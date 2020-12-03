@@ -1,14 +1,24 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import styled from 'styled-components'
 import FormSix from './FormSix'
-
+import axios from'axios';
 
 function FormFive(props) {
+
+  const [dataFinal, setData] = React.useState({});
+  const [dataDetail, setDataDetal] = React.useState([]);
+
+  useEffect(async () => {
+    const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=2&pageSize=3' );
+    const Data1 = result.data.data.docs[1]
+    setData(Data1);
+    setDataDetal(Data1.questiondetails)
+  },[]);
 
     return (
         <Component2 style={{transform:`scale(${props.SoloStyle})`}}>
         {/* <Components > */}
-            <div className="rowHeader">5. Өр, зээлийн асуудал</div>
+            <div className="rowHeader">5. {dataFinal.description}<span className="tseg">*</span></div>
             <div className="formTwoParent ">
               <div className="headerPar">
                 <div className="row" >
@@ -17,14 +27,14 @@ function FormFive(props) {
                   <div className="col-md-2 col-sm-2 col-3">Үгүй </div>
                 </div>
               </div>
-              {tableData.map((el,i)=>{
+              {dataDetail.map((el,i)=>{
                 return(
                   <div className="headerParchild" key={i}>
                   <div className="row" >
-                    <div className="col-md-1 col-sm-1 col-1">{`${el.Fieldcount}`}</div>
-                    <div className="col-md-7 col-sm-7 col-5">{el.name}</div>
-                    <div className="col-md-2 col-sm-2 col-3"><input className="getinput" type="radio" name={`five${el.Fieldcount}`} value="Тийм"/></div>
-                    <div className="col-md-2 col-sm-2 col-3"><input className="getinput" type="radio" name={`five${el.Fieldcount}`} value="Үгүй"/></div>
+                    <div className="col-md-1 col-sm-1 col-1">{`${i+1}`}</div>
+                    <div className="col-md-7 col-sm-7 col-5">{el.description}</div>
+                    <div className="col-md-2 col-sm-2 col-3"><input className="getinput3" tabIndex={dataFinal.code} type="radio" name={el.id} value="1"/></div>
+                    <div className="col-md-2 col-sm-2 col-3"><input className="getinput3" tabIndex={dataFinal.code} type="radio" name={el.id} value="0"/></div>
                   </div>
                 </div>
                 )
@@ -39,8 +49,6 @@ function FormFive(props) {
 export default FormFive
 
 
-
-
 const Component2 = styled.div`
     transition: all 0.5s ease-out;
       border-radius:8px;
@@ -53,6 +61,9 @@ const Component2 = styled.div`
         font-size:1.2rem;
         // border-bottom:1px solid rgba(63, 81, 181,0.5);
         color:black;
+        .tseg{
+          color:red;
+        }
       }
    
     .formTwoParent{

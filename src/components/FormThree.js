@@ -1,23 +1,42 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components'
 import FromFive from './FormFive'
-
-
+import { Link, animateScroll as scroll } from "react-scroll";
+import axios from'axios';
 
 
 function FormThree(props) {
   const [childStyle, setChildStyle] = React.useState('0');
-
   const [resTextstyle, setResTextstyle] = React.useState('black');
   const [responseText, setResponseText] = React.useState("D");
   const [responseTextscale, setResponseTextscale] = React.useState("0");
-
   const [resTextstyle2, setResTextstyle2] = React.useState('black');
   const [responseText2, setResponseText2] = React.useState("D");
   const [responseTextscale2, setResponseTextscale2] = React.useState("0");
+
+  const [dataFinal, setData] = React.useState({});
+  const [dataDetal, setDataDetal] = React.useState([]);
+
+  const [dataFinal2, setData2] = React.useState({});
+  const [dataDetal2, setDataDetal2] = React.useState([]);
+
+  useEffect(async () => {
+    const result = await axios.get( 'http://192.168.88.78:3000/api/questions' );
+ 
+    const Data1 = result.data.data.docs[2]
+    const Data2 = result.data.data.docs[3]
+    // console.log(Data1, "data 1");
+    setData(Data1);
+    setDataDetal(Data1.questiondetails);
+
+    setData2(Data2);
+    setDataDetal2(Data2.questiondetails);
+  },[]);
+
+
   
   const clickHandle = (e) =>{
-    e.preventDefault();
+    // e.preventDefault();
                 let rs = document.querySelectorAll(".inpTest2");
                 let arr = Array.from(rs);
                 let finalOne = {};
@@ -29,17 +48,19 @@ function FormThree(props) {
                     finalOne[field] = value
                 }
             });
-            console.log(finalOne.one, "its my final2 2 2 ");
-          if(finalOne.three === undefined){
+            // console.log(finalOne.four, "its my final2 2 2 ");
+          if(finalOne.t3hree === undefined){
                 setChildStyle("0");
                 setResponseText("Та хариултаас сонголтоо хийнэ үү...")
                 setResponseTextscale("1");
                 setResTextstyle("red");
-            }else if(finalOne.four === undefined ){
+                scroll.scrollTo(1300);
+            }else if(finalOne.f4our === undefined ){
                 setChildStyle("0");
                 setResponseText2("Та хариултаас сонголтоо хийнэ үү...")
                 setResponseTextscale2("1");
                 setResTextstyle2("red");
+                scroll.scrollTo(1300);
             }
              else{
                 setChildStyle("1");
@@ -49,41 +70,45 @@ function FormThree(props) {
                 setResponseText2("d");
                 setResponseTextscale2("0");
                 setResTextstyle2("black");
+                scroll.scrollTo(2000);
             }
   }
 
     return (
         <Component3 style={{transform:`scale(${props.childStyle})`}} >
           <div className="formOneParent">
-            <div className="headerPar"  style={{color:`${resTextstyle}`}}>3. Танай байгууллагын эцсийн бүтээгдэхүүн, үйлчилгээний нийт өртгийн 40-с дээш хувь нь Монгол улсад бүтээгддэг үү</div>
-              <div className="radioPar">
-                <input className="getinput inpTest2" type="radio" name="three" value="Тийм"/>
-                <label >Тийм</label>
-              </div>
-              <div className="radioPar">
-                <input className="getinput inpTest2" type="radio" name="three" value="Үгүй" />
+            <div className="headerPar"  style={{color:`${resTextstyle}`}}>3. {dataFinal.description}<span className="tseg">*</span></div>
+            {dataDetal.map((el,i)=>{
+              return(
+                  <div className="radioPar">
+                      <input className="getinput inpTest2" tabIndex={dataFinal.code} type="radio" name="t3hree" value={el.id}/>
+                     <label >{el.description}</label>
+                  </div>
+              )
+            })}
+              
+              {/* <div className="radioPar">
+                <input className="getinput inpTest2" type="radio" name="t3hree" value="Үгүй" />
                 <label >Үгүй</label>
-              </div>
+              </div> */}
               <div className="errText" style={{transform:`scale(${responseTextscale})`, color:`red` }} >{responseText}</div>
           </div>
 
-
           <div className="formOneParent" >
-            <div className="headerPar"  style={{color:`${resTextstyle2}`}} >4. Сүүлийн 2 жилд дараалан санхүүгийн тайлан гаргаж, аудитлуулсан эсэх?</div>
-              <div className="radioPar">
-                <input className="getinput inpTest2" type="radio" name="four" value="Тийм. 2 жилийн аудитлагдсан тайлантай"/>
-                <label >Тийм. 2 жилийн аудитлагдсан тайлантай</label>
-              </div>
-              <div className="radioPar">
-                <input className="getinput inpTest2" type="radio" name="four" value="1 жилийн аудитлагдсан тайлантай" />
-                <label >1 жилийн аудитлагдсан тайлантай</label>
-              </div>
-              <div className="radioPar">
-                <input className="getinput inpTest2" type="radio" name="four" value="Санхүүгийн тайлантай боловч аудитлуулаагүй" />
-                <label >Санхүүгийн тайлантай боловч аудитлуулаагүй</label>
-              </div>
+            <div className="headerPar"  style={{color:`${resTextstyle2}`}} >4. {dataFinal2.description}<span className="tseg">*</span></div>
+
+               {dataDetal2.map((el,i)=>{
+                    return(
+                        <div className="radioPar">
+                            <input className="getinput inpTest2" tabIndex={dataFinal2.code} type="radio" name="f4our" value={el.id}/>
+                          <label >{el.description}</label>
+                        </div>
+                    )
+                  })}
               <div className="errText" style={{transform:`scale(${responseTextscale2})`, color:`red` }} >{responseText2}</div>
-            <button onClick={clickHandle} className="TestButton">NEXT</button>
+              <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>clickHandle()}>
+                 <button onClick={clickHandle} className="TestButton">NEXT</button>
+              </Link>
           </div>
           <FromFive SoloStyle={childStyle} />
         </Component3>
@@ -123,6 +148,9 @@ const Component3 = styled.div`
         color:black;
       }
       .headerPar{
+        .tseg{
+          color:red;
+        }
         padding-bottom:6px;
         font-size:1.1rem;
         border-bottom:1px solid rgba(63, 81, 181,0.5);

@@ -1,8 +1,8 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import styled from 'styled-components'
 import FormThree from './FormThree';
-
-
+import { Link, animateScroll as scroll } from "react-scroll";
+import axios from'axios';
 
 
 
@@ -13,37 +13,51 @@ function FormTwo(props) {
     const [childStyle, setChildStyle] = React.useState('0');
     const [procent, setProcent] = React.useState('0');
 
+    const [dataFinal, setData] = React.useState({});
+    const [dataDetail, setDataDetal] = React.useState([]);
+    
+    useEffect(async () => {
+      const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=1&pageSize=3' );
+   
+      const Data1 = result.data.data.docs[1]
+      setData(Data1);
+      setDataDetal(Data1.questiondetails)
+    },[]);
+
   const clickHandles = (e) =>{
-    e.preventDefault();
+    // e.preventDefault();
                 let rs = document.querySelectorAll(".inpTest3");
-                console.log(rs, "dada"); 
+                // console.log(rs, "dada"); 
                 let arr = Array.from(rs);
                 let finalOne = {};
-                arr.map(element=>{
-                if(element.checked === true){
-                    // console.log(element, "my checked element");
-                    let field = element.name;
-                    let value = element.value;
-                    console.log(element.value.length, "its my final2 2 2 dad ad ada ");
-                    finalOne[field] = value
-                }
-            });
-            // console.log(finalOne, "its my final2 2 2 ");
-            let keys = Object.keys(finalOne);
-            console.log(keys.length, "this is my length")
 
+                arr.map(element=>{
+                  if(element.checked === true){
+                    let field = element.tabIndex;
+                    let value = element.value;
+                    finalOne[field] = value
+                  }else if(finalOne.name === 1){
+                    setOpacity("1");
+                    setChildStyle("0");
+                    setProcent(FinalProcent);
+                    scroll.scrollTo(560);
+                  }
+            });
+
+            console.log(finalOne, "my 2 2 2 data");
+            let keys = Object.keys(finalOne);
             const Procent = keys.length * 100 / 13;
             const FinalProcent = Math.round(Procent);
-            console.log(FinalProcent, "% myProcent");
-
 
             if(keys.length < 13){
               setOpacity("1");
               setChildStyle("0");
               setProcent(FinalProcent);
-            }else{
+              scroll.scrollTo(560);
+            } else{
               setOpacity("0");
               setChildStyle("1");
+              scroll.scrollTo(1300);
             }
       
   }
@@ -51,7 +65,7 @@ function FormTwo(props) {
     return (
         <Component2 style={{transform:`scale(${props.SoloStyle})`}}>
         {/* <Components > */}
-            <div className="rowHeader">2. Та дараах төрлийн үйл ажиллагаа, бизнес эрхэлдэг үү?</div>
+            <div className="rowHeader">2. {dataFinal.description}<span className="tseg">*</span></div>
             <div className="formTwoParent ">
               <div className="headerPar">
                 <div className="row" >
@@ -60,22 +74,24 @@ function FormTwo(props) {
                   <div className="col-md-2 col-sm-2 col-3">Үгүй </div>
                 </div>
               </div>
-              {tableData.map((el,i)=>{
+              {dataDetail.map((el, i)=>{
                 return(
                   <div className="headerParchild" key={i}>
-                  <div className="row" >
-                    <div className="col-md-1 col-sm-1 col-1">{`${el.Fieldcount}`}</div>
-                    <div className="col-md-7 col-sm-7 col-5">{el.name}</div>
-                    <div className="col-md-2 col-sm-2 col-3"><input className="getinput inpTest3" type="radio" name={`two${el.Fieldcount}`} value="Тийм"/></div>
-                    <div className="col-md-2 col-sm-2 col-3"><input className="getinput inpTest3" type="radio" name={`two${el.Fieldcount}`} value="Үгүй"/></div>
-                  </div>
+                    <div className="row" >
+                      <div className="col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
+                      <div className="col-md-7 col-sm-7 col-5">{el.description}</div>
+                      <div className="col-md-2 col-sm-2 col-3"><input className="getinput22 inpTest3" tabIndex={dataFinal.code + i} type="radio" name={el.id} value="1"/></div>
+                      <div className="col-md-2 col-sm-2 col-3"><input className="getinput22 inpTest3" tabIndex={dataFinal.code + i} type="radio" name={el.id} value="0"/></div>
+                    </div>
                 </div>
                 )
               })}
               <div className="buttonPar">
               <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
                <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
-               <button onClick={clickHandles} className="TestButton">NEXT</button>
+               <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>clickHandles()}>
+                 <span onClick={clickHandles} className="TestButton">NEXT</span>
+              </Link>
               </div>
             </div>
             <FormThree childStyle={childStyle} />
@@ -101,6 +117,9 @@ const Component2 = styled.div`
         font-size:1.2rem;
         // border-bottom:1px solid rgba(63, 81, 181,0.5);
         color:black;
+        .tseg{
+          color:red;
+        }
       }
    
     .formTwoParent{
@@ -122,20 +141,38 @@ const Component2 = styled.div`
               transition:all 0.4s ease;
               color:rgba(255,0,0.6);
             }
-          .TestButton{
-            border-style:none;
-            border:1px solid rgba(63, 81, 181,0.5);
-            width:30%;
-            padding:5px 0px;
-            border-radius:6px;
-            color:rgba(63, 81, 181);
-            background-color:rgba(63, 81, 181,0.1);
-            cursor:pointer;
-            font-size:18px;
-            &:hover{
-              box-shadow:1px 1px 8px -2px;
+            a{
+              text-decoration: none !important;
+              all: none;
+              border-style:none;
+              border:1px solid rgba(63, 81, 181,0.5);
+              width:30%;
+              padding:5px 0px;
+              border-radius:6px;
+              color:rgba(63, 81, 181);
+              background-color:rgba(63, 81, 181,0.1);
+              cursor:pointer;
+              font-size:18px;
+              text-align:center;
+              &:hover{
+                box-shadow:1px 1px 8px -2px;
+              }
+              // .TestButton{
+              //   border-style:none;
+              //   border:1px solid rgba(63, 81, 181,0.5);
+              //   width:30%;
+              //   padding:5px 0px;
+              //   border-radius:6px;
+              //   color:rgba(63, 81, 181);
+              //   background-color:rgba(63, 81, 181,0.1);
+              //   cursor:pointer;
+              //   font-size:18px;
+              //   &:hover{
+              //     box-shadow:1px 1px 8px -2px;
+              //   }
+              // }
             }
-          }
+        
         }
         
         .headerPar{

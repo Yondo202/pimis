@@ -1,68 +1,35 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import styled from 'styled-components'
-
+import axios from'axios';
 
 
 
 function FormSix() {
-  const [childStyle, setChildStyle] = React.useState('0');
 
-  const [resTextstyle, setResTextstyle] = React.useState('black');
-  const [responseText, setResponseText] = React.useState("D");
-  const [responseTextscale, setResponseTextscale] = React.useState("0");
+  const [dataFinal, setData] = React.useState({});
+  const [dataDetal, setDataDetal] = React.useState([]);
 
-  const [resTextstyle2, setResTextstyle2] = React.useState('black');
-  const [responseText2, setResponseText2] = React.useState("D");
-  const [responseTextscale2, setResponseTextscale2] = React.useState("0");
-  
-  const clickHandle = (e) =>{
-    e.preventDefault();
-                let rs = document.querySelectorAll(".inpTest2");
-                let arr = Array.from(rs);
-                let finalOne = {};
-                arr.map(element=>{
-                if(element.checked === true){
-                    // console.log(element, "my checked element");
-                    let field = element.name;
-                    let value = element.value;
-                    finalOne[field] = value
-                }
-            });
-            console.log(finalOne.one, "its my final2 2 2 ");
-          if(finalOne.three === undefined){
-                setChildStyle("0");
-                setResponseText("Та хариултаас сонголтоо хийнэ үү...")
-                setResponseTextscale("1");
-                setResTextstyle("red");
-            }else if(finalOne.four === undefined ){
-                setChildStyle("0");
-                setResponseText2("Та хариултаас сонголтоо хийнэ үү...")
-                setResponseTextscale2("1");
-                setResTextstyle2("red");
-            }
-             else{
-                setChildStyle("1");
-                setResponseText("d");
-                setResponseTextscale("0");
-                setResTextstyle("black");
-                setResponseText2("d");
-                setResponseTextscale2("0");
-                setResTextstyle2("black");
-            }
-  }
 
+  useEffect(async () => {
+    const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=2&pageSize=3' );
+ 
+    const Data1 = result.data.data.docs[2]
+    // console.log(Data1, "data 1");
+    setData(Data1);
+    setDataDetal(Data1.questiondetails);
+  },[]);
     return (
         <Component3 >
             <div className="formOneParent">
-                <div className="headerPar"  style={{color:`${resTextstyle}`}}>6. Танай аж ахуйн нэгжийн хувь нийлүүлэгчдийн бүрэлдэхүүнд Улс төрийн нөлөө бүхий албан тушаалтан болон тэдгээрийн гэр бүлийн хүмүүс байдаг эсэх?</div>
-                <div className="radioPar">
-                    <input className="getinput inpTest2" type="radio" name="six" value="Тийм"/>
-                    <label >Тийм</label>
-                </div>
-                <div className="radioPar">
-                    <input className="getinput inpTest2" type="radio" name="six" value="Үгүй" />
-                    <label >Үгүй</label>
-                </div>
+                <div className="headerPar"  >6. {dataFinal.description}<span className="tseg">*</span>?</div>
+              {dataDetal.map(el=>{
+                return(
+                  <div className="radioPar">
+                    <input className="getinput inpTest2" tabIndex={dataFinal.code}  type="radio" name="s6ix" value={el.id}/>
+                    <label >{el.description}</label>
+                 </div>
+                )
+              })}
             </div>
         </Component3>
     )
@@ -104,6 +71,9 @@ const Component3 = styled.div`
         font-size:1.1rem;
         border-bottom:1px solid rgba(63, 81, 181,0.5);
         color:black;
+        .tseg{
+          color:red;
+        }
       }
       .errText{
         transition: all 0.4s ease; 

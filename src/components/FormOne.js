@@ -1,48 +1,62 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import styled from 'styled-components'
 import FormTwo from './FormTwo';
-
-
-
+import { Link, animateScroll as scroll } from "react-scroll";
+import axios from'axios';
 
 function FormOne() {
   const [childStyle, setChildStyle] = React.useState('0');
-  
   const [resTextstyle, setResTextstyle] = React.useState('black');
   const [responseText, setResponseText] = React.useState("D");
   const [responseTextscale, setResponseTextscale] = React.useState("0");
-
+  const [dataFinal, setData] = React.useState({});
+  const [dataDetal, setDataDetal] = React.useState([]);
   
+  useEffect(async () => {
+    const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=1&pageSize=3' );
+ 
+    const Data1 = result.data.data.docs[0]
+    // console.log(Data1, "data 1");
+    setData(Data1);
+    setDataDetal(Data1.questiondetails)
+  },[]);
 
-  const clickHandle = (e) =>{
-    e.preventDefault();
+
+  const clickHandle = (element) =>{
+    // e.preventDefault();
             let rs = document.querySelectorAll(".inpTest");
             let arr = Array.from(rs);
             let finalOne = {};
-            arr.map(element=>{
+          arr.map(element=>{
               if(element.checked === true){
-                // console.log(element, "my checked element");
                 let field = element.name;
                 let value = element.value;
                 finalOne[field] = value
               }
           });
-          console.log(finalOne.one, "its my final2 2 2 ");
-          if(finalOne.one === "Монгол улсад бүртгэлгүй" ){
+          // console.log(finalOne, "nana");
+
+
+          console.log(finalOne.o1ne, "its my final2 2 2 ");
+          if(finalOne.o1ne === "91"){
             setResponseText("Түншлэлийн хөтөлбөрт хамрагдах боломжгүй байна...")
             setResponseTextscale("1");
             setResTextstyle("red");
             setChildStyle("0");
-          }else if(finalOne.one === undefined){
+            scroll.scrollTo(0);
+
+          }else if(finalOne.o1ne === undefined){
             setResponseText("Та хариултаас сонголтоо хийнэ үү...")
             setResponseTextscale("1");
             setResTextstyle("red");
             setChildStyle("0");
+            scroll.scrollTo(0);
           } else{
             setChildStyle("1");
             setResponseText("d");
             setResponseTextscale("0");
             setResTextstyle("black");
+            scroll.scrollTo(560);
           }
   }
 
@@ -50,29 +64,43 @@ function FormOne() {
         <Component >
           <div className="formOneParent">
 
-            <div className="headerPar" style={{color:`${resTextstyle}`}} >1. Та монгол улсад бүртгэлтэй аль төрлийн бизнес эрхэлдэг вэ?</div>
-              <div className="radioPar">
-                <input className="getinput inpTest" type="radio" name="one" value="ХХК, ХК, ГХО-тай"/>
+            <div className="headerPar" style={{color:`${resTextstyle}`}} >1. {dataFinal.description}<span className="tseg">*</span></div>
+
+              {dataDetal.map((el,i)=>{
+                return(
+                  <div className="radioPar" key={i}>
+                    <input className="getinput inpTest" type="radio" tabIndex={dataFinal.code}  name="o1ne" value={el.id}/>
+                    <label >{el.description}</label>
+                 </div>
+                )
+              })}
+
+              {/* <div className="radioPar">
+                <input className="getinput1 inpTest" type="radio" name="o1ne" value="ХХК, ХК, ГХО-тай"/>
                 <label >ХХК, ХК, ГХО-тай</label>
               </div>
               <div className="radioPar">
-                <input className="getinput inpTest" type="radio" name="one" value="ТӨК" />
+                <input className="getinput inpTest" type="radio" name="o1ne" value="ТӨК" />
                 <label >ТӨК</label>
               </div>
               <div className="radioPar">
-                <input className="getinput inpTest" type="radio" name="one" value="Судалгаа, шинжилгээний хүрээлэн, Их, Дээд Сургууль, академик байгууллага" />
+                <input className="getinput inpTest" type="radio" name="o1ne" value="Судалгаа, шинжилгээний хүрээлэн, Их, Дээд Сургууль, академик байгууллага" />
                 <label >Судалгаа, шинжилгээний хүрээлэн, Их, Дээд Сургууль, академик байгууллага</label>
               </div>
               <div className="radioPar">
-                <input className="getinput inpTest" type="radio" name="one" value="Хоршоолол, нөхөрлөл" />
+                <input className="getinput inpTest" type="radio" name="o1ne" value="Хоршоолол, нөхөрлөл" />
                 <label >Хоршоолол, нөхөрлөл</label>
               </div>
               <div className="radioPar">
-                <input className="getinput inpTest" type="radio" name="one" value="Монгол улсад бүртгэлгүй" />
+                <input className="getinput inpTest" type="radio" name="o1ne" value="Монгол улсад бүртгэлгүй" />
                 <label >Монгол улсад бүртгэлгүй</label>
-              </div>
+              </div> */}
               <div className="errText" style={{transform:`scale(${responseTextscale})`, color:`red` }} >{responseText}</div>
-            <button onClick={clickHandle} className="TestButton">Шалгах</button>
+          
+              <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>clickHandle()}>
+                <button onClick={clickHandle} className="TestButton">Шалгах</button>
+              </Link>
+                
           </div>
             <FormTwo SoloStyle={childStyle} />
         </Component>
@@ -115,6 +143,9 @@ const Component = styled.div`
         font-size:1.2rem;
         border-bottom:1px solid rgba(63, 81, 181,0.5);
         color:black;
+        .tseg{
+          color:red;
+        }
       }
       .errText{
         transition: all 0.4s ease; 
