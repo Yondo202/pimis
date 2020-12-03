@@ -12,9 +12,7 @@ function FormSix() {
 
   useEffect(async () => {
     const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=2&pageSize=3' );
- 
     const Data1 = result.data.data.docs[2]
-    // console.log(Data1, "data 1");
     setData(Data1);
     setDataDetal(Data1.questiondetails);
   },[]);

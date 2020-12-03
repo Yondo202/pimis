@@ -31,16 +31,16 @@ function FormTwo(props) {
                 let arr = Array.from(rs);
                 let finalOne = {};
 
-                arr.map(element=>{
+                arr.map((element,i)=>{
+                  // if(element.value === "1"){
+                  //   setOpacity("1");
+                  //   setChildStyle("0");
+                  //   scroll.scrollTo(560);
+                  // }
                   if(element.checked === true){
                     let field = element.tabIndex;
                     let value = element.value;
                     finalOne[field] = value
-                  }else if(finalOne.name === 1){
-                    setOpacity("1");
-                    setChildStyle("0");
-                    setProcent(FinalProcent);
-                    scroll.scrollTo(560);
                   }
             });
 
@@ -80,8 +80,8 @@ function FormTwo(props) {
                     <div className="row" >
                       <div className="col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
                       <div className="col-md-7 col-sm-7 col-5">{el.description}</div>
-                      <div className="col-md-2 col-sm-2 col-3"><input className="getinput22 inpTest3" tabIndex={dataFinal.code + i} type="radio" name={el.id} value="1"/></div>
-                      <div className="col-md-2 col-sm-2 col-3"><input className="getinput22 inpTest3" tabIndex={dataFinal.code + i} type="radio" name={el.id} value="0"/></div>
+                      <div className="col-md-2 col-sm-2 col-3"><input className="getinput22 inpTest3" tabIndex={`${dataFinal.code + i}haha`} type="radio" name={el.id} value="1"/></div>
+                      <div className="col-md-2 col-sm-2 col-3"><input className="getinput22 inpTest3" tabIndex={`${dataFinal.code + i}haha`} type="radio" name={el.id} value="0"/></div>
                     </div>
                 </div>
                 )
