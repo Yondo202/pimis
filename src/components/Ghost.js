@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-
 function Ghost() {
     return (
         <GhostComponent style={{backgroundImage:`url(/back3.jpg)`}}>

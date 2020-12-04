@@ -3,13 +3,10 @@ import styled from 'styled-components'
 import axios from'axios';
 import User from "./User";
 
-
-
 function FormSix() {
 
   const [dataFinal, setData] = React.useState({});
   const [dataDetal, setDataDetal] = React.useState([]);
-
 
   useEffect(async () => {
     const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=2&pageSize=3' );

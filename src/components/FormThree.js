@@ -4,7 +4,6 @@ import FromFive from './FormFive'
 import { Link, animateScroll as scroll } from "react-scroll";
 import axios from'axios';
 
-
 function FormThree(props) {
   const [childStyle, setChildStyle] = React.useState('0');
   const [resTextstyle, setResTextstyle] = React.useState('black');
@@ -33,8 +32,6 @@ function FormThree(props) {
     setDataDetal2(Data2.questiondetails);
   },[]);
 
-
-  
   const clickHandle = (e) =>{
     // e.preventDefault();
                 let rs = document.querySelectorAll(".inpTest2");
@@ -86,14 +83,8 @@ function FormThree(props) {
                   </div>
               )
             })}
-              
-              {/* <div className="radioPar">
-                <input className="getinput inpTest2" type="radio" name="t3hree" value="Үгүй" />
-                <label >Үгүй</label>
-              </div> */}
               <div className="errText" style={{transform:`scale(${responseTextscale})`, color:`red` }} >{responseText}</div>
           </div>
-
           <div className="formOneParent" >
             <div className="headerPar"  style={{color:`${resTextstyle2}`}} >4. {dataFinal2.description}<span className="tseg">*</span></div>
 

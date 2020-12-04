@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import FormTwo from './FormTwo';
 import { Link, animateScroll as scroll } from "react-scroll";
 import axios from'axios';
+import { Alert } from 'react-st-modal';
+
 
 function FormOne() {
   const [childStyle, setChildStyle] = React.useState('0');
@@ -21,7 +23,6 @@ function FormOne() {
     setDataDetal(Data1.questiondetails)
   },[]);
 
-
   const clickHandle = (element) =>{
     // e.preventDefault();
             let rs = document.querySelectorAll(".inpTest");
@@ -34,17 +35,16 @@ function FormOne() {
                 finalOne[field] = value
               }
           });
-          // console.log(finalOne, "nana");
-
-          console.log(finalOne.o1ne, "its my final2 2 2 ");
+          // console.log(finalOne.o1ne, "its my final2 2 2 ");
           if(finalOne.o1ne === "91"){
-            setResponseText("Түншлэлийн хөтөлбөрт хамрагдах боломжгүй байна...")
+            Alert('ААН, Кластер аль алинд тэнцэхгүй байна.', ' ✓✓✓');
+            setResponseText("Түншлэлийн хөтөлбөрт хамрагдах боломжгүй байна...");
             setResponseTextscale("1");
             setResTextstyle("red");
             setChildStyle("0");
             scroll.scrollTo(0);
           }else if(finalOne.o1ne === undefined){
-            setResponseText("Та хариултаас сонголтоо хийнэ үү...")
+            setResponseText("Та хариултаас сонголтоо хийнэ үү...");
             setResponseTextscale("1");
             setResTextstyle("red");
             setChildStyle("0");
@@ -61,44 +61,18 @@ function FormOne() {
     return (
         <Component >
           <div className="formOneParent">
-
             <div className="headerPar" style={{color:`${resTextstyle}`}} >1. {dataFinal.description}<span className="tseg">*</span></div>
-
               {dataDetal.map((el,i)=>{
-                return(
-                  <div className="radioPar" key={i}>
+                return( 
+                   <div className="radioPar" key={i}>
                     <input className="getinput inpTest" type="radio" tabIndex={dataFinal.code}  name="o1ne" value={el.id}/>
                     <label >{el.description}</label>
-                 </div>
-                )
-              })}
-
-              {/* <div className="radioPar">
-                <input className="getinput1 inpTest" type="radio" name="o1ne" value="ХХК, ХК, ГХО-тай"/>
-                <label >ХХК, ХК, ГХО-тай</label>
-              </div>
-              <div className="radioPar">
-                <input className="getinput inpTest" type="radio" name="o1ne" value="ТӨК" />
-                <label >ТӨК</label>
-              </div>
-              <div className="radioPar">
-                <input className="getinput inpTest" type="radio" name="o1ne" value="Судалгаа, шинжилгээний хүрээлэн, Их, Дээд Сургууль, академик байгууллага" />
-                <label >Судалгаа, шинжилгээний хүрээлэн, Их, Дээд Сургууль, академик байгууллага</label>
-              </div>
-              <div className="radioPar">
-                <input className="getinput inpTest" type="radio" name="o1ne" value="Хоршоолол, нөхөрлөл" />
-                <label >Хоршоолол, нөхөрлөл</label>
-              </div>
-              <div className="radioPar">
-                <input className="getinput inpTest" type="radio" name="o1ne" value="Монгол улсад бүртгэлгүй" />
-                <label >Монгол улсад бүртгэлгүй</label>
-              </div> */}
+                 </div> 
+                 )})}
               <div className="errText" style={{transform:`scale(${responseTextscale})`, color:`red` }} >{responseText}</div>
-          
               <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>clickHandle()}>
                 <button onClick={clickHandle} className="TestButton">Шалгах</button>
               </Link>
-                
           </div>
             <FormTwo SoloStyle={childStyle} />
         </Component>

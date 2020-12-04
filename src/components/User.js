@@ -1,15 +1,7 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components'
 
-
-
 function User() {
-    // display:flex;
-    // flex-direction:row;
-    // align-items:center;
-    // justify-content:space-evenly;
-
-
     return (
         <Component3 >
             <div className="formOneParent">

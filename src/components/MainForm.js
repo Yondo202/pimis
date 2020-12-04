@@ -3,7 +3,7 @@ import styled from "styled-components";
 import FromOne from "../components/FormOne";
 import {AiOutlineSend} from 'react-icons/ai'
 import { Alert } from 'react-st-modal';
-import { Link, animateScroll as scroll } from "react-scroll";
+import { animateScroll as scroll } from "react-scroll";
 import axios from'axios';
 
 function MainForm() {
@@ -75,12 +75,12 @@ function MainForm() {
           }else{
             setScale("0");
             await axios.post( 'http://192.168.88.78:3000/api/question-check', finalOne ).then((result)=>{
-              console.log(result, "result");
+              console.log(result.data.data, "result");
               const appComp = result.data.data.approvedCompany
               const appCluster = result.data.data.approvedCluster
 
               if(appComp === true && appCluster === true){
-                Alert('Та шалгуурууд болон бүрдүүлэх материалаа бүрдүүлэн өөрийн сонголтоор аль нэгэнд нь хандана уу', ' Амжилттай тэнцлээ ✓✓✓');
+                Alert('ААН, Кластер аль алинд тэнцэх боложтой байна. Та шалгуурууд болон бүрдүүлэх материалаа бүрдүүлэн өөрийн сонголтоор аль нэгэнд нь хандана уу.', '✓✓✓');
                 scroll.scrollToTop();
 
               }else if(appCluster === true && appComp === false){
@@ -90,7 +90,6 @@ function MainForm() {
               }else{
                 Alert('ААН, Кластер аль алинд тэнцэхгүй байна.', ' ✓✓✓');
                 scroll.scrollToTop();
-
               }
             });
 
