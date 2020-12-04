@@ -5,6 +5,7 @@ import { Link, animateScroll as scroll } from "react-scroll";
 import axios from'axios';
 import { Alert } from 'react-st-modal';
 
+
 function FormOne() {
   const [childStyle, setChildStyle] = React.useState('0');
   const [resTextstyle, setResTextstyle] = React.useState('black');
