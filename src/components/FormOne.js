@@ -36,7 +36,6 @@ function FormOne() {
           });
           // console.log(finalOne, "nana");
 
-
           console.log(finalOne.o1ne, "its my final2 2 2 ");
           if(finalOne.o1ne === "91"){
             setResponseText("Түншлэлийн хөтөлбөрт хамрагдах боломжгүй байна...")
@@ -44,7 +43,6 @@ function FormOne() {
             setResTextstyle("red");
             setChildStyle("0");
             scroll.scrollTo(0);
-
           }else if(finalOne.o1ne === undefined){
             setResponseText("Та хариултаас сонголтоо хийнэ үү...")
             setResponseTextscale("1");

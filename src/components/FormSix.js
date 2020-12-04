@@ -1,6 +1,7 @@
 import React,{useEffect} from 'react';
 import styled from 'styled-components'
 import axios from'axios';
+import User from "./User";
 
 
 
@@ -29,6 +30,7 @@ function FormSix() {
                 )
               })}
             </div>
+           <User />
         </Component3>
     )
 }

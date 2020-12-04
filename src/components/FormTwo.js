@@ -30,21 +30,13 @@ function FormTwo(props) {
                 // console.log(rs, "dada"); 
                 let arr = Array.from(rs);
                 let finalOne = {};
-
                 arr.map((element,i)=>{
-                  // if(element.value === "1"){
-                  //   setOpacity("1");
-                  //   setChildStyle("0");
-                  //   scroll.scrollTo(560);
-                  // }
                   if(element.checked === true){
                     let field = element.tabIndex;
                     let value = element.value;
                     finalOne[field] = value
                   }
             });
-
-            console.log(finalOne, "my 2 2 2 data");
             let keys = Object.keys(finalOne);
             const Procent = keys.length * 100 / 13;
             const FinalProcent = Math.round(Procent);
@@ -80,8 +72,8 @@ function FormTwo(props) {
                     <div className="row" >
                       <div className="col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
                       <div className="col-md-7 col-sm-7 col-5">{el.description}</div>
-                      <div className="col-md-2 col-sm-2 col-3"><input className="getinput22 inpTest3" tabIndex={`${dataFinal.code + i}haha`} type="radio" name={el.id} value="1"/></div>
-                      <div className="col-md-2 col-sm-2 col-3"><input className="getinput22 inpTest3" tabIndex={`${dataFinal.code + i}haha`} type="radio" name={el.id} value="0"/></div>
+                      <div className="col-md-2 col-sm-2 col-3"><input className={`d${i} getinput22 inpTest3`} tabIndex={`${i + 1}`} type="radio" name={el.id} value="1"/></div>
+                      <div className="col-md-2 col-sm-2 col-3"><input className={`d${i} getinput22 inpTest3`} tabIndex={`${i + 1}`} type="radio" name={el.id} value="0"/></div>
                     </div>
                 </div>
                 )
@@ -108,8 +100,6 @@ export default FormTwo
 const Component2 = styled.div`
     transition: all 0.5s ease-out;
       border-radius:8px;
-      
-      
       font-family: "Roboto", "Sans-serif";
       .rowHeader{
         background-color:white;
@@ -124,7 +114,6 @@ const Component2 = styled.div`
    
     .formTwoParent{
       background-color:white;
-
         margin-bottom:16px;
         font-size:16px;
         border:1px solid rgba(63, 81, 181,0.8);
@@ -243,32 +232,3 @@ const Component2 = styled.div`
         
 `
 
-
-const tableData = [
-  { name: "Цэрэг армийн ямар нэг зэвсэг",
-    Fieldcount:"1"},
-  { name: "Зэрлэг амьтан, ургамлын ховордсон төрөл зүйлийг олон улсын хэмжээнд худалдаалах тухай конвенц (CITES)-ийн хүрээнд хориглодог ан амьтан, ургамлын худалдаа",
-    Fieldcount:"2"},
-  {name: "Байгаль, хүрээлэн буй орчинд генийн өөрчлөлтөд орсон организмуудыг гаргах",
-    Fieldcount:"3"},
-  {name: "Хориглосон пестицид, хербицидийн үйлдвэрлэл, нийлүүлэлт, худалдаа",
-    Fieldcount:"4"},
-  { name: "Далай тэнгист тороор загас барих",
-    Fieldcount:"5" },
-  { name: "Цацраг идэвхт бүтээгдэхүүнүүд",
-    Fieldcount:"6" },
-  { name: "Аюултай хог хаягдлын хадгалалт, боловсруулалт, зайлуулалт",
-    Fieldcount:"7" },
-  {  name: "Хлорфторт нүүрстөрөгчид, галлон болон Монреалийн протоколын хүрээнд зохицуулагддаг бусад бодисууд агуулсан тоног төхөөрөмж, хэрэгслийн үйлдвэрлэл",
-    Fieldcount:"8" },
-  { name: "Олон хлорт бефенилиудын үзүүлэх нөлөө 0.005 %-аас хэтэрсэн агууламж бүхий цахилгаан хэрэгсэл, тоног төхөөрөмжийн үйлдвэрлэл",
-    Fieldcount:"9"},
-  {  name: "Шөрмөсөн чулуу агуулсан бүтээгдэхүүний үйлдвэрлэл",
-    Fieldcount:"10" },
-  { name: "Цөмийн реакторууд, тэдгээрийн хэсгүүд",
-    Fieldcount:"11"  },
-  {  name: "Тамхи (үйлдвэрлэлийн бус ба үйлдвэрлэлийн); Тамхины хатаасан навч боловсруулах машин",
-    Fieldcount:"12" },
-  {  name: "Уул уурхайн салбарт",
-    Fieldcount:"13" },
-];

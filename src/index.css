@@ -10,5 +10,24 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-    
+}
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk  {
+  background-color: rgba(0,0,0,0.8);
+}
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalTitle__1TtY9  {
+    font-size: 30px;
+}
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalContent__nuwvF  {
+    font-size: 24px;
+}
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalButtonPlace__AYeOm  {
+    /* font-size: 24px; */
+}
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalButtonPlace__AYeOm .Button-module_--primary__1ZLkB  {
+  transition: all 0.4s ease;
+  cursor: pointer;
+    /* font-size: 24px; */
+}
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalButtonPlace__AYeOm .Button-module_--primary__1ZLkB:hover  {
+  box-shadow:1px 1px 15px -2px black;
 }

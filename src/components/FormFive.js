@@ -67,8 +67,7 @@ const Component2 = styled.div`
       }
    
     .formTwoParent{
-      background-color:white;
-
+        background-color:white;
         margin-bottom:16px;
         font-size:16px;
         border:1px solid rgba(63, 81, 181,0.8);

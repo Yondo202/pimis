@@ -2,27 +2,37 @@ import React from "react";
 import styled from "styled-components";
 import FromOne from "../components/FormOne";
 import {AiOutlineSend} from 'react-icons/ai'
+import { Alert } from 'react-st-modal';
 import { Link, animateScroll as scroll } from "react-scroll";
+import axios from'axios';
 
 function MainForm() {
 
     const [scale, setScale] = React.useState("0");
-          const handleClick = (e) =>{
+          const handleClick = async (e) =>{
             e.preventDefault();
-            // const finalParent = []
             let rs = document.querySelectorAll(".getinput");
             let arr = Array.from(rs);
             let finalOne = {};
 
             let rs2 = document.querySelectorAll(".inpTest3");
             let arr2 = Array.from(rs2);
-            // console.log(arr2, "rs two 2 2 2dd")
             let finalOne2 = [];
 
             let rs3 = document.querySelectorAll(".getinput3");
             let arr3 = Array.from(rs3);
             let finalOne3 = [];
 
+            let rs4 = document.querySelectorAll(".userInp");
+            let arr4 = Array.from(rs4);
+            let userInp = {};
+
+            arr4.map(element=>{
+                let field = element.name;
+                let value = element.value;
+                userInp[field] = value;
+            });
+          
             arr.map(element=>{
               if(element.checked === true){
                 let field = element.tabIndex;
@@ -30,7 +40,6 @@ function MainForm() {
                 finalOne[field] = [value];
               }
           });
-          // console.log(finalOne, "its my final");
 
           arr2.map(element=>{
             if(element.checked === true){
@@ -51,19 +60,42 @@ function MainForm() {
             finalOne3.push(soloObject2);
           }
       });
-
+      // console.log(userInp, "my user inps");
         finalOne[2] = finalOne2
         finalOne[5] = finalOne3
-        // console.log(finalOne2, "this next final");
-        console.log(finalOne, "success final");
+        finalOne["compname"] = userInp.compname
+        finalOne["registernum"] = userInp.registernum
 
+        console.log(finalOne, "this next final");
           let keys = Object.keys(finalOne);
-          if(keys.length < 6){
+          console.log(keys.length, "myLength");
+          if(keys.length < 8){
             setScale("1");
             scroll.scrollTo(2000);
           }else{
             setScale("0");
-            scroll.scrollToTop();
+            await axios.post( 'http://192.168.88.78:3000/api/question-check', finalOne ).then((result)=>{
+              console.log(result, "result");
+              const appComp = result.data.data.approvedCompany
+              const appCluster = result.data.data.approvedCluster
+
+              if(appComp === true && appCluster === true){
+                Alert('Та шалгуурууд болон бүрдүүлэх материалаа бүрдүүлэн өөрийн сонголтоор аль нэгэнд нь хандана уу', ' Амжилттай тэнцлээ ✓✓✓');
+                scroll.scrollToTop();
+
+              }else if(appCluster === true && appComp === false){
+                Alert('Кластерын шалгуур, бүрдүүлэх материалыг бэлтгэн Кластераар хандаж болно ', ' ✓✓✓');
+                scroll.scrollToTop();
+
+              }else{
+                Alert('ААН, Кластер аль алинд тэнцэхгүй байна.', ' ✓✓✓');
+                scroll.scrollToTop();
+
+              }
+            });
+
+            // alert("Амжилттай илгээгдлээ");
+            // Alert('Амжилттай илгээгдлэээ ✓✓✓', ' ✓✓✓');
           }
         }
  
@@ -79,7 +111,7 @@ function MainForm() {
        <div className="SubmitButtonPar">
          <span className="colorText" style={{transform:`scale(${scale})`}}> Тэдээлэл дутуу байна... </span>
          {/* <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>handleClick()}> */}
-           <button className="SubmitButton" type="submit">Илгээх <div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
+           <button   className="SubmitButton" type="submit">Илгээх <div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
          {/* </Link> */}
        </div>
       </form>
