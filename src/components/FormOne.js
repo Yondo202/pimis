@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import FormTwo from './FormTwo';
 import { Link, animateScroll as scroll } from "react-scroll";
 import axios from'axios';
-import { Alert } from 'react-st-modal';
 
 
 function FormOne() {
@@ -37,7 +36,6 @@ function FormOne() {
           });
           // console.log(finalOne.o1ne, "its my final2 2 2 ");
           if(finalOne.o1ne === "91"){
-            Alert('ААН, Кластер аль алинд тэнцэхгүй байна.', ' ✓✓✓');
             setResponseText("Түншлэлийн хөтөлбөрт хамрагдах боломжгүй байна...");
             setResponseTextscale("1");
             setResTextstyle("red");
@@ -82,7 +80,7 @@ function FormOne() {
 export default FormOne
 
 const Component = styled.div`
-    font-size: 18px;
+    font-size: 16px;
     font-family: "Roboto", "Sans-serif";
     .formOneParent{
       background-color:white;

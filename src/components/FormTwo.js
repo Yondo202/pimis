@@ -148,12 +148,12 @@ const Component2 = styled.div`
               }
               // .TestButton{
               //   border-style:none;
-              //   border:1px solid rgba(63, 81, 181,0.5);
+              //   border:1px solid rgba(0, 51, 102,0.5);
               //   width:30%;
               //   padding:5px 0px;
               //   border-radius:6px;
               //   color:rgba(63, 81, 181);
-              //   background-color:rgba(63, 81, 181,0.1);
+              //   background-color:rgba(0, 51, 102,0.1);
               //   cursor:pointer;
               //   font-size:18px;
               //   &:hover{
@@ -165,7 +165,7 @@ const Component2 = styled.div`
         }
         
         .headerPar{
-          background-color: rgba(63, 81, 181,0.8);
+          background-color: rgba(0, 51, 102,0.9);
           color:white;
           text-align:center;
           border-bottom:1px solid rgba(0,0,0,0.4);

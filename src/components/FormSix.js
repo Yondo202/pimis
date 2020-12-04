@@ -17,7 +17,7 @@ function FormSix() {
     return (
         <Component3 >
             <div className="formOneParent">
-                <div className="headerPar"  >6. {dataFinal.description}<span className="tseg">*</span>?</div>
+                <div className="headerPar"  >6. {dataFinal.description}<span className="tseg">*</span></div>
               {dataDetal.map(el=>{
                 return(
                   <div className="radioPar">
@@ -35,7 +35,7 @@ function FormSix() {
 export default FormSix
 
 const Component3 = styled.div`
-    font-size: 18px;
+    font-size: 16px;
     font-family: "Roboto", "Sans-serif";
     .formOneParent{
       background-color:white;

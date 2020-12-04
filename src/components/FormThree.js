@@ -109,7 +109,7 @@ function FormThree(props) {
 export default FormThree
 
 const Component3 = styled.div`
-    font-size: 18px;
+    font-size: 16px;
     font-family: "Roboto", "Sans-serif";
     transition:all 0.5s ease;
     .formOneParent{

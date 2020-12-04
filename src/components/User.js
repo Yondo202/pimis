@@ -5,7 +5,7 @@ function User() {
     return (
         <Component3 >
             <div className="formOneParent">
-                <div className="headerPar"  >Та аж ахуйн нэр болон регистерийн дугаараа оруулан бидэнд илгээнэ үү!<span className="tseg">*</span>?</div>
+                <div className="headerPar"  >Та аж ахуйн нэр болон регистерийн дугаараа оруулан бидэнд илгээнэ үү!<span className="tseg">*</span></div>
                 <div className="inputPar">
                     <div className="compname">
                             <div className="form__group">
@@ -36,7 +36,6 @@ const Component3 = styled.div`
       border-radius:8px;
       margin-bottom:16px;
       padding:24px 26px;
-     
       .headerPar{
         padding-bottom:6px;
         font-size:1.1rem;
@@ -185,10 +184,6 @@ const Component3 = styled.div`
                }
           }
       }
-     
-
-
-      
     }
     @media only screen and (max-width:786px){
         .formOneParent{

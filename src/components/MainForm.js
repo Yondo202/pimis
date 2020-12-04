@@ -2,13 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import FromOne from "../components/FormOne";
 import {AiOutlineSend} from 'react-icons/ai'
-import { Alert } from 'react-st-modal';
+// import { Alert } from 'react-st-modal';
 import { animateScroll as scroll } from "react-scroll";
 import axios from'axios';
 
 function MainForm() {
 
     const [scale, setScale] = React.useState("0");
+
+    const [resScale, setresScale] = React.useState("0");
+    const [resText, setResText] = React.useState("");
+
           const handleClick = async (e) =>{
             e.preventDefault();
             let rs = document.querySelectorAll(".getinput");
@@ -78,23 +82,26 @@ function MainForm() {
               console.log(result.data.data, "result");
               const appComp = result.data.data.approvedCompany
               const appCluster = result.data.data.approvedCluster
-
               if(appComp === true && appCluster === true){
-                Alert('ААН, Кластер аль алинд тэнцэх боложтой байна. Та шалгуурууд болон бүрдүүлэх материалаа бүрдүүлэн өөрийн сонголтоор аль нэгэнд нь хандана уу.', '✓✓✓');
-                scroll.scrollToTop();
-
+                setresScale("1");
+                setResText("ААН, Кластер аль алинд тэнцэх боложтой байна. Та шалгуурууд болон бүрдүүлэх материалаа бүрдүүлэн өөрийн сонголтоор аль нэгэнд нь хандана уу.");
+                // Alert('ААН, Кластер аль алинд тэнцэх боложтой байна. Та шалгуурууд болон бүрдүүлэх материалаа бүрдүүлэн өөрийн сонголтоор аль нэгэнд нь хандана уу.', '✓✓✓');
+                // scroll.scrollToTop();
               }else if(appCluster === true && appComp === false){
-                Alert('Кластерын шалгуур, бүрдүүлэх материалыг бэлтгэн Кластераар хандаж болно ', ' ✓✓✓');
-                scroll.scrollToTop();
-
+                setresScale("1");
+                setResText("Кластерын шалгуур, бүрдүүлэх материалыг бэлтгэн Кластераар хандаж болно.");
+                  // Alert('Кластерын шалгуур, бүрдүүлэх материалыг бэлтгэн Кластераар хандаж болно ', ' ✓✓✓');
+                // scroll.scrollToTop();
               }else{
-                Alert('ААН, Кластер аль алинд тэнцэхгүй байна.', ' ✓✓✓');
-                scroll.scrollToTop();
+                setresScale("1");
+                // Alert('ААН, Кластер аль алинд тэнцэхгүй байна.', ' ✓✓✓');
+                // scroll.scrollToTop();
               }
             });
 
             // alert("Амжилттай илгээгдлээ");
             // Alert('Амжилттай илгээгдлэээ ✓✓✓', ' ✓✓✓');
+            // scroll.scrollToTop();
           }
         }
  
@@ -114,9 +121,14 @@ function MainForm() {
          {/* </Link> */}
        </div>
       </form>
+      <div className="resPar">
+          <h5 style={{transform:`scale(${resScale})`}}>{resText}</h5>
+      </div>
     </Component>
   );
 }
+
+// #036
 
 export default MainForm;
 
@@ -127,6 +139,17 @@ const Component = styled.div`
   margin-top:80px;
   padding-bottom:100px;
   z-index:1;
+  .resPar{
+    text-align:center;
+    padding:20px 20px;
+    border-radius:8px;
+    background:white;
+    margin-top:10px;
+    color:#036;
+    h5{
+      transition:all 0.4s ease;
+    }
+  }
   .headPar {
     text-align: center;
     background-color: white;
@@ -134,7 +157,7 @@ const Component = styled.div`
     padding:10px 20%;
     margin-bottom:16px;
     border-radius:8px;
-    border-top:5px solid #3f51b5;
+    border-top:5px solid #036;
     // border-bottom:5px solid #3f51b5;
     .headText{
     }
@@ -160,7 +183,7 @@ const Component = styled.div`
         width:100%;
         padding:5px 0px;
         color:white;
-        background-color:rgba(63, 81, 181);
+        background-color:#036;
         font-size:18px;
         text-align:center;
         transition:all 0.3s ease;
@@ -200,6 +223,12 @@ const Component = styled.div`
   
   }
   @media only screen and (max-width:786px){
+    .resPar{
+      h5{
+        font-size:14px;
+
+      }
+    }
     .headPar{
       padding:10px 3%;
       font-size: 19px;
@@ -207,13 +236,9 @@ const Component = styled.div`
    
       .SubmitButtonPar{
         flex-direction:column;
-        a{
-          width:100%;
           .SubmitButton{
             width:100%;
           }
-        }
-        
       }
   }
 `;

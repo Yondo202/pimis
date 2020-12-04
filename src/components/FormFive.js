@@ -52,8 +52,7 @@ export default FormFive
 const Component2 = styled.div`
     transition: all 0.5s ease-out;
       border-radius:8px;
-      
-      
+      font-size:16px;
       font-family: "Roboto", "Sans-serif";
       .rowHeader{
         background-color:white;
