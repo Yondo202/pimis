@@ -5,7 +5,6 @@ function Ghost() {
     return (
         <GhostComponent style={{backgroundImage:`url(/head.jpg)`}}>
             <div className="childGost">
-
             </div>
         </GhostComponent>
     )
