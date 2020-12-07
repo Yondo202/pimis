@@ -52,7 +52,7 @@ function FormOne() {
             setResponseText("d");
             setResponseTextscale("0");
             setResTextstyle("black");
-            scroll.scrollTo(560);
+            scroll.scrollTo(590);
           }
   }
 
@@ -127,7 +127,7 @@ const Component = styled.div`
         padding:10px 0px;
         label{
           margin-left:15px;
-          color:rgba(0,0,0,0.8);
+          color:rgba(0,0,0,0.9);
           margin-bottom:0px
         }
         input{

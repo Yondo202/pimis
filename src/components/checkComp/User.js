@@ -13,6 +13,7 @@ function User() {
                                 <label for="name" className="form__label">Аж ахуйн нэр</label>
                             </div>
                     </div>
+                    
                     <div className="registernum">
                             <div className="form__group">
                                 <input type="input" className="userInp form__field" placeholder="Регистерийн дугаар" name="registernum" required />
@@ -20,7 +21,6 @@ function User() {
                             </div>
                     </div>
                 </div>
-               
             </div>
         </Component3>
     )
@@ -101,10 +101,10 @@ const Component3 = styled.div`
                           transition: 0.2s;
                           font-size: 1rem;
                           color: #11998e;
-                          font-weight:600;    
+                          font-weight:500;    
                         }
                         padding-bottom: 7px;
-                        font-weight: 600;
+                        font-weight: 500;
                         border-width: 2px;
                         border-image: linear-gradient(to right, #11998e, #38ef7d);
                         border-image-slice: 1;

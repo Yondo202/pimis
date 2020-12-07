@@ -45,11 +45,11 @@ function FormTwo(props) {
               setOpacity("1");
               setChildStyle("0");
               setProcent(FinalProcent);
-              scroll.scrollTo(560);
+              scroll.scrollTo(590);
             } else{
               setOpacity("0");
               setChildStyle("1");
-              scroll.scrollTo(1300);
+              scroll.scrollTo(1330);
             }
       
   }

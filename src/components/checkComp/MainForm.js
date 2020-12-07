@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import FromOne from "../components/FormOne";
+import FromOne from "../checkComp/FormOne";
 import {AiOutlineSend} from 'react-icons/ai'
+import {RiMailSendLine} from 'react-icons/ri'
 // import { Alert } from 'react-st-modal';
 import { animateScroll as scroll } from "react-scroll";
-import axios from'axios';
+import Axios from '../../axiosbase'
 
 function MainForm() {
 
@@ -36,7 +37,6 @@ function MainForm() {
                 let value = element.value;
                 userInp[field] = value;
             });
-          
             arr.map(element=>{
               if(element.checked === true){
                 let field = element.tabIndex;
@@ -44,7 +44,6 @@ function MainForm() {
                 finalOne[field] = [value];
               }
           });
-
           arr2.map(element=>{
             if(element.checked === true){
               let soloObject2 = {}
@@ -54,7 +53,6 @@ function MainForm() {
               finalOne2.push(soloObject2);
             }
         });
-
         arr3.map(element=>{
           if(element.checked === true){
             let soloObject2 = {}
@@ -64,7 +62,6 @@ function MainForm() {
             finalOne3.push(soloObject2);
           }
       });
-      // console.log(userInp, "my user inps");
         finalOne[2] = finalOne2
         finalOne[5] = finalOne3
         finalOne["compname"] = userInp.compname
@@ -75,33 +72,23 @@ function MainForm() {
           console.log(keys.length, "myLength");
           if(keys.length < 8){
             setScale("1");
-            scroll.scrollTo(2000);
+            scroll.scrollTo(2500);
           }else{
             setScale("0");
-            await axios.post( 'http://192.168.88.78:3000/api/question-check', finalOne ).then((result)=>{
+            await Axios.post( 'question-check', finalOne ).then((result)=>{
               console.log(result.data.data, "result");
               const appComp = result.data.data.approvedCompany
               const appCluster = result.data.data.approvedCluster
               if(appComp === true && appCluster === true){
                 setresScale("1");
                 setResText("ААН, Кластер аль алинд тэнцэх боложтой байна. Та шалгуурууд болон бүрдүүлэх материалаа бүрдүүлэн өөрийн сонголтоор аль нэгэнд нь хандана уу.");
-                // Alert('ААН, Кластер аль алинд тэнцэх боложтой байна. Та шалгуурууд болон бүрдүүлэх материалаа бүрдүүлэн өөрийн сонголтоор аль нэгэнд нь хандана уу.', '✓✓✓');
-                // scroll.scrollToTop();
               }else if(appCluster === true && appComp === false){
                 setresScale("1");
                 setResText("Кластерын шалгуур, бүрдүүлэх материалыг бэлтгэн Кластераар хандаж болно.");
-                  // Alert('Кластерын шалгуур, бүрдүүлэх материалыг бэлтгэн Кластераар хандаж болно ', ' ✓✓✓');
-                // scroll.scrollToTop();
               }else{
                 setresScale("1");
-                // Alert('ААН, Кластер аль алинд тэнцэхгүй байна.', ' ✓✓✓');
-                // scroll.scrollToTop();
               }
             });
-
-            // alert("Амжилттай илгээгдлээ");
-            // Alert('Амжилттай илгээгдлэээ ✓✓✓', ' ✓✓✓');
-            // scroll.scrollToTop();
           }
         }
  
@@ -121,8 +108,9 @@ function MainForm() {
          {/* </Link> */}
        </div>
       </form>
-      <div className="resPar">
-          <h5 style={{transform:`scale(${resScale})`}}>{resText}</h5>
+      <div className="resPar" style={{transform:`scale(${resScale})`}}>
+         <RiMailSendLine />
+          <h5 >{resText}</h5>
       </div>
     </Component>
   );
@@ -136,18 +124,30 @@ const Component = styled.div`
   font-family: "Roboto", "Sans-serif";
   // text-align:center;
   position:relative;
-  margin-top:80px;
+  margin-top:60px;
   padding-bottom:100px;
+  // background-color:black;
   z-index:1;
   .resPar{
     text-align:center;
     padding:20px 20px;
     border-radius:8px;
     background:white;
-    margin-top:10px;
+    margin-top:20px;
+    margin-bottom:20px;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:start;
     color:#036;
+    transition:all 0.4s ease;
+    svg{
+      width:10%;
+      font-size:24px !important;
+    }
     h5{
       transition:all 0.4s ease;
+      margin-bottom:0px;
     }
   }
   .headPar {

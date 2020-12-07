@@ -51,13 +51,13 @@ function FormThree(props) {
                 setResponseText("Та хариултаас сонголтоо хийнэ үү...")
                 setResponseTextscale("1");
                 setResTextstyle("red");
-                scroll.scrollTo(1300);
+                scroll.scrollTo(1330);
             }else if(finalOne.f4our === undefined ){
                 setChildStyle("0");
                 setResponseText2("Та хариултаас сонголтоо хийнэ үү...")
                 setResponseTextscale2("1");
                 setResTextstyle2("red");
-                scroll.scrollTo(1300);
+                scroll.scrollTo(1330);
             }
              else{
                 setChildStyle("1");
@@ -67,7 +67,7 @@ function FormThree(props) {
                 setResponseText2("d");
                 setResponseTextscale2("0");
                 setResTextstyle2("black");
-                scroll.scrollTo(2000);
+                scroll.scrollTo(2200);
             }
   }
 
