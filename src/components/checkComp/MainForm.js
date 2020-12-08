@@ -6,6 +6,7 @@ import {RiMailSendLine} from 'react-icons/ri'
 // import { Alert } from 'react-st-modal';
 import { animateScroll as scroll } from "react-scroll";
 import Axios from '../../axiosbase'
+import Ghost from '../Ghost'
 
 function MainForm() {
 
@@ -94,10 +95,9 @@ function MainForm() {
  
   return (
     <Component className="container"  >
+      <Ghost />
       <div className="headPar">
-        <span className="headText">
-          Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ энэ асуулгаар шалгаж үзнэ үү
-        </span>
+        <span className="headText">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ энэ асуулгаар шалгаж үзнэ үү </span>
       </div>
       <form onSubmit={handleClick}>
        <FromOne />

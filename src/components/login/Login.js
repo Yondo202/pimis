@@ -1,25 +1,12 @@
 import React,{useEffect, useState,useContext} from 'react'
 import styled from "styled-components";
 import {CgProfile} from 'react-icons/cg'
-import {HiOutlineMail} from 'react-icons/hi'
 import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import axios from '../../axiosbase';
 import UserContext from "../../context/UserContext";
 
 function Login() {
     const userCtx = useContext(UserContext);
-
-    
-    const [errMessage, setErrMessage] = useState("Loading...");
-
-    useEffect(() => {
-        const parsedCount = localStorage.getItem("UserProfile");
-        const finalUser = parsedCount ? JSON.parse(parsedCount) : [];
-        //setUserProfile(finalUser);
-        // console.log(finalUser , "this get Login");
-      }, []);
-
     const handleClick = async (e) =>{
         e.preventDefault();
         let Username = document.querySelectorAll(".LoginInpName");
@@ -31,11 +18,7 @@ function Login() {
             let value = element.value;
             finalOneUser[field] = value;
         });
-        //setUserName(finalOneUser);
-
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-
-       
     }
 
     return (
@@ -61,7 +44,8 @@ function Login() {
                     </div>
                 </div>
                 <div className="SubmitButtonPar">
-                 <div>{errMessage}</div>
+                  {userCtx.errMsg ? <div className="red">{userCtx.errMsg}</div> : <div>Obsp</div>}
+                 
                 <button   className="SubmitButton" type="submit">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
                 </div>
             </form>
@@ -179,6 +163,11 @@ const Component = styled.div`
         display:flex;
         justify-content:space-between;
         flex-direction:row;
+        .red{
+          font-size:19px;
+          font-weight:400;
+          color:rgba(255,0,0,0.7);
+        }
         .colorText{
           transition:all 0.3s ease;
           font-size:18px;

@@ -6,37 +6,44 @@ const UserContext = React.createContext();
 const initialUserInfo = {
     userId:null,
     token:null,
-    expireDate:null
+    expireDate:null,
+    name:null
 }
 
 export const UserStore= (props) =>{
 
-
     const [userInfo,setUserInfo] = useState(initialUserInfo);
-    const loginUserSuccess= (id,token,expireDate)=>{
+    const [errMsg, setErrMsg] = useState("")
+    
+    const loginUserSuccess = (id,token,expireDate,name)=>{
         setUserInfo(
             {
                 userId: id,
                 token,
-                expireDate
+                expireDate,
+                name
             }
           )  
           sessionStorage.setItem("edp_loggedUser",token);
           sessionStorage.setItem("userId",id);
+          sessionStorage.setItem("userName",name);
     }
 
-    const loginUser= (email,passwowrd)=>{
+    const loginUser= (email,password)=>{
         axios.post('users/login',  {
             email: email,
-            password: passwowrd, }
+            password: password, }
               ).then((res)=>{
-                console.log(res.data.user)  ;
-                loginUserSuccess(res.data.user.id,res.data.token.token,res.data.token.expireDate);  
+                console.log(res, "login res");
+                // setErrMsg(res.data.error.message);
+                loginUserSuccess(res.data.user.id, res.data.token.token, res.data.token.expireDate, res.data.user.name);  
               }).catch((e)=>{
-                console.log(e.response);  
+                setErrMsg(e.response.data.error.message);
+                console.log(e.response.data.error.message, "err Response");  
                 setUserInfo(initialUserInfo);
               });
     }
+
     const signUpUser= (name,email,password)=>{
         axios.post('users/register',  {
             name,
@@ -44,30 +51,33 @@ export const UserStore= (props) =>{
             password,
              }
               ).then((res)=>{
-                loginUserSuccess(res.data.user.id,res.data.token.token,res.data.token.expireDate);  
-                  
+                console.log(res.data.user.name, "my resss");
+                loginUserSuccess(res.data.user.id,res.data.token.token,res.data.token.expireDate, res.data.user.name);  
               }).catch((e)=>{
                 console.log(e.response);
                 setUserInfo(initialUserInfo);
               });
-    }
+      }
 
     const logout=()=>{
-
         setUserInfo(initialUserInfo);
-        sessionStorage.removeItem()
+        sessionStorage.removeItem("userId");
+        sessionStorage.removeItem("userName");
+        sessionStorage.removeItem("edp_loggedUser");
     }
       
 
     return (
        <UserContext.Provider
-       value = {{
-           loginUser,
-           signUpUser,
-           loginUserSuccess,
-           userInfo,
-       }}
-       >
+        value = {{
+            loginUser,
+            signUpUser,
+            loginUserSuccess,
+            userInfo,
+            logout,
+            errMsg
+        }}
+        >
        {props.children}    
        </UserContext.Provider> 
 

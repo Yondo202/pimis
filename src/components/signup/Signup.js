@@ -1,22 +1,16 @@
-import React, {useEffect,useState} from 'react'
+import React, {useEffect,useState, useContext} from 'react'
 import styled from "styled-components";
 import {CgProfile} from 'react-icons/cg'
 import {HiOutlineMail} from 'react-icons/hi'
 import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-
+import UserContext from '../../context/UserContext'
+import Ghost from '../Ghost'
 
 function Signup() {
-    const [userProfile, setUserProfile] = useState({});
+    const signUpCtx = useContext(UserContext);
     const [scale, setScale] = useState("0");
     const [errText, setErrText] = useState("Мэдээлэл дутуу байна");
-
-    useEffect(() => {
-        const parsedCount = localStorage.getItem("UserProfile");
-        const finalUser = parsedCount ? JSON.parse(parsedCount) : [];
-        setUserProfile(finalUser);
-        // console.log(finalUser.name , "this get userProfile");
-      }, []);
 
     const handleClick = async (e) =>{
         e.preventDefault()
@@ -28,24 +22,18 @@ function Signup() {
                   let value = element.value;
                   finalOne[field] = value;
             });
-
             if(finalOne.password.length < 6){
               setErrText("Нууц үг 6-аас дээш оронтой байна!");
               setScale("1");
             }else{
-              setUserProfile(finalOne);
+              signUpCtx.signUpUser(finalOne.name, finalOne.email, finalOne.password);
               setScale("0");
             }
       }
 
-
-    useEffect(()=>{
-        localStorage.setItem('UserProfile', JSON.stringify(userProfile));
-        sessionStorage.setItem('UserProfile', JSON.stringify(userProfile));
-      },[userProfile]);
-
     return (
         <Component className="container">
+          <Ghost />
             <form onSubmit={handleClick}>
                 <div className="formOneParent">
                 <div className="headPar"><span className="headText">Бүртгүүлэх</span></div>

@@ -7,71 +7,95 @@ import Ghost from "../components/Ghost";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "../components/login/Login";
 import UserContext from "../context/UserContext";
+import HomeLogin from "../components/home/homeLogin";
 
 function Menu(props) {
-    const [userProfile, setUserProfile] = useState({});
     const userCtx = useContext(UserContext);
-    useEffect(() => {
-        const parsedCount = localStorage.getItem("UserProfile");
-        const finalUser = parsedCount ? JSON.parse(parsedCount) : [];
-        setUserProfile(finalUser);
-        // console.log(finalUser , "this get userProfileeeee");
-      }, []);
 
-    //   console.log(userProfile.name, "My state ym bgn");
       console.log(userCtx.userInfo.userId,'================ID');
+      console.log(userCtx.userInfo, "userInfo");
+      const clickhandle = ()=>{
+        userCtx.logout();
+        console.log("log out");
+      }
 
   return (
     <Componentss>
       <Ghost />
       <Router>
         <div className="menuPar container">
-          <div className="menus">
           {userCtx.userInfo.userId?<div>Success</div>:<div>Hooson</div>}
-            
-            <div className="items">
-              <Link to="/">Нүүр</Link>
-              <div className="line"></div>
+          {userCtx.userInfo.userId?(
+            <div className="menus">
+                <div className="items">
+                <Link to="/">Нүүр</Link>
+                <div className="line"></div>
+              </div>
+              <div className="items">
+                <Link to="/check">Шалгах</Link>
+                <div className="line"></div>
+              </div>
+              {/* <div className="items">
+                <Link to="/check">{userCtx.userInfo.name}</Link>
+                <div className="line"></div>
+              </div> */}
+              <div className="items">
+                <Link onClick={clickhandle} to="/">Log out</Link>
+                <div className="line"></div>
+              </div>
             </div>
-            <div className="items">
-              <Link to="/check">Шалгах</Link>
-              <div className="line"></div>
-            </div>
-            <div className="items">
-              <Link to="/signup">Бүртгүүлэх</Link>
-              <div className="line"></div>
-            </div>
-            <div className="items">
-              {/* <Link to="/login">{userProfile.name}</Link> */}
-              <Link to="/login">Нэвтрэх</Link>
-              <div className="line"></div>
-            </div>
-          </div>
+          ) :( <div className="menus">
+                  <div className="items">
+                  <Link to="/">Нүүр</Link>
+                  <div className="line"></div>
+                </div>
+                <div className="items">
+                  <Link to="/check">Шалгах</Link>
+                  <div className="line"></div>
+                </div>
+                <div className="items">
+                  <Link to="/signup">Бүртгүүлэх</Link>
+                  <div className="line"></div>
+                </div>
+                <div className="items">
+                  {/* <Link to="/login">{userProfile.name}</Link> */}
+                  <Link to="/login">Нэвтрэх</Link>
+                  <div className="line"></div>
+                </div>
+            </div>)}
         </div>
 
 
         {userCtx.userInfo.userId? (
           <Switch>
-        
+          {/* <Route path="/" exact > 
+              <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                  <HomeLogin />
+              </motion.div>
+          </Route> */}
           <Route path="/check">
+          <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+            <MaiForm />
+          </motion.div>
+          </Route>
+        </Switch>
+        ): (
+          <Switch>
+            <Route path="/check">
           <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
              <MaiForm />
           </motion.div>
           </Route>
-        </Switch>
-
-        ): (
-          <Switch>
           <Route path="/signup">
-          <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-              <Signup />
-          </motion.div>
-          </Route>
-          <Route path="/login">
-          <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-             <Login />
-          </motion.div>
-          </Route>
+            <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                <Signup />
+            </motion.div>
+            </Route>
+            <Route path="/login">
+            <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+              <Login />
+            </motion.div>
+            </Route>
           </Switch> 
         )
         
