@@ -13,20 +13,16 @@ const initialUserInfo = {
 export const UserStore= (props) =>{
 
     const [userInfo,setUserInfo] = useState(initialUserInfo);
-    const [errMsg, setErrMsg] = useState("")
+    const [errMsg, setErrMsg] = useState("");
+    const [errMsgSignup, setErrMsgSignUp] = useState("");
     
     const loginUserSuccess = (id,token,expireDate,name)=>{
         setUserInfo(
-            {
-                userId: id,
-                token,
-                expireDate,
-                name
-            }
+            { userId: id, token, expireDate,name }
           )  
-          sessionStorage.setItem("edp_loggedUser",token);
-          sessionStorage.setItem("userId",id);
-          sessionStorage.setItem("userName",name);
+          localStorage.setItem("edp_loggedUser",token);
+          localStorage.setItem("userId",id);
+          localStorage.setItem("userName",name);
     }
 
     const loginUser= (email,password)=>{
@@ -36,13 +32,13 @@ export const UserStore= (props) =>{
               ).then((res)=>{
                 console.log(res, "login res");
                 // setErrMsg(res.data.error.message);
-                loginUserSuccess(res.data.user.id, res.data.token.token, res.data.token.expireDate, res.data.user.name);  
+                loginUserSuccess(res.data.user.id, res.data.token, res.data.token.expireDate, res.data.user.name);  
               }).catch((e)=>{
                 setErrMsg(e.response.data.error.message);
-                console.log(e.response.data.error.message, "err Response");  
+                console.log(e.response, "err Response");  
                 setUserInfo(initialUserInfo);
               });
-    }
+      }
 
     const signUpUser= (name,email,password)=>{
         axios.post('users/register',  {
@@ -51,19 +47,21 @@ export const UserStore= (props) =>{
             password,
              }
               ).then((res)=>{
-                console.log(res.data.user.name, "my resss");
-                loginUserSuccess(res.data.user.id,res.data.token.token,res.data.token.expireDate, res.data.user.name);  
+                console.log(res.data, "my resss");
+                // setErrMsgSignUp(res.data.success);
+                loginUserSuccess(res.data.user.id,res.data.token,res.data.token.expireDate, res.data.user.name);  
               }).catch((e)=>{
                 console.log(e.response);
+                setErrMsgSignUp(e.response.data.error.message);
                 setUserInfo(initialUserInfo);
               });
       }
 
     const logout=()=>{
         setUserInfo(initialUserInfo);
-        sessionStorage.removeItem("userId");
-        sessionStorage.removeItem("userName");
-        sessionStorage.removeItem("edp_loggedUser");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("edp_loggedUser");
     }
       
 
@@ -75,7 +73,8 @@ export const UserStore= (props) =>{
             loginUserSuccess,
             userInfo,
             logout,
-            errMsg
+            errMsg,
+            errMsgSignup,
         }}
         >
        {props.children}    

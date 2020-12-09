@@ -24,6 +24,6 @@ const GhostComponent = styled.div`
     .childGost{
         width:100%;
         height:210px;
-        background-color:rgba(0,0,0,0.6);
+        background-color:rgba(0,0,0,0.4);
     }
 `

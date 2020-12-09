@@ -11,21 +11,35 @@ import HomeLogin from "../components/home/homeLogin";
 
 function Menu(props) {
     const userCtx = useContext(UserContext);
+    const [userId, setUserId] = useState();
+    const [userName, setUserName] = useState();
 
-      console.log(userCtx.userInfo.userId,'================ID');
-      console.log(userCtx.userInfo, "userInfo");
+    
+    useEffect(() => {
+      const userId = localStorage.getItem("userId", []);
+      const userName = localStorage.getItem("userName", []);
+      setUserId(userId);
+      setUserName(userName);
+    }, []);
+    // console.log(ctxUser.userInfo.userId, "user id App js");
+    console.log(userId, "user id App js local storage");
+
+      // console.log(userCtx.userInfo.userId,'================ID');
+      // console.log(userCtx.userInfo, "userInfo");
       const clickhandle = ()=>{
         userCtx.logout();
+        window.location.reload(false);
         console.log("log out");
       }
+
 
   return (
     <Componentss>
       <Ghost />
       <Router>
         <div className="menuPar container">
-          {userCtx.userInfo.userId?<div>Success</div>:<div>Hooson</div>}
-          {userCtx.userInfo.userId?(
+          {/* {userId?<div>Success</div>:<div>Hooson</div>} */}
+          {userId?(
             <div className="menus">
                 <div className="items">
                 <Link to="/">Нүүр</Link>
@@ -35,10 +49,10 @@ function Menu(props) {
                 <Link to="/check">Шалгах</Link>
                 <div className="line"></div>
               </div>
-              {/* <div className="items">
-                <Link to="/check">{userCtx.userInfo.name}</Link>
+              <div className="items">
+                <Link to="/">{userName}</Link>
                 <div className="line"></div>
-              </div> */}
+              </div>
               <div className="items">
                 <Link onClick={clickhandle} to="/">Log out</Link>
                 <div className="line"></div>
@@ -58,7 +72,6 @@ function Menu(props) {
                   <div className="line"></div>
                 </div>
                 <div className="items">
-                  {/* <Link to="/login">{userProfile.name}</Link> */}
                   <Link to="/login">Нэвтрэх</Link>
                   <div className="line"></div>
                 </div>
@@ -66,18 +79,13 @@ function Menu(props) {
         </div>
 
 
-        {userCtx.userInfo.userId? (
+        {userId? (
           <Switch>
-          {/* <Route path="/" exact > 
-              <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                  <HomeLogin />
-              </motion.div>
-          </Route> */}
-          <Route path="/check">
-          <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-            <MaiForm />
-          </motion.div>
-          </Route>
+            <Route path="/check">
+            <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+              <MaiForm />
+            </motion.div>
+            </Route>
         </Switch>
         ): (
           <Switch>

@@ -1,20 +1,20 @@
-import React, {useEffect,useState, useContext} from 'react'
+import React, {useState} from 'react'
 import styled from "styled-components";
-import {CgProfile} from 'react-icons/cg'
-import {HiOutlineMail} from 'react-icons/hi'
 import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../context/UserContext'
 import Ghost from '../Ghost'
+import { BrowserRouter as Router, Switch, Route, Link,useParams } from "react-router-dom";
+import axios from "../../axiosbase";
 
-function Signup() {
-    const signUpCtx = useContext(UserContext);
+function ResetPassword() {
+    // const signUpCtx = useContext(UserContext);
+    const {id}  = useParams();
     const [scale, setScale] = useState("0");
     const [errText, setErrText] = useState("Мэдээлэл дутуу байна");
 
-    const handleClick = async (e) =>{
+        const handleClick = async (e) =>{
         e.preventDefault()
-             let rs = document.querySelectorAll(".userInp");
+             let rs = document.querySelectorAll(".Password");
              let arr = Array.from(rs);
              let finalOne = {};
             arr.map(element=>{
@@ -22,43 +22,46 @@ function Signup() {
                   let value = element.value;
                   finalOne[field] = value;
             });
-            if(finalOne.password.length < 6){
-              setErrText("Нууц үг 6-аас дээш оронтой байна!");
+
+            if(finalOne.password !== finalOne.passwordagain){
+              setErrText("Нууц үгээ давтан оруулга уу..");
               setScale("1");
             }else{
-              signUpCtx.signUpUser(finalOne.name, finalOne.email, finalOne.password);
-              setScale("0");
+                await axios.post('users/reset-password',  { password: finalOne.password,resetToken:id })
+                .then((res)=>{
+                console.log(res, "forget res");
+                console.log(res.data.success, "forget res success");
+                // if(res.data.success){
+                //     setErrmsg("Та email хаягаа шалгана уу...");
+                // }
+              }).catch((e)=>{
+                console.log(e.response, "err Response");
+                // setErrmsg(e.response.data.error.message);
+              });
             }
       }
 
+      console.log(id, "params id");
+
     return (
-        <Component className="container">
+        <Component className="container-fluid">
           <Ghost />
             <form onSubmit={handleClick}>
                 <div className="formOneParent">
-                <div className="headPar"><span className="headText">Бүртгүүлэх</span></div>
+                <div className="headPar"><span className="headText">Нууц үг сэргээх</span></div>
                     <div className="inputPar">
-                        <div className="name">
-                            <CgProfile />
-                                <div className="form__group">
-                                    <input type="input" className="userInp form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                    <label for="name" className="form__label">Нэр</label>
-                                </div>
-                        </div>
-                        
-                        <div className="name">
-                            <HiOutlineMail />
-                                <div className="form__group">
-                                    <input type="email" className="userInp form__field" placeholder="Регистерийн дугаар" name="email" required />
-                                    <label for="name" className="form__label">E-mail</label>
-                                </div>
-                        </div>
-
                         <div className="name">
                             <BiLockOpen />
                                 <div className="form__group">
-                                    <input type="password" className="userInp form__field" placeholder="Регистерийн дугаар" name="password" required />
-                                    <label for="name" className="form__label">Нууц үг</label>
+                                    <input type="password" className="Password form__field" placeholder="Регистерийн дугаар" name="password" required />
+                                    <label for="name" className="form__label">Шинэ нууц үг</label>
+                                </div>
+                        </div>
+                        <div className="name">
+                            <BiLockOpen />
+                                <div className="form__group">
+                                    <input type="password" className="Password form__field" placeholder="Регистерийн дугаар" name="passwordagain" required />
+                                    <label for="name" className="form__label">Нууц үгээ давтаж оруулна уу?</label>
                                 </div>
                         </div>
                     </div>
@@ -66,24 +69,23 @@ function Signup() {
 
                 <div className="SubmitButtonPar">
                   <span className="colorText" style={{transform:`scale(${scale})`}}>{errText} </span>
-                   <button   className="SubmitButton" type="submit">Бүртгүүлэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
+                   <button className="SubmitButton" type="submit">Сэргээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
                 </div>
             </form>
-          
-       
         </Component>
     )
 }
 
-export default Signup
+export default ResetPassword
 
 
 const Component = styled.div`
+    width:44% !important;
     font-family:"Roboto","Sans-serif";
     position:relative;
     z-index:1;
     margin-top:80px;
-    height:83.5vh;
+    height:92vh;
     .formOneParent{
         border-top:5px solid #036;
         background-color:white;

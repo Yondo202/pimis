@@ -9,9 +9,7 @@ import Axios from '../../axiosbase'
 import Ghost from '../Ghost'
 
 function MainForm() {
-
     const [scale, setScale] = React.useState("0");
-
     const [resScale, setresScale] = React.useState("0");
     const [resText, setResText] = React.useState("");
 
@@ -110,7 +108,7 @@ function MainForm() {
       </form>
       <div className="resPar" style={{transform:`scale(${resScale})`}}>
          <RiMailSendLine />
-          <h5 >{resText}</h5>
+          <h5 className="finalText">{resText}</h5>
       </div>
     </Component>
   );
@@ -141,11 +139,12 @@ const Component = styled.div`
     justify-content:start;
     color:#036;
     transition:all 0.4s ease;
+    background-color:#EBEB00;
     svg{
       width:10%;
       font-size:24px !important;
     }
-    h5{
+    .finalText{
       transition:all 0.4s ease;
       margin-bottom:0px;
     }

@@ -6,18 +6,17 @@ import About from './About';
 function Content() {
     return (
         <Component>
-            <div className="ghost" style={{backgroundImage:`url(/background1.jpg)`}}>
-             <div className="ghostChild"></div>
-            </div>
-
             <div className="contentPar">
                 <div className="checkCompPar">
                     <span className="title">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ шалгаж үзнэ үү</span>
-                    <Switch>
-                        <Link to="/check"><a><button className="checkBtn">ШАЛГАХ</button></a></Link>
-                    </Switch>
+                        <Switch>
+                            <Link to="/check"><a><button className="checkBtn">ШАЛГАХ</button></a></Link>
+                        </Switch>
                 </div>
                 <About />
+            </div>
+            <div className="ghost" style={{backgroundImage:`url(/background1.jpg)`}}>
+             <div className="ghostChild"></div>
             </div>
         </Component>
     )
@@ -27,8 +26,8 @@ export default Content
 const Component = styled.div`
     width:100%;
     height:100vh;
+    z-index:1;
     position:relative;
-
     .contentPar{
         height:100%;
         padding:0px 80px;
@@ -37,6 +36,7 @@ const Component = styled.div`
         justify-content: space-around;
         align-items:center;
         .checkCompPar{
+          
             color:white;
             text-align:center;
             padding-top:40px;
@@ -78,9 +78,10 @@ const Component = styled.div`
         width:100%;
         top:0;
         left:0;
-        z-index:-1;
+        z-index:-99;
         filter:blur(2px);
         .ghostChild{
+            z-index:-98;
             top:0;
             left:0;
             width:100%;

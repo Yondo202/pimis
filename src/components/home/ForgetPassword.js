@@ -1,0 +1,120 @@
+import React, {useState, useContext}from 'react'
+import styled from 'styled-components'
+import {ColorRgb} from "../theme"
+import {GoMail} from 'react-icons/go'
+import {AiOutlineSend} from 'react-icons/ai'
+import Modal from 'react-awesome-modal';
+import UserContext from '../../context/UserContext'
+import axios from "../../axiosbase";
+
+
+function ForgetPassword() {
+    const signUpCtx = useContext(UserContext);
+
+    const [scale, setScale] = useState("0");
+    const [visible, setVisible] = useState(false);
+    const [Errmsg, setErrmsg] = useState("0");
+
+    const openModal=()=> { setVisible(true); }
+    const closeModal=()=> { setVisible(false); }
+
+    const handleClick = async (e) =>{
+        // e.preventDefault();
+             let rs = document.querySelectorAll(".Email");
+             let arr = Array.from(rs);
+             let finalOne = {};
+            arr.map(element=>{
+                  let field = element.name;
+                  let value = element.value;
+                  finalOne[field] = value;
+            });
+            console.log(finalOne, "my final");
+            // signUpCtx.SendEmail(finalOne.email);
+            await axios.post('users/forgot-password',  { email: finalOne.email })
+                    .then((res)=>{
+                    console.log(res, "forget res");
+                    console.log(res.data.success, "forget res success");
+                    if(res.data.success){
+                        setErrmsg("Та email хаягаа шалгана уу...");
+                    }
+                  }).catch((e)=>{
+                    console.log(e.response.data.error.message, "err Response");
+                    setErrmsg(e.response.data.error.message);
+                  });
+            setScale("1");
+      }
+    return (
+        <Component>
+            <span className="forget" onClick={openModal}> Нууц үг мартсан</span>
+                        <Modal visible={visible} width="500" height="460" effect="fadeInDown" onClickAway={closeModal}>
+                            <div className="formOneParent">
+                            <div className="headPar">
+                                <span className="headText">Нууц үг сэргээх</span>
+                                {/* <a className="Close" href="javascript:void(0);" onClick={closeModal}>X</a> */}
+                            </div>
+                                <div className="inputPar">
+                                    <div className="inpChild">
+                                        <div className="labels"><span>Email</span> </div>
+                                        <div className="name">
+                                            <GoMail />
+                                            <div className="form__group">
+                                                <input type="text" className="Email  form__field" placeholder="Аж ахуйн нэр" name="email" required />
+                                                <label for="name" className="form__label">Цахим шуудангаа оруулна уу</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="SubmitButtonPar">
+                                     <span className="colorText" style={{transform:`scale(${scale})`}}>{Errmsg}</span>
+                                          {/* {signUpCtx.userInfo.userId ? <span className="colorText" style={{transform:`scale(${scale})`}}>Амжилттай нэвтэрлээ...</span> : ()}   */}
+                                          <span onClick={handleClick}  className="SubmitButton">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </span>
+                                    </div>
+                                </div>
+                            </div>
+                </Modal>
+        </Component>
+    )
+}
+
+export default ForgetPassword
+
+const Component = styled.div`
+    .forget{
+        font-size:15px;
+        color:#036 !important;
+        font-weight:600;
+        cursor:pointer;
+        &:hover{
+                color:rgba(${ColorRgb},0.7);
+        }
+    }
+    .formOneParent{
+        padding:10px 60px;
+        .headPar{
+            display:flex;
+            flex-direction:row;
+            justify-content:space-beween !important;
+            align-items:space-beween !important;
+            
+        }
+        .colorText{
+            margin-bottom:12px !important;
+        }
+        .SubmitButton{
+            font-weigth:400 !important;
+            font-weight: !important;
+            color:white !important;
+        }
+    }
+
+    @media only screen and (max-width:768px){
+        .formOneParent{
+            padding:10px 18px;
+            .headPar{
+                font-size:1em;
+                .headText{
+                    font-size:14px;
+                }
+            }
+        }
+  }
+`

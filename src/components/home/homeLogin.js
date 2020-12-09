@@ -21,6 +21,7 @@ function HomeLogin() {
 export default HomeLogin
 
 const ComponentHome = styled.div`
+
         font-family: ${fontFamily};
         // height:100vh;
         // background-color:rgba(0,0,0,0.5);
@@ -28,7 +29,6 @@ const ComponentHome = styled.div`
         flex-direction:row;
        
         .mainContentPar{
-            position:relative;
             width:65%;
             // background-color:rgba(0,0,0,0.5);
         }

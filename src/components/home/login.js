@@ -1,16 +1,26 @@
-import React,{useContext} from 'react'
+import React,{useContext, useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {CgProfile} from 'react-icons/cg'
 import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from "../../context/UserContext";
 import {fontFamily, Color,ColorRgb} from "../theme"
-import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
+import Signup from './signup'
+import ForgetPassword from './ForgetPassword'
+
 
 function Login() {
 
+  // const [userId, setUserId] = useState();
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("userId", []);
+  //   setUserId(userId);
+  // }, []);
+  // console.log(userId, "user id App js local storage");
+
     const userCtx = useContext(UserContext);
-    const handleClick = async (e) =>{
+
+    const handleClick = (e) =>{
         e.preventDefault();
         let Username = document.querySelectorAll(".LoginInpName");
         let User = Array.from(Username);
@@ -21,11 +31,31 @@ function Login() {
             let value = element.value;
             finalOneUser[field] = value;
         });
+        console.log(finalOneUser, "final user");
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
+
+        const userId = localStorage.getItem("userId", []);
+          if(userId){
+            window.location.reload(true);
+          }else{
+            console.log('false');
+          }
     }
+    // useEffect(() => {
+    //   const timer = setTimeout(() => {
+    //     console.log('This will run after 1 second!')
+    //   }, 1000);
+    //   return () => clearTimeout(timer);
+    // }, []);
+
+      
+    console.log(userCtx.errMsg, "my err msg");
+    
+
+    
     return (
         <Component>
-            <form onSubmit={handleClick}>
+            {/* <form onSubmit={handleClick}> */}
                 <div className="imgPar">
                     <img src="/head.jpg" alt="edp_logo" />
                     <div className="text">Экспортыг дэмжих төсөл</div>
@@ -46,43 +76,33 @@ function Login() {
                         <div className="inpChild">
                          <div className="labels">
                              <span> Нууц үг </span>
-                             <span className="forget"> Нууц үг мартсан </span>
+                             <ForgetPassword />
                          </div>
                             <div className="name">
                                 <BiLockOpen />
                                 <div className="form__group">
                                     <input type="password" className="LoginInpName form__field" placeholder="Регистерийн дугаар" name="password" required />
-                                    <label for="name" className="form__label">Нууц үг</label>
+                                    <label for="password" className="form__label">Нууц үг</label>
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
                 <div className="SubmitButtonPar">
-                  {userCtx.errMsg ? <div className="red">{userCtx.errMsg}</div> : <div></div>}
-                <button   className="SubmitButton" type="submit">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
+                <div className="red">{userCtx.errMsg}</div>
+                {/* {userCtx.userInfo.userId ? <div className="red">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>} */}
+                 <button onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                 </div>
-                <div className="SignUp">
-                    <span >Та бүртгэл үүсгээгүй бол 
-                    <Switch>
-                        <Link to="/signup"><a><span className="SignBtn"> Бүртгүүлэх </span></a></Link>
-                    </Switch>
-                       дарна уу.</span>
-                </div>
-            </form>
+            {/* </form> */}
+                <Signup />
         </Component>
     )
 }
 
 export default Login
-// 128
-//93
 
 const Component = styled.div`
     font-family:${fontFamily};
-    position:relative;
-    z-index:1;
     height:100vh;
     padding-top:140px;
     .imgPar{
@@ -96,8 +116,9 @@ const Component = styled.div`
         }
 
         .text{
-            font-weight:500;
-            color:rgba(0,0,0,0.6);
+          font-size:16px;
+            font-weight:400;
+            color:#888888;
         }
     }
     .formOneParent{
@@ -130,14 +151,7 @@ const Component = styled.div`
                    color:rgba(0,0,0,0.7);
                    font-weight:500;
                }
-               .forget{
-                color:rgba(${ColorRgb},0.9);
-                font-weight:600;
-                   cursor:pointer;
-                   &:hover{
-                        color:rgba(${ColorRgb},0.7);
-                   }
-               }
+              
            }
         .name{
             display:flex;
@@ -161,16 +175,17 @@ const Component = styled.div`
                     width: 100%;
                     border: 0;
                     border-radius:6px;
-                    border-bottom: 1px solid rgba(${ColorRgb},0.5);
-                    border-right: 1px solid rgba(${ColorRgb},0.5);
-                    border-left: 1px solid rgba(${ColorRgb},0.5);
-                    border-top: 1px solid rgba(${ColorRgb},0.5);
+                    border-bottom: 1px solid rgba(${ColorRgb},0.4);
+                    border-right: 1px solid rgba(${ColorRgb},0.4);
+                    border-left: 1px solid rgba(${ColorRgb},0.4);
+                    border-top: 1px solid rgba(${ColorRgb},0.4);
                     outline: 0;
                     font-size: 1rem;
                     color: black;
                     padding: 7px 0;
                     background: transparent;
                     transition: border-color 0.2s;
+                    transition:all 5s ease;
                     position: relative;
                     z-index: 1;
                     &::placeholder {
@@ -179,7 +194,7 @@ const Component = styled.div`
                     &:placeholder-shown ~ .form__label {
                       font-size: 1rem;
                       cursor: text;
-                      top: 20px;
+                      top: 24px;
                     }
                 }
                
@@ -240,6 +255,7 @@ const Component = styled.div`
       font-weight:400;
       color:rgba(255,0,0,0.7);
       margin-bottom:10px;
+      color:red;
     }
     .colorText{
       transition:all 0.3s ease;

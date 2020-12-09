@@ -7,48 +7,73 @@ import HomeLogin from './components/home/homeLogin'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import MainForm from './components/checkComp/MainForm';
 import SignUp from './components/signup/Signup'
-
+import ResetPassword from './components/home/ResetPassword'
 
 function App() {
-
   const ctxUser = useContext(UserContext);
-
-  
-
+  const [userId, setUserId] = useState();
   useEffect(() => {
-      const savedToken = sessionStorage.getItem("edp_loggedUser", []);
-      const userId = sessionStorage.getItem("userId", []);
-      if (userId) {
-        ctxUser.loginUserSuccess(userId,savedToken,null);
-      }
-
-      // setUserProfile(parsedCount);
-      // console.log(parsedCount , "this get token ee");
+      const userId = localStorage.getItem("userId", []);
+      setUserId(userId)
     }, []);
+
+    console.log(ctxUser.userInfo.userId, "user id App js");
+    console.log(userId, "user id App js local storage");
+
+    
+
+
   
   return (
     
     <ParentComponent className="App">
       <Router>
-      <Switch>
-         <Route path="/" exact> 
-            <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                <HomeLogin />
-            </motion.div>
-        </Route>
+        {userId ? (
+          <Switch>
+          <Route path="/" exact> 
+             <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                 <Menu />
+             </motion.div>
+         </Route>
+         <Route path="/check">
+             <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                 <MainForm />
+             </motion.div>
+         </Route>
+ 
+         <Route path="/signup" >
+             <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                 <SignUp />
+             </motion.div>
+         </Route>
+       </Switch>
+        ) : (
+          <Switch>
+          <Route path="/" exact> 
+             <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                 <HomeLogin />
+             </motion.div>
+         </Route>
+         <Route path="/check">
+             <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                 <MainForm />
+             </motion.div>
+         </Route>
+ 
+         <Route path="/signup" >
+             <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                 <SignUp />
+             </motion.div>
+         </Route>
+         <Route path="/reset-password/:id" children={<ResetPassword />}>
+             <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                 <ResetPassword />
+             </motion.div>
+         </Route>
+       </Switch>
+        )}
 
-        <Route path="/check">
-            <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                <MainForm />
-            </motion.div>
-        </Route>
-
-        <Route path="/signup" >
-            <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                <SignUp />
-            </motion.div>
-        </Route>
-      </Switch>
+      
        
 
       </Router>
@@ -62,5 +87,5 @@ function App() {
 export default App;
 
 const ParentComponent = styled.div`
-    // background-color:#dadce0;
+    background-color:#dadce0;
 `
