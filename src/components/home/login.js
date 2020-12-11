@@ -45,19 +45,7 @@ function Login() {
           }
          }, 1000);
     }
-    // useEffect(() => {
-    //   const timer = setTimeout(() => {
-    //     console.log('This will run after 1 second!')
-    //   }, 1000);
-    //   return () => clearTimeout(timer);
-    // }, []);
-
-      
-    // console.log(userCtx.errMsg, "my err msg");
-    console.log(userCtx.userInfo.userId, "my user Id");
-    
-
-    
+    // console.log(userCtx.userInfo.userId, "my user Id");
     return (
         <Component>
             {/* <form onSubmit={handleClick}> */}
@@ -74,7 +62,7 @@ function Login() {
                                 <CgProfile />
                                 <div className="form__group">
                                     <input type="input" className="LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                    <label for="name" className="form__label">Нэр эсвэл email ээр нэвтрэх</label>
+                                    <label for="name" className="form__label">Еmail хаягаараа нэвтэрнэ үү</label>
                                 </div>
                             </div>
                         </div>

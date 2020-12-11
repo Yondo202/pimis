@@ -8,8 +8,6 @@ import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import SignatureCanvas from 'react-signature-canvas'
 import Modal from 'react-awesome-modal';
-import {CgProfile} from 'react-icons/cg'
-import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 
 
@@ -566,11 +564,18 @@ const Component2 = styled.div`
             .UserRequestPar{
                 padding: 15px 15px;
                 .inputPar{
+                  .modalPar{
+                    .BtnPar{
+                      width:100%;
+                      justify-content: center;
+                      button{
+                        margin-right:18px;
+                      }
+                    }
+                  }
                     .NextChild{
                         flex-direction: column;
-                        .next{
-                            width:100%;
-                        }
+                        .next{ width:100%;}
                     }
                     .SingatureImg{
                         width:100%;
@@ -580,7 +585,6 @@ const Component2 = styled.div`
         }
         }
     }
-    
 `
 
 

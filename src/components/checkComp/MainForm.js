@@ -42,7 +42,7 @@ function MainForm() {
                 let value = element.value;
                 userInp[field] = value;
             });
-            
+
             arr.map(element=>{
               if(element.checked === true){
                 let field = element.tabIndex;
@@ -109,12 +109,12 @@ function MainForm() {
         </div>
         <form onSubmit={handleClick}>
         <FromOne />
-        <div className="SubmitButtonPar">
-          <span className="colorText" style={{transform:`scale(${scale})`}}> Тэдээлэл дутуу байна... </span>
-          {/* <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>handleClick()}> */}
-            <button   className="SubmitButton" type="submit">Илгээх <div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
-          {/* </Link> */}
-        </div>
+          <div className="SubmitButtonPar">
+            <span className="colorText" style={{transform:`scale(${scale})`}}> Тэдээлэл дутуу байна... </span>
+            {/* <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>handleClick()}> */}
+              <button   className="SubmitButton" type="submit">Илгээх <div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
+            {/* </Link> */}
+          </div>
         </form>
       </motion.div>
       <div className="homeButtonPar" style={{transform:`scale(${resScale})`}}>
