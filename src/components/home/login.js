@@ -11,12 +11,14 @@ import ForgetPassword from './ForgetPassword'
 
 function Login() {
 
-  // const [userId, setUserId] = useState();
+  const [userIdLocalStorage, setUserId] = useState();
+  // const [ loginMsg, setLoginMsg ] = useState();
   // useEffect(() => {
-  //   const userId = localStorage.getItem("userId", []);
-  //   setUserId(userId);
+  //   const userIdLocalStorage = localStorage.getItem("userId", []);
+  //   setUserId(userIdLocalStorage);
   // }, []);
-  // console.log(userId, "user id App js local storage");
+  // console.log(userIdLocalStorage, "user id App js local storage");
+
 
     const userCtx = useContext(UserContext);
 
@@ -34,12 +36,14 @@ function Login() {
         console.log(finalOneUser, "final user");
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
 
-        const userId = localStorage.getItem("userId", []);
+        setTimeout(() => {
+          const userId = localStorage.getItem("userId", []);
           if(userId){
             window.location.reload(true);
           }else{
             console.log('false');
           }
+         }, 1000);
     }
     // useEffect(() => {
     //   const timer = setTimeout(() => {
@@ -49,7 +53,8 @@ function Login() {
     // }, []);
 
       
-    console.log(userCtx.errMsg, "my err msg");
+    // console.log(userCtx.errMsg, "my err msg");
+    console.log(userCtx.userInfo.userId, "my user Id");
     
 
     
@@ -89,8 +94,8 @@ function Login() {
                     </div>
                 </div>
                 <div className="SubmitButtonPar">
-                <div className="red">{userCtx.errMsg}</div>
-                {/* {userCtx.userInfo.userId ? <div className="red">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>} */}
+                {/* <div className="red">{userCtx.errMsg}</div> */}
+                {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
                  <button onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                 </div>
             {/* </form> */}
@@ -185,7 +190,7 @@ const Component = styled.div`
                     padding: 7px 0;
                     background: transparent;
                     transition: border-color 0.2s;
-                    transition:all 5s ease;
+                    transition:all 0.3s ease;
                     position: relative;
                     z-index: 1;
                     &::placeholder {
@@ -203,10 +208,11 @@ const Component = styled.div`
                     top: 0;
                     display: block;
                     transition: 0.2s;
-                    font-size: 1rem;
+                    font-size: 0rem;
                     color: gray;
                     z-index: 0;
-                    padding-left:10px;
+                    padding:0px 10px;
+                    // background-color:black;
                   }
                   
                   .form__field{
@@ -215,8 +221,8 @@ const Component = styled.div`
                           position: absolute;
                           top: 0;
                           display: block;
-                          transition: 0.2s;
-                          font-size: 1rem;
+                          transition: 0.3s;
+                          font-size: 0.8rem;
                           color: #11998e;
                           font-weight:400;    
                         }
@@ -250,12 +256,23 @@ const Component = styled.div`
     justify-content:center;
     align-items:center;
     flex-direction:column;
+    font-weight:400 !important;
     .red{
-      font-size:19px;
+      font-size:16px;
       font-weight:400;
       color:rgba(255,0,0,0.7);
       margin-bottom:10px;
       color:red;
+      // background-color:yellow;
+      padding:0px 20px;
+      line-height:24px;
+    }
+    .green{
+      font-size:16px;
+      font-weight:400;
+      color:rgba(255,0,0,0.7);
+      margin-bottom:10px;
+      color:green;
     }
     .colorText{
       transition:all 0.3s ease;

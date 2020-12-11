@@ -3,10 +3,16 @@ import styled from "styled-components";
 import FromOne from "../checkComp/FormOne";
 import {AiOutlineSend} from 'react-icons/ai'
 import {RiMailSendLine} from 'react-icons/ri'
-// import { Alert } from 'react-st-modal';
 import { animateScroll as scroll } from "react-scroll";
 import Axios from '../../axiosbase'
 import Ghost from '../Ghost'
+import { motion } from 'framer-motion'
+import {fontFamily} from '../theme'
+import {Link} from 'react-router-dom'
+
+let easing = [0, 0, 0.56, 0.95];
+const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
+    enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
 
 function MainForm() {
     const [scale, setScale] = React.useState("0");
@@ -36,6 +42,7 @@ function MainForm() {
                 let value = element.value;
                 userInp[field] = value;
             });
+            
             arr.map(element=>{
               if(element.checked === true){
                 let field = element.tabIndex;
@@ -61,12 +68,15 @@ function MainForm() {
             finalOne3.push(soloObject2);
           }
       });
+
         finalOne[2] = finalOne2
         finalOne[5] = finalOne3
         finalOne["compname"] = userInp.compname
         finalOne["registernum"] = userInp.registernum
 
-        console.log(finalOne, "this next final");
+        console.log(finalOne2 , "this my first fynal");
+        console.log(finalOne, "this finalLL");
+
           let keys = Object.keys(finalOne);
           console.log(keys.length, "myLength");
           if(keys.length < 8){
@@ -84,9 +94,8 @@ function MainForm() {
               }else if(appCluster === true && appComp === false){
                 setresScale("1");
                 setResText("Кластерын шалгуур, бүрдүүлэх материалыг бэлтгэн Кластераар хандаж болно.");
-              }else{
-                setresScale("1");
-              }
+                setTimeout(()=>{ window.history.go(-1); },14000);
+              }else{ setresScale("1"); }
             });
           }
         }
@@ -94,61 +103,94 @@ function MainForm() {
   return (
     <Component className="container"  >
       <Ghost />
-      <div className="headPar">
-        <span className="headText">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ энэ асуулгаар шалгаж үзнэ үү </span>
+      <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
+        <div className="headPar">
+          <span className="headText">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ энэ асуулгаар шалгаж үзнэ үү </span>
+        </div>
+        <form onSubmit={handleClick}>
+        <FromOne />
+        <div className="SubmitButtonPar">
+          <span className="colorText" style={{transform:`scale(${scale})`}}> Тэдээлэл дутуу байна... </span>
+          {/* <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>handleClick()}> */}
+            <button   className="SubmitButton" type="submit">Илгээх <div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
+          {/* </Link> */}
+        </div>
+        </form>
+      </motion.div>
+      <div className="homeButtonPar" style={{transform:`scale(${resScale})`}}>
+        <Link to="/"><span className="homeBtn" >Буцах</span></Link>
+        <div className="resPar" >
+          <RiMailSendLine />
+            <h5 className="finalText">{resText}</h5>
+        </div>
       </div>
-      <form onSubmit={handleClick}>
-       <FromOne />
-       <div className="SubmitButtonPar">
-         <span className="colorText" style={{transform:`scale(${scale})`}}> Тэдээлэл дутуу байна... </span>
-         {/* <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>handleClick()}> */}
-           <button   className="SubmitButton" type="submit">Илгээх <div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
-         {/* </Link> */}
-       </div>
-      </form>
-      <div className="resPar" style={{transform:`scale(${resScale})`}}>
-         <RiMailSendLine />
-          <h5 className="finalText">{resText}</h5>
-      </div>
+    
     </Component>
   );
 }
 
-// #036
-
 export default MainForm;
 
 const Component = styled.div`
-  font-family: "Roboto", "Sans-serif";
+  font-family: ${fontFamily};
   // text-align:center;
   position:relative;
   margin-top:60px;
   padding-bottom:100px;
   // background-color:black;
   z-index:1;
-  .resPar{
-    text-align:center;
-    padding:20px 20px;
-    border-radius:8px;
-    background:white;
-    margin-top:20px;
-    margin-bottom:20px;
+  .homeButtonPar{
     display:flex;
     flex-direction:row;
-    align-items:center;
-    justify-content:start;
-    color:#036;
+    width:100%;
+    align-items:center !important;
+    justify-content:space-between;
     transition:all 0.4s ease;
-    background-color:#EBEB00;
-    svg{
-      width:10%;
-      font-size:24px !important;
+    a{
+      color:black;
+      text-decoration:none;
     }
-    .finalText{
+    .homeBtn{
+      font-size:18px;
+      border:1px solid rgba(0, 51, 102,0.5);
+      padding:5px 35px;
+      border-radius:6px;
+      cursor:pointer;
+      transition:all 0.3s ease;
+      box-shadow:1px 1px 16px -5px;
+      &:hover{
+        color:white;
+        background-color:rgba(0, 51, 102,0.9);
+      }
+    }
+    .resPar{
+      text-align:center;
+      padding:20px 20px;
+      border-radius:8px;
+      background:white;
+      margin-top:20px;
+      margin-bottom:20px;
+      display:flex;
+      flex-direction:row;
+      align-items:center;
+      justify-content:start;
+      color:#036;
       transition:all 0.4s ease;
-      margin-bottom:0px;
+      // background-color:#EBEB00;
+      background-color:wheat;
+      box-shadow:1px 1px 16px -5px;
+      width:83%;
+      svg{
+        width:10%;
+        font-size:24px !important;
+      }
+      .finalText{
+        transition:all 0.4s ease;
+        margin-bottom:0px;
+      }
     }
   }
+  
   .headPar {
     text-align: center;
     background-color: white;
@@ -232,7 +274,6 @@ const Component = styled.div`
       padding:10px 3%;
       font-size: 19px;
     }
-   
       .SubmitButtonPar{
         flex-direction:column;
           .SubmitButton{

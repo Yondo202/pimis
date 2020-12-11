@@ -2,18 +2,15 @@ import React,{useEffect, useState,useContext} from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import MaiForm from "../components/checkComp/MainForm";
-import Signup from '../components/signup/Signup'
 import Ghost from "../components/Ghost";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Login from "../components/login/Login";
 import UserContext from "../context/UserContext";
-import HomeLogin from "../components/home/homeLogin";
+import MainRequest from '../components/requests/mainRequest'
 
 function Menu(props) {
     const userCtx = useContext(UserContext);
     const [userId, setUserId] = useState();
     const [userName, setUserName] = useState();
-
     
     useEffect(() => {
       const userId = localStorage.getItem("userId", []);
@@ -21,15 +18,10 @@ function Menu(props) {
       setUserId(userId);
       setUserName(userName);
     }, []);
-    // console.log(ctxUser.userInfo.userId, "user id App js");
-    console.log(userId, "user id App js local storage");
-
-      // console.log(userCtx.userInfo.userId,'================ID');
-      // console.log(userCtx.userInfo, "userInfo");
+    // console.log(userId, "user id App js local storage");
       const clickhandle = ()=>{
         userCtx.logout();
         window.location.reload(false);
-        console.log("log out");
       }
 
 
@@ -37,78 +29,47 @@ function Menu(props) {
     <Componentss>
       <Ghost />
       <Router>
-        <div className="menuPar container">
-          {/* {userId?<div>Success</div>:<div>Hooson</div>} */}
-          {userId?(
-            <div className="menus">
-                <div className="items">
-                <Link to="/">Нүүр</Link>
-                <div className="line"></div>
-              </div>
-              <div className="items">
-                <Link to="/check">Шалгах</Link>
-                <div className="line"></div>
-              </div>
-              <div className="items">
-                <Link to="/">{userName}</Link>
-                <div className="line"></div>
-              </div>
-              <div className="items">
-                <Link onClick={clickhandle} to="/">Log out</Link>
-                <div className="line"></div>
-              </div>
-            </div>
-          ) :( <div className="menus">
+      <div className="menuPar container">
+          <div className="menus">
                   <div className="items">
                   <Link to="/">Нүүр</Link>
                   <div className="line"></div>
                 </div>
                 <div className="items">
-                  <Link to="/check">Шалгах</Link>
+                  <Link to="/comp-check">Шалгах</Link>
                   <div className="line"></div>
                 </div>
                 <div className="items">
-                  <Link to="/signup">Бүртгүүлэх</Link>
+                  <Link to="/comp-request">Хүсэлт</Link>
                   <div className="line"></div>
                 </div>
                 <div className="items">
-                  <Link to="/login">Нэвтрэх</Link>
+                  <Link to="/">{userName}</Link>
                   <div className="line"></div>
                 </div>
-            </div>)}
+                <div className="items">
+                  <Link onClick={clickhandle} to="/">Log out</Link>
+                  <div className="line"></div>
+                </div>
+              </div>
         </div>
 
+            <Switch>
+                <Route path="/comp-check" exact>
+                <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                  <MaiForm />
+              </motion.div>
+              </Route>
+          </Switch>
 
-        {userId? (
-          <Switch>
-            <Route path="/check">
-            <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-              <MaiForm />
-            </motion.div>
-            </Route>
-        </Switch>
-        ): (
-          <Switch>
-            <Route path="/check">
-          <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-             <MaiForm />
-          </motion.div>
-          </Route>
-          <Route path="/signup">
-            <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                <Signup />
-            </motion.div>
-            </Route>
-            <Route path="/login">
-            <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-              <Login />
-            </motion.div>
-            </Route>
-          </Switch> 
-        )
-        
-      }
-        
+           <Switch>
+              <Route path="/comp-request">
+              <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                <MainRequest />
+              </motion.div>
+              </Route>
+          </Switch>
+      
       </Router>
     </Componentss>
   );
@@ -118,10 +79,8 @@ export default Menu;
 
 const Componentss = styled.div`
   width: 100%;
-  font-family: "Roboto", "Sans-serif";
   background-color: #dadce0;
   position: relative;
-    z-index: 2;
   .menuPar {
     position: relative;
     z-index: 2;

@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import {Color,ColorRgb} from "../theme"
 import Modal from 'react-awesome-modal';
 import {CgProfile} from 'react-icons/cg'
@@ -8,17 +7,37 @@ import {GoMail} from 'react-icons/go'
 import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../context/UserContext'
+import PasswordInducator from './PasswordIndicator'
 
+const isNumberRegx = /\d/;
+const specialCharacterRegx = /[ ~@#$%^&*()_+\-=[\]{;':\\|,.<>\/?]/;
 
 function Signup() {
     const signUpCtx = useContext(UserContext);
-
+    const [PassText, setPassText] = useState("");
     const [scale, setScale] = useState("1");
     const [visible, setVisible] = useState(false);
+    const [passwordFocused, setPasswordFocused] = useState(false);
+    const [password, setPassword] = useState("");
+    const [passwordValidity, setPasswordValidity  ] = useState({
+      minCar: null,
+      number: null,
+      specialChar: null
+    });
 
     const openModal=()=> { setVisible(true); }
     const closeModal=()=> { setVisible(false); }
 
+    const onChangePassword =password =>{
+      setPassword(password);
+
+      setPasswordValidity({
+        minChar: password.length >=8 ? true : false,
+        number: isNumberRegx.test(password) ? true : false, 
+        specialChar: specialCharacterRegx.test(password) ? true : false
+      });
+    }
+    
     const handleClick = async (e) =>{
         // e.preventDefault();
              let rs = document.querySelectorAll(".userInp");
@@ -29,15 +48,23 @@ function Signup() {
                   let value = element.value;
                   finalOne[field] = value;
             });
-            console.log(finalOne, "my final");
-            signUpCtx.signUpUser(finalOne.name, finalOne.email, finalOne.password);
-            setScale("1");
-
-            const userId = localStorage.getItem("userId", []);
-            if(userId){
-              window.location.reload(true);
+            // console.log(finalOne, "my final");
+            if(passwordValidity.minChar === false || passwordValidity.number === false || passwordValidity.specialChar === false){
+              setPassText("Нууц үг хийх хэсэгээ шалгана уу..");
+            }else if(finalOne.password !== finalOne.passwordagain) {
+              setPassText("Нууц үг адил биш байна...");
             }else{
-              console.log('false');
+              setPassText("");
+              signUpCtx.signUpUser(finalOne.name, finalOne.email, finalOne.password);
+              setScale("1");
+              setTimeout(()=>{
+                const userId = localStorage.getItem("userId", []);
+                if(userId){
+                  window.location.reload(true);
+                }else{
+                  console.log('false');
+                }
+              },1000);
             }
       }
        
@@ -55,7 +82,7 @@ function Signup() {
                         <Modal
                             visible={visible}
                             width="700"
-                            height="460"
+                            height="560"
                             effect="fadeInDown"
                             onClickAway={closeModal}
                         >
@@ -87,22 +114,34 @@ function Signup() {
                                     </div>
 
                                     <div className="inpChild">
-                                    <div className="labels">
-                                        <span> Нууц үг </span>
-                                        <span className="forget"> 6-с дээш оронтой байх</span>
-                                    </div>
-                                        <div className="name">
-                                            <BiLockOpen />
-                                            <div className="form__group">
-                                                <input type="password" className="userInp  form__field" placeholder="Регистерийн дугаар" name="password" required />
-                                                <label for="name" className="form__label">Нууц үг</label>
-                                            </div>
+                                      <div className="labels">
+                                          <span> Нууц үг </span>
+                                          <span className="forget"> 8-с дээш оронтой байх</span>
                                         </div>
+                                          <div className="name">
+                                              <BiLockOpen />
+                                              <div className="form__group">
+                                                  <input onFocus={()=> setPasswordFocused(true)} onChange={e => onChangePassword(e.target.value)} value={password} type="password" className="userInp  form__field" placeholder="Регистерийн дугаар" name="password" required />
+                                                  <label for="name" className="form__label">Нууц үг</label>
+                                              </div>
+                                          </div>
+                                    </div>
+                                    {passwordFocused && <PasswordInducator validity={passwordValidity} />}
+
+                                    <div className="inpChild">
+                                      <div className="labels"> <span> Нууц үг давтах </span> </div>
+                                          <div className="name">
+                                              <BiLockOpen />
+                                              <div className="form__group">
+                                                  <input  type="password" className="userInp  form__field" placeholder="Регистерийн дугаар" name="passwordagain" required />
+                                                  <label for="name" className="form__label">Нууц үгээ дахин оруулах</label>
+                                              </div>
+                                          </div>
                                     </div>
 
                                     <div className="SubmitButtonPar">
-                                          {signUpCtx.userInfo.userId ? <span className="colorText" style={{transform:`scale(${scale})`}}>Амжилттай нэвтэрлээ...</span> : (<span className="colorText" style={{transform:`scale(${scale})`}}>{signUpCtx.errMsgSignup}</span>)}  
                                           <button onClick={handleClick}  className="SubmitButton" type="button">Бүртгүүлэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
+                                          {signUpCtx.userInfo.userId ? <span className="colorTextgreen" style={{transform:`scale(${scale})`}}>Амжилттай нэвтэрлээ...</span> : PassText? (<span className="colorText" style={{transform:`scale(${scale})`}}>{PassText}</span>) :  (<span className="colorText" style={{transform:`scale(${scale})`}}>{signUpCtx.errMsgSignup}</span>)}  
                                     </div>
                                 </div>
                             </div>
@@ -155,6 +194,9 @@ const Component = styled.div`
            flex-direction:column;
            align-items:flex;
            justify-content:center;
+           .passIndPar{
+             text-align:start;
+           }
            .inpChild{
                margin:12px 0px;
                display:flex;
@@ -226,7 +268,7 @@ const Component = styled.div`
                         top: 0;
                         display: block;
                         transition: 0.2s;
-                        font-size: 1rem;
+                        font-size: 0rem;
                         color: gray;
                         z-index: 0;
                         padding-left:10px;
@@ -238,8 +280,8 @@ const Component = styled.div`
                               position: absolute;
                               top: 0;
                               display: block;
-                              transition: 0.2s;
-                              font-size: 1rem;
+                              transition: 0.3s;
+                              font-size: 0.8rem;
                               color: #11998e;
                               font-weight:400;    
                             }
@@ -280,10 +322,16 @@ const Component = styled.div`
               margin-bottom:10px;
             }
             .colorText{
-              margin-bottom:8px;
+              margin:10px 0px;
               transition:all 0.3s ease;
               font-size:16px;
               color:red;
+            }
+            .colorTextgreen{
+              margin:10px 0px;
+              transition:all 0.3s ease;
+              font-size:16px;
+              color:green;
             }
          
               .SubmitButton{
@@ -332,6 +380,7 @@ const Component = styled.div`
           
           }
         }
+     
       @media only screen and (max-width:768px){
             .formOneParent{
                 padding:10px 18px;

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import FormTwo from './FormTwo';
 import { Link, animateScroll as scroll } from "react-scroll";
 import axios from'axios';
+import {fontFamily2,fontFamily} from '../theme'
 
 
 function FormOne() {
@@ -80,8 +81,8 @@ function FormOne() {
 export default FormOne
 
 const Component = styled.div`
-    font-size: 16px;
-    font-family: "Roboto", "Sans-serif";
+    font-size: 15px;
+    font-family: ${fontFamily};
     .formOneParent{
       background-color:white;
       border-radius:8px;
@@ -101,7 +102,6 @@ const Component = styled.div`
           box-shadow:1px 1px 8px -2px;
         }
       }
-
       .MuiFormLabel-root{
         padding-bottom:6px;
         font-size:1.2rem;
@@ -136,8 +136,13 @@ const Component = styled.div`
           height:16px;
         }
       }
-
-
     }
-   
+   @media only screen and(max-width: 768px){
+      font-size: 14px;
+      .radioPar{
+        label{
+          font-size:14px;
+        }
+      }
+   }
 `

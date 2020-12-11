@@ -8,7 +8,6 @@ import axios from'axios';
 
 
 function FormTwo(props) {
-  
     const [opacity, setOpacity] = React.useState("0");
     const [childStyle, setChildStyle] = React.useState('0');
     const [procent, setProcent] = React.useState('0');
@@ -87,7 +86,6 @@ function FormTwo(props) {
               </div>
             </div>
             <FormThree childStyle={childStyle} />
-
         </Component2>
     )
 }
@@ -146,20 +144,6 @@ const Component2 = styled.div`
               &:hover{
                 box-shadow:1px 1px 8px -2px;
               }
-              // .TestButton{
-              //   border-style:none;
-              //   border:1px solid rgba(0, 51, 102,0.5);
-              //   width:30%;
-              //   padding:5px 0px;
-              //   border-radius:6px;
-              //   color:rgba(63, 81, 181);
-              //   background-color:rgba(0, 51, 102,0.1);
-              //   cursor:pointer;
-              //   font-size:18px;
-              //   &:hover{
-              //     box-shadow:1px 1px 8px -2px;
-              //   }
-              // }
             }
         
         }
@@ -226,9 +210,5 @@ const Component2 = styled.div`
       }
     }
   }
-    
-
-   
-        
 `
 

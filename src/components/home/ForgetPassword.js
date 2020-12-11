@@ -14,6 +14,7 @@ function ForgetPassword() {
     const [scale, setScale] = useState("0");
     const [visible, setVisible] = useState(false);
     const [Errmsg, setErrmsg] = useState("0");
+    const [color, setColor] = useState("red");
 
     const openModal=()=> { setVisible(true); }
     const closeModal=()=> { setVisible(false); }
@@ -28,18 +29,20 @@ function ForgetPassword() {
                   let value = element.value;
                   finalOne[field] = value;
             });
-            console.log(finalOne, "my final");
+            // console.log(finalOne, "my final");
             // signUpCtx.SendEmail(finalOne.email);
             await axios.post('users/forgot-password',  { email: finalOne.email })
                     .then((res)=>{
                     console.log(res, "forget res");
                     console.log(res.data.success, "forget res success");
                     if(res.data.success){
-                        setErrmsg("Та email хаягаа шалгана уу...");
+                        setErrmsg("✓ Та email хаягаа шалгана уу...");
+                        setColor("green");
                     }
                   }).catch((e)=>{
                     console.log(e.response.data.error.message, "err Response");
                     setErrmsg(e.response.data.error.message);
+                    setColor("red");
                   });
             setScale("1");
       }
@@ -64,7 +67,7 @@ function ForgetPassword() {
                                         </div>
                                     </div>
                                     <div className="SubmitButtonPar">
-                                     <span className="colorText" style={{transform:`scale(${scale})`}}>{Errmsg}</span>
+                                     <span className="colorText" style={{transform:`scale(${scale})`, color:color}}>{Errmsg}</span>
                                           {/* {signUpCtx.userInfo.userId ? <span className="colorText" style={{transform:`scale(${scale})`}}>Амжилттай нэвтэрлээ...</span> : ()}   */}
                                           <span onClick={handleClick}  className="SubmitButton">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </span>
                                     </div>
@@ -81,7 +84,7 @@ const Component = styled.div`
     .forget{
         font-size:15px;
         color:#036 !important;
-        font-weight:600;
+        font-weight:500;
         cursor:pointer;
         &:hover{
                 color:rgba(${ColorRgb},0.7);
@@ -97,10 +100,14 @@ const Component = styled.div`
             
         }
         .colorText{
+            text-align:center;
+            font-size:14px;
             margin-bottom:12px !important;
+            // color:rgba(255,0,0,0.9) !important;
+            font-weight:500 !important;
         }
         .SubmitButton{
-            font-weigth:400 !important;
+            font-weight:400 !important;
             font-weight: !important;
             color:white !important;
         }
@@ -116,5 +123,5 @@ const Component = styled.div`
                 }
             }
         }
-  }
+    }
 `

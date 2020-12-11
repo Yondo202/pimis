@@ -25,7 +25,7 @@ function Login() {
         <Component className="container">
             <form onSubmit={handleClick}>
                 <div className="formOneParent">
-                <div className="headPar"><span className="headText">Нэвтрэх</span></div>
+                 <div className="headPar"><span className="headText">Нэвтрэх</span></div>
                     <div className="inputPar">
                         <div className="name">
                             <CgProfile />
