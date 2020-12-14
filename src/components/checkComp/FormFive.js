@@ -1,12 +1,12 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import styled from 'styled-components'
 import FormSix from './FormSix'
 import axios from'axios';
 
 function FormFive(props) {
 
-  const [dataFinal, setData] = React.useState({});
-  const [dataDetail, setDataDetal] = React.useState([]);
+  const [dataFinal, setData] = useState({});
+  const [dataDetail, setDataDetal] = useState([]);
 
   useEffect(async () => {
     const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=2&pageSize=3' );

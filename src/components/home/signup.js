@@ -257,7 +257,7 @@ const Component = styled.div`
                           color: transparent;
                         }
                         &:placeholder-shown ~ .form__label {
-                          font-size: 1rem;
+                          font-size: 0.9rem;
                           cursor: text;
                           top: 24px;
                         }

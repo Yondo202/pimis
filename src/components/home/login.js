@@ -185,7 +185,7 @@ const Component = styled.div`
                       color: transparent;
                     }
                     &:placeholder-shown ~ .form__label {
-                      font-size: 1rem;
+                      font-size: 0.9rem;
                       cursor: text;
                       top: 24px;
                     }
@@ -225,7 +225,6 @@ const Component = styled.div`
                         border-image-slice: 1;
                       }
                   }
-                  /* reset input */
                   .form__field{
                     &:required,&:invalid { box-shadow:none; }
                   }

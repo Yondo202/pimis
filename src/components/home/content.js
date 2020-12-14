@@ -18,7 +18,7 @@ function Content() {
                 <div className="checkCompPar">
                     <span className="title">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ шалгаж үзнэ үү</span>
                     <Switch>
-                        <Link to="/check"><a><button className="checkBtn">ШАЛГАХ</button></a></Link>
+                        <Link to="/comp-check"><a><button className="checkBtn">ШАЛГАХ</button></a></Link>
                     </Switch>
                 </div>
             </motion.div>

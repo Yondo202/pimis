@@ -10,17 +10,16 @@ import SignatureCanvas from 'react-signature-canvas'
 import Modal from 'react-awesome-modal';
 import {AiOutlineSend} from 'react-icons/ai'
 
-
 function TableOne() {
-    const [opacity, setOpacity] = React.useState("0");
-    const [opacity2, setOpacity2] = React.useState("0");
-    const [procent, setProcent] = React.useState('0');
+    const [opacity, setOpacity] = useState("0");
+    const [opacity2, setOpacity2] = useState("0");
+    const [procent, setProcent] = useState('0');
     const [visible, setVisible] = useState(false);
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [dataFinal, setData] = React.useState({});
-    const [dataDetail, setDataDetal] = React.useState([]);
-    let [sigCanvas, setSigCanvas] = React.useState({});
-    let [trimmedDataURL, setTrimmedDataURL] = React.useState(null);
+    const [dataFinal, setData] = useState({});
+    const [dataDetail, setDataDetal] = useState([]);
+    let [sigCanvas, setSigCanvas] = useState({});
+    let [trimmedDataURL, setTrimmedDataURL] = useState(null);
     
     useEffect(async () => {
       const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=1&pageSize=3' );
@@ -59,7 +58,6 @@ function TableOne() {
                 userInp[field] = value;
             });
 
-
             finalOne["request"] = finalOne2;
             finalOne["requestName"] = userInp.name;
             finalOne["date"] = userInp.date;
@@ -87,17 +85,15 @@ function TableOne() {
                 setOpacity2("1");
                 scroll.scrollTo(2000);
             }else{
-                
                 setOpacity("0");
                 setOpacity2("0");
                 scroll.scrollTo(2000);
                 alert("GG");
             }
-      
     }
 //   console.log(trimmedDataURL, "signature url");
     return (
-        <Component2 className="container">
+        <Component1 className="container" >
             <div className="boxShadow">
                 <div className="rowHeader">1. {dataFinal.description}<span className="tseg">*</span></div>
             <div className="formTwoParent ">
@@ -130,7 +126,6 @@ function TableOne() {
                 <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
-                      
                         <div className="formOneParent">
                             <div className="inputPar">
                                 <div className="inpChild">
@@ -183,22 +178,20 @@ function TableOne() {
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                                 {/* <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div> */}
-                                    {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
+                                {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
                             <button onClick={clickHandles} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                         </div>
                 </div>
-
-               
              </div>
             </div>
-        </Component2>
+        </Component1>
     )
 }
 
 export default TableOne
 
 
-const Component2 = styled.div`
+const Component1 = styled.div`
     color:rgba(${textColor},0.9);
     transition: all 0.5s ease-out;
       font-family: ${fontFamily};

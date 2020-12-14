@@ -28,12 +28,8 @@ function App() {
           window.location.reload(false);
          }, 100);
     }
-
-    // console.log(ctxUser.userInfo.userId, "user id App js");
-    // console.log(userId, "user id App js local storage");
   
   return (
-    
     <ParentComponent className="App">
         <Ghost />
       <Router>
@@ -76,9 +72,9 @@ function App() {
              </motion.div>
          </Route>
          <Route path="/comp-request" >
-             <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+             {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} > */}
                  <MainRequest />
-             </motion.div>
+             {/* </motion.div> */}
          </Route>
        </Switch>
         ) : (
@@ -105,8 +101,6 @@ function App() {
          </Route>
        </Switch>
         )}
-
-      
        
 
       </Router>
