@@ -20,6 +20,7 @@ body {
 ::-webkit-scrollbar-thumb {
   background: rgba(40, 40, 40, 1);
   border-radius: 10px;
+  
 }
 ::-webkit-scrollbar-thumb:hover {
   background: black;

@@ -176,6 +176,7 @@ const Component = styled.div`
                     font-size: 1rem;
                     color: black;
                     padding: 7px 0;
+                    padding-left: 10px;
                     background: transparent;
                     transition: border-color 0.2s;
                     transition:all 0.3s ease;

@@ -11,6 +11,7 @@ import SignUp from './components/signup/Signup'
 import ResetPassword from './components/home/ResetPassword'
 import { fontFamily } from './components/theme';
 import MainRequest from './components/requests/mainRequest'
+import EmialSender from './containers/emailSend/EmailSend'
 
 function App() {
   const ctxUser = useContext(UserContext);
@@ -76,6 +77,11 @@ function App() {
                  <MainRequest />
              {/* </motion.div> */}
          </Route>
+         <Route path="/email" >
+             {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} > */}
+                 <EmialSender />
+             {/* </motion.div> */}
+         </Route>
        </Switch>
         ) : (
           <Switch>
@@ -118,7 +124,6 @@ const ParentComponent = styled.div`
     // background-color:#dadce0;
     width: 100%;
     // background-color: #dadce0;
-
     .menuPar {
         position: relative;
         z-index: 2;

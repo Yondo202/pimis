@@ -1,4 +1,4 @@
-import React,{useEffect, useState, useRef} from 'react';
+import React,{useEffect, useState, useRef, useContext} from 'react';
 import styled from 'styled-components'
 import { Link, animateScroll as scroll } from "react-scroll";
 import axios from'axios';
@@ -9,6 +9,8 @@ import {BiPen} from 'react-icons/bi'
 import SignatureCanvas from 'react-signature-canvas'
 import Modal from 'react-awesome-modal';
 import {AiOutlineSend} from 'react-icons/ai'
+import UserContext from '../../context/UserContext'
+
 
 function TableOne() {
     const [opacity, setOpacity] = useState("0");
@@ -20,6 +22,8 @@ function TableOne() {
     const [dataDetail, setDataDetal] = useState([]);
     let [sigCanvas, setSigCanvas] = useState({});
     let [trimmedDataURL, setTrimmedDataURL] = useState(null);
+
+    const StyleContext = useContext(UserContext);
     
     useEffect(async () => {
       const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=1&pageSize=3' );
@@ -48,7 +52,7 @@ function TableOne() {
                 }
             });
 
-            let rs4 = document.querySelectorAll(".userInp");
+            let rs4 = document.querySelectorAll(".getUserInp");
             let arr4 = Array.from(rs4);
             let userInp = {};
 
@@ -57,6 +61,7 @@ function TableOne() {
                 let value = element.value;
                 userInp[field] = value;
             });
+            console.log(userInp, "userInp");
 
             finalOne["request"] = finalOne2;
             finalOne["requestName"] = userInp.name;
@@ -64,12 +69,14 @@ function TableOne() {
             finalOne["signature"] = trimmedDataURL;
 
             // console.log(finalOne2 , "asuuulga 1");
-            console.log(finalOne, "big Final");
+            // console.log(finalOne, "big Final");
 
             let keys = Object.keys(finalOne2);
             const Procent = keys.length * 100 / 13;
             const FinalProcent = Math.round(Procent);
 
+            console.log(finalOne, "final one");
+            StyleContext.StyleComp("-100%", "0%", "100%");
             if(keys.length < 13){
               setOpacity("1");
               setProcent(FinalProcent);
@@ -83,12 +90,13 @@ function TableOne() {
                 setOpacity("0");
                 setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү");
                 setOpacity2("1");
-                scroll.scrollTo(2000);
+                // scroll.scrollTo(2000);
             }else{
                 setOpacity("0");
                 setOpacity2("0");
-                scroll.scrollTo(2000);
+                scroll.scrollTo(0);
                 alert("GG");
+                
             }
     }
 //   console.log(trimmedDataURL, "signature url");
@@ -132,7 +140,7 @@ function TableOne() {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="userInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" className="getUserInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -148,11 +156,12 @@ function TableOne() {
                                                 </div>
                                             </div>
                                     </div>
+
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" placeholder="өдөр-сар-жил" className="userInp LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
@@ -194,7 +203,7 @@ export default TableOne
 const Component1 = styled.div`
     color:rgba(${textColor},0.9);
     transition: all 0.5s ease-out;
-      font-family: ${fontFamily};
+    font-family: ${fontFamily};
       .boxShadow{
         box-shadow:1px 1px 18px -5px;
         border-radius:6px;
@@ -209,7 +218,6 @@ const Component1 = styled.div`
               color:red;
             }
           }
-       
         .formTwoParent{
             border-radius:0px 0px 6px 6px;
             background-color:white;
@@ -338,6 +346,8 @@ const Component1 = styled.div`
                                 font-size: 1rem;
                                 color: black;
                                 padding: 7px 0;
+                                padding-left:10px;
+                                font-size: 0.9rem;
                                 background: transparent;
                                 transition: border-color 0.2s;
                                 transition:all 0.3s ease;
@@ -347,7 +357,7 @@ const Component1 = styled.div`
                                   color: transparent;
                                 }
                                 &:placeholder-shown ~ .form__label {
-                                  font-size: 1rem;
+                                  font-size: 0.9rem;
                                   cursor: text;
                                   top: 24px;
                                 }

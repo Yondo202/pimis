@@ -3,6 +3,12 @@ import axios from "../axiosbase";
  
 
 const UserContext = React.createContext();
+const initialStyle ={
+  tableOne: "0%",
+  tableTwo: "100%",
+  tableThree: "200%",
+  tableheight: 150,
+}
 const initialUserInfo = {
     userId:null,
     token:null,
@@ -15,6 +21,7 @@ export const UserStore= (props) =>{
     const [userInfo,setUserInfo] = useState(initialUserInfo);
     const [errMsg, setErrMsg] = useState("");
     const [errMsgSignup, setErrMsgSignUp] = useState("");
+    const [ GlobalStyle, setGlobalStyle ] = useState(initialStyle);
     
     const loginUserSuccess = (id,token,expireDate,name)=>{
         setUserInfo(
@@ -63,6 +70,38 @@ export const UserStore= (props) =>{
         localStorage.removeItem("userName");
         localStorage.removeItem("edp_loggedUser");
     }
+
+    const StyleComp = (valueOne,valueTwo, valueThree,otherHeigth) =>{
+      if(valueOne === "0%"){
+        setGlobalStyle({
+          tableOne: valueOne,
+          tableTwo: valueTwo,
+          tableThree: valueThree,
+          tableheight: 150
+        });
+      }else if(valueTwo === "0%"){
+        setGlobalStyle({
+          tableOne: valueOne,
+          tableTwo: valueTwo,
+          tableThree: valueThree,
+          tableheight: 250
+        });
+      }else if(valueThree === "0%"){
+        setGlobalStyle({
+          tableOne: valueOne,
+          tableTwo: valueTwo,
+          tableThree: valueThree,
+          tableheight: 200
+        });
+      }else{
+        setGlobalStyle({
+          tableOne: valueOne,
+          tableTwo: valueTwo,
+          tableThree: valueThree,
+          tableheight: 150
+        });
+      }
+    }
       
 
     return (
@@ -75,6 +114,8 @@ export const UserStore= (props) =>{
             logout,
             errMsg,
             errMsgSignup,
+            StyleComp,
+            GlobalStyle
         }}
         >
        {props.children}    
