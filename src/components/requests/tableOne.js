@@ -208,7 +208,7 @@ const Component1 = styled.div`
         box-shadow:1px 1px 18px -5px;
         border-radius:6px;
           .rowHeader{
-              border-radius:6px 6px 0px 0px;
+            border-radius:6px 6px 0px 0px;
             background-color:white;
             padding: 24px 26px;
             font-size:1.2rem;

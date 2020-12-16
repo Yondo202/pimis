@@ -68,7 +68,7 @@ function FormOne() {
                     <label >{el.description}</label>
                  </div> 
                  )})}
-              <div className="errText" style={{transform:`scale(${responseTextscale})`, color:`red` }} >{responseText}</div>
+              <div className="errText" style={{transform:`scale(${responseTextscale})`}} >{responseText}</div>
               <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>clickHandle()}>
                 <button onClick={clickHandle} className="TestButton">Шалгах</button>
               </Link>
@@ -118,7 +118,16 @@ const Component = styled.div`
         }
       }
       .errText{
+        width:50%;
         transition: all 0.4s ease; 
+        text-align:center;
+        background-color: #f6c343;
+        border-radius:5px;
+        font-size:14px !important;
+        font-weight:400;
+        color:black !important;
+        line-height:34px;
+        margin-bottom:12px !important;
       }
       .radioPar{
         display:flex;
@@ -137,12 +146,12 @@ const Component = styled.div`
         }
       }
     }
-   @media only screen and(max-width: 768px){
+    @media only screen and (max-width:768px){
       font-size: 14px;
-      .radioPar{
-        label{
-          font-size:14px;
+      .formOneParent{
+        .errText{
+          width:100% !important;
         }
       }
-   }
+    }
 `

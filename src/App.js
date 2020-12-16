@@ -1,8 +1,8 @@
 import React, {useEffect, useState,useContext} from 'react'
 import { motion } from "framer-motion";
 import styled from 'styled-components'
+import Menu from './containers/menu'
 import Ghost from "./components/Ghost";
-import Menu from './containers/menu';
 import UserContext from "./context/UserContext";
 import HomeLogin from './components/home/homeLogin'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -12,6 +12,7 @@ import ResetPassword from './components/home/ResetPassword'
 import { fontFamily } from './components/theme';
 import MainRequest from './components/requests/mainRequest'
 import EmialSender from './containers/emailSend/EmailSend'
+import EmialSender2 from './containers/emailSend/EmailSend2'
 
 function App() {
   const ctxUser = useContext(UserContext);
@@ -32,33 +33,9 @@ function App() {
   
   return (
     <ParentComponent className="App">
-        <Ghost />
+        {/* <Ghost /> */}
       <Router>
-          {userId? (<div className="menuPar container">
-          <div className="menus">
-                  <div className="items">
-                  <Link to="/">Нүүр</Link>
-                  <div className="line"></div>
-                </div>
-                <div className="items">
-                  <Link to="/comp-check">Шалгах</Link>
-                  <div className="line"></div>
-                </div>
-                <div className="items">
-                  <Link to="/comp-request">Хүсэлт</Link>
-                  <div className="line"></div>
-                </div>
-                <div className="items">
-                  <Link to="/">{userName}</Link>
-                  <div className="line"></div>
-                </div>
-                <div className="items">
-                  <Link onClick={clickhandle} to="/">Log out</Link>
-                  <div className="line"></div>
-                </div>
-              </div>
-        </div>) : <></>}
-
+        {userId? <Menu /> : <></>}
 
         {userId ? (
           <Switch>
@@ -80,6 +57,11 @@ function App() {
          <Route path="/email" >
              {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} > */}
                  <EmialSender />
+             {/* </motion.div> */}
+         </Route>
+         <Route path="/email2" >
+             {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} > */}
+                 <EmialSender2 />
              {/* </motion.div> */}
          </Route>
        </Switch>
@@ -120,49 +102,6 @@ function App() {
 export default App;
 
 const ParentComponent = styled.div`
-    font-family:${fontFamily};
-    // background-color:#dadce0;
-    width: 100%;
-    // background-color: #dadce0;
-    .menuPar {
-        position: relative;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        height: 80px;
-        .menus {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 40%;
-          .items {
-              font-size:18px;
-              &:hover{
-                  .line{
-                    transform:scale(1);
-                  }
-              }
-              .line{
-                  transition:all 0.4s ease;
-                  height:2px;
-                  width:100%;
-                  background-color:white;
-                  transform:scale(0);
-              }
-            a {
-              color:white;
-              text-decoration: none !important;
-            }
-          }
-        }
-      }
-      @media only screen and (max-width:768px){
-          .menuPar{
-              .menus{
-                  width:100%;
-              }
-          }
-      }
+
 
 `

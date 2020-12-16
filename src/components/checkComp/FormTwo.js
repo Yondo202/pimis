@@ -4,9 +4,6 @@ import FormThree from './FormThree';
 import { Link, animateScroll as scroll } from "react-scroll";
 import axios from'axios';
 
-
-
-
 function FormTwo(props) {
     const [opacity, setOpacity] = React.useState("0");
     const [childStyle, setChildStyle] = React.useState('0');
@@ -123,10 +120,15 @@ const Component2 = styled.div`
           align-items:center;
           justify-content:space-between;
             .errtext{
-              font-weght:500;
-              font-size:20px;
               transition:all 0.4s ease;
-              color:rgba(255,0,0.6);
+              text-align:center;
+              background-color: #f6c343;
+              border-radius:5px;
+              font-size:14px !important;
+              font-weight:400;
+              color:black !important;
+              line-height:34px;
+              padding:0px 20px;
             }
             a{
               text-decoration: none !important;

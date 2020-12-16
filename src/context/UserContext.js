@@ -84,7 +84,7 @@ export const UserStore= (props) =>{
           tableOne: valueOne,
           tableTwo: valueTwo,
           tableThree: valueThree,
-          tableheight: 250
+          tableheight: 400
         });
       }else if(valueThree === "0%"){
         setGlobalStyle({

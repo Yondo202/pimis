@@ -11,16 +11,11 @@ import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../context/UserContext'
 
 
-function TableTwo() {
+function TableTwoMobile() {
     const StyleContext  = useContext(UserContext);
-    const [HeadTime, setHeadTime] = useState("");
-    const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
-    const [procent, setProcent] = useState('0');
     const [visible, setVisible] = useState(false);
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [dataFinal, setData] = useState({});
-    const [dataDetail, setDataDetal] = useState([]);
     let [sigCanvas, setSigCanvas] = useState({});
     let [trimmedDataURL, setTrimmedDataURL] = useState("");
 
@@ -39,52 +34,21 @@ function TableTwo() {
     const clickHandles = (e) =>{
         StyleContext.StyleComp("-200%", "-100%", "0%");
         scroll.scrollTo(0);
-    }
 
-    const [headFix, setHeadFix] = useState("-500px");
-    useEffect(() => {
-        window.addEventListener("scroll", handleScroll);
-    });
-    const handleScroll = () => {
-        if (window.pageYOffset > 100) {
-            setHeadFix("0");
-        }else {
-            setHeadFix("-241px");
-        }
-        // console.log('lalalall', window.pageYOffset);
+        let input = document.getElementById("myInput");
+            input.addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("myBtn").click();
+         }
+        });
     }
    
     return (
         <Component2 className="container">
             <div className="shadow" >
             <div className="rowHeader">2. Баталгаа/зөвшөөрөл/тусгай зөвшөөрлийн үнэлгээ<span className="tseg">*</span></div>
-                {StyleContext.GlobalStyle.tableTwo === "0%"? (
-                     <div className="FlexHead" style={{top:`${headFix}`}}>
-                     <div className="HeadContent" >   Баталгааны хэлбэр (Зөвшөөрөл,<br /> тусгай зөвшөөрөл,  албан бичиг гэх мэт)<br /> ба батладаг эрх бүхий байгууллага	 </div>
-                     <div className="DateCont headLeftBorder HeadContent "> Баталсан огноо
-                         <div className="childCont">
-                                 <div className="contentSm "> Хүлээн авсан </div>
-                                 <div className="headLeftBorder contentSm"> Шинэчилсэн </div>
-                         </div>
-                     </div>
-                     <div className="HeadContent headLeftBorder"> Батлагдсан баримт бичгүүд /хавсаргасан </div>
-                 </div>
-                ) : null }
-               
-
-                <div className="headerPar">
-                    <div className="row">
-                        <div className="col-md-4 col-sm-4 col-4 ">Баталгааны хэлбэр (Зөвшөөрөл,<br /> тусгай зөвшөөрөл,  албан бичиг гэх мэт)<br /> ба батладаг эрх бүхий байгууллага	</div>
-                        <div className="col-md-4 col-sm-4 col-4 headLeftBorder">
-                            <div className="dateHead">Баталсан огноо</div>
-                            <div className="row head-border-top">
-                                <div className="col-md-6 col-sm-6 col-6"> Хүлээн авсан </div>
-                                <div className="col-md-6 col-sm-6 col-6 headLeftBorder"> Шинэчилсэн </div>
-                            </div>
-                        </div>
-                        <div className="col-md-4 col-sm-4 col-4 headLeftBorder">Батлагдсан баримт бичгүүд /хавсаргасан</div>
-                    </div>
-                </div>
+             
             <div className="MainContPar">
             {tableData.map((el,i)=>{
                     return(
@@ -100,35 +64,36 @@ function TableTwo() {
                                 
                              </div>
                             <div className="row">
-                                <div className="col-md-4 col-sm-4 col-4 ">
-                                    <div className="inpChild"> <div className="name"> <FiUserCheck />
+                                <div className="col-md-4 col-sm-12 col-12 ">
+                                    <div className="inpChild"> <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div> <div className="name"> <FiUserCheck />
                                                 <div className="form__group"><input type="input" className="userInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                                     <label for="name" className=" form__label">Баталгааны хэлбэр</label>
                                                 </div>
                                             </div>
                                     </div>
                                 </div>
-
-                                <div className="col-md-4 col-sm-4 col-4 headLeftBorder">
+    
+                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder">
+                                 <div className="Parentlabels"><span>Баталсан огноо :</span> </div>
                                     <div className="row head-border-top">
                                         <div className="col-md-6 col-sm-6 col-6"> 
-                                            <div className="datePar inpChild">
+                                            <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
                                                 <div className="name"><div className="form__group">
                                                         <input type="date" className="userInp LoginInpName form__field" placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="name" required />
                                                         <label for="name" className=" form__label">Хүлээн авсан</label> </div></div> </div></div>
                                         <div className="col-md-6 col-sm-6 col-6 headLeftBorder"> 
-                                            <div className="datePar inpChild ">
+                                            <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
                                                 <div className="name"><div className="form__group">
                                                         <input type="date" className="userInp LoginInpName form__field" placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="name" required />
                                                         <label for="name" className=" form__label">Шинэчилсэн</label> </div> </div> </div>  </div>
                                               </div>
                                 </div>
     
-                                <div className="col-md-4 col-sm-4 col-4 headLeftBorder">
-                                    <div className="inpChild"> <div className="name"> <FiUserCheck />  <div className="form__group">
-                                                        <input type="input" className="userInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                                        <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
-                                                    </div></div> </div>
+                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> </div>
+                                     <div className="name"> <FiUserCheck />  <div className="form__group">
+                                            <input type="input" className="userInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
+                                        </div></div> </div>
                                 </div>
                             </div>
                     </div>
@@ -191,7 +156,7 @@ function TableTwo() {
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                                 {/* <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div> */}
                                 {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
-                            <button onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+                            <button id="myInput" onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                         </div>
             </div>
 
@@ -200,7 +165,7 @@ function TableTwo() {
     )
 }
 
-export default TableTwo
+export default TableTwoMobile
 
 
 const Component2 = styled.div`
@@ -226,71 +191,7 @@ const Component2 = styled.div`
             color:red;
           }
         }
-        .FlexHead{
-            font-size:16px;
-            transition: all 0.4s ease;
-            position:fixed;
-            left:0;
-            z-index:2;
-            padding:0 20%;
-            width: inherit;
-            max-width: inherit;
-            background-color:rgba(${ColorRgb});
-            color:white;
-            text-align:center;
-            border-bottom:1px solid rgba(0,0,0,0.4);
-            display:flex;
-            flex-direction:row;
-            align-items:center;
-            justify-content:space-between;
-            height:86px;
-            .HeadContent{
-                height:100%;
-                width:33.8%;
-                padding-top:10px;
-                padding-bottom:10px;
-            }
-            .headLeftBorder{
-                border-left:1px solid rgba(255,255,255,0.5);
-            }
-            .DateCont{
-                display:flex;
-                flex-direction:column;
-                height:100%;
-               .childCont{
-                    height:100%;
-                  display:flex;
-                  flex-direction:row;
-                    border-top:1px solid rgba(255,255,255,0.5);
-                  .contentSm{
-                    padding:0px 15px;
-                    width:50%;
-                    height:100%;
-                  }
-               }
-            }
-        }
-        .headerPar{
-            background-color: rgba(0, 51, 102,1);
-            color:white;
-            text-align:center;
-            border-bottom:1px solid rgba(255,255,255,0.5);
-            .col-md-4{
-                padding-top:10px;
-                padding-bottom:10px;
-            }
-            .dateHead{
-                padding:6px 0px;
-            }
-            .head-border-top{
-           
-              border-top:1px solid rgba(255,255,255,0.5);
-            }
-            .headLeftBorder{
-               
-                border-left:1px solid rgba(255,255,255,0.5);
-            }
-        }
+     
         .MainContPar{
             background-color:white;
             .ChildPar{
@@ -298,6 +199,11 @@ const Component2 = styled.div`
                 padding-top:14px;
                 padding-bottom:18px;
                 border-top:1px solid rgba(0,0,0,0.2);
+                .Parentlabels{
+                    text-align:center;
+                    border-bottom:1px solid rgba(0,0,0,0.2);
+                    padding-bottom:6px;
+                }
                 .headLeftBorder{
                     border-left:1px solid rgba(0,0,0,0.2);
                   }
@@ -317,10 +223,12 @@ const Component2 = styled.div`
                     padding:0px 0px !important;
                 }
                 .inpChild{
-                    margin:12px 0px;
+                    margin:5px 0px;
                     padding:0px 15px;
                     display:flex;
                     flex-direction:column;
+                    justify-content:flex-end;
+                    height:100%;
                      .name{
                      display:flex;
                      flex-direction:row;
@@ -334,10 +242,10 @@ const Component2 = styled.div`
                        margin-bottom:10px;
                      }
                      .form__group{
-                        position:relative;
-                        padding: 15px 0 0;
-                        margin-top: 0px;
-                        width: 100%;
+                      position:relative;
+                      padding: 15px 0 0;
+                      margin-top: 0px;
+                      width: 100%;
                          .form__field{
                              font-family: inherit;
                              width: 100%;
@@ -495,12 +403,11 @@ const Component2 = styled.div`
                        display:flex;
                        flex-direction:row;
                        justify-content:space-between;
-                       font-size:14px;
+                       font-size:13px;
                        span{
                            color:rgba(${textColor},.9);
                            font-weight:500;
                        }
-                      
                    }
                     .name{
                     display:flex;
@@ -691,14 +598,21 @@ const Component2 = styled.div`
         }
     }
 
+
     @media only screen and (max-width:768px){
         .shadow{
-            .FlexHead{
-                
+            .MainContPar{
+                .ChildPar{
+                    .inpChild{
+                        padding: 0px 15px;
+                    }
+                }
             }
         }
     }
 `
+
+
 
 const tableData = [
   { name: "Үйлдвэрийн үйл ажиллагаа  (зөвшөөрөл, тусгай зөвшөөрөл гм)", list:[]},

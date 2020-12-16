@@ -67,8 +67,6 @@ function Signup() {
               },1000);
             }
       }
-       
-
  
     return (
         <Component className="SignUp">
@@ -81,8 +79,8 @@ function Signup() {
             {/* <form onSubmit={handleClick}> */}
                         <Modal
                             visible={visible}
-                            width="700"
-                            height="560"
+                            width="900"
+                            height="580"
                             effect="fadeInDown"
                             onClickAway={closeModal}
                         >
@@ -91,60 +89,63 @@ function Signup() {
                             <a href="javascript:void(0);" onClick={closeModal}>X</a>
                             </div>
                                 <div className="inputPar">
+                                  <div className="UserSection">
                                     <div className="inpChild">
-                                        <div className="labels"><span>Нэр</span> </div>
-                                        <div className="name">
-                                            <CgProfile />
-                                            <div className="form__group">
-                                                <input type="input" className="userInp  form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                                <label for="name" className="form__label">өөрийн нэрээ оруулах</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="inpChild">
-                                        <div className="labels"><span>Email</span> </div>
-                                        <div className="name">
-                                            <GoMail />
-                                            <div className="form__group">
-                                                <input type="email" className="userInp  form__field" placeholder="Аж ахуйн нэр" name="email" required />
-                                                <label for="name" className="form__label">Цахим шуудан</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="inpChild">
-                                      <div className="labels">
-                                          <span> Нууц үг </span>
-                                          <span className="forget"> 8-с дээш оронтой байх</span>
-                                        </div>
+                                          <div className="labels"><span>Нэр</span> </div>
                                           <div className="name">
-                                              <BiLockOpen />
+                                              <CgProfile />
                                               <div className="form__group">
-                                                  <input onFocus={()=> setPasswordFocused(true)} onChange={e => onChangePassword(e.target.value)} value={password} type="password" className="userInp  form__field" placeholder="Регистерийн дугаар" name="password" required />
-                                                  <label for="name" className="form__label">Нууц үг</label>
+                                                  <input type="input" className="userInp  form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                                  <label for="name" className="form__label">өөрийн нэрээ оруулах</label>
                                               </div>
                                           </div>
-                                    </div>
-                                    {passwordFocused && <PasswordInducator validity={passwordValidity} />}
-
-                                    <div className="inpChild">
-                                      <div className="labels"> <span> Нууц үг давтах </span> </div>
+                                      </div>
+                                      <div className="inpChild">
+                                          <div className="labels"><span>Email</span> </div>
                                           <div className="name">
-                                              <BiLockOpen />
+                                              <GoMail />
                                               <div className="form__group">
-                                                  <input  type="password" className="userInp  form__field" placeholder="Регистерийн дугаар" name="passwordagain" required />
-                                                  <label for="name" className="form__label">Нууц үгээ дахин оруулах</label>
+                                                  <input type="email" className="userInp  form__field" placeholder="Аж ахуйн нэр" name="email" required />
+                                                  <label for="name" className="form__label">Цахим шуудан</label>
                                               </div>
                                           </div>
-                                    </div>
+                                      </div>
+                                  </div>
+                                   
+                                  <div className="UserSection">
+                                    <div className="inpChild">
+                                        <div className="labels">
+                                            <span> Нууц үг </span>
+                                            <span className="forget"> 8-с дээш оронтой байх</span>
+                                          </div>
+                                            <div className="name">
+                                                <BiLockOpen />
+                                                <div className="form__group">
+                                                    <input onFocus={()=> setPasswordFocused(true)} onBlur={()=> setPasswordFocused(false)} onChange={e => onChangePassword(e.target.value)} value={password} type="password" className="userInp  form__field" placeholder="Регистерийн дугаар" name="password" required />
+                                                    <label for="name" className="form__label">Нууц үг</label>
+                                                </div>
+                                            </div>
+                                         {passwordFocused && <PasswordInducator validity={passwordValidity} />}
+                                      </div>
+
+                                      <div className="inpChild">
+                                        <div className="labels"> <span> Нууц үг давтах </span> </div>
+                                            <div className="name">
+                                                <BiLockOpen />
+                                                <div className="form__group">
+                                                    <input  type="password" className="userInp  form__field" placeholder="Регистерийн дугаар" name="passwordagain" required />
+                                                    <label for="name" className="form__label">Нууц үгээ дахин оруулах</label>
+                                                </div>
+                                            </div>
+                                      </div>
+                                  </div>
 
                                     <div className="SubmitButtonPar">
                                           <button onClick={handleClick}  className="SubmitButton" type="button">Бүртгүүлэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
                                           {signUpCtx.userInfo.userId ? <span className="colorTextgreen" style={{transform:`scale(${scale})`}}>Амжилттай нэвтэрлээ...</span> : PassText? (<span className="colorText" style={{transform:`scale(${scale})`}}>{PassText}</span>) :  (<span className="colorText" style={{transform:`scale(${scale})`}}>{signUpCtx.errMsgSignup}</span>)}  
                                     </div>
                                 </div>
-                            </div>
+                          </div>
                 </Modal>
                 {/* </form> */}
 
@@ -190,120 +191,129 @@ const Component = styled.div`
             }
           }
         .inputPar{
-           display:flex;
-           flex-direction:column;
-           align-items:flex;
-           justify-content:center;
-           .passIndPar{
-             text-align:start;
-           }
-           .inpChild{
-               margin:12px 0px;
-               display:flex;
-               flex-direction:column;
-               .labels{
-                   display:flex;
-                   flex-direction:row;
-                   justify-content:space-between;
-                   font-size:14px;
-                   span{
-                       color:rgba(0,0,0,0.7);
-                       font-weight:500;
-                   }
-                   .forget{
-                    color:rgba(${ColorRgb},0.9);
-                    font-weight:600;
-                       cursor:pointer;
-                       &:hover{
-                            color:rgba(${ColorRgb},0.7);
-                       }
-                   }
-               }
-            .name{
-                display:flex;
-                flex-direction:row;
-                align-items:flex-end;
-                justify-content:flex-end;
-                width:100%;
-                svg{
-                  color:rgba(${ColorRgb},0.7);
-                  font-size:28px;
-                  margin-right:15px;
-                  margin-bottom:5px;
-                }
-                .form__group{
-                 position:relative;
-                 padding: 15px 0 0;
-                 margin-top: 0px;
-                 width: 100%;
-                    .form__field{
-                        font-family: inherit;
-                        width: 100%;
-                        border: 0;
-                        border-radius:6px;
-                        border-bottom: 1px solid rgba(${ColorRgb},0.5);
-                        border-right: 1px solid rgba(${ColorRgb},0.5);
-                        border-left: 1px solid rgba(${ColorRgb},0.5);
-                        border-top: 1px solid rgba(${ColorRgb},0.5);
-                        outline: 0;
-                        font-size: 1rem;
-                        color: black;
-                        padding: 7px 0;
-                        background: transparent;
-                        transition: border-color 0.2s;
-                        position: relative;
-                        z-index: 1;
-                        &::placeholder {
-                          color: transparent;
-                        }
-                        &:placeholder-shown ~ .form__label {
-                          font-size: 0.9rem;
-                          cursor: text;
-                          top: 24px;
-                        }
-                    }
-                   
-                    .form__label {
-                        position: absolute;
-                        top: 0;
-                        display: block;
-                        transition: 0.2s;
-                        font-size: 0rem;
-                        color: gray;
-                        z-index: 0;
-                        padding-left:10px;
+            display:flex;
+            flex-direction:column;
+            align-items:flex;
+            justify-content:center;
+            .UserSection{
+              display:flex;
+              flex-direction:row;
+              justify-content:space-between;
+              .passIndPar{
+                margin-top:15px;
+                text-align:start;
+                font-size:13px;
+              }
+              .inpChild{
+                width:46%;
+                  margin:12px 0px;
+                  display:flex;
+                  flex-direction:column;
+                  .labels{
+                      display:flex;
+                      flex-direction:row;
+                      justify-content:space-between;
+                      font-size:14px;
+                      span{
+                          color:rgba(0,0,0,0.7);
+                          font-weight:500;
                       }
-                      
-                      .form__field{
-                          &:focus {
-                            ~ .form__label {
-                              position: absolute;
-                              top: 0;
-                              display: block;
-                              transition: 0.3s;
-                              font-size: 0.8rem;
-                              color: #11998e;
-                              font-weight:400;    
-                            }
-                            // border-bottom: 1px solid gray;
-                            border-right:none;
-                            border-left:none;
-                            border-top:none;
-                            padding-bottom: 7px;
-                            font-weight: 400;
-                            border-width: 1px;
-                            border-image: linear-gradient(to right, #11998e, #38ef7d);
-                            border-image-slice: 1;
+                      .forget{
+                       color:rgba(${ColorRgb},0.9);
+                       font-weight:600;
+                          cursor:pointer;
+                          &:hover{
+                               color:rgba(${ColorRgb},0.7);
                           }
                       }
-                      /* reset input */
-                      .form__field{
-                        &:required,&:invalid { box-shadow:none; }
-                      }
-                }
-                
+                  }
+               .name{
+                   display:flex;
+                   flex-direction:row;
+                   align-items:flex-end;
+                   justify-content:flex-end;
+                   width:100%;
+                   svg{
+                     color:rgba(${ColorRgb},0.7);
+                     font-size:28px;
+                     margin-right:15px;
+                     margin-bottom:5px;
+                   }
+                   .form__group{
+                    position:relative;
+                    padding: 15px 0 0;
+                    margin-top: 0px;
+                    width: 100%;
+                       .form__field{
+                           font-family: inherit;
+                           width: 100%;
+                           border: 0;
+                           border-radius:6px;
+                           border-bottom: 1px solid rgba(${ColorRgb},0.5);
+                           border-right: 1px solid rgba(${ColorRgb},0.5);
+                           border-left: 1px solid rgba(${ColorRgb},0.5);
+                           border-top: 1px solid rgba(${ColorRgb},0.5);
+                           outline: 0;
+                           font-size: 1rem;
+                           color: black;
+                           padding: 7px 0;
+                           background: transparent;
+                           transition: border-color 0.2s;
+                           position: relative;
+                           z-index: 1;
+                           &::placeholder {
+                             color: transparent;
+                           }
+                           &:placeholder-shown ~ .form__label {
+                             font-size: 0.9rem;
+                             cursor: text;
+                             top: 24px;
+                           }
+                       }
+                      
+                       .form__label {
+                           position: absolute;
+                           top: 0;
+                           display: block;
+                           transition: 0.2s;
+                           font-size: 0rem;
+                           color: gray;
+                           z-index: 0;
+                           padding-left:10px;
+                         }
+                         
+                         .form__field{
+                             &:focus {
+                               ~ .form__label {
+                                 position: absolute;
+                                 top: 0;
+                                 display: block;
+                                 transition: 0.3s;
+                                 font-size: 0.8rem;
+                                 color: #11998e;
+                                 font-weight:400;    
+                               }
+                               // border-bottom: 1px solid gray;
+                               border-right:none;
+                               border-left:none;
+                               border-top:none;
+                               padding-bottom: 7px;
+                               font-weight: 400;
+                               border-width: 1px;
+                               border-image: linear-gradient(to right, #11998e, #38ef7d);
+                               border-image-slice: 1;
+                             }
+                         }
+                         /* reset input */
+                         .form__field{
+                           &:required,&:invalid { box-shadow:none; }
+                         }
+                   }
+                   
+                 }
               }
-           }
+            }
+           
           
          
         }
@@ -315,23 +325,28 @@ const Component = styled.div`
             justify-content:center;
             align-items:center;
             flex-direction:column;
-            .red{
-              font-size:19px;
-              font-weight:400;
-              color:rgba(255,0,0,0.7);
-              margin-bottom:10px;
-            }
             .colorText{
-              margin:10px 0px;
-              transition:all 0.3s ease;
-              font-size:16px;
-              color:red;
+              width:100%;
+              text-align:center;
+              background-color: #f6c343;
+              box-shadow:1px 1px 10px -2px black;
+              border-radius:5px;
+              font-size:15px;
+              font-weight:400;
+              color:black;
+              margin-top:18px;
+              line-height:34px;
             }
             .colorTextgreen{
-              margin:10px 0px;
-              transition:all 0.3s ease;
-              font-size:16px;
-              color:green;
+              background-color:green;
+              box-shadow:1px 1px 10px -2px black;
+              border-radius:5px;
+              font-size:15px;
+              font-weight:400;
+              color:white;
+              margin:16px 0;
+              line-height:24px;
+              padding:3px 15px; 
             }
          
               .SubmitButton{
@@ -390,6 +405,14 @@ const Component = styled.div`
                         font-size:14px;
                     }
                 }
+              .inputPar{
+                .UserSection{
+                  flex-direction:column;
+                  .inpChild{
+                    width:100%;
+                  }
+                }
+              }
             }
       }
       

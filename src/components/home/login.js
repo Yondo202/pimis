@@ -1,4 +1,5 @@
 import React,{useContext, useEffect, useState} from 'react'
+
 import styled from 'styled-components'
 import {CgProfile} from 'react-icons/cg'
 import {BiLockOpen} from 'react-icons/bi'
@@ -18,6 +19,8 @@ function Login() {
   //   setUserId(userIdLocalStorage);
   // }, []);
   // console.log(userIdLocalStorage, "user id App js local storage");
+
+
 
 
     const userCtx = useContext(UserContext);
@@ -83,7 +86,7 @@ function Login() {
                 </div>
                 <div className="SubmitButtonPar">
                 {/* <div className="red">{userCtx.errMsg}</div> */}
-                {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
+                  {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
                  <button onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                 </div>
             {/* </form> */}
@@ -238,7 +241,7 @@ const Component = styled.div`
     }
   }
   .SubmitButtonPar{
-    margin-top:20px;
+    margin-top:10px;
     text-align:end;
     display:flex;
     justify-content:center;
@@ -246,21 +249,26 @@ const Component = styled.div`
     flex-direction:column;
     font-weight:400 !important;
     .red{
-      font-size:16px;
+      background-color:#e63757;
+      box-shadow:1px 1px 10px -2px black;
+      border-radius:5px;
+      font-size:15px;
       font-weight:400;
-      color:rgba(255,0,0,0.7);
-      margin-bottom:10px;
-      color:red;
-      // background-color:yellow;
+      color:white;
+      margin-bottom:16px;
       padding:0px 20px;
       line-height:24px;
     }
     .green{
-      font-size:16px;
+      background-color:green;
+      box-shadow:1px 1px 10px -2px black;
+      border-radius:5px;
+      font-size:15px;
       font-weight:400;
-      color:rgba(255,0,0,0.7);
-      margin-bottom:10px;
-      color:green;
+      color:white;
+      margin-bottom:16px;
+      padding:0px 20px;
+      line-height:24px;
     }
     .colorText{
       transition:all 0.3s ease;

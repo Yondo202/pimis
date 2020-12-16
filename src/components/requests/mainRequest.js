@@ -2,37 +2,44 @@ import React, { useContext } from 'react'
 import TableOne from './tableOne'
 import { motion } from 'framer-motion'
 import TableTwo from './tableTwo';
+import TableMobile from './tableTwoMobile';
 import styled from 'styled-components'
 import TableThree from './tableThree';
 import UserContext from '../../context/UserContext'
 
-let easing = [0, 0, 0.56, 0.95];
-const textVariants2 = {exit: { y: 100, opacity: 0, transition: { duration: 0.9, ease: easing } },
-    enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
+
 
 function MainRequest() {
     const StyleContext = useContext(UserContext);
     console.log(StyleContext.GlobalStyle , "my global style");
     return (
         <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
-
             <div style={{left:`${StyleContext.GlobalStyle.tableOne}`}} className="handleSlidePAr1">
                 <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
                     <TableOne  />
                 </motion.div>
             </div>
-        
+
             <div style={{left:`${StyleContext.GlobalStyle.tableTwo}`}} className="handleSlidePAr2">
-                <TableTwo />
+                <TableMobile />
             </div>
+            {/* <div style={{left:`${StyleContext.GlobalStyle.tableTwo}`}} className="handleSlidePAr2">
+                <BrowserView>
+                    <TableTwo />
+                </BrowserView>
+            </div> */}
             <div style={{left:`${StyleContext.GlobalStyle.tableThree}`}} className="handleSlidePAr3">
                 <TableThree />
             </div>
         </ParentComp>
-     
     )
 }
 export default MainRequest
+
+
+let easing = [0, 0, 0.56, 0.95];
+const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
+    enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
 
 
 const ParentComp = styled.div`
@@ -40,6 +47,7 @@ const ParentComp = styled.div`
     overflow:hidden;
     position:relative;
     transition:all 1s ease;
+    margin-top:60px;
     .handleSlidePAr1{
         width:100%;
         transition:all 1s ease;

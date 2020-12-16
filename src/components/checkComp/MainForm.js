@@ -102,7 +102,7 @@ function MainForm() {
  
   return (
     <Component className="container"  >
-      <Ghost />
+      {/* <Ghost /> */}
       <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
         <div className="headPar">
           <span className="headText">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ энэ асуулгаар шалгаж үзнэ үү </span>
@@ -133,11 +133,9 @@ export default MainForm;
 
 const Component = styled.div`
   font-family: ${fontFamily};
-  // text-align:center;
   position:relative;
   margin-top:60px;
   padding-bottom:100px;
-  // background-color:black;
   z-index:1;
   .homeButtonPar{
     display:flex;

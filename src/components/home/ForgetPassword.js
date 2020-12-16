@@ -29,8 +29,6 @@ function ForgetPassword() {
                   let value = element.value;
                   finalOne[field] = value;
             });
-            // console.log(finalOne, "my final");
-            // signUpCtx.SendEmail(finalOne.email);
             await axios.post('users/forgot-password',  { email: finalOne.email })
                     .then((res)=>{
                     console.log(res, "forget res");
@@ -100,12 +98,17 @@ const Component = styled.div`
             
         }
         .colorText{
-            text-align:center;
-            font-size:14px;
-            margin-bottom:12px !important;
-            // color:rgba(255,0,0,0.9) !important;
-            font-weight:500 !important;
+            width:100%;
+              text-align:center;
+              background-color: #f6c343;
+              border-radius:5px;
+              font-size:14px !important;
+              font-weight:400;
+              color:black !important;
+              line-height:34px;
+              margin-bottom:12px !important;
         }
+        
         .SubmitButton{
             font-weight:400 !important;
             font-weight: !important;
