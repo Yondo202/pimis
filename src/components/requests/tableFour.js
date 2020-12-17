@@ -1,3 +1,4 @@
+
 import React,{useEffect, useState, useRef, useContext} from 'react';
 import styled from 'styled-components'
 import { Link, animateScroll as scroll } from "react-scroll";
@@ -12,14 +13,14 @@ import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../context/UserContext'
 
 
-function TableOne() {
+function TableFour() {
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
     const [visible, setVisible] = useState(false);
-    const [FinalErrorText, setFinalErrorText] = useState("");
     const [dataFinal, setData] = useState({});
     const [dataDetail, setDataDetal] = useState([]);
+    const [FinalErrorText, setFinalErrorText] = useState("");
     let [sigCanvas, setSigCanvas] = useState({});
     let [trimmedDataURL, setTrimmedDataURL] = useState(null);
 
@@ -37,96 +38,38 @@ function TableOne() {
     const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')) 
     setTimeout(()=>{ closeModal() },1000) };
   const clickHandles = (e) =>{
-            let finalOne = {};
-            let finalEnd = {};
-            let rs2 = document.querySelectorAll(".inpTest3");
-            let arr2 = Array.from(rs2);
-            let finalOne2 = [];
-
-            arr2.map(element=>{
-                if(element.checked === true){
-                  let soloObject2 = {}
-                  let field = element.name;
-                  let value = element.value;
-                  soloObject2[field] = value;
-                  finalOne2.push(soloObject2);
-                }
-            });
-
-            let rs4 = document.querySelectorAll(".getUserInp");
-            let arr4 = Array.from(rs4);
-            let userInp = {};
-
-            arr4.map(element=>{
-                let field = element.name;
-                let value = element.value;
-                userInp[field] = value;
-            });
-            console.log(userInp, "userInp");
-
-            finalOne["request"] = finalOne2;
-            finalOne["name"] = userInp.name;
-            finalOne["date"] = userInp.date;
-            finalOne["signature"] = trimmedDataURL;
-
-            finalEnd["PPS1"] = finalOne;
-
-
-            // console.log(finalOne2 , "asuuulga 1");
-            // console.log(finalOne, "big Final");
-
-            let keys = Object.keys(finalOne2);
-            const Procent = keys.length * 100 / 13;
-            const FinalProcent = Math.round(Procent);
-
-            console.log(finalEnd, "final one");
-            StyleContext.StyleComp("-100%", "0%", "100%");
-
-            if(keys.length < 13){
-              setOpacity("1");
-              setProcent(FinalProcent);
-              scroll.scrollTo(0);
-            }else if(trimmedDataURL === null){
-              setOpacity("0");
-              setFinalErrorText("Та гарын үсгээ зурна уу");
-              setOpacity2("1");
-              scroll.scrollTo(2000);
-            }else if(userInp.name === "" || userInp.date === ""){
-                setOpacity("0");
-                setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү");
-                setOpacity2("1");
-                // scroll.scrollTo(2000);
-            }else{
-                setOpacity("0");
-                setOpacity2("0");
-                scroll.scrollTo(0);
-                // alert("GG");
-                
-            }
+         console.log("dada");
     }
 //   console.log(trimmedDataURL, "signature url");
     return (
         <Component1 className="container" >
             <div className="boxShadow">
-                <div className="rowHeader">1. {dataFinal.description}<span className="tseg">*</span></div>
+                <div className="rowHeader">4. Байгаль орчин, нийгмийн ерөнхий үнэлгээний маягт  <span className="tseg">*</span></div>
             <div className="formTwoParent ">
                 <div className="headerPar">
-                    <div className="row" >
-                    <div className="head1 col-md-9 col-sm-5 col-5">Шалгуур</div>
-                    <div className="head2 col-md-1 col-sm-3 col-3">Хамаарахгүй</div>
-                    <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
-                    <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
+                    <div  className="row" >
+                    <div className="head1 col-md-5 col-sm-5 col-5">Шалгуур</div>
+                    <div className="head2 col-md-2 col-sm-2 col-2"><div style={{borderBottom:"1px solid rgba(0,0,0,0.5)"}} >Хариулт</div>
+                        <div className="row">
+                            <div className="col-md-6 col-md-6 col-md-6">Тийм</div>
+                            <div className="head2 col-md-6 col-md-6 col-md-6">Үгүй</div>
+                        </div>
+                    </div>
+                    <div className="head2 col-md-2 col-sm-2 col-2">Асуулт Хариулт “Тийм” бол ДБ-ны холбогдох бодлого</div>
+                    <div className="head2 col-md-3 col-sm-3 col-3">“Тийм” бол шаардлагатай баримт бичгүүд </div>
                     </div>
                 </div>
                 {dataDetail.map((el, i)=>{
                     return(
                     <div className="headerParchild" key={i}>
                         <div className="row" >
-                        <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
-                        <div className="texts col-md-8 col-sm-4 col-4">{el.description}</div>
-                        <div className="radios col-md-1 col-sm-3 col-3"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="unconcern"/></div>
-                        <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="true"/></div>
-                        <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="false"/></div>
+                        {/* <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div> */}
+                        <div className="texts col-md-5 col-sm-5 col-5">{el.description}</div>
+                        <div className="radios col-md-1 col-sm-1 col-1"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="true"/></div>
+                        <div className="radios col-md-1 col-sm-1 col-1"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="false"/></div>
+
+                        <div className="radios col-md-2 col-sm-2 col-2">Ерөнхий үнэлгээнээс өөр үйл ажиллагаа шаардлагагүй  </div>
+                        <div className="radios col-md-3 col-sm-3 col-3">OP 4.01 Байгаль орчны үнэлгээ “C” ангилал  </div>
                         </div>
                     </div>
                     )
@@ -202,7 +145,7 @@ function TableOne() {
     )
 }
 
-export default TableOne
+export default TableFour
 
 
 const Component1 = styled.div`

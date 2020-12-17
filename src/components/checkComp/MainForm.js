@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import styled from "styled-components";
 import FromOne from "../checkComp/FormOne";
 import {AiOutlineSend} from 'react-icons/ai'
@@ -9,15 +9,22 @@ import Ghost from '../Ghost'
 import { motion } from 'framer-motion'
 import {fontFamily} from '../theme'
 import {Link} from 'react-router-dom'
+import HelperMenu from "../../containers/HelperMenu"
 
 let easing = [0, 0, 0.56, 0.95];
 const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
     enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
 
 function MainForm() {
-    const [scale, setScale] = React.useState("0");
-    const [resScale, setresScale] = React.useState("0");
-    const [resText, setResText] = React.useState("");
+    const [userId, setUserId] = useState();
+    const [scale, setScale] = useState("0");
+    const [resScale, setresScale] = useState("0");
+    const [resText, setResText] = useState("");
+
+    useEffect(() => {
+      const userId = localStorage.getItem("userId", []);
+      setUserId(userId);
+    }, []);
 
           const handleClick = async (e) =>{
             e.preventDefault();
@@ -101,31 +108,35 @@ function MainForm() {
         }
  
   return (
-    <Component className="container"  >
-      {/* <Ghost /> */}
-      <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-        <div className="headPar">
-          <span className="headText">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ энэ асуулгаар шалгаж үзнэ үү </span>
-        </div>
-        <form onSubmit={handleClick}>
-        <FromOne />
-          <div className="SubmitButtonPar">
-            <span className="colorText" style={{transform:`scale(${scale})`}}> Тэдээлэл дутуу байна... </span>
-            {/* <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>handleClick()}> */}
-              <button   className="SubmitButton" type="submit">Илгээх <div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
-            {/* </Link> */}
+    <React.Fragment>
+      {userId ? null : <HelperMenu />}
+      <Component className="container"  >
+          {/* <Ghost /> */}
+          <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
+            <div className="headPar">
+              <span className="headText">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ энэ асуулгаар шалгаж үзнэ үү </span>
+            </div>
+            <form onSubmit={handleClick}>
+            <FromOne />
+              <div className="SubmitButtonPar">
+                <span className="colorText" style={{transform:`scale(${scale})`}}> Тэдээлэл дутуу байна... </span>
+                {/* <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>handleClick()}> */}
+                  <button   className="SubmitButton" type="submit">Илгээх <div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
+                {/* </Link> */}
+              </div>
+            </form>
+          </motion.div>
+          <div className="homeButtonPar" style={{transform:`scale(${resScale})`}}>
+            <Link to="/"><span className="homeBtn" >Буцах</span></Link>
+            <div className="resPar" >
+              <RiMailSendLine />
+                <h5 className="finalText">{resText}</h5>
+            </div>
           </div>
-        </form>
-      </motion.div>
-      <div className="homeButtonPar" style={{transform:`scale(${resScale})`}}>
-        <Link to="/"><span className="homeBtn" >Буцах</span></Link>
-        <div className="resPar" >
-          <RiMailSendLine />
-            <h5 className="finalText">{resText}</h5>
-        </div>
-      </div>
-    
-    </Component>
+        
+        </Component>
+    </React.Fragment>
+  
   );
 }
 

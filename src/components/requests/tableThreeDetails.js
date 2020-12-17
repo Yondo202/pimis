@@ -75,7 +75,7 @@ function TableThreeDetails() {
 
             {addItem.map((el,i)=>{
                 return(
-                    <div className="DetailPar" style={{opacity:addStyle, transform:`scale(${addStyle})`}} key={i}>
+                    <div id={i}  className="GetItemAdd DetailPar" style={{opacity:addStyle, transform:`scale(${addStyle})`}} key={i}>
                     <div className="Title"> {i !== 0 && i !== 1 && i !== 2 && i !== 3 ? i + 1 : i + 2} . Торгууль / Шийтгэл / Санал гомдлууд :</div>
                     <div className="formOneParent">
                         <div className="inputPar">
@@ -83,7 +83,7 @@ function TableThreeDetails() {
                                 <div className="labels"><span>Огноо :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" className="userInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                        <input type="date" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="date" required />
                                         <label for="name" className=" form__label">Огноо</label>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@ function TableThreeDetails() {
                                 <div className="labels"><span>Асуудлын мөн чанар :</span> </div>
                                 <div className="name"> <GiScales />
                                     <div className="form__group">
-                                        <input type="input" className="userInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
                                         <label for="name" className=" form__label">Асуудлын мөн чанар</label>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@ function TableThreeDetails() {
                                 <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
                                 <div className="name"> <FiUserCheck />
                                     <div className="form__group">
-                                        <input type="input" className="userInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
                                         <label for="name" className=" form__label">огноо тус бүрээр</label>
                                     </div>
                                 </div>
@@ -114,7 +114,7 @@ function TableThreeDetails() {
                                 <div className="labels"><span>Санал :</span> </div>
                                 <div className="name"> <GoMail />
                                     <div className="form__group">
-                                        <input type="input" className="userInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
                                         <label for="name" className=" form__label">Санал</label>
                                     </div>
                                 </div>

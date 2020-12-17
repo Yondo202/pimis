@@ -8,24 +8,6 @@ import { useLocation } from 'react-router-dom';
 
 
 function Menu(props) {
-  const location = useLocation();
-
-    const userCtx = useContext(UserContext);
-
-    
-    useEffect(() => {
-      const userId = localStorage.getItem("userId", []);
-      const userName = localStorage.getItem("userName", []);
-      setUserId(userId);
-      setUserName(userName);
-    }, []);
-
-      const clickhandle = ()=>{
-        userCtx.logout();
-        window.location.reload(false);
-    };
-
-    
 
   return (
     <Componentss>
@@ -39,7 +21,7 @@ function Menu(props) {
                     </div>
               </div>
               <div className="userMenuPar">
-                <span className="Logout"><Link onClick={clickhandle} to="/"><span>Гарах</span><IoIosLogOut /></Link></span>
+                <span className="Logout"><Link to="/"><span>Буцах</span><IoIosLogOut /></Link></span>
               </div>
           </div>
       </div>
@@ -71,7 +53,7 @@ const Componentss = styled.div`
         .userMenuPar{
           display:flex;
           flex-direction:row;
-          justify-content:space-between;
+          justify-content:flex-end;
           align-items:center;
           width:20%;
           .UserNameMenu{

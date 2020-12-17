@@ -7,6 +7,7 @@ const initialStyle ={
   tableOne: "0%",
   tableTwo: "100%",
   tableThree: "200%",
+  tableFour: "300%",
   tableheight: 150,
 }
 const initialUserInfo = {
@@ -71,35 +72,17 @@ export const UserStore= (props) =>{
         localStorage.removeItem("edp_loggedUser");
     }
 
-    const StyleComp = (valueOne,valueTwo, valueThree,otherHeigth) =>{
+    const StyleComp = (valueOne,valueTwo, valueThree,valueFour) =>{
       if(valueOne === "0%"){
-        setGlobalStyle({
-          tableOne: valueOne,
-          tableTwo: valueTwo,
-          tableThree: valueThree,
-          tableheight: 150
-        });
+        setGlobalStyle({  tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree,tableheight: 190});
       }else if(valueTwo === "0%"){
-        setGlobalStyle({
-          tableOne: valueOne,
-          tableTwo: valueTwo,
-          tableThree: valueThree,
-          tableheight: 400
-        });
+        setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree,tableheight: 400 });
       }else if(valueThree === "0%"){
-        setGlobalStyle({
-          tableOne: valueOne,
-          tableTwo: valueTwo,
-          tableThree: valueThree,
-          tableheight: 200
-        });
+        setGlobalStyle({tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableheight: 200 });
+      }else if(valueFour === "0%"){
+        setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableheight: 200 })
       }else{
-        setGlobalStyle({
-          tableOne: valueOne,
-          tableTwo: valueTwo,
-          tableThree: valueThree,
-          tableheight: 150
-        });
+        setGlobalStyle({tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableheight: 150 });
       }
     }
       

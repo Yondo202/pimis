@@ -2,6 +2,7 @@ import React, {useEffect, useState,useContext} from 'react'
 import { motion } from "framer-motion";
 import styled from 'styled-components'
 import Menu from './containers/menu'
+import HelperMenu from './containers/HelperMenu'
 import Ghost from "./components/Ghost";
 import UserContext from "./context/UserContext";
 import HomeLogin from './components/home/homeLogin'

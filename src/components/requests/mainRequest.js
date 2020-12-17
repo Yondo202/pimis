@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 import TableOne from './tableOne'
 import { motion } from 'framer-motion'
 import TableTwo from './tableTwo';
-import TableMobile from './tableTwoMobile';
 import styled from 'styled-components'
 import TableThree from './tableThree';
 import UserContext from '../../context/UserContext'
+import TableFour from './tableFour'
 
 
 
@@ -21,15 +21,14 @@ function MainRequest() {
             </div>
 
             <div style={{left:`${StyleContext.GlobalStyle.tableTwo}`}} className="handleSlidePAr2">
-                <TableMobile />
+                <TableTwo />
             </div>
-            {/* <div style={{left:`${StyleContext.GlobalStyle.tableTwo}`}} className="handleSlidePAr2">
-                <BrowserView>
-                    <TableTwo />
-                </BrowserView>
-            </div> */}
+            
             <div style={{left:`${StyleContext.GlobalStyle.tableThree}`}} className="handleSlidePAr3">
                 <TableThree />
+            </div>
+            <div style={{left:`${StyleContext.GlobalStyle.tableFour}`}} className="handleSlidePAr4">
+                <TableFour />
             </div>
         </ParentComp>
     )
@@ -59,6 +58,11 @@ const ParentComp = styled.div`
         position:absolute;
     }
     .handleSlidePAr3{
+        transition:all 1s ease;
+        position:absolute;
+        width:100%;
+    }
+    .handleSlidePAr4{
         transition:all 1s ease;
         position:absolute;
         width:100%;

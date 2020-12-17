@@ -1,28 +1,71 @@
-import React from 'react';
+import React,{useState} from 'react';
 import axios from '../../axiosbase';
-import './css/emailOne.css';
+import { Email, Item, Span, A, renderEmail, Box,Image} from 'react-html-email'
 
 
 function EmailSend() {
-    const clickHandle = () =>{
-        console.log(HtmlFull, "html One");
-        // console.log(typeof true, "type of");
+    const [ color, setColor ] =useState("#FFFF00");
+    const [ Text , setText ] = useState("Илгээхэд алдаа гарлаа");
+    const [ Scale , setScale ] = useState("0");
+    const clickHandle = async () =>{
+        // console.log(EmailHTML, "html One");
 
-    //     axios.post('test/test',  {
-    //         html: Html,
-    //        }
-    //           ).then((res)=>{
-    //             console.log(res, "login res");
-    //           }).catch((e)=>{
-    //             console.log(e.response, "err Response");  
-    //           });
-    //   }
-    }
+       await axios.post('send-pps-notice',  {
+            // html: Html,
+            email: "yondooo61@gmail.com",
+            emailBody:EmailHTML,
+           }).then((res)=>{
+                console.log(res.data.success, "my Response");
+                if(res.data.success === true){
+                    setColor("#32CD32");
+                    setText("Амжилттай илгээгдлээ");
+                    setScale("1");
+                }else{
+                    setColor("#FFFF00");
+                    setText("Илгээхэд алдаа гарлаа");
+                    setScale("1");
+                }
+              }).catch((e)=>{
+                console.log(e.response, "err Response");  
+                if(e.response.data.success === false){
+                    setColor("#FFFF00");
+                    setText("Илгээхэд алдаа гарлаа");
+                    setScale("1");
+                }
+          });
+      };
 
     return (
-        <div>
-            <div>{HtmlOne}</div>
-            <button onClick={clickHandle} className="btn btn-primary">Илгээх</button>
+        <div style={{textAlign:"center"}}>
+            <div style={{marginTop:20, width:"100%"}}>
+            <div style={{transition:`all 0.4s ease`,marginBottom:"15px", backgroundColor:color, padding:"5px 0px", transform:`scale(${Scale})`}}>{Text}</div>
+                <Email title="EDP">
+                    <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
+                        <Item style={{border:"1px solid rgba(0,0,0,0.2)",padding:'20px 20px',backgroundColor:"#f2f2f2"}} align="end">
+                        <Box style={{textAlign:"center",width:"100%", margin:'20px 0px',fontWeight:'500', fontSize:'14px'}} > Санхүүгийн дэмжлэг олгохоос татгалзсан мэдэгдэл</Box>
+                        <Box style={{textAlign:"end",width:"100%", marginBottom:'20px', fontSize:'12px'}}> Хэнд: Example company танаа:</Box>
+
+                        <Box style={{textAlign:"start",width:"100%", fontSize:'12px'}}> [Дугаар]: УП984685465</Box>
+                        <Box style={{textAlign:"start",width:"100%", fontSize:'12px'}}> [Огноо]:  2019/05/10</Box>
+
+                        <Box style={{textAlign:"start",width:"100%", margin:'20px 0px',fontWeight:'500', fontSize:'12px'}}>Агуулга: Санхүүгийн дэмжлэг олгохоос татгалзсан тухай</Box>
+                        <Box style={{textAlign:"start",width:"100%", margin:'10px 0px', fontSize:'12px'}}>Эрхэм хүндэт Баасандорж танаа</Box>
+
+                        <Box style={{textAlign:"start",width:"100%", margin:'18px 0px',textIndent: "50px", fontSize:'12px'}}>Энэхүү захиагаар танай аж ахуйн нэгжийн ирүүлсэн санхүүгийн дэмжлэгийн хүсэлтэд үнэлгээ хийгдсэн болохыг мэдэгдэж байна</Box>
+                        <Box style={{textAlign:"start",width:"100%", margin:'18px 0px',textIndent: "50px", fontSize:'12px'}}>Санхүүгийн дэмжлэгийн багийн шинжээчид таны ирүүлсэн экспортын хөгжлийн төлөвлөгөөг Санхүүгийн дэмжлэг хэрэгжүүлэх гарын авлагад тусгасан шалгуур үзүүлэлтүүдийн дагуу үнэлсэн болохыг мэдэгдэж байна. Танай байгууллагын өргөдөл дараах шалтгаануудын улмаас шаардлага хангаагүй болохыг мэдэгдэж байна.Үүнд:</Box>
+                        
+                        <Box style={{textAlign:"center",width:"100%", margin:'18px 0px',textIndent: "50px", fontSize:'12px'}}>[Санхүүгийн дэмжлэг олгохоос татгалзсан шалтгааныг бичих.]</Box>
+                        <Box style={{textAlign:"center",width:"100%", margin:'18px 0px',textIndent: "50px", fontSize:'12px'}}>Бидэнд хүсэлтээ ирүүлсэн та бүхэнд баярлалаа. Дахин бидэнд хүсэлтээ ирүүлнэ гэдэгт итгэлтэй байна.</Box>
+                     
+                        <Box style={{textAlign:"center",width:"100%", margin:'18px 0px',textIndent: "50px", fontSize:'12px'}}>Төсөлтэй холбоотой тодруулах зүйл байвал бидэнтэй холбогдоно уу.</Box>
+
+                        <Box style={{textAlign:"start",width:"100%", margin:'18px 0px', fontSize:'12px'}}>Хүндэтгэсэн: ...........</Box>
+                        <Box style={{textAlign:"start",width:"100%", margin:'18px 0px', fontSize:'12px'}}>Санхүүгийн дэмжлэгийн багийн зохицуулагч</Box>
+                        </Item>
+                </Email>
+            </div>
+            
+            <button onClick={clickHandle} style={{margin:"20px", width:"20%"}} className="btn btn-success">Илгээх</button>
         </div>
     )
 }
@@ -30,134 +73,33 @@ function EmailSend() {
 export default EmailSend
 
 
+const EmailHTML = renderEmail(
+    <Email title="EDP">
+        <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
+            <Item style={{border:"1px solid rgba(0,0,0,0.2)",padding:'20px 20px',backgroundColor:"#f2f2f2"}} align="end">
+            <Box style={{textAlign:"center",width:"100%", margin:'20px 0px',fontWeight:'500', fontSize:'14px'}} > Санхүүгийн дэмжлэг олгохоос татгалзсан мэдэгдэл</Box>
+            <Box style={{textAlign:"end",width:"100%", marginBottom:'20px', fontSize:'12px'}}> Хэнд: Example company танаа:</Box>
 
-const HtmlOne =(
-    <div class="BodyPar">
-        <div class="ContentPar">
-            <div class="header bold">Санхүүгийн дэмжлэг олгохоос татгалзсан мэдэгдэл</div>
-            <div class="CompName">Хэнд: Example company танаа</div>
+            <Box style={{textAlign:"start",width:"100%", fontSize:'12px'}}> [Дугаар]: УП984685465</Box>
+            <Box style={{textAlign:"start",width:"100%", fontSize:'12px'}}> [Огноо]:  2019/05/10</Box>
 
-            <div>[Дугаар]: УП984685465</div>
-            <div>[Огноо]: 2019/05/10</div>
+            <Box style={{textAlign:"start",width:"100%", margin:'20px 0px',fontWeight:'500', fontSize:'12px'}}>Агуулга: Санхүүгийн дэмжлэг олгохоос татгалзсан тухай</Box>
+            <Box style={{textAlign:"start",width:"100%", margin:'10px 0px', fontSize:'12px'}}>Эрхэм хүндэт Баасандорж танаа</Box>
 
-            <div class="text bold">Агуулга: Санхүүгийн дэмжлэг олгохоос татгалзсан тухай </div>
-            <div class="text">Эрхэм хүндэт   Баасандорж  танаа</div>
+            <Box style={{textAlign:"start",width:"100%", margin:'18px 0px',textIndent: "50px", fontSize:'12px'}}>Энэхүү захиагаар танай аж ахуйн нэгжийн ирүүлсэн санхүүгийн дэмжлэгийн хүсэлтэд үнэлгээ хийгдсэн болохыг мэдэгдэж байна</Box>
+            <Box style={{textAlign:"start",width:"100%", margin:'18px 0px',textIndent: "50px", fontSize:'12px'}}>Санхүүгийн дэмжлэгийн багийн шинжээчид таны ирүүлсэн экспортын хөгжлийн төлөвлөгөөг Санхүүгийн дэмжлэг хэрэгжүүлэх гарын авлагад тусгасан шалгуур үзүүлэлтүүдийн дагуу үнэлсэн болохыг мэдэгдэж байна. Танай байгууллагын өргөдөл дараах шалтгаануудын улмаас шаардлага хангаагүй болохыг мэдэгдэж байна.Үүнд:</Box>
+            
+            <Box style={{textAlign:"center",width:"100%", margin:'18px 0px',textIndent: "50px", fontSize:'12px'}}>[Санхүүгийн дэмжлэг олгохоос татгалзсан шалтгааныг бичих.]</Box>
+            <Box style={{textAlign:"center",width:"100%", margin:'18px 0px',textIndent: "50px", fontSize:'12px'}}>Бидэнд хүсэлтээ ирүүлсэн та бүхэнд баярлалаа. Дахин бидэнд хүсэлтээ ирүүлнэ гэдэгт итгэлтэй байна.</Box>
+        
+            <Box style={{textAlign:"center",width:"100%", margin:'18px 0px',textIndent: "50px", fontSize:'12px'}}>Төсөлтэй холбоотой тодруулах зүйл байвал бидэнтэй холбогдоно уу.</Box>
 
-            <div class="text ident">Энэхүү захиагаар танай аж ахуйн нэгжийн ирүүлсэн санхүүгийн дэмжлэгийн хүсэлтэд үнэлгээ хийгдсэн болохыг мэдэгдэж байна</div>
-
-            <div class="ident">Санхүүгийн дэмжлэгийн багийн шинжээчид таны ирүүлсэн экспортын хөгжлийн төлөвлөгөөг Санхүүгийн дэмжлэг хэрэгжүүлэх гарын авлагад тусгасан шалгуур үзүүлэлтүүдийн дагуу үнэлсэн болохыг мэдэгдэж байна. Танай байгууллагын өргөдөл дараах шалтгаануудын улмаас шаардлага хангаагүй болохыг мэдэгдэж байна.Үүнд:</div>
-            <div class="center">[Санхүүгийн дэмжлэг олгохоос татгалзсан шалтгааныг бичих.]</div>
-            <div class="text center">Бидэнд хүсэлтээ ирүүлсэн та бүхэнд баярлалаа. Дахин бидэнд хүсэлтээ ирүүлнэ гэдэгт итгэлтэй байна.  </div>
-
-            <div class="text center">Төсөлтэй холбоотой тодруулах зүйл байвал бидэнтэй холбогдоно уу. </div>
-
-            <div class="text">Хүндэтгэсэн:  Example name  </div>
-            <div class="text">Санхүүгийн дэмжлэгийн багийн зохицуулагч</div>
-
-        </div>
-    </div>
-)
-
+            <Box style={{textAlign:"start",width:"100%", margin:'18px 0px', fontSize:'12px'}}>Хүндэтгэсэн: ...........</Box>
+            <Box style={{textAlign:"start",width:"100%", margin:'18px 0px', fontSize:'12px'}}>Санхүүгийн дэмжлэгийн багийн зохицуулагч</Box>
+            </Item>
+    </Email>
+  )
 
 
 
-
-
-const HtmlFull = `
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>EDP</title>
-            <link rel="preconnect" href="https://fonts.gstatic.com">
-            <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,300&display=swap" rel="stylesheet">
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-        </head>
-        <style>
-            body{
-                font-family: 'Roboto', sans-serif;
-                font-size: 15px;
-            }
-            .BodyPar{
-                display:flex;
-                justify-content: center;
-            }
-            .BodyPar .ContentPar{
-                margin-top: 30px;
-                border: 1px solid rgba(0,0,0,0.4);
-                width:40%;
-                padding: 30px 60px;
-            }
-            .BodyPar .ContentPar .bold{
-                font-weight: 500;
-            }
-            .BodyPar .ContentPar .header{
-                text-align: center;
-                margin-bottom: 50px;
-            }
-            .BodyPar .ContentPar .CompName{
-                text-align: end;
-                margin: 30px 0px;
-            }
-            .BodyPar .ContentPar .text{
-                text-align: start;
-                margin: 40px 0px;
-                color: rgba(0,0,0,0.9);
-            }
-            .BodyPar .ContentPar .center{
-                text-align: center;
-                margin: 40px 0px;
-            }
-            .BodyPar .ContentPar .ident{
-                text-indent: 50px;
-            }
-            @media (max-width: 1600px){
-                .BodyPar .ContentPar{
-                width:50%;
-                padding: 30px 50px;
-                font-size: 13px;
-            }}
-            @media (max-width: 900px){
-                .BodyPar .ContentPar{
-                width:80%;
-                padding: 30px 30px;
-                font-size: 13px;
-            }}
-            @media (max-width: 768px){
-                .BodyPar .ContentPar{
-                width:100%;
-                padding: 30px 15px;
-                font-size: 13px;
-            }
-            }
-        </style>
-
-        <body>
-            <div class="BodyPar">
-                <div class="ContentPar">
-                        <div class="header bold">Санхүүгийн дэмжлэг олгохоос татгалзсан мэдэгдэл</div>
-                        <div class="CompName">Хэнд: Example company танаа</div>
-
-                        <div>[Дугаар]: УП984685465</div>
-                        <div>[Огноо]: 2019/05/10</div>
-
-                        <div class="text bold">Агуулга: Санхүүгийн дэмжлэг олгохоос татгалзсан тухай </div>
-                        <div class="text">Эрхэм хүндэт   Баасандорж  танаа</div>
-
-                        <div class="text ident">Энэхүү захиагаар танай аж ахуйн нэгжийн ирүүлсэн санхүүгийн дэмжлэгийн хүсэлтэд үнэлгээ хийгдсэн болохыг мэдэгдэж байна</div>
-
-                        <div class="ident">Санхүүгийн дэмжлэгийн багийн шинжээчид таны ирүүлсэн экспортын хөгжлийн төлөвлөгөөг Санхүүгийн дэмжлэг хэрэгжүүлэх гарын авлагад тусгасан шалгуур үзүүлэлтүүдийн дагуу үнэлсэн болохыг мэдэгдэж байна. Танай байгууллагын өргөдөл дараах шалтгаануудын улмаас шаардлага хангаагүй болохыг мэдэгдэж байна.Үүнд:</div>
-                        <div class="center">[Санхүүгийн дэмжлэг олгохоос татгалзсан шалтгааныг бичих.]</div>
-                        <div class="text center">Бидэнд хүсэлтээ ирүүлсэн та бүхэнд баярлалаа. Дахин бидэнд хүсэлтээ ирүүлнэ гэдэгт итгэлтэй байна.  </div>
-
-                        <div class="text center">Төсөлтэй холбоотой тодруулах зүйл байвал бидэнтэй холбогдоно уу. </div>
-
-                        <div class="text">Хүндэтгэсэн:  Example name  </div>
-                        <div class="text">Санхүүгийн дэмжлэгийн багийн зохицуулагч</div>
-
-                </div>
-            </div>
-        </body>
-        </html>
-`
 

@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import TableThreeDetails from './tableThreeDetails'
+import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
 import {FiUserCheck} from 'react-icons/fi'
@@ -8,8 +9,10 @@ import {BiPen} from 'react-icons/bi'
 import SignatureCanvas from 'react-signature-canvas'
 import Modal from 'react-awesome-modal';
 import {AiOutlineSend} from 'react-icons/ai'
+import UserContext from '../../context/UserContext'
 
 function TableThree() {
+    const StyleContext  = useContext(UserContext);
 
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
@@ -30,7 +33,54 @@ function TableThree() {
     setTimeout(()=>{ closeModal() },1000) };
 
     const clickHandles = () => {
-        console.log("dada");
+        let finalOne = {};
+        let finalEnd = {};
+        let rs2 = document.querySelectorAll(".GetItemAdd");
+        let arr2 = Array.from(rs2);
+        let finalOne2 = [];
+
+        
+        arr2.map(element=>{
+            let soloObject2 = {}
+            let field = element.id;
+            let value = {};
+            soloObject2[field] = value;
+            finalOne2.push(soloObject2);
+      });
+
+      finalOne2.map((el,i)=>{
+            const Lala = []
+            let rs2 = document.querySelectorAll(`.PPPS${i + 1}`);
+            let arr23 = Array.from(rs2);
+            arr23.map((el,i)=>{
+                let soloObject2 = {}
+                let field = el.name;
+                let value = el.value;
+                soloObject2[field] = value;
+                Lala.push(soloObject2);
+            });
+              el[`pps${i + 1}`] = Lala;
+        });
+
+        let rs4 = document.querySelectorAll(".getUserInp2");
+        let arr4 = Array.from(rs4);
+        let userInp = {};
+
+        arr4.map(element=>{
+            let field = element.name;
+            let value = element.value;
+            userInp[field] = value;
+        });
+
+        finalOne["request"] = finalOne2;
+        finalOne["name"] = userInp.name;
+        finalOne["date"] = userInp.date;
+        finalOne["signature"] = trimmedDataURL;
+        finalEnd["PPS3"] = finalOne;
+
+        console.log(finalEnd, "final");
+        StyleContext.StyleComp("-300%", "-200%", "-100%", "0%");
+        scroll.scrollTo(0);
         
     }
 
@@ -47,7 +97,7 @@ function TableThree() {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="userInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" className="getUserInp2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -66,7 +116,7 @@ function TableThree() {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" placeholder="өдөр-сар-жил" className="userInp LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
