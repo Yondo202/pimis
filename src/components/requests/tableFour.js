@@ -64,7 +64,7 @@ function TableFour() {
                     <div className="headerParchild" key={i}>
                         <div className="row" >
                         {/* <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div> */}
-                        <div className="texts col-md-5 col-sm-5 col-5">{el.description}</div>
+                        <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">1</div> {el.description}</div></div>
                         <div className="radios col-md-1 col-sm-1 col-1"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="true"/></div>
                         <div className="radios col-md-1 col-sm-1 col-1"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="false"/></div>
 
@@ -449,6 +449,17 @@ const Component1 = styled.div`
               background-color: rgba(63, 81, 181,0.1);
               text-align:center;
               border-bottom:1px solid rgba(0,0,0,0.4);
+              .FirstPar{
+                  display:flex;
+                  align-items:center;
+                  .countPar{
+                    height: 100%; 
+                    min-height: 100%; 
+                    line-height: 100%;
+                    width:16px;
+                    border-right:1px solid black;
+                  }
+              }
               .number{
                 font-weight:500;
                 text-align:center;
