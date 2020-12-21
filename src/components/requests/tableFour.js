@@ -37,9 +37,45 @@ function TableFour() {
     const clear = () => sigCanvas.clear();
     const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')) 
     setTimeout(()=>{ closeModal() },1000) };
-  const clickHandles = (e) =>{
-         console.log("dada");
-    }
+        const clickHandles = (e) =>{
+              console.log("dada");
+              let finalOne = {};
+              let finalEnd = {};
+              let rs2 = document.querySelectorAll(".inpTest3");
+              let arr2 = Array.from(rs2);
+              let finalOne2 = [];
+
+              arr2.map(element=>{
+                  if(element.checked === true){
+                    let soloObject2 = {}
+                    let field = element.name;
+                    let value = element.value;
+                    soloObject2[field] = value;
+                    finalOne2.push(soloObject2);
+                  }
+              });
+
+              let rs4 = document.querySelectorAll(".getUserInp");
+              let arr4 = Array.from(rs4);
+              let userInp = {};
+  
+              arr4.map(element=>{
+                  let field = element.name;
+                  let value = element.value;
+                  userInp[field] = value;
+              });
+              console.log(userInp, "userInp");
+  
+              finalOne["request"] = finalOne2;
+              finalOne["name"] = userInp.name;
+              finalOne["date"] = userInp.date;
+              finalOne["signature"] = trimmedDataURL;
+  
+              finalEnd["PPS4"] = finalOne;
+
+              console.log(finalEnd, "final one");
+
+          }
 //   console.log(trimmedDataURL, "signature url");
     return (
         <Component1 className="container" >
@@ -48,28 +84,28 @@ function TableFour() {
             <div className="formTwoParent ">
                 <div className="headerPar">
                     <div  className="row" >
-                    <div className="head1 col-md-5 col-sm-5 col-5">Шалгуур</div>
-                    <div className="head2 col-md-2 col-sm-2 col-2"><div style={{borderBottom:"1px solid rgba(0,0,0,0.5)"}} >Хариулт</div>
-                        <div className="row">
-                            <div className="col-md-6 col-md-6 col-md-6">Тийм</div>
-                            <div className="head2 col-md-6 col-md-6 col-md-6">Үгүй</div>
-                        </div>
-                    </div>
-                    <div className="head2 col-md-2 col-sm-2 col-2">Асуулт Хариулт “Тийм” бол ДБ-ны холбогдох бодлого</div>
-                    <div className="head2 col-md-3 col-sm-3 col-3">“Тийм” бол шаардлагатай баримт бичгүүд </div>
+                      <div className="head1 col-md-5 col-sm-5 col-5">Шалгуур</div>
+                      <div className="head2 col-md-2 col-sm-2 col-2"><div style={{borderBottom:"1px solid rgba(0,0,0,0.5)",paddingBottom:"10px"}} >Хариулт</div>
+                          <div className="row">
+                              <div style={{borderRight:"1px solid rgba(0,0,0,0.5)"}} className="col-md-6 col-md-6 col-md-6">Тийм</div>
+                              <div className="col-md-6 col-md-6 col-md-6">Үгүй</div>
+                          </div>
+                      </div>
+                      <div className="head2 col-md-2 col-sm-2 col-2">Асуулт Хариулт “Тийм” бол ДБ-ны холбогдох бодлого</div>
+                      <div className="head2 col-md-3 col-sm-3 col-3"> <div style={{padding:"2px 15px"}}>“Тийм” бол шаардлагатай баримт бичгүүд </div> </div>
                     </div>
                 </div>
-                {dataDetail.map((el, i)=>{
+                {tableData.map((el, i)=>{
                     return(
                     <div className="headerParchild" key={i}>
                         <div className="row" >
                         {/* <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div> */}
-                        <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">1</div><div className="mainText">{el.description}</div> </div></div>
+                        <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">{i + 1}</div><div className="mainText">{el.name}</div> </div></div>
                         <div className="radios col-md-1 col-sm-1 col-1"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="true"/></div>
                         <div className="radios col-md-1 col-sm-1 col-1"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="false"/></div>
 
-                        <div className="radios col-md-2 col-sm-2 col-2">Ерөнхий үнэлгээнээс өөр үйл ажиллагаа шаардлагагүй  </div>
-                        <div className="radios col-md-3 col-sm-3 col-3">OP 4.01 Байгаль орчны үнэлгээ “C” ангилал  </div>
+                        <div className="radios col-md-2 col-sm-2 col-2">{el.nameTwo}</div>
+                        <div className="radios col-md-3 col-sm-3 col-3"><div style={{padding:"6px 15px"}}>{el.nameThree}</div></div>
                         </div>
                     </div>
                     )
@@ -555,5 +591,68 @@ const Component1 = styled.div`
         }
     }
 `
+
+const tableData = [
+  { name: "Дэд төслөөс байгаль орчин, нийгэмд эмзэг , олон янзын ба урьд өмнө байгаагүй ноцтой  сөрөг нөлөө үзүүлэхээр байгаа эсэх? Товч тодорхойлолт өгнө үү",
+     nameTwo:"ҮАБ 4.01 Байгаль орчны үнэлгээ “A” ангилал",
+    nameThree:"Байгаль орчин, нийгмийн  нөлөөллийн үнэлгээ  (БОННҮ)"},
+
+  { name: "Нөлөөлөл үйл ажиллагаа явуулж буй газар эсвэл байгууламжийн гадна тусахаар байгаа эсэх, байгаль орчинд үзүүлэх сөрөг нөлөө нь нөхөн сэргээгдэхгүй байх эсэх? Товч тодорхойлолт өгнө үү:",
+     nameTwo:"ҮАБ 4.01 Байгаль орчны үнэлгээ “A” ангилал",
+    nameThree:"БОННҮ "},
+
+  { name: "Төлөвлөж байгаа төсөл нь байгаль орчинд багахан эсвэл ямар ч сөрөг нөлөө үзүүлэхгүй байх эсэх? Товч үндэслэл тайлбар өгнө үү:",
+     nameTwo:"OP 4.01 Байгаль орчны үнэлгээ “C” ангилал  ",
+    nameThree:"Ерөнхий үнэлгээнээс өөр үйл ажиллагаа шаардлагагүй  "},
+
+  { name: "Дэд төслийн байгаль орчин, нийгмийн нөлөөлөл бага байх, зөвхөн үйл ажиллагаа хэрэгжиж байгаа газарт тусах; эсвэл тухайн нөлөөлөл нь бага ч эргэн нөхөн сэргээгдэхгүй байх эсэх? Товч үндэслэл тайлбар өгнө үү:	",
+     nameTwo:"OP 4.01 Байгаль орчны үнэлгээ “B” ангилал  ",
+    nameThree:"БОННҮ эсвэл  Байгаль орчин, нийгмийн менежментийн төлөвлөгөө (БОНМТ) "},
+
+  { name: "Төсөл нь соёлын биет нөөцөд сөрөг нөлөө үзүүлэх эсэх? Товч үндэслэл тайлбар өгнө үү:",
+     nameTwo:"OP 4.11  Соёлын биет нөөц  ",
+    nameThree:"БОННҮ-д авч үзсэн байх (Соёлын биет нөөцийн   менежментийн төлөвлөгөөг    оруулсан БОННҮ    ба/эсвэл төслийн явцад илрүүлсэн  биет олдворуудтай холбоотой журам)"},
+
+  { name: "Төслийн үйл ажиллагаа гол чухал бус байгалийн амьдрах орчныг өөрчлөх эсвэл доройтуулах эсэх? Товч үндэслэл тайлбар өгнө үү: ",
+     nameTwo:"OP 4.04 Байгалийн амьдрах орчин ",
+    nameThree:"БОННҮ-д авч үзсэн байх  "},
+
+  { name: "Төслийн үйл ажиллагаа нь гол чухал байгалийн амьдрах орчныг өөрчлөх эсвэл доройтуулах эсэх?  ",
+     nameTwo:"OP 4.04 Байгалийн амьдрах орчин ",
+    nameThree:"Авч үзэх боломжгүй "},
+
+  { name: "Дэд төсөл нь шинээр далан барих эсвэл баригдсан ба барихаар төлөвлөж буй даланг ашиглах эсэх?   ",
+     nameTwo:"OP 4.37 Далангийн аюулгүй байдал  ",
+    nameThree:"Далангийн аюулгүй байдлыг хангах төлөвлөгөө "},
+
+  { name: "Төсөл нь ямар нэг пестицид худалдаа хийх эсэх (төслөөр шууд эсвэл зээл олгох, хамтран санхүүжүүлэх замаар шууд бус хэлбэрээр эсвэл төрийн хамтрагч байгууллагын санхүүжилтээр дамжуулан), эсвэл пестицидийн худалдаа хийх төлөвлөгөөгүй ч хөнөөлт шавжийн менежментэд хор нөлөө үзүүлж болох эсэх?  ",
+    nameTwo:"OP4.09 Хөнөөлт шавьжны менежмент ",
+    nameThree:"БОННҮ-д авч үзсэн байх (Хөнөөлт шавьжны менежментийн төлөвлөгөө) "},
+
+  { name: "Дэд төсөл нь албадан газар чөлөөлүүлэх, өмч хөрөнгийг алдагдуулах эсвэл орлого, амьжиргааны эх үүсвэрийг алдагдуулахад хүргэх эсэх? Товч үндэслэл тайлбар өгнө үү: ",
+    nameTwo:"OP 4.12 Албадан нүүлгэн шилжүүлэлт ",
+    nameThree:"Нүүлгэн шилжүүлэлт  (НШ)- ийн хураангуй төлөвлөгөө/ НШ-ийн төлөвлөгөө (Журмын талаарх  дэлгэрэнгүйг  Хавсралт C-ээс харна уу). "},
+
+  { name: "Дэд төсөл хэрэгжих газарт цөөнхийн бүлэг амьдардаг ба төслийн үйл ажиллагаа тэдэнд сөрөг эсвэл эерэг нөлөө үзүүлэх эсэх? Товч үндэслэл тайлбар өгнө үү:  ",
+    nameTwo:"ҮАБ 4.10 Уугуул иргэд  ",
+    nameThree:"Нутгийн цөөнхи бүлэгт чиглэсэн  хөгжлийн төлөвлөгөө /Уугуул иргэдэд чиглэсэн төлөвлөгөө (Журмын талаарх дэлгэрэнгүйг Хавсралт B-ээс харна уу).  "},
+
+  { name: "Төсөл нь ойтой холбоотой үйл ажиллагаа явуулснаар ойн эрүүл мэнд, чанарт нөлөөлөх эсвэл нутгийн иргэдийн эрх, сайн сайхан, бие даасан байдалд нөлөөлөх эсэх; эсвэл байгалийн ба таримал ойн менежмент, хамгаалал, ашиглалтыг өөрчлөхийг зорьж байгаа эсэх? Товч үндэслэл тайлбар өгнө үү: ",
+    nameTwo:"ҮАБ4.36 Ойн аж ахуй ",
+    nameThree:"БОННҮ-д авч үзсэн байх  "},
+
+  { name: "Төсөл нь байгалийн гол чухал ой ба бусад амьдрах орчныг өөрчлөн хувиргах ба доройтуулах нөлөө үзүүлэх эсэх?   ",
+    nameTwo:"OP4.36   Ойн аж ахуй ",
+    nameThree:"Авч үзэх боломжгүй "},
+
+  { name: "Дэд төсөл, түүнтэй холбоотой асуудал ба үйл ажиллагаанд хоёр ба түүнээс дээш тооны улс орнуудын хооронд ямар нэг газар нутгийн маргаан байгаа эсэх?  ",
+    nameTwo:"ҮАБ 7.60 Маргаантай газруудад хэрэгжих төслүүд ",
+    nameThree:"Тухайн улс орны төр засгийн газартай тохиролцох  "},
+
+  { name: "Дэд төсөл, түүнтэй холбоотой асуудал ба үйл ажиллагаа, тэдгээрийн нарийвчилсан дизайн, инженерийн судалгаа нь олон улсын усан зам ашиглах, бохирдол үүсгэх, эсвэл тухайн замд байрлах эсэх?  ",
+    nameTwo:"ҮАБ7.50 Олон улсын усан замын төслүүд  ",
+    nameThree:"Мэдэгдэх, зарлах (эсвэл тухайн нөхцөлд авч үзэх зүйл) "},
+
+];
 
 

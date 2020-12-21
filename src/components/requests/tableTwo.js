@@ -105,7 +105,7 @@ function TableTwo() {
                              </div>
                             <div   className=" row">
                                 <div className="col-md-4 col-sm-12 col-12 ">
-                                    <div className="inpChild"> <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div> <div className="name"> <FiUserCheck />
+                                    <div className="inpChild"> <div className="labels"><span>(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага :</span> </div> <div className="name"> <FiUserCheck />
                                                 <div className="form__group"><input type="input" className={`PPS${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="name" required />
                                                     <label for="name" className=" form__label">Баталгааны хэлбэр</label>
                                                 </div>

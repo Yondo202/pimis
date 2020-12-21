@@ -101,7 +101,7 @@ function MainForm() {
               }else if(appCluster === true && appComp === false){
                 setresScale("1");
                 setResText("Кластерын шалгуур, бүрдүүлэх материалыг бэлтгэн Кластераар хандаж болно.");
-                setTimeout(()=>{ window.history.go(-1); },14000);
+                // setTimeout(()=>{ window.history.go(-1); },14000);
               }else{ setresScale("1"); }
             });
           }

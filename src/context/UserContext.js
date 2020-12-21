@@ -80,7 +80,7 @@ export const UserStore= (props) =>{
       }else if(valueThree === "0%"){
         setGlobalStyle({tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableheight: 200 });
       }else if(valueFour === "0%"){
-        setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableheight: 200 })
+        setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableheight: 300 })
       }else{
         setGlobalStyle({tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableheight: 150 });
       }

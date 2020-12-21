@@ -1,17 +1,17 @@
 import React, {useState, useContext} from 'react'
-import TableThreeDetails from './tableThreeDetails'
+import TableFiveDetails from './tableFiveDetail'
 import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
-import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
+import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import SignatureCanvas from 'react-signature-canvas'
 import Modal from 'react-awesome-modal';
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../context/UserContext'
+import UserContext from '../../../context/UserContext'
 
-function TableThree() {
+function TableFive() {
     const StyleContext  = useContext(UserContext);
 
     const [opacity, setOpacity] = useState("0");
@@ -78,14 +78,14 @@ function TableThree() {
         finalEnd["PPS3"] = finalOne;
 
         console.log(finalEnd, "final");
-        StyleContext.StyleComp("-300%", "-200%", "-100%", "0%");
-        scroll.scrollTo(0);
+        // StyleContext.StyleComp("-300%", "-200%", "-100%", "0%");
+        // scroll.scrollTo(0);
     }
 
     return (
         <Component3 className="container">
 
-            <TableThreeDetails />
+            <TableFiveDetails />
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
@@ -148,7 +148,7 @@ function TableThree() {
     )
 }
 
-export default TableThree
+export default TableFive
 
 
 const Component3 = styled.div`

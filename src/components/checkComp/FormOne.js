@@ -53,7 +53,7 @@ function FormOne() {
             setResponseText("d");
             setResponseTextscale("0");
             setResTextstyle("black");
-            scroll.scrollTo(560);
+            scroll.scrollTo(610);
           }
   }
 

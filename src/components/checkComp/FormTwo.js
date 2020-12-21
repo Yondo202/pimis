@@ -41,11 +41,11 @@ function FormTwo(props) {
               setOpacity("1");
               setChildStyle("0");
               setProcent(FinalProcent);
-              scroll.scrollTo(560);
+              scroll.scrollTo(610);
             } else{
               setOpacity("0");
               setChildStyle("1");
-              scroll.scrollTo(1300);
+              scroll.scrollTo(1350);
             }
       
   }
@@ -110,7 +110,7 @@ const Component2 = styled.div`
     .formTwoParent{
       background-color:white;
         margin-bottom:16px;
-        font-size:16px;
+        font-size:15px;
         border:1px solid rgba(63, 81, 181,0.8);
         border-bottom:1px solid rgba(63, 81, 181,1);
         .buttonPar{
@@ -172,7 +172,6 @@ const Component2 = styled.div`
           background-color: rgba(63, 81, 181,0.1);
           text-align:center;
           border-bottom:1px solid rgba(0,0,0,0.4);
-          font-size:16px;
           .col-md-1{
             font-weight:500;
             text-align:center;

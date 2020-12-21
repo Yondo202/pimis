@@ -14,6 +14,8 @@ import { fontFamily } from './components/theme';
 import MainRequest from './components/requests/mainRequest'
 import EmialSender from './containers/emailSend/EmailSend'
 import EmialSender2 from './containers/emailSend/EmailSend2'
+import LoginDoneHome from './components/LoginDoneHome/MainHome'
+import NextReq from './components/requests/next/mainNext'
 
 function App() {
   const ctxUser = useContext(UserContext);
@@ -33,26 +35,32 @@ function App() {
     }
   
   return (
-    <ParentComponent className="App">
+    <div className="App">
         {/* <Ghost /> */}
       <Router>
         {userId? <Menu /> : <></>}
 
         {userId ? (
           <Switch>
-          {/* <Route path="/" exact> 
+          <Route path="/" exact> 
              <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                 <Menu />
+                 <LoginDoneHome />
              </motion.div>
-         </Route> */}
+         </Route>
          <Route path="/comp-check">
-             <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+             {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} > */}
                  <MainForm />
-             </motion.div>
+             {/* </motion.div> */}
          </Route>
          <Route path="/comp-request" >
              {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} > */}
                  <MainRequest />
+             {/* </motion.div> */}
+             
+         </Route>
+         <Route path="/next-req" >
+             {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} > */}
+                 <NextReq />
              {/* </motion.div> */}
          </Route>
          <Route path="/email" >
@@ -95,14 +103,10 @@ function App() {
       </Router>
       {/* <Menu/> */}
       {/* <HomeLogin /> */}
-    </ParentComponent>
+    </div>
     
   );
 }
 
 export default App;
 
-const ParentComponent = styled.div`
-
-
-`
