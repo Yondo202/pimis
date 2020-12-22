@@ -6,9 +6,8 @@ import { fontFamily, textColor, ColorRgb, Color } from '../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
-import SignatureCanvas from 'react-signature-canvas'
-import Modal from 'react-awesome-modal';
 import {AiOutlineSend} from 'react-icons/ai'
+import {RiMailSendLine} from 'react-icons/ri'
 import UserContext from '../../context/UserContext'
 
 
@@ -16,12 +15,14 @@ function TableOne() {
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
-    const [visible, setVisible] = useState(false);
+    const [ finalTextScale, setFinalTextScale] = useState('0');
+    // const [visible, setVisible] = useState(false);
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [dataFinal, setData] = useState({});
     const [dataDetail, setDataDetal] = useState([]);
-    let [sigCanvas, setSigCanvas] = useState({});
-    let [trimmedDataURL, setTrimmedDataURL] = useState(null);
+    
+    // let [sigCanvas, setSigCanvas] = useState({});
+    // let [trimmedDataURL, setTrimmedDataURL] = useState(null);
 
     const StyleContext = useContext(UserContext);
     
@@ -30,80 +31,93 @@ function TableOne() {
       const Data1 = result.data.data.docs[1]
       setData(Data1); setDataDetal(Data1.questiondetails);
     },[]);
-    const openModal=()=> { setVisible(true);}
-    const closeModal=()=> { setVisible(false);}
+    // const openModal=()=> { setVisible(true);}
+    // const closeModal=()=> { setVisible(false);}
+    // const clear = () => sigCanvas.clear();
+    // const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png'));
+    // setTimeout(()=>{ closeModal() },1000) };
+    const clickHandles = (e) =>{
+              let finalOne = {};
+              let finalEnd = {};
+              let rs2 = document.querySelectorAll(".inpTest3");
+              let arr2 = Array.from(rs2);
+              let finalOne2 = [];
+              let condition = [];
 
-    const clear = () => sigCanvas.clear();
-    const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')) 
-    setTimeout(()=>{ closeModal() },1000) };
-  const clickHandles = (e) =>{
-            let finalOne = {};
-            let finalEnd = {};
-            let rs2 = document.querySelectorAll(".inpTest3");
-            let arr2 = Array.from(rs2);
-            let finalOne2 = [];
+              arr2.map(element=>{
+                  if(element.checked === true){
+                    let soloObject2 = {}
+                    let field = element.name;
+                    let value = element.value;
+                    soloObject2[field] = value;
+                    finalOne2.push(soloObject2);
+                  }
+                  if(element.checked === true && element.value !== "true"){
+                    let soloObject2 = {}
+                    let field = element.name;
+                    let value = element.value;
+                    soloObject2[field] = value;
+                    condition.push(soloObject2);
+                  }
+              });
 
-            arr2.map(element=>{
-                if(element.checked === true){
-                  let soloObject2 = {}
+              console.log(condition.length);
+
+              let rs4 = document.querySelectorAll(".getUserInp1");
+              let arr4 = Array.from(rs4);
+              let userInp = {};
+
+              arr4.map(element=>{
                   let field = element.name;
                   let value = element.value;
-                  soloObject2[field] = value;
-                  finalOne2.push(soloObject2);
-                }
-            });
+                  userInp[field] = value;
+              });
+              // console.log(userInp, "userInp");
+              let confirm = document.getElementById("GetcheckBtn").checked;
+              // console.log(confirm, "my checkbtn");
 
-            let rs4 = document.querySelectorAll(".getUserInp");
-            let arr4 = Array.from(rs4);
-            let userInp = {};
+              finalOne["request"] = finalOne2;
+              finalOne["name"] = userInp.name;
+              finalOne["date"] = userInp.date;
+              // finalOne["signature"] = trimmedDataURL;
+              finalEnd["PPS1"] = finalOne;
 
-            arr4.map(element=>{
-                let field = element.name;
-                let value = element.value;
-                userInp[field] = value;
-            });
-            console.log(userInp, "userInp");
+              let keys = Object.keys(finalOne2);
+              const Procent = keys.length * 100 / 13;
+              const FinalProcent = Math.round(Procent);
 
-            finalOne["request"] = finalOne2;
-            finalOne["name"] = userInp.name;
-            finalOne["date"] = userInp.date;
-            finalOne["signature"] = trimmedDataURL;
+              console.log(finalEnd, "final one");
 
-            finalEnd["PPS1"] = finalOne;
-
-
-            // console.log(finalOne2 , "asuuulga 1");
-            // console.log(finalOne, "big Final");
-
-            let keys = Object.keys(finalOne2);
-            const Procent = keys.length * 100 / 13;
-            const FinalProcent = Math.round(Procent);
-
-            console.log(finalEnd, "final one");
-            StyleContext.StyleComp("-100%", "0%", "100%");
-
-            if(keys.length < 13){
-              setOpacity("1");
-              setProcent(FinalProcent);
-              scroll.scrollTo(0);
-            }else if(trimmedDataURL === null){
-              setOpacity("0");
-              setFinalErrorText("Та гарын үсгээ зурна уу");
-              setOpacity2("1");
-              scroll.scrollTo(2000);
-            }else if(userInp.name === "" || userInp.date === ""){
-                setOpacity("0");
-                setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү");
-                setOpacity2("1");
-                // scroll.scrollTo(2000);
-            }else{
-                setOpacity("0");
-                setOpacity2("0");
+              if(keys.length < 13){
+                setOpacity("1");
+                setProcent(FinalProcent);
                 scroll.scrollTo(0);
-                // alert("GG");
-                
-            }
-    }
+              }else if(userInp.name === "" || userInp.date === ""){
+                  setOpacity("0");
+                  setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү");
+                  setOpacity2("1");
+                  // scroll.scrollTo(2000);
+              }else if(confirm === false){
+                setOpacity("0");
+                setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
+                setOpacity2("1");
+                scroll.scrollTo(2000);
+              }else if(condition.length < 13){
+                  setOpacity("0");
+                  // setFinalErrorText("Та шалгуур хангахгүй байна...");
+                  setFinalTextScale("1");
+                  setOpacity2("0");
+              }else{
+                  setOpacity("0");
+                  setOpacity2("0");
+                  setFinalTextScale("0");
+                  // scroll.scrollTo(0);
+                  // alert("GG");
+                  // StyleContext.StyleComp("-100%", "0%", "100%");
+              }
+              StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
+
+      }
 //   console.log(trimmedDataURL, "signature url");
     return (
         <Component1 className="container" >
@@ -145,35 +159,38 @@ function TableOne() {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="getUserInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" className="getUserInp1 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="NextChild">
-
-                                    <div className="inpChild next">
-                                        <div className="labels"><span> Гарын үсэг зурсан огноо : </span></div>
-                                            <div className="name"> <BiPen />
-                                                <div className="form__group">
-                                                    <div className="SignBtn" onClick={openModal} > Зурах </div>
-                                                </div>
-                                            </div>
-                                    </div>
-
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp1 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
                                     </div>
+
+
+                                    <div className="inpChild next">
+                                        <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
+                                            <div className="name"> <BiPen />
+                                                <div className="form__group">
+                                                    <input id="GetcheckBtn" className="checkBtn" type="checkbox" name="check" />
+                                                 
+                                                  {/* <label for="check">dada</label> */}
+                                                    {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
+                                                </div>
+                                            </div>
+                                    </div>
                                 </div>
                                 
-                                {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
+                                {/* {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
 
                                 <Modal visible={visible}  width="420" height="300"effect="fadeInDown" onClickAway={closeModal}>
                                     <div className="modalPar">
@@ -186,7 +203,7 @@ function TableOne() {
                                             <button onClick={closeModal}>X</button>
                                         </div>
                                     </div>
-                                </Modal>
+                                </Modal> */}
                             </div>
                         </div>
                         <div className="buttonPar">
@@ -195,6 +212,11 @@ function TableOne() {
                                 {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
                             <button onClick={clickHandles} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                         </div>
+
+                        <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">Та шалгуур хангахгүй байна. </h6> </div>
+                    {/* <div >dadadad</div> */}
+                    {/* <h5 className="finalText">{resText}</h5> */}
+
                 </div>
              </div>
             </div>
@@ -240,6 +262,32 @@ const Component1 = styled.div`
                 }
                 .description{
                     margin-bottom:20px;
+                }
+                .resPar{
+                  text-align:center;
+                  padding:10px 20px;
+                  border-radius:8px;
+                  background:white;
+                  margin-top:20px;
+                  margin-bottom:0px;
+                  display:flex;
+                  flex-direction:row;
+                  align-items:center;
+                  justify-content:start;
+                  color:#036;
+                  transition:all 0.4s ease;
+                  // background-color:#EBEB00;
+                  background-color:wheat;
+                  box-shadow:1px 1px 16px -5px;
+                  width:100%;
+                  svg{
+                    width:10%;
+                    font-size:24px !important;
+                  }
+                  .finalText{
+                    transition:all 0.4s ease;
+                    margin-bottom:0px;
+                  }
                 }
 
                 .inputPar{
@@ -288,21 +336,31 @@ const Component1 = styled.div`
                        justify-content:space-between;
                        .next{
                            width:40%;
-                           .SignBtn{
-                               cursor:pointer;
-                               padding:5px 0px;
-                               border-radius:6px;
-                               width:100%;
-                               color:rgba(${ColorRgb},0.8);
-                               background-color:rgba(${ColorRgb},0.1);
-                               cursor:pointer;
-                               font-size:18px;
-                               text-align:center;
-                               box-shadow:1px 1px 8px -2px;
-                               &:hover{
-                                 box-shadow:1px 1px 10px -2px;
-                               }
-                           }
+                          .checkBtn{
+                            cursor:pointer;
+                            width:25px;
+                            height:25px;
+                            // display:none;
+                          }
+                          // input[type=checkbox]:checked ~ span{
+                          //   font-size:100px;
+                          //   color:red;
+                          // }
+                          //  .SignBtn{
+                          //      cursor:pointer;
+                          //      padding:5px 0px;
+                          //      border-radius:6px;
+                          //      width:100%;
+                          //      color:rgba(${ColorRgb},0.8);
+                          //      background-color:rgba(${ColorRgb},0.1);
+                          //      cursor:pointer;
+                          //      font-size:18px;
+                          //      text-align:center;
+                          //      box-shadow:1px 1px 8px -2px;
+                          //      &:hover{
+                          //        box-shadow:1px 1px 10px -2px;
+                          //      }
+                          //   }
                        }
                    }
                    .inpChild{

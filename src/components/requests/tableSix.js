@@ -1,5 +1,6 @@
 import React, {useState, useContext} from 'react'
-import TableThreeDetails from './deitals/tableThreeDetails'
+import TableSixDetails from './deitals/tableSixDetail'
+import TableSixDetails2 from './deitals/tableSixDetail2'
 import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
@@ -9,7 +10,7 @@ import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../context/UserContext'
 
-function TableThree() {
+function TableSix() {
     const StyleContext  = useContext(UserContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
@@ -17,10 +18,9 @@ function TableThree() {
     const clickHandles = () => {
         let finalOne = {};
         let finalEnd = {};
-        let rs2 = document.querySelectorAll(".GetItemAdd");
+        let rs2 = document.querySelectorAll(".GetItemAdd1");
         let arr2 = Array.from(rs2);
         let finalOne2 = [];
-        
         arr2.map(element=>{
             let soloObject2 = {}
             let field = element.id;
@@ -31,56 +31,98 @@ function TableThree() {
 
       finalOne2.map((el,i)=>{
             const Lala = []
-            let rs2 = document.querySelectorAll(`.PPPS${i + 1}`);
+            let rs2 = document.querySelectorAll(`.PAS${i + 1}`);
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
-                let soloObject2 = {}
-                let field = el.name;
-                let value = el.value;
-                soloObject2[field] = value;
-                Lala.push(soloObject2);
+                if(el.value !== ""){
+                    let soloObject2 = {}
+                    let field = el.name;
+                    let value = el.value;
+                    soloObject2[field] = value;
+                    Lala.push(soloObject2);
+                }else{
+                    return false
+                }
             });
               el[`pps${i + 1}`] = Lala;
         });
 
-        let rs4 = document.querySelectorAll(".getUserInp3");
+
+        let rs22 = document.querySelectorAll(".GetItemAdd2");
+        let arr22 = Array.from(rs22);
+        let finalOne22 = [];
+        arr22.map(element=>{
+            let soloObject2 = {}
+            let field = element.id;
+            let value = {};
+            soloObject2[field] = value;
+            finalOne22.push(soloObject2);
+        });
+
+      finalOne22.map((el,i)=>{
+            const Lala = []
+            let rs2 = document.querySelectorAll(`.APS${i + 1}`);
+            let arr23 = Array.from(rs2);
+
+            arr23.map((el,i)=>{
+                if(el.value !== ""){
+                    let soloObject2 = {}
+                    let field = el.name;
+                    let value = el.value;
+                    soloObject2[field] = value;
+                    Lala.push(soloObject2);
+                }else{
+                    return false
+                }
+            });
+
+              el[`pps${i + 1}`] = Lala;
+        });
+
+        let rs4 = document.querySelectorAll(".getUserInp2");
         let arr4 = Array.from(rs4);
         let userInp = {};
+
+        let confirm = document.getElementById("GetcheckBtn5").checked;
 
         arr4.map(element=>{
             let field = element.name;
             let value = element.value;
             userInp[field] = value;
         });
+        console.log(finalOne2[0].pps1.length, "one");
+        console.log(finalOne22[0].pps1.length, "Twoone");
 
-        let confirm = document.getElementById("GetcheckBtn3").checked;
-        console.log(confirm, "my checkbtn");
-
-        finalOne["request"] = finalOne2;
+        finalOne["requestOne"] = finalOne2;
+        finalOne["requestTwo"] = finalOne22;
         finalOne["name"] = userInp.name;
         finalOne["date"] = userInp.date;
-        finalEnd["PPS3"] = finalOne;
-
+        // finalOne["signature"] = trimmedDataURL;
+        finalEnd["PPS5"] = finalOne;
         console.log(finalEnd, "final");
-
-        if(userInp.name === "" || userInp.date === ""){
+        
+        if(finalOne2[0].pps1.length < 8 || finalOne22[0].pps1.length < 8){
+            setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
             setOpacity2("1");
+        }else if(userInp.name === "" || userInp.date === ""){
             setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
-        }else if(confirm === false){
             setOpacity2("1");
+        }else if(confirm === false){
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
+            setOpacity2("1");
         }else{
+            setOpacity2("0");
             alert("gg");
         }
-
-        StyleContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
-        scroll.scrollTo(0);
+        // StyleContext.StyleComp("-300%", "-200%", "-100%", "0%");
     }
 
     return (
         <Component3 className="container">
 
-            <TableThreeDetails />
+            <TableSixDetails />
+            <TableSixDetails2 />
+
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
@@ -90,32 +132,35 @@ function TableThree() {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="getUserInp3 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" className="getUserInp2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div className="NextChild">
-
+                                   
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="inpChild next">
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
                                             <div className="name"> <BiPen />
                                                 <div className="form__group">
-                                                    <input id="GetcheckBtn3" className="checkBtn" type="checkbox" name="check" />
+                                                    {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
+                                                    <input id="GetcheckBtn5" className="checkBtn" type="checkbox" name="check" />
                                                 </div>
                                             </div>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                         <div className="buttonPar">
@@ -129,7 +174,7 @@ function TableThree() {
     )
 }
 
-export default TableThree
+export default TableSix
 
 
 const Component3 = styled.div`
@@ -138,8 +183,6 @@ const Component3 = styled.div`
     font-family: ${fontFamily};
     margin-bottom:600px;
     font-size:${fontSize} !important;
-  
-
 
     .UserRequestPar{
         box-shadow:1px 1px 10px -5px;
@@ -164,6 +207,37 @@ const Component3 = styled.div`
            justify-content:center;
            padding-top:15px;
 
+           .modalPar{
+               padding:5px 5px;
+              .Canvass{
+                  border:1px solid rgba(${ColorRgb},0.5);
+              }
+               .BtnPar{
+                  padding:0px 10px;
+                  margin:20px 0px;
+                  display:flex;
+                  flex-direction:row;
+                  align-items:center;
+                  justify-content:space-between;
+                  button{
+                      font-weight:500;
+                      color:rgba(${textColor},0.9);
+                      cursor:pointer;
+                      border-style:none;
+                      border-radius:4px;
+                      padding:6px 14px;
+                      background-color:white;
+                      box-shadow:1px 1px 8px -2px;
+                  }
+               }
+           }
+           .SingatureImg{
+                margin:10px 0px;
+                border:1px solid rgba(${ColorRgb},0.3);
+                height:100%;
+                width:420px;
+                object-fit:cover;
+           }
            .NextChild{
                display:flex;
                flex-direction:row;

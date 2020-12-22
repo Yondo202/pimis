@@ -1,44 +1,26 @@
 import React, {useState, useContext} from 'react'
-import TableFiveDetails from './tableFiveDetail'
+import TableFiveDetails from './deitals/tableFiveDetail'
+import TableFiveDetails2 from './deitals/tableFiveDetail2'
 import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
-import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
+import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
-import SignatureCanvas from 'react-signature-canvas'
-import Modal from 'react-awesome-modal';
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../../context/UserContext'
+import UserContext from '../../context/UserContext'
 
 function TableFive() {
     const StyleContext  = useContext(UserContext);
-
-    const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
-    const [procent, setProcent] = useState('0');
-    const [visible, setVisible] = useState(false);
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [dataFinal, setData] = useState({});
-    const [dataDetail, setDataDetal] = useState([]);
-    let [sigCanvas, setSigCanvas] = useState({});
-    let [trimmedDataURL, setTrimmedDataURL] = useState(null);
-
-
-    const openModal=()=> { setVisible(true);}
-    const closeModal=()=> { setVisible(false);}
-
-    const clear = () => sigCanvas.clear();
-    const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png'));
-    setTimeout(()=>{ closeModal() },1000) };
 
     const clickHandles = () => {
         let finalOne = {};
         let finalEnd = {};
-        let rs2 = document.querySelectorAll(".GetItemAdd");
+        let rs2 = document.querySelectorAll(".GetItemAdd1");
         let arr2 = Array.from(rs2);
         let finalOne2 = [];
-        
         arr2.map(element=>{
             let soloObject2 = {}
             let field = element.id;
@@ -49,15 +31,51 @@ function TableFive() {
 
       finalOne2.map((el,i)=>{
             const Lala = []
-            let rs2 = document.querySelectorAll(`.PPPS${i + 1}`);
+            let rs2 = document.querySelectorAll(`.PAS${i + 1}`);
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
-                let soloObject2 = {}
-                let field = el.name;
-                let value = el.value;
-                soloObject2[field] = value;
-                Lala.push(soloObject2);
+                if(el.value !== ""){
+                    let soloObject2 = {}
+                    let field = el.name;
+                    let value = el.value;
+                    soloObject2[field] = value;
+                    Lala.push(soloObject2);
+                }else{
+                    return false
+                }
             });
+              el[`pps${i + 1}`] = Lala;
+        });
+
+
+        let rs22 = document.querySelectorAll(".GetItemAdd2");
+        let arr22 = Array.from(rs22);
+        let finalOne22 = [];
+        arr22.map(element=>{
+            let soloObject2 = {}
+            let field = element.id;
+            let value = {};
+            soloObject2[field] = value;
+            finalOne22.push(soloObject2);
+        });
+
+      finalOne22.map((el,i)=>{
+            const Lala = []
+            let rs2 = document.querySelectorAll(`.APS${i + 1}`);
+            let arr23 = Array.from(rs2);
+
+            arr23.map((el,i)=>{
+                if(el.value !== ""){
+                    let soloObject2 = {}
+                    let field = el.name;
+                    let value = el.value;
+                    soloObject2[field] = value;
+                    Lala.push(soloObject2);
+                }else{
+                    return false
+                }
+            });
+
               el[`pps${i + 1}`] = Lala;
         });
 
@@ -65,20 +83,40 @@ function TableFive() {
         let arr4 = Array.from(rs4);
         let userInp = {};
 
+        let confirm = document.getElementById("GetcheckBtn5").checked;
+
         arr4.map(element=>{
             let field = element.name;
             let value = element.value;
             userInp[field] = value;
         });
+        console.log(finalOne2[0].pps1.length, "one");
+        console.log(finalOne22[0].pps1.length, "Twoone");
 
-        finalOne["request"] = finalOne2;
+        finalOne["requestOne"] = finalOne2;
+        finalOne["requestTwo"] = finalOne22;
         finalOne["name"] = userInp.name;
         finalOne["date"] = userInp.date;
-        finalOne["signature"] = trimmedDataURL;
-        finalEnd["PPS3"] = finalOne;
-
+        // finalOne["signature"] = trimmedDataURL;
+        finalEnd["PPS5"] = finalOne;
         console.log(finalEnd, "final");
-        // StyleContext.StyleComp("-300%", "-200%", "-100%", "0%");
+        
+        if(finalOne2[0].pps1.length < 8 || finalOne22[0].pps1.length < 8){
+            setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
+            setOpacity2("1");
+        }else if(userInp.name === "" || userInp.date === ""){
+            setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
+            setOpacity2("1");
+        }else if(confirm === false){
+            setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
+            setOpacity2("1");
+        }else{
+            setOpacity2("0");
+            alert("gg");
+        }
+        // StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%");
+
+        StyleContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
         // scroll.scrollTo(0);
     }
 
@@ -86,6 +124,8 @@ function TableFive() {
         <Component3 className="container">
 
             <TableFiveDetails />
+            <TableFiveDetails2 />
+
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
@@ -102,14 +142,7 @@ function TableFive() {
                                 </div>
                                 
                                 <div className="NextChild">
-                                    <div className="inpChild next">
-                                        <div className="labels"><span> Гарын үсэг зурсан огноо : </span></div>
-                                            <div className="name"> <BiPen />
-                                                <div className="form__group">
-                                                    <div className="SignBtn" onClick={openModal} > Зурах </div>
-                                                </div>
-                                            </div>
-                                    </div>
+                                   
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
@@ -119,22 +152,18 @@ function TableFive() {
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div className="inpChild next">
+                                        <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
+                                            <div className="name"> <BiPen />
+                                                <div className="form__group">
+                                                    {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
+                                                    <input id="GetcheckBtn5" className="checkBtn" type="checkbox" name="check" />
+                                                </div>
+                                            </div>
+                                    </div>
                                 </div>
                                 
-                                {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
-
-                                <Modal visible={visible}  width="700" height="350"effect="fadeInDown" onClickAway={closeModal}>
-                                    <div className="modalPar">
-                                        <div className="Canvass">
-                                            <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 690, height: 260, className: 'sigCanvas'}} />
-                                        </div>
-                                        <div className="BtnPar">
-                                            <button onClick={clear}>Цэвэрлэх</button>
-                                            <button onClick={trim}>Хадгалах</button>
-                                            <button onClick={closeModal}>X</button>
-                                        </div>
-                                    </div>
-                                </Modal>
                             </div>
                         </div>
                         <div className="buttonPar">
@@ -221,22 +250,11 @@ const Component3 = styled.div`
                justify-content:space-between;
                .next{
                    width:40%;
-                   .SignBtn{
-                       cursor:pointer;
-                       padding:5px 0px;
-                       border-radius:6px;
-                       width:100%;
-                       color:rgba(${ColorRgb},0.8);
-                       background-color:rgba(${ColorRgb},0);
-                       cursor:pointer;
-                       font-size:18px;
-                       text-align:center;
-                       box-shadow:1px 1px 8px -2px;
-                       transition:all 0.3s ease;
-                       &:hover{
-                         box-shadow:1px 1px 14px -2px;
-                       }
-                   }
+                   .checkBtn{
+                    cursor:pointer;
+                    width:25px;
+                    height:25px;
+                  }
                }
            }
            .inpChild{

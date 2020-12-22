@@ -11,15 +11,12 @@ import HamburgerMenu from 'react-hamburger-menu'
 
 function Menu(props) {
     const location = useLocation();
-
     const userCtx = useContext(UserContext);
     const [userId, setUserId] = useState();
     const [userName, setUserName] = useState();
     const [ diplayNone, setDisplayNone ] = useState("block");
     const [ headerHeight, setheaderHeight ] = useState("70px");
     const [open, close] = useState('');
-    const [classNameID, setClassNameId] = useState('');
-    const [ headStyle, setHeadStyle ] = useState('70px');
     
     useEffect(() => {
       const userId = localStorage.getItem("userId", []);
@@ -41,17 +38,17 @@ function Menu(props) {
       window.location.reload(false);
     };
 
-      useEffect(() => {
-        const currentPath = location.pathname;
-        console.log(currentPath);
-        if(currentPath !== "/"){
-          setDisplayNone("none");
-          setheaderHeight("70px");
-        }else{
-          setDisplayNone("block");
-          setheaderHeight("70px");
-        }
-      }, [location]);
+    useEffect(() => {
+      const currentPath = location.pathname;
+      console.log(currentPath);
+      if(currentPath !== "/"){
+        setDisplayNone("none");
+        setheaderHeight("70px");
+      }else{
+        setDisplayNone("block");
+        setheaderHeight("70px");
+      }
+    }, [location]);
 
     //   useEffect(() => {
     //     window.addEventListener("scroll", handleScroll);
@@ -66,8 +63,6 @@ function Menu(props) {
     //       setHeadStyle("70px");
     //     }
     // }
-      
-
   return (
     <Componentss>
       <div style={{display:diplayNone}} className="Background">

@@ -7,75 +7,114 @@ import { fontFamily, textColor, ColorRgb, Color } from '../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
-import SignatureCanvas from 'react-signature-canvas'
-import Modal from 'react-awesome-modal';
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../context/UserContext'
-
+import {RiMailSendLine} from 'react-icons/ri'
 
 function TableFour() {
-    const [opacity, setOpacity] = useState("0");
-    const [opacity2, setOpacity2] = useState("0");
-    const [procent, setProcent] = useState('0');
-    const [visible, setVisible] = useState(false);
-    const [dataFinal, setData] = useState({});
-    const [dataDetail, setDataDetal] = useState([]);
-    const [FinalErrorText, setFinalErrorText] = useState("");
-    let [sigCanvas, setSigCanvas] = useState({});
-    let [trimmedDataURL, setTrimmedDataURL] = useState(null);
+      const [opacity, setOpacity] = useState("0");
+      const [opacity2, setOpacity2] = useState("0");
+      const [ finalText, setFinalText] = useState('');
+      const [ finalTextScale, setFinalTextScale] = useState('0');
+      const [procent, setProcent] = useState('0');
+      const [visible, setVisible] = useState(false);
+      const [dataFinal, setData] = useState({});
+      const [dataDetail, setDataDetal] = useState([]);
+      const [FinalErrorText, setFinalErrorText] = useState("");
 
-    const StyleContext = useContext(UserContext);
-    
-    useEffect(async () => {
-      const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=1&pageSize=3' );
-      const Data1 = result.data.data.docs[1]
-      setData(Data1); setDataDetal(Data1.questiondetails);
-    },[]);
-    const openModal=()=> { setVisible(true);}
-    const closeModal=()=> { setVisible(false);}
+      const StyleContext = useContext(UserContext);
+      
+      useEffect(async () => {
+        const result = await axios.get('http://192.168.88.78:3000/api/questions?page=1&pageSize=3');
+        const Data1 = result.data.data.docs[1]
+        setData(Data1); setDataDetal(Data1.questiondetails);
+      },[]);
 
-    const clear = () => sigCanvas.clear();
-    const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')) 
-    setTimeout(()=>{ closeModal() },1000) };
-        const clickHandles = (e) =>{
-              console.log("dada");
-              let finalOne = {};
-              let finalEnd = {};
-              let rs2 = document.querySelectorAll(".inpTest3");
-              let arr2 = Array.from(rs2);
-              let finalOne2 = [];
-
-              arr2.map(element=>{
-                  if(element.checked === true){
-                    let soloObject2 = {}
-                    let field = element.name;
-                    let value = element.value;
-                    soloObject2[field] = value;
-                    finalOne2.push(soloObject2);
-                  }
-              });
-
-              let rs4 = document.querySelectorAll(".getUserInp");
-              let arr4 = Array.from(rs4);
-              let userInp = {};
-  
-              arr4.map(element=>{
+      const clickHandles = (e) =>{
+            let finalOne = {};
+            let finalEnd = {};
+            let rs2 = document.querySelectorAll(".inpTest3");
+            let arr2 = Array.from(rs2);
+            let finalOne2 = [];
+            arr2.map(element=>{
+                if(element.checked === true){
+                  let soloObject2 = {}
                   let field = element.name;
                   let value = element.value;
-                  userInp[field] = value;
-              });
-              console.log(userInp, "userInp");
-  
-              finalOne["request"] = finalOne2;
-              finalOne["name"] = userInp.name;
-              finalOne["date"] = userInp.date;
-              finalOne["signature"] = trimmedDataURL;
-  
-              finalEnd["PPS4"] = finalOne;
+                  soloObject2[`pps${field}`] = value;
+                  finalOne2.push(soloObject2);
+                }
+            });
 
-              console.log(finalEnd, "final one");
+            let rs4 = document.querySelectorAll(".getUserInp");
+            let arr4 = Array.from(rs4);
+            let userInp = {};
 
-          }
+            arr4.map(element=>{
+                let field = element.name;
+                let value = element.value;
+                userInp[field] = value;
+            });
+
+            finalOne["request"] = finalOne2;
+            finalOne["name"] = userInp.name;
+            finalOne["date"] = userInp.date;
+            finalEnd["PPS4"] = finalOne;
+
+            let confirm = document.getElementById("GetcheckBtn4").checked;
+            let keys = Object.keys(finalOne2);
+            const Procent = keys.length * 100 / 15;
+            const FinalProcent = Math.round(Procent);
+
+            if(finalOne2.length < 15){
+              setOpacity("1");
+              setProcent(FinalProcent);
+              scroll.scrollTo(0);
+            }else if(userInp.name === "" || userInp.date === ""){
+              setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
+              setOpacity("0");
+              setOpacity2("1");
+            }else if(confirm === false){
+              setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
+              setOpacity("0");
+              setOpacity2("1");
+            }else if(finalOne2[0].pps1 == "true" && finalOne2[1].pps2 == "true"  && finalOne2[4].pps5 == "true" && 
+                    finalOne2[6].pps7 == "true" && finalOne2[7].pps8 == "true" && finalOne2[8].pps9 == "true" && finalOne2[9].pps10 == "true" && finalOne2[10].pps11 == "true" &&
+                    finalOne2[12].pps13 == "true" && finalOne2[13].pps14 == "true" && finalOne2[14].pps15 == "true" ){
+                    setFinalText("(A) Та шалгуур хангахгүй байна");
+                    setFinalTextScale("1");
+                    setOpacity2("0");
+            }else if(finalOne2[2].pps3  === finalOne2[3].pps4){
+                    setFinalText("Та шалгуур хангахгүй байна");
+                    setFinalTextScale("1");
+                    setOpacity2("0");
+            }else if(finalOne2[0].pps1 == "false" && finalOne2[1].pps2 == "false" && finalOne2[2].pps3 == "true" && finalOne2[3].pps4 == "false"  && finalOne2[4].pps5 == "false" && 
+                    finalOne2[6].pps7 == "false" && finalOne2[7].pps8 == "false" && finalOne2[8].pps9 == "false" && finalOne2[9].pps10 == "false" && finalOne2[10].pps11 == "false" &&
+                    finalOne2[12].pps13 == "false" && finalOne2[13].pps14 == "false" && finalOne2[14].pps15 == "false" ){
+                      // Тэнцсэн гэхдээ 5,6 руу үргэлжилэхгүй 
+                    setFinalText("(C) Та шалгуур хангаж байна.");
+                    setFinalTextScale("1");
+                    setOpacity2("0");
+            }else if(finalOne2[0].pps1 == "false" && finalOne2[1].pps2 == "false" && finalOne2[2].pps3 == "false" && finalOne2[3].pps4 == "true"  && finalOne2[4].pps5 == "false" && 
+                    finalOne2[6].pps7 == "false" && finalOne2[7].pps8 == "false" && finalOne2[8].pps9 == "false" && finalOne2[9].pps10 == "false" && finalOne2[10].pps11 == "false" &&
+                    finalOne2[12].pps13 == "false" && finalOne2[13].pps14 == "false" && finalOne2[14].pps15 == "false" ){
+                      // Цааш 5,6 руу үргэлжилнэ
+                    setFinalText("(B) Та шалгуур хангаж байна.");
+                    setFinalTextScale("1");
+                    setOpacity2("0");
+            }else{
+                   // Тэнцээгүй биш гэхдээ асууна
+                    setFinalTextScale("1");
+                    setFinalText("Та шалгуур хангаж байна...");
+                    setOpacity2("0");
+                    alert("gg");
+                  }
+                  
+                  // StyleContext.StyleComp("-300%", "-200%", "-100%", "-100%","0%");
+
+                  StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
+                  scroll.scrollTo(0);
+        }
 //   console.log(trimmedDataURL, "signature url");
     return (
         <Component1 className="container" >
@@ -87,8 +126,8 @@ function TableFour() {
                       <div className="head1 col-md-5 col-sm-5 col-5">Шалгуур</div>
                       <div className="head2 col-md-2 col-sm-2 col-2"><div style={{borderBottom:"1px solid rgba(0,0,0,0.5)",paddingBottom:"10px"}} >Хариулт</div>
                           <div className="row">
-                              <div style={{borderRight:"1px solid rgba(0,0,0,0.5)"}} className="col-md-6 col-md-6 col-md-6">Тийм</div>
-                              <div className="col-md-6 col-md-6 col-md-6">Үгүй</div>
+                              <div style={{borderRight:"1px solid rgba(0,0,0,0.5)"}} className="col-md-6 col-md-6 col-md-6"><div className="margin">Тийм</div></div>
+                              <div className="col-md-6 col-md-6 col-md-6"><div className="margin">Үгүй</div> </div>
                           </div>
                       </div>
                       <div className="head2 col-md-2 col-sm-2 col-2">Асуулт Хариулт “Тийм” бол ДБ-ны холбогдох бодлого</div>
@@ -133,39 +172,26 @@ function TableFour() {
                                 <div className="NextChild">
 
                                     <div className="inpChild next">
-                                        <div className="labels"><span> Гарын үсэг зурсан огноо : </span></div>
-                                            <div className="name"> <BiPen />
-                                                <div className="form__group">
-                                                    <div className="SignBtn" onClick={openModal} > Зурах </div>
-                                                </div>
-                                            </div>
-                                    </div>
-
-                                    <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input max='3000-12-31' type="date" placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                
-                                {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
 
-                                <Modal visible={visible}  width="420" height="300"effect="fadeInDown" onClickAway={closeModal}>
-                                    <div className="modalPar">
-                                        <div className="Canvass">
-                                            <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 420, height: 200, className: 'sigCanvas'}} />
-                                        </div>
-                                        <div className="BtnPar">
-                                            <button onClick={clear}>Цэвэрлэх</button>
-                                            <button onClick={trim}>Хадгалах</button>
-                                            <button onClick={closeModal}>X</button>
-                                        </div>
+                                    <div className="inpChild next">
+                                        <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
+                                            <div className="name"> <BiPen />
+                                                <div className="form__group">
+                                                    {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
+                                                    <input id="GetcheckBtn4" className="checkBtn" type="checkbox" name="check" />
+                                                </div>
+                                            </div>
                                     </div>
-                                </Modal>
+
+                                </div>
                             </div>
                         </div>
                         <div className="buttonPar">
@@ -174,6 +200,7 @@ function TableFour() {
                                 {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
                             <button onClick={clickHandles} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                         </div>
+                        <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">{finalText}</h6> </div>
                 </div>
              </div>
             </div>
@@ -229,37 +256,6 @@ const Component1 = styled.div`
                    align-items:flex;
                    justify-content:center;
                    padding-top:15px;
-
-                   .modalPar{
-                       padding:5px 5px;
-                      .Canvass{
-                          border:1px solid rgba(${ColorRgb},0.5);
-                      }
-                       .BtnPar{
-                          padding:0px 10px;
-                          margin:20px 0px;
-                          display:flex;
-                          flex-direction:row;
-                          align-items:center;
-                          justify-content:space-between;
-                          button{
-                              font-weight:500;
-                              color:rgba(${textColor},0.9);
-                              cursor:pointer;
-                              border-style:none;
-                              border-radius:4px;
-                              padding:6px 14px;
-                              background-color:white;
-                              box-shadow:1px 1px 8px -2px;
-                          }
-                       }
-                   }
-                   .SingatureImg{
-                        margin:10px 0px;
-                        border:1px solid rgba(${ColorRgb},0.3);
-                        height:200px;
-                        width:420px;
-                   }
                    .NextChild{
                        display:flex;
                        flex-direction:row;
@@ -267,21 +263,11 @@ const Component1 = styled.div`
                        justify-content:space-between;
                        .next{
                            width:40%;
-                           .SignBtn{
-                               cursor:pointer;
-                               padding:5px 0px;
-                               border-radius:6px;
-                               width:100%;
-                               color:rgba(${ColorRgb},0.8);
-                               background-color:rgba(${ColorRgb},0.1);
-                               cursor:pointer;
-                               font-size:18px;
-                               text-align:center;
-                               box-shadow:1px 1px 8px -2px;
-                               &:hover{
-                                 box-shadow:1px 1px 10px -2px;
-                               }
-                           }
+                           .checkBtn{
+                            cursor:pointer;
+                            width:25px;
+                            height:25px;
+                          }
                        }
                    }
                    .inpChild{
@@ -403,6 +389,32 @@ const Component1 = styled.div`
                 color:rgba(255,0,0.6);
               }
             }
+            .resPar{
+              text-align:center;
+              padding:10px 20px;
+              border-radius:8px;
+              background:white;
+              margin-top:20px;
+              margin-bottom:0px;
+              display:flex;
+              flex-direction:row;
+              align-items:center;
+              justify-content:start;
+              color:#036;
+              transition:all 0.4s ease;
+              // background-color:#EBEB00;
+              background-color:wheat;
+              box-shadow:1px 1px 16px -5px;
+              width:100%;
+              svg{
+                width:10%;
+                font-size:24px !important;
+              }
+              .finalText{
+                transition:all 0.4s ease;
+                margin-bottom:0px;
+              }
+            }
     
             .buttonPar{
               margin:10px 0px;
@@ -469,7 +481,11 @@ const Component1 = styled.div`
               text-align:center;
               border-bottom:1px solid rgba(0,0,0,0.4);
               font-size:14px;
-             
+             .margin{
+               padding-top:6px;
+               padding-bottom:6px;
+               
+             }
               .head1{
                 padding-top: 10px;
                 padding-bottom: 16px;

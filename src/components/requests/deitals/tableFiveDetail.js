@@ -1,9 +1,8 @@
 import React, { useState,useContext } from 'react'
 import styled from 'styled-components'
 import { textColor, ColorRgb } from '../../theme';
-import {FiUserCheck} from 'react-icons/fi'
-import {GoCalendar,GoMail} from 'react-icons/go'
-import {GiScales} from 'react-icons/gi'
+import {GoCalendar} from 'react-icons/go'
+import {VscAccount,VscFoldDown,VscCloudUpload,VscCloudDownload,VscChecklist,VscOpenPreview} from 'react-icons/vsc'
 import {IoIosAddCircleOutline} from 'react-icons/io'
 import UserContext from '../../../context/UserContext'
 
@@ -12,20 +11,13 @@ function TableFiveDetails() {
     const StyleContext  = useContext(UserContext);
     const initialList = [{id: 1}];
     const [ addItem, setAddItem ] = useState(initialList);
-    const [ addStyle, setAddStyle ] = useState("0");
     const AddHandle = ()=>{
-        // console.log("nana");
-        StyleContext.StyleComp("-200%", "-100%", "0%", 100 + 100);
         const list = addItem.concat( {id: 1});
         setAddItem(list);
-        setTimeout(() => {
-            setAddStyle("1");
-           }, 50);
     }
     return (
         <Component3Detail>
             <div className="rowHeader">5. Байгаль орчин, нийгмийн менежментийн төлөвлөгөөний загвар<span className="tseg">*</span></div>
-            
 
             {addItem.map((el,i)=>{
                 return(
@@ -35,9 +27,9 @@ function TableFiveDetails() {
                         <div className="inputPar">
                             <div className="inpChild">
                                 <div className="labels"><span>Асуудал :</span> </div>
-                                <div className="name"> <GoCalendar />
+                                <div className="name"> <VscOpenPreview />
                                     <div className="form__group">
-                                        <input type="text" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
+                                        <input type="text" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
                                         <label for="name" className=" form__label">Асуудал</label>
                                     </div>
                                 </div>
@@ -45,9 +37,9 @@ function TableFiveDetails() {
 
                             <div className="inpChild">
                                 <div className="labels"><span>Нөлөөллийг бууруулах арга хэмжээ :</span> </div>
-                                <div className="name"> <GiScales />
+                                <div className="name"> <VscChecklist />
                                     <div className="form__group">
-                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
+                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce" required />
                                         <label for="name" className=" form__label">Нөлөөллийг бууруулах арга хэмжээ</label>
                                     </div>
                                 </div>
@@ -56,9 +48,9 @@ function TableFiveDetails() {
                         <div className="inputPar">
                             <div className="inpChild">
                                 <div className="labels"><span>Холбогдох стандартууд :</span> </div>
-                                <div className="name"> <FiUserCheck />
+                                <div className="name"> <VscCloudDownload />
                                     <div className="form__group">
-                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
+                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard-mgl" required />
                                         <label for="name" className=" form__label">Монгол улс</label>
                                     </div>
                                 </div>
@@ -66,9 +58,9 @@ function TableFiveDetails() {
 
                             <div className="inpChild">
                                 <div className="labels"><span>Холбогдох стандартууд :</span> </div>
-                                <div className="name"> <GoMail />
+                                <div className="name"> <VscCloudUpload />
                                     <div className="form__group">
-                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
+                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard-world" required />
                                         <label for="name" className=" form__label">Дэлхийн банк</label>
                                     </div>
                                 </div>
@@ -80,9 +72,9 @@ function TableFiveDetails() {
                         <div className="inputPar">
                             <div className="inpChild">
                                 <div className="labels"><span>Нөлөөллийг бууруулах үйл ажиллагааны зардал :</span> </div>
-                                <div className="name"> <GoCalendar />
+                                <div className="name"> <VscFoldDown />
                                     <div className="form__group">
-                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="date" required />
+                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce-cost" required />
                                         <label for="name" className=" form__label">Үйл ажиллагааны зардал</label>
                                     </div>
                                 </div>
@@ -90,9 +82,9 @@ function TableFiveDetails() {
 
                             <div className="inpChild">
                                 <div className="labels"><span>Хариуцах эзэн :</span> </div>
-                                <div className="name"> <GiScales />
+                                <div className="name"> <VscAccount />
                                     <div className="form__group">
-                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
+                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
                                         <label for="name" className=" form__label">Хариуцах эзэн</label>
                                     </div>
                                 </div>
@@ -101,9 +93,9 @@ function TableFiveDetails() {
                         <div className="inputPar">
                             <div className="inpChild">
                                 <div className="labels"><span>Эхлэх хугацаа :</span> </div>
-                                <div className="name"> <FiUserCheck />
+                                <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
+                                        <input type="date" max='3000-12-31' className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
                                         <label for="name"  className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
@@ -111,9 +103,9 @@ function TableFiveDetails() {
 
                             <div className="inpChild">
                                 <div className="labels"><span>Дуусах хугацаа :</span> </div>
-                                <div className="name"> <GoMail />
+                                <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31'  className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
+                                        <input type="date" max='3000-12-31'  className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
                                         <label for="name" className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>

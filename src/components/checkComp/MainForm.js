@@ -128,10 +128,7 @@ function MainForm() {
           </motion.div>
           <div className="homeButtonPar" style={{transform:`scale(${resScale})`}}>
             <Link to="/"><span className="homeBtn" >Буцах</span></Link>
-            <div className="resPar" >
-              <RiMailSendLine />
-                <h5 className="finalText">{resText}</h5>
-            </div>
+            <div className="resPar" ><RiMailSendLine /> <h5 className="finalText">{resText}</h5> </div>
           </div>
         
         </Component>

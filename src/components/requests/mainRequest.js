@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import TableThree from './tableThree';
 import UserContext from '../../context/UserContext'
 import TableFour from './tableFour'
+import TableFive from './tableFive'
+import TableSix from './tableSix'
 
 
 
@@ -30,6 +32,15 @@ function MainRequest() {
             <div style={{left:`${StyleContext.GlobalStyle.tableFour}`}} className="handleSlidePAr4">
                 <TableFour />
             </div>
+
+            <div style={{left:`${StyleContext.GlobalStyle.tableFive}`}} className="handleSlidePAr5">
+                <TableFive />
+            </div>
+
+            {/* <div style={{left:`${StyleContext.GlobalStyle.tableSix}`}} className="handleSlidePAr6">
+                <TableSix />
+            </div> */}
+
         </ParentComp>
     )
 }
@@ -63,6 +74,16 @@ const ParentComp = styled.div`
         width:100%;
     }
     .handleSlidePAr4{
+        transition:all 1s ease;
+        position:absolute;
+        width:100%;
+    }
+    .handleSlidePAr5{
+        transition:all 1s ease;
+        position:absolute;
+        width:100%;
+    }
+    .handleSlidePAr6s{
         transition:all 1s ease;
         position:absolute;
         width:100%;

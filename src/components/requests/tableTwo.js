@@ -5,36 +5,17 @@ import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
-import SignatureCanvas from 'react-signature-canvas'
-import Modal from 'react-awesome-modal';
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../context/UserContext'
-
 
 function TableTwo() {
     const StyleContext  = useContext(UserContext);
     const [opacity2, setOpacity2] = useState("0");
-    const [visible, setVisible] = useState(false);
     const [FinalErrorText, setFinalErrorText] = useState("");
-    let [sigCanvas, setSigCanvas] = useState({});
-    let [trimmedDataURL, setTrimmedDataURL] = useState("");
-
-    const openModal=()=> { setVisible(true);}
-    const closeModal=()=> { setVisible(false);}
-
-    const clear = () => sigCanvas.clear();
-
-    const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png'));
-
-    setTimeout(()=>{
-         closeModal();
-      },1000) };
-
 
     const clickHandles = (e) =>{
-        StyleContext.StyleComp("-200%", "-100%", "0%");
-        scroll.scrollTo(0);
-
+        StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
+        // scroll.scrollTo(0);
 
         let finalOne = {};
         let finalEnd = {};
@@ -50,11 +31,27 @@ function TableTwo() {
               soloObject2[field] = value;
               finalOne2.push(soloObject2);
         });
+
+        let conditionFinal = []
         
         finalOne2.map((el,i)=>{
             const Lala = []
             let rs2 = document.querySelectorAll(`.PPS${i + 1}`);
             let arr23 = Array.from(rs2);
+
+            let condition = document.querySelectorAll(`.getItems${i + 1}`);
+            let arr44 = Array.from(condition);
+            arr44.map((el,i)=>{
+                if(el.value !== ""){
+                    let conditionbefore = {}
+                    let field = el.name;
+                    let value = el.value;
+                    conditionbefore[field] = value;
+                    conditionFinal.push(conditionbefore);
+                }else{
+                    return false
+                }
+            });
             arr23.map((el,i)=>{
                 let soloObject2 = {}
                 let field = el.name;
@@ -62,10 +59,11 @@ function TableTwo() {
                 soloObject2[field] = value;
                 Lala.push(soloObject2);
             });
+
               el[`pps${i + 1}`] = Lala;
         });
 
-        let rs4 = document.querySelectorAll(".getUserInp");
+        let rs4 = document.querySelectorAll(".getUser2");
         let arr4 = Array.from(rs4);
         let userInp = {};
 
@@ -75,13 +73,33 @@ function TableTwo() {
             userInp[field] = value;
         });
 
+        let confirm = document.getElementById("GetcheckBtn2").checked;
+        console.log(confirm, "my checkbtn");
+
         finalOne["request"] = finalOne2;
         finalOne["name"] = userInp.name;
         finalOne["date"] = userInp.date;
-        finalOne["signature"] = trimmedDataURL;
         finalEnd["PPS2"] = finalOne;
 
-        console.log(finalEnd, "final");
+        console.log(finalEnd, "my all");
+
+        if(conditionFinal.length < 27){
+            setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
+            setOpacity2("1");
+            scroll.scrollTo(0);
+        }else if(userInp.name === "" || userInp.date === ""){
+            setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
+            setOpacity2("1");
+        }else if(confirm === false){
+            setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
+            setOpacity2("1");
+        }else{
+            alert("gg");
+            setOpacity2("0");
+            // StyleContext.StyleComp("-200%", "-100%", "0%");
+            // scroll.scrollTo(0);
+        }
+        // console.log(finalEnd, "final");
     }
    
     return (
@@ -106,7 +124,7 @@ function TableTwo() {
                             <div   className=" row">
                                 <div className="col-md-4 col-sm-12 col-12 ">
                                     <div className="inpChild"> <div className="labels"><span>(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага :</span> </div> <div className="name"> <FiUserCheck />
-                                                <div className="form__group"><input type="input" className={`PPS${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="name" required />
+                                                <div className="form__group"><input type="input" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="name" required />
                                                     <label for="name" className=" form__label">Баталгааны хэлбэр</label>
                                                 </div>
                                             </div>
@@ -119,19 +137,19 @@ function TableTwo() {
                                         <div className="col-md-6 col-sm-6 col-6"> 
                                             <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
                                                 <div className="name"><div className="form__group">
-                                                        <input type="date" className={`PPS${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="getDate" required />
+                                                        <input max='3000-12-31' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="getDate" required />
                                                         <label for="name" className=" form__label">Хүлээн авсан</label> </div></div> </div></div>
                                         <div className="col-md-6 col-sm-6 col-6 headLeftBorder"> 
                                             <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
                                                 <div className="name"><div className="form__group">
-                                                        <input type="date" className={`PPS${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="resentDate" required />
+                                                        <input max='3000-12-31' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="resentDate" required />
                                                         <label for="name" className=" form__label">Шинэчилсэн</label> </div> </div> </div>  </div>
                                               </div>
                                 </div>
 
                                 <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> </div>
                                      <div className="name"> <FiUserCheck />  <div className="form__group">
-                                            <input type="input" className={`PPS${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="approveLetter" required />
+                                            <input type="file" className={`PPS${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="file" required />
                                             <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
                                         </div></div> </div>
                                 </div>
@@ -150,7 +168,7 @@ function TableTwo() {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="getUserInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" className="getUser2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -158,38 +176,25 @@ function TableTwo() {
                                 
                                 <div className="NextChild">
                                     <div className="inpChild next">
-                                        <div className="labels"><span> Гарын үсэг зурсан огноо : </span></div>
-                                            <div className="name"> <BiPen />
-                                                <div className="form__group">
-                                                    <div className="SignBtn" onClick={openModal} > Зурах </div>
-                                                </div>
-                                            </div>
-                                    </div>
-                                    <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input max='3000-12-31' type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                
-                                {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL} alt="Signature" /> : null}
-
-                                <Modal visible={visible}  width="420" height="300"effect="fadeInDown" onClickAway={closeModal}>
-                                    <div className="modalPar">
-                                        <div className="Canvass">
-                                            <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 420, height: 200, className: 'sigCanvas'}} />
-                                        </div>
-                                        <div className="BtnPar">
-                                            <button onClick={clear}>Цэвэрлэх</button>
-                                            <button onClick={trim}>Хадгалах</button>
-                                            <button onClick={closeModal}>X</button>
-                                        </div>
+                                    <div className="inpChild next">
+                                        <div className="labels"><span>Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
+                                            <div className="name"> <BiPen />
+                                                <div className="form__group">
+                                                    {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
+                                                    <input id="GetcheckBtn2" className="checkBtn" type="checkbox" name="check" />
+                                                </div>
+                                            </div>
                                     </div>
-                                </Modal>
+                                </div>
+                               
                             </div>
                         </div>
                         <div className="buttonPar">
@@ -380,36 +385,6 @@ const Component2 = styled.div`
                justify-content:center;
                padding-top:15px;
 
-               .modalPar{
-                   padding:5px 5px;
-                  .Canvass{
-                      border:1px solid rgba(${ColorRgb},0.5);
-                  }
-                   .BtnPar{
-                      padding:0px 10px;
-                      margin:20px 0px;
-                      display:flex;
-                      flex-direction:row;
-                      align-items:center;
-                      justify-content:space-between;
-                      button{
-                          font-weight:500;
-                          color:rgba(${textColor},0.9);
-                          cursor:pointer;
-                          border-style:none;
-                          border-radius:4px;
-                          padding:6px 14px;
-                          background-color:white;
-                          box-shadow:1px 1px 8px -2px;
-                      }
-                   }
-               }
-               .SingatureImg{
-                margin:10px 0px;
-                border:1px solid rgba(${ColorRgb},0.3);
-                height:200px;
-                width:420px;
-               }
                .NextChild{
                    display:flex;
                    flex-direction:row;
@@ -417,21 +392,11 @@ const Component2 = styled.div`
                    justify-content:space-between;
                    .next{
                        width:40%;
-                       .SignBtn{
-                           cursor:pointer;
-                           padding:5px 0px;
-                           border-radius:6px;
-                           width:100%;
-                           color:rgba(${ColorRgb},0.8);
-                           background-color:rgba(${ColorRgb},0);
-                           cursor:pointer;
-                           font-size:18px;
-                           text-align:center;
-                           box-shadow:1px 1px 10px -2px;
-                           &:hover{
-                             box-shadow:1px 1px 15px -2px;
-                           }
-                       }
+                       .checkBtn{
+                        cursor:pointer;
+                        width:25px;
+                        height:25px;
+                      }
                    }
                }
                .inpChild{

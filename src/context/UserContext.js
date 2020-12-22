@@ -8,6 +8,8 @@ const initialStyle ={
   tableTwo: "100%",
   tableThree: "200%",
   tableFour: "300%",
+  tableFive: "400%",
+  tableSix: "500%",
   tableheight: 150,
 }
 const initialUserInfo = {
@@ -72,17 +74,21 @@ export const UserStore= (props) =>{
         localStorage.removeItem("edp_loggedUser");
     }
 
-    const StyleComp = (valueOne,valueTwo, valueThree,valueFour) =>{
+    const StyleComp = (valueOne,valueTwo, valueThree,valueFour,valueFive,valueSix) =>{
       if(valueOne === "0%"){
-        setGlobalStyle({  tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree,tableheight: 190});
+        setGlobalStyle({  tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 190});
       }else if(valueTwo === "0%"){
-        setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree,tableheight: 400 });
+        setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 400 });
       }else if(valueThree === "0%"){
-        setGlobalStyle({tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableheight: 200 });
+        setGlobalStyle({tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 300 });
       }else if(valueFour === "0%"){
-        setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableheight: 300 })
+        setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 300 });
+      }else if(valueFive === "0%"){
+        setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 500 });
+      }else if(valueFive === "0%"){
+        setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 500 });
       }else{
-        setGlobalStyle({tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableheight: 150 });
+        setGlobalStyle({tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 250 });
       }
     }
       

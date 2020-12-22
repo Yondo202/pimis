@@ -15,7 +15,6 @@ import MainRequest from './components/requests/mainRequest'
 import EmialSender from './containers/emailSend/EmailSend'
 import EmialSender2 from './containers/emailSend/EmailSend2'
 import LoginDoneHome from './components/LoginDoneHome/MainHome'
-import NextReq from './components/requests/next/mainNext'
 
 function App() {
   const ctxUser = useContext(UserContext);
@@ -57,11 +56,6 @@ function App() {
                  <MainRequest />
              {/* </motion.div> */}
              
-         </Route>
-         <Route path="/next-req" >
-             {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} > */}
-                 <NextReq />
-             {/* </motion.div> */}
          </Route>
          <Route path="/email" >
              {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} > */}
