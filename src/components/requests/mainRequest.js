@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import TableOne from './tableOne'
 import { motion } from 'framer-motion'
 import TableTwo from './tableTwo';
@@ -8,40 +8,48 @@ import UserContext from '../../context/UserContext'
 import TableFour from './tableFour'
 import TableFive from './tableFive'
 import TableSix from './tableSix'
-
-
+import { Modal } from './MainModal/Modal';
+import { HelpStore } from '../../context/HelperContext'
 
 function MainRequest() {
+    const [ showModal, setShowModal ] = useState(false);
+    const ModalOpen = () => {
+        console.log("dada");
+        setShowModal(prev => !prev);
+      }
     const StyleContext = useContext(UserContext);
-    console.log(StyleContext.GlobalStyle , "my global style");
+    // console.log(StyleContext.GlobalStyle , "my global style");
     return (
-        <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
-            <div style={{left:`${StyleContext.GlobalStyle.tableOne}`}} className="handleSlidePAr1">
-                <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                    <TableOne  />
-                </motion.div>
-            </div>
+        <HelpStore>
+            <div><button onClick={ModalOpen} >Modal</button></div>
+            <Modal showModal={showModal} setShowModal={setShowModal}  />
+            <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
+                
+                <div style={{left:`${StyleContext.GlobalStyle.tableOne}`, opacity:`${StyleContext.GlobalStyle.tableOne === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                    <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
+                        <TableOne  />
+                    </motion.div>
+                </div>
+                <div style={{left:`${StyleContext.GlobalStyle.tableTwo}`, opacity:`${StyleContext.GlobalStyle.tableTwo === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                    <TableTwo />
+                </div>
+                
+                <div style={{left:`${StyleContext.GlobalStyle.tableThree}`, opacity:`${StyleContext.GlobalStyle.tableThree === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                    <TableThree />
+                </div>
+                <div style={{left:`${StyleContext.GlobalStyle.tableFour}`, opacity:`${StyleContext.GlobalStyle.tableFour === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                    <TableFour />
+                </div>
 
-            <div style={{left:`${StyleContext.GlobalStyle.tableTwo}`}} className="handleSlidePAr2">
-                <TableTwo />
-            </div>
-            
-            <div style={{left:`${StyleContext.GlobalStyle.tableThree}`}} className="handleSlidePAr3">
-                <TableThree />
-            </div>
-            <div style={{left:`${StyleContext.GlobalStyle.tableFour}`}} className="handleSlidePAr4">
-                <TableFour />
-            </div>
+                <div style={{left:`${StyleContext.GlobalStyle.tableFive}`, opacity:`${StyleContext.GlobalStyle.tableFive === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                    <TableFive />
+                </div>
 
-            <div style={{left:`${StyleContext.GlobalStyle.tableFive}`}} className="handleSlidePAr5">
-                <TableFive />
-            </div>
-
-            {/* <div style={{left:`${StyleContext.GlobalStyle.tableSix}`}} className="handleSlidePAr6">
-                <TableSix />
-            </div> */}
-
-        </ParentComp>
+                <div style={{left:`${StyleContext.GlobalStyle.tableSix}`, opacity:`${StyleContext.GlobalStyle.tableSix === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                    <TableSix />
+                </div>
+            </ParentComp>
+        </HelpStore>
     )
 }
 export default MainRequest
@@ -56,39 +64,15 @@ const ParentComp = styled.div`
     width:100%;
     overflow:hidden;
     position:relative;
-    transition:all 1s ease;
+    // transition:all 0.6s ease;
     margin-top:60px;
     .handleSlidePAr1{
         width:100%;
-        transition:all 1s ease;
         position:absolute;
-    }
-    .handleSlidePAr2{
-        width:100%;
-        transition:all 1s ease;
-        position:absolute;
-    }
-    .handleSlidePAr3{
-        transition:all 1s ease;
-        position:absolute;
-        width:100%;
-    }
-    .handleSlidePAr4{
-        transition:all 1s ease;
-        position:absolute;
-        width:100%;
-    }
-    .handleSlidePAr5{
-        transition:all 1s ease;
-        position:absolute;
-        width:100%;
-    }
-    .handleSlidePAr6s{
-        transition:all 1s ease;
-        position:absolute;
-        width:100%;
+        transition:left 0.8s ease, opacity 1s ease-in;
+
     }
     @media only screen and (max-width:768px){
-        height:500vh !important;
+        height:1000vh !important;
     }
 `

@@ -7,9 +7,9 @@ import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import {RiMailSendLine} from 'react-icons/ri'
 import UserContext from '../../context/UserContext'
-
+import {Modal} from './MainModal/Modal'
+import HelperContext from '../../context/HelperContext'
 
 function TableOne() {
     const [opacity, setOpacity] = useState("0");
@@ -20,11 +20,13 @@ function TableOne() {
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [dataFinal, setData] = useState({});
     const [dataDetail, setDataDetal] = useState([]);
+    const [ text, setText ] = useState("dadada");
     
     // let [sigCanvas, setSigCanvas] = useState({});
     // let [trimmedDataURL, setTrimmedDataURL] = useState(null);
 
     const StyleContext = useContext(UserContext);
+    const tablesContext = useContext(HelperContext);
     
     useEffect(async () => {
       const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=1&pageSize=3' );
@@ -61,7 +63,8 @@ function TableOne() {
                   }
               });
 
-              console.log(condition.length);
+              tablesContext.TableControl(finalOne2);
+
 
               let rs4 = document.querySelectorAll(".getUserInp1");
               let arr4 = Array.from(rs4);
@@ -88,6 +91,7 @@ function TableOne() {
 
               console.log(finalEnd, "final one");
 
+
               if(keys.length < 13){
                 setOpacity("1");
                 setProcent(FinalProcent);
@@ -102,28 +106,29 @@ function TableOne() {
                 setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
                 setOpacity2("1");
                 scroll.scrollTo(2000);
-              }else if(condition.length < 13){
-                  setOpacity("0");
-                  // setFinalErrorText("Та шалгуур хангахгүй байна...");
-                  setFinalTextScale("1");
-                  setOpacity2("0");
               }else{
-                  setOpacity("0");
-                  setOpacity2("0");
-                  setFinalTextScale("0");
-                  // scroll.scrollTo(0);
-                  // alert("GG");
-                  // StyleContext.StyleComp("-100%", "0%", "100%");
-              }
+                setOpacity("0");
+                setOpacity2("0");
+                setFinalTextScale("0");
+                // scroll.scrollTo(0);
+                // alert("GG");
+                // StyleContext.StyleComp("-100%", "0%", "100%");
+            }
+            // else if(condition.length < 13){
+            //     setOpacity("0");
+            //     // setFinalErrorText("Та шалгуур хангахгүй байна...");
+            //     setFinalTextScale("1");
+            //     setOpacity2("0");
+            // }
+              
               StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
-
       }
 //   console.log(trimmedDataURL, "signature url");
     return (
         <Component1 className="container" >
             <div className="boxShadow">
                 <div className="rowHeader">1. {dataFinal.description}<span className="tseg">*</span></div>
-            <div className="formTwoParent ">
+              <div className="formTwoParent ">
                 <div className="headerPar">
                     <div className="row" >
                     <div className="head1 col-md-9 col-sm-5 col-5">Шалгуур</div>
@@ -210,15 +215,19 @@ function TableOne() {
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                                 {/* <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div> */}
                                 {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
-                            <button onClick={clickHandles} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+                            <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                         </div>
 
-                        <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">Та шалгуур хангахгүй байна. </h6> </div>
+                        {/* <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">Та шалгуур хангахгүй байна. </h6> </div> */}
                     {/* <div >dadadad</div> */}
                     {/* <h5 className="finalText">{resText}</h5> */}
 
                 </div>
              </div>
+            </div>
+
+            <div >
+              <Modal text="this is table One" />
             </div>
         </Component1>
     )
@@ -342,25 +351,7 @@ const Component1 = styled.div`
                             height:25px;
                             // display:none;
                           }
-                          // input[type=checkbox]:checked ~ span{
-                          //   font-size:100px;
-                          //   color:red;
-                          // }
-                          //  .SignBtn{
-                          //      cursor:pointer;
-                          //      padding:5px 0px;
-                          //      border-radius:6px;
-                          //      width:100%;
-                          //      color:rgba(${ColorRgb},0.8);
-                          //      background-color:rgba(${ColorRgb},0.1);
-                          //      cursor:pointer;
-                          //      font-size:18px;
-                          //      text-align:center;
-                          //      box-shadow:1px 1px 8px -2px;
-                          //      &:hover{
-                          //        box-shadow:1px 1px 10px -2px;
-                          //      }
-                          //   }
+                         
                        }
                    }
                    .inpChild{
@@ -475,11 +466,17 @@ const Component1 = styled.div`
               flex-direction:row;
               align-items:center;
               justify-content:space-around;
+              
               .errtext{
-                font-weght:500;
-                font-size:18px;
                 transition:all 0.4s ease;
-                color:rgba(255,0,0.6);
+                text-align:center;
+                background-color: #f6c343;
+                border-radius:5px;
+                font-size:15px !important;
+                font-weight:400;
+                color:black !important;
+                line-height:34px;
+                padding:0px 20px;
               }
             }
     
@@ -489,11 +486,17 @@ const Component1 = styled.div`
               flex-direction:row;
               align-items:center;
               justify-content:space-between;
+               
                 .errtext{
-                  font-weght:500;
-                  font-size:18px;
                   transition:all 0.4s ease;
-                  color:rgba(255,0,0.6);
+                  text-align:center;
+                  background-color: #f6c343;
+                  border-radius:5px;
+                  font-size:15px !important;
+                  font-weight:400;
+                  color:black !important;
+                  line-height:34px;
+                  padding:0px 20px;
                 }
 
                 .SubmitButton{

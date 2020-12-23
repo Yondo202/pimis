@@ -66,6 +66,8 @@ function TableFour() {
             const Procent = keys.length * 100 / 15;
             const FinalProcent = Math.round(Procent);
 
+            console.log(finalEnd , "pps4 final end");
+
             if(finalOne2.length < 15){
               setOpacity("1");
               setProcent(FinalProcent);
@@ -78,9 +80,9 @@ function TableFour() {
               setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
               setOpacity("0");
               setOpacity2("1");
-            }else if(finalOne2[0].pps1 == "true" && finalOne2[1].pps2 == "true"  && finalOne2[4].pps5 == "true" && 
-                    finalOne2[6].pps7 == "true" && finalOne2[7].pps8 == "true" && finalOne2[8].pps9 == "true" && finalOne2[9].pps10 == "true" && finalOne2[10].pps11 == "true" &&
-                    finalOne2[12].pps13 == "true" && finalOne2[13].pps14 == "true" && finalOne2[14].pps15 == "true" ){
+            }else if(finalOne2[0].pps1 === "true" && finalOne2[1].pps2 === "true"  && finalOne2[4].pps5 === "true" && 
+                    finalOne2[6].pps7 === "true" && finalOne2[7].pps8 === "true" && finalOne2[8].pps9 === "true" && finalOne2[9].pps10 === "true" && finalOne2[10].pps11 === "true" &&
+                    finalOne2[12].pps13 === "true" && finalOne2[13].pps14 === "true" && finalOne2[14].pps15 === "true" ){
                     setFinalText("(A) Та шалгуур хангахгүй байна");
                     setFinalTextScale("1");
                     setOpacity2("0");
@@ -88,16 +90,16 @@ function TableFour() {
                     setFinalText("Та шалгуур хангахгүй байна");
                     setFinalTextScale("1");
                     setOpacity2("0");
-            }else if(finalOne2[0].pps1 == "false" && finalOne2[1].pps2 == "false" && finalOne2[2].pps3 == "true" && finalOne2[3].pps4 == "false"  && finalOne2[4].pps5 == "false" && 
-                    finalOne2[6].pps7 == "false" && finalOne2[7].pps8 == "false" && finalOne2[8].pps9 == "false" && finalOne2[9].pps10 == "false" && finalOne2[10].pps11 == "false" &&
-                    finalOne2[12].pps13 == "false" && finalOne2[13].pps14 == "false" && finalOne2[14].pps15 == "false" ){
+            }else if(finalOne2[0].pps1 === "false" && finalOne2[1].pps2 === "false" && finalOne2[2].pps3 === "true" && finalOne2[3].pps4 === "false"  && finalOne2[4].pps5 === "false" && 
+                    finalOne2[6].pps7 === "false" && finalOne2[7].pps8 === "false" && finalOne2[8].pps9 === "false" && finalOne2[9].pps10 === "false" && finalOne2[10].pps11 === "false" &&
+                    finalOne2[12].pps13 === "false" && finalOne2[13].pps14 === "false" && finalOne2[14].pps15 === "false" ){
                       // Тэнцсэн гэхдээ 5,6 руу үргэлжилэхгүй 
                     setFinalText("(C) Та шалгуур хангаж байна.");
                     setFinalTextScale("1");
                     setOpacity2("0");
-            }else if(finalOne2[0].pps1 == "false" && finalOne2[1].pps2 == "false" && finalOne2[2].pps3 == "false" && finalOne2[3].pps4 == "true"  && finalOne2[4].pps5 == "false" && 
-                    finalOne2[6].pps7 == "false" && finalOne2[7].pps8 == "false" && finalOne2[8].pps9 == "false" && finalOne2[9].pps10 == "false" && finalOne2[10].pps11 == "false" &&
-                    finalOne2[12].pps13 == "false" && finalOne2[13].pps14 == "false" && finalOne2[14].pps15 == "false" ){
+            }else if(finalOne2[0].pps1 === "false" && finalOne2[1].pps2 === "false" && finalOne2[2].pps3 === "false" && finalOne2[3].pps4 === "true"  && finalOne2[4].pps5 === "false" && 
+                    finalOne2[6].pps7 === "false" && finalOne2[7].pps8 === "false" && finalOne2[8].pps9 === "false" && finalOne2[9].pps10 === "false" && finalOne2[10].pps11 === "false" &&
+                    finalOne2[12].pps13 === "false" && finalOne2[13].pps14 === "false" && finalOne2[14].pps15 === "false" ){
                       // Цааш 5,6 руу үргэлжилнэ
                     setFinalText("(B) Та шалгуур хангаж байна.");
                     setFinalTextScale("1");
@@ -110,10 +112,9 @@ function TableFour() {
                     alert("gg");
                   }
                   
-                  // StyleContext.StyleComp("-300%", "-200%", "-100%", "-100%","0%");
 
                   StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
-                  scroll.scrollTo(0);
+                  // scroll.scrollTo(0);
         }
 //   console.log(trimmedDataURL, "signature url");
     return (
@@ -196,8 +197,6 @@ function TableFour() {
                         </div>
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                                {/* <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div> */}
-                                {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
                             <button onClick={clickHandles} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                         </div>
                         <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">{finalText}</h6> </div>
@@ -383,10 +382,15 @@ const Component1 = styled.div`
               align-items:center;
               justify-content:space-around;
               .errtext{
-                font-weght:500;
-                font-size:18px;
                 transition:all 0.4s ease;
-                color:rgba(255,0,0.6);
+                text-align:center;
+                background-color: #f6c343;
+                border-radius:5px;
+                font-size:15px !important;
+                font-weight:400;
+                color:black !important;
+                line-height:34px;
+                padding:0px 20px;
               }
             }
             .resPar{
@@ -423,10 +427,15 @@ const Component1 = styled.div`
               align-items:center;
               justify-content:space-between;
                 .errtext{
-                  font-weght:500;
-                  font-size:18px;
                   transition:all 0.4s ease;
-                  color:rgba(255,0,0.6);
+                  text-align:center;
+                  background-color: #f6c343;
+                  border-radius:5px;
+                  font-size:15px !important;
+                  font-weight:400;
+                  color:black !important;
+                  line-height:34px;
+                  padding:0px 20px;
                 }
 
                 .SubmitButton{

@@ -7,7 +7,6 @@ import {GiScales} from 'react-icons/gi'
 import {IoIosAddCircleOutline} from 'react-icons/io'
 import UserContext from '../../../context/UserContext'
 
-
 function TableThreeDetails() {
     const StyleContext  = useContext(UserContext);
     const initialList = [{id: 1}];
@@ -25,12 +24,16 @@ function TableThreeDetails() {
     return (
         <Component3Detail>
             <div className="rowHeader">3. Үйлдвэрлэгчийн байгаль орчин, нийгмийн удирдлагын гүйцэтгэлийн талаарх мэдээллийн товчоон<span className="tseg">*</span></div>
-            
-
             {addItem.map((el,i)=>{
                 return(
-                    <div id={i}  className="GetItemAdd1 DetailPar" key={i}>
-                    <div className="Title"> {i + 1} . Торгууль / Шийтгэл / Санал гомдлууд :</div>
+                    <div id={i}  className="GetItemAdd33 DetailPar" key={i}>
+                        <div className="topTitle">
+                            <div className="Title"> {i + 1} . Торгууль / Шийтгэл / Санал гомдлууд :</div>
+                            <div className="null">
+                                Байхгүй:
+                                <input className="checkBtn" type="checkbox" name="null" />
+                            </div>
+                        </div>
                     <div className="formOneParent">
                         <div className="inputPar">
                             <div className="inpChild">
@@ -78,14 +81,9 @@ function TableThreeDetails() {
                  </div>
                 )
             })}
-            
             <div className="AddItemBtn">
                 <IoIosAddCircleOutline onClick={AddHandle} />
             </div>
-
-            {/* <button >hahahaha</button> */}
-
-
         </Component3Detail>
     )
 }
@@ -127,11 +125,31 @@ const Component3Detail = styled.div`
         background-color:white;
         margin-top:40px;
         transition:all 0.5s ease; 
-        .Title{
-            font-size:16px;  
-            font-weight:500;
-            margin-bottom:10px;
+        .topTitle{
+            display:flex;
+            flex-direction:row;
+            align-items:center;
+            justify-content:space-between;
+            .Title{
+                font-size:16px;  
+                font-weight:500;
+                margin-bottom:10px;
+            }
+            .null{
+                display:flex;
+                text-aling:center;
+                font-size:16px;  
+                font-weight:500;
+                margin-bottom:10px;
+                .checkBtn{
+                    margin-left:10px;
+                    cursor:pointer;
+                    width:22px;
+                    height:22px;
+                  }
+            }
         }
+        
         .description{
             margin-bottom:20px;
         }

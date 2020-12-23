@@ -17,31 +17,26 @@ function TableThree() {
     const clickHandles = () => {
         let finalOne = {};
         let finalEnd = {};
-        let rs2 = document.querySelectorAll(".GetItemAdd");
+        let rs2 = document.querySelectorAll(".GetItemAdd33");
         let arr2 = Array.from(rs2);
         let finalOne2 = [];
-        
-        arr2.map(element=>{
-            let soloObject2 = {}
-            let field = element.id;
-            let value = {};
-            soloObject2[field] = value;
-            finalOne2.push(soloObject2);
-        });
 
-      finalOne2.map((el,i)=>{
-            const Lala = []
+        // const tableCondition = [];
+        arr2.map((el,i)=>{
+            const Lala = {}
             let rs2 = document.querySelectorAll(`.PPPS${i + 1}`);
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
-                let soloObject2 = {}
-                let field = el.name;
-                let value = el.value;
-                soloObject2[field] = value;
-                Lala.push(soloObject2);
+                if(el.value !== ""){
+                    let field = el.name;
+                    let value = el.value;
+                    Lala[field] = value;
+                }
             });
-              el[`pps${i + 1}`] = Lala;
+            // tableCondition.push(Lala);
+            finalOne2.push(Lala);
         });
+        // let keys = Object.keys(tableCondition[0]);
 
         let rs4 = document.querySelectorAll(".getUserInp3");
         let arr4 = Array.from(rs4);
@@ -54,7 +49,6 @@ function TableThree() {
         });
 
         let confirm = document.getElementById("GetcheckBtn3").checked;
-        console.log(confirm, "my checkbtn");
 
         finalOne["request"] = finalOne2;
         finalOne["name"] = userInp.name;
@@ -72,9 +66,8 @@ function TableThree() {
         }else{
             alert("gg");
         }
-
         StyleContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
-        scroll.scrollTo(0);
+        // scroll.scrollTo(0);
     }
 
     return (
@@ -288,13 +281,17 @@ const Component3 = styled.div`
             flex-direction:row;
             align-items:center;
             justify-content:space-between;
-              .errtext{
-                font-weght:500;
-                font-size:18px;
+            .errtext{
                 transition:all 0.4s ease;
-                color:rgba(255,0,0.6);
+                text-align:center;
+                background-color: #f6c343;
+                border-radius:5px;
+                font-size:15px !important;
+                font-weight:400;
+                color:black !important;
+                line-height:34px;
+                padding:0px 20px;
               }
-
               .SubmitButton{
                   margin:10px 0px;
                   margin-bottom:10px;
@@ -345,6 +342,7 @@ const Component3 = styled.div`
     @media only screen and (max-width:786px){
         .UserRequestPar{
             .buttonPar{
+                flex-direction:column;
                 .SubmitButton {
                     width:100%;
                 }

@@ -21,7 +21,7 @@ function TableFiveDetails() {
 
             {addItem.map((el,i)=>{
                 return(
-                    <div id={i}  className="GetItemAdd DetailPar" key={i}>
+                    <div id={i}  className="GetItemAdd55 DetailPar" key={i}>
                     <div className="Title"> {i + 1} . БҮТЭЭН БАЙГУУЛАЛТЫН ҮЕ ШАТ :</div>
                     <div className="formOneParent">
                         <div className="inputPar">
@@ -29,7 +29,7 @@ function TableFiveDetails() {
                                 <div className="labels"><span>Асуудал :</span> </div>
                                 <div className="name"> <VscOpenPreview />
                                     <div className="form__group">
-                                        <input type="text" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
+                                        <input type="text" className={`PASS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
                                         <label for="name" className=" form__label">Асуудал</label>
                                     </div>
                                 </div>
@@ -39,7 +39,7 @@ function TableFiveDetails() {
                                 <div className="labels"><span>Нөлөөллийг бууруулах арга хэмжээ :</span> </div>
                                 <div className="name"> <VscChecklist />
                                     <div className="form__group">
-                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce" required />
+                                        <input type="input" className={`PASS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce" required />
                                         <label for="name" className=" form__label">Нөлөөллийг бууруулах арга хэмжээ</label>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@ function TableFiveDetails() {
                                 <div className="labels"><span>Холбогдох стандартууд :</span> </div>
                                 <div className="name"> <VscCloudDownload />
                                     <div className="form__group">
-                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard-mgl" required />
+                                        <input type="input" className={`PASS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard-mgl" required />
                                         <label for="name" className=" form__label">Монгол улс</label>
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@ function TableFiveDetails() {
                                 <div className="labels"><span>Холбогдох стандартууд :</span> </div>
                                 <div className="name"> <VscCloudUpload />
                                     <div className="form__group">
-                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard-world" required />
+                                        <input type="input" className={`PASS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard-world" required />
                                         <label for="name" className=" form__label">Дэлхийн банк</label>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@ function TableFiveDetails() {
                                 <div className="labels"><span>Нөлөөллийг бууруулах үйл ажиллагааны зардал :</span> </div>
                                 <div className="name"> <VscFoldDown />
                                     <div className="form__group">
-                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce-cost" required />
+                                        <input type="input" className={`PASS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce-cost" required />
                                         <label for="name" className=" form__label">Үйл ажиллагааны зардал</label>
                                     </div>
                                 </div>
@@ -84,7 +84,7 @@ function TableFiveDetails() {
                                 <div className="labels"><span>Хариуцах эзэн :</span> </div>
                                 <div className="name"> <VscAccount />
                                     <div className="form__group">
-                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
+                                        <input type="input" className={`PASS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
                                         <label for="name" className=" form__label">Хариуцах эзэн</label>
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@ function TableFiveDetails() {
                                 <div className="labels"><span>Эхлэх хугацаа :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31' className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
+                                        <input type="date" max='3000-12-31' className={`PASS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
                                         <label for="name"  className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@ function TableFiveDetails() {
                                 <div className="labels"><span>Дуусах хугацаа :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31'  className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
+                                        <input type="date" max='3000-12-31'  className={`PASS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
                                         <label for="name" className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>

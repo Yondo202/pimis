@@ -18,7 +18,7 @@ function TableSixDetails2() {
         <Component3Detail>
             {addItem.map((el,i)=>{
                 return(
-                    <div id={i}  className="GetItemAdd2 DetailPar" key={i}>
+                    <div id={i}  className="GetItemAdd666 DetailPar" key={i}>
                     <div className="Title"> {i + 1} . ҮЙЛ АЖИЛЛАГААНЫ ҮЕ ШАТ :</div>
                     <div className="formOneParent">
                         <div className="inputPar">
@@ -26,7 +26,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Ямар өгөгдөхүүнийг хэмжих	:</span> </div>
                                 <div className="name"> <VscOpenPreview />
                                     <div className="form__group">
-                                        <input type="text" className={`APS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="messure" required />
+                                        <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="messure" required />
                                         <label for="name" className=" form__label">Ямар өгөгдөхүүнийг хэмжих</label>
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Хаана өгөгдөхүүнийг хэмжих :</span> </div>
                                 <div className="name"> <VscChecklist />
                                     <div className="form__group">
-                                        <input type="input" className={`APS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where-messure" required />
+                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where-messure" required />
                                         <label for="name" className=" form__label">Хаана өгөгдөхүүнийг хэмжих</label>
                                     </div>
                                 </div>
@@ -47,7 +47,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>өгөгдөхүүнд мониторинг хийх (ашиглах тоног төхөөрөмж)	 :</span> </div>
                                 <div className="name"> <VscCloudDownload />
                                     <div className="form__group">
-                                        <input type="input" className={`APS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
+                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
                                         <label for="name" className=" form__label">Хэрхэн</label>
                                     </div>
                                 </div>
@@ -57,7 +57,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Мониторингийн давтамж буюу үргэлжлэх байдал :</span> </div>
                                 <div className="name"> <VscCloudUpload />
                                     <div className="form__group">
-                                        <input type="input" className={`APS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor-duration" required />
+                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor-duration" required />
                                         <label for="name" className=" form__label">Хэзээ</label>
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Тоног төхөөрөмжийн зардал буюу гүйцэтгэгчийн төлбөр :</span> </div>
                                 <div className="name"> <VscFoldDown />
                                     <div className="form__group">
-                                        <input type="input" className={`APS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce-cost" required />
+                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce-cost" required />
                                         <label for="name" className=" form__label">Мониторингийн зардал </label>
                                     </div>
                                 </div>
@@ -81,7 +81,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Хариуцах эзэн :</span> </div>
                                 <div className="name"> <VscAccount />
                                     <div className="form__group">
-                                        <input type="input" className={`APS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
+                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
                                         <label for="name" className=" form__label">Хариуцах эзэн</label>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Эхлэх хугацаа :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31' className={`APS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
+                                        <input type="date" max='3000-12-31' className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
                                         <label for="name"  className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
@@ -102,7 +102,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Дуусах хугацаа :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31'  className={`APS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
+                                        <input type="date" max='3000-12-31'  className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
                                         <label for="name" className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>

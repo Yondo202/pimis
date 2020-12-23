@@ -14,7 +14,6 @@ function TableTwo() {
     const [FinalErrorText, setFinalErrorText] = useState("");
 
     const clickHandles = (e) =>{
-        StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
         // scroll.scrollTo(0);
 
         let finalOne = {};
@@ -86,7 +85,7 @@ function TableTwo() {
         if(conditionFinal.length < 27){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
             setOpacity2("1");
-            scroll.scrollTo(0);
+            // scroll.scrollTo(0);
         }else if(userInp.name === "" || userInp.date === ""){
             setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
             setOpacity2("1");
@@ -99,6 +98,8 @@ function TableTwo() {
             // StyleContext.StyleComp("-200%", "-100%", "0%");
             // scroll.scrollTo(0);
         }
+        StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
+
         // console.log(finalEnd, "final");
     }
    
@@ -194,7 +195,6 @@ function TableTwo() {
                                             </div>
                                     </div>
                                 </div>
-                               
                             </div>
                         </div>
                         <div className="buttonPar">
@@ -509,11 +509,17 @@ const Component2 = styled.div`
                 flex-direction:row;
                 align-items:center;
                 justify-content:space-between;
+               
                   .errtext{
-                    font-weght:500;
-                    font-size:18px;
                     transition:all 0.4s ease;
-                    color:rgba(255,0,0.6);
+                    text-align:center;
+                    background-color: #f6c343;
+                    border-radius:5px;
+                    font-size:15px !important;
+                    font-weight:400;
+                    color:black !important;
+                    line-height:34px;
+                    padding:0px 20px;
                   }
   
                   .SubmitButton{
@@ -605,10 +611,26 @@ const Component2 = styled.div`
 
     @media only screen and (max-width:768px){
         .shadow{
+            .UserRequestPar{
+                .buttonPar{
+                    flex-direction:column;
+                    .SubmitButton{
+                        width:100%;
+                    }
+                }
+                .inputPar{
+                    .NextChild{
+                        flex-direction:column;
+                        .next{
+                            width:100%;
+                        }
+                    }
+                }
+            }
             .MainContPar{
                 .ChildPar{
                     .inpChild{
-                        padding: 0px 15px;
+                        padding: 10px 15px;
                     }
                 }
             }

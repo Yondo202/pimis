@@ -21,7 +21,7 @@ function TableSixDetails() {
 
             {addItem.map((el,i)=>{
                 return(
-                    <div id={i}  className="GetItemAdd DetailPar" key={i}>
+                    <div id={i}  className="GetItemAdd66 DetailPar" key={i}>
                     <div className="Title"> {i + 1} . БҮТЭЭН БАЙГУУЛАЛТЫН ҮЕ ШАТ :</div>
                     <div className="formOneParent">
                         <div className="inputPar">

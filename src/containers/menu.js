@@ -3,11 +3,12 @@ import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import { fontFamily,ColorRgb } from '../components/theme';
-import {IoIosLogOut} from 'react-icons/io'
-import {CgProfile} from 'react-icons/cg'
-import {IoNotificationsOutline} from 'react-icons/io5'
+import {IoIosLogOut} from 'react-icons/io';
+import {CgProfile} from 'react-icons/cg';
+import {IoNotificationsOutline} from 'react-icons/io5';
 import { useLocation } from 'react-router-dom';
-import HamburgerMenu from 'react-hamburger-menu'
+import HamburgerMenu from 'react-hamburger-menu';
+
 
 function Menu(props) {
     const location = useLocation();
@@ -29,14 +30,12 @@ function Menu(props) {
       close(!open);
     }
 
-    const handleClickMenus = () => {
-      close(!open);
-    }
-
     const clickhandle = ()=>{
       userCtx.logout();
       window.location.reload(false);
     };
+
+  
 
     useEffect(() => {
       const currentPath = location.pathname;
@@ -408,7 +407,8 @@ const Componentss = styled.div`
           justify-content:space;
           padding-right:100%;
           height:25%;
-          transition:all 1s ease;
+          transition:padding-right 1s ease, opacity 1.4s ease;
+          // transition-delay: 10s
           opacity:0;
           .items{
             font-size:22px;

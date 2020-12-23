@@ -18,80 +18,62 @@ function TableFive() {
     const clickHandles = () => {
         let finalOne = {};
         let finalEnd = {};
-        let rs2 = document.querySelectorAll(".GetItemAdd1");
+        let rs2 = document.querySelectorAll(".GetItemAdd55");
         let arr2 = Array.from(rs2);
         let finalOne2 = [];
-        arr2.map(element=>{
-            let soloObject2 = {}
-            let field = element.id;
-            let value = {};
-            soloObject2[field] = value;
-            finalOne2.push(soloObject2);
-        });
 
-      finalOne2.map((el,i)=>{
-            const Lala = []
-            let rs2 = document.querySelectorAll(`.PAS${i + 1}`);
+        let tableCondition1 = [];
+        arr2.map((el,i)=>{
+            const Lala = {}
+            let rs2 = document.querySelectorAll(`.PASS${i + 1}`);
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
                 if(el.value !== ""){
-                    let soloObject2 = {}
                     let field = el.name;
                     let value = el.value;
-                    soloObject2[field] = value;
-                    Lala.push(soloObject2);
-                }else{
-                    return false
+                    Lala[field] = value;
                 }
             });
-              el[`pps${i + 1}`] = Lala;
+              tableCondition1.push(Lala);
+              finalOne2.push(Lala);
         });
 
+        let keys1 = Object.keys(tableCondition1[0]);
+        console.log(keys1.length, "my length");
 
-        let rs22 = document.querySelectorAll(".GetItemAdd2");
+        let tableCondition2 = [];
+        let rs22 = document.querySelectorAll(".GetItemAdd555");
         let arr22 = Array.from(rs22);
         let finalOne22 = [];
-        arr22.map(element=>{
-            let soloObject2 = {}
-            let field = element.id;
-            let value = {};
-            soloObject2[field] = value;
-            finalOne22.push(soloObject2);
-        });
-
-      finalOne22.map((el,i)=>{
-            const Lala = []
-            let rs2 = document.querySelectorAll(`.APS${i + 1}`);
+        arr22.map((el,i)=>{
+            const Lala = {}
+            let rs2 = document.querySelectorAll(`.passa${i + 1}`);
             let arr23 = Array.from(rs2);
-
             arr23.map((el,i)=>{
                 if(el.value !== ""){
-                    let soloObject2 = {}
                     let field = el.name;
                     let value = el.value;
-                    soloObject2[field] = value;
-                    Lala.push(soloObject2);
-                }else{
-                    return false
+                    Lala[field] = value;
                 }
             });
-
-              el[`pps${i + 1}`] = Lala;
+            tableCondition2.push(Lala);
+            finalOne22.push(Lala);
         });
+        let keys2 = Object.keys(tableCondition2[0]);
+        console.log(keys2.length , "keys2");
 
-        let rs4 = document.querySelectorAll(".getUserInp2");
+
+        let rs4 = document.querySelectorAll(".getUserInp222");
         let arr4 = Array.from(rs4);
         let userInp = {};
-
-        let confirm = document.getElementById("GetcheckBtn5").checked;
-
         arr4.map(element=>{
             let field = element.name;
             let value = element.value;
             userInp[field] = value;
         });
-        console.log(finalOne2[0].pps1.length, "one");
-        console.log(finalOne22[0].pps1.length, "Twoone");
+
+        let confirm = document.getElementById("GetcheckBtn5").checked;
+        console.log(confirm, "my confirm");
 
         finalOne["requestOne"] = finalOne2;
         finalOne["requestTwo"] = finalOne22;
@@ -101,7 +83,8 @@ function TableFive() {
         finalEnd["PPS5"] = finalOne;
         console.log(finalEnd, "final");
         
-        if(finalOne2[0].pps1.length < 8 || finalOne22[0].pps1.length < 8){
+        
+        if(keys1.length < 8 || keys2.length < 8){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
             setOpacity2("1");
         }else if(userInp.name === "" || userInp.date === ""){
@@ -114,7 +97,6 @@ function TableFive() {
             setOpacity2("0");
             alert("gg");
         }
-        // StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%");
 
         StyleContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
         // scroll.scrollTo(0);
@@ -135,7 +117,7 @@ function TableFive() {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="getUserInp2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -147,7 +129,7 @@ function TableFive() {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
@@ -168,8 +150,6 @@ function TableFive() {
                         </div>
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                                {/* <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div> */}
-                                {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
                             <button onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                         </div>
             </div>
@@ -185,7 +165,7 @@ const Component3 = styled.div`
     transition: all 0.5s ease-out;
     font-family: ${fontFamily};
     margin-bottom:600px;
-    font-size:${fontSize} !important;
+    font-size:${fontSize};
   
 
 
@@ -367,11 +347,16 @@ const Component3 = styled.div`
             flex-direction:row;
             align-items:center;
             justify-content:space-between;
-              .errtext{
-                font-weght:500;
-                font-size:18px;
+            .errtext{
                 transition:all 0.4s ease;
-                color:rgba(255,0,0.6);
+                text-align:center;
+                background-color: #f6c343;
+                border-radius:5px;
+                font-size:15px !important;
+                font-weight:400;
+                color:black !important;
+                line-height:34px;
+                padding:0px 20px;
               }
 
               .SubmitButton{
@@ -424,6 +409,8 @@ const Component3 = styled.div`
     @media only screen and (max-width:786px){
         .UserRequestPar{
             .buttonPar{
+                display:flex;
+                flex-direction:column;
                 .SubmitButton {
                     width:100%;
                 }
