@@ -55,7 +55,8 @@ function TableThree() {
         finalOne["date"] = userInp.date;
         finalEnd["PPS3"] = finalOne;
 
-        console.log(finalEnd, "final");
+        // console.log(finalEnd, "final");
+        console.log(JSON.stringify(finalEnd));
 
         if(userInp.name === "" || userInp.date === ""){
             setOpacity2("1");

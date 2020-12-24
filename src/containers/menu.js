@@ -2,7 +2,7 @@ import React,{useEffect, useState,useContext} from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
-import { fontFamily,ColorRgb } from '../components/theme';
+import { fontFamily,ColorRgb, } from '../components/theme';
 import {IoIosLogOut} from 'react-icons/io';
 import {CgProfile} from 'react-icons/cg';
 import {IoNotificationsOutline} from 'react-icons/io5';
@@ -16,7 +16,7 @@ function Menu(props) {
     const [userId, setUserId] = useState();
     const [userName, setUserName] = useState();
     const [ diplayNone, setDisplayNone ] = useState("block");
-    const [ headerHeight, setheaderHeight ] = useState("70px");
+    const [ headerHeight, setheaderHeight ] = useState("50px");
     const [open, close] = useState('');
     
     useEffect(() => {
@@ -32,20 +32,20 @@ function Menu(props) {
 
     const clickhandle = ()=>{
       userCtx.logout();
-      window.location.reload(false);
+      setTimeout(()=>{
+        window.location.reload(false);
+      },600)
     };
-
-  
 
     useEffect(() => {
       const currentPath = location.pathname;
       console.log(currentPath);
-      if(currentPath !== "/"){
+      if(currentPath !== "/" && currentPath !== "/comp-request"){
         setDisplayNone("none");
-        setheaderHeight("70px");
+        setheaderHeight("50px");
       }else{
         setDisplayNone("block");
-        setheaderHeight("70px");
+        setheaderHeight("50px");
       }
     }, [location]);
 
@@ -97,11 +97,11 @@ function Menu(props) {
                                   <div className="line"></div>
                               </div>
                               <div className="items">
-                                <Link to="/comp-check">Шалгах</Link>
+                                <Link to="/comp-request">Хүсэлт</Link>
                                 <div className="line"></div>
                               </div>
                               <div className="items">
-                                <Link to="/comp-request">Хүсэлт</Link>
+                                <Link to="/comp-check">Шалгах</Link>
                                 <div className="line"></div>
                               </div>
                         </div>
@@ -113,6 +113,7 @@ function Menu(props) {
                         </div>
                 </span>
 
+
                 <div className="MobileMenu">
                     <label for="check" className="checkBtnHome">
                             <HamburgerMenu
@@ -123,7 +124,7 @@ function Menu(props) {
                                 strokeWidth={2}
                                 rotate={0}
                                 // color={this.state.color}
-                                color="black"
+                                color="white"
                                 borderRadius={0}
                                 animationDuration={0.5}
                             />
@@ -132,16 +133,12 @@ function Menu(props) {
                     <div></div>
                 </div>
             </div>
-          
-  
       </div>
     </Componentss>
   );
 }
 
 export default Menu;
-
-
 
 const Componentss = styled.div`
     font-family:${fontFamily};
@@ -176,7 +173,7 @@ const Componentss = styled.div`
     .MainMenus{
       position:relative;
       // border-top: 0.1px solid rgba(${ColorRgb}, 0.5);
-      background-color:white;
+      background-color:rgba(${ColorRgb});
       display:flex;
       flex-direction:row;
       align-items:center;
@@ -232,17 +229,17 @@ const Componentss = styled.div`
                   content: ""attr(content)"";
                   position:absolute;
                   top:-6px;
-                  right:-6px;
-                  width:18px;
-                  height:18px;
+                  right:-5px;
+                  width:16px;
+                  height:16px;
                   color:white;
                   border-radius:50%;
                   background-color:#ff0000;
                 }
                 svg{
                   margin-left:8px;
-                  font-size:28px;
-                  color:rgba(${ColorRgb},0.9);
+                  font-size:26px;
+                  color:rgba(255,255,255,0.9);
                   
                 }
               }
@@ -281,25 +278,24 @@ const Componentss = styled.div`
                   text-decoration: none !important;
                   svg{
                     margin-left:8px;
-                    font-size:28px;
-                    color:rgba(${ColorRgb},0.9);
+                    font-size:26px;
+                    color:rgba(255,255,255,0.9);
                   }
                 }
             }
             .Logout{
                 margin-left:8px;
-
               a {
                 font-weight:500;
                 display:flex;
                 align-items:center;
                 color:black;
                 text-decoration: none !important;
-                color:rgba(${ColorRgb},0.9);
+                color:rgba(255,255,255,0.9);
                 svg{
                   margin-left:4px;
                   font-size:22px;
-                  color:rgba(${ColorRgb},0.9);
+                  color:rgba(255,255,255,0.9);        
                 }
               }
             }
@@ -321,11 +317,11 @@ const Componentss = styled.div`
                     transition:all 0.4s ease;
                     height:2px;
                     width:100%;
-                    background-color:black;
+                    background-color:white;
                     transform:scale(0);
                 }
               a {
-                color:black;
+                color:white;
                 text-decoration: none !important;
               }
             }
@@ -346,7 +342,6 @@ const Componentss = styled.div`
       }
     }
 
-
     .MainMenus{
       position:relative;
       .MobileMenu{
@@ -361,14 +356,13 @@ const Componentss = styled.div`
           text-align:center;
         }
         .headLogoPar{
-            height:54px;
+            height:45px;
             img{
               height:100%;
 
             }
         }
       }
-     
       .menuPar{
         position:fixed;
         display:flex;
@@ -412,6 +406,9 @@ const Componentss = styled.div`
           opacity:0;
           .items{
             font-size:22px;
+            a{
+              color:black;
+            }
           }
         }
         .userMenuPar{
@@ -423,11 +420,22 @@ const Componentss = styled.div`
           align-items:flex-end;
           width: 100%;
           margin-bottom:22px;
+          .Logout{
+            a{
+              color:black;
+            }
+          }
+          .Notification{
+            a{
+              svg{
+                color:black;
+              }
+            }
+          }
           .UserNameMenu{
             display:none;
           }
         }
-
       }
     
        input[type=checkbox]:checked + span{

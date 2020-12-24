@@ -39,7 +39,6 @@ function MainHome() {
                         
                     </div>
                 </div>
-
                 <div style={{borderRight:`1px solid rgba(${ColorRgb},0.7)`}} className="col-md-6">
                 <div className="row">
                         {/* <div style={{borderRight:`1px solid rgba(${ColorRgb},0.2)`}} className="col-md-4">
@@ -188,7 +187,8 @@ const Container = styled.div`
 
         .header{
             margin-top:20px;
-            background-color: rgba(${ColorRgb});
+            background-color: rgba(${ColorRgb},0.9);
+            // background-color: rgb(255,255,255);
             .headItems{
                 display:flex;
                 align-items:center;

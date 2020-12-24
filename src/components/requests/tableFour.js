@@ -67,6 +67,7 @@ function TableFour() {
             const FinalProcent = Math.round(Procent);
 
             console.log(finalEnd , "pps4 final end");
+            // console.log(JSON.stringify(finalEnd));
 
             if(finalOne2.length < 15){
               setOpacity("1");

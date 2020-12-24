@@ -81,7 +81,9 @@ function TableFive() {
         finalOne["date"] = userInp.date;
         // finalOne["signature"] = trimmedDataURL;
         finalEnd["PPS5"] = finalOne;
+
         console.log(finalEnd, "final");
+        // console.log(JSON.stringify(finalEnd));
         
         
         if(keys1.length < 8 || keys2.length < 8){

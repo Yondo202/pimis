@@ -20,9 +20,6 @@ function Login() {
   // }, []);
   // console.log(userIdLocalStorage, "user id App js local storage");
 
-
-
-
     const userCtx = useContext(UserContext);
 
     const handleClick = (e) =>{

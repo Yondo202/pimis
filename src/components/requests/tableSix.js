@@ -83,11 +83,8 @@ function TableSix() {
         finalEnd["PPS6"] = finalOne;
 
         console.log(finalEnd, "final");
+        console.log(JSON.stringify(finalEnd));
         
-        // if(finalOne2[0].pps1.length < 8 || finalOne22[0].pps1.length < 8){
-        //     setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
-        //     setOpacity2("1");
-        // }
         if(keys1.length < 8 || keys2.length < 8){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
             setOpacity2("1");

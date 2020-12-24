@@ -89,7 +89,7 @@ function TableOne() {
               const Procent = keys.length * 100 / 13;
               const FinalProcent = Math.round(Procent);
 
-              console.log(finalEnd, "final one");
+              console.log(JSON.stringify(finalEnd));
 
 
               if(keys.length < 13){

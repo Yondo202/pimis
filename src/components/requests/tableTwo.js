@@ -15,52 +15,39 @@ function TableTwo() {
 
     const clickHandles = (e) =>{
         // scroll.scrollTo(0);
-
         let finalOne = {};
         let finalEnd = {};
         let rs2 = document.querySelectorAll(".GetItem");
-        // console.log(rs2,"myrs")
         let arr2 = Array.from(rs2);
         let finalOne2 = [];
-
-        arr2.map(element=>{
-              let soloObject2 = {}
-              let field = element.id;
-              let value = {};
-              soloObject2[field] = value;
-              finalOne2.push(soloObject2);
-        });
-
         let conditionFinal = []
         
-        finalOne2.map((el,i)=>{
-            const Lala = []
+        arr2.map((el,i)=>{
+            const Lala = {}
             let rs2 = document.querySelectorAll(`.PPS${i + 1}`);
             let arr23 = Array.from(rs2);
-
-            let condition = document.querySelectorAll(`.getItems${i + 1}`);
-            let arr44 = Array.from(condition);
-            arr44.map((el,i)=>{
+            arr23.map((el,i)=>{
                 if(el.value !== ""){
                     let conditionbefore = {}
                     let field = el.name;
                     let value = el.value;
-                    conditionbefore[field] = value;
-                    conditionFinal.push(conditionbefore);
+                    Lala[field] = value;
                 }else{
                     return false
                 }
             });
-            arr23.map((el,i)=>{
-                let soloObject2 = {}
-                let field = el.name;
-                let value = el.value;
-                soloObject2[field] = value;
-                Lala.push(soloObject2);
-            });
-
-              el[`pps${i + 1}`] = Lala;
+            finalOne2.push(Lala);
         });
+
+        let originalTest = []
+         finalOne2.map(el =>{
+          let  conditon1 = Object.keys(el)
+          console.log(conditon1);
+           if(conditon1.length === 4){
+                originalTest.push(el);
+           }
+        })
+        console.log(originalTest.length, "test");
 
         let rs4 = document.querySelectorAll(".getUser2");
         let arr4 = Array.from(rs4);
@@ -71,18 +58,16 @@ function TableTwo() {
             let value = element.value;
             userInp[field] = value;
         });
-
         let confirm = document.getElementById("GetcheckBtn2").checked;
-        console.log(confirm, "my checkbtn");
 
         finalOne["request"] = finalOne2;
         finalOne["name"] = userInp.name;
         finalOne["date"] = userInp.date;
         finalEnd["PPS2"] = finalOne;
 
-        console.log(finalEnd, "my all");
+        console.log(conditionFinal, "hevellee");
 
-        if(conditionFinal.length < 27){
+        if(originalTest.length < 9){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
             setOpacity2("1");
             // scroll.scrollTo(0);
@@ -95,12 +80,13 @@ function TableTwo() {
         }else{
             alert("gg");
             setOpacity2("0");
-            // StyleContext.StyleComp("-200%", "-100%", "0%");
             // scroll.scrollTo(0);
         }
         StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
 
-        // console.log(finalEnd, "final");
+        console.log(finalEnd, "my all");
+        // console.log(JSON.stringify(finalEnd), "myddd");
+
     }
    
     return (
@@ -150,7 +136,7 @@ function TableTwo() {
 
                                 <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> </div>
                                      <div className="name"> <FiUserCheck />  <div className="form__group">
-                                            <input type="file" className={`PPS${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="file" required />
+                                            <input type="file" accept=".xlsx,.xls/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={`PPS${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="file" required />
                                             <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
                                         </div></div> </div>
                                 </div>

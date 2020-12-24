@@ -11,7 +11,7 @@ import TableSix from './tableSix'
 import { Modal } from './MainModal/Modal';
 import { HelpStore } from '../../context/HelperContext'
 
-function MainRequest() {
+function MainRequest(props) {
     const [ showModal, setShowModal ] = useState(false);
     const ModalOpen = () => {
         console.log("dada");
@@ -21,7 +21,7 @@ function MainRequest() {
     // console.log(StyleContext.GlobalStyle , "my global style");
     return (
         <HelpStore>
-            <div><button onClick={ModalOpen} >Modal</button></div>
+            <div><button onClick={ModalOpen} >Modal</button>{props.dada}</div>
             <Modal showModal={showModal} setShowModal={setShowModal}  />
             <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
                 
