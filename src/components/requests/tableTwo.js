@@ -7,20 +7,53 @@ import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../context/UserContext'
+import axios from '../../axiosbase'
 
 function TableTwo() {
     const StyleContext  = useContext(UserContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
+    const [ fileData, setFileData ] = useState();
+    const [ fileSelect, setFileSelect ] = useState([]);
+    const handleFile =(e)=>{
+        // const data = new FormData();
+        // for(var x = 0; x<this.state.selectedFile.length; x++) {
+        //     data.append('file', this.state.selectedFile[x])
+        // }
+        // const files = []
+        // files.push(e.target.files[0]);
+
+        // setFileSelect(files);
+        // console.log(fileSelect, "my files");
+        console.log(e.target.files[0], "$$");
+        setFileData(e.target.files[0]);
+    }
 
     const clickHandles = (e) =>{
         // scroll.scrollTo(0);
+        
+        let getFile = document.querySelectorAll(".GetFilesData");
+        let myArr = Array.from(getFile);
+        console.log(myArr , "my arar");
+        const TestArr = [];
+
+        myArr.map((el,i)=>{
+            const myObject = {};
+            let value = el.files[0]
+            let field = el.name
+            myObject[field] = value;
+            TestArr.push(myObject);
+
+        });
+
+        console.log(TestArr, "my files");
+
+        e.preventDefault();
         let finalOne = {};
         let finalEnd = {};
         let rs2 = document.querySelectorAll(".GetItem");
         let arr2 = Array.from(rs2);
         let finalOne2 = [];
-        let conditionFinal = []
         
         arr2.map((el,i)=>{
             const Lala = {}
@@ -41,13 +74,14 @@ function TableTwo() {
 
         let originalTest = []
          finalOne2.map(el =>{
+         console.log(el, " my elementssss");
           let  conditon1 = Object.keys(el)
-          console.log(conditon1);
-           if(conditon1.length === 4){
+          console.log(conditon1.length);
+           if(conditon1.length === 3){
                 originalTest.push(el);
            }
         })
-        console.log(originalTest.length, "test");
+        // console.log(originalTest.length, "test");
 
         let rs4 = document.querySelectorAll(".getUser2");
         let arr4 = Array.from(rs4);
@@ -65,7 +99,7 @@ function TableTwo() {
         finalOne["date"] = userInp.date;
         finalEnd["PPS2"] = finalOne;
 
-        console.log(conditionFinal, "hevellee");
+        // console.log(conditionFinal, "hevellee");
 
         if(originalTest.length < 9){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
@@ -80,14 +114,23 @@ function TableTwo() {
         }else{
             alert("gg");
             setOpacity2("0");
+            axios.put("pps-request", finalEnd).then((res)=>{
+                console.log(res, "res");
+              }).catch((err)=>{
+                console.log(err, "err");
+              })
             // scroll.scrollTo(0);
         }
-        StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
+        // StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
 
         console.log(finalEnd, "my all");
         // console.log(JSON.stringify(finalEnd), "myddd");
-
+        console.log(fileData, "my file Data");
     }
+
+    // youtube.com/watch?v=PEGUFi9Sx-U
+
+    // https://www.youtube.com/watch?v=0TTa5Ulmgds
    
     return (
         <Component2 className="container">
@@ -124,19 +167,19 @@ function TableTwo() {
                                         <div className="col-md-6 col-sm-6 col-6"> 
                                             <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
                                                 <div className="name"><div className="form__group">
-                                                        <input max='3000-12-31' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="getDate" required />
+                                                        <input max='3000-31-12' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="getDate" required />
                                                         <label for="name" className=" form__label">Хүлээн авсан</label> </div></div> </div></div>
                                         <div className="col-md-6 col-sm-6 col-6 headLeftBorder"> 
                                             <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
                                                 <div className="name"><div className="form__group">
-                                                        <input max='3000-12-31' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="resentDate" required />
+                                                        <input max='3000-31-12' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="resentDate" required />
                                                         <label for="name" className=" form__label">Шинэчилсэн</label> </div> </div> </div>  </div>
                                               </div>
                                 </div>
 
                                 <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> </div>
                                      <div className="name"> <FiUserCheck />  <div className="form__group">
-                                            <input type="file" accept=".xlsx,.xls/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={`PPS${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="file" required />
+                                            <input type="file" onChange={(e)=>handleFile(e)} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={`GetFilesData LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="file" required />
                                             <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
                                         </div></div> </div>
                                 </div>
@@ -190,7 +233,6 @@ function TableTwo() {
                             <button id="myInput" onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                         </div>
             </div>
-
         </div>
         </Component2>
     )

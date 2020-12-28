@@ -1,7 +1,6 @@
 import React,{useEffect, useState, useRef, useContext} from 'react';
 import styled from 'styled-components'
 import { Link, animateScroll as scroll } from "react-scroll";
-import axios from'axios';
 import { fontFamily, textColor, ColorRgb, Color } from '../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
@@ -10,6 +9,7 @@ import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../context/UserContext'
 import {Modal} from './MainModal/Modal'
 import HelperContext from '../../context/HelperContext'
+import axios from '../../axiosbase'
 
 function TableOne() {
     const [opacity, setOpacity] = useState("0");
@@ -28,11 +28,8 @@ function TableOne() {
     const StyleContext = useContext(UserContext);
     const tablesContext = useContext(HelperContext);
     
-    useEffect(async () => {
-      const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=1&pageSize=3' );
-      const Data1 = result.data.data.docs[1]
-      setData(Data1); setDataDetal(Data1.questiondetails);
-    },[]);
+    // useEffect(async () => {
+    // },[]);
     // const openModal=()=> { setVisible(true);}
     // const closeModal=()=> { setVisible(false);}
     // const clear = () => sigCanvas.clear();
@@ -89,7 +86,8 @@ function TableOne() {
               const Procent = keys.length * 100 / 13;
               const FinalProcent = Math.round(Procent);
 
-              console.log(JSON.stringify(finalEnd));
+              // console.log(JSON.stringify(finalEnd));
+              console.log(finalEnd, "final end");
 
 
               if(keys.length < 13){
@@ -100,12 +98,10 @@ function TableOne() {
                   setOpacity("0");
                   setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү");
                   setOpacity2("1");
-                  // scroll.scrollTo(2000);
               }else if(confirm === false){
                 setOpacity("0");
                 setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
                 setOpacity2("1");
-                scroll.scrollTo(2000);
               }else{
                 setOpacity("0");
                 setOpacity2("0");
@@ -113,21 +109,30 @@ function TableOne() {
                 // scroll.scrollTo(0);
                 // alert("GG");
                 // StyleContext.StyleComp("-100%", "0%", "100%");
+                axios.post("pps-request", finalEnd).then((res)=>{
+                  console.log(res, "res");
+                }).catch((err)=>{
+                  console.log(err, "err");
+                })
+              // scroll.scrollTo(0);
             }
+            StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
+
+
             // else if(condition.length < 13){
             //     setOpacity("0");
             //     // setFinalErrorText("Та шалгуур хангахгүй байна...");
             //     setFinalTextScale("1");
             //     setOpacity2("0");
             // }
+            
               
-              StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
       }
 //   console.log(trimmedDataURL, "signature url");
     return (
         <Component1 className="container" >
             <div className="boxShadow">
-                <div className="rowHeader">1. {dataFinal.description}<span className="tseg">*</span></div>
+                <div className="rowHeader">1. Үйлдвэрлэгч нь дараах үйл ажиллагааг эрхэлдэг ба явуулдаг эсэх? <span className="tseg">*</span></div>
               <div className="formTwoParent ">
                 <div className="headerPar">
                     <div className="row" >
@@ -137,12 +142,12 @@ function TableOne() {
                     <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
                     </div>
                 </div>
-                {dataDetail.map((el, i)=>{
+                {dataOne.map((el, i)=>{
                     return(
                     <div className="headerParchild" key={i}>
                         <div className="row" >
                         <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
-                        <div className="texts col-md-8 col-sm-4 col-4">{el.description}</div>
+                        <div className="texts col-md-8 col-sm-4 col-4">{el.name}</div>
                         <div className="radios col-md-1 col-sm-3 col-3"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="unconcern"/></div>
                         <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="true"/></div>
                         <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="false"/></div>
@@ -181,7 +186,6 @@ function TableOne() {
                                         </div>
                                     </div>
 
-
                                     <div className="inpChild next">
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
                                             <div className="name"> <BiPen />
@@ -218,7 +222,7 @@ function TableOne() {
                             <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                         </div>
 
-                        {/* <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">Та шалгуур хангахгүй байна. </h6> </div> */}
+                    {/* <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">Та шалгуур хангахгүй байна. </h6> </div> */}
                     {/* <div >dadadad</div> */}
                     {/* <h5 className="finalText">{resText}</h5> */}
 
@@ -234,6 +238,48 @@ function TableOne() {
 }
 
 export default TableOne
+
+const dataOne = [
+  {
+      name: "Цэрэг армийн ямар нэг зэвсэг"
+  },
+  {
+      name: "Зэрлэг амьтан, ургамлын ховордсон төрөл зүйлийг олон улсын хэмжээнд худалдаалах тухай конвенц (CITES)-ийн хүрээнд хориглодог ан амьтан, ургамлын худалдаа"
+  },
+  {
+      name: "Байгаль, хүрээлэн буй орчинд генийн өөрчлөлтөд орсон организмуудыг гаргах"
+  },
+  {
+      name: "Хориглосон пестицид, хербицидийн үйлдвэрлэл, нийлүүлэлт, худалдаа"
+  },
+  {
+      name: "Далай тэнгист тороор загас барих"
+  },
+  {
+      name: "Цацраг идэвхт бүтээгдэхүүнүүд"
+  },
+  {
+      name: "Аюултай хог хаягдлын хадгалалт, боловсруулалт, зайлуулалт"
+  },
+  {
+      name: "Хлорфторт нүүрстөрөгчид, галлон болон Монреалийн протоколын хүрээнд зохицуулагддаг бусад бодисууд агуулсан тоног төхөөрөмж, хэрэгслийн үйлдвэрлэл"
+  },
+  {
+      name: "Олон хлорт бефенилиудын үзүүлэх нөлөө 0.005 %-аас хэтэрсэн агууламж бүхий цахилгаан хэрэгсэл, тоног төхөөрөмжийн үйлдвэрлэл"
+  },
+  {
+      name: "Шөрмөсөн чулуу агуулсан бүтээгдэхүүний үйлдвэрлэл"
+  },
+  {
+      name: "Цөмийн реакторууд, тэдгээрийн хэсгүүд"
+  },
+  {
+      name: "Тамхи (үйлдвэрлэлийн бус ба үйлдвэрлэлийн); Тамхины хатаасан навч боловсруулах машин"
+  },
+  {
+      name: "Уул уурхайн салбарт"
+  },
+]
 
 
 const Component1 = styled.div`
