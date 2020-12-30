@@ -1,40 +1,47 @@
 import React,{useEffect, useState, useRef, useContext} from 'react';
 import styled from 'styled-components'
 import { Link, animateScroll as scroll } from "react-scroll";
-import { fontFamily, textColor, ColorRgb, Color } from '../theme';
+import { fontFamily, textColor, ColorRgb, Color } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../context/UserContext'
-import {Modal} from './MainModal/Modal'
-import HelperContext from '../../context/HelperContext'
-import axios from '../../axiosbase'
+import UserContext from '../../../context/UserContext'
+import {Modal} from '../MainModal/Modal'
+import HelperContext from '../../../context/HelperContext'
+import axios from '../../../axiosbase'
 
 function TableOne() {
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
     const [ finalTextScale, setFinalTextScale] = useState('0');
-    // const [visible, setVisible] = useState(false);
     const [FinalErrorText, setFinalErrorText] = useState("");
+    const [ initialData, setInitialData ] = useState([]);
     const [dataFinal, setData] = useState({});
     const [dataDetail, setDataDetal] = useState([]);
     const [ text, setText ] = useState("dadada");
-    
-    // let [sigCanvas, setSigCanvas] = useState({});
-    // let [trimmedDataURL, setTrimmedDataURL] = useState(null);
+
+    useEffect(async ()=>{
+      const resData = await axios.get(`http://192.168.88.78:3000/api/pps-request/49`);
+      console.log(resData.data.data.ppsRequest1Details, "resss data");
+      const datas = resData.data.data.ppsRequest1Details
+      const finalData = []
+        dataOne.map((el,i)=>{
+          const iAdd =  i + 1
+          datas.map((elem, index)=>{ if(iAdd === elem.rownum){ el["id"] = elem.id; el["rvalue"] = elem.rvalue } })
+          finalData.push(el);
+        });
+      setInitialData(finalData);
+
+      console.log(finalData, "final Data");
+    },[]);
+
+    console.log(initialData, "initial data");
 
     const StyleContext = useContext(UserContext);
     const tablesContext = useContext(HelperContext);
-    
-    // useEffect(async () => {
-    // },[]);
-    // const openModal=()=> { setVisible(true);}
-    // const closeModal=()=> { setVisible(false);}
-    // const clear = () => sigCanvas.clear();
-    // const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png'));
-    // setTimeout(()=>{ closeModal() },1000) };
+
     const clickHandles = (e) =>{
               let finalOne = {};
               let finalEnd = {};
@@ -64,7 +71,6 @@ function TableOne() {
 
               tablesContext.TableControl(finalOne2);
 
-
               let rs4 = document.querySelectorAll(".getUserInp1");
               let arr4 = Array.from(rs4);
               let userInp = {};
@@ -74,23 +80,16 @@ function TableOne() {
                   let value = element.value;
                   userInp[field] = value;
               });
-              // console.log(userInp, "userInp");
               let confirm = document.getElementById("GetcheckBtn").checked;
-              // console.log(confirm, "my checkbtn");
 
               finalOne["request"] = finalOne2;
               finalOne["name"] = userInp.name;
               finalOne["date"] = userInp.date;
-              // finalOne["signature"] = trimmedDataURL;
-              // finalEnd["ppsRequest1Details"] = finalOne;
-              finalEnd["PPS1"] = finalOne;
+              finalEnd["ppsRequest1Detail"] = finalOne;
 
               let keys = Object.keys(finalOne2);
               const Procent = keys.length * 100 / 13;
               const FinalProcent = Math.round(Procent);
-
-              // console.log(JSON.stringify(finalEnd));
-
 
               if(keys.length < 13){
                 setOpacity("1");
@@ -114,9 +113,10 @@ function TableOne() {
                 }).catch((err)=>{
                   console.log(err, "err");
                 })
-                StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
-                scroll.scrollTo(0);
+                // scroll.scrollTo(0);
             }
+                StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
+
 
             console.log(finalEnd, "final end");
       }
@@ -135,13 +135,13 @@ function TableOne() {
                     <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
                     </div>
                 </div>
-                {dataOne.map((el, i)=>{
+                {initialData.map((el, i)=>{
                     return(
                       <div className="headerParchild" key={i}>
                           <div className="row" >
                           <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
                           <div className="texts col-md-8 col-sm-4 col-4">{el.name}</div>
-                          <div className="radios col-md-1 col-sm-3 col-3"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} checked value="unconcern"/></div>
+                          <div className="radios col-md-1 col-sm-3 col-3"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="unconcern"/></div>
                           <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="true"/></div>
                           <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="false"/></div>
                       </div>
@@ -184,34 +184,14 @@ function TableOne() {
                                             <div className="name"> <BiPen />
                                                 <div className="form__group">
                                                     <input id="GetcheckBtn" className="checkBtn" type="checkbox" name="check" />
-                                                 
-                                                  {/* <label for="check">dada</label> */}
-                                                    {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
                                                 </div>
                                             </div>
                                     </div>
                                 </div>
-                                
-                                {/* {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
-
-                                <Modal visible={visible}  width="420" height="300"effect="fadeInDown" onClickAway={closeModal}>
-                                    <div className="modalPar">
-                                        <div className="Canvass">
-                                            <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 420, height: 200, className: 'sigCanvas'}} />
-                                        </div>
-                                        <div className="BtnPar">
-                                            <button onClick={clear}>Цэвэрлэх</button>
-                                            <button onClick={trim}>Хадгалах</button>
-                                            <button onClick={closeModal}>X</button>
-                                        </div>
-                                    </div>
-                                </Modal> */}
                             </div>
                         </div>
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                                {/* <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div> */}
-                                {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
                             <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                         </div>
 
@@ -319,37 +299,6 @@ const Component1 = styled.div`
                    align-items:flex;
                    justify-content:center;
                    padding-top:15px;
-
-                   .modalPar{
-                       padding:5px 5px;
-                      .Canvass{
-                          border:1px solid rgba(${ColorRgb},0.5);
-                      }
-                       .BtnPar{
-                          padding:0px 10px;
-                          margin:20px 0px;
-                          display:flex;
-                          flex-direction:row;
-                          align-items:center;
-                          justify-content:space-between;
-                          button{
-                              font-weight:500;
-                              color:rgba(${textColor},0.9);
-                              cursor:pointer;
-                              border-style:none;
-                              border-radius:4px;
-                              padding:6px 14px;
-                              background-color:white;
-                              box-shadow:1px 1px 8px -2px;
-                          }
-                       }
-                   }
-                   .SingatureImg{
-                        margin:10px 0px;
-                        border:1px solid rgba(${ColorRgb},0.3);
-                        height:200px;
-                        width:420px;
-                   }
                    .NextChild{
                        display:flex;
                        flex-direction:row;
@@ -644,15 +593,6 @@ const Component1 = styled.div`
             .UserRequestPar{
                 padding: 15px 15px;
                 .inputPar{
-                  .modalPar{
-                    .BtnPar{
-                      width:100%;
-                      justify-content: center;
-                      button{
-                        margin-right:18px;
-                      }
-                    }
-                  }
                     .NextChild{
                         flex-direction: column;
                         .next{ width:100%;}

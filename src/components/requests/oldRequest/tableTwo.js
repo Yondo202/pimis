@@ -1,14 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react'
 import styled from 'styled-components'
 import { Link, animateScroll as scroll } from "react-scroll";
-import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
+import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../context/UserContext'
-import HelperContext from '../../context/HelperContext'
-import axios from '../../axiosbase'
+import UserContext from '../../../context/UserContext'
+import HelperContext from '../../../context/HelperContext'
+import axios from '../../../axiosbase'
 
 function TableTwo() {
     const StyleContext  = useContext(UserContext);
@@ -89,7 +89,7 @@ function TableTwo() {
         finalOne["request"] = finalOne2;
         finalOne["name"] = userInp.name;
         finalOne["date"] = userInp.date;
-        finalEnd["PPS2"] = finalOne;
+        finalEnd["ppsRequest2Detail"] = finalOne;
 
         // console.log(conditionFinal, "hevellee");
 
@@ -124,8 +124,8 @@ function TableTwo() {
                       console.log(res, 'ress');
                   }).catch((err)=> console.log(err))
                 });
-            // StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
-            // scroll.scrollTo(0);
+            StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
+            scroll.scrollTo(0);
         }
         
         console.log(finalEnd, "my all");

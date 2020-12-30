@@ -9,16 +9,23 @@ const initialSee = { tableOneData : {}, tableTwoData: {}, tableThree : {}, table
 export const HelpStore = (props) =>{
 
     const [ tableSee, setTableSee ] = useState(initialSee);
+    const [ tableId, setTableId ] = useState(null);
     
     const TableControl = (valueOne)=>{
         setTableSee({tableOneData: valueOne});
+    }
+    const TableIdControl = (tableId) => {
+        console.log(tableId, " $$ global tableID $$");
+        setTableId(tableId);
     }
 
     return (
        <HelperContext.Provider
         value = {{
              tableSee,
-             TableControl
+             TableControl,
+             TableIdControl,
+             tableId
         }}
         >
        {props.children}    
