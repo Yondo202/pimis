@@ -40,7 +40,7 @@ function TableThreeDetails() {
                                 <div className="labels"><span>Огноо :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="date" required />
+                                        <input type="date" max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
                                         <label for="name" className=" form__label">Огноо</label>
                                     </div>
                                 </div>
@@ -61,7 +61,7 @@ function TableThreeDetails() {
                                 <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
                                 <div className="name"> <FiUserCheck />
                                     <div className="form__group">
-                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
+                                        <input type="date" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
                                         <label for="name" className=" form__label">огноо тус бүрээр</label>
                                     </div>
                                 </div>

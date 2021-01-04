@@ -11,59 +11,67 @@ import {Modal} from '../MainModal/Modal'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 
-function TableOne() {
+function TableOne(props) {
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
-    const [ finalTextScale, setFinalTextScale] = useState('0');
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [ initialData, setInitialData ] = useState([]);
-    const [dataFinal, setData] = useState({});
-    const [dataDetail, setDataDetal] = useState([]);
-    const [ text, setText ] = useState("dadada");
+    const [ Dname, setDname] = useState("");
+    const [Ddate, setDdate] = useState("");
 
-    useEffect(async ()=>{
-      const resData = await axios.get(`http://192.168.88.78:3000/api/pps-request/49`);
-      console.log(resData.data.data.ppsRequest1Details, "resss data");
-      const datas = resData.data.data.ppsRequest1Details
+    useEffect(()=>{
       const finalData = []
-        dataOne.map((el,i)=>{
-          const iAdd =  i + 1
-          datas.map((elem, index)=>{ if(iAdd === elem.rownum){ el["id"] = elem.id; el["rvalue"] = elem.rvalue } })
-          finalData.push(el);
-        });
+      dataOne.map((el,i)=>{
+        props.initialData.map(elem=>{ if(i + 1 === elem.rownum){ el["id"] = elem.id; el["rvalue"] = elem.rvalue; el["rownum"] = elem.rownum } });
+        finalData.push(el);
+      });
       setInitialData(finalData);
-
-      console.log(finalData, "final Data");
+      setDname(props.initialName);
+      setDdate(props.initialDate);
     },[]);
-
-    console.log(initialData, "initial data");
+   
+    // console.log(initialData, "initial dataaaaaaaaaa");
 
     const StyleContext = useContext(UserContext);
     const tablesContext = useContext(HelperContext);
 
-    const clickHandles = (e) =>{
+
+    // const handleChecked = (e) => {
+    //   console.log(e.target.id);
+    //   console.log(e.target.value);
+    //   const data = initialData.map((el,i)=>{
+    //     if(el.id === e.target.id){
+    //       el["rvalue"] = e.target.value
+    //     }
+    //   })
+    //   // setInitialData(data);
+    // }
+
+    console.log(initialData, "my initial");
+    const changeHandle = (e) =>{
+      setDname(e.target.value);
+    }
+    const changeHandleDate = (e)=>{
+      setDdate(e.target.value);
+    }
+
+    const clickHandles = async (e) =>{
               let finalOne = {};
               let finalEnd = {};
               let rs2 = document.querySelectorAll(".inpTest3");
               let arr2 = Array.from(rs2);
               let finalOne2 = [];
-              let condition = [];
 
               arr2.map(element=>{
                   if(element.checked === true){
                     let soloObject2 = {}
-                    let field = element.name;
+                    let rownum = element.name;
                     let value = element.value;
-                    soloObject2[field] = value;
+                    soloObject2["id"] = element.id;
+                    soloObject2["rvalue"] = value;
+                    soloObject2["rownum"] = rownum;
                     finalOne2.push(soloObject2);
-                  }
-                  if(element.checked === true && element.value !== "true"){
-                    let soloObject2 = {}
-                    let field = element.name;
-                    let value = element.value;
-                    soloObject2[field] = value;
-                    condition.push(soloObject2);
                   }
               });
 
@@ -80,12 +88,12 @@ function TableOne() {
                   let value = element.value;
                   userInp[field] = value;
               });
-              let confirm = document.getElementById("GetcheckBtn").checked;
+              // let confirm = document.getElementById("GetcheckBtn").checked;
 
               finalOne["request"] = finalOne2;
               finalOne["name"] = userInp.name;
               finalOne["date"] = userInp.date;
-              finalEnd["ppsRequest1Detail"] = finalOne;
+              finalEnd["PPS1"] = finalOne;
 
               let keys = Object.keys(finalOne2);
               const Procent = keys.length * 100 / 13;
@@ -94,30 +102,44 @@ function TableOne() {
               if(keys.length < 13){
                 setOpacity("1");
                 setProcent(FinalProcent);
-                scroll.scrollTo(0);
+                // scroll.scrollTo(0);
               }else if(userInp.name === "" || userInp.date === ""){
                   setOpacity("0");
                   setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү");
                   setOpacity2("1");
-              }else if(confirm === false){
-                setOpacity("0");
-                setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
-                setOpacity2("1");
               }else{
                 setOpacity("0");
                 setOpacity2("0");
-                setFinalTextScale("0");
-                axios.post("pps-request", finalEnd).then((res)=>{
+               await axios.put("pps-request/60", finalEnd).then((res)=>{
                   console.log(res, "res");
-                  tablesContext.TableIdControl(res.data.data.id);
+                  // tablesContext.TableIdControl(res.data.data.id);
                 }).catch((err)=>{
                   console.log(err, "err");
-                })
-                // scroll.scrollTo(0);
-            }
+                });
+                scroll.scrollTo(0);
+
+                // const resData = await axios.get(`http://192.168.88.78:3000/api/pps-request/60`);
+                // const finalData = []
+                //   dataOne.map((el,i)=>{
+                //     resData.data.data.ppsRequest1Details.map(elem=>{ if(i + 1 === elem.rownum){ el["id"] = elem.id; el["rvalue"] = elem.rvalue; el["rownum"] = elem.rownum } })
+                //     finalData.push(el);
+                //   });
+                // setInitialData(finalData);
+                // setDname(resData.data.data.name1);
+                // setDdate(resData.data.data.date1);
                 StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
 
+            }
 
+              // else if(confirm === false){
+              //   setOpacity("0");
+              //   setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
+              //   setOpacity2("1");
+              // }
+            
+
+
+            // console.log(JSON.stringify(finalEnd));
             console.log(finalEnd, "final end");
       }
 
@@ -127,33 +149,8 @@ function TableOne() {
             <div className="boxShadow">
                 <div className="rowHeader">1. Үйлдвэрлэгч нь дараах үйл ажиллагааг эрхэлдэг ба явуулдаг эсэх? <span className="tseg">*</span></div>
               <div className="formTwoParent ">
-                <div className="headerPar">
-                    <div className="row" >
-                    <div className="head1 col-md-9 col-sm-5 col-5">Шалгуур</div>
-                    <div className="head2 col-md-1 col-sm-3 col-3">Хамаарахгүй</div>
-                    <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
-                    <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
-                    </div>
-                </div>
-                {initialData.map((el, i)=>{
-                    return(
-                      <div className="headerParchild" key={i}>
-                          <div className="row" >
-                          <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
-                          <div className="texts col-md-8 col-sm-4 col-4">{el.name}</div>
-                          <div className="radios col-md-1 col-sm-3 col-3"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="unconcern"/></div>
-                          <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="true"/></div>
-                          <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="false"/></div>
-                      </div>
-                    </div>
-                    )
-                })}
-                <div className="FinalBtn">
-                    <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
-                    <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
-                </div>
 
-                <div className="UserRequestPar">
+              <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
                         <div className="formOneParent">
@@ -162,8 +159,8 @@ function TableOne() {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="getUserInp1 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                            <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
+                                            <input type="text" value={Dname} onChange={changeHandle} className="getUserInp1 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" />
+                                            <label for="name"  className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
                                 </div>
@@ -173,33 +170,59 @@ function TableOne() {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp1 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" value={Ddate} onChange={changeHandleDate} max='3000-12-31' placeholder="өдөр-сар-жил" va className="getUserInp1 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div className="inpChild next">
+                                    {/* <div className="inpChild next">
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
                                             <div className="name"> <BiPen />
                                                 <div className="form__group">
                                                     <input id="GetcheckBtn" className="checkBtn" type="checkbox" name="check" />
                                                 </div>
                                             </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
-                        <div className="buttonPar">
+                </div>
+                <div className="headerPar">
+                    <div className="row" >
+                    <div className="head1 col-md-9 col-sm-5 col-5">Шалгуур</div>
+                    <div className="head2 col-md-1 col-sm-3 col-3">Хамаарахгүй</div>
+                    <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
+                    <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
+                    </div>
+                </div>
+                
+                {initialData.map((el, i)=>{
+                    return(
+                      <div className="headerParchild" key={i}>
+                          <div className="row" >
+                          <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
+                          <div className="texts col-md-8 col-sm-4 col-4">{el.name}</div>
+
+                          <div className="radios col-md-1 col-sm-3 col-3"> {el.rvalue === "unconcern" ? <input id={el.id} className={`getinput22 inpTest3`} type="radio" name={i + 1} checked={"unconcern"} value="unconcern"/>:<input id={el.id} className={`getinput22 inpTest3`} type="radio"  name={i + 1}  value="unconcern"/> } </div>
+                          <div className="radios col-md-1 col-sm-2 col-2">{el.rvalue === "true" ? <input className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={"true"} value="true"/> : <input className={`getinput22 inpTest3`} id={el.id}  type="radio" name={i + 1} value="true"/> }</div>
+                          <div className="radios col-md-1 col-sm-2 col-2">{el.rvalue === "false" ? <input className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={"false"} value="false"/>: <input className={`getinput22 inpTest3`} id={el.id}  type="radio" name={i + 1} value="false"/>}</div>
+                      </div>
+                    </div>
+                    )
+                })}
+
+
+                <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                             <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
-                        </div>
-
-                    {/* <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">Та шалгуур хангахгүй байна. </h6> </div> */}
-                    {/* <div >dadadad</div> */}
-                    {/* <h5 className="finalText">{resText}</h5> */}
-
                 </div>
+
+                <div className="FinalBtn">
+                    <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
+                    <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
+                </div>
+
+           
              </div>
             </div>
 

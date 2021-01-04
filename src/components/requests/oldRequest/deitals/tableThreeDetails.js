@@ -1,109 +1,78 @@
 import React, { useState,useContext } from 'react'
 import styled from 'styled-components'
-import { textColor, ColorRgb } from '../../theme';
-import {GoCalendar} from 'react-icons/go'
-import {VscAccount,VscFoldDown,VscCloudUpload,VscCloudDownload,VscChecklist,VscOpenPreview} from 'react-icons/vsc'
+import { textColor, ColorRgb } from '../../../theme';
+import {FiUserCheck} from 'react-icons/fi'
+import {GoCalendar,GoMail} from 'react-icons/go'
+import {GiScales} from 'react-icons/gi'
 import {IoIosAddCircleOutline} from 'react-icons/io'
-import UserContext from '../../../context/UserContext'
+import UserContext from '../../../../context/UserContext'
 
-function TableSixDetails2() {
+function TableThreeDetails() {
     const StyleContext  = useContext(UserContext);
     const initialList = [{id: 1}];
     const [ addItem, setAddItem ] = useState(initialList);
+    const [ addStyle, setAddStyle ] = useState("0");
     const AddHandle = ()=>{
+        // console.log("nana");
+        StyleContext.StyleComp("-200%", "-100%", "0%", 100 + 100);
         const list = addItem.concat( {id: 1});
         setAddItem(list);
+        setTimeout(() => {
+            setAddStyle("1");
+           }, 50);
     }
     return (
         <Component3Detail>
+            <div className="rowHeader">3. Үйлдвэрлэгчийн байгаль орчин, нийгмийн удирдлагын гүйцэтгэлийн талаарх мэдээллийн товчоон<span className="tseg">*</span></div>
             {addItem.map((el,i)=>{
                 return(
-                    <div id={i}  className="GetItemAdd666 DetailPar" key={i}>
-                    <div className="Title"> {i + 1} . ҮЙЛ АЖИЛЛАГААНЫ ҮЕ ШАТ :</div>
+                    <div id={i}  className="GetItemAdd33 DetailPar" key={i}>
+                        <div className="topTitle">
+                            <div className="Title"> {i + 1} . Торгууль / Шийтгэл / Санал гомдлууд :</div>
+                            <div className="null">
+                                Байхгүй:
+                                <input className="checkBtn" type="checkbox" name="null" />
+                            </div>
+                        </div>
                     <div className="formOneParent">
                         <div className="inputPar">
                             <div className="inpChild">
-                                <div className="labels"><span>Ямар өгөгдөхүүнийг хэмжих	:</span> </div>
-                                <div className="name"> <VscOpenPreview />
-                                    <div className="form__group">
-                                        <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="messure" required />
-                                        <label for="name" className=" form__label">Ямар өгөгдөхүүнийг хэмжих</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="inpChild">
-                                <div className="labels"><span>Хаана өгөгдөхүүнийг хэмжих :</span> </div>
-                                <div className="name"> <VscChecklist />
-                                    <div className="form__group">
-                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where-messure" required />
-                                        <label for="name" className=" form__label">Хаана өгөгдөхүүнийг хэмжих</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="inputPar">
-                            <div className="inpChild">
-                                <div className="labels"><span>өгөгдөхүүнд мониторинг хийх (ашиглах тоног төхөөрөмж)	 :</span> </div>
-                                <div className="name"> <VscCloudDownload />
-                                    <div className="form__group">
-                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
-                                        <label for="name" className=" form__label">Хэрхэн</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="inpChild">
-                                <div className="labels"><span>Мониторингийн давтамж буюу үргэлжлэх байдал :</span> </div>
-                                <div className="name"> <VscCloudUpload />
-                                    <div className="form__group">
-                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor-duration" required />
-                                        <label for="name" className=" form__label">Хэзээ</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style={{borderStyle:"none"}} className="formOneParent">
-                        <div className="inputPar">
-                            <div className="inpChild">
-                                <div className="labels"><span>Тоног төхөөрөмжийн зардал буюу гүйцэтгэгчийн төлбөр :</span> </div>
-                                <div className="name"> <VscFoldDown />
-                                    <div className="form__group">
-                                        <input type="number" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
-                                        <label for="name" className=" form__label">Мониторингийн зардал </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="inpChild">
-                                <div className="labels"><span>Хариуцах эзэн :</span> </div>
-                                <div className="name"> <VscAccount />
-                                    <div className="form__group">
-                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
-                                        <label for="name" className=" form__label">Хариуцах эзэн</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="inputPar">
-                            <div className="inpChild">
-                                <div className="labels"><span>Эхлэх хугацаа :</span> </div>
+                                <div className="labels"><span>Огноо :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31' className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
-                                        <label for="name"  className=" form__label">Он-сар-өдөр</label>
+                                        <input type="date" max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
+                                        <label for="name" className=" form__label">Огноо</label>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="inpChild">
-                                <div className="labels"><span>Дуусах хугацаа :</span> </div>
-                                <div className="name"> <GoCalendar />
+                                <div className="labels"><span>Асуудлын мөн чанар :</span> </div>
+                                <div className="name"> <GiScales />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31'  className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
-                                        <label for="name" className=" form__label">Он-сар-өдөр</label>
+                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
+                                        <label for="name" className=" form__label">Асуудлын мөн чанар</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="inputPar">
+                            <div className="inpChild">
+                                <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
+                                <div className="name"> <FiUserCheck />
+                                    <div className="form__group">
+                                        <input type="date" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
+                                        <label for="name" className=" form__label">огноо тус бүрээр</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="inpChild">
+                                <div className="labels"><span>Санал :</span> </div>
+                                <div className="name"> <GoMail />
+                                    <div className="form__group">
+                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
+                                        <label for="name" className=" form__label">Санал</label>
                                     </div>
                                 </div>
                             </div>
@@ -112,19 +81,14 @@ function TableSixDetails2() {
                  </div>
                 )
             })}
-            
             <div className="AddItemBtn">
                 <IoIosAddCircleOutline onClick={AddHandle} />
             </div>
-
-            {/* <button >hahahaha</button> */}
-
-
         </Component3Detail>
     )
 }
 
-export default TableSixDetails2
+export default TableThreeDetails
 
 const Component3Detail = styled.div`
     background-color:white;
@@ -161,11 +125,31 @@ const Component3Detail = styled.div`
         background-color:white;
         margin-top:40px;
         transition:all 0.5s ease; 
-        .Title{
-            font-size:16px;  
-            font-weight:500;
-            margin-bottom:10px;
+        .topTitle{
+            display:flex;
+            flex-direction:row;
+            align-items:center;
+            justify-content:space-between;
+            .Title{
+                font-size:16px;  
+                font-weight:500;
+                margin-bottom:10px;
+            }
+            .null{
+                display:flex;
+                text-aling:center;
+                font-size:16px;  
+                font-weight:500;
+                margin-bottom:10px;
+                .checkBtn{
+                    margin-left:10px;
+                    cursor:pointer;
+                    width:22px;
+                    height:22px;
+                  }
+            }
         }
+        
         .description{
             margin-bottom:20px;
         }

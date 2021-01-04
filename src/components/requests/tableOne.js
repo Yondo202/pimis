@@ -41,22 +41,15 @@ function TableOne() {
               let rs2 = document.querySelectorAll(".inpTest3");
               let arr2 = Array.from(rs2);
               let finalOne2 = [];
-              let condition = [];
 
               arr2.map(element=>{
                   if(element.checked === true){
                     let soloObject2 = {}
                     let field = element.name;
                     let value = element.value;
-                    soloObject2[field] = value;
+                    soloObject2["rownum"] = field;
+                    soloObject2["rvalue"] = value;
                     finalOne2.push(soloObject2);
-                  }
-                  if(element.checked === true && element.value !== "true"){
-                    let soloObject2 = {}
-                    let field = element.name;
-                    let value = element.value;
-                    soloObject2[field] = value;
-                    condition.push(soloObject2);
                   }
               });
 
@@ -141,7 +134,7 @@ function TableOne() {
                           <div className="row" >
                           <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
                           <div className="texts col-md-8 col-sm-4 col-4">{el.name}</div>
-                          <div className="radios col-md-1 col-sm-3 col-3"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} checked value="unconcern"/></div>
+                          <div className="radios col-md-1 col-sm-3 col-3"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="unconcern"/></div>
                           <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="true"/></div>
                           <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="false"/></div>
                       </div>

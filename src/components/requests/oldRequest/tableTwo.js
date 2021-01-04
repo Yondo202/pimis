@@ -10,36 +10,99 @@ import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 
-function TableTwo() {
+function TableTwo(props) {
     const StyleContext  = useContext(UserContext);
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [ tablesId, setTablesID ] = useState([]);
+    const [ initialData, setInitialData ] = useState([]);
+    const [ Dname, setDname ] = useState("");
+    const [Ddate, setDdate] = useState("");
 
-    console.log(helperContext.tableId, "my table ID");
+    // console.log(helperContext.tableId, "my table ID");
+    useEffect(()=>{
+       const finalData = []
+       tableData.map((el,i)=>{
+           props.initialData.map((elem, index )=> {
+            if(i === index ){
+                el["name"] = elem.name;
+                el["recentDate"] = elem.recentDate
+                el["getDate"] = elem.getDate;
+                el["id"] = elem.id
+            }
+           })
+           finalData.push(el);
+       });
+       setDname(props.initialName);
+       setDdate(props.initialDate);
+       setInitialData(finalData);
+    },[]);
+    // console.log(initialData, " 222  my initial Data");
+
+
+    const onChangeHandle = (event) =>{
+        const finalData = []
+          tableData.map((el,i)=>{
+           props.initialData.map(elem=> elem);
+           finalData.push(el);
+       });
+        finalData.map((el, i )=>{
+            if(el.id.toString() === event.target.id){
+                 el["name"] = event.target.value
+            }
+        });
+       setInitialData(finalData);
+    }
+
+    const onChangeGetDate = (event) =>{
+        const finalData = []
+        tableData.map((el,i)=>{
+            props.initialData.map(elem=> elem);
+            finalData.push(el);
+        });
+        finalData.map((el, i )=>{
+            if(el.id.toString() === event.target.id){
+                el["getDate"] = event.target.value
+            }
+        });
+        setInitialData(finalData);
+    }
+
+    const onChangeRecentDate = (event) =>{
+        const finalData = []
+        tableData.map((el,i)=>{
+            props.initialData.map(elem=> elem);
+            finalData.push(el);
+        });
+        finalData.map((el, i )=>{
+            if(el.id.toString() === event.target.id){
+                el["recentDate"] = event.target.value
+            }
+        });
+        setInitialData(finalData);
+    }
+    const changeHandleName = (e) =>{
+        setDname(e.target.value);
+      }
+      const changeHandleDate = (e)=>{
+        setDdate(e.target.value);
+      }
+
 
     const clickHandles = (e) =>{
         // scroll.scrollTo(0);
-        
-        let getFile = document.querySelectorAll(".GetFilesData");
-        let myArr = Array.from(getFile);
-        const TestArr = [];
-        const ConditionFile = [];
-
-        myArr.map((el,i)=>{
-            let value = el.files[0]
-            if(value !== undefined){
-                ConditionFile.push(value);
-            }
-            tablesId.map((element, index)=>{
-                if( index === i ){value["tableId"] = element.id }
-            })
-            TestArr.push(value);
-        });
-        // console.log(ConditionFile.length, " ** condition length");
-        // console.log(TestArr, "my files");
-
+        // Хэрэгтэй
+        // let getFile = document.querySelectorAll(".GetFilesData");
+        // let myArr = Array.from(getFile);
+        // const TestArr = [];
+        // myArr.map((el,i)=>{
+        //     let value = el.files[0]
+        //     tablesId.map((element, index)=>{
+        //         if( index === i ){value["tableId"] = element.id }
+        //     })
+        //     TestArr.push(value);
+        // });
         e.preventDefault();
         let finalOne = {};
         let finalEnd = {};
@@ -53,9 +116,9 @@ function TableTwo() {
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
                 if(el.value !== ""){
-                    let conditionbefore = {}
                     let field = el.name;
                     let value = el.value;
+                    Lala["id"] = el.id
                     Lala[field] = value;
                 }else{
                     return false
@@ -64,12 +127,14 @@ function TableTwo() {
             finalOne2.push(Lala);
         });
 
+        // console.log(finalOne2, "jajajja")
+
         let originalTest = []
          finalOne2.map(el =>{
         //  console.log(el, " my elementssss");
           let  conditon1 = Object.keys(el)
         //   console.log(conditon1.length);
-           if(conditon1.length === 3){
+           if(conditon1.length === 4){
                 originalTest.push(el);
            }
         })
@@ -89,17 +154,14 @@ function TableTwo() {
         finalOne["request"] = finalOne2;
         finalOne["name"] = userInp.name;
         finalOne["date"] = userInp.date;
-        finalEnd["ppsRequest2Detail"] = finalOne;
+        finalEnd["PPS2"] = finalOne;
 
-        // console.log(conditionFinal, "hevellee");
+        console.log(originalTest.length, "hevellee");
 
         if(originalTest.length < 9){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
             setOpacity2("1");
             // scroll.scrollTo(0);
-        }else if(ConditionFile.length < 9){
-            setFinalErrorText("Баримт бичгүүдийг бүрэн хавсаргасан байх ёстой ");
-            setOpacity2("1");
         }else if(userInp.name === "" || userInp.date === ""){
             setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
             setOpacity2("1");
@@ -109,21 +171,22 @@ function TableTwo() {
         }else{
             alert("gg");
             setOpacity2("0");
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{
+            axios.put(`pps-request/60`, finalEnd).then((res)=>{
                 console.log(res, "res");
-                console.log(res.data.data.request2, " reqqq data");
-                setTablesID(res.data.data.request2);
+                // console.log(res.data.data.request2, " reqqq data");
+
+                // setTablesID(res.data.data.request2);
               }).catch((err)=>{
                 console.log(err, "err");
               });
 
-              TestArr.map((el,i)=>{
-                  const data = new FormData();
-                  data.append(el.name, el);
-                  axios.put(`pps-request/${el.tableId}/upload-pps2`, data).then((res)=>{
-                      console.log(res, 'ress');
-                  }).catch((err)=> console.log(err))
-                });
+            //   TestArr.map((el,i)=>{
+            //       const data = new FormData();
+            //       data.append(el.name, el);
+            //       axios.put(`pps-request/${el.tableId}/upload-pps2`, data).then((res)=>{
+            //           console.log(res, 'ress');
+            //       }).catch((err)=> console.log(err))
+            //     });
             StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
             scroll.scrollTo(0);
         }
@@ -143,10 +206,10 @@ function TableTwo() {
             <div className="rowHeader">2. Баталгаа/зөвшөөрөл/тусгай зөвшөөрлийн үнэлгээ<span className="tseg">*</span></div>
              
             <div className="MainContPar">
-            {tableData.map((el,i)=>{
+            {initialData.map((el,i)=>{
                     return(
                         <div id={i}  className="GetItem ChildPar" key={i + 1}>
-                             <div className="Title"> {i + 1}. {el.name} :
+                             <div className="Title"> {i + 1}. {el.items} :
                              {el.list.map((el,i)=>{
                                  return(
                                 <div className="ListPar" key={i}>
@@ -158,8 +221,8 @@ function TableTwo() {
                              </div>
                             <div   className=" row">
                                 <div className="col-md-4 col-sm-12 col-12 ">
-                                    <div className="inpChild"> <div className="labels"><span>(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага :</span> </div> <div className="name"> <FiUserCheck />
-                                                <div className="form__group"><input type="input" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="name" required />
+                                    <div className="inpChild"><div className="labels"><span>(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага :</span> </div> <div className="name"> <FiUserCheck />
+                                            <div className="form__group"><input type="input" id={el.id} value={el.name} onChange={onChangeHandle} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="name" />
                                                     <label for="name" className=" form__label">Баталгааны хэлбэр</label>
                                                 </div>
                                             </div>
@@ -172,12 +235,12 @@ function TableTwo() {
                                         <div className="col-md-6 col-sm-6 col-6"> 
                                             <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
                                                 <div className="name"><div className="form__group">
-                                                        <input max='3000-12-31' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="getDate" required />
+                                                        <input max='3000-12-31' onChange={onChangeGetDate} value={el.getDate} id={el.id} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="getDate" required />
                                                         <label for="name" className=" form__label">Хүлээн авсан</label> </div></div> </div></div>
                                         <div className="col-md-6 col-sm-6 col-6 headLeftBorder"> 
                                             <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
                                                 <div className="name"><div className="form__group">
-                                                        <input max='3000-12-31' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="recentDate" required />
+                                                        <input max='3000-12-31' onChange={onChangeRecentDate} type="date" id={el.id} value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="recentDate" required />
                                                         <label for="name" className=" form__label">Шинэчилсэн</label> </div> </div> </div>  </div>
                                               </div>
                                 </div>
@@ -203,8 +266,8 @@ function TableTwo() {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="getUser2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                            <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
+                                            <input type="input" onChange={changeHandleName} value={Dname} className="getUser2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <label for="name"   className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
                                 </div>
@@ -214,7 +277,7 @@ function TableTwo() {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input max='3000-12-31' type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input max='3000-12-31' onChange={changeHandleDate} value={Ddate}  type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
@@ -674,13 +737,13 @@ const Component2 = styled.div`
 
 
 const tableData = [
-  { name: "Үйлдвэрийн үйл ажиллагаа  (зөвшөөрөл, тусгай зөвшөөрөл гм)", list:[]},
-  {name: "Байгаль орчны үнэлгээ ", list:[]},
-  {name: "Усан хангамж",list:[]},
-  {name: "Хаягдал ус гаргах",list:["Хотын","Үйлдвэрийн","Бусад"]},
-  {name: "Хаягдал зайлуулалт",list:["Аюултай бус (жишээ нь: цаас, сав боодол, мод, хуванцар гм) ","Аюултай"]},
-  {name: "Аюултай материалын хадгалалт, ашиглалт  (будаг, уусгагч, түлш, бусад шатамхай бодис материал гм)",list:[]},
-  {name: "Гал түймрээс сэргийлэх",list:[]},
-  {name: "Эрүүл мэнд, аюулгүй ажиллагаа",list:[]},
-  {name: "Хүүхдийн хөдөлмөр эрхлэлт",list:[]},
+  { items: "Үйлдвэрийн үйл ажиллагаа  (зөвшөөрөл, тусгай зөвшөөрөл гм)", list:[]},
+  {items: "Байгаль орчны үнэлгээ ", list:[]},
+  {items: "Усан хангамж",list:[]},
+  {items: "Хаягдал ус гаргах",list:["Хотын","Үйлдвэрийн","Бусад"]},
+  {items: "Хаягдал зайлуулалт",list:["Аюултай бус (жишээ нь: цаас, сав боодол, мод, хуванцар гм) ","Аюултай"]},
+  {items: "Аюултай материалын хадгалалт, ашиглалт  (будаг, уусгагч, түлш, бусад шатамхай бодис материал гм)",list:[]},
+  {items: "Гал түймрээс сэргийлэх",list:[]},
+  {items: "Эрүүл мэнд, аюулгүй ажиллагаа",list:[]},
+  {items: "Хүүхдийн хөдөлмөр эрхлэлт",list:[]},
 ];

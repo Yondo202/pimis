@@ -8,11 +8,16 @@ import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../context/UserContext'
+import HelperContext from '../../context/HelperContext'
+import axios from '../../axiosbase'
 
 function TableThree() {
+    const helperContext = useContext(HelperContext);
     const StyleContext  = useContext(UserContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
+
+    console.log(helperContext.tableId, "my tableId 3");
 
     const clickHandles = () => {
         let finalOne = {};
@@ -55,8 +60,8 @@ function TableThree() {
         finalOne["date"] = userInp.date;
         finalEnd["PPS3"] = finalOne;
 
-        // console.log(finalEnd, "final");
-        console.log(JSON.stringify(finalEnd));
+        console.log(finalEnd, "final");
+        // console.log(JSON.stringify(finalEnd));
 
         if(userInp.name === "" || userInp.date === ""){
             setOpacity2("1");
@@ -66,8 +71,15 @@ function TableThree() {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
         }else{
             alert("gg");
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{
+                console.log(res, "$$ ressssss 3 $$");
+              }).catch((err)=>{
+                console.log(err, "err");
+              });
+            StyleContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
+
         }
-        StyleContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
+
         // scroll.scrollTo(0);
     }
 

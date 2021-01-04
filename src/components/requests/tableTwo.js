@@ -110,7 +110,7 @@ function TableTwo() {
             alert("gg");
             setOpacity2("0");
             axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{
-                console.log(res, "res");
+                console.log(res, "$$ ressssss $$");
                 console.log(res.data.data.request2, " reqqq data");
                 setTablesID(res.data.data.request2);
               }).catch((err)=>{
@@ -121,11 +121,12 @@ function TableTwo() {
                   const data = new FormData();
                   data.append(el.name, el);
                   axios.put(`pps-request/${el.tableId}/upload-pps2`, data).then((res)=>{
-                      console.log(res, 'ress');
+                    //   console.log(res, 'ress');
                   }).catch((err)=> console.log(err))
                 });
-            // StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
-            // scroll.scrollTo(0);
+
+            StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
+            scroll.scrollTo(0);
         }
         
         console.log(finalEnd, "my all");
