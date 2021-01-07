@@ -1,149 +1,110 @@
-import React, {useRef, useEffect, useCallback, useContext, useState } from 'react';
-import {useSpring, animated} from 'react-spring';
-import {VscFilePdf} from 'react-icons/vsc';
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
-import ModalFour from '../modals/modalFour';
-import ModalOne from '../modals/modalOne'
-import ModalThree from '../modals/modalThree';
-import ModalTwo from '../modals/modalTwo';
-import {ColorRgb} from '../../theme'
+import {fontFamily, textColor, ColorRgb, } from '../../theme';
 
-import { useReactToPrint } from "react-to-print";
 
-// import HelperContext from '../../../context/HelperContext'
+function ModalFour(props) {
+    console.log(props.Data2, "** 44 data")
 
-export const Modal = ({ showModal,setShowModal, initialData }) => {
-    // const HelpContext = useContext(HelperContext);
     const [ DataOne, setDataOne ] = useState([]);
-    const modalRef = useRef();
-    const animation = useSpring({
-        config:{
-            duration:250
-        },
-        opacity: showModal ? 1 : 0,
-        transform: showModal ? `translateX(0%)` : `translateX(-100%)`
-    });
+    useEffect(()=>{
+        setDataOne(props.DataOne);
+        const finalData = []
+            tableData.map((el,i)=>{
+                props.Data2.map((elem,index)=>{ if (i + 1 === elem.rownum){ el["rowvalue"] = elem.rowvalue;} });
+                finalData.push(el);
+            });
+        setDataOne(finalData);
 
-    const closeModal = e =>{
-       if(modalRef.current === e.target){
-         setShowModal(false);
-       }
-    }
-    
-    const keyPress = useCallback(e=>{
-        if(e.key === 'Escape' && showModal){
-            setShowModal(false);
-        }
-    },[setShowModal, showModal]);
-    
-    useEffect( async ()=>{
-        document.addEventListener('keydown', keyPress);
-        await setDataOne(initialData);
-        console.log(initialData, " all data modal");
-        return () => document.removeEventListener('keydown', keyPress)
-    },[keyPress]);
+    },[]);
 
-    console.log(DataOne, "### data 11");
+    console.log(DataOne, " my data foureee oneeeee"); 
 
-    const componentRef = useRef();
-    const handlePrint = useReactToPrint({
-      content: () => componentRef.current,
-    });
-   
-    return(
-        <>
-            {showModal ?
-            (<Background ref={modalRef} onClick={closeModal}>
-                <animated.div style={animation} >
-                    <div className="modalPar container">
-                        <div className="closeParent">
-                            <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
-                            <button className="esc" onClick={()=> setShowModal(prev => !prev)} > X </button>
+    return (
+        <TableTwo >
+            <h6>4. Байгаль орчин, нийгмийн ерөнхий үнэлгээний маягт *</h6>
+            <div className="table container">
+                <div  className="Header row">
+                        <div className="col-md-5 col-sm-5 col-5"><div className="question">Асуудлууд</div></div>
+                        <div style={{textAlign:"center",borderLeft:`1px solid rgba(0,0,0,0.3)`}} className="col-md-2 col-sm-2 col-2">
+                          <div className="question">Хариулт</div>
                         </div>
-                      
+                        <div style={{borderLeft:`1px solid rgba(0,0,0,0.3)`}} className="col-md-2 col-sm-2 col-2"><div className="question">(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага</div></div>
+                        <div className="col-md-3 col-sm-3 col-3" style={{borderLeft:`1px solid rgba(0,0,0,0.3)`}}><div className="question">Батлагдсан баримт бичгүүд /хавсаргасан</div></div>
+                </div>
 
-                        <div  ref={componentRef}>
-                          <ModalOne  DataOne={DataOne.ppsRequest1Details} />
-                          <ModalTwo Data2={DataOne.ppsRequest2Details} />
-                          <ModalThree Data2={DataOne.ppsRequest3Details} />
-                          <ModalFour Data2={DataOne.ppsRequest4Details} />
+                {DataOne.map((el,i)=>{
+                    return(
+                        <div key={i} className="items row">
+                                <div style={{borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:` rgba(63,81,181,0.1)`}} className="col-md-5 col-sm-5 col-5"><div className="question">{el.name}</div></div>
+                                <div style={{textAlign:"center",borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:`rgba(63,255,181,0.2)`}} className="col-md-2 col-sm-2 col-2">
+                                <div className="question">{el.rowvalue === true? <span className="hariult">Тийм</span>: el.rowvalue === false? <span className="hariult">Үгүй</span>: <span className="hariult">хоосон</span>}</div>
+                                </div>
+                                <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:` rgba(63,81,181,0.1)`}} className="col-md-2 col-sm-2 col-2"><div className="question">{el.nameTwo}</div></div>
+                                <div className="col-md-3 col-sm-3 col-3" style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:` rgba(63,81,181,0.1)`}}><div className="question">{el.nameThree}</div></div>
                         </div>
+                    )
+                })}
+            </div>
+          
 
-                    </div>
-                </animated.div>
-            </Background>)
-             : null}
-        </>
+           
+            
+        </TableTwo>
     )
 }
-// https://www.youtube.com/watch?v=d3aI1Dt0Z50
 
-const Background = styled.div`
-    font-size:13px;
-    width: 100%;
-    height: 100%;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    background: rgba(0,0,0,0.5);
-    position:fixed;
-    display:flex;
-    justify-content:end;
-    align-items:center;
-    z-index:1000;
-    .modalPar{
-        overflow-x:scroll;
-        background-color:white;
-        // width:794px;
-        width:1000px;
-        height:100vh;
-        padding:20px 20px;
-        .PdfParent{
-          padding-top:50px;
+export default ModalFour
+
+const TableTwo  = styled.div`
+    padding: 50px 100px 50px 64px;
+    color:rgb(${textColor});
+    font-family:${fontFamily};
+    .table{
+        border:1px solid rgba(0,0,0,0.2);
+        .Header{
+            background-color:rgba(${ColorRgb},0.8);
+            color:white;
+            .question{
+                padding-top:6px;
+                padding-bottom:6px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                height:100%;
+            }
         }
-        .closeParent{
-            width:100%;
-            display:flex;
-            flex-direction:row;
-            align-items:center;
-            justify-content:space-between;
-            padding: 0px 100px 0px 64px;
-            button{
-                padding:5px 10px;
-                border-style:none;
-                cursor:pointer;
-                box-shadow:1px 1px 6px -2px rgb(${ColorRgb});
+        .items{
+            .question{
+                padding-top:6px;
+                padding-bottom:6px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                height:100%;
+            .hariult{
+                font-weight:500;
             }
-            .esc{
-            }
-            .print{
-              font-weight:500;
-              color:black;
-              // background-color:rgb(${ColorRgb});
-              // background-color:#008CBA;
-              width:80%;
-              display:flex;
-              align-items:center;
-              justify-content:center;
-              border:1px #008CBA;
-              border-style: dashed;
-              transition:all 0.4s ease;
-              &:hover{
-                background-color:#009CBA;
-              }
-              svg{
-                margin-right:18px;
-                font-size:24px;
-              }
             }
         }
     }
+    
 `
 
+// const tableData = [
+//     { items: "Үйлдвэрийн үйл ажиллагаа  (зөвшөөрөл, тусгай зөвшөөрөл гм)", list:[]},
+//     {items: "Байгаль орчны үнэлгээ ", list:[]},
+//     {items: "Усан хангамж",list:[]},
+//     {items: "Хаягдал ус гаргах",list:["Хотын","Үйлдвэрийн","Бусад"]},
+//     {items: "Хаягдал зайлуулалт",list:["Аюултай бус (жишээ нь: цаас, сав боодол, мод, хуванцар гм) ","Аюултай"]},
+//     {items: "Аюултай материалын хадгалалт, ашиглалт  (будаг, уусгагч, түлш, бусад шатамхай бодис материал гм)",list:[]},
+//     {items: "Гал түймрээс сэргийлэх",list:[]},
+//     {items: "Эрүүл мэнд, аюулгүй ажиллагаа",list:[]},
+//     {items: "Хүүхдийн хөдөлмөр эрхлэлт",list:[]},
+//   ];
 
 
-const tableData = [
+  const tableData = [
     { name: "Дэд төслөөс байгаль орчин, нийгэмд эмзэг , олон янзын ба урьд өмнө байгаагүй ноцтой  сөрөг нөлөө үзүүлэхээр байгаа эсэх? Товч тодорхойлолт өгнө үү",
        nameTwo:"ҮАБ 4.01 Байгаль орчны үнэлгээ “A” ангилал",
       nameThree:"Байгаль орчин, нийгмийн  нөлөөллийн үнэлгээ  (БОННҮ)"},
@@ -203,5 +164,4 @@ const tableData = [
     { name: "Дэд төсөл, түүнтэй холбоотой асуудал ба үйл ажиллагаа, тэдгээрийн нарийвчилсан дизайн, инженерийн судалгаа нь олон улсын усан зам ашиглах, бохирдол үүсгэх, эсвэл тухайн замд байрлах эсэх?  ",
       nameTwo:"ҮАБ7.50 Олон улсын усан замын төслүүд  ",
       nameThree:"Мэдэгдэх, зарлах (эсвэл тухайн нөхцөлд авч үзэх зүйл) "},
-  
   ];

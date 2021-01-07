@@ -1,32 +1,84 @@
-import React, { useState,useContext } from 'react'
+import React, { useState,useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { textColor, ColorRgb } from '../../theme';
+import { textColor, ColorRgb } from '../../../theme';
 import {GoCalendar} from 'react-icons/go'
 import {VscAccount,VscFoldDown,VscCloudUpload,VscCloudDownload,VscChecklist,VscOpenPreview} from 'react-icons/vsc'
 import {IoIosAddCircleOutline} from 'react-icons/io'
-import UserContext from '../../../context/UserContext'
+import UserContext from '../../../../context/UserContext'
 
-function TableFiveDetails2() {
+
+function TableFiveDetails2(props) {
     const StyleContext  = useContext(UserContext);
     const initialList = [{id: 1}];
     const [ addItem, setAddItem ] = useState(initialList);
-    const AddHandle = ()=>{
-        const list = addItem.concat( {id: 1});
-        setAddItem(list);
+    const [ initialData, setInitialData ] = useState([]);
+    // const AddHandle = ()=>{
+    //     const list = initialData.concat( {id: 1});
+    //     setInitialData(list);
+    // }
+    useEffect(() => {
+        setInitialData(props.initialData);
+    }, []);
+    const changeHandle1 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["issue"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
     }
+    const changeHandle2 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["reduce"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle3 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["standard_mgl"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle4 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["standard_world"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle5 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["reduce_cost"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle6 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["hostname"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle7 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["startdate"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle8 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["enddate"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+
+
+    console.log(initialData, " 555");
+
+
+
     return (
         <Component3Detail>
-            {addItem.map((el,i)=>{
+
+            {initialData.map((el,i)=>{
                 return(
                     <div id={i}  className="GetItemAdd555 DetailPar" key={i}>
-                    <div className="Title"> {i + 1} . ҮЙЛ АЖИЛЛАГААНЫ ҮЕ ШАТ :</div>
+                    <div className="Title"> {i + 1} . ҮЙЛ АЖИЛЛАГААНЫ ҮЕ ШАТ  :</div>
                     <div className="formOneParent">
                         <div className="inputPar">
                             <div className="inpChild">
                                 <div className="labels"><span>Асуудал :</span> </div>
                                 <div className="name"> <VscOpenPreview />
                                     <div className="form__group">
-                                        <input type="text" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
+                                        <input type="text" id={el.id} onChange={changeHandle1} value={el.issue} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
                                         <label for="name" className=" form__label">Асуудал</label>
                                     </div>
                                 </div>
@@ -36,7 +88,7 @@ function TableFiveDetails2() {
                                 <div className="labels"><span>Нөлөөллийг бууруулах арга хэмжээ :</span> </div>
                                 <div className="name"> <VscChecklist />
                                     <div className="form__group">
-                                        <input type="input" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce" required />
+                                        <input type="input" id={el.id} onChange={changeHandle2} value={el.reduce} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce" required />
                                         <label for="name" className=" form__label">Нөлөөллийг бууруулах арга хэмжээ</label>
                                     </div>
                                 </div>
@@ -47,7 +99,7 @@ function TableFiveDetails2() {
                                 <div className="labels"><span>Холбогдох стандартууд :</span> </div>
                                 <div className="name"> <VscCloudDownload />
                                     <div className="form__group">
-                                        <input type="input" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard_mgl" required />
+                                        <input type="input" id={el.id} onChange={changeHandle3} value={el.standard_mgl} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard_mgl" required />
                                         <label for="name" className=" form__label">Монгол улс</label>
                                     </div>
                                 </div>
@@ -57,7 +109,7 @@ function TableFiveDetails2() {
                                 <div className="labels"><span>Холбогдох стандартууд :</span> </div>
                                 <div className="name"> <VscCloudUpload />
                                     <div className="form__group">
-                                        <input type="input" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard_world" required />
+                                        <input type="input" id={el.id} onChange={changeHandle4} value={el.standard_world} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard_world" required />
                                         <label for="name" className=" form__label">Дэлхийн банк</label>
                                     </div>
                                 </div>
@@ -71,7 +123,7 @@ function TableFiveDetails2() {
                                 <div className="labels"><span>Нөлөөллийг бууруулах үйл ажиллагааны зардал :</span> </div>
                                 <div className="name"> <VscFoldDown />
                                     <div className="form__group">
-                                        <input type="number" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce_cost" required />
+                                        <input type="number" id={el.id} onChange={changeHandle5} value={el.reduce_cost} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce_cost" required />
                                         <label for="name" className=" form__label">Үйл ажиллагааны зардал</label>
                                     </div>
                                 </div>
@@ -81,7 +133,7 @@ function TableFiveDetails2() {
                                 <div className="labels"><span>Хариуцах эзэн :</span> </div>
                                 <div className="name"> <VscAccount />
                                     <div className="form__group">
-                                        <input type="input" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
+                                        <input type="input" id={el.id} onChange={changeHandle6} value={el.hostname}  className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
                                         <label for="name" className=" form__label">Хариуцах эзэн</label>
                                     </div>
                                 </div>
@@ -92,7 +144,7 @@ function TableFiveDetails2() {
                                 <div className="labels"><span>Эхлэх хугацаа :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31' className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
+                                        <input type="date" id={el.id} onChange={changeHandle7} value={el.startdate}  max='3000-12-31' className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
                                         <label for="name"  className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
@@ -102,7 +154,7 @@ function TableFiveDetails2() {
                                 <div className="labels"><span>Дуусах хугацаа :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31'  className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
+                                        <input type="date" id={el.id} max='3000-12-31' onChange={changeHandle8} value={el.enddate}   className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
                                         <label for="name" className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
@@ -113,9 +165,9 @@ function TableFiveDetails2() {
                 )
             })}
             
-            <div className="AddItemBtn">
+            {/* <div className="AddItemBtn">
                 <IoIosAddCircleOutline onClick={AddHandle} />
-            </div>
+            </div> */}
 
             {/* <button >hahahaha</button> */}
 

@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* font-family: "Montserrat", sans-serif !important; */
-  letter-spacing: -0.2px !important;
+  letter-spacing: -0.1px !important;
   overflow-x: hidden;
   background-color: #f2f2f2;
 }

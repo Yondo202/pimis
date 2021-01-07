@@ -3,7 +3,7 @@ import React,{useEffect, useState, useRef, useContext} from 'react';
 import styled from 'styled-components'
 import { Link, animateScroll as scroll } from "react-scroll";
 import axios from'../../axiosbase';
-import { fontFamily, textColor, ColorRgb, Color } from '../theme';
+import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
@@ -46,7 +46,7 @@ function TableFour() {
                   let field = element.name;
                   let value = element.value;
                   soloObject2["rownum"] = field
-                  soloObject2["rvalue"] = value
+                  soloObject2["rowvalue"] = value
                   // soloObject2[`pps${field}`] = value;
                   finalOne2.push(soloObject2);
                 }
@@ -77,7 +77,7 @@ function TableFour() {
             console.log(finalEnd , "pps4 final end");
             // console.log(JSON.stringify(finalEnd));
 
-            console.log(finalOne2[3].rvalue, "dadad");
+            console.log(finalOne2[3].rowvalue, "dadad");
 
 
             if(finalOne2.length < 15){
@@ -86,7 +86,12 @@ function TableFour() {
               scroll.scrollTo(0);
               setFinalTextScale("0");
               setFinalMsg("0");
-            }else if(userInp.name === "" || userInp.date === ""){
+            }else if(finalOne2[2].rowvalue  === finalOne2[3].rowvalue){
+              setFinalText("3 болон 4 дүгээр асуулт ижил биш байх ёстой");
+              setFinalTextScale("1");
+              setOpacity2("0");
+              setFinalMsg("0");
+           }else if(userInp.name === "" || userInp.date === ""){
               setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
               setOpacity("0");
               setOpacity2("1");
@@ -98,14 +103,9 @@ function TableFour() {
               setFinalTextScale("0");
               setOpacity2("1");
               setFinalMsg("0");
-            }else if(finalOne2[2].rvalue  === finalOne2[3].rvalue){
-              setFinalText("3 болон 4 дүгээр асуулт ижил биш байх ёстой");
-              setFinalTextScale("1");
-              setOpacity2("0");
-              setFinalMsg("0");
-           }else if(finalOne2[0].rvalue === "true" && finalOne2[1].rvalue === "true"  && finalOne2[4].rvalue === "true" && 
-                    finalOne2[6].rvalue === "true" && finalOne2[7].rvalue === "true" && finalOne2[8].rvalue === "true" && finalOne2[9].rvalue === "true" && finalOne2[10].rvalue === "true" &&
-                    finalOne2[12].rvalue === "true" && finalOne2[13].rvalue === "true" && finalOne2[14].rvalue === "true" ){
+            }else if(finalOne2[0].rowvalue === "true" && finalOne2[1].rowvalue === "true"  && finalOne2[4].rowvalue === "true" && 
+                    finalOne2[6].rowvalue === "true" && finalOne2[7].rowvalue === "true" && finalOne2[8].rowvalue === "true" && finalOne2[9].rowvalue === "true" && finalOne2[10].rowvalue === "true" &&
+                    finalOne2[12].rowvalue === "true" && finalOne2[13].rowvalue === "true" && finalOne2[14].rowvalue === "true" ){
                     finalEnd.PPS4["esm"] = "A"
                     setFinalText("(A) Та шалгуур хангахгүй байна");
                     setFinalTextScale("1");
@@ -113,9 +113,9 @@ function TableFour() {
                     setFinalMsg("0");
                     console.log(finalEnd, "myfinal End (A)");
                     axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
-            }else if(finalOne2[0].rvalue === "false" && finalOne2[1].rvalue === "false" && finalOne2[2].rvalue === "true" && finalOne2[3].rvalue === "false"  && finalOne2[4].rvalue === "false" && 
-                    finalOne2[6].rvalue === "false" && finalOne2[7].rvalue === "false" && finalOne2[8].rvalue === "false" && finalOne2[9].rvalue === "false" && finalOne2[10].rvalue === "false" &&
-                    finalOne2[12].rvalue === "false" && finalOne2[13].rvalue === "false" && finalOne2[14].rvalue === "false" ){
+            }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "true" && finalOne2[3].rowvalue === "false"  && finalOne2[4].rowvalue === "false" && 
+                    finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
+                    finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
                       // Тэнцсэн гэхдээ 5,6 руу үргэлжилэхгүй 
                     setFinalText("(C) Та шалгуур хангаж байна.");
                     setFinalTextScale("1");
@@ -124,9 +124,9 @@ function TableFour() {
                     finalEnd.PPS4["esm"] = "C"
                     console.log(finalEnd, "myfinal End (C)");
                     axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
-            }else if(finalOne2[0].rvalue === "false" && finalOne2[1].rvalue === "false" && finalOne2[2].rvalue === "false" && finalOne2[3].rvalue === "true"  && finalOne2[4].rvalue === "false" && 
-                    finalOne2[6].rvalue === "false" && finalOne2[7].rvalue === "false" && finalOne2[8].rvalue === "false" && finalOne2[9].rvalue === "false" && finalOne2[10].rvalue === "false" &&
-                    finalOne2[12].rvalue === "false" && finalOne2[13].rvalue === "false" && finalOne2[14].rvalue === "false" ){
+            }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "false" && finalOne2[3].rowvalue === "true"  && finalOne2[4].rowvalue === "false" && 
+                    finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
+                    finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
                       // Цааш 5,6 руу үргэлжилнэ
                     setFinalText("(B) Та шалгуур хангаж байна.");
                     setFinalTextScale("1");
@@ -134,6 +134,10 @@ function TableFour() {
                     finalEnd.PPS4["esm"] = "B"
                     console.log(finalEnd, "myfinal End (B)");
                     axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    setTimeout(()=>{
+                      StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
+                    },3000);
+                    
                     // setFinalMsg("1");
             }else{
                    // Тэнцээгүй биш гэхдээ асууна
@@ -146,6 +150,7 @@ function TableFour() {
                     console.log(finalEnd, "other F");
                     axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
                   }
+                  //  StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
         }
         const nextHandleBtn = () => {
             // scroll.scrollTo(0);
@@ -269,7 +274,7 @@ const Component1 = styled.div`
             background-color:white;
             padding-bottom:16px;
             margin-bottom:100px;
-            font-size:15px;
+            font-size:${fontSize};
     
             .UserRequestPar{
                 margin-top:10px;

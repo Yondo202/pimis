@@ -16,9 +16,18 @@ function TableThree(props) {
     const StyleContext  = useContext(UserContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
+    const [Dname, setDname ] = useState(props.initialName);
+    const [Ddate, setDdate] = useState(props.initialDate);
 
     console.log(helperContext.tableId, "my tableId 3");
     console.log(props.initialData, " my initial Data 33");
+
+    const changeNameHandle = (event) =>{
+        setDname(event.target.value);
+    }
+    const changeDateHandle = (event) =>{
+        setDdate(event.target.value);
+    }
 
     const clickHandles = () => {
         let finalOne = {};
@@ -36,6 +45,9 @@ function TableThree(props) {
                 if(el.value !== ""){
                     let field = el.name;
                     let value = el.value;
+                    if(props.initialData[0]){
+                        Lala["id"] = el.id;
+                    }
                     Lala[field] = value;
                 }
             });
@@ -71,23 +83,21 @@ function TableThree(props) {
             setOpacity2("1");
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
         }else{
-            alert("gg");
             // axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{
-            //     console.log(res, "$$ ressssss 3 $$");
-            //   }).catch((err)=>{
-            //     console.log(err, "err");
-            //   });
+            axios.put(`pps-request/81`, finalEnd).then((res)=>{
+                console.log(res, "$$ ressssss 3 $$");
+              }).catch((err)=>{
+                console.log(err, "err");
+              });
             StyleContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
-
+            scroll.scrollTo(0);
         }
 
-        // scroll.scrollTo(0);
     }
 
     return (
         <Component3 className="container">
-
-            <TableThreeDetails />
+            <TableThreeDetails initialData={props.initialData} />
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
@@ -97,19 +107,18 @@ function TableThree(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="getUserInp3 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" onChange={changeNameHandle} value={Dname} className="getUserInp3 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div className="NextChild">
-
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" onChange={changeDateHandle} value={Ddate} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>

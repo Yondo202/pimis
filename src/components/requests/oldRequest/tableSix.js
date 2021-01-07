@@ -3,20 +3,29 @@ import TableSixDetails from './deitals/tableSixDetail'
 import TableSixDetails2 from './deitals/tableSixDetail2'
 import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
-import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
+import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../context/UserContext'
-import HelperContext from '../../context/HelperContext'
-import axios from '../../axiosbase'
+import UserContext from '../../../context/UserContext'
+import HelperContext from '../../../context/HelperContext'
+import axios from '../../../axiosbase'
 
-function TableSix() {
+function TableSix(props) {
     const StyleContext  = useContext(UserContext);
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
+    const [ Dname, setDname ] = useState(props.initialName);
+    const [Ddate, setDdate] = useState(props.initialDate);
+
+    const changeNameHandle = (event) =>{
+        setDname(event.target.value);
+    }
+    const changeDateHandle = (event) =>{
+        setDdate(event.target.value);
+    }
 
     const clickHandles = () => {
         let finalOne = {};
@@ -34,6 +43,7 @@ function TableSix() {
                 if(el.value !== ""){
                     let field = el.name;
                     let value = el.value;
+                    Lala["id"] = el.id;
                     Lala[field] = value;
                 }
             });
@@ -56,6 +66,7 @@ function TableSix() {
                 if(el.value !== ""){
                     let field = el.name;
                     let value = el.value;
+                    Lala["id"] = el.id;
                     Lala[field] = value;
                 }
             });
@@ -100,7 +111,8 @@ function TableSix() {
         }else{
             setOpacity2("0");
             alert("gg");
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
+            // axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
+            axios.put(`pps-request/80`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 6 $$")}).catch((err)=>{ console.log(err, "err");});
         }
         // StyleContext.StyleComp("-300%", "-200%", "-100%", "0%");
     }
@@ -108,8 +120,8 @@ function TableSix() {
     return (
         <Component3 className="container">
 
-            <TableSixDetails />
-            <TableSixDetails2 />
+            <TableSixDetails initialData={props.initialData.requestOne} />
+            <TableSixDetails2 initialData={props.initialData.requestTwo} />
 
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
@@ -120,7 +132,7 @@ function TableSix() {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="getUserInp2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" value={Dname} onChange={changeNameHandle} className="getUserInp2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -132,7 +144,7 @@ function TableSix() {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" value={Ddate} onChange={changeDateHandle} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>

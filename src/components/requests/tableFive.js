@@ -63,7 +63,7 @@ function TableFive() {
             finalOne22.push(Lala);
         });
         let keys2 = Object.keys(tableCondition2[0]);
-        console.log(keys2.length , "keys2");
+        // console.log(keys2.length , "keys2");
 
 
         let rs4 = document.querySelectorAll(".getUserInp222");
@@ -76,7 +76,7 @@ function TableFive() {
         });
 
         let confirm = document.getElementById("GetcheckBtn5").checked;
-        console.log(confirm, "my confirm");
+        // console.log(confirm, "my confirm");
 
         finalOne["requestOne"] = finalOne2;
         finalOne["requestTwo"] = finalOne22;
@@ -88,7 +88,6 @@ function TableFive() {
         console.log(finalEnd, "final");
         // console.log(JSON.stringify(finalEnd));
         
-        
         if(keys1.length < 8 || keys2.length < 8){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
             setOpacity2("1");
@@ -99,12 +98,11 @@ function TableFive() {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
             setOpacity2("1");
         }else{
-            setOpacity2("0");
-            alert("gg");
+            // setOpacity2("0");
             axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
 
-            scroll.scrollTo(0);
             StyleContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
+            scroll.scrollTo(0);
         }
 
     }

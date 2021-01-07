@@ -4,6 +4,7 @@ import { Link, animateScroll as scroll } from "react-scroll";
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
+import {RiUpload2Line} from 'react-icons/ri'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../../context/UserContext'
@@ -30,6 +31,7 @@ function TableTwo(props) {
                 el["recentDate"] = elem.recentDate
                 el["getDate"] = elem.getDate;
                 el["id"] = elem.id
+                el["fileurl"] = elem.fileurl
             }
            })
            finalData.push(el);
@@ -38,7 +40,7 @@ function TableTwo(props) {
        setDdate(props.initialDate);
        setInitialData(finalData);
     },[]);
-    // console.log(initialData, " 222  my initial Data");
+    console.log(initialData, " 222  my initial Data");
 
 
     const onChangeHandle = (event) =>{
@@ -82,27 +84,55 @@ function TableTwo(props) {
         });
         setInitialData(finalData);
     }
-    const changeHandleName = (e) =>{
-        setDname(e.target.value);
-      }
-      const changeHandleDate = (e)=>{
-        setDdate(e.target.value);
-      }
+
+    const onChangeFile = (event) =>{
+        console.log(event.target, " my event");
+        const finalData = []
+        tableData.map((el,i)=>{
+            props.initialData.map(elem=> elem);
+            finalData.push(el);
+        });
+
+        finalData.map((el, i )=>{
+            if(el.id.toString() === event.target.id){
+                el["fileurl"] = event.target.files[0].name
+            }
+        });
+        setInitialData(finalData);
+    }
+
+    const changeHandleName = (e) =>{   setDname(e.target.value);  }
+      const changeHandleDate = (e)=>{  setDdate(e.target.value);  }
 
 
     const clickHandles = (e) =>{
-        // scroll.scrollTo(0);
-        // Хэрэгтэй
-        // let getFile = document.querySelectorAll(".GetFilesData");
-        // let myArr = Array.from(getFile);
-        // const TestArr = [];
-        // myArr.map((el,i)=>{
-        //     let value = el.files[0]
-        //     tablesId.map((element, index)=>{
-        //         if( index === i ){value["tableId"] = element.id }
-        //     })
-        //     TestArr.push(value);
-        // });
+        let getFile = document.querySelectorAll(".GetFilesData");
+        let myArr1 = Array.from(getFile);
+
+        const FilesSend = (FileData) =>{
+            const TestArr = [];
+                myArr1.map((el,i)=>{
+                    let value = el.files[0]
+                    if(value === undefined){
+                        value = {}
+                    }
+                    FileData.map((element, index)=>{
+                            if( i === index){
+                                value["tableId"] = element.id
+                                TestArr.push(value);
+                            }
+                    })
+                });
+                console.log(TestArr, " test arrrrr");
+            TestArr.map((el,i)=>{
+                    const data = new FormData();
+                    data.append(el.name, el);
+                    axios.put(`pps-request/${el.tableId}/upload-pps2`, data).then((res)=>{
+                        console.log(res, 'ress');
+                    }).catch((err)=> console.log(err))
+            });
+        }
+
         e.preventDefault();
         let finalOne = {};
         let finalEnd = {};
@@ -118,11 +148,14 @@ function TableTwo(props) {
                 if(el.value !== ""){
                     let field = el.name;
                     let value = el.value;
-                    Lala["id"] = el.id
+                    if(props.initialData[0]){
+                        Lala["id"] = el.id
+                    }
                     Lala[field] = value;
-                }else{
-                    return false
                 }
+                // if(el.name === "file"){
+                //     Lala["fileurl"] = el.files[0]
+                // }
             });
             finalOne2.push(Lala);
         });
@@ -134,9 +167,16 @@ function TableTwo(props) {
         //  console.log(el, " my elementssss");
           let  conditon1 = Object.keys(el)
         //   console.log(conditon1.length);
-           if(conditon1.length === 4){
-                originalTest.push(el);
-           }
+            if(props.initialData[0]){
+                if(conditon1.length === 4){
+                    originalTest.push(el);
+               }
+            }else{
+                if(conditon1.length === 3){
+                    originalTest.push(el);
+               }
+            }
+           
         })
         // console.log(originalTest.length, "test");
 
@@ -169,24 +209,17 @@ function TableTwo(props) {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
             setOpacity2("1");
         }else{
-            alert("gg");
             setOpacity2("0");
-            axios.put(`pps-request/60`, finalEnd).then((res)=>{
+            axios.put(`pps-request/81`, finalEnd).then((res)=>{
                 console.log(res, "res");
-                // console.log(res.data.data.request2, " reqqq data");
-
-                // setTablesID(res.data.data.request2);
+                // setTablesID(res.data.data.ppsRequest2Detail);
+                // console.log()
+                FilesSend(res.data.data.ppsRequest2Detail);
               }).catch((err)=>{
                 console.log(err, "err");
               });
 
-            //   TestArr.map((el,i)=>{
-            //       const data = new FormData();
-            //       data.append(el.name, el);
-            //       axios.put(`pps-request/${el.tableId}/upload-pps2`, data).then((res)=>{
-            //           console.log(res, 'ress');
-            //       }).catch((err)=> console.log(err))
-            //     });
+
             StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
             scroll.scrollTo(0);
         }
@@ -195,9 +228,10 @@ function TableTwo(props) {
         // console.log(JSON.stringify(finalEnd), "myddd");
     }
 
+    
+
 
     // youtube.com/watch?v=PEGUFi9Sx-U
-
     // https://www.youtube.com/watch?v=0TTa5Ulmgds
    
     return (
@@ -206,23 +240,22 @@ function TableTwo(props) {
             <div className="rowHeader">2. Баталгаа/зөвшөөрөл/тусгай зөвшөөрлийн үнэлгээ<span className="tseg">*</span></div>
              
             <div className="MainContPar">
-            {initialData.map((el,i)=>{
+            {props.initialData[0]? (initialData.map((el,i)=>{
                     return(
                         <div id={i}  className="GetItem ChildPar" key={i + 1}>
-                             <div className="Title"> {i + 1}. {el.items} :
-                             {el.list.map((el,i)=>{
-                                 return(
-                                <div className="ListPar" key={i}>
-                                    <li> {el} </li>
-                                </div>
-                                 )
-                             })}
-                                
-                             </div>
-                            <div   className=" row">
+                            <div className="Title"> {i + 1}. {el.items} :
+                                {el.list.map((el,i)=>{
+                                    return(
+                                    <div className="ListPar" key={i}>
+                                        <li> {el} </li>
+                                    </div>
+                                    )
+                                })}
+                            </div>
+                            <div className=" row">
                                 <div className="col-md-4 col-sm-12 col-12 ">
                                     <div className="inpChild"><div className="labels"><span>(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага :</span> </div> <div className="name"> <FiUserCheck />
-                                            <div className="form__group"><input type="input" id={el.id} value={el.name} onChange={onChangeHandle} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="name" />
+                                            <div className="form__group"><input type="input" id={el.id} value={el.name} onChange={onChangeHandle} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="name" />
                                                     <label for="name" className=" form__label">Баталгааны хэлбэр</label>
                                                 </div>
                                             </div>
@@ -235,26 +268,77 @@ function TableTwo(props) {
                                         <div className="col-md-6 col-sm-6 col-6"> 
                                             <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
                                                 <div className="name"><div className="form__group">
-                                                        <input max='3000-12-31' onChange={onChangeGetDate} value={el.getDate} id={el.id} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="getDate" required />
+                                                        <input max='3000-12-31' onChange={onChangeGetDate} value={el.getDate} id={el.id} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="getDate" required />
                                                         <label for="name" className=" form__label">Хүлээн авсан</label> </div></div> </div></div>
                                         <div className="col-md-6 col-sm-6 col-6 headLeftBorder"> 
                                             <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
                                                 <div className="name"><div className="form__group">
-                                                        <input max='3000-12-31' onChange={onChangeRecentDate} type="date" id={el.id} value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} placeholder="Аж ахуйн нэр" onfocus="(this.type='text')" name="recentDate" required />
+                                                        <input max='3000-12-31' onChange={onChangeRecentDate} type="date" id={el.id} value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="recentDate" required />
                                                         <label for="name" className=" form__label">Шинэчилсэн</label> </div> </div> </div>  </div>
                                               </div>
                                 </div>
 
-                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> </div>
-                                     <div className="name"> <FiUserCheck />  <div className="form__group">
-                                            <input type="file" accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={`GetFilesData LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="file" required />
+                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.fileurl}</div> </div>
+                                     <div className="name"> <RiUpload2Line />  <div className="form__group">
+                                            <input type="file"  id={el.id} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
                                             <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
+
+                                            {/* <input type="file" tabIndex={el.id} onChange={()=>onChangeFile()} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={`GetFilesData inputfile`} id="file" name="file"  />
+                                            <label for="file" >{el.fileurl}</label>  */}
                                         </div></div> </div>
                                 </div>
                             </div>
-                         </div>
+                        </div>
                     )
-                })}
+                })): (tableData.map((el,i)=>{
+                    return(
+                        <div id={i}  className="GetItem ChildPar" key={i + 1}>
+                            <div className="Title"> {i + 1}. {el.items} :
+                                {el.list.map((el,i)=>{
+                                    return(
+                                    <div className="ListPar" key={i}>
+                                        <li> {el} </li>
+                                    </div>
+                                    )
+                                })}
+                            </div>
+                            <div className=" row">
+                                <div className="col-md-4 col-sm-12 col-12 ">
+                                    <div className="inpChild"><div className="labels"><span>(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага :</span> </div> <div className="name"> <FiUserCheck />
+                                            <div className="form__group"><input type="input" value={el.name} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="name" />
+                                                    <label for="name" className=" form__label">Баталгааны хэлбэр</label>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder">
+                                 <div className="Parentlabels"><span>Баталсан огноо :</span> </div>
+                                    <div className="row head-border-top">
+                                        <div className="col-md-6 col-sm-6 col-6"> 
+                                            <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
+                                                <div className="name"><div className="form__group">
+                                                        <input max='3000-12-31' value={el.getDate} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="getDate" required />
+                                                        <label for="name" className=" form__label">Хүлээн авсан</label> </div></div> </div></div>
+                                        <div className="col-md-6 col-sm-6 col-6 headLeftBorder"> 
+                                            <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
+                                                <div className="name"><div className="form__group">
+                                                        <input max='3000-12-31' type="date" value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="recentDate" required />
+                                                        <label for="name" className=" form__label">Шинэчилсэн</label> </div> </div> </div>  </div>
+                                              </div>
+                                </div>
+                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.fileurl}</div> </div>
+                                     <div className="name"> <RiUpload2Line />  <div className="form__group">
+                                            <input type="file"   accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
+                                            <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
+
+                                            {/* <input type="file" tabIndex={el.id} onChange={()=>onChangeFile()} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={`GetFilesData inputfile`} id="file" name="file"  />
+                                            <label for="file" >{el.fileurl}</label>  */}
+                                        </div></div> </div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })) }
             </div>
 
             <div className="UserRequestPar">
@@ -266,7 +350,7 @@ function TableTwo(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" onChange={changeHandleName} value={Dname} className="getUser2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" onChange={changeHandleName} value={Dname} className="getUser2 LoginInpName form__field" name="name" required />
                                             <label for="name"   className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -370,6 +454,20 @@ const Component2 = styled.div`
                     flex-direction:column;
                     justify-content:flex-end;
                     height:100%;
+                    .labels{
+                        display:flex;
+                        flex-direction:column;
+                        justify-content:space-between;
+                        font-size:13px;
+                        span{
+                         
+                         color:rgba(${textColor},.9);
+                         font-weight:500;
+                        }
+                        .filess{
+                            color:green;
+                        }
+                     }
                      .name{
                      display:flex;
                      flex-direction:row;
@@ -387,6 +485,29 @@ const Component2 = styled.div`
                       padding: 15px 0 0;
                       margin-top: 0px;
                       width: 100%;
+                        .inputfile{
+                            width: 0.1px;
+                            height: 0.1px;
+                            opacity: 0;
+                            overflow: hidden;
+                            position: absolute;
+                            z-index: -1;
+                            &+label {
+                                border-radius:3px;
+                                padding:4px 10px;
+                                font-weight: 400;
+                                color: white;
+                                background-color: rgb(${ColorRgb});
+                                display: inline-block;
+                            }
+                            &:focus + label,
+                            & + label:hover {
+                                cursor:pointer;
+                                background-color: rgba(${ColorRgb},0.8);
+                            }
+                           
+                        }
+                       
                          .form__field{
                              font-family: inherit;
                              width: 100%;
@@ -505,10 +626,11 @@ const Component2 = styled.div`
                        justify-content:space-between;
                        font-size:13px;
                        span{
-                           color:rgba(${textColor},.9);
-                           font-weight:500;
+                        color:rgba(${textColor},.9);
+                        font-weight:500;
                        }
-                   }
+                      
+                    }
                     .name{
                     display:flex;
                     flex-direction:row;

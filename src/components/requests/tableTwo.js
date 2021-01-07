@@ -15,28 +15,39 @@ function TableTwo() {
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [ tablesId, setTablesID ] = useState([]);
 
     console.log(helperContext.tableId, "my table ID");
 
     const clickHandles = (e) =>{
         // scroll.scrollTo(0);
-        
         let getFile = document.querySelectorAll(".GetFilesData");
-        let myArr = Array.from(getFile);
-        const TestArr = [];
-        const ConditionFile = [];
+        let myArr1 = Array.from(getFile);
 
-        myArr.map((el,i)=>{
-            let value = el.files[0]
-            if(value !== undefined){
-                ConditionFile.push(value);
-            }
-            tablesId.map((element, index)=>{
-                if( index === i ){value["tableId"] = element.id }
-            })
-            TestArr.push(value);
-        });
+        const FilesSend =(AllData)=>{
+            const TestArr = [];
+            myArr1.map((el,i)=>{
+                    let value = {}
+                    value = el.files[0]
+                    if(value === undefined){
+                        value = {"name" : null };
+                    }
+                    console.log(value, " #### valll");
+                    AllData.map((element, index)=>{
+                            if( i === index){
+                                value["tableId"] = element.id
+                                TestArr.push(value);
+                        }
+                    })
+            });
+            TestArr.map((el,i)=>{
+                  const data = new FormData();
+                  data.append(el.name, el);
+                  axios.put(`pps-request/${el.tableId}/upload-pps2`, data).then((res)=>{
+                      console.log(res, 'ress');
+                  }).catch((err)=> console.log(err))
+            });
+        }
+
         // console.log(ConditionFile.length, " ** condition length");
         // console.log(TestArr, "my files");
 
@@ -97,9 +108,6 @@ function TableTwo() {
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
             setOpacity2("1");
             // scroll.scrollTo(0);
-        }else if(ConditionFile.length < 9){
-            setFinalErrorText("Баримт бичгүүдийг бүрэн хавсаргасан байх ёстой ");
-            setOpacity2("1");
         }else if(userInp.name === "" || userInp.date === ""){
             setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
             setOpacity2("1");
@@ -107,32 +115,28 @@ function TableTwo() {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
             setOpacity2("1");
         }else{
-            alert("gg");
+            // alert("gg");
             setOpacity2("0");
+
             axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{
                 console.log(res, "$$ ressssss $$");
-                console.log(res.data.data.request2, " reqqq data");
-                setTablesID(res.data.data.request2);
+                FilesSend(res.data.data.ppsRequest2Detail);
               }).catch((err)=>{
                 console.log(err, "err");
               });
 
-              TestArr.map((el,i)=>{
-                  const data = new FormData();
-                  data.append(el.name, el);
-                  axios.put(`pps-request/${el.tableId}/upload-pps2`, data).then((res)=>{
-                    //   console.log(res, 'ress');
-                  }).catch((err)=> console.log(err))
-                });
-
-            StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
-            scroll.scrollTo(0);
+              StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
+              scroll.scrollTo(0);
+            //   setTimeout(()=>{
+            //  
+            //   },[1000])
+           
         }
         
         console.log(finalEnd, "my all");
         // console.log(JSON.stringify(finalEnd), "myddd");
     }
-
+    
 
     // youtube.com/watch?v=PEGUFi9Sx-U
 

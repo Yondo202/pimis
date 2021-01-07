@@ -1,13 +1,11 @@
 import React,{useEffect, useState, useRef, useContext} from 'react';
 import styled from 'styled-components'
 import { Link, animateScroll as scroll } from "react-scroll";
-import { fontFamily, textColor, ColorRgb, Color } from '../../theme';
+import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
-import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../../context/UserContext'
-import {Modal} from '../MainModal/Modal'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 
@@ -17,38 +15,35 @@ function TableOne(props) {
     const [procent, setProcent] = useState('0');
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [ initialData, setInitialData ] = useState([]);
-    const [ Dname, setDname] = useState("");
-    const [Ddate, setDdate] = useState("");
-
-    useEffect(()=>{
-      const finalData = []
-      dataOne.map((el,i)=>{
-        props.initialData.map(elem=>{ if(i + 1 === elem.rownum){ el["id"] = elem.id; el["rvalue"] = elem.rvalue; el["rownum"] = elem.rownum } });
-        finalData.push(el);
-      });
-      setInitialData(finalData);
-      setDname(props.initialName);
-      setDdate(props.initialDate);
-    },[]);
-   
-    // console.log(initialData, "initial dataaaaaaaaaa");
-
+    const [ Dname, setDname] = useState(props.initialName);
+    const [Ddate, setDdate] = useState(props.initialDate);
     const StyleContext = useContext(UserContext);
     const tablesContext = useContext(HelperContext);
 
+    useEffect(async ()=>{
+        const finalData = []
+      await dataOne.map((el,i)=>{
+          if(props.initialData){
+            props.initialData.map((elem,index)=>{ 
+            if(i === index){el["id"] = elem.id; el["rvalue"] = elem.rvalue;  el["rownum"] = elem.rownum; }});
+          }
+        finalData.push(el);
+     })
+     setInitialData(finalData);
+      console.log("----------------------------------------------------");
+    },[]);
 
-    // const handleChecked = (e) => {
-    //   console.log(e.target.id);
-    //   console.log(e.target.value);
-    //   const data = initialData.map((el,i)=>{
-    //     if(el.id === e.target.id){
-    //       el["rvalue"] = e.target.value
-    //     }
-    //   })
-    //   // setInitialData(data);
-    // }
+    console.log(initialData, "initial dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
-    console.log(initialData, "my initial");
+    const radioChange = (event)=> {
+      let finalData = []
+       dataOne.map((el,i)=>{  props.initialData.map(elem=> elem); finalData.push(el); });
+      finalData.map((el,i)=>{
+        if(el.id.toString() === event.target.id){ el["rvalue"] = event.target.value}
+      })
+       setInitialData(finalData);
+    }
+
     const changeHandle = (e) =>{
       setDname(e.target.value);
     }
@@ -62,7 +57,6 @@ function TableOne(props) {
               let rs2 = document.querySelectorAll(".inpTest3");
               let arr2 = Array.from(rs2);
               let finalOne2 = [];
-
               arr2.map(element=>{
                   if(element.checked === true){
                     let soloObject2 = {}
@@ -74,11 +68,8 @@ function TableOne(props) {
                     finalOne2.push(soloObject2);
                   }
               });
-
               console.log(finalOne2, "final data");
-
               tablesContext.TableControl(finalOne2);
-
               let rs4 = document.querySelectorAll(".getUserInp1");
               let arr4 = Array.from(rs4);
               let userInp = {};
@@ -88,7 +79,6 @@ function TableOne(props) {
                   let value = element.value;
                   userInp[field] = value;
               });
-              // let confirm = document.getElementById("GetcheckBtn").checked;
 
               finalOne["request"] = finalOne2;
               finalOne["name"] = userInp.name;
@@ -110,7 +100,7 @@ function TableOne(props) {
               }else{
                 setOpacity("0");
                 setOpacity2("0");
-               await axios.put("pps-request/60", finalEnd).then((res)=>{
+               await axios.put("pps-request/80", finalEnd).then((res)=>{
                   console.log(res, "res");
                   // tablesContext.TableIdControl(res.data.data.id);
                 }).catch((err)=>{
@@ -127,8 +117,8 @@ function TableOne(props) {
                 // setInitialData(finalData);
                 // setDname(resData.data.data.name1);
                 // setDdate(resData.data.data.date1);
-                StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
 
+                StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
             }
 
               // else if(confirm === false){
@@ -143,12 +133,40 @@ function TableOne(props) {
             console.log(finalEnd, "final end");
       }
 
-
     return (
         <Component1 className="container" >
-            <div className="boxShadow">
+          <div className="boxShadow">
                 <div className="rowHeader">1. Үйлдвэрлэгч нь дараах үйл ажиллагааг эрхэлдэг ба явуулдаг эсэх? <span className="tseg">*</span></div>
               <div className="formTwoParent ">
+
+             
+                <div className="headerPar">
+                    <div className="row" >
+                    <div className="head1 col-md-9 col-sm-5 col-5">Шалгуур</div>
+                    <div className="head2 col-md-1 col-sm-3 col-3">Хамаарахгүй</div>
+                    <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
+                    <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
+                    </div>
+                </div>
+                
+                {initialData.map((el, i)=>{
+                    return(
+                      <div className="headerParchild" key={i}>
+                          <div className="row" >
+                          <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
+                          <div className="texts col-md-8 col-sm-4 col-4">{el.name}</div>
+                          <div className="radios col-md-1 col-sm-3 col-3"><input onChange={radioChange} className={`getinput22 inpTest3`} id={el.id}  type="radio" name={i + 1} checked={el.rvalue === "unconcern" ? true: false} value="unconcern"/></div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input onChange={radioChange} className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={el.rvalue === "true" ? true: false}  value="true"/> </div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input onChange={radioChange} className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={el.rvalue === "false" ? true: false}  value="false"/></div>
+                      </div>
+                    </div>
+                    )
+                })}
+                
+                <div className="FinalBtn">
+                    <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
+                    <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
+                </div>
 
               <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
@@ -186,48 +204,17 @@ function TableOne(props) {
                                 </div>
                             </div>
                         </div>
-                </div>
-                <div className="headerPar">
-                    <div className="row" >
-                    <div className="head1 col-md-9 col-sm-5 col-5">Шалгуур</div>
-                    <div className="head2 col-md-1 col-sm-3 col-3">Хамаарахгүй</div>
-                    <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
-                    <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
-                    </div>
-                </div>
-                
-                {initialData.map((el, i)=>{
-                    return(
-                      <div className="headerParchild" key={i}>
-                          <div className="row" >
-                          <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
-                          <div className="texts col-md-8 col-sm-4 col-4">{el.name}</div>
-
-                          <div className="radios col-md-1 col-sm-3 col-3"> {el.rvalue === "unconcern" ? <input id={el.id} className={`getinput22 inpTest3`} type="radio" name={i + 1} checked={"unconcern"} value="unconcern"/>:<input id={el.id} className={`getinput22 inpTest3`} type="radio"  name={i + 1}  value="unconcern"/> } </div>
-                          <div className="radios col-md-1 col-sm-2 col-2">{el.rvalue === "true" ? <input className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={"true"} value="true"/> : <input className={`getinput22 inpTest3`} id={el.id}  type="radio" name={i + 1} value="true"/> }</div>
-                          <div className="radios col-md-1 col-sm-2 col-2">{el.rvalue === "false" ? <input className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={"false"} value="false"/>: <input className={`getinput22 inpTest3`} id={el.id}  type="radio" name={i + 1} value="false"/>}</div>
-                      </div>
-                    </div>
-                    )
-                })}
-
-
-                <div className="buttonPar">
+                        <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                             <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
-                </div>
+                   </div>
+              </div>
 
-                <div className="FinalBtn">
-                    <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
-                    <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
-                </div>
+                
+
 
            
              </div>
-            </div>
-
-            <div >
-              <Modal text="this is table One" />
             </div>
         </Component1>
     )
@@ -301,7 +288,7 @@ const Component1 = styled.div`
             background-color:white;
             padding-bottom:16px;
             margin-bottom:100px;
-            font-size:15px;
+            font-size:${fontSize};
     
             .UserRequestPar{
                 margin-top:10px;

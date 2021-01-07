@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
+import {VscOpenPreview} from 'react-icons/vsc'
 import TableOne from './tableOne'
 import { motion } from 'framer-motion'
 import TableTwo from './tableTwo';
@@ -10,19 +11,45 @@ import TableFive from './tableFive'
 import TableSix from './tableSix'
 import { Modal } from './MainModal/Modal';
 import { HelpStore } from '../../context/HelperContext'
+import {ColorRgb, textColor} from '../theme'
 
 function MainRequest(props) {
     const [ showModal, setShowModal ] = useState(false);
-    const ModalOpen = () => {
-        console.log("dada");
-        setShowModal(prev => !prev);
+    const [ ScrollClass, setScrollClass ] = useState("");
+    const ModalOpen = () => {   setShowModal(prev => !prev);}
+
+      useEffect( async()=>{
+        window.addEventListener("scroll", handleScroll);
+        // let resData = await axios.get(`pps-request/76`);
+        // if(resData.data.data){ setInitialData(resData.data.data); setLoading(false); }
+      },[]);
+      const handleScroll = () => {
+          if(window.pageYOffset > 50){  setScrollClass("modalBtn2"); }else{ setScrollClass(""); }
       }
     const StyleContext = useContext(UserContext);
-    // console.log(StyleContext.GlobalStyle , "my global style");
+    const One = StyleContext.GlobalStyle.tableOne
+    const Two = StyleContext.GlobalStyle.tableTwo
+    const Three = StyleContext.GlobalStyle.tableThree
+    const Four = StyleContext.GlobalStyle.tableFour
+
+
+
     return (
         <HelpStore>
-            <div><button onClick={ModalOpen} >Modal</button>{props.dada}</div>
-            <Modal showModal={showModal} setShowModal={setShowModal}  />
+            <PreviewBtn >
+                <div className={`modalBtn ${ScrollClass}`}>
+                    {/* <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button> */}
+                    <div className="countPar container">
+                        <div className="itemsPar">
+                            <div className={`${One==="0%"? `borderPar2`: `borderPar`}`}  ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
+                            <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
+                            <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
+                            <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">4</span></div> 
+                        </div>
+                    </div>
+                </div>
+            </PreviewBtn>
+            {/* <Modal showModal={showModal} setShowModal={setShowModal}  /> */}
             <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
                 
                 <div style={{left:`${StyleContext.GlobalStyle.tableOne}`, opacity:`${StyleContext.GlobalStyle.tableOne === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
@@ -74,5 +101,128 @@ const ParentComp = styled.div`
     }
     @media only screen and (max-width:768px){
         height:1000vh !important;
+    }
+`
+
+const PreviewBtn = styled.div`
+    .modalBtn{
+        // background-color:rgba(0,0,0,0.1);
+        border-bottom:1px solid rgba(0,0,0,0.1);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        width:100%;
+        position:relative;
+        height:50px;
+        transition:all 0.4s ease;
+        .countPar{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            .itemsPar{
+                width:80%;
+                display:flex;
+                flex-direction:row;
+                align-items:center;
+                justify-content:space-between;
+                .line{
+                    height:1px;
+                    width:26%;
+                    background-color:rgba(0,0,0,0.2);
+                }
+                .line2{
+                    height:1px;
+                    width:26%;
+                    background-color:rgba(0,0,0,0.9);
+                }
+                .borderPar{
+                    cursor:pointer;
+                    width:30px;
+                    height:30px;
+                    border-radius:50%;
+                    border:1px solid rgba(0,0,0,0.5);
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    .items{
+                       
+                    }
+                }
+                .borderPar2{
+                    cursor:pointer;
+                    width:30px;
+                    height:30px;
+                    border-radius:50%;
+                    border:1px solid rgba(0,0,0,0.3);
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    background-color: rgba(${ColorRgb});
+                    color:white;
+                    font-weight:500;
+                    .items{
+                       
+                    }
+                }
+            }
+        }
+        button{
+            cursor:pointer;
+            border-style:none;
+            border:solid 1px green;
+            top:10px;
+            left:15px;
+            position:absolute;
+            width:120px;
+            // border-style:none;
+            border-radius:6px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:rgb(${textColor});
+            transition:all 0.3s ease;
+            svg{
+                margin-right:10px;
+                font-size:20px;
+            }
+            &:hover{
+                background-color:rgba(0,0,0,0.1)
+            }
+        }    
+    }
+    .modalBtn2{
+        height:40px;
+        transition:all 0.4s ease;
+        position:fixed;
+        top:0;
+        z-index:2;
+        border-bottom:1px solid black;
+        background-color: rgba(${ColorRgb});
+        color:white;
+        button{
+            top:5px;
+        }    
+        .countPar{
+            .itemsPar{
+                .line{
+                    height:1px;
+                    width:26%;
+                    background-color:rgba(255,255,255,0.2);
+                }
+                .line2{
+                    height:1px;
+                    width:26%;
+                    background-color:rgba(255,255,255,0.9);
+                }
+                .borderPar{
+                    border:1px solid rgba(255,255,255,0.5);
+                }
+                .borderPar2{
+                    background-color:white;
+                    border:1px solid rgba(0,0,0,0.3);
+                    color:black;
+                }
+            }
+        }
     }
 `

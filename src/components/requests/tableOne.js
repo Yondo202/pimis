@@ -1,7 +1,7 @@
 import React,{useEffect, useState, useRef, useContext} from 'react';
 import styled from 'styled-components'
 import { Link, animateScroll as scroll } from "react-scroll";
-import { fontFamily, textColor, ColorRgb, Color } from '../theme';
+import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
@@ -291,7 +291,7 @@ const Component1 = styled.div`
             background-color:white;
             padding-bottom:16px;
             margin-bottom:100px;
-            font-size:15px;
+            font-size:${fontSize};
     
             .UserRequestPar{
                 margin-top:10px;

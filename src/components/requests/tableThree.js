@@ -70,17 +70,16 @@ function TableThree() {
             setOpacity2("1");
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
         }else{
-            alert("gg");
+            // alert("gg");
             axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{
                 console.log(res, "$$ ressssss 3 $$");
               }).catch((err)=>{
                 console.log(err, "err");
               });
             StyleContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
-
+            scroll.scrollTo(0);
         }
 
-        // scroll.scrollTo(0);
     }
 
     return (

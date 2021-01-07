@@ -1,68 +1,93 @@
 import React, { useContext, useState, useEffect } from 'react'
-import TableOne from './tableOne'
+import { Link, animateScroll as scroll } from "react-scroll";
+import {VscOpenPreview} from 'react-icons/vsc'
+import TableOne from './tableOne';
 import TableTwo from './tableTwo';
-import TableThree from "./tableThree"
+import TableThree from "./tableThree";
+import TableFour from './tableFour';
+import TableFive from "./tableFive";
+import TableSix from './tableSix';
 import { motion } from 'framer-motion'
-
 import styled from 'styled-components'
 import UserContext from '../../../context/UserContext'
 import { HelpStore } from '../../../context/HelperContext'
 import {Modal} from '../MainModal/Modal'
 import axios from '../../../axiosbase'
+import {ColorRgb, textColor} from '../../theme'
 
 
 function MainRequest(props) {
     const [ showModal, setShowModal ] = useState(false);
-    const ModalOpen = () => {
-        console.log("dada");
-        setShowModal(prev => !prev);
-      }
+    const ModalOpen = () => {  setShowModal(prev => !prev); }
     const StyleContext = useContext(UserContext);
-
     const [Loading, setLoading] = useState(true);
     const [ initialData, setInitialData ] = useState([]);
+    const [ ScrollClass, setScrollClass ] = useState("");
 
     useEffect( async()=>{
-        const resData = await axios.get(`http://192.168.88.78:3000/api/pps-request/60`);
-        if(resData.data.data){
-            setInitialData(resData.data.data);
-            setLoading(false);
-        }
+        window.addEventListener("scroll", handleScroll);
+        let resData = await axios.get(`pps-request/81`);
+        if(resData.data.data){ setInitialData(resData.data.data); setLoading(false); }
       },[]);
-      console.log(initialData, "global initial");
+      const handleScroll = () => {
+          if(window.pageYOffset > 50){
+            setScrollClass("modalBtn2");
+          }else{
+            setScrollClass("");
+          }
+      }
+      
+    const func = StyleContext.StyleComp
+    const One = StyleContext.GlobalStyle.tableOne
+    const Two = StyleContext.GlobalStyle.tableTwo
+    const Three = StyleContext.GlobalStyle.tableThree
+    const Four = StyleContext.GlobalStyle.tableFour
+    const Five = StyleContext.GlobalStyle.tableFive
+    const Six = StyleContext.GlobalStyle.tableSix
      
-    // console.log(StyleContext.GlobalStyle , "my global style");
     return (
         <HelpStore>
-            <div><button onClick={ModalOpen} >Modal</button></div>
-            <Modal showModal={showModal} setShowModal={setShowModal}  />
+            <PreviewBtn >
+                <div className={`modalBtn ${ScrollClass}`}>
+                    <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button>
+                    <div className="countPar container">
+                        <div className="itemsPar">
+                            <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("0%", "100%", "200%","300%"),scroll.scrollTo(0))} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
+                            <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} onClick={()=> (func("-100%", "0%", "100%","200%"),scroll.scrollTo(0))}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
+                            <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-200%", "-100%", "0%","100%"),scroll.scrollTo(0))}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
+                            <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-300%", "-200%", "-100%","0%"),scroll.scrollTo(0))}><span className="items">4</span></div> 
+                        </div>
+                    </div>
+                </div>
+            </PreviewBtn>
             {Loading === true? <GifPar className="Gif"> <img src="https://media.giphy.com/media/52qtwCtj9OLTi/giphy.gif" alt="edp-gif" /></GifPar> : (
+                <>
+                <Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal}  />
                 <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
-                <div style={{left:`${StyleContext.GlobalStyle.tableOne}`, opacity:`${StyleContext.GlobalStyle.tableOne === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                        <TableOne initialData={initialData.ppsRequest1Details} initialName={initialData.name1} initialDate={initialData.date1} />
-                    </motion.div>
-                </div>
-                <div style={{left:`${StyleContext.GlobalStyle.tableTwo}`, opacity:`${StyleContext.GlobalStyle.tableTwo === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <TableTwo initialData={initialData.ppsRequest2Details}  initialName={initialData.name2}  initialDate={initialData.date2} />
-                </div>
-                
-                <div style={{left:`${StyleContext.GlobalStyle.tableThree}`, opacity:`${StyleContext.GlobalStyle.tableThree === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <TableThree initialData={initialData.ppsRequest3Details}  initialName={initialData.name3}  initialDate={initialData.date3} />
-                </div>
-                
-                {/* <div style={{left:`${StyleContext.GlobalStyle.tableFour}`, opacity:`${StyleContext.GlobalStyle.tableFour === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <TableFour />
-                </div>
+                    <div style={{left:`${One}`, opacity:`${One === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
+                            <TableOne initialData={initialData.ppsRequest1Details} initialName={initialData.name1} initialDate={initialData.date1} />
+                        </motion.div>
+                    </div>
+                    <div style={{left:`${Two}`, opacity:`${Two === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <TableTwo initialData={initialData.ppsRequest2Details}  initialName={initialData.name2}  initialDate={initialData.date2} />
+                    </div>
+                    <div style={{left:`${Three}`, opacity:`${Three === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <TableThree initialData={initialData.ppsRequest3Details}  initialName={initialData.name3}  initialDate={initialData.date3} />
+                    </div>
+                    
+                    <div style={{left:`${Four}`, opacity:`${Four === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <TableFour initialData={initialData.ppsRequest4Details}  initialName={initialData.name4}  initialDate={initialData.date4} />
+                    </div>
 
-                <div style={{left:`${StyleContext.GlobalStyle.tableFive}`, opacity:`${StyleContext.GlobalStyle.tableFive === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <TableFive />
-                </div>
-
-                <div style={{left:`${StyleContext.GlobalStyle.tableSix}`, opacity:`${StyleContext.GlobalStyle.tableSix === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <TableSix />
-                </div> */}
-            </ParentComp>
+                    <div style={{left:`${Five}`, opacity:`${Five === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <TableFive initialData={initialData.ppsRequest5Detail}  initialName={initialData.name5}  initialDate={initialData.date5}  />
+                    </div>
+                    <div style={{left:`${Six}`, opacity:`${Six === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <TableSix initialData={initialData.ppsRequest6Detail}  initialName={initialData.name6}  initialDate={initialData.date6} />
+                    </div> 
+                </ParentComp>
+                </>
             ) }
             
         </HelpStore>
@@ -70,10 +95,133 @@ function MainRequest(props) {
 }
 export default MainRequest
 
-
 let easing = [0, 0, 0.56, 0.95];
 const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
     enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
+
+
+const PreviewBtn = styled.div`
+    .modalBtn{
+        // background-color:rgba(0,0,0,0.1);
+        border-bottom:1px solid rgba(0,0,0,0.1);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        width:100%;
+        position:relative;
+        height:50px;
+        transition:all 0.4s ease;
+        .countPar{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            .itemsPar{
+                width:80%;
+                display:flex;
+                flex-direction:row;
+                align-items:center;
+                justify-content:space-between;
+                .line{
+                    height:1px;
+                    width:26%;
+                    background-color:rgba(0,0,0,0.2);
+                }
+                .line2{
+                    height:1px;
+                    width:26%;
+                    background-color:rgba(0,0,0,0.9);
+                }
+                .borderPar{
+                    cursor:pointer;
+                    width:30px;
+                    height:30px;
+                    border-radius:50%;
+                    border:1px solid rgba(0,0,0,0.5);
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    .items{
+                       
+                    }
+                }
+                .borderPar2{
+                    cursor:pointer;
+                    width:30px;
+                    height:30px;
+                    border-radius:50%;
+                    border:1px solid rgba(0,0,0,0.3);
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    background-color: rgba(${ColorRgb});
+                    color:white;
+                    font-weight:500;
+                    .items{
+                       
+                    }
+                }
+            }
+        }
+        button{
+            cursor:pointer;
+            border-style:none;
+            border:solid 1px green;
+            top:10px;
+            left:15px;
+            position:absolute;
+            width:120px;
+            // border-style:none;
+            border-radius:6px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:rgb(${textColor});
+            transition:all 0.3s ease;
+            svg{
+                margin-right:10px;
+                font-size:20px;
+            }
+            &:hover{
+                background-color:rgba(0,0,0,0.1)
+            }
+        }    
+    }
+    .modalBtn2{
+        height:40px;
+        transition:all 0.4s ease;
+        position:fixed;
+        top:0;
+        z-index:2;
+        border-bottom:1px solid black;
+        background-color: rgba(${ColorRgb});
+        color:white;
+        button{
+            top:5px;
+        }    
+        .countPar{
+            .itemsPar{
+                .line{
+                    height:1px;
+                    width:26%;
+                    background-color:rgba(255,255,255,0.2);
+                }
+                .line2{
+                    height:1px;
+                    width:26%;
+                    background-color:rgba(255,255,255,0.9);
+                }
+                .borderPar{
+                    border:1px solid rgba(255,255,255,0.5);
+                }
+                .borderPar2{
+                    background-color:white;
+                    border:1px solid rgba(0,0,0,0.3);
+                    color:black;
+                }
+            }
+        }
+    }
+`
 
 const GifPar = styled.div`
     height:90vh;
@@ -82,6 +230,7 @@ const GifPar = styled.div`
     align-items:center;
     justify-content:center;
     background-color:white;
+  
     img{
         // border-radius:50%;
     }

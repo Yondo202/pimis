@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react'
+import React, { useState,useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { textColor, ColorRgb } from '../../../theme';
 import {FiUserCheck} from 'react-icons/fi'
@@ -7,24 +7,63 @@ import {GiScales} from 'react-icons/gi'
 import {IoIosAddCircleOutline} from 'react-icons/io'
 import UserContext from '../../../../context/UserContext'
 
-function TableThreeDetails() {
+function TableThreeDetails(props) {
     const StyleContext  = useContext(UserContext);
+
     const initialList = [{id: 1}];
     const [ addItem, setAddItem ] = useState(initialList);
-    const [ addStyle, setAddStyle ] = useState("0");
     const AddHandle = ()=>{
         // console.log("nana");
         StyleContext.StyleComp("-200%", "-100%", "0%", 100 + 100);
         const list = addItem.concat( {id: 1});
         setAddItem(list);
-        setTimeout(() => {
-            setAddStyle("1");
-           }, 50);
     }
+
+    const [ initialData, setInitialData ] = useState([]);
+
+    useEffect(() => {
+        setInitialData(props.initialData);
+    }, [])
+    const changeDateHandle = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{
+            if(el.id.toString() === event.target.id){  el["pdate"] = event.target.value }
+            finalData.push(el)
+        })
+        setInitialData(finalData);
+    }
+    
+    const changeDateHandle2 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{
+            if(el.id.toString() === event.target.id){  el["issue"] = event.target.value }
+            finalData.push(el)
+        })
+        setInitialData(finalData);
+    }
+    const changeDateHandle3 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{
+            if(el.id.toString() === event.target.id){  el["stepdate"] = event.target.value }
+            finalData.push(el)
+        })
+        setInitialData(finalData);
+    }
+    const changeDateHandle4 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{
+            if(el.id.toString() === event.target.id){  el["vote"] = event.target.value }
+            finalData.push(el)
+        })
+        setInitialData(finalData);
+    }
+    console.log(props.initialData, "***********")
+
+    // console.log(props.initialData, "detail inital 3");
     return (
         <Component3Detail>
             <div className="rowHeader">3. Үйлдвэрлэгчийн байгаль орчин, нийгмийн удирдлагын гүйцэтгэлийн талаарх мэдээллийн товчоон<span className="tseg">*</span></div>
-            {addItem.map((el,i)=>{
+            {props.initialData[0] ? (initialData.map((el,i)=>{
                 return(
                     <div id={i}  className="GetItemAdd33 DetailPar" key={i}>
                         <div className="topTitle">
@@ -40,7 +79,7 @@ function TableThreeDetails() {
                                 <div className="labels"><span>Огноо :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
+                                        <input type="date" onChange={changeDateHandle} id={el.id} value={el.pdate} max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
                                         <label for="name" className=" form__label">Огноо</label>
                                     </div>
                                 </div>
@@ -50,7 +89,7 @@ function TableThreeDetails() {
                                 <div className="labels"><span>Асуудлын мөн чанар :</span> </div>
                                 <div className="name"> <GiScales />
                                     <div className="form__group">
-                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
+                                        <input type="input" onChange={changeDateHandle2} value={el.issue} id={el.id} className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
                                         <label for="name" className=" form__label">Асуудлын мөн чанар</label>
                                     </div>
                                 </div>
@@ -61,7 +100,7 @@ function TableThreeDetails() {
                                 <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
                                 <div className="name"> <FiUserCheck />
                                     <div className="form__group">
-                                        <input type="date" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
+                                        <input type="date" max='3000-12-31' id={el.id} onChange={changeDateHandle3} value={el.stepdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
                                         <label for="name" className=" form__label">огноо тус бүрээр</label>
                                     </div>
                                 </div>
@@ -71,7 +110,7 @@ function TableThreeDetails() {
                                 <div className="labels"><span>Санал :</span> </div>
                                 <div className="name"> <GoMail />
                                     <div className="form__group">
-                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
+                                        <input type="input" id={el.id} value={el.vote} onChange={changeDateHandle4}  className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
                                         <label for="name" className=" form__label">Санал</label>
                                     </div>
                                 </div>
@@ -80,10 +119,65 @@ function TableThreeDetails() {
                     </div>
                  </div>
                 )
-            })}
-            <div className="AddItemBtn">
-                <IoIosAddCircleOutline onClick={AddHandle} />
-            </div>
+            })) : (addItem.map((el,i)=>{
+                return(
+                    <div id={i}  className="GetItemAdd33 DetailPar" key={i}>
+                        <div className="topTitle">
+                            <div className="Title"> {i + 1} . Торгууль / Шийтгэл / Санал гомдлууд :</div>
+                            <div className="null">
+                                Байхгүй:
+                                <input className="checkBtn" type="checkbox" name="null" />
+                            </div>
+                        </div>
+                    <div className="formOneParent">
+                        <div className="inputPar">
+                            <div className="inpChild">
+                                <div className="labels"><span>Огноо :</span> </div>
+                                <div className="name"> <GoCalendar />
+                                    <div className="form__group">
+                                        <input type="date" onChange={changeDateHandle} id={el.id} value={el.pdate} max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
+                                        <label for="name" className=" form__label">Огноо</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="inpChild">
+                                <div className="labels"><span>Асуудлын мөн чанар :</span> </div>
+                                <div className="name"> <GiScales />
+                                    <div className="form__group">
+                                        <input type="input" onChange={changeDateHandle2} value={el.issue} id={el.id} className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
+                                        <label for="name" className=" form__label">Асуудлын мөн чанар</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="inputPar">
+                            <div className="inpChild">
+                                <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
+                                <div className="name"> <FiUserCheck />
+                                    <div className="form__group">
+                                        <input type="date" id={el.id} onChange={changeDateHandle3} value={el.stepdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
+                                        <label for="name" className=" form__label">огноо тус бүрээр</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="inpChild">
+                                <div className="labels"><span>Санал :</span> </div>
+                                <div className="name"> <GoMail />
+                                    <div className="form__group">
+                                        <input type="input" id={el.id} value={el.vote} onChange={changeDateHandle4}  className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
+                                        <label for="name" className=" form__label">Санал</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+                )
+            })) }
+            {props.initialData[0] ? null : <div className="AddItemBtn"> <IoIosAddCircleOutline onClick={AddHandle} /> </div> }
+            
         </Component3Detail>
     )
 }

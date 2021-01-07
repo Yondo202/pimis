@@ -1,36 +1,59 @@
 
 
-import React, {useContext} from 'react'
+// import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components';
 import HelperContext from '../../../context/HelperContext'
+import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 
-function ModalOne() {
-    const HelpContext = useContext(HelperContext);
-    console.log(HelpContext.tableSee.tableOneData, "1 this my helper global context");
+
+function ModalOne(props) {
+    // const HelpContext = useContext(HelperContext);
+    // console.log(HelpContext.tableSee.tableOneData, "1 this my helper global context");
+    const [ DataOne, setDataOne ] = useState([]);
+    useEffect(()=>{
+        // setDataOne(props.DataOne);
+        const finalData = []
+            dataOne.map((el,i)=>{
+                props.DataOne.map(elem=>{ if(i + 1 === elem.rownum){ el["rvalue"] = elem.rvalue; el["rownum"] = elem.rownum } });
+                finalData.push(el);
+            });
+        setDataOne(finalData);
+        console.log(DataOne, " my data one"); 
+    },[])
+
     return (
         <TableOne >
-            <h6>ҮЙЛДВЭРЛЭГЧ НЬ ДАРААХ ҮЙЛ АЖИЛЛАГААГ ЭРХЭЛДЭГ БА ЯВУУЛДАГ ЭСЭХ?</h6>
-            <table className="table">
-                <tr className="Header">
-                    <th>Шалгуур</th>
-                    <th>Хариулт</th>
-                </tr>
-                {dataOne.map(()=>{
+            <h6>1. Үйлдвэрлэгч нь дараах үйл ажиллагааг эрхэлдэг ба явуулдаг эсэх? *</h6>
+            <div className="table container">
+                <div  className="Header row">
+                    <div className="col-md-10 col-sm-10 col-10"><div className="question">Шалгуур</div></div>
+                    <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`}} className="col-md-2 col-sm-2 col-2">
+                        <div className="answer">Хариулт</div>
+                    </div>
+                </div>
 
+                
+                {DataOne.map((el,i)=>{
+                    return(
+                            <div className="items row">
+                                <div style={{borderBottom:`1px solid rgba(0,0,0,0.2)`}} className="col-md-10 col-sm-10 col-10">
+                                    <div className="question22">
+                                        <span className="Num">{el.rownum}</span>
+                                         {el.name}
+                                    </div>
+                                </div>
+                                <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.3)`,backgroundColor:`rgba(63,255,181,0.2)`}}  className="col-md-2 col-sm-2 col-2">
+                                    <div className="answer">
+                                        {el.rvalue === "true" ? <span>Тийм</span> : null}
+                                        {el.rvalue === "unconcern" ? <span>Хамаарахгүй</span> : null}
+                                        {el.rvalue === "false" ? <span>Үгүй</span> : null}
+                                    </div>
+                                </div>
+                            </div>
+                    )
                 })}
-                <tr>
-                    <td>Цэрэг армийн ямар нэг зэвсэг</td>
-                    <td>$100 100</td>
-                </tr>
-                <tr> 
-                    <td>Зэрлэг амьтан, ургамлын ховордсон төрөл зүйлийг олон улсын хэмжээнд худалдаалах тухай конвенц (CITES)-ийн хүрээнд хориглодог ан амьтан, ургамлын худалдаа</td>
-                    <td>$100</td>
-                </tr>
-                <tr>
-                    <td>January</td>
-                    <td>$100</td>
-                </tr>
-            </table>
+            </div>
         </TableOne> 
     )
 }
@@ -38,11 +61,43 @@ function ModalOne() {
 export default ModalOne
 
 const TableOne = styled.div`
+    padding: 50px 100px 50px 64px;
+    font-family:${fontFamily};
+    color:rgb(${textColor});
     .table{
-        width:100%;
-        border:1px solid rgba(0,0,0,0.1);
+        border:1px solid rgba(0,0,0,0.2);
         .Header{
-
+            background-color:rgba(${ColorRgb},0.8);
+            color:white;
+            text-align:center;
+            padding-top:6px;
+            padding-bottom:6px;
+        }
+        .items{
+            background-color: rgba(63,81,181,0.1);
+            .question22{
+                height:100%;
+                display:flex;
+                align-items:center;
+                .Num{
+                    margin-right:10px;
+                    padding-right:10px;
+                    height:100%;
+                    border-right:1px solid rgba(0,0,0,0.2);
+                }
+            }
+            .question{
+                padding:5px 0px;
+                
+            }
+            .answer{
+                font-weight:500;
+                height:100%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                padding:5px 0px;
+            }
         }
     }
 `
@@ -89,3 +144,69 @@ const dataOne = [
         name: "Уул уурхайн салбарт"
     },
 ]
+
+
+
+
+
+// export class ModalOne extends Component {
+//     constructor(props) {
+//         super(props)
+    
+//         this.state = {
+//             DataOne : []
+//         }
+//     }
+
+//     componentDidMount() {
+//         const finalData = []
+//             DataOne.map((el,i)=>{
+//                 this.props.DataOne.map(elem=>{ if(i + 1 === elem.rownum){ el["rvalue"] = elem.rvalue; el["rownum"] = elem.rownum } });
+//                 finalData.push(el);
+//             });
+//         this.setState({
+//             DataOne : finalData
+//         })
+//         // setDataOne(finalData);
+//         console.log(DataOne, " my data one");
+//     }
+    
+//     render() {
+//         return (
+//             <TableOne >
+//                 <h6>1. Үйлдвэрлэгч нь дараах үйл ажиллагааг эрхэлдэг ба явуулдаг эсэх? *</h6>
+//                 <div className="table container">
+//                     <div  className="Header row">
+//                         <div className="col-md-10 col-sm-10 col-10"><div className="question">Шалгуур</div></div>
+//                         <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`}} className="col-md-2 col-sm-2 col-2">
+//                             <div className="answer">Хариулт</div>
+//                         </div>
+//                     </div>
+
+                    
+//                     {DataOne.map((el,i)=>{
+//                         return(
+//                                 <div className="items row">
+//                                     <div style={{borderBottom:`1px solid rgba(0,0,0,0.2)`}} className="col-md-10 col-sm-10 col-10">
+//                                         <div className="question22">
+//                                             <span className="Num">{el.rownum}</span>
+//                                             {el.name}
+//                                         </div>
+//                                     </div>
+//                                     <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.3)`,backgroundColor:`rgba(63,255,181,0.2)`}}  className="col-md-2 col-sm-2 col-2">
+//                                         <div className="answer">
+//                                             {el.rvalue === "true" ? <span>Тийм</span> : null}
+//                                             {el.rvalue === "unconcern" ? <span>Хамаарахгүй</span> : null}
+//                                             {el.rvalue === "false" ? <span>Үгүй</span> : null}
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                         )
+//                     })}
+//                 </div>
+//             </TableOne> 
+//         )
+//     }
+// }
+
+// export default ModalOne

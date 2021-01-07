@@ -1,32 +1,79 @@
-import React, { useState,useContext } from 'react'
+import React, { useState,useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { textColor, ColorRgb } from '../../theme';
+import { textColor, ColorRgb } from '../../../theme';
 import {GoCalendar} from 'react-icons/go'
 import {VscAccount,VscFoldDown,VscCloudUpload,VscCloudDownload,VscChecklist,VscOpenPreview} from 'react-icons/vsc'
 import {IoIosAddCircleOutline} from 'react-icons/io'
-import UserContext from '../../../context/UserContext'
+import UserContext from '../../../../context/UserContext'
 
-function TableSixDetails2() {
+
+function TableSixDetails2(props) {
     const StyleContext  = useContext(UserContext);
     const initialList = [{id: 1}];
     const [ addItem, setAddItem ] = useState(initialList);
-    const AddHandle = ()=>{
-        const list = addItem.concat( {id: 1});
-        setAddItem(list);
+    const [ initialData, setInitialData ] = useState([]);
+    useEffect(() => {
+        setInitialData(props.initialData);
+    }, []);
+      
+    const changeHandle1 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["messure"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
     }
+    const changeHandle2 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["where_messure"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle3 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["monitoring"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle4 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["monitor_duration"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle5 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["cost"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle6 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["hostname"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle7 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["startdate"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle8 = (event) =>{
+        const finalData = []
+        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["enddate"] = event.target.value };finalData.push(el) })
+        setInitialData(finalData);
+    }
+
+    // console.log(initialData, "666");
+
     return (
         <Component3Detail>
-            {addItem.map((el,i)=>{
+            <div className="rowHeader">6. Мониторингийн төлөвлөгөөний загвар<span className="tseg">*</span></div>
+
+            {initialData ? (initialData.map((el,i)=>{
                 return(
                     <div id={i}  className="GetItemAdd666 DetailPar" key={i}>
-                    <div className="Title"> {i + 1} . ҮЙЛ АЖИЛЛАГААНЫ ҮЕ ШАТ :</div>
+                    <div className="Title"> {i + 1} . БҮТЭЭН БАЙГУУЛАЛТЫН ҮЕ ШАТ :</div>
                     <div className="formOneParent">
                         <div className="inputPar">
                             <div className="inpChild">
                                 <div className="labels"><span>Ямар өгөгдөхүүнийг хэмжих	:</span> </div>
                                 <div className="name"> <VscOpenPreview />
                                     <div className="form__group">
-                                        <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="messure" required />
+                                        <input type="text" value={el.messure} id={el.id} onChange={changeHandle1} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="messure" required />
                                         <label for="name" className=" form__label">Ямар өгөгдөхүүнийг хэмжих</label>
                                     </div>
                                 </div>
@@ -36,7 +83,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Хаана өгөгдөхүүнийг хэмжих :</span> </div>
                                 <div className="name"> <VscChecklist />
                                     <div className="form__group">
-                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where-messure" required />
+                                        <input type="input" value={el.where_messure} onChange={changeHandle2} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where_messure" required />
                                         <label for="name" className=" form__label">Хаана өгөгдөхүүнийг хэмжих</label>
                                     </div>
                                 </div>
@@ -47,7 +94,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>өгөгдөхүүнд мониторинг хийх (ашиглах тоног төхөөрөмж)	 :</span> </div>
                                 <div className="name"> <VscCloudDownload />
                                     <div className="form__group">
-                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
+                                        <input type="input" value={el.monitoring} onChange={changeHandle3} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
                                         <label for="name" className=" form__label">Хэрхэн</label>
                                     </div>
                                 </div>
@@ -57,8 +104,8 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Мониторингийн давтамж буюу үргэлжлэх байдал :</span> </div>
                                 <div className="name"> <VscCloudUpload />
                                     <div className="form__group">
-                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor-duration" required />
-                                        <label for="name" className=" form__label">Хэзээ</label>
+                                        <input type="input" value={el.monitor_duration} onChange={changeHandle4} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor_duration" required />
+                                        <label for="name" className=" form__label">Хэзээ </label>
                                     </div>
                                 </div>
                             </div>
@@ -71,7 +118,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Тоног төхөөрөмжийн зардал буюу гүйцэтгэгчийн төлбөр :</span> </div>
                                 <div className="name"> <VscFoldDown />
                                     <div className="form__group">
-                                        <input type="number" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
+                                        <input type="number" value={el.cost} onChange={changeHandle5} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
                                         <label for="name" className=" form__label">Мониторингийн зардал </label>
                                     </div>
                                 </div>
@@ -81,7 +128,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Хариуцах эзэн :</span> </div>
                                 <div className="name"> <VscAccount />
                                     <div className="form__group">
-                                        <input type="input" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
+                                        <input type="input" value={el.hostname} onChange={changeHandle6} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
                                         <label for="name" className=" form__label">Хариуцах эзэн</label>
                                     </div>
                                 </div>
@@ -92,7 +139,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Эхлэх хугацаа :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31' className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
+                                        <input type="date" value={el.startdate} onChange={changeHandle7} id={el.id} max='3000-12-31' className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
                                         <label for="name"  className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
@@ -102,7 +149,7 @@ function TableSixDetails2() {
                                 <div className="labels"><span>Дуусах хугацаа :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31'  className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
+                                        <input type="date" max='3000-12-31' value={el.enddate} onChange={changeHandle8} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
                                         <label for="name" className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
@@ -111,11 +158,13 @@ function TableSixDetails2() {
                     </div>
                  </div>
                 )
-            })}
+            })) : <div>(Мэдээлэл байхгүй байна...)</div>}
+
+            {}
             
-            <div className="AddItemBtn">
+            {/* <div className="AddItemBtn">
                 <IoIosAddCircleOutline onClick={AddHandle} />
-            </div>
+            </div> */}
 
             {/* <button >hahahaha</button> */}
 
