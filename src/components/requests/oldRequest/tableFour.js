@@ -39,6 +39,7 @@ function TableFour(props) {
           });
           setInitialData(finalData);
       },[]);
+      console.log(initialData, "444 ************");
 
       const radioChange = (event)=> {
         let finalData = []
@@ -60,7 +61,7 @@ function TableFour(props) {
       const clickHandles = (e) =>{
             let finalOne = {};
             let finalEnd = {};
-            let rs2 = document.querySelectorAll(".inpTest3");
+            let rs2 = document.querySelectorAll(".inpTest34");
             let arr2 = Array.from(rs2);
             let finalOne2 = [];
             arr2.map(element=>{
@@ -69,7 +70,7 @@ function TableFour(props) {
                   let field = element.name;
                   let value = element.value;
                   if(props.initialData[0]){
-                    soloObject2["id"] = element.id
+                    soloObject2["id"] = parseInt(element.id);
                   }
                   soloObject2["rownum"] = field
                   soloObject2["rowvalue"] = value
@@ -134,7 +135,7 @@ function TableFour(props) {
                     setFinalMsg("0");
                     console.log(finalEnd, "myfinal End (A)");
                     // axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
-                    axios.put(`pps-request/81`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "true" && finalOne2[3].rowvalue === "false"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
@@ -145,7 +146,7 @@ function TableFour(props) {
                     setFinalMsg("0");
                     finalEnd.PPS4["esm"] = "C"
                     console.log(finalEnd, "myfinal End (C)");
-                    axios.put(`pps-request/81`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "false" && finalOne2[3].rowvalue === "true"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
@@ -155,7 +156,7 @@ function TableFour(props) {
                     setOpacity2("0");
                     finalEnd.PPS4["esm"] = "B"
                     console.log(finalEnd, "myfinal End (B)");
-                    axios.put(`pps-request/81`, finalEnd).then((res)=>{ console.log(res, "$$(B) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(B) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
                     StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
                     scroll.scrollTo(0);
                     // setFinalMsg("1");
@@ -168,7 +169,7 @@ function TableFour(props) {
                     alert("gg");
                     finalEnd.PPS4["esm"] = "F"
                     console.log(finalEnd, "other F");
-                    axios.put(`pps-request/81`, finalEnd).then((res)=>{ console.log(res, "$$(F) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(F) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
                     // StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
                   }
         }
@@ -179,13 +180,12 @@ function TableFour(props) {
             // StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
         }
 //   console.log(trimmedDataURL, "signature url");
-console.log(initialData, " 444 my initial finalll")
+// console.log(initialData, " 444 my initial finalll")
     return (
         <Component1 className="container" >
             <div className="boxShadow">
                 <div className="rowHeader">4. Байгаль орчин, нийгмийн ерөнхий үнэлгээний маягт  <span className="tseg">*</span></div>
             <div className="formTwoParent ">
-           
 
                 <div className="headerPar">
                     <div  className="row" >
@@ -200,36 +200,37 @@ console.log(initialData, " 444 my initial finalll")
                       <div className="head2 col-md-3 col-sm-3 col-3"> <div style={{padding:"2px 15px"}}>“Тийм” бол шаардлагатай баримт бичгүүд </div> </div>
                     </div>
                 </div>
-                {props.initialData[0] ? (initialData.map((el, i)=>{
-                    return(
-                    <div className="headerParchild" key={i}>
-                        <div className="row" >
-                        {/* <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div> */}
-                        <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">{i + 1}</div><div className="mainText">{el.name}</div> </div></div>
-                        <div className="radios col-md-1 col-sm-1 col-1"> <input className={`getinput22 inpTest3`} type="radio" name={i + 1} id={el.id} onChange={radioChange} checked={el.rowvalue === "true" ? true: false} value={true}/></div>
-                        <div className="radios col-md-1 col-sm-1 col-1"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} id={el.id} onChange={radioChange} checked={el.rowvalue === "false" ? true: false} value={false}/></div>
+                <form>
+                    {props.initialData[0] ? (initialData.map((el, i)=>{
+                            return(
+                            <div className="headerParchild" key={i}>
+                                <div className="row" >
+                                {/* <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div> */}
+                                <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">{i + 1}</div><div className="mainText">{el.name}</div> </div></div>
+                                <div className="radios col-md-1 col-sm-1 col-1"> <input className={`inpTest34`} type="radio" name={i + 1} id={el.id} onChange={radioChange} checked={el.rowvalue === "true" ? true: false} value={true}/></div>
+                                <div className="radios col-md-1 col-sm-1 col-1"><input className={`inpTest34`} type="radio" name={i + 1} id={el.id} onChange={radioChange} checked={el.rowvalue === "false" ? true: false} value={false}/></div>
 
 
-                        <div className="radios col-md-2 col-sm-2 col-2">{el.nameTwo}</div>
-                        <div className="radios col-md-3 col-sm-3 col-3"><div style={{padding:"6px 15px"}}>{el.nameThree}</div></div>
-                        </div>
-                    </div>
-                    )
-                })):(tableData.map((el, i)=>{
-                  return(
-                  <div className="headerParchild" key={i}>
-                      <div className="row" >
-                      {/* <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div> */}
-                      <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">{i + 1}</div><div className="mainText">{el.name}</div> </div></div>
-                      <div className="radios col-md-1 col-sm-1 col-1"> <input className={`getinput22 inpTest3`} type="radio" name={i + 1} value={true}/></div>
-                      <div className="radios col-md-1 col-sm-1 col-1"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value={false}/></div>
-                      <div className="radios col-md-2 col-sm-2 col-2">{el.nameTwo}</div>
-                      <div className="radios col-md-3 col-sm-3 col-3"><div style={{padding:"6px 15px"}}>{el.nameThree}</div></div>
-                      </div>
-                  </div>
-                  )
-              }))}
-
+                                <div className="radios col-md-2 col-sm-2 col-2">{el.nameTwo}</div>
+                                <div className="radios col-md-3 col-sm-3 col-3"><div style={{padding:"6px 15px"}}>{el.nameThree}</div></div>
+                                </div>
+                            </div>
+                            )
+                        })):(tableData.map((el, i)=>{
+                          return(
+                          <div className="headerParchild" key={i}>
+                              <div className="row" >
+                              {/* <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div> */}
+                              <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">{i + 1}</div><div className="mainText">{el.name}</div> </div></div>
+                              <div className="radios col-md-1 col-sm-1 col-1"> <input className={`inpTest34`} type="radio" name={i + 1} value={true}/></div>
+                              <div className="radios col-md-1 col-sm-1 col-1"><input className={`inpTest34`} type="radio" name={i + 1} value={false}/></div>
+                              <div className="radios col-md-2 col-sm-2 col-2">{el.nameTwo}</div>
+                              <div className="radios col-md-3 col-sm-3 col-3"><div style={{padding:"6px 15px"}}>{el.nameThree}</div></div>
+                              </div>
+                          </div>
+                          )
+                    }))}
+                </form>
               <div className="FinalBtn">
                   <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
                   <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>

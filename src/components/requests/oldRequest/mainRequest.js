@@ -23,10 +23,14 @@ function MainRequest(props) {
     const [Loading, setLoading] = useState(true);
     const [ initialData, setInitialData ] = useState([]);
     const [ ScrollClass, setScrollClass ] = useState("");
+    const [ tokens, setTokens ] = useState("");
+
 
     useEffect( async()=>{
+        let storageToken = localStorage.getItem("edp_loggedUser", []);
+        setTokens(storageToken);
         window.addEventListener("scroll", handleScroll);
-        let resData = await axios.get(`pps-request/81`);
+        let resData = await axios.get(`pps-request/${StyleContext.reqID}`, {headers: {Authorization:`bearer ${storageToken}`}});
         if(resData.data.data){ setInitialData(resData.data.data); setLoading(false); }
       },[]);
       const handleScroll = () => {
@@ -36,7 +40,9 @@ function MainRequest(props) {
             setScrollClass("");
           }
       }
-      
+
+    console.log(" ^^^^^^^^^^ initial",initialData );
+
     const func = StyleContext.StyleComp
     const One = StyleContext.GlobalStyle.tableOne
     const Two = StyleContext.GlobalStyle.tableTwo
@@ -66,30 +72,29 @@ function MainRequest(props) {
                 <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
                     <div style={{left:`${One}`, opacity:`${One === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                         <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                            <TableOne initialData={initialData.ppsRequest1Details} initialName={initialData.name1} initialDate={initialData.date1} />
+                            <TableOne  initialData={initialData.ppsRequest1Details} initialName={initialData.name1} initialDate={initialData.date1} id={StyleContext.reqID} token={tokens} />
                         </motion.div>
                     </div>
                     <div style={{left:`${Two}`, opacity:`${Two === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <TableTwo initialData={initialData.ppsRequest2Details}  initialName={initialData.name2}  initialDate={initialData.date2} />
+                        <TableTwo initialData={initialData.ppsRequest2Details}  initialName={initialData.name2}  initialDate={initialData.date2} id={StyleContext.reqID} token={tokens} />
                     </div>
                     <div style={{left:`${Three}`, opacity:`${Three === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <TableThree initialData={initialData.ppsRequest3Details}  initialName={initialData.name3}  initialDate={initialData.date3} />
+                        <TableThree initialData={initialData.ppsRequest3Details}  initialName={initialData.name3}  initialDate={initialData.date3} id={StyleContext.reqID} token={tokens} />
                     </div>
                     
                     <div style={{left:`${Four}`, opacity:`${Four === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <TableFour initialData={initialData.ppsRequest4Details}  initialName={initialData.name4}  initialDate={initialData.date4} />
+                        <TableFour initialData={initialData.ppsRequest4Details}  initialName={initialData.name4}  initialDate={initialData.date4} id={StyleContext.reqID} token={tokens} />
                     </div>
 
                     <div style={{left:`${Five}`, opacity:`${Five === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <TableFive initialData={initialData.ppsRequest5Detail}  initialName={initialData.name5}  initialDate={initialData.date5}  />
+                        <TableFive initialData={initialData.ppsRequest5Detail}  initialName={initialData.name5}  initialDate={initialData.date5} id={StyleContext.reqID} token={tokens}  />
                     </div>
                     <div style={{left:`${Six}`, opacity:`${Six === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <TableSix initialData={initialData.ppsRequest6Detail}  initialName={initialData.name6}  initialDate={initialData.date6} />
+                        <TableSix initialData={initialData.ppsRequest6Detail}  initialName={initialData.name6}  initialDate={initialData.date6} id={StyleContext.reqID} token={tokens} />
                     </div> 
                 </ParentComp>
                 </>
             ) }
-            
         </HelpStore>
     )
 }

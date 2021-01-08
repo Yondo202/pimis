@@ -18,6 +18,11 @@ export const UserStore= (props) =>{
     const [errMsgSignup, setErrMsgSignUp] = useState("");
     const [ GlobalStyle, setGlobalStyle ] = useState(initialStyle);
     const [ tableSee, setTableSee ] = useState(initialSee);
+    const [ reqID, setReqId ] = useState();
+
+    const idPass = (id) => {
+      setReqId(id);
+    }
     
     const loginUserSuccess = (id,token,expireDate,name)=>{
         setUserInfo(
@@ -84,8 +89,8 @@ export const UserStore= (props) =>{
         setGlobalStyle({tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 250 });
       }
     }
-      
-
+    
+    
     return (
        <UserContext.Provider
         value = {{
@@ -97,7 +102,9 @@ export const UserStore= (props) =>{
             errMsg,
             errMsgSignup,
             StyleComp,
-            GlobalStyle
+            GlobalStyle,
+            idPass,
+            reqID
         }}
         >
        {props.children}    

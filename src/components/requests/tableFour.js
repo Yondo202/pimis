@@ -28,11 +28,17 @@ function TableFour() {
       const helperContext = useContext(HelperContext);
       console.log(helperContext.tableId, " $ table Id 4 $ ");
 
-      useEffect(async () => {
-        const result = await axios.get('http://192.168.88.78:3000/api/questions?page=1&pageSize=3');
-        const Data1 = result.data.data.docs[1]
-        setData(Data1); setDataDetal(Data1.questiondetails);
-      },[]);
+      const [ UserToken, setUserToken ] = useState(null);
+        useEffect(()=>{
+          let storageToken = localStorage.getItem("edp_loggedUser", []);
+          setUserToken(storageToken);
+      });
+
+      // useEffect(async () => {
+      //   const result = await axios.get('http://192.168.88.78:3000/api/questions?page=1&pageSize=3');
+      //   const Data1 = result.data.data.docs[1]
+      //   setData(Data1); setDataDetal(Data1.questiondetails);
+      // },[]);
 
       const clickHandles = (e) =>{
             let finalOne = {};
@@ -112,7 +118,7 @@ function TableFour() {
                     setOpacity2("0");
                     setFinalMsg("0");
                     console.log(finalEnd, "myfinal End (A)");
-                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "true" && finalOne2[3].rowvalue === "false"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
@@ -123,7 +129,7 @@ function TableFour() {
                     setFinalMsg("0");
                     finalEnd.PPS4["esm"] = "C"
                     console.log(finalEnd, "myfinal End (C)");
-                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "false" && finalOne2[3].rowvalue === "true"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
@@ -133,7 +139,7 @@ function TableFour() {
                     setOpacity2("0");
                     finalEnd.PPS4["esm"] = "B"
                     console.log(finalEnd, "myfinal End (B)");
-                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
                     setTimeout(()=>{
                       StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
                     },3000);
@@ -148,7 +154,7 @@ function TableFour() {
                     alert("gg");
                     finalEnd.PPS4["esm"] = "F"
                     console.log(finalEnd, "other F");
-                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
                   }
                   //  StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
         }

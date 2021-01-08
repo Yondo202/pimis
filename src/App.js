@@ -24,19 +24,17 @@ function App() {
       setUserId(userId);
       setUserName(userName);
     }, []);
-    const clickhandle = ()=>{
-        ctxUser.logout();
-        setTimeout(() => {
-          window.location.reload(false);
-         }, 100);
-    }
+    // const clickhandle = ()=>{
+    //     ctxUser.logout();
+    //     setTimeout(() => {
+    //       window.location.reload(false);
+    //      }, 100);
+    // }
   
   return (
     <div className="App">
-        {/* <Ghost /> */}
       <Router>
         {userId? <Menu /> : <></>}
-
         {userId ? (
         <Switch>
           <Route path="/" exact> 
@@ -44,26 +42,12 @@ function App() {
                  <LoginDoneHome />
              </motion.div>
          </Route>
-         <Route path="/comp-check">
-                 <MainForm />
-         </Route>
-         <Route path="/comp-request" >
-                 <ReqHome />
-         </Route>
-         <Route path="/comp-request-new" >
-                 <MainRequest />
-         </Route>
-         <Route path="/comp-request-old" >
-                 <MainRequestOld />
-         </Route>
-         <Route path="/email" >
-                 <EmialSender />
-         </Route>
-         <Route path="/email2" >
-             {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} > */}
-                 <EmialSender2 />
-             {/* </motion.div> */}
-         </Route>
+         <Route path="/comp-check" component={MainForm} />
+         <Route path="/comp-request" component={ReqHome} exact />
+         <Route path="/comp-request/new" component={MainRequest} />
+         <Route path="/comp-request/old" component={MainRequestOld} />
+         <Route path="/email" component={EmialSender}  />
+         <Route path="/email2" component={EmialSender2} />
        </Switch>
         ) : (
           <Switch>

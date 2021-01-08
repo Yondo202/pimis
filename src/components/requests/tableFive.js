@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext,useEffect} from 'react'
 import TableFiveDetails from './deitals/tableFiveDetail'
 import TableFiveDetails2 from './deitals/tableFiveDetail2'
 import { Link, animateScroll as scroll } from "react-scroll";
@@ -17,6 +17,11 @@ function TableFive() {
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
+    const [ UserToken, setUserToken ] = useState(null);
+    useEffect(()=>{
+      let storageToken = localStorage.getItem("edp_loggedUser", []);
+      setUserToken(storageToken);
+  });
 
     const clickHandles = () => {
         let finalOne = {};
@@ -99,7 +104,7 @@ function TableFive() {
             setOpacity2("1");
         }else{
             // setOpacity2("0");
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
 
             StyleContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
             scroll.scrollTo(0);

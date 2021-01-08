@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import TableSixDetails from './deitals/tableSixDetail'
 import TableSixDetails2 from './deitals/tableSixDetail2'
 import { Link, animateScroll as scroll } from "react-scroll";
@@ -17,6 +17,11 @@ function TableSix() {
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
+    const [ UserToken, setUserToken ] = useState(null);
+    useEffect(()=>{
+      let storageToken = localStorage.getItem("edp_loggedUser", []);
+      setUserToken(storageToken);
+    });
 
     const clickHandles = () => {
         let finalOne = {};
@@ -100,7 +105,7 @@ function TableSix() {
         }else{
             setOpacity2("0");
             alert("gg");
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
         }
         // StyleContext.StyleComp("-300%", "-200%", "-100%", "0%");
     }
@@ -127,7 +132,6 @@ function TableSix() {
                                 </div>
                                 
                                 <div className="NextChild">
-                                   
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />

@@ -18,6 +18,11 @@ function Menu(props) {
     const [ diplayNone, setDisplayNone ] = useState("block");
     const [ headerHeight, setheaderHeight ] = useState("50px");
     const [open, close] = useState('');
+    const [ activeMenu, setActiveMenu ]=useState({
+      Home: '',
+      Req: '',
+      Check: ''
+    })
     
     useEffect(() => {
       const userId = localStorage.getItem("userId", []);
@@ -94,15 +99,15 @@ function Menu(props) {
                         <div className="menus">
                               <div className="items">
                                   <Link to="/">Нүүр</Link>
-                                  <div className="line"></div>
+                                  <div style={{transform:`${activeMenu.Home}`}} className="line"></div>
                               </div>
                               <div className="items">
                                 <Link to="/comp-request">Хүсэлт</Link>
-                                <div className="line"></div>
+                                <div style={{transform:`${activeMenu.Check}`}} className="line"></div>
                               </div>
                               <div className="items">
                                 <Link to="/comp-check">Шалгах</Link>
-                                <div className="line"></div>
+                                <div  className="line"></div>
                               </div>
                         </div>
                         <div className="userMenuPar">

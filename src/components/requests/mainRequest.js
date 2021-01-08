@@ -32,8 +32,6 @@ function MainRequest(props) {
     const Three = StyleContext.GlobalStyle.tableThree
     const Four = StyleContext.GlobalStyle.tableFour
 
-
-
     return (
         <HelpStore>
             <PreviewBtn >

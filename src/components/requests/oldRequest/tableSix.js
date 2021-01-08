@@ -112,7 +112,7 @@ function TableSix(props) {
             setOpacity2("0");
             alert("gg");
             // axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
-            axios.put(`pps-request/80`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 6 $$")}).catch((err)=>{ console.log(err, "err");});
+            axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(A) res 6 $$")}).catch((err)=>{ console.log(err, "err");});
         }
         // StyleContext.StyleComp("-300%", "-200%", "-100%", "0%");
     }

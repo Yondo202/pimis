@@ -15,19 +15,25 @@ function TableOne() {
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
+    const [ UserToken, setUserToken ] = useState(null);
     const [ finalTextScale, setFinalTextScale] = useState('0');
     // const [visible, setVisible] = useState(false);
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [dataFinal, setData] = useState({});
     const [dataDetail, setDataDetal] = useState([]);
     const [ text, setText ] = useState("dadada");
+    const StyleContext = useContext(UserContext);
+    const tablesContext = useContext(HelperContext);
+
+    useEffect(()=>{
+      let storageToken = localStorage.getItem("edp_loggedUser", []);
+      setUserToken(storageToken);
+    })
+
+    // console.log("** userToken:",UserToken );
     
     // let [sigCanvas, setSigCanvas] = useState({});
     // let [trimmedDataURL, setTrimmedDataURL] = useState(null);
-
-    const StyleContext = useContext(UserContext);
-    const tablesContext = useContext(HelperContext);
-    
     // useEffect(async () => {
     // },[]);
     // const openModal=()=> { setVisible(true);}
@@ -35,6 +41,10 @@ function TableOne() {
     // const clear = () => sigCanvas.clear();
     // const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png'));
     // setTimeout(()=>{ closeModal() },1000) };
+
+
+    // console.log(StyleContext.userInfo, " my user Info .........");
+
     const clickHandles = (e) =>{
               let finalOne = {};
               let finalEnd = {};
@@ -81,9 +91,7 @@ function TableOne() {
               let keys = Object.keys(finalOne2);
               const Procent = keys.length * 100 / 13;
               const FinalProcent = Math.round(Procent);
-
               // console.log(JSON.stringify(finalEnd));
-
 
               if(keys.length < 13){
                 setOpacity("1");
@@ -101,7 +109,8 @@ function TableOne() {
                 setOpacity("0");
                 setOpacity2("0");
                 setFinalTextScale("0");
-                axios.post("pps-request", finalEnd).then((res)=>{
+                axios.post("pps-request", finalEnd, {headers: { Authorization:`bearer ${UserToken} `} })
+                .then((res)=>{
                   console.log(res, "res");
                   tablesContext.TableIdControl(res.data.data.id);
                 }).catch((err)=>{
@@ -110,7 +119,6 @@ function TableOne() {
                 StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
                 scroll.scrollTo(0);
             }
-
             console.log(finalEnd, "final end");
       }
 

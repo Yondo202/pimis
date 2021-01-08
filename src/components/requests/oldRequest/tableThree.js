@@ -84,7 +84,7 @@ function TableThree(props) {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
         }else{
             // axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{
-            axios.put(`pps-request/81`, finalEnd).then((res)=>{
+            axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{
                 console.log(res, "$$ ressssss 3 $$");
               }).catch((err)=>{
                 console.log(err, "err");

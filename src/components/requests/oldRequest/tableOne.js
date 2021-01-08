@@ -19,21 +19,19 @@ function TableOne(props) {
     const [Ddate, setDdate] = useState(props.initialDate);
     const StyleContext = useContext(UserContext);
     const tablesContext = useContext(HelperContext);
-
-    useEffect(async ()=>{
-        const finalData = []
-      await dataOne.map((el,i)=>{
-          if(props.initialData){
+    
+    useEffect(()=>{
+      const finalData = []
+      dataOne.map((el,i)=>{
             props.initialData.map((elem,index)=>{ 
             if(i === index){el["id"] = elem.id; el["rvalue"] = elem.rvalue;  el["rownum"] = elem.rownum; }});
-          }
         finalData.push(el);
      })
      setInitialData(finalData);
       console.log("----------------------------------------------------");
     },[]);
 
-    console.log(initialData, "initial dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    console.log(initialData, "*****initial dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
     const radioChange = (event)=> {
       let finalData = []
@@ -100,7 +98,7 @@ function TableOne(props) {
               }else{
                 setOpacity("0");
                 setOpacity2("0");
-               await axios.put("pps-request/80", finalEnd).then((res)=>{
+               await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{
                   console.log(res, "res");
                   // tablesContext.TableIdControl(res.data.data.id);
                 }).catch((err)=>{
@@ -126,9 +124,6 @@ function TableOne(props) {
               //   setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
               //   setOpacity2("1");
               // }
-            
-
-
             // console.log(JSON.stringify(finalEnd));
             console.log(finalEnd, "final end");
       }
@@ -139,7 +134,6 @@ function TableOne(props) {
                 <div className="rowHeader">1. Үйлдвэрлэгч нь дараах үйл ажиллагааг эрхэлдэг ба явуулдаг эсэх? <span className="tseg">*</span></div>
               <div className="formTwoParent ">
 
-             
                 <div className="headerPar">
                     <div className="row" >
                     <div className="head1 col-md-9 col-sm-5 col-5">Шалгуур</div>
@@ -149,7 +143,7 @@ function TableOne(props) {
                     </div>
                 </div>
                 
-                {initialData.map((el, i)=>{
+                { initialData.map((el, i)=>{
                     return(
                       <div className="headerParchild" key={i}>
                           <div className="row" >

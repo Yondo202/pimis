@@ -15,6 +15,11 @@ function TableTwo() {
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
+    const [ UserToken, setUserToken ] = useState(null);
+    useEffect(()=>{
+      let storageToken = localStorage.getItem("edp_loggedUser", []);
+      setUserToken(storageToken);
+    });
 
     console.log(helperContext.tableId, "my table ID");
 
@@ -42,7 +47,7 @@ function TableTwo() {
             TestArr.map((el,i)=>{
                   const data = new FormData();
                   data.append(el.name, el);
-                  axios.put(`pps-request/${el.tableId}/upload-pps2`, data).then((res)=>{
+                  axios.put(`pps-request/${el.tableId}/upload-pps2`, data, {headers: {Authorization:`bearer ${UserToken}`}}).then((res)=>{
                       console.log(res, 'ress');
                   }).catch((err)=> console.log(err))
             });
@@ -118,7 +123,7 @@ function TableTwo() {
             // alert("gg");
             setOpacity2("0");
 
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers: {Authorization:`bearer ${UserToken}`}} ).then((res)=>{
                 console.log(res, "$$ ressssss $$");
                 FilesSend(res.data.data.ppsRequest2Detail);
               }).catch((err)=>{

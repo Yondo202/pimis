@@ -127,7 +127,7 @@ function TableTwo(props) {
             TestArr.map((el,i)=>{
                     const data = new FormData();
                     data.append(el.name, el);
-                    axios.put(`pps-request/${el.tableId}/upload-pps2`, data).then((res)=>{
+                    axios.put(`pps-request/${el.tableId}/upload-pps2`, data, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{
                         console.log(res, 'ress');
                     }).catch((err)=> console.log(err))
             });
@@ -210,7 +210,7 @@ function TableTwo(props) {
             setOpacity2("1");
         }else{
             setOpacity2("0");
-            axios.put(`pps-request/81`, finalEnd).then((res)=>{
+            axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{
                 console.log(res, "res");
                 // setTablesID(res.data.data.ppsRequest2Detail);
                 // console.log()

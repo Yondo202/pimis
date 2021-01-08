@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import TableThreeDetails from './deitals/tableThreeDetails'
 import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
@@ -16,6 +16,12 @@ function TableThree() {
     const StyleContext  = useContext(UserContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
+
+    const [ UserToken, setUserToken ] = useState(null);
+    useEffect(()=>{
+      let storageToken = localStorage.getItem("edp_loggedUser", []);
+      setUserToken(storageToken);
+    });
 
     console.log(helperContext.tableId, "my tableId 3");
 
@@ -71,7 +77,7 @@ function TableThree() {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
         }else{
             // alert("gg");
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}} ).then((res)=>{
                 console.log(res, "$$ ressssss 3 $$");
               }).catch((err)=>{
                 console.log(err, "err");

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import {Color,ColorRgb} from "../theme"
+import {Color,ColorRgb, textColor} from "../theme"
 import Modal from 'react-awesome-modal';
 import {CgProfile} from 'react-icons/cg'
 import {GoMail} from 'react-icons/go'
@@ -85,27 +85,27 @@ function Signup() {
                             onClickAway={closeModal}
                         >
                             <div className="formOneParent">
-                            <div className="headPar"><span className="headText">Нэвтрэх</span>
+                            <div className="headPar"><span className="headText">Бүртгүүлэх</span>
                             <a href="javascript:void(0);" onClick={closeModal}>X</a>
                             </div>
                                 <div className="inputPar">
                                   <div className="UserSection">
                                     <div className="inpChild">
-                                          <div className="labels"><span>Нэр</span> </div>
+                                          <div className="labels"><span>Нэр :</span> </div>
                                           <div className="name">
                                               <CgProfile />
                                               <div className="form__group">
-                                                  <input type="input" className="userInp  form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                                  <label for="name" className="form__label">өөрийн нэрээ оруулах</label>
+                                                  <input type="input" className="userInp  form__field" name="name" required />
+                                                  <label for="name" className="form__label">өөрийн нэрээ оруулах </label>
                                               </div>
                                           </div>
                                       </div>
                                       <div className="inpChild">
-                                          <div className="labels"><span>Email</span> </div>
+                                          <div className="labels"><span>Email :</span> </div>
                                           <div className="name">
                                               <GoMail />
                                               <div className="form__group">
-                                                  <input type="email" className="userInp  form__field" placeholder="Аж ахуйн нэр" name="email" required />
+                                                  <input type="email" className="userInp  form__field" name="email" required />
                                                   <label for="name" className="form__label">Цахим шуудан</label>
                                               </div>
                                           </div>
@@ -148,7 +148,6 @@ function Signup() {
                           </div>
                 </Modal>
                 {/* </form> */}
-
         </Component>
     )
 }
@@ -213,9 +212,10 @@ const Component = styled.div`
                       display:flex;
                       flex-direction:row;
                       justify-content:space-between;
-                      font-size:14px;
+                      font-size:13px;
                       span{
-                          color:rgba(0,0,0,0.7);
+                          font-size:14px;
+                          color:rgba(${textColor});
                           font-weight:500;
                       }
                       .forget{
@@ -249,14 +249,14 @@ const Component = styled.div`
                            width: 100%;
                            border: 0;
                            border-radius:6px;
-                           border-bottom: 1px solid rgba(${ColorRgb},0.5);
-                           border-right: 1px solid rgba(${ColorRgb},0.5);
-                           border-left: 1px solid rgba(${ColorRgb},0.5);
-                           border-top: 1px solid rgba(${ColorRgb},0.5);
+                           border-bottom: 1px solid rgba(${ColorRgb},0.3);
+                           border-right: 1px solid rgba(${ColorRgb},0.3);
+                           border-left: 1px solid rgba(${ColorRgb},0.3);
+                           border-top: 1px solid rgba(${ColorRgb},0.3);
                            outline: 0;
                            font-size: 1rem;
                            color: black;
-                           padding: 7px 0;
+                           padding: 7px 10px;
                            background: transparent;
                            transition: border-color 0.2s;
                            position: relative;
