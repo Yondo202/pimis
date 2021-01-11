@@ -130,7 +130,7 @@ function TableTwo() {
                 console.log(err, "err");
               });
 
-              StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
+              helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
               scroll.scrollTo(0);
             //   setTimeout(()=>{
             //  

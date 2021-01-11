@@ -11,7 +11,6 @@ function Menu(props) {
 
   return (
     <Componentss>
-     
       <div style={{height:"70px"}} className="MainMenus">
         <div className="menuPar container">
               <div className="menus">

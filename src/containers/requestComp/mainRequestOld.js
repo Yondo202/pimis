@@ -40,9 +40,7 @@ function MainRequest(props) {
             setScrollClass("");
           }
       }
-
     console.log(" ^^^^^^^^^^ initial",initialData );
-
     const func = StyleContext.StyleComp
     const One = StyleContext.GlobalStyle.tableOne
     const Two = StyleContext.GlobalStyle.tableTwo
@@ -52,50 +50,50 @@ function MainRequest(props) {
     const Six = StyleContext.GlobalStyle.tableSix
      
     return (
-        <HelpStore>
-            <PreviewBtn >
-                <div className={`modalBtn ${ScrollClass}`}>
-                    <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button>
-                    <div className="countPar container">
-                        <div className="itemsPar">
-                            <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("0%", "100%", "200%","300%"),scroll.scrollTo(0))} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
-                            <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} onClick={()=> (func("-100%", "0%", "100%","200%"),scroll.scrollTo(0))}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
-                            <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-200%", "-100%", "0%","100%"),scroll.scrollTo(0))}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
-                            <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-300%", "-200%", "-100%","0%"),scroll.scrollTo(0))}><span className="items">4</span></div> 
+            <>
+                <PreviewBtn >
+                    <div className={`modalBtn ${ScrollClass}`}>
+                        <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button>
+                        <div className="countPar container">
+                            <div className="itemsPar">
+                                <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("0%", "100%", "200%","300%"),scroll.scrollTo(0))} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
+                                <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} onClick={()=> (func("-100%", "0%", "100%","200%"),scroll.scrollTo(0))}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
+                                <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-200%", "-100%", "0%","100%"),scroll.scrollTo(0))}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
+                                <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-300%", "-200%", "-100%","0%"),scroll.scrollTo(0))}><span className="items">4</span></div> 
+                            </div>
                         </div>
                     </div>
-                </div>
-            </PreviewBtn>
-            {Loading === true? <GifPar className="Gif"> <img src="https://media.giphy.com/media/52qtwCtj9OLTi/giphy.gif" alt="edp-gif" /></GifPar> : (
-                <>
-                <Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal}  />
-                <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
-                    <div style={{left:`${One}`, opacity:`${One === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                            <TableOne  initialData={initialData.ppsRequest1Details} initialName={initialData.name1} initialDate={initialData.date1} id={StyleContext.reqID} token={tokens} />
-                        </motion.div>
-                    </div>
-                    <div style={{left:`${Two}`, opacity:`${Two === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <TableTwo initialData={initialData.ppsRequest2Details}  initialName={initialData.name2}  initialDate={initialData.date2} id={StyleContext.reqID} token={tokens} />
-                    </div>
-                    <div style={{left:`${Three}`, opacity:`${Three === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <TableThree initialData={initialData.ppsRequest3Details}  initialName={initialData.name3}  initialDate={initialData.date3} id={StyleContext.reqID} token={tokens} />
-                    </div>
-                    
-                    <div style={{left:`${Four}`, opacity:`${Four === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <TableFour initialData={initialData.ppsRequest4Details}  initialName={initialData.name4}  initialDate={initialData.date4} id={StyleContext.reqID} token={tokens} />
-                    </div>
+                </PreviewBtn>
+                {Loading === true? <GifPar className="Gif"> <img src="https://media.giphy.com/media/52qtwCtj9OLTi/giphy.gif" alt="edp-gif" /></GifPar> : (
+                    <>
+                    <Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal}  />
+                    <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
+                        <div style={{left:`${One}`, opacity:`${One === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                            <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
+                                <TableOne  initialData={initialData.ppsRequest1Details} initialName={initialData.name1} initialDate={initialData.date1} id={StyleContext.reqID} token={tokens} />
+                            </motion.div>
+                        </div>
+                        <div style={{left:`${Two}`, opacity:`${Two === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                            <TableTwo initialData={initialData.ppsRequest2Details}  initialName={initialData.name2}  initialDate={initialData.date2} id={StyleContext.reqID} token={tokens} />
+                        </div>
+                        <div style={{left:`${Three}`, opacity:`${Three === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                            <TableThree initialData={initialData.ppsRequest3Details}  initialName={initialData.name3}  initialDate={initialData.date3} id={StyleContext.reqID} token={tokens} />
+                        </div>
+                        
+                        <div style={{left:`${Four}`, opacity:`${Four === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                            <TableFour initialData={initialData.ppsRequest4Details}  initialName={initialData.name4}  initialDate={initialData.date4} id={StyleContext.reqID} token={tokens} />
+                        </div>
 
-                    <div style={{left:`${Five}`, opacity:`${Five === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <TableFive initialData={initialData.ppsRequest5Detail}  initialName={initialData.name5}  initialDate={initialData.date5} id={StyleContext.reqID} token={tokens}  />
-                    </div>
-                    <div style={{left:`${Six}`, opacity:`${Six === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <TableSix initialData={initialData.ppsRequest6Detail}  initialName={initialData.name6}  initialDate={initialData.date6} id={StyleContext.reqID} token={tokens} />
-                    </div> 
-                </ParentComp>
-                </>
-            ) }
-        </HelpStore>
+                        <div style={{left:`${Five}`, opacity:`${Five === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                            <TableFive initialData={initialData.ppsRequest5Detail}  initialName={initialData.name5}  initialDate={initialData.date5} id={StyleContext.reqID} token={tokens}  />
+                        </div>
+                        <div style={{left:`${Six}`, opacity:`${Six === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                            <TableSix initialData={initialData.ppsRequest6Detail}  initialName={initialData.name6}  initialDate={initialData.date6} id={StyleContext.reqID} token={tokens} />
+                        </div> 
+                    </ParentComp>
+                    </>
+                ) }
+            </>
     )
 }
 
@@ -183,6 +181,7 @@ const PreviewBtn = styled.div`
             justify-content:center;
             color:rgb(${textColor});
             transition:all 0.3s ease;
+            background-color:white;
             svg{
                 margin-right:10px;
                 font-size:20px;

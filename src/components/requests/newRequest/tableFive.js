@@ -106,7 +106,7 @@ function TableFive() {
             // setOpacity2("0");
             axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
 
-            StyleContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
+            helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
             scroll.scrollTo(0);
         }
 

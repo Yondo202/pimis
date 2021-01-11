@@ -82,7 +82,7 @@ function TableThree() {
               }).catch((err)=>{
                 console.log(err, "err");
               });
-            StyleContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
+              helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
             scroll.scrollTo(0);
         }
 

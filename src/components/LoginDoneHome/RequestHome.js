@@ -10,7 +10,6 @@ import {  Link } from "react-router-dom";
 import axios from '../../axiosbase'
 import UserContext from '../../context/UserContext'
 
-
 function RequestHome() {
     const UserCtx = useContext(UserContext)
     const [ allData, setAllData ] = useState([])
@@ -87,7 +86,6 @@ function RequestHome() {
                     }) : <div className="col-md-12 col-sm-12 col-12">Илгээсэн хүсэлт байхгүй байна...</div>}
                 </div>
             </div>
-            
         </Reqhome>
     )
 }

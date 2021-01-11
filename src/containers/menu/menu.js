@@ -41,18 +41,21 @@ function Menu(props) {
       },600)
     };
 
+    const clickhandle2 = ()=>{
+      setTimeout(()=>{
+        window.location.reload(false);
+      },100)
+    };
+
     useEffect(() => {
       const currentPath = location.pathname;
-      console.log(currentPath);
-      if(currentPath !== "/" && currentPath !== "/comp-request"){
-        setDisplayNone("none");
-        setheaderHeight("50px");
-      }else{
-        setDisplayNone("block");
-        setheaderHeight("50px");
-      }
+      if(currentPath !== "/" && currentPath !== "/comp-request"){  setDisplayNone("none");  setheaderHeight("50px");
+      }else{setDisplayNone("block"); setheaderHeight("50px");}
+      if(currentPath === "/"){setActiveMenu({Home:'line2',Req:'',Check:'',Maygt:''})}
+      if(currentPath === "/comp-request"){setActiveMenu({Home: '',Req:'line2',Check: '',Maygt:''})}
+      if(currentPath === "/comp-check"){setActiveMenu({Home: '',Req:'',Check:'line2',Maygt: ''})}
+      if(currentPath === "/maygt-1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }
     }, [location]);
-
     //   useEffect(() => {
     //     window.addEventListener("scroll", handleScroll);
     // });
@@ -69,18 +72,16 @@ function Menu(props) {
   return (
     <Componentss>
       <div style={{display:diplayNone}} className="Background">
-        <div className="LogoHeadPar container">
+        <div style={{padding:`0px 0px`}} className="LogoHeadPar container">
             <div style={{backgroundImage:`url(/head.jpg)`}} className="logoPar"></div>
         </div>
       </div>
      
       <div style={{height:headerHeight}} className="MainMenus">
-            <div className="container">
+            <div style={{padding:`0px 0px`}} className="container">
                <input type="checkbox" id="check" name="check" />
-
                 <span className="menuPar">
                       <div className="backgroundGhost"></div>
-
                       <label for="check" className="checkBtn">
                           <HamburgerMenu
                               isOpen={open}
@@ -98,19 +99,23 @@ function Menu(props) {
                         <div className="menus">
                               <div className="items">
                                   <Link to="/">Нүүр</Link>
-                                  <div style={{transform:`${activeMenu.Home}`}} className="line"></div>
+                                  <div style={{transform:`${activeMenu.Home}`}} className={`line ${activeMenu.Home}`}></div>
                               </div>
                               <div className="items">
-                                <Link to="/comp-request">Хүсэлт</Link>
-                                <div style={{transform:`${activeMenu.Check}`}} className="line"></div>
+                                <Link onClick={clickhandle2} to="/comp-request">Хүсэлт</Link>
+                                <div style={{transform:`${activeMenu.Check}`}} className={`line ${activeMenu.Req}`}></div>
                               </div>
                               <div className="items">
                                 <Link to="/maygt-1">Өргөдөлийн маягт</Link>
-                                <div  className="line"></div>
+                                <div  className={`line ${activeMenu.Maygt}`}></div>
                               </div>
                               <div className="items">
                                 <Link to="/comp-check">Шалгах</Link>
-                                <div  className="line"></div>
+                                <div  className={`line ${activeMenu.Check}`}></div>
+                              </div>
+                              <div className="items">
+                                <Link to="/comp-test">Test</Link>
+                                <div  className={`line ${activeMenu.Check}`}></div>
                               </div>
                         </div>
                         <div className="userMenuPar">
@@ -305,9 +310,9 @@ const Componentss = styled.div`
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 37%;
+            width: 39%;
             .items {
-                font-size:17px;
+                font-size:16px;
                 font-weight:500;
                 &:hover{
                     .line{
@@ -320,6 +325,13 @@ const Componentss = styled.div`
                     width:100%;
                     background-color:white;
                     transform:scale(0);
+                }
+                .line2{
+                  transition:all 0.4s ease;
+                  height:2px;
+                  width:100%;
+                  background-color:white;
+                  transform:scale(1);
                 }
               a {
                 color:white;

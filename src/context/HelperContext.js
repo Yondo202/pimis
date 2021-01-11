@@ -1,11 +1,9 @@
 import React,{useState} from "react";
 import axios from "../axiosbase";
 
-
 const HelperContext = React.createContext();
 const initialStyle ={tableOne: "0%", tableTwo: "100%",tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%", tableheight: 150,}
 const initialSee = { tableOneData : {}, tableTwoData: {}, tableThree : {}, tableFour : {} }
-
 
 export const HelpStore = (props) =>{
 
@@ -13,9 +11,7 @@ export const HelpStore = (props) =>{
     const [ tableId, setTableId ] = useState(null);
     const [ GlobalStyle, setGlobalStyle ] = useState(initialStyle);
     
-    const TableControl = (valueOne)=>{
-        setTableSee({tableOneData: valueOne});
-    }
+    const TableControl = (valueOne)=>{ setTableSee({tableOneData: valueOne}); }
     const TableIdControl = (tableId) => {
         console.log(tableId, " $$ global tableID $$");
         setTableId(tableId);
