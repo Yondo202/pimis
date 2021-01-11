@@ -110,7 +110,7 @@ function MainForm() {
   return (
     <React.Fragment>
       {userId ? null : <HelperMenu />}
-      <Component className="container"  >
+      <Component className="container" >
           {/* <Ghost /> */}
           <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
             <div className="headPar">

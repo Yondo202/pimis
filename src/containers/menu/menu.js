@@ -105,6 +105,10 @@ function Menu(props) {
                                 <div style={{transform:`${activeMenu.Check}`}} className="line"></div>
                               </div>
                               <div className="items">
+                                <Link to="/maygt-1">Өргөдөлийн маягт</Link>
+                                <div  className="line"></div>
+                              </div>
+                              <div className="items">
                                 <Link to="/comp-check">Шалгах</Link>
                                 <div  className="line"></div>
                               </div>
@@ -183,13 +187,6 @@ const Componentss = styled.div`
       align-items:center;
       width: 100%;
       box-shadow: 0px 2px 8px -2px rgba(${ColorRgb}, 0.5);
-        // .headLogoPar{
-        //   width:30%;
-        //   img{
-        //     // width:120px;
-        //     height:60px;
-        //   }
-        // }
         .MobileMenu{
           display:none;
           .checkBtnHome{
@@ -308,7 +305,7 @@ const Componentss = styled.div`
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 30%;
+            width: 37%;
             .items {
                 font-size:17px;
                 font-weight:500;
