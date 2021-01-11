@@ -1,8 +1,8 @@
 import React,{useEffect, useState,useContext} from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import UserContext from "../context/UserContext";
-import { fontFamily,ColorRgb } from '../components/theme';
+import UserContext from "../../context/UserContext";
+import { fontFamily,ColorRgb } from '../../components/theme';
 import {IoIosLogOut} from 'react-icons/io'
 import { useLocation } from 'react-router-dom';
 

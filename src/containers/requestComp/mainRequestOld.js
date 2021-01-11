@@ -1,19 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Link, animateScroll as scroll } from "react-scroll";
 import {VscOpenPreview} from 'react-icons/vsc'
-import TableOne from './tableOne';
-import TableTwo from './tableTwo';
-import TableThree from "./tableThree";
-import TableFour from './tableFour';
-import TableFive from "./tableFive";
-import TableSix from './tableSix';
+import TableOne from '../../components/requests/oldRequest/tableOne';
+import TableTwo from '../../components/requests/oldRequest/tableTwo';
+import TableThree from "../../components/requests/oldRequest/tableThree";
+import TableFour from '../../components/requests/oldRequest/tableFour';
+import TableFive from "../../components/requests/oldRequest/tableFive";
+import TableSix from '../../components/requests/oldRequest/tableSix';
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import UserContext from '../../../context/UserContext'
-import { HelpStore } from '../../../context/HelperContext'
-import {Modal} from '../MainModal/Modal'
-import axios from '../../../axiosbase'
-import {ColorRgb, textColor} from '../../theme'
+import UserContext from '../../context/UserContext'
+import { HelpStore } from '../../context/HelperContext'
+import {Modal} from '../../components/requests/MainModal/Modal'
+import axios from '../../axiosbase'
+import {ColorRgb, textColor} from '../../components/theme'
 
 
 function MainRequest(props) {
@@ -98,6 +98,7 @@ function MainRequest(props) {
         </HelpStore>
     )
 }
+
 export default MainRequest
 
 let easing = [0, 0, 0.56, 0.95];

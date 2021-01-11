@@ -1,18 +1,18 @@
-import React, {useState, useContext, useEffect} from 'react'
-import TableSixDetails from './deitals/tableSixDetail'
-import TableSixDetails2 from './deitals/tableSixDetail2'
+import React, {useState, useContext,useEffect} from 'react'
+import TableFiveDetails from './deitals/tableFiveDetail'
+import TableFiveDetails2 from './deitals/tableFiveDetail2'
 import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
-import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
+import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../context/UserContext'
-import HelperContext from '../../context/HelperContext'
-import axios from '../../axiosbase'
+import UserContext from '../../../context/UserContext'
+import HelperContext from '../../../context/HelperContext'
+import axios from '../../../axiosbase'
 
-function TableSix() {
+function TableFive() {
     const StyleContext  = useContext(UserContext);
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
@@ -21,19 +21,19 @@ function TableSix() {
     useEffect(()=>{
       let storageToken = localStorage.getItem("edp_loggedUser", []);
       setUserToken(storageToken);
-    });
+  });
 
     const clickHandles = () => {
         let finalOne = {};
         let finalEnd = {};
-        let rs2 = document.querySelectorAll(".GetItemAdd66");
+        let rs2 = document.querySelectorAll(".GetItemAdd55");
         let arr2 = Array.from(rs2);
         let finalOne2 = [];
 
         let tableCondition1 = [];
         arr2.map((el,i)=>{
             const Lala = {}
-            let rs2 = document.querySelectorAll(`.PAS${i + 1}`);
+            let rs2 = document.querySelectorAll(`.PASS${i + 1}`);
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
                 if(el.value !== ""){
@@ -42,20 +42,20 @@ function TableSix() {
                     Lala[field] = value;
                 }
             });
-              finalOne2.push(Lala);
               tableCondition1.push(Lala);
+              finalOne2.push(Lala);
         });
+
         let keys1 = Object.keys(tableCondition1[0]);
-        console.log(keys1.length, "keys1");
+        console.log(keys1.length, "my length");
 
-
-        let rs22 = document.querySelectorAll(".GetItemAdd666");
+        let tableCondition2 = [];
+        let rs22 = document.querySelectorAll(".GetItemAdd555");
         let arr22 = Array.from(rs22);
         let finalOne22 = [];
-        let tableCondition2 = [];
         arr22.map((el,i)=>{
             const Lala = {}
-            let rs2 = document.querySelectorAll(`.APSA${i + 1}`);
+            let rs2 = document.querySelectorAll(`.passa${i + 1}`);
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
                 if(el.value !== ""){
@@ -64,31 +64,31 @@ function TableSix() {
                     Lala[field] = value;
                 }
             });
-            finalOne22.push(Lala);
             tableCondition2.push(Lala);
+            finalOne22.push(Lala);
         });
         let keys2 = Object.keys(tableCondition2[0]);
-        // console.log(keys2.length, "keys2");
+        // console.log(keys2.length , "keys2");
 
 
-        let rs4 = document.querySelectorAll(".getUserInp2");
+        let rs4 = document.querySelectorAll(".getUserInp222");
         let arr4 = Array.from(rs4);
         let userInp = {};
-
-        let confirm = document.getElementById("GetcheckBtn55").checked;
-
         arr4.map(element=>{
             let field = element.name;
             let value = element.value;
             userInp[field] = value;
         });
 
+        let confirm = document.getElementById("GetcheckBtn5").checked;
+        // console.log(confirm, "my confirm");
+
         finalOne["requestOne"] = finalOne2;
         finalOne["requestTwo"] = finalOne22;
         finalOne["name"] = userInp.name;
         finalOne["date"] = userInp.date;
         // finalOne["signature"] = trimmedDataURL;
-        finalEnd["PPS6"] = finalOne;
+        finalEnd["PPS5"] = finalOne;
 
         console.log(finalEnd, "final");
         // console.log(JSON.stringify(finalEnd));
@@ -103,18 +103,20 @@ function TableSix() {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
             setOpacity2("1");
         }else{
-            setOpacity2("0");
-            alert("gg");
+            // setOpacity2("0");
             axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
+
+            StyleContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
+            scroll.scrollTo(0);
         }
-        // StyleContext.StyleComp("-300%", "-200%", "-100%", "0%");
+
     }
 
     return (
         <Component3 className="container">
 
-            <TableSixDetails />
-            <TableSixDetails2 />
+            <TableFiveDetails />
+            <TableFiveDetails2 />
 
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
@@ -125,18 +127,19 @@ function TableSix() {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="getUserInp2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div className="NextChild">
+                                   
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
@@ -147,7 +150,7 @@ function TableSix() {
                                             <div className="name"> <BiPen />
                                                 <div className="form__group">
                                                     {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
-                                                    <input id="GetcheckBtn55" className="checkBtn" type="checkbox" name="check" />
+                                                    <input id="GetcheckBtn5" className="checkBtn" type="checkbox" name="check" />
                                                 </div>
                                             </div>
                                     </div>
@@ -164,7 +167,7 @@ function TableSix() {
     )
 }
 
-export default TableSix
+export default TableFive
 
 
 const Component3 = styled.div`
@@ -172,7 +175,9 @@ const Component3 = styled.div`
     transition: all 0.5s ease-out;
     font-family: ${fontFamily};
     margin-bottom:600px;
-    font-size:${fontSize} !important;
+    font-size:${fontSize};
+  
+
 
     .UserRequestPar{
         box-shadow:1px 1px 10px -5px;
@@ -414,6 +419,7 @@ const Component3 = styled.div`
     @media only screen and (max-width:786px){
         .UserRequestPar{
             .buttonPar{
+                display:flex;
                 flex-direction:column;
                 .SubmitButton {
                     width:100%;

@@ -3,10 +3,8 @@ import axios from "../axiosbase";
  
 
 const UserContext = React.createContext();
-const initialStyle ={
-  tableOne: "0%", tableTwo: "100%",tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%",
-  tableheight: 150,
-}
+const initialStyle ={tableOne: "0%", tableTwo: "100%",tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%", tableheight: 150,}
+
 const initialUserInfo = { userId:null, token:null,  expireDate:null, name:null}
 
 const initialSee = { tableOneData : {}, tableTwoData: {}, tableThree : {}, tableFour : {} }

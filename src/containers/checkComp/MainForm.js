@@ -1,15 +1,15 @@
 import React,{useState,useEffect} from "react";
 import styled from "styled-components";
-import FromOne from "../checkComp/FormOne";
+import FromOne from "../../components/checkComp/FormOne";
 import {AiOutlineSend} from 'react-icons/ai'
 import {RiMailSendLine} from 'react-icons/ri'
 import { animateScroll as scroll } from "react-scroll";
 import Axios from '../../axiosbase'
-import Ghost from '../Ghost'
+// import Ghost from '../../components/Ghost'
 import { motion } from 'framer-motion'
-import {fontFamily} from '../theme'
+import {fontFamily} from '../../components/theme'
 import {Link} from 'react-router-dom'
-import HelperMenu from "../../containers/HelperMenu"
+import HelperMenu from "../menu/HelperMenu"
 
 let easing = [0, 0, 0.56, 0.95];
 const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },

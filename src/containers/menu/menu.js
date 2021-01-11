@@ -1,14 +1,13 @@
 import React,{useEffect, useState,useContext} from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import UserContext from "../context/UserContext";
-import { fontFamily,ColorRgb, } from '../components/theme';
+import UserContext from "../../context/UserContext";
+import { fontFamily,ColorRgb, } from '../../components/theme';
 import {IoIosLogOut} from 'react-icons/io';
 import {CgProfile} from 'react-icons/cg';
 import {IoNotificationsOutline} from 'react-icons/io5';
 import { useLocation } from 'react-router-dom';
 import HamburgerMenu from 'react-hamburger-menu';
-
 
 function Menu(props) {
     const location = useLocation();

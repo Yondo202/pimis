@@ -1,39 +1,41 @@
-import React, {useState, useContext,useEffect} from 'react'
-import TableFiveDetails from './deitals/tableFiveDetail'
-import TableFiveDetails2 from './deitals/tableFiveDetail2'
+import React, {useState, useContext, useEffect} from 'react'
+import TableThreeDetails from './deitals/tableThreeDetails'
 import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
-import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
+import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../context/UserContext'
-import HelperContext from '../../context/HelperContext'
-import axios from '../../axiosbase'
+import UserContext from '../../../context/UserContext'
+import HelperContext from '../../../context/HelperContext'
+import axios from '../../../axiosbase'
 
-function TableFive() {
-    const StyleContext  = useContext(UserContext);
+function TableThree() {
     const helperContext = useContext(HelperContext);
+    const StyleContext  = useContext(UserContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
+
     const [ UserToken, setUserToken ] = useState(null);
     useEffect(()=>{
       let storageToken = localStorage.getItem("edp_loggedUser", []);
       setUserToken(storageToken);
-  });
+    });
+
+    console.log(helperContext.tableId, "my tableId 3");
 
     const clickHandles = () => {
         let finalOne = {};
         let finalEnd = {};
-        let rs2 = document.querySelectorAll(".GetItemAdd55");
+        let rs2 = document.querySelectorAll(".GetItemAdd33");
         let arr2 = Array.from(rs2);
         let finalOne2 = [];
 
-        let tableCondition1 = [];
+        // const tableCondition = [];
         arr2.map((el,i)=>{
             const Lala = {}
-            let rs2 = document.querySelectorAll(`.PASS${i + 1}`);
+            let rs2 = document.querySelectorAll(`.PPPS${i + 1}`);
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
                 if(el.value !== ""){
@@ -42,71 +44,45 @@ function TableFive() {
                     Lala[field] = value;
                 }
             });
-              tableCondition1.push(Lala);
-              finalOne2.push(Lala);
+            // tableCondition.push(Lala);
+            finalOne2.push(Lala);
         });
+        // let keys = Object.keys(tableCondition[0]);
 
-        let keys1 = Object.keys(tableCondition1[0]);
-        console.log(keys1.length, "my length");
-
-        let tableCondition2 = [];
-        let rs22 = document.querySelectorAll(".GetItemAdd555");
-        let arr22 = Array.from(rs22);
-        let finalOne22 = [];
-        arr22.map((el,i)=>{
-            const Lala = {}
-            let rs2 = document.querySelectorAll(`.passa${i + 1}`);
-            let arr23 = Array.from(rs2);
-            arr23.map((el,i)=>{
-                if(el.value !== ""){
-                    let field = el.name;
-                    let value = el.value;
-                    Lala[field] = value;
-                }
-            });
-            tableCondition2.push(Lala);
-            finalOne22.push(Lala);
-        });
-        let keys2 = Object.keys(tableCondition2[0]);
-        // console.log(keys2.length , "keys2");
-
-
-        let rs4 = document.querySelectorAll(".getUserInp222");
+        let rs4 = document.querySelectorAll(".getUserInp3");
         let arr4 = Array.from(rs4);
         let userInp = {};
+
         arr4.map(element=>{
             let field = element.name;
             let value = element.value;
             userInp[field] = value;
         });
 
-        let confirm = document.getElementById("GetcheckBtn5").checked;
-        // console.log(confirm, "my confirm");
+        let confirm = document.getElementById("GetcheckBtn3").checked;
 
-        finalOne["requestOne"] = finalOne2;
-        finalOne["requestTwo"] = finalOne22;
+        finalOne["request"] = finalOne2;
         finalOne["name"] = userInp.name;
         finalOne["date"] = userInp.date;
-        // finalOne["signature"] = trimmedDataURL;
-        finalEnd["PPS5"] = finalOne;
+        finalEnd["PPS3"] = finalOne;
 
         console.log(finalEnd, "final");
         // console.log(JSON.stringify(finalEnd));
-        
-        if(keys1.length < 8 || keys2.length < 8){
-            setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
-            setOpacity2("1");
-        }else if(userInp.name === "" || userInp.date === ""){
-            setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
-            setOpacity2("1");
-        }else if(confirm === false){
-            setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
-            setOpacity2("1");
-        }else{
-            // setOpacity2("0");
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
 
-            StyleContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
+        if(userInp.name === "" || userInp.date === ""){
+            setOpacity2("1");
+            setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
+        }else if(confirm === false){
+            setOpacity2("1");
+            setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
+        }else{
+            // alert("gg");
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}} ).then((res)=>{
+                console.log(res, "$$ ressssss 3 $$");
+              }).catch((err)=>{
+                console.log(err, "err");
+              });
+            StyleContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
             scroll.scrollTo(0);
         }
 
@@ -115,9 +91,7 @@ function TableFive() {
     return (
         <Component3 className="container">
 
-            <TableFiveDetails />
-            <TableFiveDetails2 />
-
+            <TableThreeDetails />
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
@@ -127,39 +101,38 @@ function TableFive() {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" className="getUserInp3 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div className="NextChild">
-                                   
+
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
                                     </div>
-
                                     <div className="inpChild next">
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
                                             <div className="name"> <BiPen />
                                                 <div className="form__group">
-                                                    {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
-                                                    <input id="GetcheckBtn5" className="checkBtn" type="checkbox" name="check" />
+                                                    <input id="GetcheckBtn3" className="checkBtn" type="checkbox" name="check" />
                                                 </div>
                                             </div>
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
+                                {/* <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div> */}
+                                {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
                             <button onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                         </div>
             </div>
@@ -167,7 +140,7 @@ function TableFive() {
     )
 }
 
-export default TableFive
+export default TableThree
 
 
 const Component3 = styled.div`
@@ -175,7 +148,7 @@ const Component3 = styled.div`
     transition: all 0.5s ease-out;
     font-family: ${fontFamily};
     margin-bottom:600px;
-    font-size:${fontSize};
+    font-size:${fontSize} !important;
   
 
 
@@ -202,37 +175,6 @@ const Component3 = styled.div`
            justify-content:center;
            padding-top:15px;
 
-           .modalPar{
-               padding:5px 5px;
-              .Canvass{
-                  border:1px solid rgba(${ColorRgb},0.5);
-              }
-               .BtnPar{
-                  padding:0px 10px;
-                  margin:20px 0px;
-                  display:flex;
-                  flex-direction:row;
-                  align-items:center;
-                  justify-content:space-between;
-                  button{
-                      font-weight:500;
-                      color:rgba(${textColor},0.9);
-                      cursor:pointer;
-                      border-style:none;
-                      border-radius:4px;
-                      padding:6px 14px;
-                      background-color:white;
-                      box-shadow:1px 1px 8px -2px;
-                  }
-               }
-           }
-           .SingatureImg{
-                margin:10px 0px;
-                border:1px solid rgba(${ColorRgb},0.3);
-                height:100%;
-                width:420px;
-                object-fit:cover;
-           }
            .NextChild{
                display:flex;
                flex-direction:row;
@@ -368,7 +310,6 @@ const Component3 = styled.div`
                 line-height:34px;
                 padding:0px 20px;
               }
-
               .SubmitButton{
                   margin:10px 0px;
                   margin-bottom:10px;
@@ -419,7 +360,6 @@ const Component3 = styled.div`
     @media only screen and (max-width:786px){
         .UserRequestPar{
             .buttonPar{
-                display:flex;
                 flex-direction:column;
                 .SubmitButton {
                     width:100%;

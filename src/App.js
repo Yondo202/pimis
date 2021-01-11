@@ -1,18 +1,18 @@
 import React, {useEffect, useState,useContext} from 'react'
 import { motion } from "framer-motion";
-import Menu from './containers/menu'
+import Menu from './containers/menu/menu'
 import UserContext from "./context/UserContext";
 import HomeLogin from './components/home/homeLogin'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import MainForm from './components/checkComp/MainForm';
+import MainForm from './containers/checkComp/MainForm';
 import SignUp from './components/signup/Signup'
 import ResetPassword from './components/home/ResetPassword'
-import MainRequest from './components/requests/mainRequest'
-import EmialSender from './containers/emailSend/EmailSend'
-import EmialSender2 from './containers/emailSend/EmailSend2'
+import MainRequest from './containers/requestComp/mainRequest'
+import EmialSender from './components/emailSend/EmailSend'
+import EmialSender2 from './components/emailSend/EmailSend2'
 import LoginDoneHome from './components/LoginDoneHome/MainHome'
 import ReqHome from './components/LoginDoneHome/RequestHome'
-import MainRequestOld from './components/requests/oldRequest/mainRequest'
+import MainRequestOld from './containers/requestComp/mainRequestOld'
 
 function App() {
   const ctxUser = useContext(UserContext);

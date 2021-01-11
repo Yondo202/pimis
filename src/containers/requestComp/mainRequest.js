@@ -1,17 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react'
 import {VscOpenPreview} from 'react-icons/vsc'
-import TableOne from './tableOne'
-import { motion } from 'framer-motion'
-import TableTwo from './tableTwo';
-import styled from 'styled-components'
-import TableThree from './tableThree';
-import UserContext from '../../context/UserContext'
-import TableFour from './tableFour'
-import TableFive from './tableFive'
-import TableSix from './tableSix'
-import { Modal } from './MainModal/Modal';
 import { HelpStore } from '../../context/HelperContext'
-import {ColorRgb, textColor} from '../theme'
+import TableOne from '../../components/requests/newRequest/tableOne'
+import { motion } from 'framer-motion'
+import TableTwo from '../../components/requests/newRequest/tableTwo';
+import styled from 'styled-components'
+import TableThree from '../../components/requests/newRequest/tableThree';
+import UserContext from '../../context/UserContext'
+import TableFour from '../../components/requests/newRequest/tableFour'
+import TableFive from '../../components/requests/newRequest/tableFive'
+import TableSix from '../../components/requests/newRequest/tableSix'
+import { Modal } from '../../components/requests/MainModal/Modal';
+import {ColorRgb, textColor} from '../../components/theme'
 
 function MainRequest(props) {
     const [ showModal, setShowModal ] = useState(false);
@@ -27,6 +27,7 @@ function MainRequest(props) {
           if(window.pageYOffset > 50){  setScrollClass("modalBtn2"); }else{ setScrollClass(""); }
       }
     const StyleContext = useContext(UserContext);
+
     const One = StyleContext.GlobalStyle.tableOne
     const Two = StyleContext.GlobalStyle.tableTwo
     const Three = StyleContext.GlobalStyle.tableThree
