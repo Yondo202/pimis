@@ -16,23 +16,28 @@ function CompCheck() {
     const StyleContext = useContext(UserContext);
 
     const clickHandles = (e) =>{
-        console.log("lalal");
-            //   let finalOne = {};
-            //   let finalEnd = {};
-            //   let rs2 = document.querySelectorAll(".inpTest3");
-            //   let arr2 = Array.from(rs2);
-            //   let finalOne2 = [];
+              let finalOne = {};
+              let finalEnd = {};
+              let rs2 = document.querySelectorAll(".inpTest333");
+              let arr2 = Array.from(rs2);
+              let finalOne2 = [];
 
-            //   arr2.map(element=>{
-            //       if(element.checked === true){
-            //         let soloObject2 = {}
-            //         let field = element.name;
-            //         let value = element.value;
-            //         soloObject2["rownum"] = field;
-            //         soloObject2["rvalue"] = value;
-            //         finalOne2.push(soloObject2);
-            //       }
-            //   });
+              arr2.map(element=>{
+                  let soloObject2 = {}
+                  if(element.checked === true){
+                    let field = element.name;
+                    let value = element.value;
+                    let id = element.id
+                    soloObject2[id + field] = value;
+                    finalOne2.push(soloObject2);
+                    // soloObject22 = [...soloObject2];
+                    // finalOne2["items"] = soloObject2
+                  }
+                  // finalOne2(...soloObject22);
+              });
+              console.log(finalOne2, "final two two");
+              const assing = Object.assign({}, finalOne2);
+              console.log(assing, " gg");
 
             //   let rs4 = document.querySelectorAll(".getUserInp1");
             //   let arr4 = Array.from(rs4);
@@ -77,7 +82,6 @@ function CompCheck() {
             // console.log(finalEnd, "final end");
       }
 
-
     return (
         <Component1 className="container" >
             <div className="boxShadow">
@@ -85,31 +89,32 @@ function CompCheck() {
                 {allData.map((el,i)=>{
                     return(
                         <div key={i} className="formTwoParent ">
-                        <div className="headerPar">
-                            <div className="row" >
-                            <div className="head1 col-md-10 col-sm-8 col-8">{el.title}</div>
-                            <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
-                            <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
-                            </div>
-                        </div>
-                        {el.items.map((el, ind)=>{
-                            return(
-                            <div className="headerParchild" key={ind}>
-                                <div className="row" >
-                                <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
-                                <div className="texts col-md-9 col-sm-7 col-7">{el.name}</div>
-                                <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={ind + 1} value="true"/></div>
-                                <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={ind + 1} value="false"/></div>
-                            </div>
-                            </div>
-                            )
-                        })}
+                          <div className="headerPar">
+                              <div className="row" >
+                              <div className="head1 col-md-10 col-sm-8 col-8">{el.title}</div>
+                              <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
+                              <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
+                              </div>
+                          </div>
+                          {el.items.map((elem, ind)=>{
+                              return(
+                              <div className="headerParchild" key={ind}>
+                                  <div className="row" >
+                                  <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
+                                  <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
+                                  <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
+                                  <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
+                              </div>
+                              </div>
+                              )
+                          })}
                     </div>)})}
-                    
+
                     <div className="FinalBtn">
                             <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
                             <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                     </div>
+
                     <div className="buttonPar">
                             {/* <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}dadada adadad ada</div> */}
                             <div className="errtext">{FinalErrorText}dadada adadad ada</div>
