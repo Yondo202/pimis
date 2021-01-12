@@ -216,37 +216,37 @@ function EnterpriseInfo() {
     }
 
     return (
-        <div className="w-full pb-20 flex flex-col">
-            <h3 className="text-xl text-gray-600 font-semibold ml-4 my-8 self-start">
+        <div className="tw-w-full tw-pb-20 tw-flex tw-flex-col">
+            <h3 className="tw-text-xl tw-text-gray-600 tw-font-semibold tw-ml-4 tw-my-8 tw-self-start">
                 1. Аж ахуйн нэгжийн мэдээлэл
             </h3>
 
             <form onSubmit={handleSubmit}>
-                <div className="rounded-lg shadow-md min-w-min w-11/12 max-w-5xl mb-10 mx-auto border-t border-gray-100 bg-gray-50">
-                    <FormInline label="Аж ахуй нэгжийн нэр:" type="text" value={company.cname} name="cname" onChange={handleInput} classAppend="sm:w-4/6" placeholder="ААН-ийн гэрчилгээнд бичигдсэн нэрийг бүтнээр бичнэ үү." />
+                <div className="tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mb-10 tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-gray-50">
+                    <FormInline label="Аж ахуй нэгжийн нэр:" type="text" value={company.cname} name="cname" onChange={handleInput} classAppend="sm:tw-w-4/6" placeholder="ААН-ийн гэрчилгээнд бичигдсэн нэрийг бүтнээр бичнэ үү." />
 
-                    <FormInline label="Холбоо барих хүний нэр:" type="text" value={company.contactname} name="contactname" onChange={handleInput} classAppend="sm:w-3/6" />
+                    <FormInline label="Холбоо барих хүний нэр:" type="text" value={company.contactname} name="contactname" onChange={handleInput} classAppend="sm:tw-w-3/6" />
 
-                    <FormInline label="Албан тушаал:" type="text" value={company.contact_position} name="contact_position" onChange={handleInput} classAppend="sm:w-3/6" />
+                    <FormInline label="Албан тушаал:" type="text" value={company.contact_position} name="contact_position" onChange={handleInput} classAppend="sm:tw-w-3/6" />
 
-                    <FormInline label="Шуудангийн хаяг:" type="text" value={company.postal_address} name="postal_address" onChange={handleInput} classAppend="sm:w-5/6" />
+                    <FormInline label="Шуудангийн хаяг:" type="text" value={company.postal_address} name="postal_address" onChange={handleInput} classAppend="sm:tw-w-5/6" />
 
-                    <FormInline label="Оффисын байршил:" type="text" value={company.address_detail} name="address_detail" onChange={handleInput} classAppend="sm:w-5/6" />
+                    <FormInline label="Оффисын байршил:" type="text" value={company.address_detail} name="address_detail" onChange={handleInput} classAppend="sm:tw-w-5/6" />
 
-                    <FormInline label="Утас:" type="phoneFormat" value={company.phone1} name="phone1" onChange={handleInput} classAppend="sm:w-3/6" />
+                    <FormInline label="Утас:" type="phoneFormat" value={company.phone1} name="phone1" onChange={handleInput} classAppend="sm:tw-w-3/6" />
 
-                    <FormInline label="Суурин утас 1:" type="phoneFormat" value={company.phone2} name="phone2" onChange={handleInput} classAppend="sm:w-3/6" />
+                    <FormInline label="Суурин утас 1:" type="phoneFormat" value={company.phone2} name="phone2" onChange={handleInput} classAppend="sm:tw-w-3/6" />
 
-                    <FormInline label="Суурин утас 2:" type="phoneFormat" value={company.phone3} name="phone3" onChange={handleInput} classAppend="sm:w-3/6" />
+                    <FormInline label="Суурин утас 2:" type="phoneFormat" value={company.phone3} name="phone3" onChange={handleInput} classAppend="sm:tw-w-3/6" />
 
-                    <FormInline label="Гар утас:" type="phoneFormat" value={company.handphone} name="handphone" onChange={handleInput} classAppend="sm:w-3/6" />
+                    <FormInline label="Гар утас:" type="phoneFormat" value={company.handphone} name="handphone" onChange={handleInput} classAppend="sm:tw-w-3/6" />
 
-                    <FormInline label="Э-шуудан:" type="email" value={company.c_email} name="c_email" onChange={handleInput} classAppend="sm:w-4/6" />
+                    <FormInline label="Э-шуудан:" type="email" value={company.c_email} name="c_email" onChange={handleInput} classAppend="sm:tw-w-4/6" />
 
-                    <FormInline label="Веб хуудас, олон нийтийн сүлжээний хаяг:" type="text" value={company.social_info} name="social_info" onChange={handleInput} classAppend="sm:w-4/6" />
+                    <FormInline label="Веб хуудас, олон нийтийн сүлжээний хаяг:" type="text" value={company.social_info} name="social_info" onChange={handleInput} classAppend="sm:tw-w-4/6" />
                 </div>
 
-                <div className="rounded-lg shadow-md min-w-min w-11/12 max-w-5xl mb-20 mx-auto">
+                <div className="tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mb-20 tw-mx-auto tw-bg-white tw-border-t">
                     <FormSmall label="Аж ахуйн нэгжийн эрх зүйн байдал:" type="text" value={company.legal_state} name="legal_state" onChange={handleInput} />
 
                     <FormSmall label="Татвар төлөгчийн дугаар:" type="numberFormat" value={company.registerno} name="registerno" onChange={handleInputFormat} />
@@ -265,146 +265,146 @@ function EnterpriseInfo() {
 
                     <FormSmall label="Түр ажилтны тоо:" type="numberFormat" value={company.temp_empcount} name="temp_empcount" onChange={handleInputFormat} />
 
-                    <div className="w-full flex flex-col flex-nowrap sm:flex-row divide-y divide-gray-200 sm:divide-y-0 sm:divide-x odd:bg-gray-100 first:rounded-t-lg last:rounded-b-lg">
-                        <div className="p-2 pt-5 pl-4 w-full sm:w-5/12 h-auto sm:h-24">
-                            <label className={`text-sm text-gray-700 ${focusWoman && 'font-semibold ml-2'} transition-all duration-300 transform-gpu`}>
+                    <div className="tw-w-full tw-flex tw-flex-col tw-flex-nowrap sm:tw-flex-row tw-divide-y tw-divide-gray-200 sm:tw-divide-y-0 sm:tw-divide-x odd:tw-bg-gray-100 first:tw-rounded-t-lg last:tw-rounded-b-lg">
+                        <div className="tw-p-2 tw-pt-5 tw-pl-4 tw-w-full sm:tw-w-5/12 tw-h-auto sm:tw-h-24">
+                            <label className={`tw-text-sm tw-text-gray-700 ${focusWoman && 'tw-font-semibold tw-ml-2'} tw-transition-all tw-duration-300 tw-transform-gpu`}>
                                 Эмэгтэй эзэмшигчтэй эсэх:
                             </label>
                         </div>
-                        <div className="py-3 px-4 flex-grow sm:w-7/12">
+                        <div className="tw-py-3 tw-px-4 tw-flex-grow sm:tw-w-7/12">
                             <input className="" name="women_owned" type="radio" checked={company.women_owned == "1"} value="1" onChange={handleInput} onFocus={() => setFocusWoman(true)} onBlur={() => setFocusWoman(false)} />
-                            <label className="text-sm font-medium mx-2">Тийм</label>
-                            <input className="ml-8" name="women_owned" type="radio" checked={company.women_owned == "0"} value="0" onChange={handleInput} onFocus={() => setFocusWoman(true)} onBlur={() => setFocusWoman(false)} />
-                            <label className="text-sm font-medium mx-2">Үгүй</label>
+                            <label className="tw-text-sm tw-font-medium tw-mx-2">Тийм</label>
+                            <input className="tw-ml-8" name="women_owned" type="radio" checked={company.women_owned == "0"} value="0" onChange={handleInput} onFocus={() => setFocusWoman(true)} onBlur={() => setFocusWoman(false)} />
+                            <label className="tw-text-sm tw-font-medium tw-mx-2">Үгүй</label>
                         </div>
                     </div>
 
-                    <div className="w-full flex flex-col flex-nowrap sm:flex-row divide-y divide-gray-200 sm:divide-y-0 sm:divide-x odd:bg-gray-100 first:rounded-t-md last:rounded-b-md">
-                        <div className="p-2 pt-5 pl-4 w-full sm:w-5/12 h-auto sm:h-24">
-                            <label className={`min-w-min text-sm ${focusSector && 'font-semibold ml-2'} transition-all duration-300 transform-gpu`}>
+                    <div className="tw-w-full tw-flex tw-flex-col tw-flex-nowrap sm:tw-flex-row tw-divide-y tw-divide-gray-200 sm:tw-divide-y-0 sm:tw-divide-x odd:tw-bg-gray-100 first:tw-rounded-t-md last:tw-rounded-b-md">
+                        <div className="tw-p-2 tw-pt-5 tw-pl-4 tw-w-full sm:tw-w-5/12 tw-h-auto sm:tw-h-24">
+                            <label className={`tw-min-w-min tw-text-sm ${focusSector && 'tw-font-semibold tw-ml-2'} tw-transition-all tw-duration-300 tw-transform-gpu`}>
                                 Салбар:
                             </label>
                         </div>
-                        <div className="py-3 px-4 flex-grow sm:w-7/12">
-                            <div className="w-full sm:max-w flex items-center px-2 border border-gray-300 rounded-md focus-within:border-blue-600 transition duration-300">
-                                <SearchSVG className={`w-4 h-4 ${focusSector ? 'text-blue-700' : 'text-gray-500'} transition-colors duration-300`} />
-                                <input className="flex-grow mx-2 py-2 bg-transparent text-sm outline-none" type="text" value={searchSector} onChange={e => setSearchSector(e.target.value)} onFocus={handleFocusSector} onBlur={handleBlurSector} />
+                        <div className="tw-py-3 tw-px-4 tw-flex-grow sm:tw-w-7/12">
+                            <div className="tw-w-full sm:tw-max-w tw-flex tw-items-center tw-px-2 tw-border tw-border-gray-300 tw-rounded-md focus-within:tw-border-blue-600 tw-transition tw-duration-300">
+                                <SearchSVG className={`tw-w-4 tw-h-4 ${focusSector ? 'tw-text-blue-700' : 'tw-text-gray-500'} tw-transition-colors tw-duration-300`} />
+                                <input className="tw-flex-grow tw-mx-2 tw-py-2 tw-bg-transparent tw-text-sm tw-outline-none" type="text" value={searchSector} onChange={e => setSearchSector(e.target.value)} onFocus={handleFocusSector} onBlur={handleBlurSector} />
                             </div>
-                            <div className={`my-2 text-sm rounded-md border border-r-0 border-gray-300 shadow-sm divide-y divide-dashed overflow-y-auto ${focusSector ? 'visible opacity-100 h-60' : 'invisible opacity-0 h-0'} transition-all duration-300`}>
+                            <div className={`tw-my-2 tw-text-sm tw-rounded-md tw-border tw-border-r-0 tw-border-gray-300 tw-shadow-sm tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focusSector ? 'tw-visible tw-opacity-100 tw-h-60' : 'tw-invisible tw-opacity-0 tw-h-0'} tw-transition-all tw-duration-300`}>
                                 {
                                     businessSectors.filter(filterSector).sort(compareSector).length ?
                                         businessSectors.filter(filterSector).sort(compareSector).map((item, i) =>
-                                            <div className='p-1 pl-2 hover:bg-blue-500 hover:text-gray-50' onMouseDown={() => handleSelectSector(item.id, item.bdescription_mon)} key={item.id}>
-                                                <span className="font-semibold pr-2">{i + 1}.</span>
+                                            <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelectSector(item.id, item.bdescription_mon)} key={item.id}>
+                                                <span className="tw-font-semibold tw-pr-2">{i + 1}.</span>
                                                 {item.bdescription_mon}
                                             </div>) :
-                                        <p className="p-1 text-xs text-center mt-4 italic opacity-80">Хайлт олдсонгүй.</p>
+                                        <p className="tw-p-1 tw-text-xs tw-text-center tw-mt-4 tw-italic tw-opacity-80">Хайлт олдсонгүй.</p>
                                 }
                             </div>
                         </div>
                     </div>
 
-                    <div className="w-full flex flex-col flex-nowrap sm:flex-row divide-y divide-gray-200 sm:divide-y-0 sm:divide-x odd:bg-gray-100 first:rounded-t-md last:rounded-b-md">
-                        <div className="p-2 pt-5 pl-4 w-full sm:w-5/12 h-auto sm:h-24">
-                            <label className={`min-w-min text-sm ${focusLocation && 'font-semibold ml-2'} transition-all duration-300 transform-gpu`}>
+                    <div className="tw-w-full tw-flex tw-flex-col tw-flex-nowrap sm:tw-flex-row tw-divide-y tw-divide-gray-200 sm:tw-divide-y-0 sm:tw-divide-x odd:tw-bg-gray-100 first:tw-rounded-t-md last:tw-rounded-b-md">
+                        <div className="tw-p-2 tw-pt-5 tw-pl-4 tw-w-full sm:tw-w-5/12 tw-h-auto sm:tw-h-24">
+                            <label className={`tw-min-w-min tw-text-sm ${focusLocation && 'tw-font-semibold tw-ml-2'} tw-transition-all tw-duration-300 tw-transform-gpu`}>
                                 Байршил:
                             </label>
                         </div>
-                        <div className="py-3 px-4 flex-grow sm:w-7/12">
-                            <div className="w-full sm:max-w flex items-center px-2 border border-gray-300 rounded-md focus-within:border-blue-600 transition duration-300">
-                                <SearchSVG className={`w-4 h-4 ${focusLocation ? 'text-blue-700' : 'text-gray-500'} transition-colors duration-300`} />
-                                <input className="flex-grow mx-2 py-2 bg-transparent text-sm outline-none" type="text" value={searchLocation} onChange={e => setSearchLocation(e.target.value)} onFocus={handleFocusLocation} onBlur={handleBlurLocation} />
+                        <div className="tw-py-3 tw-px-4 tw-flex-grow sm:tw-w-7/12">
+                            <div className="tw-w-full sm:tw-max-w tw-flex tw-items-center tw-px-2 tw-border tw-border-gray-300 tw-rounded-md focus-within:tw-border-blue-600 tw-transition tw-duration-300">
+                                <SearchSVG className={`tw-w-4 tw-h-4 ${focusLocation ? 'tw-text-blue-700' : 'tw-text-gray-500'} tw-transition-colors tw-duration-300`} />
+                                <input className="tw-flex-grow tw-mx-2 tw-py-2 tw-bg-transparent tw-text-sm tw-outline-none" type="text" value={searchLocation} onChange={e => setSearchLocation(e.target.value)} onFocus={handleFocusLocation} onBlur={handleBlurLocation} />
                             </div>
-                            <div className={`my-2 text-sm rounded-md border border-r-0 border-gray-300 shadow-sm divide-y divide-dashed overflow-y-auto ${focusLocation ? 'visible opacity-100 h-60' : 'invisible opacity-0 h-0'} transition-all duration-300`}>
+                            <div className={`tw-my-2 tw-text-sm tw-rounded-md tw-border tw-border-r-0 tw-border-gray-300 tw-shadow-sm tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focusLocation ? 'tw-visible tw-opacity-100 tw-h-60' : 'tw-invisible tw-opacity-0 tw-h-0'} tw-transition-all tw-duration-300`}>
                                 {
                                     locations.filter(obj => filter(obj, searchLocation)).sort(compare).length ?
                                         locations.filter(obj => filter(obj, searchLocation)).sort(compare).map((item, i) =>
-                                            <div className='p-1 pl-2 hover:bg-blue-500 hover:text-gray-50' onMouseDown={() => handleSelectLocation(item.id, item.description_mon)} key={item.id}>
-                                                <span className="font-semibold pr-2">{i + 1}.</span>
+                                            <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelectLocation(item.id, item.description_mon)} key={item.id}>
+                                                <span className="tw-font-semibold tw-pr-2">{i + 1}.</span>
                                                 {item.description_mon}
                                             </div>) :
-                                        <p className="p-1 text-xs text-center mt-4 italic opacity-80">Хайлт олдсонгүй.</p>
+                                        <p className="tw-p-1 tw-text-xs tw-text-center tw-mt-4 tw-italic tw-opacity-80">Хайлт олдсонгүй.</p>
                                 }
                             </div>
                         </div>
                     </div>
 
-                    <div className="w-full flex flex-col flex-nowrap sm:flex-row divide-y divide-gray-200 sm:divide-y-0 sm:divide-x odd:bg-gray-100 first:rounded-t-lg last:rounded-b-lg">
-                        <div className="p-2 pt-5 pl-4 w-full sm:w-5/12 h-auto sm:h-24">
-                            <label className={`text-sm text-gray-700 ${focusForeign && 'font-semibold ml-2'} transition-all duration-300 transform-gpu`}>
+                    <div className="tw-w-full tw-flex tw-flex-col tw-flex-nowrap sm:tw-flex-row tw-divide-y tw-divide-gray-200 sm:tw-divide-y-0 sm:tw-divide-x odd:tw-bg-gray-100 first:tw-rounded-t-lg last:tw-rounded-b-lg">
+                        <div className="tw-p-2 tw-pt-5 tw-pl-4 tw-w-full sm:tw-w-5/12 tw-h-auto sm:tw-h-24">
+                            <label className={`tw-text-sm tw-text-gray-700 ${focusForeign && 'tw-font-semibold tw-ml-2'} tw-transition-all tw-duration-300 tw-transform-gpu`}>
                                 Гадаад хөрөнгө оруулалттай эсэх:
                             </label>
                         </div>
-                        <div className="py-3 px-4 flex-grow sm:w-7/12">
+                        <div className="tw-py-3 tw-px-4 tw-flex-grow sm:tw-w-7/12">
                             <input className="" name="foreign_invested" type="radio" checked={company.foreign_invested == "1"} value="1" onChange={handleInput} onFocus={() => setFocusForeign(true)} onBlur={() => setFocusForeign(false)} />
-                            <label className="text-sm font-medium mx-2">Тийм</label>
-                            <input className="ml-8" name="foreign_invested" type="radio" checked={company.foreign_invested == "0"} value="0" onChange={handleInput} onFocus={() => setFocusForeign(true)} onBlur={() => setFocusForeign(false)} />
-                            <label className="text-sm font-medium mx-2">Үгүй</label>
+                            <label className="tw-text-sm tw-font-medium tw-mx-2">Тийм</label>
+                            <input className="tw-ml-8" name="foreign_invested" type="radio" checked={company.foreign_invested == "0"} value="0" onChange={handleInput} onFocus={() => setFocusForeign(true)} onBlur={() => setFocusForeign(false)} />
+                            <label className="tw-text-sm tw-font-medium tw-mx-2">Үгүй</label>
                         </div>
                     </div>
 
                     {
                         company.foreign_invested == '1' && <>
-                            <div className="w-full flex flex-col flex-nowrap sm:flex-row divide-y divide-gray-200 sm:divide-y-0 sm:divide-x odd:bg-gray-100 first:rounded-t-md last:rounded-b-md">
-                                <div className="p-2 pt-5 pl-4 w-full sm:w-5/12 h-auto sm:h-24">
-                                    <label className={`min-w-min text-sm ${focusCountry && 'font-semibold ml-2'} transition-all duration-300 transform-gpu`}>
+                            <div className="tw-w-full tw-flex tw-flex-col tw-flex-nowrap sm:tw-flex-row tw-divide-y tw-divide-gray-200 sm:tw-divide-y-0 sm:tw-divide-x odd:tw-bg-gray-100 first:tw-rounded-t-md last:tw-rounded-b-md">
+                                <div className="tw-p-2 tw-pt-5 tw-pl-4 tw-w-full sm:tw-w-5/12 tw-h-auto sm:tw-h-24">
+                                    <label className={`tw-min-w-min tw-text-sm ${focusCountry && 'tw-font-semibold tw-ml-2'} tw-transition-all tw-duration-300 tw-transform-gpu`}>
                                         Аль улсын гадаад хөрөнгө оруулалт болох нь:
                             </label>
                                 </div>
-                                <div className="py-3 px-4 flex-grow sm:w-7/12">
-                                    <div className="w-full sm:max-w flex items-center px-2 border border-gray-300 rounded-md focus-within:border-blue-600 transition duration-300">
-                                        <SearchSVG className={`w-4 h-4 ${focusCountry ? 'text-blue-700' : 'text-gray-500'} transition-colors duration-300`} />
-                                        <input className="flex-grow mx-2 py-2 bg-transparent text-sm outline-none" type="text" value={searchCountry} onChange={e => setSearchCountry(e.target.value)} onFocus={handleFocusCountry} onBlur={handleBlurCountry} />
+                                <div className="tw-py-3 tw-px-4 tw-flex-grow sm:tw-w-7/12">
+                                    <div className="tw-w-full sm:tw-max-w tw-flex tw-items-center tw-px-2 tw-border tw-border-gray-300 tw-rounded-md focus-within:tw-border-blue-600 tw-transition tw-duration-300">
+                                        <SearchSVG className={`tw-w-4 tw-h-4 ${focusCountry ? 'tw-text-blue-700' : 'tw-text-gray-500'} tw-transition-colors tw-duration-300`} />
+                                        <input className="tw-flex-grow tw-mx-2 tw-py-2 tw-bg-transparent tw-text-sm tw-outline-none" type="text" value={searchCountry} onChange={e => setSearchCountry(e.target.value)} onFocus={handleFocusCountry} onBlur={handleBlurCountry} />
                                     </div>
-                                    <div className={`my-2 text-sm rounded-md border border-r-0 border-gray-300 shadow-sm divide-y divide-dashed overflow-y-auto ${focusCountry ? 'visible opacity-100 h-60' : 'invisible opacity-0 h-0'} transition-all duration-300`}>
+                                    <div className={`tw-my-2 tw-text-sm tw-rounded-md tw-border tw-border-r-0 tw-border-gray-300 tw-shadow-sm tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focusCountry ? 'tw-visible tw-opacity-100 tw-h-60' : 'tw-invisible tw-opacity-0 tw-h-0'} tw-transition-all tw-duration-300`}>
                                         {
                                             countries.filter(obj => filter(obj, searchCountry)).sort(compare).length ?
                                                 countries.filter(obj => filter(obj, searchCountry)).sort(compare).map((item, i) =>
-                                                    <div className='p-1 pl-2 hover:bg-blue-500 hover:text-gray-50' onMouseDown={() => handleSelectCountry(item.id, item.description_mon)} key={item.id}>
-                                                        <span className="font-semibold pr-2">{i + 1}.</span>
+                                                    <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelectCountry(item.id, item.description_mon)} key={item.id}>
+                                                        <span className="tw-font-semibold tw-pr-2">{i + 1}.</span>
                                                         {item.description_mon}
                                                     </div>) :
-                                                <p className="p-1 text-xs text-center mt-4 italic opacity-80">Хайлт олдсонгүй.</p>
+                                                <p className="tw-p-1 tw-text-xs tw-text-center tw-mt-4 tw-italic tw-opacity-80">Хайлт олдсонгүй.</p>
                                         }
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="w-full flex flex-col flex-nowrap sm:flex-row divide-y divide-gray-200 sm:divide-y-0 sm:divide-x odd:bg-gray-100 first:rounded-t-lg last:rounded-b-lg">
-                                <div className="p-2 pt-5 pl-4 w-full sm:w-5/12 h-auto sm:h-24">
-                                    <label className={`text-sm text-gray-700 ${focusInvest && 'font-semibold ml-2'} transition-all duration-300 transform-gpu`}>
+                            <div className="tw-w-full tw-flex tw-flex-col tw-flex-nowrap sm:tw-flex-row tw-divide-y tw-divide-gray-200 sm:tw-divide-y-0 sm:tw-divide-x odd:tw-bg-gray-100 first:tw-rounded-t-lg last:tw-rounded-b-lg">
+                                <div className="tw-p-2 tw-pt-5 tw-pl-4 tw-w-full sm:tw-w-5/12 tw-h-auto sm:tw-h-24">
+                                    <label className={`tw-text-sm tw-text-gray-700 ${focusInvest && 'tw-font-semibold tw-ml-2'} tw-transition-all tw-duration-300 tw-transform-gpu`}>
                                         Гадаад хөрөнгө оруулалтын эзлэх хувь:
-                            </label>
+                                    </label>
                                 </div>
-                                <div className="py-3 px-4 flex-grow sm:w-7/12">
-                                    <div className="w-16 pl-2 border border-gray-300 rounded-md focus-within:border-blue-600 transition duration-300 flex items-center">
-                                        <input className="w-full text-sm bg-transparent outline-none py-2 placeholder-gray-700 placeholder-opacity-50 focus:placeholder-opacity-70" type="number" value={company.invest_percent} name="invest_percent" onChange={handleInput} onFocus={() => setFocusInvest(true)} onBlur={() => setFocusInvest(false)} />
-                                        <span className="text font-bold mx-2">%</span>
+                                <div className="tw-py-3 tw-px-4 tw-flex-grow sm:tw-w-7/12">
+                                    <div className="tw-w-16 tw-pl-2 tw-border tw-border-gray-300 tw-rounded-md focus-within:tw-border-blue-600 tw-transition tw-duration-300 tw-flex tw-items-center">
+                                        <input className="tw-w-full tw-text-sm tw-bg-transparent tw-outline-none tw-py-2 tw-placeholder-gray-700 tw-placeholder-opacity-50 focus:tw-placeholder-opacity-70" type="number" value={company.invest_percent} name="invest_percent" onChange={handleInput} onFocus={() => setFocusInvest(true)} onBlur={() => setFocusInvest(false)} />
+                                        <span className="tw-text tw-font-bold tw-mx-2">%</span>
                                     </div>
                                 </div>
                             </div>
                         </>
                     }
 
-                    <div className="w-full flex flex-col flex-nowrap sm:flex-row divide-y divide-gray-200 sm:divide-y-0 sm:divide-x odd:bg-gray-100 first:rounded-t-lg last:rounded-b-lg">
-                        <div className="p-2 pt-5 pl-4 w-full sm:w-5/12 h-auto sm:h-24">
-                            <label className={`text-sm text-gray-700 ${focusTax && 'font-semibold ml-2'} transition-all duration-300 transform-gpu`}>
+                    <div className="tw-w-full tw-flex tw-flex-col tw-flex-nowrap sm:tw-flex-row tw-divide-y tw-divide-gray-200 sm:tw-divide-y-0 sm:tw-divide-x odd:tw-bg-gray-100 first:tw-rounded-t-lg last:tw-rounded-b-lg">
+                        <div className="tw-p-2 tw-pt-5 tw-pl-4 tw-w-full sm:tw-w-5/12 tw-h-auto sm:tw-h-24">
+                            <label className={`tw-text-sm tw-text-gray-700 ${focusTax && 'tw-font-semibold tw-ml-2'} tw-transition-all tw-duration-300 tw-transform-gpu`}>
                                 Татвар төлдөг эсэх:
                             </label>
                         </div>
-                        <div className="py-3 px-4 flex-grow sm:w-7/12">
+                        <div className="tw-py-3 tw-px-4 tw-flex-grow sm:tw-w-7/12">
                             <input className="" name="tax_payment" type="radio" checked={company.tax_payment == "1"} value="1" onChange={handleInput} onFocus={() => setFocusTax(true)} onBlur={() => setFocusTax(false)} />
-                            <label className="text-sm font-medium mx-2">Тийм</label>
-                            <input className="ml-8" name="tax_payment" type="radio" checked={company.tax_payment == "0"} value="0" onChange={handleInput} onFocus={() => setFocusTax(true)} onBlur={() => setFocusTax(false)} />
+                            <label className="tw-text-sm font-medium mx-2">Тийм</label>
+                            <input className="tw-ml-8" name="tax_payment" type="radio" checked={company.tax_payment == "0"} value="0" onChange={handleInput} onFocus={() => setFocusTax(true)} onBlur={() => setFocusTax(false)} />
                             <label className="text-sm font-medium mx-2">Үгүй</label>
                         </div>
                     </div>
                 </div>
             </form>
 
-            <button className="rounded-full py-2 px-4 self-end mr-12 inline-flex items-center font-medium text-white bg-blue-600 focus:outline-none active:bg-blue-700 hover:shadow-lg" onClick={navToProjectIntro}>
+            <button className="tw-rounded-full tw-py-2 tw-px-4 tw-self-end tw-mr-12 tw-inline-flex tw-items-center tw-font-medium tw-text-white tw-bg-blue-600 focus:tw-outline-none active:tw-bg-blue-700 hover:tw-shadow-lg" onClick={navToProjectIntro}>
                 Төслийн маягт бөглөх
-                    <DocAddSVG className="w-5 h-5 ml-2 animate-pulse" />
+                    <DocAddSVG className="tw-w-5 tw-h-5 tw-ml-2 tw-animate-pulse" />
             </button>
         </div>
     )

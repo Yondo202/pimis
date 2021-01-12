@@ -4,6 +4,7 @@ import React, { createContext, useState } from 'react'
 const AlertContext = createContext()
 
 const initialState = {
+    open: false,
     variant: '',    //success or error
     msg: '',
 }
