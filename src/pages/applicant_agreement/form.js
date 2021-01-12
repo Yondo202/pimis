@@ -79,57 +79,60 @@ function ApplicantAgreement() {
     }
 
     return (
-        <div className="w-full max-w-5xl mx-auto py-20 flex flex-col text-gray-700">
-            <h3 className="text-gray-600 font-semibold ml-4 mb-4">
+        <div className="tw-w-full tw-max-w-5xl tw-mx-auto tw-py-20 tw-flex tw-flex-col tw-text-gray-700">
+            <h3 className="tw-text-gray-600 tw-font-semibold tw-ml-4 tw-mb-4">
                 4. Өргөдөл гаргагчийн мэдэгдэл
             </h3>
 
             <form onSubmit={handleSubmit}>
-                <div className="rounded-lg shadow-md min-w-min w-11/12 max-w-5xl mb-20 mx-auto text-sm">
-                    <div className="flex items-center justify-between rounded-t-lg bg-gray-100">
-                        <p className="p-4 font-medium">Дээрх 3-р хэсэгт тайлбарласан үйл ажиллагааг Түншлэлийн хөтөлбөрөөр зөвшөөрсөн тохиолдолд төлөвлөж буй үйл ажиллагааныхаа төлбөрийг төлөх санхүүжилт байгаа бөгөөд бүрэн хэрэгжүүлэхээр төлөвлөж байна.</p>
-                        <input className="m-4" type="checkbox" checked={data.implementation} name="implementation" onChange={handleInputCheckbox} />
+                <div className="tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mb-20 tw-mx-auto tw-text-sm">
+                    <div className="tw-flex tw-items-center tw-justify-between tw-rounded-t-lg tw-bg-gray-100">
+                        <p className="tw-p-4 tw-font-medium">Дээрх 3-р хэсэгт тайлбарласан үйл ажиллагааг Түншлэлийн хөтөлбөрөөр зөвшөөрсөн тохиолдолд төлөвлөж буй үйл ажиллагааныхаа төлбөрийг төлөх санхүүжилт байгаа бөгөөд бүрэн хэрэгжүүлэхээр төлөвлөж байна.</p>
+                        <input className="tw-m-4" type="checkbox" checked={data.implementation} name="implementation" onChange={handleInputCheckbox} />
                     </div>
-                    <div className="flex items-center justify-between">
-                        <p className="p-4 font-medium">Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг авснаас хойш доод тал нь 5 жилийн хугацааны туршид борлуулалтын орлогын дэлгэрэнгүй мэдээлэл ирүүлэх, түүнчлэн санхүүгийн тухайн жилийн экспортын тоо хэмжээ, үнийн дүнгийн мэдээлэл бүхий албан бичгийг Гаалийн Ерөнхий газраас авч ирүүлэхийг зөвшөөрч байна.</p>
-                        <input className="m-4" type="checkbox" checked={data.documentation} name="documentation" onChange={handleInputCheckbox} />
+                    <div className="tw-flex tw-items-center tw-justify-between">
+                        <p className="tw-p-4 tw-font-medium">Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг авснаас хойш доод тал нь 5 жилийн хугацааны туршид борлуулалтын орлогын дэлгэрэнгүй мэдээлэл ирүүлэх, түүнчлэн санхүүгийн тухайн жилийн экспортын тоо хэмжээ, үнийн дүнгийн мэдээлэл бүхий албан бичгийг Гаалийн Ерөнхий газраас авч ирүүлэхийг зөвшөөрч байна.</p>
+                        <input className="tw-m-4" type="checkbox" checked={data.documentation} name="documentation" onChange={handleInputCheckbox} />
                     </div>
-                    <div className="flex items-center justify-between flex-wrap bg-gray-100">
-                        <p className="p-4 flex-grow font-medium">Охин компани биш <ArrowSVG className="w-4 h-4 inline transform rotate-90 -translate-y-1 animate-pulse" /></p>
-                        <input className="m-4" type="checkbox" checked={data.not_subsidiary} name="not_subsidiary" onChange={handleInputCheckbox} />
+                    <div className="tw-flex tw-items-center tw-justify-between tw-flex-wrap tw-bg-gray-100">
+                        <p className="tw-p-4 tw-flex-grow tw-font-medium">
+                            Охин компани биш
+                            <ArrowSVG className="tw-w-4 tw-h-4 tw-inline tw-transform tw-rotate-90 tw--translate-y-1 tw-animate-pulse" />
+                        </p>
+                        <input className="tw-m-4" type="checkbox" checked={data.not_subsidiary} name="not_subsidiary" onChange={handleInputCheckbox} />
 
-                        <div className={`w-full p-2 pl-6 border-b bg-white transition-all duration-300 ${data.not_subsidiary ? 'h-60 opacity-100' : 'h-0 opacity-0'}`}>
-                            <div className="mb-4 font-medium">
+                        <div className={`tw-w-full tw-p-2 tw-pl-6 tw-border-b tw-bg-white tw-transition-all tw-duration-300 ${data.not_subsidiary ? 'tw-h-60 tw-opacity-100' : 'tw-h-0 tw-opacity-0'}`}>
+                            <div className="tw-mb-4 tw-font-medium">
                                 Дараах компанийн нэгдэл болсон
-                            <input className="bg-transparent w-4/6 max-w-xs outline-none border border-gray-300 rounded-md py-2 px-1 mx-1 focus:border-blue-600 transition duration-300" type="text" value={data.head_company} name="head_company" onChange={handleInput} />
+                            <input className="tw-bg-transparent tw-w-4/6 tw-max-w-xs tw-outline-none tw-border tw-border-gray-300 tw-rounded-md tw-py-2 tw-px-1 tw-mx-1 focus:tw-border-blue-600 tw-transition tw-duration-300" type="text" value={data.head_company} name="head_company" onChange={handleInput} />
                             толгой компанид харьяалагддаг болохыг баталж байна. Толгой компанийн хараат болон охин компаниуд:
                         </div>
 
-                            <ol className="list-decimal pl-8">
-                                <li><input className="max-w-xs w-4/6 ml-2 mb-2 bg-transparent outline-none border border-gray-300 rounded-md py-2 px-3 focus:border-blue-600 transition duration-300" type="text" value={data.subsidiaries && data.subsidiaries.id1} name="id1" onChange={handleInputSubidiary} /></li>
-                                <li><input className="max-w-xs w-4/6 ml-2 mb-2 bg-transparent outline-none border border-gray-300 rounded-md py-2 px-3 focus:border-blue-600 transition duration-300" type="text" value={data.subsidiaries && data.subsidiaries.id2} name="id2" onChange={handleInputSubidiary} /></li>
-                                <li><input className="max-w-xs w-4/6 ml-2 mb-2 bg-transparent outline-none border border-gray-300 rounded-md py-2 px-3 focus:border-blue-600 transition duration-300" type="text" value={data.subsidiaries && data.subsidiaries.id3} name="id3" onChange={handleInputSubidiary} /></li>
+                            <ol className="tw-list-decimal tw-pl-8">
+                                <li><input className="tw-max-w-xs tw-w-4/6 tw-ml-2 tw-mb-2 tw-bg-transparent tw-outline-none tw-border tw-border-gray-300 tw-rounded-md tw-py-2 tw-px-3 focus:tw-border-blue-600 tw-transition tw-duration-300" type="text" value={data.subsidiaries && data.subsidiaries.id1} name="id1" onChange={handleInputSubidiary} /></li>
+                                <li><input className="tw-max-w-xs tw-w-4/6 tw-ml-2 tw-mb-2 tw-bg-transparent tw-outline-none tw-border tw-border-gray-300 tw-rounded-md tw-py-2 tw-px-3 focus:tw-border-blue-600 tw-transition tw-duration-300" type="text" value={data.subsidiaries && data.subsidiaries.id2} name="id2" onChange={handleInputSubidiary} /></li>
+                                <li><input className="tw-max-w-xs tw-w-4/6 tw-ml-2 tw-mb-2 tw-bg-transparent tw-outline-none tw-border tw-border-gray-300 tw-rounded-md tw-py-2 tw-px-3 focus:tw-border-blue-600 tw-transition tw-duration-300" type="text" value={data.subsidiaries && data.subsidiaries.id3} name="id3" onChange={handleInputSubidiary} /></li>
                             </ol>
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                        <p className="p-4 font-medium">Би/бид өөрт байгаа бүх мэдээлэл, мэдлэгийн хүрээнд энэхүү өргөдөлд үнэн, зөв мэдээллийг тусгасан бөгөөд буруу, худал мэдээлэл өгсөн тохиолдолд санхүүгийн дэмжлэг авах шийдвэрт нөлөөлнө гэдгийг хүлээн зөвшөөрч байна.</p>
-                        <input className="m-4" type="checkbox" checked={data.transparency} name="transparency" onChange={handleInputCheckbox} />
+                    <div className="tw-flex tw-items-center tw-justify-between">
+                        <p className="tw-p-4 tw-font-medium">Би/бид өөрт байгаа бүх мэдээлэл, мэдлэгийн хүрээнд энэхүү өргөдөлд үнэн, зөв мэдээллийг тусгасан бөгөөд буруу, худал мэдээлэл өгсөн тохиолдолд санхүүгийн дэмжлэг авах шийдвэрт нөлөөлнө гэдгийг хүлээн зөвшөөрч байна.</p>
+                        <input className="tw-m-4" type="checkbox" checked={data.transparency} name="transparency" onChange={handleInputCheckbox} />
                     </div>
 
-                    <div className="flex items-center justify-between rounded-b-lg bg-gray-100">
-                        <p className="p-4 font-medium">Би/бид худал мэдээлэл өгсөн тохиолдолд санхүүгийн дэмжлэг олгохгүй байх шийдвэрт хүргэнэ гэдгийг ойлгож байна.</p>
-                        <input className="m-4" type="checkbox" checked={data.decision} name="decision" onChange={handleInputCheckbox} />
+                    <div className="tw-flex tw-items-center tw-justify-between tw-rounded-b-lg tw-bg-gray-100">
+                        <p className="tw-p-4 tw-font-medium">Би/бид худал мэдээлэл өгсөн тохиолдолд санхүүгийн дэмжлэг олгохгүй байх шийдвэрт хүргэнэ гэдгийг ойлгож байна.</p>
+                        <input className="tw-m-4" type="checkbox" checked={data.decision} name="decision" onChange={handleInputCheckbox} />
                     </div>
                 </div>
 
-                <div className="rounded-lg shadow-md min-w-min w-11/12 max-w-5xl mb-20 mx-auto text-sm flex flex-wrap">
-                    <div className="flex items-center w-full h-12 bg-gray-100">
-                        <p className="font-semibold ml-4">Дээрх мэдээллийг уншиж, ойлгосон гэдгийг баталгаажуулан энэхүү өргөдөлд гарын үсэг зурж огноог бичнэ үү.</p>
+                <div className="tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mb-20 tw-mx-auto tw-text-sm tw-flex tw-flex-wrap">
+                    <div className="tw-flex tw-items-center tw-w-full tw-h-12 tw-bg-gray-100">
+                        <p className="tw-font-semibold tw-ml-4">Дээрх мэдээллийг уншиж, ойлгосон гэдгийг баталгаажуулан энэхүү өргөдөлд гарын үсэг зурж огноог бичнэ үү.</p>
                     </div>
 
-                    <div className="inline-flex flex-col w-full">
+                    <div className="tw-inline-flex tw-flex-col tw-w-full">
                         <div />
 
                         <FormSmall label="Нэр:" type="text" value={data.name} name="name" onChange={handleInput} instruction="Өргөдөл гаргагчийг төлөөлөх эрх бүхий хүний нэрийг бичнэ үү." />
@@ -137,22 +140,22 @@ function ApplicantAgreement() {
                         <FormSmall label="Огноо:" type="date" value={data.date} name="date" onChange={handleInput} />
                     </div>
 
-                    <div className="inline-flex flex-col w-full p-4">
-                        <label className="font-medium mb-4">Гарын үсэг:</label>
+                    <div className="tw-inline-flex tw-flex-col tw-w-full tw-p-4">
+                        <label className="tw-font-medium tw-mb-4">Гарын үсэг:</label>
 
-                        <SignaturePad canvasProps={{ className: 'flex-grow-0 mx-auto mb-4 border border-gray-300 rounded-lg shadow-md hover:border-blue-600 w-80 h-36' }} ref={sigCanvas} onEnd={handleInputSignature} />
+                        <SignaturePad canvasProps={{ className: 'tw-flex-grow-0 tw-mx-auto tw-mb-4 tw-border tw-border-gray-300 tw-rounded-lg tw-shadow-md hover:tw-border-blue-600 tw-w-80 tw-h-36' }} ref={sigCanvas} onEnd={handleInputSignature} />
 
-                        <button className="flex-grow-0 mx-auto font-medium border border-gray-300 py-2 px-4 rounded-full focus:outline-none inline-flex items-center hover:border-gray-600 hover:shadow-md active:bg-gray-600 active:text-white" onClick={clearCanvas}>
+                        <button className="tw-flex-grow-0 tw-mx-auto tw-font-medium tw-border tw-border-gray-300 tw-py-2 tw-px-4 tw-rounded-full focus:tw-outline-none tw-inline-flex tw-items-center hover:tw-border-gray-600 hover:tw-shadow-md active:tw-bg-gray-600 active:tw-text-white" onClick={clearCanvas}>
                             Дахин зурах
-                            <PenSVG className="w-4 h-4 ml-2 animate-pulse" />
+                            <PenSVG className="tw-w-4 tw-h-4 tw-ml-2 tw-animate-pulse" />
                         </button>
                     </div>
                 </div>
             </form>
 
-            <button className="rounded-full py-2 px-6 self-end mr-12 inline-flex items-center font-medium text-white bg-blue-600 focus:outline-none active:bg-blue-700 hover:shadow-lg" onClick={submitData}>
+            <button className="tw-rounded-full tw-py-2 tw-px-6 tw-self-end tw-mr-12 tw-inline-flex tw-items-center tw-font-medium tw-text-white tw-bg-blue-600 focus:tw-outline-none active:tw-bg-blue-700 hover:tw-shadow-lg" onClick={submitData}>
                 Илгээх
-                <MailSVG className="w-5 h-5 ml-2 animate-pulse" />
+                <MailSVG className="tw-w-5 tw-h-5 tw-ml-2 tw-animate-pulse" />
             </button>
         </div>
     )

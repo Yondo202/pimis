@@ -162,35 +162,35 @@ function ProjectIntro() {
     }
 
     return (
-        <div className="w-full max-w-5xl mx-auto py-20 flex flex-col text-gray-700">
-            <h3 className="text-xl text-gray-600 font-semibold ml-4 mb-8">
+        <div className="tw-w-full tw-max-w-5xl tw-mx-auto tw-py-20 tw-flex tw-flex-col tw-text-gray-700">
+            <h3 className="tw-text-xl tw-text-gray-600 tw-font-semibold tw-ml-4 tw-mb-8">
                 2. Таны төсөл
             </h3>
 
             <form className="" onSubmit={handleSubmit}>
-                <div className="rounded-lg shadow-md min-w-min w-11/12 max-w-5xl mb-20 mx-auto">
+                <div className="tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mb-20 tw-mx-auto tw-border-t tw-bg-white">
                     <FormSmall label="Төслийн нэр:" type="text" value={data.project_name} name="project_name" onChange={handleInput} instruction="Төслийн нэр 10 үгнээс хэтрэхгүй. Нэр нь төслийн хүрээнд юу хийхийг тодорхойлсон байна." />
 
-                    <div className="w-full flex flex-col flex-nowrap sm:flex-row divide-y divide-gray-200 sm:divide-y-0 sm:divide-x odd:bg-gray-100 first:rounded-t-md last:rounded-b-md">
-                        <div className="p-2 pt-5 pl-4 w-full sm:w-5/12 h-auto sm:h-24">
-                            <label className={`min-w-min text-sm ${focusSector && 'font-semibold ml-2'} transition-all duration-300 transform-gpu`}>
+                    <div className="tw-w-full tw-flex tw-flex-col tw-flex-nowrap sm:tw-flex-row tw-divide-y tw-divide-gray-200 sm:tw-divide-y-0 sm:tw-divide-x odd:tw-bg-gray-100 first:tw-rounded-t-md last:tw-rounded-b-md">
+                        <div className="tw-p-2 tw-pt-5 tw-pl-4 tw-w-full sm:tw-w-5/12 tw-h-auto sm:tw-h-24">
+                            <label className={`tw-min-w-min tw-text-sm ${focusSector && 'tw-font-semibold tw-ml-2'} tw-transition-all tw-duration-300 tw-transform-gpu`}>
                                 Салбар:
                             </label>
                         </div>
-                        <div className="py-3 px-4 flex-grow sm:w-7/12">
-                            <div className="w-full sm:max-w flex items-center px-2 border border-gray-300 rounded-md focus-within:border-blue-600 transition duration-300">
-                                <SearchSVG className={`w-4 h-4 ${focusSector ? 'text-blue-700' : 'text-gray-500'} transition-colors duration-300`} />
-                                <input className="flex-grow mx-2 py-2 bg-transparent text-sm outline-none" type="text" value={searchSector} onChange={e => setSearchSector(e.target.value)} onFocus={handleFocusSector} onBlur={handleBlurSector} />
+                        <div className="tw-py-3 tw-px-4 tw-flex-grow sm:tw-w-7/12">
+                            <div className="tw-w-full sm:tw-max-w tw-flex tw-items-center tw-px-2 tw-border tw-border-gray-300 tw-rounded-md focus-within:tw-border-blue-600 tw-transition tw-duration-300">
+                                <SearchSVG className={`tw-w-4 tw-h-4 ${focusSector ? 'tw-text-blue-700' : 'tw-text-gray-500'} tw-transition-colors tw-duration-300`} />
+                                <input className="tw-flex-grow tw-mx-2 tw-py-2 tw-bg-transparent tw-text-sm tw-outline-none" type="text" value={searchSector} onChange={e => setSearchSector(e.target.value)} onFocus={handleFocusSector} onBlur={handleBlurSector} />
                             </div>
-                            <div className={`my-2 text-sm rounded-md border border-r-0 border-gray-300 shadow-sm divide-y divide-dashed overflow-y-auto ${focusSector ? 'visible opacity-100 h-60' : 'invisible opacity-0 h-0'} transition-all duration-300`}>
+                            <div className={`tw-my-2 tw-text-sm tw-rounded-md tw-border tw-border-r-0 tw-border-gray-300 tw-shadow-sm tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focusSector ? 'tw-visible tw-opacity-100 tw-h-60' : 'tw-invisible tw-opacity-0 tw-h-0'} tw-transition-all tw-duration-300`}>
                                 {
                                     businessSectors.filter(filterSector).sort(compareSector).length ?
                                         businessSectors.filter(filterSector).sort(compareSector).map((item, i) =>
-                                            <div className='p-1 pl-2 hover:bg-blue-500 hover:text-gray-50' onMouseDown={() => handleSelectSector(item.id, item.bdescription_mon)} key={item.id}>
-                                                <span className="font-semibold pr-2">{i + 1}.</span>
+                                            <div className="tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50" onMouseDown={() => handleSelectSector(item.id, item.bdescription_mon)} key={item.id}>
+                                                <span className="tw-font-semibold tw-pr-2">{i + 1}.</span>
                                                 {item.bdescription_mon}
                                             </div>) :
-                                        <p className="p-1 text-xs text-center mt-4 italic opacity-80">Хайлт олдсонгүй.</p>
+                                        <p className="tw-p-1 tw-text-xs tw-text-center tw-mt-4 tw-italic tw-opacity-80">Хайлт олдсонгүй.</p>
                                 }
                             </div>
                         </div>
@@ -198,51 +198,51 @@ function ProjectIntro() {
 
                     <FormSmall label="Танай байгууллагын үндсэн үйл ажиллагаа:" type="text" value={data.primary_activity} name="primary_activity" onChange={handleInput} />
 
-                    <div className="w-full flex flex-col flex-nowrap sm:flex-row divide-y divide-gray-200 sm:divide-y-0 sm:divide-x odd:bg-gray-100 first:rounded-t-md last:rounded-b-md">
-                        <div className="p-2 pt-5 pl-4 w-full sm:w-5/12 h-auto sm:h-24">
-                            <label className={`min-w-min text-sm ${focusProduct && 'font-semibold ml-2'} transition-all duration-300 transform-gpu`}>
+                    <div className="tw-w-full tw-flex tw-flex-col tw-flex-nowrap sm:tw-flex-row tw-divide-y tw-divide-gray-200 sm:tw-divide-y-0 sm:tw-divide-x odd:tw-bg-gray-100 first:tw-rounded-t-md last:tw-rounded-b-md">
+                        <div className="tw-p-2 tw-pt-5 tw-pl-4 tw-w-full sm:tw-w-5/12 tw-h-auto sm:tw-h-24">
+                            <label className={`tw-min-w-min tw-text-sm ${focusProduct && 'tw-font-semibold tw-ml-2'} tw-transition-all tw-duration-300 tw-transform-gpu`}>
                                 Бүтээгдэхүүн үйлчилгээ:
                             </label>
                         </div>
-                        <div className="py-3 px-4 flex-grow sm:w-7/12">
-                            <div className="mb-2 flex flex-wrap items-center">
+                        <div className="tw-py-3 tw-px-4 tw-flex-grow sm:tw-w-7/12">
+                            <div className="tw-mb-2 tw-flex tw-flex-wrap tw-items-center">
                                 {
                                     data.ppsProducts.length ?
                                         data.ppsProducts.map((item, i) =>
-                                            <div className="text-sm m-1 p-1 rounded-lg bg-gray-200 flex flex-nowrap items-center" key={item.productId}>
-                                                <span className="ml-1">{products.filter(obj => obj.id === item.productId)[0] && products.filter(obj => obj.id === item.productId)[0].description_mon}</span>
-                                                <button className="rounded-md text-red-500 focus:outline-none active:bg-red-200 active:text-red-600 ml-1" onClick={() => handleRemoveProduct(i)}>
-                                                    <CloseSVG className="w-4 h-4" />
+                                            <div className="tw-text-sm tw-m-1 tw-p-1 tw-rounded-lg tw-bg-gray-200 tw-flex tw-flex-nowrap tw-items-center" key={item.productId}>
+                                                <span className="tw-ml-1">{products.filter(obj => obj.id === item.productId)[0] && products.filter(obj => obj.id === item.productId)[0].description_mon}</span>
+                                                <button className="tw-rounded-md tw-text-red-500 focus:tw-outline-none active:tw-bg-red-200 active:tw-text-red-600 tw-ml-1" onClick={() => handleRemoveProduct(i)}>
+                                                    <CloseSVG className="tw-w-4 tw-h-4" />
                                                 </button>
                                             </div>) :
-                                        <p className="p-1 text-xs italic opacity-80">Бүтээгдэхүүн сонгогдоогүй байна.</p>
+                                        <p className="tw-p-1 tw-text-xs tw-italic tw-opacity-80">Бүтээгдэхүүн сонгогдоогүй байна.</p>
                                 }
                             </div>
-                            <div className="w-full flex items-center px-2 border border-gray-300 rounded-md focus-within:border-blue-600 transition duration-300">
-                                <SearchSVG className={`w-4 h-4 ${focusProduct ? 'text-blue-700' : 'text-gray-500'} transition-colors duration-300`} />
-                                <input className="flex-grow mx-2 py-2 bg-transparent text-sm outline-none" type="text" value={searchProduct} onChange={e => setSearchProduct(e.target.value)} onFocus={handleFocusProduct} onBlur={handleBlurProduct} />
-                                <button className={`rounded-md focus:outline-none ${focusProduct ? 'bg-gray-200 text-blue-600' : 'bg-green-500 text-white'} active:bg-green-600 p-1 flex items-center transition-all duration-300`} onClick={handleAddProduct}>
-                                    <PlusSVG className="w-4 h-4" />
-                                    <span className="text-sm mr-1">Нэмэх</span>
+                            <div className="tw-w-full tw-flex tw-items-center tw-px-2 tw-border tw-border-gray-300 tw-rounded-md focus-within:tw-border-blue-600 tw-transition tw-duration-300">
+                                <SearchSVG className={`tw-w-4 tw-h-4 ${focusProduct ? 'tw-text-blue-700' : 'tw-text-gray-500'} tw-transition-colors tw-duration-300`} />
+                                <input className="tw-flex-grow tw-mx-2 tw-py-2 tw-bg-transparent tw-text-sm tw-outline-none" type="text" value={searchProduct} onChange={e => setSearchProduct(e.target.value)} onFocus={handleFocusProduct} onBlur={handleBlurProduct} />
+                                <button className={`tw-rounded-md focus:tw-outline-none ${focusProduct ? 'tw-bg-gray-200 tw-text-blue-600' : 'tw-bg-green-500 tw-text-white'} active:tw-bg-green-600 tw-p-1 tw-flex tw-items-center tw-transition-all tw-duration-300`} onClick={handleAddProduct}>
+                                    <PlusSVG className="tw-w-4 tw-h-4" />
+                                    <span className="tw-text-sm tw-mr-1">Нэмэх</span>
                                 </button>
                             </div>
-                            <div className={`my-2 text-sm rounded-md border border-r-0 border-gray-300 shadow-sm divide-y divide-dashed overflow-y-auto ${focusProduct ? 'visible opacity-100 h-60' : 'invisible opacity-0 h-0'} transition-all duration-300`}>
+                            <div className={`tw-my-2 tw-text-sm tw-rounded-md tw-border tw-border-r-0 tw-border-gray-300 tw-shadow-sm tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focusProduct ? 'tw-visible tw-opacity-100 tw-h-60' : 'tw-invisible tw-opacity-0 tw-h-0'} tw-transition-all tw-duration-300`}>
                                 {
                                     products.filter(filterProduct).sort(compareProduct).length ?
                                         products.filter(filterProduct).sort(compareProduct).map((item, i) =>
-                                            <div className='p-1 pl-2 hover:bg-blue-500 hover:text-gray-50' onMouseDown={() => setSearchProduct(item.description_mon)} key={item.id}>
-                                                <span className="font-semibold pr-2">{i + 1}.</span>
+                                            <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => setSearchProduct(item.description_mon)} key={item.id}>
+                                                <span className="tw-font-semibold tw-pr-2">{i + 1}.</span>
                                                 {item.description_mon}
                                             </div>) :
-                                        <p className="p-1 text-xs text-center mt-4 italic opacity-80">Хайлт олдсонгүй.</p>
+                                        <p className="tw-p-1 tw-text-xs tw-text-center tw-mt-4 tw-italic tw-opacity-80">Хайлт олдсонгүй.</p>
                                 }
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="rounded-lg shadow-md min-w-min w-11/12 max-w-5xl mb-20 mx-auto">
-                    <FormTextarea label="Төслийн талаар болон санхүүгийн дэмжлэгийг хэрхэн ашиглах талаар бичнэ үү:" placeholder="Төслийн танилцуулгыг бичнэ. Хэрэв та санхүүгийн дэмжлэг авбал юу хийх, ямар үр дүнд хүрэх талаар дэлгэрэнгүй тайлбарлана. Учир нь энэ хэсгээс таны төслийн талаар дэлгэрэнгүй мэдээллийг бид авах болно. Энэхүү тайлбар заавал их байх шаардлагагүй, гэхдээ та санхүүгийн дэмжлэг авсан тохиолдолд юу хийх вэ гэдэг тань тодорхой байх хэрэгтэй." value={data.project_intro} name="project_intro" onChange={handleInput} classAppend="bg-gray-100" rows="5" />
+                <div className="tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mb-20 tw-mx-auto tw-border-t tw-bg-white">
+                    <FormTextarea label="Төслийн талаар болон санхүүгийн дэмжлэгийг хэрхэн ашиглах талаар бичнэ үү:" placeholder="Төслийн танилцуулгыг бичнэ. Хэрэв та санхүүгийн дэмжлэг авбал юу хийх, ямар үр дүнд хүрэх талаар дэлгэрэнгүй тайлбарлана. Учир нь энэ хэсгээс таны төслийн талаар дэлгэрэнгүй мэдээллийг бид авах болно. Энэхүү тайлбар заавал их байх шаардлагагүй, гэхдээ та санхүүгийн дэмжлэг авсан тохиолдолд юу хийх вэ гэдэг тань тодорхой байх хэрэгтэй." value={data.project_intro} name="project_intro" onChange={handleInput} classAppend="tw-bg-gray-100" rows="5" />
 
                     <FormTextarea label="Төслийг хэзээ эхлүүлэхээр төлөвлөж байна:" value={data.start_plan} name="start_plan" onChange={handleInput} />
 
@@ -252,9 +252,9 @@ function ProjectIntro() {
                 </div>
             </form>
 
-            <button className="rounded-full self-end py-2 px-4 mr-12 inline-flex items-center font-medium text-white bg-blue-600 focus:outline-none active:bg-blue-700 hover:shadow-lg" onClick={navToProjectBudget}>
+            <button className="tw-rounded-full tw-self-end tw-py-2 tw-px-4 tw-mr-12 tw-inline-flex tw-items-center tw-font-medium tw-text-white tw-bg-blue-600 focus:tw-outline-none active:tw-bg-blue-700 hover:tw-shadow-lg" onClick={navToProjectBudget}>
                 Үргэлжлүүлэх
-                <ArrowSVG className="w-5 h-5 ml-2 animate-pulse" />
+                <ArrowSVG className="tw-w-5 tw-h-5 tw-ml-2 tw-animate-pulse" />
             </button>
         </div >
     )
