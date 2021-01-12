@@ -1,12 +1,9 @@
 import React,{useState} from "react";
 import axios from "../axiosbase";
- 
 
 const UserContext = React.createContext();
 const initialStyle ={tableOne: "0%", tableTwo: "100%",tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%", tableheight: 150,}
-
 const initialUserInfo = { userId:null, token:null,  expireDate:null, name:null}
-
 const initialSee = { tableOneData : {}, tableTwoData: {}, tableThree : {}, tableFour : {} }
 
 export const UserStore= (props) =>{
@@ -16,9 +13,10 @@ export const UserStore= (props) =>{
     const [errMsgSignup, setErrMsgSignUp] = useState("");
     const [ GlobalStyle, setGlobalStyle ] = useState(initialStyle);
     const [ tableSee, setTableSee ] = useState(initialSee);
-    const [ reqID, setReqId ] = useState();
+    const [ reqID, setReqId ] = useState(0);
 
     const idPass = (id) => {
+      setGlobalStyle(initialStyle);
       setReqId(id);
     }
     

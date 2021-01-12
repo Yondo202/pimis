@@ -1,12 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react'
-import {VscOpenPreview} from 'react-icons/vsc'
-import { HelpStore } from '../../context/HelperContext'
+// import { HelpStore } from '../../context/HelperContext'
 import TableOne from '../../components/requests/newRequest/tableOne'
 import { motion } from 'framer-motion'
 import TableTwo from '../../components/requests/newRequest/tableTwo';
 import styled from 'styled-components'
 import TableThree from '../../components/requests/newRequest/tableThree';
-import UserContext from '../../context/UserContext'
+import UserContext from '../../context/HelperContext'
 import TableFour from '../../components/requests/newRequest/tableFour'
 import TableFive from '../../components/requests/newRequest/tableFive'
 import TableSix from '../../components/requests/newRequest/tableSix'
@@ -34,48 +33,48 @@ function MainRequest(props) {
     const Four = StyleContext.GlobalStyle.tableFour
 
     return (
-        <HelpStore>
-            <PreviewBtn >
-                <div className={`modalBtn ${ScrollClass}`}>
-                    {/* <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button> */}
-                    <div className="countPar container">
-                        <div className="itemsPar">
-                            <div className={`${One==="0%"? `borderPar2`: `borderPar`}`}  ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
-                            <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
-                            <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
-                            <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">4</span></div> 
+            <>
+                <PreviewBtn >
+                    <div className={`modalBtn ${ScrollClass}`}>
+                        {/* <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button> */}
+                        <div className="countPar container">
+                            <div className="itemsPar">
+                                <div className={`${One==="0%"? `borderPar2`: `borderPar`}`}  ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
+                                <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
+                                <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
+                                <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">4</span></div> 
+                            </div>
                         </div>
                     </div>
-                </div>
-            </PreviewBtn>
-            {/* <Modal showModal={showModal} setShowModal={setShowModal}  /> */}
-            <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
-                
-                <div style={{left:`${StyleContext.GlobalStyle.tableOne}`, opacity:`${StyleContext.GlobalStyle.tableOne === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                        <TableOne  />
-                    </motion.div>
-                </div>
-                <div style={{left:`${StyleContext.GlobalStyle.tableTwo}`, opacity:`${StyleContext.GlobalStyle.tableTwo === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <TableTwo />
-                </div>
-                
-                <div style={{left:`${StyleContext.GlobalStyle.tableThree}`, opacity:`${StyleContext.GlobalStyle.tableThree === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <TableThree />
-                </div>
-                <div style={{left:`${StyleContext.GlobalStyle.tableFour}`, opacity:`${StyleContext.GlobalStyle.tableFour === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <TableFour />
-                </div>
+                </PreviewBtn>
+                {/* <Modal showModal={showModal} setShowModal={setShowModal}  /> */}
+                <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
+                    
+                    <div style={{left:`${StyleContext.GlobalStyle.tableOne}`, opacity:`${StyleContext.GlobalStyle.tableOne === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
+                            <TableOne  />
+                        </motion.div>
+                    </div>
+                    <div style={{left:`${StyleContext.GlobalStyle.tableTwo}`, opacity:`${StyleContext.GlobalStyle.tableTwo === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <TableTwo />
+                    </div>
+                    
+                    <div style={{left:`${StyleContext.GlobalStyle.tableThree}`, opacity:`${StyleContext.GlobalStyle.tableThree === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <TableThree />
+                    </div>
+                    <div style={{left:`${StyleContext.GlobalStyle.tableFour}`, opacity:`${StyleContext.GlobalStyle.tableFour === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <TableFour />
+                    </div>
 
-                <div style={{left:`${StyleContext.GlobalStyle.tableFive}`, opacity:`${StyleContext.GlobalStyle.tableFive === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <TableFive />
-                </div>
+                    <div style={{left:`${StyleContext.GlobalStyle.tableFive}`, opacity:`${StyleContext.GlobalStyle.tableFive === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <TableFive />
+                    </div>
 
-                <div style={{left:`${StyleContext.GlobalStyle.tableSix}`, opacity:`${StyleContext.GlobalStyle.tableSix === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                    <TableSix />
-                </div>
-            </ParentComp>
-        </HelpStore>
+                    <div style={{left:`${StyleContext.GlobalStyle.tableSix}`, opacity:`${StyleContext.GlobalStyle.tableSix === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        <TableSix />
+                    </div>
+                </ParentComp>
+            </>
     )
 }
 export default MainRequest
@@ -180,6 +179,7 @@ const PreviewBtn = styled.div`
             justify-content:center;
             color:rgb(${textColor});
             transition:all 0.3s ease;
+            background-color:white;
             svg{
                 margin-right:10px;
                 font-size:20px;

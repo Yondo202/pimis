@@ -141,7 +141,7 @@ function TableFour() {
                     console.log(finalEnd, "myfinal End (B)");
                     axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
                     setTimeout(()=>{
-                      StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
+                      helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
                     },3000);
                     
                     // setFinalMsg("1");

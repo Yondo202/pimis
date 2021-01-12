@@ -116,7 +116,7 @@ function TableOne() {
                 }).catch((err)=>{
                   console.log(err, "err");
                 })
-                StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
+                tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
                 scroll.scrollTo(0);
             }
             console.log(finalEnd, "final end");
