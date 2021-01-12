@@ -1,4 +1,4 @@
-import React, {useEffect, useState,useContext} from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { motion } from "framer-motion";
 import Menu from './containers/menu/menu'
 import UserContext from "./context/UserContext";
@@ -31,85 +31,84 @@ function App() {
   const [userId, setUserId] = useState();
   const [userName, setUserName] = useState();
   useEffect(() => {
-      const userId = localStorage.getItem("userId", []);
-      const userName = localStorage.getItem("userName", []);
-      setUserId(userId);
-      setUserName(userName);
-    }, []);
-    // const clickhandle = ()=>{
-    //     ctxUser.logout();
-    //     setTimeout(() => {
-    //       window.location.reload(false);
-    //      }, 100);
-    // }
-  
+    const userId = localStorage.getItem("userId", []);
+    const userName = localStorage.getItem("userName", []);
+    setUserId(userId);
+    setUserName(userName);
+  }, []);
+  // const clickhandle = ()=>{
+  //     ctxUser.logout();
+  //     setTimeout(() => {
+  //       window.location.reload(false);
+  //      }, 100);
+  // }
+
   return (
     <div className="App">
       <AlertStore>
         <Router>
-          {userId? <Menu /> : <></>}
+          {userId ? <Menu /> : <></>}
           {userId ? (
-          <>
-            <Switch>
-              <Route path="/" exact> 
-                <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+            <>
+              <Switch>
+                <Route path="/" exact>
+                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
                     <LoginDoneHome />
-                </motion.div>
-            </Route>
-            <Route path="/comp-test" component={CheckComp} />
-            <Route path="/comp-check" component={MainForm} />
-            <Route path="/comp-request" component={ReqHome} exact />
-            <HelpStore>
-              <Route path="/comp-request/new" component={MainRequest} />
-              <Route path="/comp-request/old" component={MainRequestOld} />
-            </HelpStore>
-            <Route path="/email" component={EmialSender}  />
-            <Route path="/email2" component={EmialSender2} />
-          </Switch>
-          <Switch>
-            <UrgudulStore>
+                  </motion.div>
+                </Route>
+                <Route path="/comp-test" component={CheckComp} />
+                <Route path="/comp-check" component={MainForm} />
+                <Route path="/comp-request" component={ReqHome} exact />
+                <HelpStore>
+                  <Route path="/comp-request/new" component={MainRequest} />
+                  <Route path="/comp-request/old" component={MainRequestOld} />
+                </HelpStore>
+                <Route path="/email" component={EmialSender} />
+                <Route path="/email2" component={EmialSender2} />
+              </Switch>
+              <Switch>
+                <UrgudulStore>
                   <Route exact path='/maygt-1' component={ApplicationForm} />
                   <Route path='/maygt-2' component={ProjectIntro} />
                   <Route path='/maygt-3' component={ProjectBudget} />
                   <Route path='/maygt-4' component={ApplicantAgreement} />
-            </UrgudulStore>
-          </Switch>
-          <Switch>
-            <Route exact path='/sector-edit' component={BusinessSectorEditor} />
-            <Route path='/product-edit' component={ProductsEditor} />
-          </Switch>
-          </>
+                </UrgudulStore>
+              </Switch>
+              <Switch>
+                <Route exact path='/sector-edit' component={BusinessSectorEditor} />
+                <Route path='/product-edit' component={ProductsEditor} />
+              </Switch>
+            </>
           ) : (
-            <Switch>
-            <Route path="/" exact> 
-              <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                  <HomeLogin />
-              </motion.div>
-          </Route>
-          <Route path="/comp-check">
-              <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                  <MainForm />
-              </motion.div>
-          </Route>
-          <Route path="/signup" >
-              <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                  <SignUp />
-              </motion.div>
-          </Route>
-          <Route path="/changepassword/:id" children={<ResetPassword />}>
-              <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                  <ResetPassword />
-              </motion.div>
-          </Route>
-        </Switch>
-          )}
+              <Switch>
+                <Route path="/" exact>
+                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                    <HomeLogin />
+                  </motion.div>
+                </Route>
+                <Route path="/comp-check">
+                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                    <MainForm />
+                  </motion.div>
+                </Route>
+                <Route path="/signup" >
+                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                    <SignUp />
+                  </motion.div>
+                </Route>
+                <Route path="/changepassword/:id" children={<ResetPassword />}>
+                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                    <ResetPassword />
+                  </motion.div>
+                </Route>
+              </Switch>
+            )}
         </Router>
         <AlertDialog />
       </AlertStore>
     </div>
-    
+
   );
 }
 
 export default App;
-
