@@ -5,20 +5,20 @@ function FormSmall(props) {
     const [focused, setFocused] = useState(false)
 
     return (
-        <div className="w-full flex flex-col flex-nowrap sm:flex-row divide-y divide-gray-200 sm:divide-y-0 sm:divide-x odd:bg-gray-100 first:rounded-t-lg last:rounded-b-lg">
-            <div className="p-2 pt-5 pl-4 w-full sm:w-5/12 h-auto sm:h-24">
-                <label className={`text-sm text-gray-700 ${focused && 'font-semibold ml-2'} transition-all duration-300 transform-gpu`}>
+        <div className="tw-w-full tw-flex tw-flex-col tw-flex-nowrap sm:tw-flex-row tw-divide-y tw-divide-gray-200 sm:tw-divide-y-0 sm:tw-divide-x odd:tw-bg-gray-100 first:tw-rounded-t-lg last:tw-rounded-b-lg">
+            <div className="tw-p-2 tw-pt-5 tw-pl-4 tw-w-full sm:tw-w-5/12 tw-h-auto sm:tw-h-24">
+                <label className={`tw-text-sm tw-text-gray-700 ${focused && 'tw-font-semibold tw-ml-2'} tw-transition-all tw-duration-300 tw-transform-gpu`}>
                     {props.label}
                 </label>
             </div>
-            <div className="py-3 px-4 flex-grow sm:w-7/12">
+            <div className="tw-py-3 tw-px-4 tw-flex-grow sm:tw-w-7/12">
                 {
                     props.type === "numberFormat" ?
-                        <NumberFormat className="w-24 bg-transparent text-sm text-gray-700 outline-none border border-gray-300 rounded-md py-2 px-3 focus:border-blue-600 transition duration-300 placeholder-gray-700 placeholder-opacity-50 focus:placeholder-opacity-70" thousandSeparator={true} value={props.value} name={props.name} onChange={props.onChange} placeholder={props.placeholder} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
+                        <NumberFormat className="tw-w-24 tw-bg-transparent tw-text-sm tw-text-gray-700 tw-outline-none tw-border tw-border-gray-300 tw-rounded-md tw-py-2 tw-px-3 focus:tw-border-blue-600 tw-transition tw-duration-300 tw-placeholder-gray-700 tw-placeholder-opacity-50 focus:tw-placeholder-opacity-70" thousandSeparator={true} value={props.value} name={props.name} onChange={props.onChange} placeholder={props.placeholder} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
                         :
-                        <input className={`${props.type === 'text' ? 'w-full' : (props.type === 'date' ? 'w-40' : 'w-24')} bg-transparent text-sm text-gray-700 outline-none border border-gray-300 rounded-md py-2 px-3 focus:border-blue-600 transition duration-300 placeholder-gray-700 placeholder-opacity-50 focus:placeholder-opacity-70`} type={props.type} value={props.value} name={props.name} onChange={props.onChange} placeholder={props.placeholder} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
+                        <input className={`${props.type === 'text' ? 'tw-w-full' : (props.type === 'date' ? 'tw-w-40' : 'tw-w-24')} tw-bg-transparent tw-text-sm tw-text-gray-700 tw-outline-none tw-border tw-border-gray-300 tw-rounded-md tw-py-2 tw-px-3 tw-focus:border-blue-600 tw-transition tw-duration-300 tw-placeholder-gray-700 tw-placeholder-opacity-50 focus:tw-placeholder-opacity-70`} type={props.type} value={props.value} name={props.name} onChange={props.onChange} placeholder={props.placeholder} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
                 }
-                <p className="text-xs italic opacity-80 text-gray-700 align-bottom mt-2">{props.instruction}</p>
+                <p className="tw-text-xs tw-italic tw-opacity-80 tw-text-gray-700 tw-align-bottom tw-mt-2">{props.instruction}</p>
             </div>
         </div>
     )

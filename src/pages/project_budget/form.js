@@ -82,24 +82,24 @@ function ProjectBudget() {
     }
 
     return (
-        <div className="w-full max-w-5xl mx-auto py-20 flex flex-col text-gray-700">
-            <h3 className="text-xl text-gray-600 font-semibold ml-4 mb-4">
+        <div className="tw-w-full tw-max-w-5xl tw-mx-auto tw-py-20 tw-flex tw-flex-col tw-text-gray-700">
+            <h3 className="tw-text-xl tw-text-gray-600 tw-font-semibold tw-ml-4 tw-mb-4">
                 3. Төслийн зардал болон санхүүжилт
             </h3>
-            <p className="text-sm italic opacity-80 ml-4">Санхүүгийн дэмжлэгийн дээд хэмжээ: ААН-д 50,000 ам.доллар, Кластерт 100,000 ам.доллар.</p>
-            <p className="text-sm italic opacity-80 ml-4 mb-8">Төслийн зөвшөөрөгдсөн зардлын зөвхөн 50%-ийг Түншлэлийн хөтөлбөрийн хүрээнд санхүүжүүлнэ.</p>
+            <p className="tw-text-sm tw-italic tw-opacity-80 tw-ml-4">Санхүүгийн дэмжлэгийн дээд хэмжээ: ААН-д 50,000 ам.доллар, Кластерт 100,000 ам.доллар.</p>
+            <p className="tw-text-sm tw-italic tw-opacity-80 tw-ml-4 tw-mb-8">Төслийн зөвшөөрөгдсөн зардлын зөвхөн 50%-ийг Түншлэлийн хөтөлбөрийн хүрээнд санхүүжүүлнэ.</p>
 
-            <form className="bg-gray-50 rounded-lg shadow-md min-w-min w-11/12 max-w-5xl mx-auto mb-20" onSubmit={handleSubmit}>
-                <div className="w-full flex flex-col flex-nowrap sm:flex-row divide-y divide-gray-200 sm:divide-y-0 sm:divide-x rounded-lg">
-                    <div className="p-2 pt-5 pl-4 w-full sm:w-8/12 h-auto sm:h-24">
-                        <label className={`text-sm ${focused && 'font-semibold ml-2'} transition-all duration-300 transform-gpu`}>
+            <form className="tw-bg-gray-50 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-mb-20" onSubmit={handleSubmit}>
+                <div className="tw-w-full tw-flex tw-flex-col tw-flex-nowrap sm:tw-flex-row tw-divide-y tw-divide-gray-200 sm:tw-divide-y-0 sm:tw-divide-x tw-rounded-lg">
+                    <div className="tw-p-2 tw-pt-5 tw-pl-4 tw-w-full sm:tw-w-8/12 tw-h-auto sm:tw-h-24">
+                        <label className={`tw-text-sm ${focused && 'tw-font-semibold tw-ml-2'} tw-transition-all tw-duration-300 tw-transform-gpu`}>
                             Төслөөс хүсэж буй санхүүгийн дэмжлэгийн нийт хэмжээ, ам.доллароор:
                         </label>
                     </div>
-                    <div className="py-3 px-4 flex-grow sm:w-4/12">
-                        <div className="w-32 border border-gray-300 rounded-md focus-within:border-blue-600 transition duration-300 flex items-center">
-                            <span className="text-lg font-medium mx-2">$</span>
-                            <NumberFormat className="w-24 text-sm bg-transparent outline-none py-2 placeholder-gray-700 placeholder-opacity-50 focus:placeholder-opacity-70" thousandSeparator={true} value={data.totalbudget} name="totalbudget" onChange={handleInputFormat} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
+                    <div className="tw-py-3 tw-px-4 tw-flex-grow sm:tw-w-4/12">
+                        <div className="tw-w-32 tw-border tw-border-gray-300 tw-rounded-md focus-within:tw-border-blue-600 tw-transition tw-duration-300 tw-flex tw-items-center">
+                            <span className="tw-text-lg tw-font-medium tw-mx-2">$</span>
+                            <NumberFormat className="tw-w-24 tw-text-sm tw-bg-transparent tw-outline-none tw-py-2 tw-placeholder-gray-700 tw-placeholder-opacity-50 focus:tw-placeholder-opacity-70" thousandSeparator={true} value={data.totalbudget} name="totalbudget" onChange={handleInputFormat} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
                         </div>
                     </div>
                 </div>
@@ -113,9 +113,9 @@ function ProjectBudget() {
 
             <ProjectBudget4 />
 
-            <button className="rounded-full self-end py-2 px-4 mr-12 inline-flex items-center font-medium text-white bg-blue-600 focus:outline-none active:bg-blue-700 hover:shadow-lg" onClick={navToAgreement}>
+            <button className="tw-rounded-full tw-self-end tw-py-2 tw-px-4 tw-mr-12 tw-inline-flex tw-items-center tw-font-medium tw-text-white tw-bg-blue-600 focus:tw-outline-none active:tw-bg-blue-700 hover:tw-shadow-lg" onClick={navToAgreement}>
                 Үргэлжлүүлэх
-                <ArrowSVG className="w-5 h-5 ml-2 animate-pulse" />
+                <ArrowSVG className="tw-w-5 tw-h-5 tw-ml-2 tw-animate-pulse" />
             </button>
         </div>
     )

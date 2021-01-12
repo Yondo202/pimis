@@ -142,79 +142,79 @@ function BusinessSectorEditor() {
     })
 
     return (
-        <div className="w-full max-w-7xl mx-auto text-gray-700 h-screen overflow-hidden flex flex-col px-6">
-            <div className="mt-10 mb-6">
-                <div className="inline-flex w-full sm:w-auto min-w-min items-center rounded-full px-3 py-2 bg-gray-100 shadow-md">
-                    <SearchSVG className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                    <input className="flex-grow sm:w-96 bg-white text-sm outline-none py-1 px-2 ml-2 focus:border-blue-600 transition duration-300" type="text" value={search} onChange={e => setSearch(e.target.value)} />
+        <div className="tw-w-full tw-max-w-7xl tw-mx-auto tw-text-gray-700 tw-h-screen tw-overflow-hidden tw-flex tw-flex-col tw-px-6">
+            <div className="tw-mt-10 tw-mb-6">
+                <div className="tw-inline-flex tw-w-full sm:tw-w-auto tw-min-w-min tw-items-center tw-rounded-full tw-px-3 tw-py-2 tw-bg-gray-100 tw-shadow-md">
+                    <SearchSVG className="tw-w-5 tw-h-5 tw-text-blue-500 tw-flex-shrink-0" />
+                    <input className="tw-flex-grow sm:tw-w-96 tw-bg-white tw-text-sm tw-outline-none tw-py-1 tw-px-2 tw-ml-2 focus:tw-border-blue-600 tw-transition tw-duration-300" type="text" value={search} onChange={e => setSearch(e.target.value)} />
                     <div className="">
-                        <button className="whitespace-nowrap text-sm font-semibold py-1 pl-2 ml-2 focus:outline-none flex justify-between items-center rounded-md active:bg-gray-200" ref={buttonRef} onClick={() => setDropdown(!dropdown)}>
+                        <button className="tw-whitespace-nowrap tw-text-sm tw-font-semibold tw-py-1 tw-pl-2 tw-ml-2 focus:tw-outline-none tw-flex tw-justify-between tw-items-center tw-rounded-md active:tw-bg-gray-200" ref={buttonRef} onClick={() => setDropdown(!dropdown)}>
                             {translation[filterBy]}
-                            <DownSVG className="w-4 h-4 text-blue-600 ml-1 mr-2 animate-pulse" />
+                            <DownSVG className="tw-w-4 tw-h-4 tw-text-blue-600 tw-ml-1 tw-mr-2 tw-animate-pulse" />
                         </button>
-                        <div className={`absolute transform translate-y-2 z-10 bg-white rounded-md shadow-md divide-y divide-dashed ${dropdown ? 'visible opacity-100' : 'invisible opacity-0'} transition-all duration-300`} ref={dropdownRef}>
+                        <div className={`tw-absolute tw-transform tw-translate-y-2 tw-z-10 tw-bg-white tw-rounded-md tw-shadow-md tw-divide-y tw-divide-dashed ${dropdown ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} ref={dropdownRef}>
                             {
-                                businessSectors[0] && Object.keys(translation).map(key => <div className="text-sm font-semibold py-2 pl-2 pr-8 hover:bg-blue-100" onClick={() => { setFilterBy(key); setDropdown(false) }} key={key}>{translation[key]}</div>)
+                                businessSectors[0] && Object.keys(translation).map(key => <div className="tw-text-sm tw-font-semibold tw-py-2 tw-pl-2 tw-pr-8 hover:tw-bg-blue-100" onClick={() => { setFilterBy(key); setDropdown(false) }} key={key}>{translation[key]}</div>)
                             }
                         </div>
                     </div>
                 </div>
             </div>
 
-            <table className="block relative border-collapse h-3/4 rounded-md shadow-lg border border-gray-200 border-opacity-40 overflow-y-auto">
+            <table className="tw-block tw-relative tw-border-collapse tw-h-3/4 tw-rounded-md tw-shadow-lg tw-border tw-border-gray-200 tw-border-opacity-40 tw-overflow-y-auto">
                 <thead className="">
-                    <tr className="h-16">
-                        <th className="px-4 sticky top-0 bg-gray-100"></th>
-                        <th className="sticky top-0 bg-gray-100">
-                            <button className="flex items-center text-sm font-bold uppercase text-gray-500 rounded-md focus:outline-none active:bg-gray-200 py-2 px-2" onClick={() => sortBy('id')}>
-                                <span className={`${sort.by === 'id' && 'text-blue-500'} transition duration-300`}>ID</span>
-                                <ArrowSVG className={`w-4 h-4 transform ${sort.by === 'id' ? (sort.asc ? 'rotate-90 text-blue-600' : '-rotate-90 text-blue-600') : 'rotate-90 animate-pulse'}`} />
+                    <tr className="tw-h-16">
+                        <th className="tw-px-4 tw-sticky tw-top-0 tw-bg-gray-100"></th>
+                        <th className="tw-sticky tw-top-0 tw-bg-gray-100">
+                            <button className="tw-flex tw-items-center tw-text-sm tw-font-bold tw-uppercase tw-text-gray-500 tw-rounded-md focus:tw-outline-none active:tw-bg-gray-200 tw-py-2 tw-px-2" onClick={() => sortBy('id')}>
+                                <span className={`${sort.by === 'id' && 'tw-text-blue-500'} tw-transition tw-duration-300`}>ID</span>
+                                <ArrowSVG className={`tw-w-4 tw-h-4 tw-transform ${sort.by === 'id' ? (sort.asc ? 'tw-rotate-90 tw-text-blue-600' : 'tw--rotate-90 tw-text-blue-600') : 'tw-rotate-90 tw-animate-pulse'}`} />
                             </button>
                         </th>
-                        <th className="px-4 sticky top-0 bg-gray-100">
-                            <button className="flex items-center text-sm font-bold uppercase text-gray-500 rounded-md focus:outline-none active:bg-gray-200 py-2 px-2" onClick={() => sortBy('bdescription_mon')}>
-                                <span className={`${sort.by === 'bdescription_mon' && 'text-blue-500'} transition duration-300`}>Салбар</span>
-                                <ArrowSVG className={`w-4 h-4 transform ${sort.by === 'bdescription_mon' ? (sort.asc ? 'rotate-90 text-blue-600' : '-rotate-90 text-blue-600') : 'rotate-90 animate-pulse'}`} />
+                        <th className="tw-px-4 tw-sticky tw-top-0 tw-bg-gray-100">
+                            <button className="tw-flex tw-items-center tw-text-sm tw-font-bold tw-uppercase tw-text-gray-500 tw-rounded-md tw-focus:outline-none tw-active:bg-gray-200 tw-py-2 tw-px-2" onClick={() => sortBy('bdescription_mon')}>
+                                <span className={`${sort.by === 'bdescription_mon' && 'tw-text-blue-500'} tw-transition tw-duration-300`}>Салбар</span>
+                                <ArrowSVG className={`tw-w-4 tw-h-4 tw-transform ${sort.by === 'bdescription_mon' ? (sort.asc ? 'tw-rotate-90 tw-text-blue-600' : 'tw--rotate-90 tw-text-blue-600') : 'tw-rotate-90 tw-animate-pulse'}`} />
                             </button>
                         </th>
-                        <th className="px-4 sticky top-0 bg-gray-100">
-                            <button className="flex items-center text-sm font-bold uppercase text-gray-500 rounded-md focus:outline-none active:bg-gray-200 py-2 px-2" onClick={() => sortBy('bcode')}>
-                                <span className={`${sort.by === 'bcode' && 'text-blue-500'} transition duration-300`}>Код</span>
-                                <ArrowSVG className={`w-4 h-4 transform ${sort.by === 'bcode' ? (sort.asc ? 'rotate-90 text-blue-600' : '-rotate-90 text-blue-600') : 'rotate-90 animate-pulse'}`} />
+                        <th className="tw-px-4 tw-sticky tw-top-0 tw-bg-gray-100">
+                            <button className="tw-flex tw-items-center tw-text-sm tw-font-bold tw-uppercase tw-text-gray-500 tw-rounded-md focus:tw-outline-none active:tw-bg-gray-200 tw-py-2 tw-px-2" onClick={() => sortBy('bcode')}>
+                                <span className={`${sort.by === 'bcode' && 'tw-text-blue-500'} tw-transition tw-duration-300`}>Код</span>
+                                <ArrowSVG className={`tw-w-4 tw-h-4 tw-transform ${sort.by === 'bcode' ? (sort.asc ? 'tw-rotate-90 tw-text-blue-600' : 'tw--rotate-90 tw-text-blue-600') : 'tw-rotate-90 tw-animate-pulse'}`} />
                             </button>
                         </th>
-                        <th className="px-4 sticky top-0 bg-gray-100">
-                            <button className="flex items-center text-sm font-bold uppercase text-gray-500 rounded-md focus:outline-none active:bg-gray-200 py-2 px-2" onClick={() => sortBy('ismining')}>
-                                <span className={`${sort.by === 'ismining' && 'text-blue-500'} leading-tight transition duration-300`}>Уул уурхай эсэх</span>
-                                <ArrowSVG className={`w-4 h-4 flex-shrink-0 transform ${sort.by === 'ismining' ? (sort.asc ? 'rotate-90 text-blue-600' : '-rotate-90 text-blue-600') : 'rotate-90 animate-pulse'}`} />
+                        <th className="tw-px-4 tw-sticky tw-top-0 tw-bg-gray-100">
+                            <button className="tw-flex tw-items-center tw-text-sm tw-font-bold tw-uppercase tw-text-gray-500 tw-rounded-md focus:tw-outline-none active:tw-bg-gray-200 tw-py-2 tw-px-2" onClick={() => sortBy('ismining')}>
+                                <span className={`${sort.by === 'ismining' && 'tw-text-blue-500'} tw-leading-tight tw-transition tw-duration-300`}>Уул уурхай эсэх</span>
+                                <ArrowSVG className={`tw-w-4 tw-h-4 tw-flex-shrink-0 tw-transform ${sort.by === 'ismining' ? (sort.asc ? 'tw-rotate-90 tw-text-blue-600' : 'tw--rotate-90 tw-text-blue-600') : 'tw-rotate-90 tw-animate-pulse'}`} />
                             </button>
                         </th>
-                        <th className="px-4 sticky top-0 bg-gray-100">
-                            <button className="flex items-center text-sm font-bold uppercase text-gray-500 rounded-md focus:outline-none active:bg-gray-200 py-2 px-2" onClick={() => sortBy('bdescription')}>
-                                <span className={`${sort.by === 'bdescription' && 'text-blue-500'} transition duration-300`}>Business Sector</span>
-                                <ArrowSVG className={`w-4 h-4 transform ${sort.by === 'bdescription' ? (sort.asc ? 'rotate-90 text-blue-600' : '-rotate-90 text-blue-600') : 'rotate-90 animate-pulse'}`} />
+                        <th className="tw-px-4 tw-sticky tw-top-0 tw-bg-gray-100">
+                            <button className="tw-flex tw-items-center tw-text-sm tw-font-bold tw-uppercase tw-text-gray-500 tw-rounded-md focus:tw-outline-none active:tw-bg-gray-200 tw-py-2 tw-px-2" onClick={() => sortBy('bdescription')}>
+                                <span className={`${sort.by === 'bdescription' && 'tw-text-blue-500'} tw-transition tw-duration-300`}>Business Sector</span>
+                                <ArrowSVG className={`tw-w-4 tw-h-4 tw-transform ${sort.by === 'bdescription' ? (sort.asc ? 'tw-rotate-90 tw-text-blue-600' : 'tw--rotate-90 tw-text-blue-600') : 'tw-rotate-90 tw-animate-pulse'}`} />
                             </button>
                         </th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-dashed">
+                <tbody className="tw-divide-y tw-divide-dashed">
                     {
                         businessSectors.sort(compare).filter(filter).map(item => (
-                            <tr className="bg-white text-sm h-20" key={item.id}>
+                            <tr className="tw-bg-white tw-text-sm tw-h-20" key={item.id}>
                                 <td className="">
-                                    <div className="flex items-center w-20 pl-2">
-                                        <button className="p-1 focus:outline-none rounded-md active:bg-gray-200" title="Засварлах">
-                                            <PenSVG className="w-5 h-5 text-blue-500 hover:text-blue-700" onClick={() => openEdit(item.id)} />
+                                    <div className="tw-flex tw-items-center tw-w-20 tw-pl-2">
+                                        <button className="tw-p-1 focus:tw-outline-none tw-rounded-md active:tw-bg-gray-200" title="Засварлах">
+                                            <PenSVG className="tw-w-5 tw-h-5 tw-text-blue-500 hover:tw-text-blue-700" onClick={() => openEdit(item.id)} />
                                         </button>
-                                        <button className="p-1 focus:outline-none rounded-md active:bg-gray-200" title="Устгах">
-                                            <TrashSVG className="w-5 h-5 text-red-500 hover:text-red-700" onClick={() => openConfirm(item.id)} />
+                                        <button className="tw-p-1 focus:tw-outline-none tw-rounded-md active:tw-bg-gray-200" title="Устгах">
+                                            <TrashSVG className="tw-w-5 tw-h-5 tw-text-red-500 hover:tw-text-red-700" onClick={() => openConfirm(item.id)} />
                                         </button>
                                     </div>
                                 </td>
-                                <td className="text-center">{item.id}</td>
+                                <td className="tw-text-center">{item.id}</td>
                                 <td className="">{item.bdescription_mon}</td>
-                                <td className="text-center">{item.bcode}</td>
-                                <td className="text-center">{item.ismining === 0 ? 'Тийм' : 'Үгүй'}</td>
+                                <td className="tw-text-center">{item.bcode}</td>
+                                <td className="tw-text-center">{item.ismining === 0 ? 'Тийм' : 'Үгүй'}</td>
                                 <td className="">{item.bdescription}</td>
                             </tr>
                         ))
@@ -222,55 +222,55 @@ function BusinessSectorEditor() {
                 </tbody>
             </table>
 
-            <button className="bg-green-500 focus:outline-none px-4 py-2 mt-8 font-bold text-white rounded-full self-center flex items-center hover:shadow-lg active:bg-green-600" onClick={openCreate}>
-                <PlusSVG className="w-6 h-6 text-white mr-1 animate-pulse" />
+            <button className="tw-bg-green-500 focus:tw-outline-none tw-px-4 tw-py-2 tw-mt-8 tw-font-bold tw-text-white tw-rounded-full tw-self-center tw-flex tw-items-center hover:tw-shadow-lg active:tw-bg-green-600" onClick={openCreate}>
+                <PlusSVG className="tw-w-6 tw-h-6 tw-text-white tw-mr-1 tw-animate-pulse" />
                 Шинээр нэмэх
             </button>
 
-            <div className={`fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-gray-700 bg-opacity-70 ${modal.open ? 'visible opacity-100' : 'invisible opacity-0'} transition-all duration-300`}>
-                <div className="bg-white relative rounded-md shadow-lg p-4 m-2 w-full max-w-3xl">
-                    <button className="border focus:outline-none text-red-500 active:text-red-700 border-red-500 rounded-md absolute top-4 right-4" onClick={() => setModal({ ...modal, open: false })}>
-                        <CloseSVG className="w-8 h-8" />
+            <div className={`tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-70 ${modal.open ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`}>
+                <div className="tw-bg-white tw-relative tw-rounded-md tw-shadow-lg tw-p-4 tw-m-2 tw-w-full tw-max-w-3xl">
+                    <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-4 tw-right-4" onClick={() => setModal({ ...modal, open: false })}>
+                        <CloseSVG className="tw-w-8 tw-h-8" />
                     </button>
-                    <div className="mt-8 mb-2 flex flex-col">
-                        <h3 className="text-xl font-bold text-center mb-2">{modal.id ? 'Засварлах' : 'Шинээр нэмэх'}</h3>
-                        {temp.id && <label className="font-semibold pl-4 text-blue-600">ID: {temp.id}</label>}
+                    <div className="tw-mt-8 tw-mb-2 tw-flex tw-flex-col">
+                        <h3 className="tw-text-xl tw-font-bold tw-text-center tw-mb-2">{modal.id ? 'Засварлах' : 'Шинээр нэмэх'}</h3>
+                        {temp.id && <label className="tw-font-semibold tw-pl-4 tw-text-blue-600">ID: {temp.id}</label>}
                     </div>
-                    <div className="flex flex-col sm:flex-row items-center mb-4">
-                        <label className="w-full sm:w-40 min-w-min pl-2 sm:text-center font-semibold">Салбар:</label>
-                        <input className="w-full sm:flex-grow min-w-min max-w-lg text-sm bg-transparent rounded-md py-2 px-2 border border-gray-300 outline-none focus:border-blue-600 transition duration-300" type="text" value={temp.bdescription_mon} name="bdescription_mon" onChange={handleInput} />
+                    <div className="tw-flex tw-flex-col sm:tw-flex-row tw-items-center tw-mb-4">
+                        <label className="tw-w-full sm:tw-w-40 tw-min-w-min tw-pl-2 sm:tw-text-center tw-font-semibold">Салбар:</label>
+                        <input className="tw-w-full sm:tw-flex-grow tw-min-w-min tw-max-w-lg tw-text-sm tw-bg-transparent tw-rounded-md tw-py-2 tw-px-2 tw-border tw-border-gray-300 tw-outline-none focus:tw-border-blue-600 tw-transition tw-duration-300" type="text" value={temp.bdescription_mon} name="bdescription_mon" onChange={handleInput} />
                     </div>
-                    <div className="flex flex-col sm:flex-row items-center mb-4">
-                        <label className="w-full sm:w-40 min-w-min pl-2 sm:text-center font-semibold">Код:</label>
-                        <input className="w-full sm:flex-grow min-w-min max-w-lg text-sm bg-transparent rounded-md py-2 px-2 border border-gray-300 outline-none focus:border-blue-600 transition duration-300" type="text" value={temp.bcode} name="bcode" onChange={handleInput} />
+                    <div className="tw-flex tw-flex-col sm:tw-flex-row tw-items-center tw-mb-4">
+                        <label className="tw-w-full sm:tw-w-40 tw-min-w-min tw-pl-2 sm:tw-text-center tw-font-semibold">Код:</label>
+                        <input className="tw-w-full sm:tw-flex-grow tw-min-w-min tw-max-w-lg tw-text-sm tw-bg-transparent tw-rounded-md tw-py-2 tw-px-2 tw-border tw-border-gray-300 tw-outline-none focus:tw-border-blue-600 tw-transition tw-duration-300" type="text" value={temp.bcode} name="bcode" onChange={handleInput} />
                     </div>
-                    <div className="flex flex-row items-center mb-4 font-semibold">
-                        <label className="w-40 min-w-min pl-2 sm:text-center">Уул уурхай эсэх:</label>
-                        <input className="ml-8 w-4 h-4 mr-1" type="radio" name="ismining" checked={temp.ismining === 0} value={0} onChange={handleNumberInput} />Тийм
-                        <input className="ml-8 w-4 h-4 mr-1" type="radio" name="ismining" checked={temp.ismining === null} value={undefined} onChange={handleNumberInput} />Үгүй
+                    <div className="tw-flex tw-flex-row tw-items-center tw-mb-4 tw-font-semibold">
+                        <label className="tw-w-40 tw-min-w-min tw-pl-2 sm:tw-text-center">Уул уурхай эсэх:</label>
+                        <input className="tw-ml-8 tw-w-4 tw-h-4 tw-mr-1" type="radio" name="ismining" checked={temp.ismining === 0} value={0} onChange={handleNumberInput} />Тийм
+                        <input className="tw-ml-8 tw-w-4 tw-h-4 tw-mr-1" type="radio" name="ismining" checked={temp.ismining === null} value={undefined} onChange={handleNumberInput} />Үгүй
                     </div>
-                    <div className="flex flex-col sm:flex-row items-center mb-4">
-                        <label className="w-full sm:w-40 min-w-min pl-2 sm:text-center font-semibold">Салбар англиар:</label>
-                        <input className="w-full sm:flex-grow min-w-min max-w-lg text-sm bg-transparent rounded-md py-2 px-2 border border-gray-300 outline-none focus:border-blue-600 transition duration-300" type="text" value={temp.bdescription} name="bdescription" onChange={handleInput} />
+                    <div className="tw-flex tw-flex-col sm:tw-flex-row tw-items-center tw-mb-4">
+                        <label className="tw-w-full sm:tw-w-40 tw-min-w-min tw-pl-2 sm:tw-text-center tw-font-semibold">Салбар англиар:</label>
+                        <input className="tw-w-full sm:tw-flex-grow tw-min-w-min tw-max-w-lg tw-text-sm tw-bg-transparent tw-rounded-md tw-py-2 tw-px-2 tw-border tw-border-gray-300 tw-outline-none focus:tw-border-blue-600 tw-transition tw-duration-300" type="text" value={temp.bdescription} name="bdescription" onChange={handleInput} />
                     </div>
-                    <button className="py-2 px-8 focus:outline-none hover:shadow-lg active:bg-green-600 bg-green-500 rounded-lg float-right mt-4 font-semibold text-white" onClick={modal.id ? handleUpdate : handleCreate}>Хадгалах</button>
+                    <button className="tw-py-2 tw-px-8 focus:tw-outline-none hover:tw-shadow-lg active:tw-bg-green-600 tw-bg-green-500 tw-rounded-lg tw-float-right tw-mt-4 tw-font-semibold tw-text-white" onClick={modal.id ? handleUpdate : handleCreate}>Хадгалах</button>
                 </div>
             </div>
 
-            <div className={`fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-gray-700 bg-opacity-70 ${confirm.open ? 'visible opacity-100' : 'invisible opacity-0'} transition-all duration-300`}>
-                <div className="bg-white relative rounded-md shadow-lg p-4 m-2 w-full max-w-xl flex flex-col border-2 border-red-600 border-opacity-80">
-                    <button className="border focus:outline-none text-red-500 active:text-red-700 border-red-500 rounded-md absolute top-4 right-4" onClick={() => setConfirm({ ...confirm, open: false })}>
-                        <CloseSVG className="w-8 h-8" />
+            <div className={`tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-70 ${confirm.open ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`}>
+                <div className="tw-bg-white tw-relative tw-rounded-md tw-shadow-lg tw-p-4 tw-m-2 tw-w-full tw-max-w-xl tw-flex tw-flex-col tw-border-2 tw-border-red-600 tw-border-opacity-80">
+                    <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-4 tw-right-4" onClick={() => setConfirm({ ...confirm, open: false })}>
+                        <CloseSVG className="tw-w-8 tw-h-8" />
                     </button>
-                    <h3 className="text-xl font-bold mb-4 text-center">Устгах</h3>
-                    <label className="font-semibold mb-2 pl-4 text-red-500">ID: {confirm.id}</label>
-                    <p className="mb-6 font-semibold">
-                        <span className="mr-1 text-red-500">"{businessSectors.filter(obj => obj.id === confirm.id)[0] && businessSectors.filter(obj => obj.id === confirm.id)[0].bdescription_mon}"</span>
+                    <h3 className="tw-text-xl tw-font-bold tw-mb-4 tw-text-center">Устгах</h3>
+                    <label className="tw-font-semibold tw-mb-2 tw-pl-4 tw-text-red-500">ID: {confirm.id}</label>
+                    <p className="tw-mb-6 tw-font-semibold">
+                        <span className="tw-mr-1 tw-text-red-500">"{businessSectors.filter(obj => obj.id === confirm.id)[0] && businessSectors.filter(obj => obj.id === confirm.id)[0].bdescription_mon}"</span>
                         гэсэн салбарыг устгах уу?
                     </p>
-                    <div className="flex justify-end">
-                        <button className="py-2 px-8 bg-green-500 active:bg-green-600 text-white font-semibold rounded-lg mr-2 focus:outline-none hover:shadow-lg" onClick={() => setConfirm({ ...confirm, open: false })}>Болих</button>
-                        <button className="py-2 px-8 bg-red-500 active:bg-red-600 text-white font-semibold rounded-lg focus:outline-none hover:shadow-lg" onClick={handleDelete}>Устгах</button>
+                    <div className="tw-flex tw-justify-end">
+                        <button className="tw-py-2 tw-px-8 tw-bg-green-500 active:tw-bg-green-600 tw-text-white tw-font-semibold tw-rounded-lg tw-mr-2 focus:tw-outline-none hover:tw-shadow-lg" onClick={() => setConfirm({ ...confirm, open: false })}>Болих</button>
+                        <button className="tw-py-2 tw-px-8 tw-bg-red-500 active:tw-bg-red-600 tw-text-white tw-font-semibold tw-rounded-lg focus:tw-outline-none hover:tw-shadow-lg" onClick={handleDelete}>Устгах</button>
                     </div>
                 </div>
             </div>

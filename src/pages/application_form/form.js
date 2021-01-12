@@ -46,26 +46,33 @@ function ApplicationForm() {
     const [id, setId] = useState()
 
     const AlertCtx = useContext(AlertContext)
-    // AlertCtx.setAlert({...AlertCtx})
+
+    const showSuccess = () => {
+        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Tanii medeelel amjilttai hadgalagdlaa.' })
+    }
+
+    const showError = () => {
+        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Talbaruudiig buren buglunu uu.' })
+    }
 
     return (
-        <div className="w-full max-w-5xl mx-auto text-gray-700">
-            <div className="w-full rounded-lg shadow-md bg-gradient-to-tl from-green-100 to-blue-300 flex flex-col mb-8">
-                <h3 className="text-4xl font-bold text-gray-700 self-start ml-12 mt-20 mb-16">Өргөдлийн маягт</h3>
+        <div className="tw-w-full tw-max-w-5xl tw-mx-auto tw-text-gray-700">
+            <div className="tw-w-full tw-rounded-lg tw-shadow-md tw-bg-gradient-to-tl tw-from-green-100 tw-to-blue-300 tw-flex tw-flex-col tw-mb-8">
+                <h3 className="tw-text-4xl tw-font-bold tw-text-gray-700 tw-self-start tw-ml-12 tw-mt-20 tw-mb-16">Өргөдлийн маягт</h3>
 
-                <p className="italic opacity-80 text-sm self-start ml-8 mb-4">Жич: Налуулж бичигдсэн бүх мэдээлэл энэ маягтыг бөглөх үйлчлүүлэгчид туслахад зориулагдсан болно.</p>
+                <p className="tw-italic tw-opacity-80 tw-text-sm tw-self-start tw-ml-8 tw-mb-4">Жич: Налуулж бичигдсэн бүх мэдээлэл энэ маягтыг бөглөх үйлчлүүлэгчид туслахад зориулагдсан болно.</p>
 
-                <form className="self-end mr-4 mb-4 sm:flex" onSubmit={handleSubmit}>
-                    <div className="flex flex-nowrap justify-end items-center mb-1">
-                        <label className="font-semibold">Компани эсвэл нэгдэл:</label>
-                        <select className="px-1 py-1 mx-2 text-sm font-semibold outline-none border border-gray-300 rounded-md focus:border focus:border-blue-600 transition duration-300" value={data.project_type} name="project_type" onChange={handleInputInt}>
-                            <option className="font-semibold" value={0}>Компани</option>
-                            <option className="font-semibold" value={1}>Кластер</option>
+                <form className="tw-self-end tw-mr-4 tw-mb-4 sm:tw-flex" onSubmit={handleSubmit}>
+                    <div className="tw-flex tw-flex-nowrap tw-justify-end tw-items-center tw-mb-1">
+                        <label className="tw-font-semibold">Компани эсвэл нэгдэл:</label>
+                        <select className="tw-px-1 tw-py-1 tw-mx-2 tw-text-sm tw-font-semibold tw-outline-none tw-border tw-border-gray-300 tw-rounded-md focus:tw-border focus:tw-border-blue-600 tw-transition tw-duration-300" value={data.project_type} name="project_type" onChange={handleInputInt}>
+                            <option className="tw-font-semibold" value={0}>Компани</option>
+                            <option className="tw-font-semibold" value={1}>Кластер</option>
                         </select>
                     </div>
-                    <div className="flex flex-nowrap justify-end items-center mb-1">
-                        <label className="ml-4 font-semibold">Огноо:</label>
-                        <input className="w-36 px-1 py-1 h- mx-2 text-sm font-semibold outline-none border border-gray-300 rounded-md focus:border focus:border-blue-600 transition duration-300" type="date" value={data.ognoo} name="ognoo" onChange={handleInput} />
+                    <div className="tw-flex tw-flex-nowrap tw-justify-end tw-items-center tw-mb-1">
+                        <label className="tw-ml-4 tw-font-semibold">Огноо:</label>
+                        <input className="tw-w-36 tw-px-1 tw-py-1 tw-mx-2 tw-text-sm tw-font-semibold tw-outline-none tw-border tw-border-gray-300 tw-rounded-md focus:tw-border focus:tw-border-blue-600 tw-transition tw-duration-300" type="date" value={data.ognoo} name="ognoo" onChange={handleInput} />
                     </div>
                 </form>
             </div>
@@ -77,33 +84,40 @@ function ApplicationForm() {
                 }[data.project_type]
             }
 
-            <div className={`fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-gray-700 bg-opacity-70 ${modalOpen ? 'visible opacity-100' : 'invisible opacity-0'} transition-all duration-300`}>
-                <div className="bg-white relative rounded-md shadow-lg p-4 m-8 w-full max-w-3xl flex flex-col items-center">
-                    <button className="border focus:outline-none text-red-500 active:text-red-700 border-red-500 rounded-md absolute top-4 right-4" onClick={() => setModalOpen(false)}>
-                        <CloseSVG className="w-8 h-8" />
+            <div className={`tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-70 ${modalOpen ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`}>
+                <div className="tw-bg-white tw-relative tw-rounded-md tw-shadow-lg tw-p-4 tw-m-8 tw-w-full tw-max-w-3xl tw-flex tw-flex-col tw-items-center">
+                    <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-4 tw-right-4" onClick={() => setModalOpen(false)}>
+                        <CloseSVG className="tw-w-8 tw-h-8" />
                     </button>
-                    <div className="text-center mt-4 mb-8 mx-8 font-semibold">
+                    <div className="tw-text-center tw-mt-4 tw-mb-8 tw-mx-8 tw-font-semibold">
                         Хадгалагдсан маягт сонгох
                     </div>
-                    <div className="w-full mb-8">
-                        <span className="font-semibold">Хадгалагдсан маягтууд:</span>
-                        <button className="border ml-4 py-1 px-2 rounded-md focus:outline-none active:shadow-lg" onClick={() => loadData(28)}>
+                    <div className="tw-w-full tw-mb-8">
+                        <span className="tw-font-semibold">Хадгалагдсан маягтууд:</span>
+                        <button className="tw-border tw-ml-4 tw-py-1 tw-px-2 tw-rounded-md focus:tw-outline-none active:tw-shadow-lg" onClick={() => loadData(28)}>
                             ID: 28
                         </button>
-                        <button className="border ml-4 py-1 px-2 rounded-md focus:outline-none active:shadow-lg" onClick={() => loadData(42)}>
+                        <button className="tw-border tw-ml-4 tw-py-1 tw-px-2 tw-rounded-md focus:tw-outline-none active:tw-shadow-lg" onClick={() => loadData(42)}>
                             ID: 42
                         </button>
-                        <button className="border ml-4 py-1 px-2 rounded-md focus:outline-none active:shadow-lg" onClick={() => loadData(id)}>
+                        <button className="tw-border tw-ml-4 tw-py-1 tw-px-2 tw-rounded-md focus:tw-outline-none active:tw-shadow-lg" onClick={() => loadData(id)}>
                             ID: {id}
                         </button>
-                        <input className="w-12 ml-8 py-1 px-2 border border-red-300 rounded-md" type="number" value={id} onChange={e => setId(e.target.value)} />
+                        <input className="tw-w-12 tw-ml-8 tw-py-1 tw-px-2 tw-border tw-border-red-300 tw-rounded-md" type="number" value={id} onChange={e => setId(e.target.value)} />
                     </div>
-                    <button className="border p-1 pr-2 rounded-md bg-green-500 text-white focus:outline-none active:bg-green-600 hover:shadow-lg flex items-center" onClick={() => newData()}>
-                        <PlusSVG className="w-5 h-5 mr-1 animate-pulse" />
+                    <button className="tw-border tw-p-1 tw-pr-2 tw-rounded-md tw-bg-green-500 tw-text-white focus:tw-outline-none active:tw-bg-green-600 hover:tw-shadow-lg tw-flex tw-items-center" onClick={() => newData()}>
+                        <PlusSVG className="tw-w-5 tw-h-5 tw-mr-1 tw-animate-pulse" />
                         <span className="">Шинээр өргөдлийн маягт бөглөх</span>
                     </button>
                 </div>
             </div>
+
+            <button className="tw-p-1 tw-bg-green-400" onClick={showSuccess}>
+                Alert Button
+            </button>
+            <button className="tw-p-1 tw-bg-red-400" onClick={showError}>
+                Alert Button
+            </button>
         </div>
     )
 }
