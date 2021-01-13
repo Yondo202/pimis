@@ -24,6 +24,7 @@ import ProductsEditor from 'pages/products_edit/editorPage'
 import ApplicationForm from 'pages/application_form/form'
 import { AlertStore } from 'components/utilities/alertContext'
 import AlertDialog from 'components/alert_dialog/alertDialog'
+import UrgudulFront from 'pages/urgudul/page';
 
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
                   <Route path='/maygt-2' component={ProjectIntro} />
                   <Route path='/maygt-3' component={ProjectBudget} />
                   <Route path='/maygt-4' component={ApplicantAgreement} />
+                  <Route path="/urgudul" component={UrgudulFront} />
                 </UrgudulStore>
               </Switch>
               <Switch>
@@ -107,7 +109,6 @@ function App() {
         <AlertDialog />
       </AlertStore>
     </div>
-
   );
 }
 

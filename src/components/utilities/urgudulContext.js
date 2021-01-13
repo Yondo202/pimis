@@ -170,3 +170,160 @@ export const UrgudulStore = (props) => {
 }
 
 export default UrgudulContext
+
+
+const ctx = {
+    project_type: '',
+    compnay_name: '',
+    project_name: '',
+
+    //Экспортыг дэмжих төслөөс олгоно
+    urgudliin_dugaar: '',
+
+    //A Urgudul gargach - Applicant
+    //A-1
+    company_name: '',
+    representative_name: '',
+    representative_position: '',
+    registered_date: '',
+    registration_number: '',
+    official_address: '',
+    telephone: '',
+    handphone: '',
+    email: '',
+    website: '',
+    company_size: '',
+    project_plan: '',
+
+    //A-2-1
+    clusters: [
+        {
+            company_name: '',
+            representative_name: '',
+            company_size: '',
+            support_recipient: '',
+            project_contribution: '',
+        },
+    ],
+
+    //A-2-2
+    directors: [
+        {
+            position: '',
+            director_name: '',
+            employed_date: '',
+            project_contribution: '',
+        },
+    ],
+
+    //A-3
+    applicant_overview: '',
+
+    //A-4
+    applicant_experience: '',
+
+    //B Tusliin zadargaa - Project breakdown
+    //B-1
+    project_duration: '',
+
+    //B-2
+    project_introduction: '',
+
+    //B-3
+    preperation: '',
+
+    //B-4
+    identified_problems: '',
+
+    //B-5
+    suggested_solutions: '',
+
+    //B-6
+    planned_activities: [
+        {
+            activity: '',
+            ////
+        },
+    ],
+
+    //B-7
+    project_benefits: {
+        sales_growth: '',
+        export_growth: '',
+        profit_growth: '',
+        efficiency_growth: '',
+        explanation_growth: '',
+        assumptions: '',
+    },
+
+    //B-8
+    project_calculations: {
+        export: {
+            year2: '',
+            year1: '',
+            year: '',
+            project_endDate: '',
+            year1_: '',
+            year2_: '',
+            year3_: '',
+        },
+        fullTime_workplace: {
+            year2: '',
+            year1: '',
+            year: '',
+            project_endDate: '',
+            year1_: '',
+            year2_: '',
+            year3_: '',
+        },
+        sales: {
+            year2: '',
+            year1: '',
+            year: '',
+            project_endDate: '',
+            year1_: '',
+            year2_: '',
+            year3_: '',
+        },
+        productivity: {
+            year2: '',
+            year1: '',
+            year: '',
+            project_endDate: '',
+            year1_: '',
+            year2_: '',
+            year3_: '',
+        },
+    },
+
+    //C Төсөөлж буй төсөв – Төлөвлөсөн үйл ажиллагаа бүрээр (B6 хэсгээс авав)
+    expected_budget: [
+        {
+            activity: '',
+            budget_cost: '',
+            edp_funding: '',
+            applicant_contribution: '',
+        },
+    ],
+
+    //D Medegdel - Notice
+    parties: [
+        {
+            compnay_name: '',
+            representative_position: '',
+            representative_name: '',
+            representative_signature: '',
+            date: '',
+        },
+    ],
+
+    //E Shalgah - Checklist
+    checklist: {
+        format: false,
+        dollar: false,
+        nine_months: false,
+        max_amount: false,
+        self_fund: false,
+        signed: false,
+    },
+}
