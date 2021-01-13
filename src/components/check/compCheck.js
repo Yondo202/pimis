@@ -20,24 +20,22 @@ function CompCheck() {
               let finalEnd = {};
               let rs2 = document.querySelectorAll(".inpTest333");
               let arr2 = Array.from(rs2);
-              let finalOne2 = [];
+              let soloObject2 = {}
 
               arr2.map(element=>{
-                  let soloObject2 = {}
                   if(element.checked === true){
                     let field = element.name;
                     let value = element.value;
                     let id = element.id
                     soloObject2[id + field] = value;
-                    finalOne2.push(soloObject2);
-                    // soloObject22 = [...soloObject2];
-                    // finalOne2["items"] = soloObject2
                   }
-                  // finalOne2(...soloObject22);
               });
-              console.log(finalOne2, "final two two");
-              const assing = Object.assign({}, finalOne2);
-              console.log(assing, " gg");
+              console.log(soloObject2, "final two two");
+
+              let keys = Object.keys(soloObject2);
+              console.log(keys.length, " my urt");
+              const Procent = keys.length * 100 / 25;
+              const FinalProcent = Math.round(Procent);
 
             //   let rs4 = document.querySelectorAll(".getUserInp1");
             //   let arr4 = Array.from(rs4);
@@ -59,20 +57,23 @@ function CompCheck() {
             //   const Procent = keys.length * 100 / 13;
             //   const FinalProcent = Math.round(Procent);
 
-            //   if(keys.length < 13){
-            //     setOpacity("1");
-            //     setProcent(FinalProcent);
-            //     scroll.scrollTo(0);
-            //   }else if(userInp.name === "" || userInp.date === ""){
-            //       setOpacity("0");
-            //       setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү");
-            //       setOpacity2("1");
-            //   }else{
-            //     setOpacity("0");
-            //     setOpacity2("0");
-            //     setFinalTextScale("0");
-            //     // scroll.scrollTo(0);
-            // }
+              if(keys.length < 25){
+                setOpacity("1");
+                setProcent(FinalProcent);
+                // scroll.scrollTo(0);
+              }else{
+                setOpacity("0");
+                setOpacity2("0");
+                setFinalTextScale("0");
+                alert("gg");
+                // scroll.scrollTo(0);
+            }
+
+          //   else if(userInp.name === "" || userInp.date === ""){
+          //     setOpacity("0");
+          //     setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү");
+          //     setOpacity2("1");
+          // }
 
             // // else if(confirm === false){
             // //     setOpacity("0");
@@ -116,15 +117,10 @@ function CompCheck() {
                     </div>
 
                     <div className="buttonPar">
-                            {/* <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}dadada adadad ada</div> */}
-                            <div className="errtext">{FinalErrorText}dadada adadad ada</div>
+                            <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                             <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                     </div>
             </div>
-
-            {/* <div >
-              <Modal text="this is table One" />
-            </div> */}
         </Component1>
     )
 }
@@ -414,13 +410,4 @@ const allData = [
    }, 
 ]
 
-// const dataOne = [
-//   {  name: "100 хувь хувийн ААН мөн эсэх"},
-//   {  name: "2 жилийн турш тогтмол үйл ажиллагаа явуулсныг батлах санхүүгийн тайлантай эсэх"},
-//   {  name: "Уул уурхайн салбарт ажилладаггүй эсэх"},
-//   {  name: "Ре-экспортын худалдаа эрхэлдэггүй эсэх"},
-//   {  name: "Түүхий эд экспортлогч бус эсэх /хэрэв жилийн 100 мянган ам.доллараас дээш экспорт хийдэг бөгөөд энэ ойрын хугацаанд боловсруулсан бүтээгдэхүүний экспорт хийхээр зорьж буй бол тийм гэж дугуйлна уу/"},
-//   {  name: "*Сүүлийн хоёр жил тус бүр 50 мянгаас 50 сая ам.доллартай тэнцэх нийт борлуулалтын орлоготой ажилласан эсэх "},
-//   {  name: "*Сүүлийн 2 жил тус бүр НДШ төлдөг бүтэн цагийн ажилчдын тоо 10-250 хооронд байсан эсэх"},
-// ]
 

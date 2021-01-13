@@ -96,8 +96,8 @@ export default Login
 
 const Component = styled.div`
     font-family:${fontFamily};
-    height:100vh;
-    padding-top:140px;
+    height:75vh;
+    padding-top:30px;
     .imgPar{
         text-align:center;
         padding:30px 0px;
@@ -337,7 +337,7 @@ const Component = styled.div`
 
   @media only screen and (max-width:768px){
     padding-top:50px;
-
+    height:100vh;
     .SubmitButtonPar{
         .SubmitButton{
             width:100%;

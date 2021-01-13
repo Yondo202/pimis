@@ -13,7 +13,7 @@ const textVariants2 = {exit: { y: 80, opacity: 0, transition: { duration: 0.9, e
 function Content() {
     return (
         <Component>
-            <div className="contentPar">
+            {/* <div className="contentPar">
             <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants}>
                 <div className="checkCompPar">
                     <span className="title">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ шалгаж үзнэ үү</span>
@@ -26,9 +26,9 @@ function Content() {
                 <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
                     <About />
                 </motion.div>
-            </div>
+            </div> */}
             <div className="ghost" style={{backgroundImage:`url(/background1.jpg)`}}>
-             <div className="ghostChild"></div>
+                <div className="ghostChild"></div>
             </div>
         </Component>
     )
