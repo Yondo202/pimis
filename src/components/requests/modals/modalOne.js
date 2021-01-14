@@ -20,7 +20,7 @@ function ModalOne(props) {
             });
         setDataOne(finalData);
         console.log(DataOne, " my data one"); 
-    },[])
+    },[]);
 
     return (
         <TableOne >
@@ -140,9 +140,6 @@ const dataOne = [
     {
         name: "Тамхи (үйлдвэрлэлийн бус ба үйлдвэрлэлийн); Тамхины хатаасан навч боловсруулах машин"
     },
-    {
-        name: "Уул уурхайн салбарт"
-    },
 ]
 
 
@@ -152,7 +149,6 @@ const dataOne = [
 // export class ModalOne extends Component {
 //     constructor(props) {
 //         super(props)
-    
 //         this.state = {
 //             DataOne : []
 //         }
@@ -182,7 +178,6 @@ const dataOne = [
 //                             <div className="answer">Хариулт</div>
 //                         </div>
 //                     </div>
-
                     
 //                     {DataOne.map((el,i)=>{
 //                         return(

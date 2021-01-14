@@ -93,7 +93,7 @@ function TableOne() {
               const FinalProcent = Math.round(Procent);
               // console.log(JSON.stringify(finalEnd));
 
-              if(keys.length < 13){
+              if(keys.length < 12){
                 setOpacity("1");
                 setProcent(FinalProcent);
                 scroll.scrollTo(0);
@@ -116,6 +116,7 @@ function TableOne() {
                 }).catch((err)=>{
                   console.log(err, "err");
                 })
+                
                 tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
                 scroll.scrollTo(0);
             }
@@ -126,7 +127,10 @@ function TableOne() {
     return (
         <Component1 className="container" >
             <div className="boxShadow">
-                <div className="rowHeader">1. Үйлдвэрлэгч нь дараах үйл ажиллагааг эрхэлдэг ба явуулдаг эсэх? <span className="tseg">*</span></div>
+                <div className="rowHeader">
+                  <div className="boldTitle">ХАВСРАЛТ 2 А</div>
+                  <div className="italicTitle">ХҮСНЭГТ 1. ХОРИГЛОСОН ҮЙЛ АЖИЛЛАГААНЫ ЖАГСААЛТ</div>
+                </div>
               <div className="formTwoParent ">
                 <div className="headerPar">
                     <div className="row" >
@@ -270,9 +274,6 @@ const dataOne = [
   {
       name: "Тамхи (үйлдвэрлэлийн бус ба үйлдвэрлэлийн); Тамхины хатаасан навч боловсруулах машин"
   },
-  {
-      name: "Уул уурхайн салбарт"
-  },
 ]
 
 
@@ -280,19 +281,31 @@ const Component1 = styled.div`
     color:rgba(${textColor},0.9);
     transition: all 0.5s ease-out;
     font-family: ${fontFamily};
+    margin-top:10px;
       .boxShadow{
         box-shadow:1px 1px 18px -5px;
         border-radius:6px;
           .rowHeader{
-            border-radius:6px 6px 0px 0px;
-            background-color:white;
+            text-align:center;
             padding: 24px 26px;
-            font-size:1.2rem;
-            // border-bottom:1px solid rgba(63, 81, 181,0.5);
-            color:black;
-            .tseg{
-              color:red;
+            border-bottom:1px solid rgba(63, 81, 181,0.5);
+            background-color:white;
+            .boldTitle{
+              font-weight:bold;
             }
+            .italicTitle{
+              font-style: italic;
+              color:blue;
+            }
+            // border-radius:6px 6px 0px 0px;
+            // background-color:white;
+            // padding: 24px 26px;
+            // font-size:1.2rem;
+            // // border-bottom:1px solid rgba(63, 81, 181,0.5);
+            // color:black;
+            // .tseg{
+            //   color:red;
+            // }
           }
         .formTwoParent{
             border-radius:0px 0px 6px 6px;
@@ -564,7 +577,7 @@ const Component1 = styled.div`
               text-align:center;
               border-bottom:1px solid rgba(0,0,0,0.4);
               font-size:14px;
-             
+              font-weight:500;
               .head1{
                 padding-top: 10px;
                 padding-bottom: 16px;
@@ -591,6 +604,7 @@ const Component1 = styled.div`
                 text-align:start;
                 padding-top: 8px;
                 padding-bottom: 8px;
+                font-weight:500;
               }
               .radios{
                 display:flex;

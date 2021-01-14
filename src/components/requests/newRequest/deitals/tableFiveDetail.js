@@ -17,7 +17,10 @@ function TableFiveDetails() {
     }
     return (
         <Component3Detail>
-            <div className="rowHeader">5. Байгаль орчин, нийгмийн менежментийн төлөвлөгөөний загвар<span className="tseg">*</span></div>
+            <div className="rowHeader">
+                <div className="boldTitle">ХАВСРАЛТ 2Д</div>
+                <div className="italicTitle">ХҮСНЭГТ 5. БАЙГАЛЬ ОРЧИН, НИЙГМИЙН МЕНЕЖМЕНТИЙН ТӨЛӨВЛӨГӨӨНИЙ ЗАГВАР</div>
+            </div>
 
             {addItem.map((el,i)=>{
                 return(
@@ -135,17 +138,20 @@ const Component3Detail = styled.div`
     padding:15px 40px;
     transition:all 0.5s ease; 
     .rowHeader{
-        border-radius:6px 6px 0px 0px;
-        background-color:white;
-        padding-bottom:20px;
-        padding-top:10px;
-        font-size:1.2rem;
+        text-align:center;
+        padding: 24px 26px;
         border-bottom:1px solid rgba(63, 81, 181,0.5);
-        color:black;
-        .tseg{
-          color:red;
+        background-color:white;
+        .boldTitle{
+          font-weight:bold;
+          font-size:16px;
         }
-      }
+        .italicTitle{
+          font-style: italic;
+          color:blue;
+          font-size:15px;
+        }
+    }
     .AddItemBtn{
         text-align:end;
         padding:10px 10px;

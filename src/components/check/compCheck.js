@@ -1,8 +1,9 @@
-import React,{useEffect, useState, useRef, useContext} from 'react';
+import React,{useState, useContext} from 'react';
 import styled from 'styled-components'
 import { Link, animateScroll as scroll } from "react-scroll";
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
 import {AiOutlineSend} from 'react-icons/ai'
+import {CgDanger} from 'react-icons/cg'
 import UserContext from '../../context/UserContext'
 import HelperContext from '../../context/HelperContext'
 import axios from '../../axiosbase'
@@ -16,71 +17,55 @@ function CompCheck() {
     const StyleContext = useContext(UserContext);
 
     const clickHandles = (e) =>{
-              let finalOne = {};
-              let finalEnd = {};
               let rs2 = document.querySelectorAll(".inpTest333");
               let arr2 = Array.from(rs2);
               let soloObject2 = {}
+              const cond = {}
 
-              arr2.map(element=>{
+              arr2.map((element,i)=>{ 
                   if(element.checked === true){
                     let field = element.name;
                     let value = element.value;
-                    let id = element.id
+                    let id = element.id;
                     soloObject2[id + field] = value;
                   }
+
+                  if( element.checked === true && element.id + element.name !== "a6" && element.id + element.name !== "a7" && element.value !== "false"){
+                    let field = element.name;
+                    let value = element.value;
+                    let id = element.id;
+                    cond[id + field] = value;
+                  }
+
               });
               console.log(soloObject2, "final two two");
+              // console.log(condititon, " condition");
+              console.log(cond , " my condddd");
+
+              let finalCond = Object.keys(cond);
+              console.log(finalCond.length, " cond length")
+
 
               let keys = Object.keys(soloObject2);
               console.log(keys.length, " my urt");
               const Procent = keys.length * 100 / 25;
               const FinalProcent = Math.round(Procent);
 
-            //   let rs4 = document.querySelectorAll(".getUserInp1");
-            //   let arr4 = Array.from(rs4);
-            //   let userInp = {};
-
-            //   arr4.map(element=>{
-            //       let field = element.name;
-            //       let value = element.value;
-            //       userInp[field] = value;
-            //   });
-            // //   let confirm = document.getElementById("GetcheckBtn").checked;
-
-            //   finalOne["request"] = finalOne2;
-            //   finalOne["name"] = userInp.name;
-            //   finalOne["date"] = userInp.date;
-            //   finalEnd["PPS1"] = finalOne;
-
-            //   let keys = Object.keys(finalOne2);
-            //   const Procent = keys.length * 100 / 13;
-            //   const FinalProcent = Math.round(Procent);
-
               if(keys.length < 25){
                 setOpacity("1");
                 setProcent(FinalProcent);
-                // scroll.scrollTo(0);
+              }else if(finalCond.length < 23){
+                setOpacity("0");
+                setFinalErrorText("Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.");
+                setOpacity2("1");
               }else{
                 setOpacity("0");
                 setOpacity2("0");
                 setFinalTextScale("0");
                 alert("gg");
                 // scroll.scrollTo(0);
-            }
+              }
 
-          //   else if(userInp.name === "" || userInp.date === ""){
-          //     setOpacity("0");
-          //     setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү");
-          //     setOpacity2("1");
-          // }
-
-            // // else if(confirm === false){
-            // //     setOpacity("0");
-            // //     setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
-            // //     setOpacity2("1");
-            // // }
-            // console.log(finalEnd, "final end");
       }
 
     return (
@@ -112,13 +97,13 @@ function CompCheck() {
                     </div>)})}
 
                     <div className="FinalBtn">
-                            <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
-                            <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
+                        <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
+                        <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                     </div>
 
                     <div className="buttonPar">
-                            <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                            <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+                        <div style={{opacity:`${opacity2}`}} className="errtext"><CgDanger /> {FinalErrorText}</div>
+                        <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                     </div>
             </div>
         </Component1>
@@ -225,6 +210,8 @@ const Component1 = styled.div`
           align-items:center;
           justify-content:space-around;
           .errtext{
+            
+
             transition:all 0.4s ease;
             text-align:center;
             background-color: #f6c343;
@@ -234,6 +221,7 @@ const Component1 = styled.div`
             color:black !important;
             line-height:34px;
             padding:0px 20px;
+            
           }
         }
 
@@ -244,17 +232,23 @@ const Component1 = styled.div`
           align-items:center;
           justify-content:space-between;
           padding:30px 30px;
-           
             .errtext{
+              display:flex;
+              color:black;
+              align-items:center;
               transition:all 0.4s ease;
               text-align:center;
               background-color: #f6c343;
               border-radius:5px;
-              font-size:15px !important;
-              font-weight:400;
-              color:black !important;
+              font-size:16px !important;
+              font-weight:500;
               line-height:34px;
-              padding:0px 20px;
+              padding:6px 20px;
+              svg{
+                color:red;
+                margin-right:10px;
+                font-size:25px;
+              }
             }
 
             .SubmitButton{
@@ -273,7 +267,7 @@ const Component1 = styled.div`
                 align-items:center;
                 justify-content:space-around;
                 border:1px solid rgba(63, 81, 181,0.5);
-                width:50%;
+                width:30%;
                 border-radius:6px;
                 .hide{
                   transition:all 0.3s ease;
