@@ -65,7 +65,6 @@ function CompCheck() {
                 alert("gg");
                 // scroll.scrollTo(0);
               }
-
       }
 
     return (
