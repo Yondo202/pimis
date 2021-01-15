@@ -123,7 +123,7 @@ function ProductsEditor() {
     const dropdownRef = useRef()
     const buttonRef = useRef()
 
-    const handleClickOutside = e => {
+    const handleClickOutside = (e) => {
         if (dropdown && !dropdownRef.current.contains(e.target) && !buttonRef.current.contains(e.target)) {
             setDropdown(false)
         }
