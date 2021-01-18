@@ -27,7 +27,7 @@ function UrgudulBreakdown() {
     return (
         <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
-                <span className="tw-text-blue-500 tw-text-xl tw-mr-2">B</span>
+                <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B</span>
                 - Төслийн задаргаа
 
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="ТТүлхүүр албан тушаалтны жагсаалт, тэдгээрийн овог нэр, албан тушаалын хамт." position="bottom" />

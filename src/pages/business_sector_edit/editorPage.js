@@ -4,8 +4,9 @@ import PenSVG from 'assets/svgComponents/penSVG'
 import TrashSVG from 'assets/svgComponents/trashSVG'
 import PlusSVG from 'assets/svgComponents/plusSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
-import DownSVG from 'assets/svgComponents/downSVG'
+import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import CloseSVG from 'assets/svgComponents/closeSVG'
+
 
 const initialState = {
     id: '',
@@ -150,7 +151,7 @@ function BusinessSectorEditor() {
                     <div className="">
                         <button className="tw-whitespace-nowrap tw-text-sm tw-font-semibold tw-py-1 tw-pl-2 tw-ml-2 focus:tw-outline-none tw-flex tw-justify-between tw-items-center tw-rounded-md active:tw-bg-gray-200" ref={buttonRef} onClick={() => setDropdown(!dropdown)}>
                             {translation[filterBy]}
-                            <DownSVG className="tw-w-4 tw-h-4 tw-text-blue-600 tw-ml-1 tw-mr-2 tw-animate-pulse" />
+                            <ChevronDownSVG className="tw-w-4 tw-h-4 tw-text-blue-600 tw-ml-1 tw-mr-2 tw-animate-pulse" />
                         </button>
                         <div className={`tw-absolute tw-transform tw-translate-y-2 tw-z-10 tw-bg-white tw-rounded-md tw-shadow-md tw-divide-y tw-divide-dashed ${dropdown ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} ref={dropdownRef}>
                             {

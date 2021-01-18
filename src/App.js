@@ -74,7 +74,7 @@ function App() {
                   <Route path='/maygt-2' component={ProjectIntro} />
                   <Route path='/maygt-3' component={ProjectBudget} />
                   <Route path='/maygt-4' component={ApplicantAgreement} />
-                  <Route path="/urgudul" component={UrgudulNavigator} />
+                  <Route path="/urgudul/:page" component={UrgudulNavigator} />
                 </UrgudulStore>
               </Switch>
               <Switch>

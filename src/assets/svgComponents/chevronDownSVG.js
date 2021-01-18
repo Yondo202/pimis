@@ -1,6 +1,6 @@
 import React from "react";
 
-const DownSVG = (props) => (
+const ChevronDownSVG = (props) => (
     <svg viewBox="0 0 24 24" {...props}>
         <path
             fill="none"
@@ -13,4 +13,4 @@ const DownSVG = (props) => (
     </svg>
 );
 
-export default DownSVG;
+export default ChevronDownSVG;
