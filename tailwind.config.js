@@ -4,7 +4,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-
+      height: theme => ({
+        '8.5': '34px',
+      })
     },
   },
   variants: {

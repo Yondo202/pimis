@@ -49,7 +49,7 @@ function UrugudulDirectors() {
 
                             <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
 
-                            <FormInline label="Тухайн байгууллагад ажилласан эхэлсэн он сар өдөр" type="text" value={item.company_size} name="company_size" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                            <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" value={item.company_size} name="company_size" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
 
                             <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
                                 <FormInline label="Энэхүү төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр" type="text" value={item.support_recipient} name="support_recipient" id={i} onChange={handleInput} classAppend="tw-flex-grow" classInput="tw-w-full" />

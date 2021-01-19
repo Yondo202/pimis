@@ -4,6 +4,7 @@ import HelpPopup from 'components/helpModal/helpPopup'
 import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
+import FormOptions from 'components/urgudul_components/formOptions'
 
 
 const initialState = [
@@ -33,6 +34,12 @@ function UrugudulClusters() {
         setForm(form.filter((_, i) => i !== index))
     }
 
+    const handleSetForm = (name, value, index) => {
+        const newForm = form
+        newForm[index][name] = value
+        setForm([...newForm])
+    }
+
     return (
         <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
@@ -50,10 +57,9 @@ function UrugudulClusters() {
 
                             <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
 
-                            {/* SELECT COMP-OOR ZASNA */}
-                            <FormInline label="Аж ахуйн нэгжийн хэмжээ (Бичил/Жижиг/Дунд)" type="text" value={item.company_size} name="company_size" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                            <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
 
-                            <FormInline label="Манай дэмжлэг хүртэгч мөн эсэх?" type="text" value={item.support_recipient} name="support_recipient" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                            <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх?" options={['Тийм', 'Үгүй']} values={[1, 0]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
 
                             <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
                                 <FormInline label="Төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр" type="text" value={item.project_contribution} name="project_contribution" id={i} onChange={handleInput} classAppend="tw-flex-grow" classInput="tw-w-full" />

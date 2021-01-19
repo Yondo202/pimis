@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import SearchSVG from 'assets/svgComponents/searchSVG'
 import axios from 'axios'
+import PenSVG from 'assets/svgComponents/penSVG'
 
-function SearchSelector(props) {
+function SearchSelect(props) {
     const [fetch, setFetch] = useState([])
 
     useEffect(() => {
@@ -13,7 +14,7 @@ function SearchSelector(props) {
                 setFetch(data)
                 props.value && setSearch(data.filter(obj => obj.id === props.value)[0][props.description])
             }).catch(err => {
-                console.log(err.response.data)
+                console.log(err.response?.data)
             })
     }, [])
 
@@ -58,13 +59,15 @@ function SearchSelector(props) {
     }
 
     return (
-        <div className={`tw-relative tw-px-3 tw-pt-8 tw-pb-3.5 tw-flex tw-flex-col ${props.classAppend}`}>
-            <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-font-medium tw-whitespace-nowrap tw-top-2 tw-left-0 ${focused ? 'tw-text-sm' : 'tw-text-xs tw-top-6 tw-left-4'} tw-transition-all tw-duration-300`}>
+        <div className={`tw-relative tw-pl-11 tw-pr-3 tw-pt-8 tw-pb-3 tw-flex tw-flex-col ${props.classAppend}`}>
+            <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-font-medium tw-whitespace-nowrap tw-top-2 tw-left-8 ${focused ? 'tw-text-sm' : 'tw-text-xs tw-top-6 tw-left-12'} tw-transition-all tw-duration-300`}>
                 {props.label}
             </label>
 
-            <div className={`tw-flex tw-items-center tw-text-sm tw-border tw-border-gray-400 tw-rounded-md tw-pt-2 tw-pb-1 tw-pl-2 tw-pr-1 focus-within:tw-border-blue-500 tw-transition-colors tw-duration-300 tw-placeholder-gray-400 ${props.classInput}`}>
-                <input className="tw-mr-1 tw-outline-none" type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} />
+            <PenSVG className={`tw-absolute tw-w-6 tw-h-6 tw-top-9 tw-left-3 ${focused && 'tw-text-blue-500'} tw-transition-colors tw-duration-300`} />
+
+            <div className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border tw-border-gray-400 tw-rounded-md tw-pt-2 tw-pb-1 tw-pl-2 tw-pr-1 focus-within:tw-border-blue-500 tw-transition-colors tw-duration-300 tw-placeholder-gray-400 ${props.classInput}`}>
+                <input className="tw-mr-1 tw-outline-none tw-flex-grow" type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} />
 
                 <SearchSVG className={`tw-w-4 tw-h-4 tw-transform tw--translate-y-0.5 ${focused ? 'tw-text-blue-500' : 'tw-text-gray-500'} tw-transition-colors tw-duration-300`} />
             </div>
@@ -85,4 +88,4 @@ function SearchSelector(props) {
     )
 }
 
-export default SearchSelector
+export default SearchSelect

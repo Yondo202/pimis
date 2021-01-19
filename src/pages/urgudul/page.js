@@ -11,6 +11,7 @@ import UrgudulBenefits from './urgudul_b/form_b_7'
 import UrgudulCalculations from './urgudul_b/form_b_8'
 import UrgudulNotice from './urgudul_d/form_d_1'
 import UrgudulChecklist from './urgudul_e/form'
+import UrgudulOverview from './urgudul_a/form_a_3_4'
 
 
 function UrgudulNavigator() {
@@ -59,9 +60,12 @@ function UrgudulNavigator() {
 
                 <Route path="/urgudul/2">
                     <UrgudulApplicant />
+
                     {
-                        'cluster' ? <UrugudulClusters /> : <UrugudulDirectors />
+                        '' ? <UrugudulClusters /> : <UrugudulDirectors />
                     }
+
+                    <UrgudulOverview />
                 </Route>
 
                 <Route path="/urgudul/3">
