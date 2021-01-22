@@ -12,6 +12,7 @@ import UrgudulCalculations from './urgudul_b/form_b_8'
 import UrgudulNotice from './urgudul_d/form_d_1'
 import UrgudulChecklist from './urgudul_e/form'
 import UrgudulOverview from './urgudul_a/form_a_3_4'
+import UrgudulBudget from './urgudul_c/form_c'
 
 
 function UrgudulNavigator() {

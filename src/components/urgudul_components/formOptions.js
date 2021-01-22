@@ -19,23 +19,21 @@ function FormOptions(props) {
                 {props.label}
             </label>
 
-            <PenAltSVG className={`tw-relative tw-top-1 tw-w-6 tw-h-6 ${focused && 'tw-text-blue-500'} tw-transition-colors tw-duration-300`} />
+            <PenAltSVG className={`tw-relative tw-top-1 tw-w-6 tw-h-6 tw-flex-shrink-0 ${focused ? 'tw-text-blue-500' : 'tw-text-gray-600'} tw-transition-colors tw-duration-300`} />
 
             <div className="tw-ml-2 tw-text-sm tw-pt-3 tw-pb-1 tw-px-2 focus:tw-outline-none tw-flex tw-flex-wrap tw-items-center" tabIndex="0" onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}>
                 {
                     props.options?.map((item, i) =>
-                        <>
-                            <div className={`tw-mr-1 tw-w-4 tw-h-4 tw-rounded-full tw-border-2 ${checked(i) ? 'tw-border-blue-500' : 'tw-border-gray-500'} tw-transition-colors tw-duration-300 tw-flex tw-justify-center tw-items-center`} onClick={() => handleSelect(props.name, props.values[i], props.id)}>
+                        <button className="tw-inline-flex tw-items-center focus:tw-outline-none hover:tw-shadow-md tw-rounded-lg tw-px-1 tw-mr-1" key={i} onClick={() => handleSelect(props.name, props.values[i], props.id)}>
+                            <div className={`tw-mr-1 tw-w-4 tw-h-4 tw-rounded-full tw-border-2 ${checked(i) ? 'tw-border-blue-500' : 'tw-border-gray-600'} tw-transition-colors tw-duration-100 tw-flex tw-justify-center tw-items-center`} >
                                 {
                                     checked(i) &&
                                     <span className="tw-w-2 tw-h-2 tw-rounded-full tw-bg-blue-500 tw-transition-colors tw-duration-300" />
                                 }
                             </div>
 
-                            <span htmlFor={`${props.name}-${i}`} className="tw-mr-2" onClick={() => handleSelect(props.name, props.values[i], props.index)}>
-                                {item}
-                            </span>
-                        </>
+                            <span className="">{item}</span>
+                        </button>
                     )
                 }
             </div>

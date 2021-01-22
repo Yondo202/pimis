@@ -27,7 +27,7 @@ function ButtonTooltip(props) {
             {props.afterSVG}
 
             {
-                props.tooltip && <div className={`tw-absolute tw-px-2 tw-py-0.5 tw-rounded-md tw-bg-gray-500 tw-bg-opacity-90 tw-text-white tw-text-xs tw-font-normal tw-italic tw-z-10 ${hovered ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} ref={tooltipRef} style={positionStyle}>
+                props.tooltip && <div className={`tw-absolute tw-px-2 tw-py-0.5 tw-rounded-md tw-bg-gray-600 tw-bg-opacity-90 tw-text-white tw-text-xs tw-font-normal tw-italic tw-z-10 ${hovered ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} ref={tooltipRef} style={positionStyle}>
                     {props.tooltip}
                 </div>
             }

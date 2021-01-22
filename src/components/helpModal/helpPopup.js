@@ -56,18 +56,18 @@ function HelpPopup(props) {
 
     return (
         <div className={`tw-relative tw-flex ${props.classAppend}`}>
-            <button className="tw-rounded-full focus:tw-outline-none hover:tw-shadow-md tw-text-gray-600 active:tw-text-gray-800 tw-transition-colors tw-duration-300" onClick={() => { setOpen(!open) }} ref={buttonRef}>
+            <button className={`tw-rounded-full focus:tw-outline-none hover:tw-shadow-md ${props.buttonClass ? props.buttonClass : 'tw-text-gray-600 active:tw-text-gray-800'} tw-transition-colors tw-duration-300`} onClick={() => { setOpen(!open) }} ref={buttonRef}>
                 <QuestionMarkSVG className="tw-w-6 tw-h-6" />
             </button>
 
-            <div className={`tw-absolute tw-w-72 tw-text-sm tw-bg-indigo-600 tw-bg-opacity-90 tw-text-white tw-font-normal tw-italic tw-rounded-lg tw-shadow-md tw-p-2 tw-z-10 ${open ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} style={positionStyle} ref={divRef}>
-                <div className="tw-mt-2 tw-ml-2">
+            <div className={`tw-absolute ${props.popupClass || 'tw-w-72'} tw-text-sm tw-bg-indigo-600 tw-bg-opacity-90 tw-text-white tw-font-normal tw-italic tw-rounded-lg tw-shadow-md tw-p-2 tw-z-10 ${open ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} style={positionStyle} ref={divRef}>
+                <div className="tw-ml-2">
                     {props.main}
                 </div>
                 <ul className="tw-list-disc tw-pl-6 tw-mt-2">
                     {
                         props.list && props.list.map((item, i) =>
-                            <li>
+                            <li key={i}>
                                 {item}
                             </li>
                         )

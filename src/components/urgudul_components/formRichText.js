@@ -1,35 +1,55 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import 'react-quill/dist/quill.bubble.css'
+import './reactQuill.css'
 
 
-const modules = {
+const modulesFull = {
     toolbar: [
-        [{ 'font': [] }],
         [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'font': [] }],
         ['bold', 'italic', 'underline', 'strike'],
         [{ 'color': [] }, { 'background': [] }],
         ['blockquote', 'code-block'],
         [{ 'align': [] }],
-        [{ 'indent': '-1' }, { 'indent': '+1' }],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         [{ 'script': 'sub' }, { 'script': 'super' }],
-        ['image', 'link'],
+        ['link', 'image', 'video'],
         ['clean'],
     ]
 }
 
-function FormRichText() {
-    const [value, setValue] = useState('')
+const modulesMin = {
+    toolbar: [
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        ['bold', 'italic', 'underline'],
+        ['link'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        ['clean'],
+    ]
+}
+
+function FormRichText(props) {
+    const handleOnChange = (content, delta, source, editor) => {
+        props.setForm(props.name, content, props.id)
+    }
+
+    let modules
+    switch (props.modules) {
+        case 'full':
+            modules = modulesFull
+            break
+        case 'small':
+            modules = modulesMin
+            break
+        default:
+            if (typeof props.modules === 'object') modules = props.modules
+            break
+    }
 
     return (
-        <ReactQuill
-            theme="snow"
-            modules={modules}
-            tabIndex={0}
-            value={value}
-            onChange={setValue}
-        />
+        <ReactQuill theme="snow" bounds={'quill'} modules={modules} tabIndex={0} value={props.value} onChange={handleOnChange} />
     )
 }
 

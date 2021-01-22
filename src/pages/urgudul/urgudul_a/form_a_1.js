@@ -5,6 +5,8 @@ import SearchSelect from 'components/urgudul_components/searchSelect'
 import DistrictSelect from 'components/urgudul_components/districtSelect'
 import CompanySizeSelect from 'components/urgudul_components/companySizeSelect'
 import FormOptions from 'components/urgudul_components/formOptions'
+import PenSVG from 'assets/svgComponents/penSVG'
+import FormRichText from 'components/urgudul_components/formRichText'
 
 
 const initialState = {
@@ -79,7 +81,7 @@ function UrgudulApplicant() {
                     </div>
 
                     <div className="tw-flex tw-flex-wrap">
-                        <SearchSelect label="Байршил" api="http://localhost:9000/api/locations" keys={['data']} value={form.province_id} name="province_id" description="description" description_mon="description_mon" setForm={handleSetForm} classAppend="tw-w-60" />
+                        <SearchSelect label="Байршил" api="locations" keys={['data']} value={form.province_id} name="province_id" description="description" description_mon="description_mon" setForm={handleSetForm} classAppend="tw-w-60" />
 
                         {
                             form.province_id === 39
@@ -108,7 +110,7 @@ function UrgudulApplicant() {
                     <FormOptions label="Компаний хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={form.company_size} name="company_size" setForm={handleSetForm} classAppend="tw-flex-grow" />
 
                     <div className="tw-relative tw-w-2 tw-ml-auto">
-                        <HelpPopup classAppend="tw-right-5 tw-top-1" main="Аж ахуйн нэгжийн хэмжээ нь борлуулалт эсвэл бүтэн цагийн ажилтнуудын аль өндрөөр тогтоосноор ангилал нь тогтоно. Жишээ нь:" list={["$30M борлуулалттай 30 хүнтэй аж ахуйн нэгжийн хувьд Дунд ангиллын аж ахуйн нэгжид хамаарна."]} position="bottom" />
+                        <HelpPopup classAppend="tw-right-5 tw-top-1" main="Аж ахуйн нэгжийн хэмжээ нь борлуулалт эсвэл бүтэн цагийн ажилтнуудын аль өндрөөр тогтоосноор ангилал нь тогтоно. Жишээ нь:" list={["$30M борлуулалттай 30 хүнтэй аж ахуйн нэгжийн хувьд Дунд ангиллын аж ахуйн нэгжид хамаарна."]} position="top-left" />
                     </div>
                 </div>
 
@@ -141,20 +143,33 @@ function UrgudulApplicant() {
                     </table>
                 </div>
 
-                <SearchSelect label="Салбар" api="http://localhost:9000/api/business-sector" keys={['data']} value={form.business_sectorId} name="business_sectorId" description="bdescription" description_mon="bdescription_mon" setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
+                <SearchSelect label="Салбар" api="business-sector" keys={['data']} value={form.business_sectorId} name="business_sectorId" description="bdescription" description_mon="bdescription_mon" setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
 
                 <FormOptions label="Гадаад хөрөнгө оруулалттай эсэх" options={['Тийм', 'Үгүй']} values={[1, 0]} value={form.foreign_invested} name="foreign_invested" setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
 
                 {
                     form.foreign_invested === 1 &&
                     <>
-                        <SearchSelect label="Аль улсаас гадаад хөрөнгө оруулалдаг болох нь" api="http://localhost:9000/api/countries" keys={['data']} value={form.invested_countryid} name="invested_countryid" description="description" description_mon="description_mon" setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
+                        <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                            <SearchSelect label="Аль улсаас гадаад хөрөнгө оруулалдаг болох нь" api="countries" keys={['data']} value={form.invested_countryid} name="invested_countryid" description="description" description_mon="description_mon" setForm={handleSetForm} />
+                        </div>
 
                         <FormInline label="Гадаад хөрөнгө оруулалтын эзлэх хувь" type="numberFormat" formats={{ format: '### %' }} value={form.investment_percent} name="investment_percent" onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-16" />
                     </>
                 }
+            </div>
 
-                <FormInline label="Төслийн төлөвлөлт, гүйцэтгэл дэх оролцоо" type="text" value={form.project_plan} name="project_plan" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+            <div className="tw-w-full">
+                <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
+                    <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                    <span className="tw-ml-2 tw-text-sm tw-font-medium">Төслийн төлөвлөлт, гүйцэтгэл дэх оролцоо</span>
+
+                    <HelpPopup classAppend="tw-ml-auto" main="Аж ахуйн нэгжийн хэмжээ нь борлуулалт эсвэл бүтэн цагийн ажилтнуудын аль өндрөөр тогтоосноор ангилал нь тогтоно. Жишээ нь:" list={['$30M борлуулалттай 30 хүнтэй аж ахуйн нэгжийн хувьд Дунд ангиллын аж ахуйн нэгжид хамаарна.']} position="top-left" />
+                </div>
+
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+                    <FormRichText modules="small" value={form.project_plan} name="project_plan" setForm={handleSetForm} />
+                </div>
             </div>
         </div>
     )

@@ -34,9 +34,9 @@ function UrugudulClusters() {
         setForm(form.filter((_, i) => i !== index))
     }
 
-    const handleSetForm = (name, value, index) => {
+    const handleSetForm = (key, value, index) => {
         const newForm = form
-        newForm[index][name] = value
+        newForm[index][key] = value
         setForm([...newForm])
     }
 
@@ -71,7 +71,7 @@ function UrugudulClusters() {
                         </div>
 
                         <div className="tw-flex tw-items-center">
-                            <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classAppend="tw-text-red-500 active:tw-text-red-600" classLabel="tw-text-sm" />
+                            <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classAppend="tw-text-red-500 active:tw-text-red-600" />
                         </div>
                     </div>
                 )

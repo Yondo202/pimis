@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
-import PenSVG from 'assets/svgComponents/penSVG'
 import SelectorSVG from 'assets/svgComponents/selectorSVG'
 
 
@@ -84,7 +83,7 @@ function DistrictSelect(props) {
                 Дүүрэг
             </label>
 
-            <SelectorSVG className={`tw-absolute tw-w-6 tw-h-6 tw-top-9 tw-left-3 ${open && 'tw-text-blue-500'} tw-transition-colors tw-duration-300`} />
+            <SelectorSVG className={`tw-absolute tw-w-6 tw-h-6 tw-top-9 tw-left-3 tw-flex-shrink-0 ${open ? 'tw-text-blue-500' : 'tw-text-gray-600'} tw-transition-colors tw-duration-300`} />
 
             <button className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border tw-rounded-md tw-pt-2 tw-pb-1 tw-px-2 focus:tw-outline-none ${open ? 'tw-border-blue-500' : 'tw-border-gray-400'} tw-transition-colors tw-duration-300`} onClick={handleClickButton} ref={buttonRef}>
                 <span className="tw-h-5">

@@ -1,0 +1,312 @@
+.quill {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.quill .ql-toolbar {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border: 1px solid #9CA3AF;
+}
+
+.quill .ql-container {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 1px solid #9CA3AF;
+    flex-grow: 1;
+}
+
+.quill .ql-toolbar .ql-formats .ql-picker-label {
+    font-weight: 500;
+    outline-color: #3B82F6;
+}
+
+/* not working */
+
+.quil .ql-toolbar .ql-formats button {
+    outline: none;
+}
+
+/* clean */
+
+.quill .ql-toolbar .ql-formats .ql-clean {
+    outline: none;
+}
+
+.quill .ql-toolbar .ql-formats .ql-clean::before {
+    content: '';
+    background-color: #EF4444;
+    position: absolute;
+    height: 2px;
+    width: 20px;
+    transform: translate(-10px, 18px);
+}
+
+.quill .ql-toolbar .ql-formats .ql-clean::after {
+    background-color: #4B5563;
+    position: absolute;
+    display: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: white;
+    content: 'Форматуудыг цэвэрлэх';
+    z-index: 10;
+    transform: translate(-12px, 30px);
+    opacity: 0;
+}
+
+.quill .ql-toolbar .ql-formats .ql-clean:hover::after {
+    display: inline-block;
+    opacity: 1;
+}
+
+/* video */
+
+.quill .ql-toolbar .ql-formats .ql-video {
+    outline: none;
+}
+
+.quill .ql-toolbar .ql-formats .ql-video::after {
+    background-color: #4B5563;
+    position: absolute;
+    display: none;
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: white;
+    content: 'Видео линкээр оруулах';
+    z-index: 10;
+    transform: translate(-12px, 30px);
+    opacity: 0;
+}
+
+.quill .ql-toolbar .ql-formats .ql-video:hover::after {
+    display: inline-block;
+    opacity: 1;
+}
+
+/* image */
+
+.quill .ql-toolbar .ql-formats .ql-image {
+    outline: none;
+}
+
+.quill .ql-toolbar .ql-formats .ql-image::after {
+    background-color: #4B5563;
+    position: absolute;
+    display: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: white;
+    content: 'Зураг файлаар оруулах';
+    z-index: 10;
+    transform: translate(-12px, 30px);
+    opacity: 0;
+}
+
+.quill .ql-toolbar .ql-formats .ql-image:hover::after {
+    display: inline-block;
+    opacity: 1;
+}
+
+/* link */
+
+.quill .ql-toolbar .ql-formats .ql-link {
+    outline: none;
+}
+
+.quill .ql-toolbar .ql-formats .ql-link::after {
+    background-color: #4B5563;
+    position: absolute;
+    display: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: white;
+    content: 'Текстэнд линк нэмэх';
+    z-index: 10;
+    transform: translate(-12px, 30px);
+    opacity: 0;
+}
+
+.quill .ql-toolbar .ql-formats .ql-link:hover::after {
+    display: inline-block;
+    opacity: 1;
+}
+
+/* script - super */
+
+.quill .ql-toolbar .ql-formats .ql-script {
+    outline: none;
+}
+
+/* list */
+
+.quill .ql-toolbar .ql-formats .ql-list {
+    outline: none;
+}
+
+/* align */
+
+.quill .ql-toolbar .ql-formats .ql-align .ql-picker-label {
+    border-radius: 4px;
+    border: 1px solid #4B5563;
+}
+
+/* code-block */
+
+.quill .ql-toolbar .ql-formats .ql-code-block {
+    outline: none;
+}
+
+.quill .ql-toolbar .ql-formats .ql-code-block::after {
+    background-color: #4B5563;
+    position: absolute;
+    display: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: white;
+    content: 'Код бичвэр оруулах';
+    z-index: 10;
+    transform: translate(-12px, 30px);
+    opacity: 0;
+}
+
+.quill .ql-toolbar .ql-formats .ql-code-block:hover::after {
+    display: inline-block;
+    opacity: 1;
+}
+
+/* blockquote */
+
+.quill .ql-toolbar .ql-formats .ql-blockquote {
+    outline: none;
+}
+
+.quill .ql-toolbar .ql-formats .ql-blockquote::after {
+    background-color: #4B5563;
+    position: absolute;
+    display: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: white;
+    content: 'Ишлэл оруулах';
+    z-index: 10;
+    transform: translate(-12px, 30px);
+    opacity: 0;
+}
+
+.quill .ql-toolbar .ql-formats .ql-blockquote:hover::after {
+    display: inline-block;
+    opacity: 1;
+}
+
+/* background */
+
+.quill .ql-toolbar .ql-formats .ql-background::after {
+    background-color: #4B5563;
+    position: absolute;
+    display: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: white;
+    content: 'Арын талбарын өнгө';
+    z-index: 10;
+    transform: translate(-12px, 30px);
+    opacity: 0;
+}
+
+.quill .ql-toolbar .ql-formats .ql-background:hover::after {
+    display: inline-block;
+    opacity: 1;
+}
+
+/* color */
+
+.quill .ql-toolbar .ql-formats .ql-color::after {
+    background-color: #4B5563;
+    position: absolute;
+    display: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: white;
+    content: 'Текстийн өнгө';
+    z-index: 10;
+    transform: translate(-12px, 30px);
+    opacity: 0;
+}
+
+.quill .ql-toolbar .ql-formats .ql-color:hover::after {
+    display: inline-block;
+    opacity: 1;
+}
+
+/* font */
+
+.quill .ql-toolbar .ql-formats .ql-font .ql-picker-label {
+    border-radius: 4px;
+    border: 1px solid #4B5563;
+}
+
+.quill .ql-toolbar .ql-formats .ql-font .ql-picker-label::after {
+    background-color: #4B5563;
+    position: absolute;
+    display: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: white;
+    content: 'Текстийн фонт';
+    z-index: 10;
+    transform: translate(-48px, 30px);
+    opacity: 0;
+}
+
+.quill .ql-toolbar .ql-formats .ql-font .ql-picker-label:hover::after {
+    display: inline-block;
+    opacity: 1;
+}
+
+/* size */
+
+.quill .ql-toolbar .ql-formats .ql-size .ql-picker-label {
+    border-radius: 4px;
+    border: 1px solid #4B5563;
+}
+
+.quill .ql-toolbar .ql-formats .ql-size .ql-picker-label::after {
+    background-color: #4B5563;
+    position: absolute;
+    display: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: white;
+    content: 'Текстийн хэмжээ';
+    z-index: 10;
+    transform: translate(-12px, 30px);
+    opacity: 0;
+}
+
+.quill .ql-toolbar .ql-formats .ql-size .ql-picker-label:hover::after {
+    display: inline-block;
+    opacity: 1;
+}

@@ -178,7 +178,7 @@ const ctx = {
     project_name: '',
 
     //Экспортыг дэмжих төслөөс олгоно
-    urgudliin_dugaar: '',
+    project_number: '',
 
     //A Urgudul gargach - Applicant
     //A-1
