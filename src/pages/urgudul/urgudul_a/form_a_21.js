@@ -5,6 +5,8 @@ import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import FormOptions from 'components/urgudul_components/formOptions'
+import PenSVG from 'assets/svgComponents/penSVG'
+import FormRichText from 'components/urgudul_components/formRichText'
 
 
 const initialState = [
@@ -51,21 +53,28 @@ function UrugudulClusters() {
 
             {
                 form.map((item, i) =>
-                    <div className="tw-flex odd:tw-bg-gray-100" key={i}>
-                        <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-center">
-                            <FormInline label="Кластерын гишүүн аж ахуйн нэгж" type="text" value={item.company_name} name="company_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                    <div className="tw-flex odd:tw-bg-gray-50" key={i}>
+                        <div className="tw-flex-grow">
+                            <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-center">
+                                <FormInline label="Кластерын гишүүн аж ахуйн нэгж" type="text" value={item.company_name} name="company_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
-                            <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                                <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
-                            <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
+                                <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
 
-                            <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх?" options={['Тийм', 'Үгүй']} values={[1, 0]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
+                                <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх?" options={['Тийм', 'Үгүй']} values={[1, 0]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
+                            </div>
 
-                            <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
-                                <FormInline label="Төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр" type="text" value={item.project_contribution} name="project_contribution" id={i} onChange={handleInput} classAppend="tw-flex-grow" classInput="tw-w-full" />
+                            <div className="tw-w-full tw-border tw-border-dashed">
+                                <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
+                                    <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                                    <span className="tw-ml-2 tw-text-sm tw-font-medium">Төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр</span>
 
-                                <div className="tw-relative tw-w-2">
-                                    <HelpPopup classAppend="tw-right-5 tw-top-1" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
+                                    <HelpPopup classAppend="tw-ml-auto" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
+                                </div>
+
+                                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+                                    <FormRichText modules="small" value={item.project_contribution} name="project_contribution" id={i} setForm={handleSetForm} />
                                 </div>
                             </div>
                         </div>

@@ -6,7 +6,7 @@ function SearchSelectCompact(props) {
     const [fetch, setFetch] = useState([])
 
     useEffect(() => {
-        if (props.data) {
+        if (props.data && props.data.length) {
             setFetch(props.data)
             props.value && setSearch(props.data.filter(obj => obj.id === props.value)[0][props.description])
         } else {
@@ -70,10 +70,10 @@ function SearchSelectCompact(props) {
             <div className={`tw-flex tw-items-center tw-text-sm ${props.classDiv || `tw-border tw-border-gray-400`} tw-rounded-md tw-px-1 focus-within:tw-border-blue-500 tw-transition-colors tw-duration-300 tw-placeholder-gray-400`}>
                 <input className={`tw-mr-1 tw-outline-none tw-placeholder-gray-500 ${props.classInput || 'tw-flex-grow'}`} type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} placeholder={props.placeholder} />
 
-                <SearchSVG className={`tw-w-4 tw-h-4 tw-flex-shrink-0 ${focused ? 'tw-text-blue-500' : 'tw-text-gray-600'} tw-transition-colors tw-duration-300`} />
+                <SearchSVG className={`tw-w-4 tw-h-4 tw-flex-shrink-0 ${focused ? 'tw-text-blue-600' : 'tw-text-gray-700'} tw-transition-colors tw-duration-300`} />
             </div>
 
-            <div className={`tw-absolute tw-w-full tw-bg-white tw-z-10 tw-text-sm tw-rounded-md tw-shadow-sm tw-border tw-border-gray-400 tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focused ? 'tw-visible tw-opacity-100 tw-h-48' : 'tw-invisible tw-opacity-0 tw-h-0'} tw-transition-all tw-duration-300`}>
+            <div className={`tw-absolute tw-transform tw-translate-y-1 tw-w-full tw-h-48 tw-bg-white tw-z-10 tw-text-sm tw-rounded-md tw-shadow-sm tw-border tw-border-gray-400 tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focused ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`}>
                 {
                     fetch.filter(obj => filter(obj, search)).length ?
                         fetch.filter(obj => filter(obj, search)).sort(compare).map((item, i) =>

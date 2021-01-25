@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import HelpPopup from 'components/helpModal/helpPopup'
 import SearchSelect from 'components/urgudul_components/searchSelect'
@@ -7,6 +7,8 @@ import CompanySizeSelect from 'components/urgudul_components/companySizeSelect'
 import FormOptions from 'components/urgudul_components/formOptions'
 import PenSVG from 'assets/svgComponents/penSVG'
 import FormRichText from 'components/urgudul_components/formRichText'
+import axios from 'axiosbase'
+import UrgudulContext from 'components/utilities/urgudulContext'
 
 
 const initialState = {
@@ -16,8 +18,8 @@ const initialState = {
     registered_date: '',
     registration_number: '',
     official_address: '',
-    province_id: '',
-    district_id: '',
+    locationId: '',
+    district_id: null,
     telephone: '',
     handphone: '',
     email: '',
@@ -26,8 +28,8 @@ const initialState = {
     project_plan: '',
     business_sectorId: '',
     foreign_invested: '',
-    invested_countryid: '',
-    investment_percent: '',
+    invested_countryid: null,
+    investment_percent: null,
 }
 
 function UrgudulApplicant() {
@@ -47,6 +49,19 @@ function UrgudulApplicant() {
 
     const handleSetForm = (key, value) => {
         setForm({ ...form, [key]: value })
+    }
+
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    const handleSubmit = () => {
+        axios.put(`projects/${UrgudulCtx.data.id}`, { compnay: form })
+            .then(res => {
+                console.log(res.data)
+                UrgudulCtx.setData(res.data.data)
+            })
+            .catch(err => {
+                console.log(err.response?.data)
+            })
     }
 
     return (
@@ -81,10 +96,10 @@ function UrgudulApplicant() {
                     </div>
 
                     <div className="tw-flex tw-flex-wrap">
-                        <SearchSelect label="Байршил" api="locations" keys={['data']} value={form.province_id} name="province_id" description="description" description_mon="description_mon" setForm={handleSetForm} classAppend="tw-w-60" />
+                        <SearchSelect label="Байршил" api="locations" keys={['data']} value={form.locationId} name="locationId" description="description" description_mon="description_mon" setForm={handleSetForm} classAppend="tw-w-60" />
 
                         {
-                            form.province_id === 39
+                            form.locationId === 39
                             && <DistrictSelect value={form.district_id} setForm={handleSetForm} classAppend="tw-w-56" />
                         }
                     </div>
@@ -159,18 +174,22 @@ function UrgudulApplicant() {
                 }
             </div>
 
-            <div className="tw-w-full">
+            <div className="tw-w-full tw-border tw-border-dashed">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
                     <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
                     <span className="tw-ml-2 tw-text-sm tw-font-medium">Төслийн төлөвлөлт, гүйцэтгэл дэх оролцоо</span>
 
-                    <HelpPopup classAppend="tw-ml-auto" main="Аж ахуйн нэгжийн хэмжээ нь борлуулалт эсвэл бүтэн цагийн ажилтнуудын аль өндрөөр тогтоосноор ангилал нь тогтоно. Жишээ нь:" list={['$30M борлуулалттай 30 хүнтэй аж ахуйн нэгжийн хувьд Дунд ангиллын аж ахуйн нэгжид хамаарна.']} position="top-left" />
+                    <HelpPopup classAppend="tw-ml-auto" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв батлах, нийт төслийн удирдлага, худалдан авалтын удирдлага, төслийн тайлагнал, нөөцийн удирдлага гм." position="top-left" />
                 </div>
 
                 <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
                     <FormRichText modules="small" value={form.project_plan} name="project_plan" setForm={handleSetForm} />
                 </div>
             </div>
+
+            <button className="tw-p-2 tw-bg-gray-400" onClick={handleSubmit}>
+                Илгээх
+            </button>
         </div>
     )
 }

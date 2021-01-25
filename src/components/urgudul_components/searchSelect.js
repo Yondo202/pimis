@@ -7,7 +7,7 @@ function SearchSelect(props) {
     const [fetch, setFetch] = useState([])
 
     useEffect(() => {
-        if (props.data) {
+        if (props.data && props.data.length) {
             setFetch(props.data)
             props.value && setSearch(props.data.filter(obj => obj.id === props.value)[0][props.description])
         } else {

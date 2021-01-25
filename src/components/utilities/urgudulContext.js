@@ -160,7 +160,8 @@ export const initialState = {
 }
 
 export const UrgudulStore = (props) => {
-    const [data, setData] = useState({ ...initialState, companies: [] })
+    // const [data, setData] = useState({ ...initialState, companies: [] })
+    const [data, setData] = useState({})
 
     return (
         <UrgudulContext.Provider value={{ data, setData }}>

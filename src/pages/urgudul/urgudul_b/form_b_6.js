@@ -70,7 +70,7 @@ function UrgudulActivities() {
 
             {
                 form.map((item, i) =>
-                    <div className="tw-flex odd:tw-bg-gray-100" key={i}>
+                    <div className="tw-flex odd:tw-bg-gray-50" key={i}>
                         <div className="tw-flex-grow">
                             <div className="tw-border tw-border-dashed">
                                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
@@ -94,18 +94,17 @@ function UrgudulActivities() {
                             </div>
 
                             <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                <FormInline label="Үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost} name="budget_cost" id={i} onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-100'} classInput="tw-w-24" />
+                                <FormInline label="Үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost} name="budget_cost" id={i} onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
-                                <FormInline label="ЭДТ-өөс санхүүжүүлэгдэх нь, доллараар" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.edp_funding} name="edp_funding" id={i} onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-100'} classInput="tw-w-24" />
+                                <FormInline label="ЭДТ-өөс санхүүжүүлэгдэх нь, доллараар" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.edp_funding} name="edp_funding" id={i} onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
                                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
-                                    <FormInline label="Өргөдөл гаргагчийн оролцоо (бэлэн мөнгө)" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.applicant_contribution} name="applicant_contribution" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-100'} classInput="tw-w-24" />
+                                    <FormInline label="Өргөдөл гаргагчийн оролцоо (бэлэн мөнгө)" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.applicant_contribution} name="applicant_contribution" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
                                     <div className="tw-relative tw-w-2">
                                         <HelpPopup classAppend="tw-right-5 tw-top-1" main="/.../" position="top-left" />
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 
@@ -116,7 +115,7 @@ function UrgudulActivities() {
                 )
             }
 
-            <div className="tw-flex tw-justify-end tw-items-center tw-pt-2">
+            <div className="tw-flex tw-justify-end tw-items-center tw-py-1">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
                     {form.length}ш үйл ажиллагаа нэмсэн байна.
                 </div>
@@ -147,7 +146,7 @@ function UrgudulActivities() {
                         <span className="tw-ml-2 tw-text-base tw-font-medium">{!isNaN(selfPerc) && `${+ selfPerc.toFixed(2)}%`}</span>
                         {
                             !(selfPerc >= 0 && selfPerc <= 100) && !isNaN(selfPerc) &&
-                            <HelpPopup classAppend="tw-ml-4 tw-inline-flex tw-transform tw-translate-y-1.5" buttonClass="tw-text-red-400 active:tw-text-red-600" main="Тоцоолол алдаатай байна. Өргөгдөл гаргагчийн оролцооны нийт эзлэх хувь нь 0-ээс бага эсвэл 100-аас их байна." position="top-left" />
+                            <HelpPopup classAppend="tw-ml-4 tw-inline-flex tw-transform tw-translate-y-1.5" buttonClass="tw-text-red-400 active:tw-text-red-600" main="Тоцоолол алдаатай байна. Өргөгдөл гаргагчийн оролцооны нийт эзлэх хувь нь 0-ээс бага эсвэл 100-аас их байх боломжгүй." position="top-left" />
                         }
                     </span>
                 </div>

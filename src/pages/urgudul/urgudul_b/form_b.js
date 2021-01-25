@@ -32,7 +32,7 @@ function UrgudulBreakdown() {
     }
 
     return (
-        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B</span>
                 - Төслийн задаргаа
@@ -54,7 +54,7 @@ function UrgudulBreakdown() {
                 <FormInline label="Төслийн үргэлжлэх хугацаа" type="date" value={form.end_date} name="end_date" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
             </div>
 
-            <div className="tw-w-full">
+            <div className="tw-w-full tw-border tw-border-dashed">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
                     <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
                     <span className="tw-ml-2 tw-text-sm tw-font-medium">Төслийн танилцуулга</span>
@@ -67,7 +67,7 @@ function UrgudulBreakdown() {
                 </div>
             </div>
 
-            <div className="tw-w-full">
+            <div className="tw-w-full tw-border tw-border-dashed">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
                     <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
                     <span className="tw-ml-2 tw-text-sm tw-font-medium">Бэлтгэл ажил</span>
@@ -80,7 +80,7 @@ function UrgudulBreakdown() {
                 </div>
             </div>
 
-            <div className="tw-w-full">
+            <div className="tw-w-full tw-border tw-border-dashed">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
                     <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
                     <span className="tw-ml-2 tw-text-sm tw-font-medium">Тодорхойлсон асуудлууд</span>
@@ -93,7 +93,7 @@ function UrgudulBreakdown() {
                 </div>
             </div>
 
-            <div className="tw-w-full">
+            <div className="tw-w-full tw-border tw-border-dashed">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
                     <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
                     <span className="tw-ml-2 tw-text-sm tw-font-medium">Санал болгож буй шийдэл</span>
@@ -106,7 +106,7 @@ function UrgudulBreakdown() {
                 </div>
             </div>
 
-            <div className="tw-w-full">
+            <div className="tw-w-full tw-border tw-border-dashed">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
                     <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
                     <span className="tw-ml-2 tw-text-sm tw-font-medium">Төлөвлөсөн үйл ажиллагаа болон зорилтот хүлээгдэж буй үр дүн</span>
