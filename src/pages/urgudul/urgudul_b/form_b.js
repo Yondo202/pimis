@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import HelpPopup from 'components/helpModal/helpPopup'
 import PenSVG from 'assets/svgComponents/penSVG'
 import FormRichText from 'components/urgudul_components/formRichText'
+import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
+import axios from 'axiosbase'
+import UrgudulContext from 'components/utilities/urgudulContext'
 
 
 const initialState = {
@@ -31,8 +34,21 @@ function UrgudulBreakdown() {
         setForm({ ...form, [key]: value })
     }
 
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    const handleSubmit = () => {
+        axios.put(`projects/${UrgudulCtx.data.id}`, form)
+            .then(res => {
+                console.log(res.data)
+                UrgudulCtx.setData(res.data.data)
+            })
+            .catch(err => {
+                console.log(err.response?.data)
+            })
+    }
+
     return (
-        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B</span>
                 - Төслийн задаргаа
@@ -62,7 +78,7 @@ function UrgudulBreakdown() {
                     <HelpPopup classAppend="tw-ml-auto" main="Одоогийн нөхцөл байдал, гол асуудал, төслийн агуулгын талаар товч танилцуулна." list={['Ямар зах зээлийн боломж харагдаж буй ба үүнийг хэрхэн тодорхойлсон бэ?', 'Потенциалт худалдан авагч нар хэн бэ? гэх зэргийг нарийн тодорхойлоно уу.']} position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', overflowY: '768px' }}>
                     <FormRichText modules="small" value={form.project_introduction} name="project_introduction" setForm={handleSetForm} />
                 </div>
             </div>
@@ -75,7 +91,7 @@ function UrgudulBreakdown() {
                     <HelpPopup classAppend="tw-ml-auto" main="Төслийн бэлтгэл ажил хийгдсэн байгаа эсэх. Зорилтот зах зээлийн судалгаа, хэрэглэгчийн судалгаа хийсэн эсэх. Хэрэв тийм бол уг ажлын талаар товч тайлбар бичих. Бэлтгэл зах зээлийн судалгаа нь зах зээлийн боломжоо үр дүнтэй тодорхойлж чадаж буй эсэхэд хамгийн их нөлөөтэй болно." position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', overflowY: '768px' }}>
                     <FormRichText modules="small" value={form.preperation} name="preperation" setForm={handleSetForm} />
                 </div>
             </div>
@@ -88,7 +104,7 @@ function UrgudulBreakdown() {
                     <HelpPopup classAppend="tw-ml-auto" main="Уг төслөөр ямар асуудлуудыг шийдвэрлэж, төслийн танилцуулгад тодорхойлсон зах зээлийн боломжийг ашиглах боломжтой болох вэ?" position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', overflowY: '768px' }}>
                     <FormRichText modules="small" value={form.identified_problems} name="identified_problems" setForm={handleSetForm} />
                 </div>
             </div>
@@ -101,7 +117,7 @@ function UrgudulBreakdown() {
                     <HelpPopup classAppend="tw-ml-auto" main="Дээр тодорхойлсон асуудлуудыг шийдвэрлэхэд санал болгож буй ямар шийдлүүд байгаа вэ? Хувь аж ахуйн нэгжээрээ болон кластераар шийдвэрлэх үйл ажиллагааг санал болгоно уу." position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', overflowY: '768px' }}>
                     <FormRichText modules="small" value={form.suggested_solutions} name="suggested_solutions" setForm={handleSetForm} />
                 </div>
             </div>
@@ -114,9 +130,13 @@ function UrgudulBreakdown() {
                     <HelpPopup classAppend="tw-ml-auto" main="Уг төслийн хүрээнд хийхээр зорьж буй гол үйл ажиллагаануудыг тус бүрийн хүлээгдэж буй үр дүнтэй нь бичнэ үү" list={['Хэмжих хэмжүүрийг тодорхой бичнэ үү.', 'Үйл ажиллагаа нь практик бодит үр дүн авчрах ажил байхыг анхаарна уу.', '(Аж ахуйн нэгжийн болон кластераар хийх ажлуудыг тусад нь бичнэ.)']} position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', overflowY: '768px' }}>
                     <FormRichText modules="small" value={form.expected_result} name="expected_result" setForm={handleSetForm} />
                 </div>
+            </div>
+
+            <div className="tw-flex tw-justify-end">
+                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )

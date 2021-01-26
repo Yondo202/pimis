@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
-import FormSmall from 'components/form_small/formSmall'
-import FormTextareaCol from 'components/form_textarea_col/formTextareaCol'
 import HelpPopup from 'components/helpModal/helpPopup'
 import FormRichText from 'components/urgudul_components/formRichText'
 import PenSVG from 'assets/svgComponents/penSVG'
+import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
+import axios from 'axiosbase'
+import UrgudulContext from 'components/utilities/urgudulContext'
 
 
 const initialState = {
@@ -32,8 +33,21 @@ function UrgudulBenefits() {
         setForm({ ...form, [key]: value })
     }
 
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    const handleSubmit = () => {
+        axios.put(`projects/${UrgudulCtx.data.id}`, form)
+            .then(res => {
+                console.log(res.data)
+                UrgudulCtx.setData(res.data.data)
+            })
+            .catch(err => {
+                console.log(err.response?.data)
+            })
+    }
+
     return (
-        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B7</span>
                 - Төслийн үр ашгийн талаар
@@ -57,7 +71,7 @@ function UrgudulBenefits() {
                 <FormInline label="Ажлын байр:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.workplace_growth} name="workplace_growth" onChange={handleInputFormat} classInput="tw-w-24" />
             </div>
 
-            <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-border tw-border-dashed" style={{ resize: 'vertical', overflowY: 'auto' }}>
+            <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                 <FormRichText modules="small" value={form.growths_explanation} name="growths_explanation" setForm={handleSetForm} />
             </div>
 
@@ -69,9 +83,13 @@ function UrgudulBenefits() {
                     <HelpPopup classAppend="tw-ml-auto" main="Дээр дурдсан таамаглалыг тооцоолсон үндэслэл, шалтгааныг энд тайлбарлана уу." position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.assumptions} name="assumptions" setForm={handleSetForm} />
                 </div>
+            </div>
+
+            <div className="tw-flex tw-justify-end">
+                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )

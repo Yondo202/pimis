@@ -1,11 +1,13 @@
+import React, { useContext, useState } from 'react'
+import FormInline from 'components/urgudul_components/formInline'
+import FormRichText from 'components/urgudul_components/formRichText'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PenSVG from 'assets/svgComponents/penSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
 import HelpPopup from 'components/helpModal/helpPopup'
-import FormInline from 'components/urgudul_components/formInline'
-import FormRichText from 'components/urgudul_components/formRichText'
-import React, { useState } from 'react'
+import axios from 'axiosbase'
+import UrgudulContext from 'components/utilities/urgudulContext'
 
 
 const initialState = [
@@ -16,7 +18,6 @@ const initialState = [
         applicant_contribution: '',
     },
 ]
-
 
 function UrgudulActivities() {
     const [form, setForm] = useState(initialState)
@@ -52,8 +53,21 @@ function UrgudulActivities() {
     const self = form.map(item => + item.applicant_contribution).reduce((a, b) => a + b, 0)
     const selfPerc = (self / net) * 100
 
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    const handleSubmit = () => {
+        axios.put(`projects/${UrgudulCtx.data.id}`, form)
+            .then(res => {
+                console.log(res.data)
+                UrgudulCtx.setData(res.data.data)
+            })
+            .catch(err => {
+                console.log(err.response?.data)
+            })
+    }
+
     return (
-        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B6</span>
                 {
@@ -80,7 +94,7 @@ function UrgudulActivities() {
                                     </span>
                                 </div>
 
-                                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+                                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                                     <FormRichText modules="small" value={item.activity} name="activity" id={i} setForm={handleSetForm} />
                                 </div>
                             </div>
@@ -146,10 +160,14 @@ function UrgudulActivities() {
                         <span className="tw-ml-2 tw-text-base tw-font-medium">{!isNaN(selfPerc) && `${+ selfPerc.toFixed(2)}%`}</span>
                         {
                             !(selfPerc >= 0 && selfPerc <= 100) && !isNaN(selfPerc) &&
-                            <HelpPopup classAppend="tw-ml-4 tw-inline-flex tw-transform tw-translate-y-1.5" buttonClass="tw-text-red-400 active:tw-text-red-600" main="Тоцоолол алдаатай байна. Өргөгдөл гаргагчийн оролцооны нийт эзлэх хувь нь 0-ээс бага эсвэл 100-аас их байх боломжгүй." position="top-left" />
+                            <HelpPopup classAppend="tw-ml-4 tw-inline-flex tw-top-1.5" buttonClass="tw-text-red-400 active:tw-text-red-600" main="Тоцоолол алдаатай байна. Өргөгдөл гаргагчийн оролцооны нийт эзлэх хувь нь 0-ээс бага эсвэл 100-аас их байх боломжгүй." position="top-left" />
                         }
                     </span>
                 </div>
+            </div>
+
+            <div className="tw-flex tw-justify-end">
+                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )

@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import HelpPopup from 'components/helpModal/helpPopup'
 import FormRichText from 'components/urgudul_components/formRichText'
+import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
+import axios from 'axiosbase'
+import UrgudulContext from 'components/utilities/urgudulContext'
 
 
 const initialState = {
@@ -13,6 +16,19 @@ function UrgudulOverview() {
 
     const handleSetForm = (key, value) => {
         setForm({ ...form, [key]: value })
+    }
+
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    const handleSubmit = () => {
+        axios.put(`projects/${UrgudulCtx.data.id}`, form)
+            .then(res => {
+                console.log(res.data)
+                UrgudulCtx.setData(res.data.data)
+            })
+            .catch(err => {
+                console.log(err.response?.data)
+            })
     }
 
     return (
@@ -32,7 +48,7 @@ function UrgudulOverview() {
                 }
             </div>
 
-            <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+            <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                 <FormRichText modules="full" value={form.companies_overview} name="companies_overview" setForm={handleSetForm} />
             </div>
 
@@ -43,8 +59,12 @@ function UrgudulOverview() {
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." position="bottom" />
             </div>
 
-            <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+            <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                 <FormRichText modules="full" value={form.companies_experience} name="companies_experience" setForm={handleSetForm} />
+            </div>
+
+            <div className="tw-flex tw-justify-end">
+                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )

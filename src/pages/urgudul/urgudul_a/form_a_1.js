@@ -9,6 +9,7 @@ import PenSVG from 'assets/svgComponents/penSVG'
 import FormRichText from 'components/urgudul_components/formRichText'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
+import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
 
 
 const initialState = {
@@ -65,7 +66,7 @@ function UrgudulApplicant() {
     }
 
     return (
-        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A1</span>
                 - Өргөдөл гаргагч
@@ -182,14 +183,14 @@ function UrgudulApplicant() {
                     <HelpPopup classAppend="tw-ml-auto" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв батлах, нийт төслийн удирдлага, худалдан авалтын удирдлага, төслийн тайлагнал, нөөцийн удирдлага гм." position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y" style={{ resize: 'vertical', overflowY: 'auto' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.project_plan} name="project_plan" setForm={handleSetForm} />
                 </div>
             </div>
 
-            <button className="tw-p-2 tw-bg-gray-400" onClick={handleSubmit}>
-                Илгээх
-            </button>
+            <div className="tw-flex tw-justify-end">
+                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+            </div>
         </div>
     )
 }

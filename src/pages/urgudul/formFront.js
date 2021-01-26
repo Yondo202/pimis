@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
+import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
 
 
 const initialState = {
@@ -38,7 +39,7 @@ function UrgudulFront() {
 
     return (
         <div className="tw-w-full tw-max-w-5xl tw-mx-auto tw-text-gray-700">
-            <div className="tw-mt-8 tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+            <div className="tw-mt-8 tw-mb-20 tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
                 <div className="tw-text-2xl tw-font-semibold tw-py-8 tw-px-4 tw-text-center tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-blue-500 tw-to-green-500">
                     Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт
                 </div>
@@ -70,9 +71,7 @@ function UrgudulFront() {
 
                     <FormInline label="Төслийн нэр" type="text" value={form.project_name} name="project_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
 
-                    <button className="tw-p-2 tw-bg-gray-400" onClick={handleSubmit}>
-                        Илгээх
-                    </button>
+                    <ButtonTooltip classAppend="tw-mt-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
                 </div>
             </div>
         </div>
