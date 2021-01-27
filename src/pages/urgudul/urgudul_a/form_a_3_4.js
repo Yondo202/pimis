@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react'
-import HelpPopup from 'components/helpModal/helpPopup'
+import HelpPopup from 'components/help_popup/helpPopup'
 import FormRichText from 'components/urgudul_components/formRichText'
-import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
+import AlertContext from 'components/utilities/alertContext'
+import { useHistory } from 'react-router-dom'
 
 
 const initialState = {
-    companies_overview: '',
-    companies_experience: '',
+    applicant_overview: '',
+    applicant_experience: '',
 }
 
 function UrgudulOverview() {
@@ -20,15 +22,26 @@ function UrgudulOverview() {
 
     const UrgudulCtx = useContext(UrgudulContext)
 
+    const AlertCtx = useContext(AlertContext)
+
+    const history = useHistory()
+
     const handleSubmit = () => {
-        axios.put(`projects/${UrgudulCtx.data.id}`, form)
-            .then(res => {
-                console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
-            })
-            .catch(err => {
-                console.log(err.response?.data)
-            })
+        if (UrgudulCtx.data.id) {
+            axios.put(`projects/${UrgudulCtx.data.id}`, form)
+                .then(res => {
+                    console.log(res.data)
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Танилцуулга мэдээлэл хадгалагдлаа.' })
+                })
+                .catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
+            setTimeout(() => history.push('/urgudul/1'), 3000)
+        }
     }
 
     return (
@@ -49,7 +62,7 @@ function UrgudulOverview() {
             </div>
 
             <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                <FormRichText modules="full" value={form.companies_overview} name="companies_overview" setForm={handleSetForm} />
+                <FormRichText modules="full" value={form.applicant_overview} name="applicant_overview" setForm={handleSetForm} />
             </div>
 
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
@@ -60,7 +73,7 @@ function UrgudulOverview() {
             </div>
 
             <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                <FormRichText modules="full" value={form.companies_experience} name="companies_experience" setForm={handleSetForm} />
+                <FormRichText modules="full" value={form.applicant_experience} name="applicant_experience" setForm={handleSetForm} />
             </div>
 
             <div className="tw-flex tw-justify-end">

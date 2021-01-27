@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
-import HelpPopup from 'components/helpModal/helpPopup'
+import HelpPopup from 'components/help_popup/helpPopup'
 import axios from 'axiosbase'
-import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import SearchSelectCompact from 'components/urgudul_components/searchSelectCompact'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
@@ -11,27 +11,39 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 
 const year = new Date().getFullYear()
 const month = new Date().getMonth() + 1
+
 const dates = [
-    '2016',                     //0
-    `${year - 2}/${month}`,
-    `${year - 1}/${month}`,
-    `${year}/${month}`,
-    '2222/7',          //4
-    `${year + 1}/${month}`,
-    `${year + 2}/${month}`,
-    `${year + 3}/${month}`,
+    'baseYear',
+    'year--',
+    'year-',
+    'submitDate',
+    'endDate',
+    'year+',
+    'year++',
+    'year+++',
 ]
 
 const datesObj = {
-    [dates[0]]: '',
-    [dates[1]]: '',
-    [dates[2]]: '',
-    [dates[3]]: '',
-    [dates[4]]: '',
-    [dates[5]]: '',
-    [dates[6]]: '',
-    [dates[7]]: '',
+    'baseYear': '',
+    'year--': '',
+    'year-': '',
+    'submitDate': '',
+    'endDate': '',
+    'year+': '',
+    'year++': '',
+    'year+++': '',
 }
+
+// const datesArr = [
+//     { year: 2016, coltype: 'baseYear', amount: '' },
+//     { year: year - 2, coltype: 'year--', amount: '' },
+//     { year: year - 1, coltype: 'year-', amount: '' },
+//     { year: year, month: month, coltype: 'submitDate', amount: '' },
+//     { year: 2222, month: 77, coltype: 'endDate', amount: '' },
+//     { year: year + 1, coltype: 'year+', amount: '' },
+//     { year: year + 2, coltype: 'year++', amount: '' },
+//     { year: year + 3, coltype: 'year+++', amount: '' },
+// ]
 
 const initialState = {
     sales: {
@@ -57,6 +69,15 @@ const initialState = {
             ],
         },
     ],
+    sumbitDate: {
+        year: year,
+        month: month,
+    },
+    endDate: {
+        year: 2222,
+        month: 11,
+    },
+    baseYear: 2016,
 }
 
 function UrgudulCalculations() {
@@ -132,7 +153,7 @@ function UrgudulCalculations() {
     const UrgudulCtx = useContext(UrgudulContext)
 
     const handleSubmit = () => {
-        axios.put(`projects/${UrgudulCtx.data.id}`, form)
+        axios.put(`projects/${UrgudulCtx.data.id}`, { export_data: form })
             .then(res => {
                 console.log(res.data)
                 UrgudulCtx.setData(res.data.data)
@@ -283,7 +304,7 @@ function UrgudulCalculations() {
                                             <div className="tw-flex tw-justify-end tw-items-center">
                                                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
                                                     Тус улсад {country.export_products.length}ш бүтээгдэхүүн нэмсэн байна.
-                                            </div>
+                                                </div>
 
                                                 <ButtonTooltip tooltip="Бүтээгдэхүүн нэмж оруулах" beforeSVG={<PlusCircleSVG className="tw-w-7 tw-h-7 tw-transition-colors tw-duration-300" />} onClick={() => handleAddProduct(i)} classAppend="tw-text-blue-500 active:tw-text-blue-600 tw-mr-1" />
                                             </div>
@@ -297,7 +318,7 @@ function UrgudulCalculations() {
                                 <div className="tw-flex tw-justify-start tw-items-center tw-px-2">
                                     <button className="tw-float-right tw-px-1 tw-py-0.5 tw-text-green-400 tw-text-xs tw-font-semibold tw-rounded focus:tw-outline-none tw-border tw-border-green-400 active:tw-bg-green-100" onClick={handleAddCountry}>
                                         Экспорт хийдэг улс нэмж оруулах
-                                </button>
+                                    </button>
 
                                     <div className="tw-text-xs tw-italic tw-text-gray-600 tw-ml-2">
                                         {form.export_details.length}ш улс оруулсан байна.

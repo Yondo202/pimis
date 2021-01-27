@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
-import HelpPopup from 'components/helpModal/helpPopup'
+import HelpPopup from 'components/help_popup/helpPopup'
 import PenSVG from 'assets/svgComponents/penSVG'
 import FormRichText from 'components/urgudul_components/formRichText'
-import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
+import AlertContext from 'components/utilities/alertContext'
+import { useHistory } from 'react-router-dom'
 
 
 const initialState = {
@@ -36,15 +38,26 @@ function UrgudulBreakdown() {
 
     const UrgudulCtx = useContext(UrgudulContext)
 
+    const AlertCtx = useContext(AlertContext)
+
+    const history = useHistory()
+
     const handleSubmit = () => {
-        axios.put(`projects/${UrgudulCtx.data.id}`, form)
-            .then(res => {
-                console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
-            })
-            .catch(err => {
-                console.log(err.response?.data)
-            })
+        if (UrgudulCtx.data.id) {
+            axios.put(`projects/${UrgudulCtx.data.id}`, form)
+                .then(res => {
+                    console.log(res.data)
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Төслийн задаргаа хадгалагдлаа.' })
+                })
+                .catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
+            setTimeout(() => history.push('/urgudul/1'), 3000)
+        }
     }
 
     return (
@@ -78,7 +91,7 @@ function UrgudulBreakdown() {
                     <HelpPopup classAppend="tw-ml-auto" main="Одоогийн нөхцөл байдал, гол асуудал, төслийн агуулгын талаар товч танилцуулна." list={['Ямар зах зээлийн боломж харагдаж буй ба үүнийг хэрхэн тодорхойлсон бэ?', 'Потенциалт худалдан авагч нар хэн бэ? гэх зэргийг нарийн тодорхойлоно уу.']} position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', overflowY: '768px' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.project_introduction} name="project_introduction" setForm={handleSetForm} />
                 </div>
             </div>
@@ -91,7 +104,7 @@ function UrgudulBreakdown() {
                     <HelpPopup classAppend="tw-ml-auto" main="Төслийн бэлтгэл ажил хийгдсэн байгаа эсэх. Зорилтот зах зээлийн судалгаа, хэрэглэгчийн судалгаа хийсэн эсэх. Хэрэв тийм бол уг ажлын талаар товч тайлбар бичих. Бэлтгэл зах зээлийн судалгаа нь зах зээлийн боломжоо үр дүнтэй тодорхойлж чадаж буй эсэхэд хамгийн их нөлөөтэй болно." position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', overflowY: '768px' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.preperation} name="preperation" setForm={handleSetForm} />
                 </div>
             </div>
@@ -104,7 +117,7 @@ function UrgudulBreakdown() {
                     <HelpPopup classAppend="tw-ml-auto" main="Уг төслөөр ямар асуудлуудыг шийдвэрлэж, төслийн танилцуулгад тодорхойлсон зах зээлийн боломжийг ашиглах боломжтой болох вэ?" position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', overflowY: '768px' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.identified_problems} name="identified_problems" setForm={handleSetForm} />
                 </div>
             </div>
@@ -117,7 +130,7 @@ function UrgudulBreakdown() {
                     <HelpPopup classAppend="tw-ml-auto" main="Дээр тодорхойлсон асуудлуудыг шийдвэрлэхэд санал болгож буй ямар шийдлүүд байгаа вэ? Хувь аж ахуйн нэгжээрээ болон кластераар шийдвэрлэх үйл ажиллагааг санал болгоно уу." position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', overflowY: '768px' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.suggested_solutions} name="suggested_solutions" setForm={handleSetForm} />
                 </div>
             </div>
@@ -130,7 +143,7 @@ function UrgudulBreakdown() {
                     <HelpPopup classAppend="tw-ml-auto" main="Уг төслийн хүрээнд хийхээр зорьж буй гол үйл ажиллагаануудыг тус бүрийн хүлээгдэж буй үр дүнтэй нь бичнэ үү" list={['Хэмжих хэмжүүрийг тодорхой бичнэ үү.', 'Үйл ажиллагаа нь практик бодит үр дүн авчрах ажил байхыг анхаарна уу.', '(Аж ахуйн нэгжийн болон кластераар хийх ажлуудыг тусад нь бичнэ.)']} position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', overflowY: '768px' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.expected_result} name="expected_result" setForm={handleSetForm} />
                 </div>
             </div>

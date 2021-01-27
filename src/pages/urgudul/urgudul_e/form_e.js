@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
-import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
-import HelpPopup from 'components/helpModal/helpPopup'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
+import HelpPopup from 'components/help_popup/helpPopup'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
 

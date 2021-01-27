@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
-import HelpPopup from 'components/helpModal/helpPopup'
+import HelpPopup from 'components/help_popup/helpPopup'
 import FormRichText from 'components/urgudul_components/formRichText'
 import PenSVG from 'assets/svgComponents/penSVG'
-import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
+import AlertContext from 'components/utilities/alertContext'
+import { useHistory } from 'react-router-dom'
 
 
 const initialState = {
@@ -35,15 +37,26 @@ function UrgudulBenefits() {
 
     const UrgudulCtx = useContext(UrgudulContext)
 
+    const AlertCtx = useContext(AlertContext)
+
+    const history = useHistory()
+
     const handleSubmit = () => {
-        axios.put(`projects/${UrgudulCtx.data.id}`, form)
-            .then(res => {
-                console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
-            })
-            .catch(err => {
-                console.log(err.response?.data)
-            })
+        if (UrgudulCtx.data.id) {
+            axios.put(`projects/${3}`, { benefit: form })
+                .then(res => {
+                    console.log(res.data)
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Төслийн үр ашгийн талаарх мэдээлэл хадгалагдлаа.' })
+                })
+                .catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
+            setTimeout(() => history.push('/urgudul/1'), 3000)
+        }
     }
 
     return (

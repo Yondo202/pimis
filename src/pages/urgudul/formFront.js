@@ -2,7 +2,8 @@ import React, { useContext, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
-import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
+import AlertContext from 'components/utilities/alertContext'
 
 
 const initialState = {
@@ -22,18 +23,20 @@ function UrgudulFront() {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
 
-    const isCluster = form.project_type === 1
-
     const UrgudulCtx = useContext(UrgudulContext)
+
+    const AlertCtx = useContext(AlertContext)
 
     const handleSubmit = () => {
         axios.post('projects', form)
             .then(res => {
                 console.log(res.data)
                 UrgudulCtx.setData(res.data.data)
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
             })
             .catch(err => {
                 console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
             })
     }
 
@@ -50,17 +53,17 @@ function UrgudulFront() {
                             Өргөдлийн төрөл:
                         </div>
 
-                        <button className={`tw-mt-4 tw-p-1.5 tw-border tw-rounded-lg tw-flex tw-items-center focus:tw-outline-none tw-transition-colors tw-duration-300 ${!isCluster && 'tw-border-blue-500'}`} onClick={() => handleClickForm('project_type', 0)} >
-                            <div className={`tw-ml-1 tw-w-4 tw-h-4 tw-border tw-rounded-full tw-inline-flex tw-justify-center tw-items-center tw-transition-colors tw-duration-300 ${!isCluster ? 'tw-border-blue-500' : 'tw-border-gray-700'}`}>
-                                <span className={`tw-w-2 tw-h-2 tw-rounded-full ${!isCluster ? 'tw-bg-blue-500' : 'tw-bg-transparent'} tw-transition-colors tw-duration-300`} />
+                        <button className={`tw-mt-4 tw-p-1.5 tw-border tw-rounded-lg tw-flex tw-items-center focus:tw-outline-none tw-transition-colors tw-duration-300 ${form.project_type === 0 && 'tw-border-blue-500'}`} onClick={() => handleClickForm('project_type', 0)} >
+                            <div className={`tw-ml-1 tw-w-4 tw-h-4 tw-border tw-rounded-full tw-inline-flex tw-justify-center tw-items-center tw-transition-colors tw-duration-300 ${form.project_type === 0 ? 'tw-border-blue-500' : 'tw-border-gray-700'}`}>
+                                <span className={`tw-w-2 tw-h-2 tw-rounded-full ${form.project_type === 0 ? 'tw-bg-blue-500' : 'tw-bg-transparent'} tw-transition-colors tw-duration-300`} />
                             </div>
 
                             <span className="tw-ml-2 tw-text-sm">Аж ахуй нэгж</span>
                         </button>
 
-                        <button className={`tw-my-2 tw-p-1.5 tw-border tw-rounded-lg tw-flex tw-items-center focus:tw-outline-none tw-transition-colors tw-duration-300 ${isCluster && 'tw-border-green-500'}`} onClick={() => handleClickForm('project_type', 1)} >
-                            <div className={`tw-ml-1 tw-w-4 tw-h-4 tw-border tw-rounded-full tw-inline-flex tw-justify-center tw-items-center tw-transition-colors tw-duration-300 ${isCluster ? 'tw-border-green-500' : 'tw-border-gray-700'}`}>
-                                <span className={`tw-w-2 tw-h-2 tw-rounded-full ${isCluster ? 'tw-bg-green-500' : 'tw-bg-transparent'} tw-transition-colors tw-duration-300`} />
+                        <button className={`tw-my-2 tw-p-1.5 tw-border tw-rounded-lg tw-flex tw-items-center focus:tw-outline-none tw-transition-colors tw-duration-300 ${form.project_type === 1 && 'tw-border-green-500'}`} onClick={() => handleClickForm('project_type', 1)} >
+                            <div className={`tw-ml-1 tw-w-4 tw-h-4 tw-border tw-rounded-full tw-inline-flex tw-justify-center tw-items-center tw-transition-colors tw-duration-300 ${form.project_type === 1 ? 'tw-border-green-500' : 'tw-border-gray-700'}`}>
+                                <span className={`tw-w-2 tw-h-2 tw-rounded-full ${form.project_type === 1 ? 'tw-bg-green-500' : 'tw-bg-transparent'} tw-transition-colors tw-duration-300`} />
                             </div>
 
                             <span className="tw-ml-2 tw-text-sm">Кластер</span>
@@ -71,7 +74,7 @@ function UrgudulFront() {
 
                     <FormInline label="Төслийн нэр" type="text" value={form.project_name} name="project_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
 
-                    <ButtonTooltip classAppend="tw-mt-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                    <ButtonTooltip classAppend="tw-mt-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Маягт үүсгэх" onClick={handleSubmit} />
                 </div>
             </div>
         </div>

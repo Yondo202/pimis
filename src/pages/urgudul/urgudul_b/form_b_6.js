@@ -4,10 +4,12 @@ import FormRichText from 'components/urgudul_components/formRichText'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PenSVG from 'assets/svgComponents/penSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
-import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
-import HelpPopup from 'components/helpModal/helpPopup'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
+import HelpPopup from 'components/help_popup/helpPopup'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
+import AlertContext from 'components/utilities/alertContext'
+import { useHistory } from 'react-router-dom'
 
 
 const initialState = [
@@ -55,15 +57,26 @@ function UrgudulActivities() {
 
     const UrgudulCtx = useContext(UrgudulContext)
 
+    const AlertCtx = useContext(AlertContext)
+
+    const history = useHistory()
+
     const handleSubmit = () => {
-        axios.put(`projects/${UrgudulCtx.data.id}`, form)
-            .then(res => {
-                console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
-            })
-            .catch(err => {
-                console.log(err.response?.data)
-            })
+        if (UrgudulCtx.data.id) {
+            axios.put(`projects/${UrgudulCtx.data.id}`, { activities: form })
+                .then(res => {
+                    console.log(res.data)
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагааны талаарх мэдээлэл хадгалагдлаа.' })
+                })
+                .catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
+            setTimeout(() => history.push('/urgudul/1'), 3000)
+        }
     }
 
     return (

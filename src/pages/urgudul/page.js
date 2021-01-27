@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
-import { Switch, Route, useHistory, useParams } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { Switch, Route, useHistory, useParams, useLocation } from 'react-router-dom'
 import UrgudulFront from './formFront'
 import UrgudulApplicant from './urgudul_a/form_a_1'
 import UrugudulClusters from './urgudul_a/form_a_21'
@@ -11,10 +11,10 @@ import UrgudulBenefits from './urgudul_b/form_b_7'
 import UrgudulCalculations from './urgudul_b/form_b_8'
 import UrgudulChecklist from './urgudul_e/form_e'
 import UrgudulOverview from './urgudul_a/form_a_3_4'
-import UrgudulBudget from './urgudul_c/form_c'
 import UrgudulNoticeCluster from './urgudul_d/form_d_1'
 import UrgudulNoticeCompany from './urgudul_d/form_d_2'
 import UrgudulContext from 'components/utilities/urgudulContext'
+import { useTransition, animated } from 'react-spring'
 
 
 function UrgudulNavigator() {
@@ -25,21 +25,35 @@ function UrgudulNavigator() {
     let startPage = 1
     if (page > 5) startPage = 6
 
+    const [slideLeft, setSlideLeft] = useState(false)
+
     const handleJump = (index) => {
         history.push(`/urgudul/${index}`)
+        if (index < page) setSlideLeft(true)
     }
 
     const handlePrev = () => {
         page !== 1 && history.push(`/urgudul/${page - 1}`)
+        setSlideLeft(true)
     }
 
     const handleNext = () => {
         page !== 10 && history.push(`/urgudul/${page + 1}`)
+        setSlideLeft(false)
     }
 
     const UrgudulCtx = useContext(UrgudulContext)
 
     const isCluster = UrgudulCtx.data.project_type === 1
+
+    const location = useLocation()
+
+    const transitions = useTransition(location, location => location.pathname, {
+        from: { opacity: 0, transform: slideLeft ? 'translateX(-100px)' : 'translateX(100px)' },
+        enter: { opacity: 1, transform: 'translateX(0)' },
+        leave: { display: 'none' },
+        initial: { opacity: 1 },
+    })
 
     return (
         <div className="tw-w-full tw-max-w-5xl tw-mx-auto tw-text-gray-700">
@@ -63,51 +77,57 @@ function UrgudulNavigator() {
                 </button>
             </div>
 
-            <Switch>
-                <Route exact path="/urgudul/1">
-                    <UrgudulFront />
-                </Route>
+            {
+                transitions.map(({ item, props, key }) =>
+                    <animated.div key={key} style={props}>
+                        <Switch location={item}>
+                            <Route exact path="/urgudul/1">
+                                <UrgudulFront />
+                            </Route>
 
-                <Route path="/urgudul/2">
-                    <UrgudulApplicant />
-                </Route>
+                            <Route path="/urgudul/2">
+                                <UrgudulApplicant />
+                            </Route>
 
-                <Route path="/urgudul/3">
-                    {
-                        isCluster ? <UrugudulClusters /> : <UrugudulDirectors />
-                    }
-                </Route>
+                            <Route path="/urgudul/3">
+                                {
+                                    isCluster ? <UrugudulClusters /> : <UrugudulDirectors />
+                                }
+                            </Route>
 
-                <Route path="/urgudul/4">
-                    <UrgudulOverview />
-                </Route>
+                            <Route path="/urgudul/4">
+                                <UrgudulOverview />
+                            </Route>
 
-                <Route path="/urgudul/5">
-                    <UrgudulBreakdown />
-                </Route>
+                            <Route path="/urgudul/5">
+                                <UrgudulBreakdown />
+                            </Route>
 
-                <Route path="/urgudul/6">
-                    <UrgudulActivities />
-                </Route>
+                            <Route path="/urgudul/6">
+                                <UrgudulActivities />
+                            </Route>
 
-                <Route path="/urgudul/7">
-                    <UrgudulBenefits />
-                </Route>
+                            <Route path="/urgudul/7">
+                                <UrgudulBenefits />
+                            </Route>
 
-                <Route path="/urgudul/8">
-                    <UrgudulCalculations />
-                </Route>
+                            <Route path="/urgudul/8">
+                                <UrgudulCalculations />
+                            </Route>
 
-                <Route path="/urgudul/9">
-                    {
-                        isCluster ? <UrgudulNoticeCluster /> : <UrgudulNoticeCompany />
-                    }
-                </Route>
+                            <Route path="/urgudul/9">
+                                {
+                                    isCluster ? <UrgudulNoticeCluster /> : <UrgudulNoticeCompany />
+                                }
+                            </Route>
 
-                <Route path="/urgudul/10">
-                    <UrgudulChecklist />
-                </Route>
-            </Switch>
+                            <Route path="/urgudul/10">
+                                <UrgudulChecklist />
+                            </Route>
+                        </Switch>
+                    </animated.div>
+                )
+            }
         </div >
     )
 }

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
-import ButtonTooltip from 'components/buttonTooltip/buttonTooltip'
-import HelpPopup from 'components/helpModal/helpPopup'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
+import HelpPopup from 'components/help_popup/helpPopup'
 import FormInline from 'components/urgudul_components/formInline'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
