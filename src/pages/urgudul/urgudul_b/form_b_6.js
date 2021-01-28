@@ -15,9 +15,9 @@ import { useHistory } from 'react-router-dom'
 const initialState = [
     {
         activity: '',
-        budget_cost: '',
-        edp_funding: '',
-        applicant_contribution: '',
+        budget_cost: null,
+        edp_funding: null,
+        applicant_contribution: null,
     },
 ]
 

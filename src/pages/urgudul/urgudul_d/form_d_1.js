@@ -10,11 +10,13 @@ import PenSVG from 'assets/svgComponents/penSVG'
 import SignaturePad from 'react-signature-canvas'
 import SearchSelect from 'components/urgudul_components/searchSelect'
 import CloseSVG from 'assets/svgComponents/closeSVG'
+import ClusterMemberSelect from 'components/urgudul_components/clusterMemberSelect'
 
 
 const initialState = [
     {
-        company_name: '',
+
+        company_id: '',
         representative_position: '',
         representative_name: '',
         representative_signature: '',
@@ -145,7 +147,9 @@ function UrgudulNoticeCluster() {
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                                 <FormInline label="ААН нэр:" type="text" value={item.company_name} name="company_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
-                                <FormInline label="Албан тушаал:" type="text" value={item.representative_position} name="representative_position" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                                    <ClusterMemberSelect value={item.company_id} name="company_id" id={i} setForm={handleSetForm} />
+                                </div>
 
                                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
                                     <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_position} name="representative_position" id={i} description="description" description_mon="description_mon" setForm={handleSetForm} classLabel={i % 2 === 0 && 'tw-bg-gray-50'} />

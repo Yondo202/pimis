@@ -18,7 +18,7 @@ const initialState = [
         company_name: '',
         representative_name: '',
         company_size: '',
-        support_recipient: '',
+        support_recipient: null,
         project_contribution: '',
     },
 ]
@@ -33,7 +33,15 @@ function UrugudulClusters() {
     }
 
     const handleAdd = () => {
-        setForm([...form, { ...initialState[0] }])
+        const newObj = {
+            company_name: '',
+            representative_name: '',
+            company_size: '',
+            support_recipient: '',
+            project_contribution: '',
+        }
+
+        setForm([...form, newObj])
     }
 
     const handleRemove = (index) => {
@@ -54,7 +62,7 @@ function UrugudulClusters() {
 
     const handleSubmit = () => {
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, { cluster: form })
+            axios.put(`projects/${UrgudulCtx.data.id}`, { clusters: form })
                 .then(res => {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })

@@ -15,6 +15,7 @@ import { useHistory } from 'react-router-dom'
 
 const initialState = [
     {
+        company_id: '',
         position: '',
         director_name: '',
         employed_date: '',
@@ -32,7 +33,14 @@ function UrugudulDirectors() {
     }
 
     const handleAdd = () => {
-        setForm([...form, { ...initialState[0] }])
+        const newObj = {
+            position: '',
+            director_name: '',
+            employed_date: '',
+            project_contribution: '',
+        }
+
+        setForm([...form, newObj])
     }
 
     const handleRemove = (index) => {

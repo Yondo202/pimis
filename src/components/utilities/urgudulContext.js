@@ -160,9 +160,6 @@ export const initialState = {
 
 const initialTemp = {
     id: 3,
-    cluster: {
-
-    }
 }
 
 export const UrgudulStore = (props) => {
