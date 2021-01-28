@@ -108,6 +108,16 @@ function TableTwo(props) {
     const clickHandles = (e) =>{
         let getFile = document.querySelectorAll(".GetFilesData");
         let myArr1 = Array.from(getFile);
+        let condition = []
+        myArr1.map((el,i)=>{
+            let value = {}
+            value = el.files[0];
+            if(value !== undefined){
+                condition.push(value);
+            }
+        })
+
+
 
         const FilesSend = (FileData) =>{
             const TestArr = [];
@@ -176,7 +186,6 @@ function TableTwo(props) {
                     originalTest.push(el);
                }
             }
-           
         })
         // console.log(originalTest.length, "test");
 
@@ -208,6 +217,9 @@ function TableTwo(props) {
         }else if(confirm === false){
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
             setOpacity2("1");
+        }else if(condition < 10){
+            setFinalErrorText("Шаардлагатай материал бүрэн хавсаргаагүй байна...");
+            setOpacity2("1");
         }else{
             setOpacity2("0");
             axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{
@@ -237,7 +249,10 @@ function TableTwo(props) {
     return (
         <Component2 className="container">
             <div className="shadow" >
-            <div className="rowHeader">2. Баталгаа/зөвшөөрөл/тусгай зөвшөөрлийн үнэлгээ<span className="tseg">*</span></div>
+            <div className="rowHeader">
+                <div className="boldTitle">ХАВСРАЛТ 2 B.</div>
+                <div className="italicTitle">ХҮСНЭГТ 2. БАТАЛГАА/ЗӨВШӨӨРӨЛ/ТУСГАЙ ЗӨВШӨӨРЛИЙН ҮНЭЛГЭЭ</div>
+            </div>
              
             <div className="MainContPar">
             {props.initialData[0]? (initialData.map((el,i)=>{
@@ -406,15 +421,19 @@ const Component2 = styled.div`
         position: relative;
         width: 100%;
         .rowHeader{
-            border-radius:6px 6px 0px 0px;
-          background-color:white;
-          padding: 24px 26px;
-          font-size:1.2rem;
-          // border-bottom:1px solid rgba(63, 81, 181,0.5);
-          color:black;
-          .tseg{
-            color:red;
-          }
+            text-align:center;
+            padding: 24px 26px;
+            border-bottom:1px solid rgba(63, 81, 181,0.5);
+            background-color:white;
+            .boldTitle{
+              font-weight:bold;
+              font-size:16px;
+            }
+            .italicTitle{
+              font-style: italic;
+              color:blue;
+              font-size:15px;
+            }
         }
      
         .MainContPar{
@@ -868,4 +887,5 @@ const tableData = [
   {items: "Гал түймрээс сэргийлэх",list:[]},
   {items: "Эрүүл мэнд, аюулгүй ажиллагаа",list:[]},
   {items: "Хүүхдийн хөдөлмөр эрхлэлт",list:[]},
+  {items: "Шатаах зуух/ зуухнаас ялгарах утаа, бодис",list:[]},
 ];

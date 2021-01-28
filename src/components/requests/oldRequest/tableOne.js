@@ -87,7 +87,7 @@ function TableOne(props) {
               const Procent = keys.length * 100 / 13;
               const FinalProcent = Math.round(Procent);
 
-              if(keys.length < 13){
+              if(keys.length < 12){
                 setOpacity("1");
                 setProcent(FinalProcent);
                 // scroll.scrollTo(0);
@@ -105,6 +105,8 @@ function TableOne(props) {
                   console.log(err, "err");
                 });
                 scroll.scrollTo(0);
+                StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
+
 
                 // const resData = await axios.get(`http://192.168.88.78:3000/api/pps-request/60`);
                 // const finalData = []
@@ -116,7 +118,7 @@ function TableOne(props) {
                 // setDname(resData.data.data.name1);
                 // setDdate(resData.data.data.date1);
 
-                StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
+               
             }
 
               // else if(confirm === false){
@@ -131,7 +133,10 @@ function TableOne(props) {
     return (
         <Component1 className="container" >
           <div className="boxShadow">
-                <div className="rowHeader">1. Үйлдвэрлэгч нь дараах үйл ажиллагааг эрхэлдэг ба явуулдаг эсэх? <span className="tseg">*</span></div>
+                <div className="rowHeader">
+                    <div className="boldTitle">ХАВСРАЛТ 2 А.</div>
+                    <div className="italicTitle">ХҮСНЭГТ 1. ХОРИГЛОСОН ҮЙЛ АЖИЛЛАГААНЫ ЖАГСААЛТ</div>
+                </div>
               <div className="formTwoParent ">
 
                 <div className="headerPar">
@@ -203,11 +208,6 @@ function TableOne(props) {
                             <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                    </div>
               </div>
-
-                
-
-
-           
              </div>
             </div>
         </Component1>
@@ -253,9 +253,6 @@ const dataOne = [
   {
       name: "Тамхи (үйлдвэрлэлийн бус ба үйлдвэрлэлийн); Тамхины хатаасан навч боловсруулах машин"
   },
-  {
-      name: "Уул уурхайн салбарт"
-  },
 ]
 
 
@@ -266,17 +263,20 @@ const Component1 = styled.div`
       .boxShadow{
         box-shadow:1px 1px 18px -5px;
         border-radius:6px;
-          .rowHeader{
-            border-radius:6px 6px 0px 0px;
-            background-color:white;
-            padding: 24px 26px;
-            font-size:1.2rem;
-            // border-bottom:1px solid rgba(63, 81, 181,0.5);
-            color:black;
-            .tseg{
-              color:red;
-            }
+        .rowHeader{
+          text-align:center;
+          padding: 24px 26px;
+          border-bottom:1px solid rgba(63, 81, 181,0.5);
+          background-color:white;
+          .boldTitle{
+            font-weight:bold;
           }
+          .italicTitle{
+            font-style: italic;
+            color:blue;
+            font-size:15px;
+          }
+        }
         .formTwoParent{
             border-radius:0px 0px 6px 6px;
             background-color:white;
@@ -516,7 +516,7 @@ const Component1 = styled.div`
               text-align:center;
               border-bottom:1px solid rgba(0,0,0,0.4);
               font-size:14px;
-             
+              font-weight:500;
               .head1{
                 padding-top: 10px;
                 padding-bottom: 16px;
@@ -540,6 +540,7 @@ const Component1 = styled.div`
                 padding-bottom: 10px;
               }
               .texts{
+                font-weight:500;
                 text-align:start;
                 padding-top: 8px;
                 padding-bottom: 8px;

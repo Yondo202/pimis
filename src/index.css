@@ -64,3 +64,8 @@ code {
 #stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalButtonPlace__AYeOm .Button-module_--primary__1ZLkB:hover  {
   box-shadow:1px 1px 15px -2px black;
 }
+
+
+#__react-alert__{
+    background-color: black;
+}

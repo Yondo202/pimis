@@ -184,7 +184,10 @@ function TableFour(props) {
     return (
         <Component1 className="container" >
             <div className="boxShadow">
-                <div className="rowHeader">4. Байгаль орчин, нийгмийн ерөнхий үнэлгээний маягт  <span className="tseg">*</span></div>
+              <div className="rowHeader">
+                <div className="boldTitle">ХАВСРАЛТ 2Г.</div>
+                <div className="italicTitle">ХҮСНЭГТ 4. БАЙГАЛЬ ОРЧИН, НИЙГМИЙН ЕРӨНХИЙ ҮНЭЛГЭЭНИЙ МАЯГТ</div>
+              </div>
             <div className="formTwoParent ">
 
                 <div className="headerPar">
@@ -300,17 +303,21 @@ const Component1 = styled.div`
       .boxShadow{
         box-shadow:1px 1px 18px -5px;
         border-radius:6px;
-          .rowHeader{
-            border-radius:6px 6px 0px 0px;
-            background-color:white;
-            padding: 24px 26px;
-            font-size:1.2rem;
-            // border-bottom:1px solid rgba(63, 81, 181,0.5);
-            color:black;
-            .tseg{
-              color:red;
-            }
+        .rowHeader{
+          text-align:center;
+          padding: 24px 26px;
+          border-bottom:1px solid rgba(63, 81, 181,0.5);
+          background-color:white;
+          .boldTitle{
+            font-weight:bold;
+            font-size:16px;
           }
+          .italicTitle{
+            font-style: italic;
+            color:blue;
+            font-size:15px;
+          }
+        }
         .formTwoParent{
             border-radius:0px 0px 6px 6px;
             background-color:white;
@@ -597,6 +604,7 @@ const Component1 = styled.div`
               text-align:center;
               border-bottom:1px solid rgba(0,0,0,0.4);
               font-size:14px;
+              font-weight:500;
              .margin{
                padding-top:6px;
                padding-bottom:6px;
@@ -647,6 +655,7 @@ const Component1 = styled.div`
                 text-align:start;
                 padding-top: 8px;
                 padding-bottom: 8px;
+                font-weight:500;
               }
               .radios{
                 display:flex;

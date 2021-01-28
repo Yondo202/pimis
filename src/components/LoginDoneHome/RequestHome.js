@@ -35,7 +35,7 @@ function RequestHome() {
                 <div className="row">
                     {allData[0]? allData.map((el,i)=>{
                             return(
-                                <div key={i} className="col-md-4">
+                                <div key={i} style={{marginBottom:`30px`}} className="col-md-4">
                                     <div className="infoPar">
                                         <div className="content">
                                             <VscGoToFile />

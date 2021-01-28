@@ -2,6 +2,9 @@ import React, { useContext, useState, useEffect } from 'react'
 // import { HelpStore } from '../../context/HelperContext'
 import TableOne from '../../components/requests/newRequest/tableOne'
 import { motion } from 'framer-motion'
+import { positions, Provider } from "react-alert";
+// import AlertTemplate from "react-alert-template-basic";
+import AlertMUITemplate from "react-alert-template-mui";
 import TableTwo from '../../components/requests/newRequest/tableTwo';
 import styled from 'styled-components'
 import TableThree from '../../components/requests/newRequest/tableThree';
@@ -11,6 +14,13 @@ import TableFive from '../../components/requests/newRequest/tableFive'
 import TableSix from '../../components/requests/newRequest/tableSix'
 import { Modal } from '../../components/requests/MainModal/Modal';
 import {ColorRgb, textColor} from '../../components/theme'
+
+const options = {
+    timeout: 10000,
+    position: positions.BOTTOM_CENTER,
+    offset: '120px',
+    width:'500px'
+  };
 
 function MainRequest(props) {
     const [ showModal, setShowModal ] = useState(false);
@@ -51,12 +61,15 @@ function MainRequest(props) {
                 <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
                     
                     <div style={{left:`${StyleContext.GlobalStyle.tableOne}`, opacity:`${StyleContext.GlobalStyle.tableOne === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
+                        
                         <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                            <TableOne  />
+                                <TableOne  />
                         </motion.div>
                     </div>
                     <div style={{left:`${StyleContext.GlobalStyle.tableTwo}`, opacity:`${StyleContext.GlobalStyle.tableTwo === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        <TableTwo />
+                        <Provider template={AlertMUITemplate} {...options}>
+                            <TableTwo />
+                        </Provider>
                     </div>
                     
                     <div style={{left:`${StyleContext.GlobalStyle.tableThree}`, opacity:`${StyleContext.GlobalStyle.tableThree === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">

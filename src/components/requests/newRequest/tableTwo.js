@@ -9,17 +9,21 @@ import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
+import { useAlert } from "react-alert";
 
 function TableTwo() {
+    const alert = useAlert();
     const StyleContext  = useContext(UserContext);
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [ UserToken, setUserToken ] = useState(null);
+    
     useEffect(()=>{
       let storageToken = localStorage.getItem("edp_loggedUser", []);
       setUserToken(storageToken);
-    });
+    },[]);
+        
 
     console.log(helperContext.tableId, "my table ID");
 
@@ -27,6 +31,15 @@ function TableTwo() {
         // scroll.scrollTo(0);
         let getFile = document.querySelectorAll(".GetFilesData");
         let myArr1 = Array.from(getFile);
+        let condition = []
+        myArr1.map((el,i)=>{
+            let value = {}
+            value = el.files[0];
+            if(value !== undefined){
+                condition.push(value);
+            }
+        })
+
 
         const FilesSend =(AllData)=>{
             const TestArr = [];
@@ -36,12 +49,11 @@ function TableTwo() {
                     if(value === undefined){
                         value = {"name" : null };
                     }
-                    console.log(value, " #### valll");
                     AllData.map((element, index)=>{
                             if( i === index){
                                 value["tableId"] = element.id
                                 TestArr.push(value);
-                        }
+                             }
                     })
             });
             TestArr.map((el,i)=>{
@@ -107,9 +119,13 @@ function TableTwo() {
         finalOne["date"] = userInp.date;
         finalEnd["PPS2"] = finalOne;
 
-        // console.log(conditionFinal, "hevellee");
+   
 
-        if(originalTest.length < 9){
+
+   
+        console.log(condition.length, "legth;");
+
+        if(originalTest.length < 10){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
             setOpacity2("1");
             // scroll.scrollTo(0);
@@ -120,22 +136,24 @@ function TableTwo() {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
             setOpacity2("1");
         }else{
-            // alert("gg");
+            if(condition.length < 10){
+                const str = "аардлагатай материал хавсаргаагүй тохиолдолд хүсэлт хүчингүй болно гэдэгийг анхаарна уу!!!";
+                const str2 = "а хүсэлт гэсэн хэсэгээр орж бүрэн хавсаргах боломжтой..";
+                alert.show("Т" + str2.toLowerCase(),{
+                    title: "Ш" + str.toLowerCase()
+                  });
+            }
             setOpacity2("0");
-
             axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers: {Authorization:`bearer ${UserToken}`}} ).then((res)=>{
                 console.log(res, "$$ ressssss $$");
                 FilesSend(res.data.data.ppsRequest2Detail);
               }).catch((err)=>{
                 console.log(err, "err");
               });
-
-              helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
-              scroll.scrollTo(0);
-            //   setTimeout(()=>{
-            //  
-            //   },[1000])
-           
+            setTimeout(()=>{
+                helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
+                scroll.scrollTo(0);
+            },[6000]);
         }
         
         console.log(finalEnd, "my all");
@@ -150,7 +168,10 @@ function TableTwo() {
     return (
         <Component2 className="container">
             <div className="shadow" >
-            <div className="rowHeader">2. Баталгаа/зөвшөөрөл/тусгай зөвшөөрлийн үнэлгээ<span className="tseg">*</span></div>
+            <div className="rowHeader">
+                <div className="boldTitle">ХАВСРАЛТ 2Б</div>
+                <div className="italicTitle">ХҮСНЭГТ 2. БАТАЛГАА/ЗӨВШӨӨРӨЛ/ТУСГАЙ ЗӨВШӨӨРЛИЙН ҮНЭЛГЭЭ</div>
+            </div>
              
             <div className="MainContPar">
             {tableData.map((el,i)=>{
@@ -269,15 +290,19 @@ const Component2 = styled.div`
         position: relative;
         width: 100%;
         .rowHeader{
-            border-radius:6px 6px 0px 0px;
-          background-color:white;
-          padding: 24px 26px;
-          font-size:1.2rem;
-          // border-bottom:1px solid rgba(63, 81, 181,0.5);
-          color:black;
-          .tseg{
-            color:red;
-          }
+            text-align:center;
+            padding: 24px 26px;
+            border-bottom:1px solid rgba(63, 81, 181,0.5);
+            background-color:white;
+            .boldTitle{
+              font-weight:bold;
+              font-size:16px;
+            }
+            .italicTitle{
+              font-style: italic;
+              color:blue;
+              font-size:15px;
+            }
         }
      
         .MainContPar{
@@ -693,4 +718,5 @@ const tableData = [
   {name: "Гал түймрээс сэргийлэх",list:[]},
   {name: "Эрүүл мэнд, аюулгүй ажиллагаа",list:[]},
   {name: "Хүүхдийн хөдөлмөр эрхлэлт",list:[]},
+  {name: "Шатаах зуух/ зуухнаас ялгарах утаа, бодис",list:[]},
 ];
