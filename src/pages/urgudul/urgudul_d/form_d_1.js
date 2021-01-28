@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import HelpPopup from 'components/help_popup/helpPopup'
 import FormInline from 'components/urgudul_components/formInline'
@@ -6,15 +6,19 @@ import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
+import PenSVG from 'assets/svgComponents/penSVG'
+import SignaturePad from 'react-signature-canvas'
+import SearchSelect from 'components/urgudul_components/searchSelect'
+import CloseSVG from 'assets/svgComponents/closeSVG'
 
 
 const initialState = [
     {
-        compnay_name: '',
+        company_name: '',
         representative_position: '',
         representative_name: '',
         representative_signature: '',
-        date: '',
+        submitDate: '',
     },
 ]
 
@@ -27,6 +31,27 @@ function UrgudulNoticeCluster() {
         setForm([...newForm])
     }
 
+    const handleSetForm = (key, value, index) => {
+        const newForm = form
+        newForm[index][key] = value
+        setForm([...newForm])
+    }
+
+    const sigCanvas = useRef()
+
+    const handleInputSignature = (index) => {
+        const newForm = form
+        newForm[index].representative_signature = sigCanvas.current.getTrimmedCanvas().toDataURL('image/png')
+        setForm([...newForm])
+    }
+
+    const handleClearCanvas = (index) => {
+        sigCanvas.current.clear()
+        const newForm = form
+        newForm[index].representative_signature = ''
+        setForm([...newForm])
+    }
+
     const handleAdd = () => {
         setForm([...form, { ...initialState[0] }])
     }
@@ -34,6 +59,16 @@ function UrgudulNoticeCluster() {
     const handleRemove = (index) => {
         setForm(form.filter((_, i) => i !== index))
     }
+
+    const [occupations, setOccupations] = useState([])
+
+    useEffect(() => {
+        axios.get('occupations')
+            .then(res => {
+                console.log(res.data)
+                setOccupations(res.data.data)
+            })
+    }, [])
 
     const UrgudulCtx = useContext(UrgudulContext)
 
@@ -49,7 +84,7 @@ function UrgudulNoticeCluster() {
     }
 
     return (
-        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">D</span>
                 - Мэдэгдэл
@@ -108,19 +143,34 @@ function UrgudulNoticeCluster() {
                     form.map((item, i) =>
                         <div className="tw-flex even:tw-bg-gray-50" key={i}>
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                <FormInline label="ААН нэр:" type="text" value={item.compnay_name} name="compnay_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                                <FormInline label="ААН нэр:" type="text" value={item.company_name} name="company_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
                                 <FormInline label="Албан тушаал:" type="text" value={item.representative_position} name="representative_position" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
+                                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_position} name="representative_position" id={i} description="description" description_mon="description_mon" setForm={handleSetForm} classLabel={i % 2 === 0 && 'tw-bg-gray-50'} />
+                                </div>
+
                                 <FormInline label="Овог, нэр:" type="text" value={item.representative_name} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
-                                <FormInline label="Гарын үсэг:" type="text" value={item.representative_signature} name="representative_signature" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg">
+                                    <div className="tw-flex tw-items-center tw-p-2">
+                                        <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                                        <span className="tw-ml-2 tw-text-sm tw-font-medium">Гарын үсэг</span>
+                                    </div>
 
-                                <FormInline label="Огноо:" type="date" value={item.date} name="date" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                                    <div className="tw-flex tw-justify-center tw-items-center tw-px-2 tw-pb-3">
+                                        <SignaturePad canvasProps={{ className: 'tw-border tw-border-gray-300 tw-rounded-lg tw-shadow-md tw-w-60 tw-h-24' }} ref={sigCanvas} onEnd={() => handleInputSignature(i)} />
+
+                                        <ButtonTooltip tooltip="Арилгах" beforeSVG={<CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors tw-duration-300" />} onClick={() => handleClearCanvas(i)} classAppend="tw-px-2" classButton="tw-text-red-500 active:tw-text-red-600" />
+                                    </div>
+                                </div>
+
+                                <FormInline label="Огноо:" type="date" value={item.submitDate} name="submitDate" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
                             </div>
 
                             <div className="tw-flex tw-items-center">
-                                <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classAppend="tw-text-red-500 active:tw-text-red-600" />
+                                <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
                             </div>
                         </div>
                     )
@@ -132,11 +182,11 @@ function UrgudulNoticeCluster() {
                     {form.length}ш кластерын байгууллага нэмсэн байна.
                 </div>
 
-                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-text-green-500 active:tw-text-green-600 tw-mr-2" />
+                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />
             </div>
 
             <div className="tw-flex tw-justify-end">
-                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )

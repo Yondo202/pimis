@@ -90,9 +90,11 @@ function UrgudulNavigator() {
                             </Route>
 
                             <Route path="/urgudul/3">
-                                {
+                                {/* {
                                     isCluster ? <UrugudulClusters /> : <UrugudulDirectors />
-                                }
+                                } */}
+                                <UrugudulClusters />
+                                <UrugudulDirectors />
                             </Route>
 
                             <Route path="/urgudul/4">
@@ -116,9 +118,11 @@ function UrgudulNavigator() {
                             </Route>
 
                             <Route path="/urgudul/9">
-                                {
+                                {/* {
                                     isCluster ? <UrgudulNoticeCluster /> : <UrgudulNoticeCompany />
-                                }
+                                } */}
+                                <UrgudulNoticeCluster />
+                                <UrgudulNoticeCompany />
                             </Route>
 
                             <Route path="/urgudul/10">

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import HelpPopup from 'components/help_popup/helpPopup'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
@@ -45,6 +45,16 @@ function UrugudulDirectors() {
         setForm([...newForm])
     }
 
+    const [occupations, setOccupations] = useState([])
+
+    useEffect(() => {
+        axios.get('occupations')
+            .then(res => {
+                console.log(res.data)
+                setOccupations(res.data.data)
+            })
+    }, [])
+
     const UrgudulCtx = useContext(UrgudulContext)
 
     const AlertCtx = useContext(AlertContext)
@@ -84,7 +94,7 @@ function UrugudulDirectors() {
                         <div className="tw-flex-grow">
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-center">
                                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
-                                    <SearchSelect label="Албан тушаал" api="occupations" keys={['data']} value={item.position} name="position" id={i} description="description" description_mon="description_mon" setForm={handleSetForm} />
+                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.position} name="position" id={i} description="description" description_mon="description_mon" setForm={handleSetForm} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
                                 </div>
 
                                 <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.director_name} name="director_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
@@ -107,7 +117,7 @@ function UrugudulDirectors() {
                         </div>
 
                         <div className="tw-flex tw-items-center">
-                            <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classAppend="tw-text-red-500 active:tw-text-red-600" />
+                            <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
                         </div>
                     </div>
                 )
@@ -118,11 +128,11 @@ function UrugudulDirectors() {
                     {form.length}ш хүний мэдээлэл нэмсэн байна.
                 </div>
 
-                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-text-green-500 active:tw-text-green-600 tw-mr-2" />
+                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />
             </div>
 
             <div className="tw-flex tw-justify-end">
-                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )

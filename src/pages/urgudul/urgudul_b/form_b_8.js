@@ -7,6 +7,8 @@ import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import NumberFormat from 'react-number-format'
 import UrgudulContext from 'components/utilities/urgudulContext'
+import AlertContext from 'components/utilities/alertContext'
+import { useHistory } from 'react-router-dom'
 
 
 const year = new Date().getFullYear()
@@ -34,17 +36,6 @@ const datesObj = {
     'year+++': '',
 }
 
-// const datesArr = [
-//     { year: 2016, coltype: 'baseYear', amount: '' },
-//     { year: year - 2, coltype: 'year--', amount: '' },
-//     { year: year - 1, coltype: 'year-', amount: '' },
-//     { year: year, month: month, coltype: 'submitDate', amount: '' },
-//     { year: 2222, month: 77, coltype: 'endDate', amount: '' },
-//     { year: year + 1, coltype: 'year+', amount: '' },
-//     { year: year + 2, coltype: 'year++', amount: '' },
-//     { year: year + 3, coltype: 'year+++', amount: '' },
-// ]
-
 const initialState = {
     sales: {
         ...datesObj
@@ -55,21 +46,18 @@ const initialState = {
     productivity: {
         ...datesObj
     },
-    export: {
-        ...datesObj
-    },
     export_details: [
         {
-            country_id: '',
+            countryId: '',
             export_products: [
                 {
                     ...datesObj,
-                    product_name: '',
+                    productId: '',
                 },
             ],
         },
     ],
-    sumbitDate: {
+    submitDate: {
         year: year,
         month: month,
     },
@@ -89,23 +77,24 @@ function UrgudulCalculations() {
 
     const handleSetFormCountry = (key, value, index) => {
         const newArr = form.export_details
-        newArr[index].country_id = value
+        newArr[index].countryId = value
         setForm({ ...form, export_details: newArr })
     }
 
-    const handleInputProductName = (value, productIndex, countryIndex) => {
+    const handleSetFormProduct = (key, value, productIndex, countryIndex) => {
         const newArr = form.export_details
-        newArr[countryIndex].export_products[productIndex].product_name = value
-        setForm({ ...form, export_products: newArr })
+        newArr[countryIndex].export_products[productIndex].productId = value
+        setForm({ ...form, export_details: newArr })
     }
 
     const handleInputProductExport = (key, value, productIndex, countryIndex) => {
         const newArr = form.export_details
         newArr[countryIndex].export_products[productIndex][key] = value
-        setForm({ ...form, export_products: newArr })
+        setForm({ ...form, export_details: newArr })
     }
 
     const [countries, setCounties] = useState([])
+    const [products, setProducts] = useState([])
 
     useEffect(() => {
         axios.get('countries')
@@ -113,15 +102,21 @@ function UrgudulCalculations() {
                 console.log(res.data)
                 setCounties(res.data.data)
             })
+
+        axios.get('products')
+            .then(res => {
+                console.log(res.data)
+                setProducts(res.data.data.docs)
+            })
     }, [])
 
     const handleAddCountry = () => {
         const newCountry = {
-            country_id: '',
+            countryId: '',
             export_products: [
                 {
                     ...datesObj,
-                    product_name: '',
+                    productId: '',
                 },
             ],
         }
@@ -150,17 +145,38 @@ function UrgudulCalculations() {
         setForm({ ...form, export_details: newCountries })
     }
 
+    const exportSums = { ...datesObj }
+
+    for (const country of form.export_details) {
+        for (const product of country.export_products) {
+            Object.keys(exportSums).forEach(key => {
+                exportSums[key] = +exportSums[key] + +product[key]
+            })
+        }
+    }
+
     const UrgudulCtx = useContext(UrgudulContext)
 
+    const AlertCtx = useContext(AlertContext)
+
+    const history = useHistory()
+
     const handleSubmit = () => {
-        axios.put(`projects/${UrgudulCtx.data.id}`, { export_data: form })
-            .then(res => {
-                console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
-            })
-            .catch(err => {
-                console.log(err.response?.data)
-            })
+        if (UrgudulCtx.data.id) {
+            axios.put(`projects/${3}`, { exportDatas: form })
+                .then(res => {
+                    console.log(res.data)
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Борлуулалт, экспортын тооцоолол хадгалагдлаа.' })
+                })
+                .catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
+            setTimeout(() => history.push('/urgudul/1'), 3000)
+        }
     }
 
     return (
@@ -172,24 +188,24 @@ function UrgudulCalculations() {
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
             </div>
 
-            <div className="tw-overflow-x-auto tw-overflow-y-hidden">
+            <div className="">
                 <table className="tw-text-sm">
                     <thead>
                         <tr className="tw-h-9">
                             <th className="tw-border tw-text-center"></th>
-                            <th className="tw-border tw-text-center">{dates[0]}</th>
-                            <th className="tw-border tw-text-center">{dates[1]}</th>
-                            <th className="tw-border tw-text-center">{dates[2]}</th>
-                            <th className="tw-border tw-text-center">{dates[3]}</th>
+                            <th className="tw-border tw-text-center">{form.baseYear}</th>
+                            <th className="tw-border tw-text-center">{form.submitDate.year - 2}</th>
+                            <th className="tw-border tw-text-center">{form.submitDate.year - 1}</th>
+                            <th className="tw-border tw-text-center">{`${form.submitDate.year}-${form.submitDate.month}`}</th>
                             <th className="tw-border">
                                 <div className="tw-flex tw-justify-evenly tw-items-center">
-                                    {dates[4]}
+                                    {`${form.endDate.year}-${form.endDate.month}`}
                                     <HelpPopup main="Төслийн дуусах хугацаа, сар жилээр" position="bottom" />
                                 </div>
                             </th>
-                            <th className="tw-border tw-text-center">{dates[5]}</th>
-                            <th className="tw-border tw-text-center">{dates[6]}</th>
-                            <th className="tw-border tw-text-center">{dates[7]}</th>
+                            <th className="tw-border tw-text-center">{form.submitDate.year + 1}</th>
+                            <th className="tw-border tw-text-center">{form.submitDate.year + 2}</th>
+                            <th className="tw-border tw-text-center">{form.submitDate.year + 3}</th>
                             <th className="tw-border tw-text-center">Нэгж</th>
                         </tr>
                     </thead>
@@ -200,7 +216,7 @@ function UrgudulCalculations() {
                                 dates.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-100 tw-rounded" value={form.sales[item]} thousandSeparator={true} prefix="$ " onValueChange={values => handleInput(item, values.value, 'sales')} />
+                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.sales[item]} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'sales')} />
                                         </div>
                                     </td>
                                 )
@@ -219,7 +235,7 @@ function UrgudulCalculations() {
                                 dates.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-100 tw-rounded" value={form.fullTime_workplace[item]} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} />
+                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.fullTime_workplace[item]} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} />
                                         </div>
                                     </td>
                                 )
@@ -238,7 +254,7 @@ function UrgudulCalculations() {
                                 dates.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-100 tw-rounded" value={form.productivity[item]} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'productivity')} />
+                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.productivity[item]} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'productivity')} />
                                         </div>
                                     </td>
                                 )
@@ -255,10 +271,8 @@ function UrgudulCalculations() {
                             </td>
                             {
                                 dates.map((item, i) =>
-                                    <td className="tw-border" key={i}>
-                                        <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-100 tw-rounded" value={form.export[item]} thousandSeparator={true} prefix="$ " onValueChange={values => handleInput(item, values.value, 'export')} />
-                                        </div>
+                                    <td className="tw-border tw-px-1 tw-text-right tw-font-medium" key={i}>
+                                        {exportSums[item] !== 0 && exportSums[item].toLocaleString()}
                                     </td>
                                 )
                             }
@@ -269,12 +283,12 @@ function UrgudulCalculations() {
                                 <>
                                     <tr className="tw-h-9" key={i}>
                                         <td className="tw-border tw-px-1">
-                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.country_id} name="country_id" id={i} description="description" description_mon="description_mon" setForm={handleSetFormCountry} classDiv="tw-py-0.5 tw-bg-indigo-100 tw-rounded" classInput="tw-w-36 tw-bg-transparent" />
+                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} description="description" description_mon="description_mon" setForm={handleSetFormCountry} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" />
                                         </td>
                                         <td className="tw-border tw-px-2" colSpan="8">
                                             <button className="tw-float-right tw-px-1 tw-py-0.5 tw-text-red-400 tw-text-xs tw-font-semibold tw-rounded focus:tw-outline-none tw-border tw-border-red-400 active:tw-bg-red-100" onClick={() => handleRemoveCountry(i)}>
                                                 Экспорт хийдэг улсыг хасах
-                                        </button>
+                                            </button>
                                         </td>
                                         <td className="tw-border tw-truncate tw-font-bold tw-text-center">$</td>
                                     </tr>
@@ -282,19 +296,21 @@ function UrgudulCalculations() {
                                         country.export_products.map((product, j) =>
                                             <tr className="tw-h-9">
                                                 <td className="tw-border tw-px-1">
-                                                    <input className="tw-w-full tw-px-1 tw-py-0.5 tw-outline-none tw-placeholder-gray-500 tw-bg-indigo-100 tw-rounded" placeholder={`Бүтээгдэхүүн ${j + 1}`} type="text" value={product.product_name} onChange={e => handleInputProductName(e.target.value, j, i)} />
+                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={country.productId} name="productId" id={j} id2={i} description="description" description_mon="description_mon" setForm={handleSetFormProduct} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" />
                                                 </td>
                                                 {
                                                     dates.map((key, k) =>
                                                         <td className="tw-border tw-px-1" key={k}>
                                                             <div className="tw-flex tw-justify-center">
-                                                                <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-100 tw-rounded" value={product[key]} thousandSeparator={true} prefix="$ " onValueChange={values => handleInputProductExport(key, values.value, j, i)} />
+                                                                <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={product[key]} thousandSeparator={true} onValueChange={values => handleInputProductExport(key, values.value, j, i)} />
                                                             </div>
                                                         </td>
                                                     )
                                                 }
                                                 <td className="tw-border">
-                                                    <ButtonTooltip tooltip="Бүтээгдэхүүнийг хасах" beforeSVG={<MinusCircleSVG className="tw-w-7 tw-h-7 tw-transition-colors tw-duration-300" />} onClick={() => handleRemoveProduct(j, i)} classAppend="tw-text-red-500 active:tw-text-red-600 tw-mx-auto" />
+                                                    <div className="tw-flex tw-items-center tw-justify-center">
+                                                        <ButtonTooltip tooltip="Бүтээгдэхүүнийг хасах" beforeSVG={<MinusCircleSVG className="tw-w-7 tw-h-7 tw-transition-colors tw-duration-300" />} onClick={() => handleRemoveProduct(j, i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                                                    </div>
                                                 </td>
                                             </tr>
                                         )
@@ -306,7 +322,7 @@ function UrgudulCalculations() {
                                                     Тус улсад {country.export_products.length}ш бүтээгдэхүүн нэмсэн байна.
                                                 </div>
 
-                                                <ButtonTooltip tooltip="Бүтээгдэхүүн нэмж оруулах" beforeSVG={<PlusCircleSVG className="tw-w-7 tw-h-7 tw-transition-colors tw-duration-300" />} onClick={() => handleAddProduct(i)} classAppend="tw-text-blue-500 active:tw-text-blue-600 tw-mr-1" />
+                                                <ButtonTooltip tooltip="Бүтээгдэхүүн нэмж оруулах" beforeSVG={<PlusCircleSVG className="tw-w-7 tw-h-7 tw-transition-colors tw-duration-300" />} onClick={() => handleAddProduct(i)} classAppend="tw-mr-1" classButton="tw-text-blue-500 active:tw-text-blue-600" />
                                             </div>
                                         </td>
                                     </tr>
@@ -322,7 +338,7 @@ function UrgudulCalculations() {
 
                                     <div className="tw-text-xs tw-italic tw-text-gray-600 tw-ml-2">
                                         {form.export_details.length}ш улс оруулсан байна.
-                                </div>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -331,7 +347,7 @@ function UrgudulCalculations() {
             </div>
 
             <div className="tw-flex tw-justify-end">
-                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )

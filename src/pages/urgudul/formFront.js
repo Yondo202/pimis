@@ -74,7 +74,7 @@ function UrgudulFront() {
 
                     <FormInline label="Төслийн нэр" type="text" value={form.project_name} name="project_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
 
-                    <ButtonTooltip classAppend="tw-mt-4 tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Маягт үүсгэх" onClick={handleSubmit} />
+                    <ButtonTooltip classAppend="tw-mt-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Маягт үүсгэх" onClick={handleSubmit} />
                 </div>
             </div>
         </div>
