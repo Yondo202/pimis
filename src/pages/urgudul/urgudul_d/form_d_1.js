@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import HelpPopup from 'components/help_popup/helpPopup'
 import FormInline from 'components/urgudul_components/formInline'
@@ -7,25 +7,35 @@ import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import PenSVG from 'assets/svgComponents/penSVG'
-import SignaturePad from 'react-signature-canvas'
 import SearchSelect from 'components/urgudul_components/searchSelect'
-import CloseSVG from 'assets/svgComponents/closeSVG'
-import ClusterMemberSelect from 'components/urgudul_components/clusterMemberSelect'
+import FormSelect from 'components/urgudul_components/formSelect'
+import AlertContext from 'components/utilities/alertContext'
+import { useHistory } from 'react-router-dom'
+import FormSignature from 'components/urgudul_components/formSignature'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 
 const initialState = [
     {
-
-        company_id: '',
-        representative_position: '',
-        representative_name: '',
-        representative_signature: '',
-        submitDate: '',
+        applicant: true,
+        companyId: null,
+        representative_positionId: null,
+        representative_name: null,
+        representative_signature: null,
+        submitDate: null,
     },
 ]
 
 function UrgudulNoticeCluster() {
     const [form, setForm] = useState(initialState)
+
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    // useEffect(() => {
+    //     if (UrgudulCtx.data.notices && UrgudulCtx.data.notices?.length) {
+    //         setForm(UrgudulCtx.data.notices)
+    //     }
+    // }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {
         const newForm = form
@@ -39,23 +49,20 @@ function UrgudulNoticeCluster() {
         setForm([...newForm])
     }
 
-    const sigCanvas = useRef()
-
-    const handleInputSignature = (index) => {
-        const newForm = form
-        newForm[index].representative_signature = sigCanvas.current.getTrimmedCanvas().toDataURL('image/png')
-        setForm([...newForm])
-    }
-
-    const handleClearCanvas = (index) => {
-        sigCanvas.current.clear()
-        const newForm = form
-        newForm[index].representative_signature = ''
-        setForm([...newForm])
-    }
+    const applicantIndex = form.findIndex(obj => obj.applicant === true)
+    const applicantItem = form[applicantIndex]
 
     const handleAdd = () => {
-        setForm([...form, { ...initialState[0] }])
+        const newObj = {
+            applicant: null,
+            company_id: null,
+            representative_positionId: null,
+            representative_name: null,
+            representative_signature: null,
+            submitDate: null,
+        }
+
+        setForm([...form, newObj])
     }
 
     const handleRemove = (index) => {
@@ -72,17 +79,33 @@ function UrgudulNoticeCluster() {
             })
     }, [])
 
-    const UrgudulCtx = useContext(UrgudulContext)
+    const companyName = UrgudulCtx.data.company?.company_name || ''
+    const clusters = UrgudulCtx.data.clusters
+
+    const AlertCtx = useContext(AlertContext)
+
+    const history = useHistory()
 
     const handleSubmit = () => {
-        axios.put(`projects/${UrgudulCtx.data.id}`, form)
-            .then(res => {
-                console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
+        if (UrgudulCtx.data.id) {
+            axios.put(`projects/${UrgudulCtx.data.id}`, { noticeClusters: form }, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
             })
-            .catch(err => {
-                console.log(err.response?.data)
-            })
+                .then(res => {
+                    console.log(res.data)
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хамтрагч талуудын мэдээлэл хадгалагдлаа.' })
+                })
+                .catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
+            setTimeout(() => history.push('/urgudul/1'), 3000)
+        }
     }
 
     return (
@@ -140,37 +163,67 @@ function UrgudulNoticeCluster() {
                 Энэхүү өргөдлийн маягтанд орсон бүхий л мэдээллийг үнэн зөвөөр мэдээллэсэн бөгөөд санаатай болон санаандгүйгээр мэдээллийг хооронд нь зөрүүлэх, мэдээллийг нотлох баримт нь мэдээллээс зөрөх, нотлох баримтгүй байх нь уг санхүүжилтийг олгохоос татгалзах, цаашид өргөдөл хүлээн авахгүй хүртэл шийдвэр гаргах шалтгаан болохыг бүрэн ойлгож, гарын үсэг зурсан:
             </div>
 
+            <div className="tw-p-2 tw-pl-4 tw-p-t-4 tw-text-blue-500 tw-font-medium">
+                Өргөдөл гаргагч ААН төлөөлж:
+            </div>
+
+            <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-flex tw-place-items-center tw-p-2 tw-pl-8">
+                    <span className="tw-text-sm tw-font-medium">ААН нэгжийн нэр:</span>
+                    {
+                        companyName &&
+                        <span className="tw-ml-3 tw-bg-indigo-100 tw-rounded-lg py-1 tw-px-2 tw-text-sm">{companyName}</span>
+                    }
+                </div>
+
+                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                    <SearchSelect label="Албан тушаал" data={occupations} value={applicantItem.representative_positionId} name="representative_positionId" id={applicantIndex} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" />
+                </div>
+
+                <FormInline label="Овог, нэр" type="text" value={applicantItem.representative_name} name="representative_name" id={applicantIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-80" />
+
+                <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-row-span-2">
+                    <div className="tw-flex tw-items-center tw-p-2">
+                        <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                        <span className="tw-ml-2 tw-text-sm tw-font-medium">Гарын үсэг</span>
+                    </div>
+
+                    <FormSignature value={applicantItem.representative_signature} name="representative_signature" id={applicantIndex} setForm={handleSetForm} classAppend="tw-px-2 tw-pb-3 tw-justify-center" canvasProps={{ width: 300, height: 80 }} />
+                </div>
+
+                <FormInline label="Огноо" type="date" value={applicantItem.submitDate} name="submitDate" id={applicantIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+            </div>
+
+            <div className="tw-p-2 tw-pl-4 tw-p-t-4 tw-text-blue-500 tw-font-medium">
+                Кластерийн гишүүн ААН-үүдийг төлөөлж:
+            </div>
+
             <div>
                 {
                     form.map((item, i) =>
+                        i !== applicantIndex &&
                         <div className="tw-flex even:tw-bg-gray-50" key={i}>
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                <FormInline label="ААН нэр:" type="text" value={item.company_name} name="company_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
-
                                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
-                                    <ClusterMemberSelect value={item.company_id} name="company_id" id={i} setForm={handleSetForm} />
+                                    <FormSelect label="АНН нэр" data={clusters} value={item.company_id} name="company_id" id={i} setForm={handleSetForm} displayName="company_name" classAppend="tw-w-96" />
                                 </div>
 
                                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
-                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_position} name="representative_position" id={i} description="description" description_mon="description_mon" setForm={handleSetForm} classLabel={i % 2 === 0 && 'tw-bg-gray-50'} />
+                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} />
                                 </div>
 
-                                <FormInline label="Овог, нэр:" type="text" value={item.representative_name} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                                <FormInline label="Овог, нэр" type="text" value={item.representative_name} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
 
-                                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg">
+                                <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-row-span-2">
                                     <div className="tw-flex tw-items-center tw-p-2">
                                         <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
                                         <span className="tw-ml-2 tw-text-sm tw-font-medium">Гарын үсэг</span>
                                     </div>
 
-                                    <div className="tw-flex tw-justify-center tw-items-center tw-px-2 tw-pb-3">
-                                        <SignaturePad canvasProps={{ className: 'tw-border tw-border-gray-300 tw-rounded-lg tw-shadow-md tw-w-60 tw-h-24' }} ref={sigCanvas} onEnd={() => handleInputSignature(i)} />
-
-                                        <ButtonTooltip tooltip="Арилгах" beforeSVG={<CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors tw-duration-300" />} onClick={() => handleClearCanvas(i)} classAppend="tw-px-2" classButton="tw-text-red-500 active:tw-text-red-600" />
-                                    </div>
+                                    <FormSignature value={item.representative_signature} name="representative_signature" id={i} setForm={handleSetForm} classAppend="tw-px-2 tw-pb-3 tw-justify-center" canvasProps={{ width: 300, height: 80 }} />
                                 </div>
 
-                                <FormInline label="Огноо:" type="date" value={item.submitDate} name="submitDate" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                                <FormInline label="Огноо" type="date" value={item.submitDate} name="submitDate" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
                             </div>
 
                             <div className="tw-flex tw-items-center">
@@ -183,7 +236,9 @@ function UrgudulNoticeCluster() {
 
             <div className="tw-flex tw-justify-end tw-items-center tw-py-1">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
-                    {form.length}ш кластерын байгууллага нэмсэн байна.
+                    {
+                        form.length > 1 ? `${form.length - 1}ш кластерын гишүүн ААН нэмсэн байна.` : 'Кластерийн гишүүн ААН нэмээгүй байна.'
+                    }
                 </div>
 
                 <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />

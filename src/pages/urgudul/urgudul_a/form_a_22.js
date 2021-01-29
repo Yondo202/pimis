@@ -11,20 +11,29 @@ import axios from 'axiosbase'
 import SearchSelect from 'components/urgudul_components/searchSelect'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 
 const initialState = [
     {
-        company_id: '',
-        position: '',
-        director_name: '',
-        employed_date: '',
-        project_contribution: '',
+        company_id: null,
+        position: null,
+        director_name: null,
+        employed_date: null,
+        project_contribution: null,
     },
 ]
 
 function UrugudulDirectors() {
     const [form, setForm] = useState(initialState)
+
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    useEffect(() => {
+        if (UrgudulCtx.data.directors && UrgudulCtx.data.directors?.length) {
+            setForm(UrgudulCtx.data.directors)
+        }
+    }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {
         const newForm = form
@@ -63,15 +72,17 @@ function UrugudulDirectors() {
             })
     }, [])
 
-    const UrgudulCtx = useContext(UrgudulContext)
-
     const AlertCtx = useContext(AlertContext)
 
     const history = useHistory()
 
     const handleSubmit = () => {
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, { directors: form })
+            axios.put(`projects/${UrgudulCtx.data.id}`, { directors: form }, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
+            })
                 .then(res => {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
@@ -102,7 +113,7 @@ function UrugudulDirectors() {
                         <div className="tw-flex-grow">
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-center">
                                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
-                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.position} name="position" id={i} description="description" description_mon="description_mon" setForm={handleSetForm} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
+                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.position} name="position" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
                                 </div>
 
                                 <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.director_name} name="director_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />

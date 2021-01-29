@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import HelpPopup from 'components/help_popup/helpPopup'
 import FormInline from 'components/urgudul_components/formInline'
@@ -6,19 +6,35 @@ import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
+import AlertContext from 'components/utilities/alertContext'
+import { useHistory } from 'react-router-dom'
+import FormSelect from 'components/urgudul_components/formSelect'
+import SearchSelect from 'components/urgudul_components/searchSelect'
+import PenSVG from 'assets/svgComponents/penSVG'
+import FormSignature from 'components/urgudul_components/formSignature'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 
 const initialState = [
     {
-        representative_position: '',
-        representative_name: '',
-        representative_signature: '',
-        submitDate: '',
+        director: true,
+        representative_positionId: 4,
+        representative_name: null,
+        representative_signature: null,
+        submitDate: null,
     },
 ]
 
 function UrgudulNoticeCompany() {
     const [form, setForm] = useState(initialState)
+
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    // useEffect(() => {
+    //     if (UrgudulCtx.data.notices && UrgudulCtx.data.notices?.le) {
+    //         setForm(UrgudulCtx.data.notices)
+    //     }
+    // }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {
         const newForm = form
@@ -26,25 +42,65 @@ function UrgudulNoticeCompany() {
         setForm([...newForm])
     }
 
+    const handleSetForm = (key, value, index) => {
+        const newForm = form
+        newForm[index][key] = value
+        setForm([...newForm])
+    }
+
+    const directorIndex = form.findIndex(obj => obj.director === true)
+    const directorItem = form[directorIndex]
+
     const handleAdd = () => {
-        setForm([...form, { ...initialState[0] }])
+        const newObj = {
+            director: null,
+            representative_positionId: null,
+            representative_name: null,
+            representative_signature: null,
+            submitDate: null,
+        }
+
+        setForm([...form, newObj])
     }
 
     const handleRemove = (index) => {
         setForm(form.filter((_, i) => i !== index))
     }
 
-    const UrgudulCtx = useContext(UrgudulContext)
+    const [occupations, setOccupations] = useState([])
 
-    const handleSubmit = () => {
-        axios.put(`projects/${UrgudulCtx.data.id}`, form)
+    useEffect(() => {
+        axios.get('occupations')
             .then(res => {
                 console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
+                setOccupations(res.data.data)
             })
-            .catch(err => {
-                console.log(err.response?.data)
+    }, [])
+
+    const AlertCtx = useContext(AlertContext)
+
+    const history = useHistory()
+
+    const handleSubmit = () => {
+        if (UrgudulCtx.data.id) {
+            axios.put(`projects/${UrgudulCtx.data.id}`, { noticeClusters: form }, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
             })
+                .then(res => {
+                    console.log(res.data)
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хамтрагч талуудын мэдээлэл хадгалагдлаа.' })
+                })
+                .catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
+            setTimeout(() => history.push('/urgudul/1'), 3000)
+        }
     }
 
     return (
@@ -99,18 +155,56 @@ function UrgudulNoticeCompany() {
                 Энэхүү өргөдлийн маягтанд орсон бүхий л мэдээллийг үнэн зөвөөр мэдээллэсэн бөгөөд санаатай болон санаандгүйгээр мэдээллийг хооронд нь зөрүүлэх, мэдээллийг нотлох баримт нь мэдээллээс зөрөх, нотлох баримтгүй байх нь уг санхүүжилтийг олгохоос татгалзах, цаашид өргөдөл хүлээн авахгүй хүртэл шийдвэр гаргах шалтгаан болохыг бүрэн ойлгож, гарын үсэг зурсан:
             </div>
 
+            <div className="tw-p-2 tw-pl-4 tw-p-t-4 tw-text-blue-500 tw-font-medium">
+                Гүйцэтгэх захирал:
+            </div>
+
+            <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-flex tw-place-items-center tw-p-2 tw-pl-8">
+                    <span className="tw-text-sm tw-font-medium">Албан тушаал:</span>
+                    <span className="tw-ml-3 tw-bg-indigo-100 tw-rounded-lg py-1 tw-px-2 tw-text-sm">Гүйцэтгэх захирал</span>
+                </div>
+
+                <FormInline label="Овог, нэр" type="text" value={directorItem.representative_name} name="representative_name" id={directorIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-80" />
+
+                <FormInline label="Огноо" type="date" value={directorItem.submitDate} name="submitDate" id={directorIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+
+                <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg">
+                    <div className="tw-flex tw-items-center tw-p-2">
+                        <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                        <span className="tw-ml-2 tw-text-sm tw-font-medium">Гарын үсэг</span>
+                    </div>
+
+                    <FormSignature value={directorItem.representative_signature} name="representative_signature" id={directorIndex} setForm={handleSetForm} classAppend="tw-px-2 tw-pb-3 tw-justify-center" canvasProps={{ width: 300, height: 80 }} />
+                </div>
+            </div>
+
+            <div className="tw-p-2 tw-pl-4 tw-p-t-4 tw-text-blue-500 tw-font-medium">
+                Болон бусад ажилчид:
+            </div>
+
             <div>
                 {
                     form.map((item, i) =>
+                        i !== directorIndex &&
                         <div className="tw-flex even:tw-bg-gray-50" key={i}>
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                <FormInline label="Албан тушаал:" type="text" value={item.representative_position} name="representative_position" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} />
+                                </div>
 
-                                <FormInline label="Овог, нэр:" type="text" value={item.representative_name} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                                <FormInline label="Овог, нэр" type="text" value={item.representative_name} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
 
-                                <FormInline label="Гарын үсэг:" type="text" value={item.representative_signature} name="representative_signature" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                                <FormInline label="Огноо" type="date" value={item.submitDate} name="submitDate" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
 
-                                <FormInline label="Огноо:" type="date" value={item.submitDate} name="submitDate" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                                <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg">
+                                    <div className="tw-flex tw-items-center tw-p-2">
+                                        <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                                        <span className="tw-ml-2 tw-text-sm tw-font-medium">Гарын үсэг</span>
+                                    </div>
+
+                                    <FormSignature value={item.representative_signature} name="representative_signature" id={i} setForm={handleSetForm} classAppend="tw-px-2 tw-pb-3 tw-justify-center" canvasProps={{ width: 300, height: 80 }} />
+                                </div>
                             </div>
 
                             <div className="tw-flex tw-items-center">
@@ -123,7 +217,9 @@ function UrgudulNoticeCompany() {
 
             <div className="tw-flex tw-justify-end tw-items-center tw-py-1">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
-                    {form.length}ш үйл хүний мэдээлэл нэмсэн байна.
+                    {
+                        form.length > 1 ? `${form.length - 1}ш ажилчны мэдээлэл оруулсан.` : 'Бусад ажилчдын мэдээлэл оруулаагүй байна.'
+                    }
                 </div>
 
                 <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />

@@ -23,6 +23,9 @@ body {
   overflow-x: hidden;
   background-color: #f2f2f2;
 }
+.container{
+  max-width: 1000px;
+}
 
 ::-webkit-scrollbar {
   width: 6px;

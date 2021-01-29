@@ -1,9 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import HelpPopup from 'components/help_popup/helpPopup'
 import SearchSelect from 'components/urgudul_components/searchSelect'
-import DistrictSelect from 'components/urgudul_components/districtSelect'
-import CompanySizeSelect from 'components/urgudul_components/companySizeSelect'
 import FormOptions from 'components/urgudul_components/formOptions'
 import PenSVG from 'assets/svgComponents/penSVG'
 import FormRichText from 'components/urgudul_components/formRichText'
@@ -12,31 +10,89 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
+import FormSelect from 'components/urgudul_components/formSelect'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 
 const initialState = {
-    company_name: '',
-    representative_name: '',
-    representative_position: '',
-    registered_date: '',
-    registration_number: '',
-    official_address: '',
-    locationId: '',
+    company_name: null,
+    representative_name: null,
+    representative_position: null,
+    registered_date: null,
+    registration_number: null,
+    official_address: null,
+    locationId: null,
     district_id: null,
-    telephone: '',
-    handphone: '',
-    email: '',
-    website: '',
-    company_size: '',
-    project_plan: '',
-    business_sectorId: '',
-    foreign_invested: '',
+    telephone: null,
+    handphone: null,
+    email: null,
+    website: null,
+    company_size: null,
+    project_plan: null,
+    business_sectorId: null,
+    foreign_invested: null,
     invested_countryid: null,
     investment_percent: null,
 }
 
+const districts = [
+    {
+        id: 1,
+        description_mon: 'Багануур',
+        description: 'Baganuur',
+    },
+    {
+        id: 2,
+        description_mon: 'Багахангай',
+        description: 'Bagakhangai',
+    },
+    {
+        id: 3,
+        description_mon: 'Баянгол',
+        description: 'Bayangol',
+    },
+    {
+        id: 4,
+        description_mon: 'Баянзүрх',
+        description: 'Bayanzurkh',
+    },
+    {
+        id: 5,
+        description_mon: 'Налайх',
+        description: 'Nalaikh',
+    },
+    {
+        id: 6,
+        description_mon: 'Сонгинохайрхан',
+        description: 'SonginoKhairkhan',
+    },
+    {
+        id: 7,
+        description_mon: 'Сүхбаатар',
+        description: 'Sukhbaatar',
+    },
+    {
+        id: 8,
+        description_mon: 'Хан-Уул',
+        description: 'Khan-Uul',
+    },
+    {
+        id: 9,
+        description_mon: 'Чингэлтэй',
+        description: 'Chingeltei',
+    },
+]
+
 function UrgudulApplicant() {
     const [form, setForm] = useState(initialState)
+
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    useEffect(() => {
+        if (UrgudulCtx.data.company) {
+            setForm({ ...form, ...UrgudulCtx.data.company })
+        }
+    }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value })
@@ -54,15 +110,17 @@ function UrgudulApplicant() {
         setForm({ ...form, [key]: value })
     }
 
-    const UrgudulCtx = useContext(UrgudulContext)
-
     const AlertCtx = useContext(AlertContext)
 
     const history = useHistory()
 
     const handleSubmit = () => {
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, { compnay: form })
+            axios.put(`projects/${UrgudulCtx.data.id}`, { company: form }, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
+            })
                 .then(res => {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
@@ -110,11 +168,11 @@ function UrgudulApplicant() {
                     </div>
 
                     <div className="tw-flex tw-flex-wrap">
-                        <SearchSelect label="Байршил" api="locations" keys={['data']} value={form.locationId} name="locationId" description="description" description_mon="description_mon" setForm={handleSetForm} classAppend="tw-w-60" />
+                        <SearchSelect label="Байршил" api="locations" keys={['data']} value={form.locationId} name="locationId" setForm={handleSetForm} displayName="description_mon" classAppend="tw-w-60" />
 
                         {
-                            form.locationId === 39
-                            && <DistrictSelect value={form.district_id} setForm={handleSetForm} classAppend="tw-w-56" />
+                            form.locationId === 39 &&
+                            <FormSelect label="Дүүрэг" data={districts} value={form.district_id} name="district_id" setForm={handleSetForm} displayName="description_mon" classAppend="tw-w-56" />
                         }
                     </div>
                 </div>
@@ -134,8 +192,6 @@ function UrgudulApplicant() {
                 <FormInline label="Вэбсайт" type="text" value={form.website} name="website" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
 
                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
-                    {/* <CompanySizeSelect value={form.company_size} setForm={handleSetForm} classAppend="tw-w-44" /> */}
-
                     <FormOptions label="Компаний хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={form.company_size} name="company_size" setForm={handleSetForm} classAppend="tw-flex-grow" />
 
                     <div className="tw-relative tw-w-2 tw-ml-auto">
@@ -172,7 +228,7 @@ function UrgudulApplicant() {
                     </table>
                 </div>
 
-                <SearchSelect label="Салбар" api="business-sector" keys={['data']} value={form.business_sectorId} name="business_sectorId" description="bdescription" description_mon="bdescription_mon" setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
+                <SearchSelect label="Салбар" api="business-sector" keys={['data']} value={form.business_sectorId} name="business_sectorId" displayName="bdescription_mon" setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
 
                 <FormOptions label="Гадаад хөрөнгө оруулалттай эсэх" options={['Тийм', 'Үгүй']} values={[1, 0]} value={form.foreign_invested} name="foreign_invested" setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
 
@@ -180,7 +236,7 @@ function UrgudulApplicant() {
                     form.foreign_invested === 1 &&
                     <>
                         <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
-                            <SearchSelect label="Аль улсаас гадаад хөрөнгө оруулалдаг болох нь" api="countries" keys={['data']} value={form.invested_countryid} name="invested_countryid" description="description" description_mon="description_mon" setForm={handleSetForm} />
+                            <SearchSelect label="Аль улсаас гадаад хөрөнгө оруулалдаг болох нь" api="countries" keys={['data']} value={form.invested_countryid} name="invested_countryid" displayName="description_mon" setForm={handleSetForm} />
                         </div>
 
                         <FormInline label="Гадаад хөрөнгө оруулалтын эзлэх хувь" type="numberFormat" formats={{ format: '### %' }} value={form.investment_percent} name="investment_percent" onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-16" />

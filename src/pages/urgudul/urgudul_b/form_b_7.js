@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import HelpPopup from 'components/help_popup/helpPopup'
 import FormRichText from 'components/urgudul_components/formRichText'
@@ -8,24 +8,29 @@ import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 
 const initialState = {
-    sales_growth: '',
-    export_growth: '',
-    profit_growth: '',
-    efficiency_growth: '',
-    workplace_growth: '',
-    growths_explanation: '',
-    assumptions: '',
+    sales_growth: null,
+    export_growth: null,
+    profit_growth: null,
+    efficiency_growth: null,
+    workplace_growth: null,
+    growths_explanation: null,
+    assumptions: null,
 }
 
 function UrgudulBenefits() {
     const [form, setForm] = useState(initialState)
 
-    const handleInput = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value })
-    }
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    useEffect(() => {
+        if (UrgudulCtx.data.benefit) {
+            setForm({ ...form, ...UrgudulCtx.data.benefit })
+        }
+    }, [UrgudulCtx.data.id])
 
     const handleInputFormat = (values, name) => {
         setForm({ ...form, [name]: values.value })
@@ -35,15 +40,17 @@ function UrgudulBenefits() {
         setForm({ ...form, [key]: value })
     }
 
-    const UrgudulCtx = useContext(UrgudulContext)
-
     const AlertCtx = useContext(AlertContext)
 
     const history = useHistory()
 
     const handleSubmit = () => {
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, { benefit: form })
+            axios.put(`projects/${UrgudulCtx.data.id}`, { benefit: form }, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
+            })
                 .then(res => {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })

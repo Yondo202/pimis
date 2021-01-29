@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import HelpPopup from 'components/help_popup/helpPopup'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
@@ -11,20 +11,29 @@ import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 
 const initialState = [
     {
-        company_name: '',
-        representative_name: '',
-        company_size: '',
+        company_name: null,
+        representative_name: null,
+        company_size: null,
         support_recipient: null,
-        project_contribution: '',
+        project_contribution: null,
     },
 ]
 
 function UrugudulClusters() {
     const [form, setForm] = useState(initialState)
+
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    useEffect(() => {
+        if (UrgudulCtx.data.clusters && UrgudulCtx.data.clusters?.length) {
+            setForm(UrgudulCtx.data.clusters)
+        }
+    }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {
         const newForm = form
@@ -54,15 +63,17 @@ function UrugudulClusters() {
         setForm([...newForm])
     }
 
-    const UrgudulCtx = useContext(UrgudulContext)
-
     const AlertCtx = useContext(AlertContext)
 
     const history = useHistory()
 
     const handleSubmit = () => {
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, { clusters: form })
+            axios.put(`projects/${UrgudulCtx.data.id}`, { clusters: form }, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
+            })
                 .then(res => {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })

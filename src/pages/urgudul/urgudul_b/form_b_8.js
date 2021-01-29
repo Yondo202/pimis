@@ -9,6 +9,7 @@ import NumberFormat from 'react-number-format'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 
 const year = new Date().getFullYear()
@@ -26,14 +27,14 @@ const dates = [
 ]
 
 const datesObj = {
-    'baseYear': '',
-    'year--': '',
-    'year-': '',
-    'submitDate': '',
-    'endDate': '',
-    'year+': '',
-    'year++': '',
-    'year+++': '',
+    'baseYear': null,
+    'year--': null,
+    'year-': null,
+    'submitDate': null,
+    'endDate': null,
+    'year+': null,
+    'year++': null,
+    'year+++': null,
 }
 
 const initialState = {
@@ -48,11 +49,11 @@ const initialState = {
     },
     export_details: [
         {
-            countryId: '',
+            countryId: null,
             export_products: [
                 {
                     ...datesObj,
-                    productId: '',
+                    productId: null,
                 },
             ],
         },
@@ -62,14 +63,52 @@ const initialState = {
         month: month,
     },
     endDate: {
-        year: 2222,
-        month: 11,
+        year: null,
+        month: null,
     },
     baseYear: 2016,
 }
 
 function UrgudulCalculations() {
     const [form, setForm] = useState(initialState)
+
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    useEffect(() => {
+        if (UrgudulCtx.data.exportDatas) {
+            let temp = {}
+
+            const arr = ['sales', 'fullTime_workplace', 'productivity']
+            arr.forEach(key => {
+                temp[key] = { ...datesObj, ...UrgudulCtx.data.exportDatas?.[key] }
+            })
+
+            if (!UrgudulCtx.data.exportDatas?.export_details?.length) {
+                temp.export_details = [
+                    {
+                        countryId: null,
+                        export_products: [
+                            {
+                                ...datesObj,
+                                productId: null,
+                            },
+                        ],
+                    },
+                ]
+            }
+
+            if (!UrgudulCtx.data.exportDatas?.endDate) {
+                if (UrgudulCtx.data.end_data) {
+                    temp.endDate = {
+                        year: UrgudulCtx.data.endDate.split('-')[0],
+                        month: UrgudulCtx.data.endDate.split('-')[1],
+                    }
+                }
+            }
+
+            setForm({ ...form, ...temp })
+        }
+    }, [UrgudulCtx.data.id])
 
     const handleInput = (key, value, objName) => {
         setForm({ ...form, [objName]: { ...form[objName], [key]: value } })
@@ -155,15 +194,17 @@ function UrgudulCalculations() {
         }
     }
 
-    const UrgudulCtx = useContext(UrgudulContext)
-
     const AlertCtx = useContext(AlertContext)
 
     const history = useHistory()
 
     const handleSubmit = () => {
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${3}`, { exportDatas: form })
+            axios.put(`projects/${3}`, { exportDatas: form }, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
+            })
                 .then(res => {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
@@ -283,7 +324,7 @@ function UrgudulCalculations() {
                                 <>
                                     <tr className="tw-h-9" key={i}>
                                         <td className="tw-border tw-px-1">
-                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} description="description" description_mon="description_mon" setForm={handleSetFormCountry} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" />
+                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" />
                                         </td>
                                         <td className="tw-border tw-px-2" colSpan="8">
                                             <button className="tw-float-right tw-px-1 tw-py-0.5 tw-text-red-400 tw-text-xs tw-font-semibold tw-rounded focus:tw-outline-none tw-border tw-border-red-400 active:tw-bg-red-100" onClick={() => handleRemoveCountry(i)}>
@@ -296,7 +337,7 @@ function UrgudulCalculations() {
                                         country.export_products.map((product, j) =>
                                             <tr className="tw-h-9">
                                                 <td className="tw-border tw-px-1">
-                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={country.productId} name="productId" id={j} id2={i} description="description" description_mon="description_mon" setForm={handleSetFormProduct} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" />
+                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={country.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" />
                                                 </td>
                                                 {
                                                     dates.map((key, k) =>

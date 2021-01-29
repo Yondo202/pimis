@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import FormRichText from 'components/urgudul_components/formRichText'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
@@ -10,11 +10,12 @@ import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 
 const initialState = [
     {
-        activity: '',
+        activity: null,
         budget_cost: null,
         edp_funding: null,
         applicant_contribution: null,
@@ -24,11 +25,13 @@ const initialState = [
 function UrgudulActivities() {
     const [form, setForm] = useState(initialState)
 
-    const handleInput = (e) => {
-        const newForm = form
-        newForm[e.target.id][e.target.name] = e.target.value
-        setForm([...newForm])
-    }
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    useEffect(() => {
+        if (UrgudulCtx.data.activities && UrgudulCtx.data.activities?.length) {
+            setForm(UrgudulCtx.data.activities)
+        }
+    }, [UrgudulCtx.data.id])
 
     const handleInputFormat = (values, key, index) => {
         const newForm = form
@@ -55,15 +58,17 @@ function UrgudulActivities() {
     const self = form.map(item => + item.applicant_contribution).reduce((a, b) => a + b, 0)
     const selfPerc = (self / net) * 100
 
-    const UrgudulCtx = useContext(UrgudulContext)
-
     const AlertCtx = useContext(AlertContext)
 
     const history = useHistory()
 
     const handleSubmit = () => {
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, { activities: form })
+            axios.put(`projects/${UrgudulCtx.data.id}`, { activities: form }, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
+            })
                 .then(res => {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
