@@ -19,7 +19,7 @@ function FormInline(props) {
                 {props.label}
             </label>
 
-            <PenSVG className={`tw-w-6 tw-h-6 tw-flex-shrink-0 ${focused ? 'tw-text-blue-500' : 'tw-text-gray-600'} tw-transition-colors tw-duration-300`} />
+            <PenSVG className={`tw-w-5 tw-h-5 tw-flex-shrink-0 ${focused ? 'tw-text-blue-500' : 'tw-text-gray-600'} tw-transition-colors tw-duration-300`} />
 
             {
                 props.type === 'numberFormat' ?

@@ -1,11 +1,17 @@
 import CloseSVG from 'assets/svgComponents/closeSVG'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import SignaturePad from 'react-signature-canvas'
 
 
 function FormSignature(props) {
     const sigCanvasRef = useRef()
+
+    const emptyDataURL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQYV2NgAAIAAAUAAarVyFEAAAAASUVORK5CYII='
+
+    useEffect(() => {
+        sigCanvasRef.current.getTrimmedCanvas().toDataURL('image/png') === emptyDataURL && sigCanvasRef.current.fromDataURL(props.value)
+    }, [props.value])
 
     const handleDrawSignature = (index) => {
         props.setForm(props.name, sigCanvasRef.current.getTrimmedCanvas().toDataURL('image/png'), props.id)
@@ -13,7 +19,7 @@ function FormSignature(props) {
 
     const handleClearCanvas = (index) => {
         sigCanvasRef.current.clear()
-        props.setForm(props.name, '', props.id)
+        props.setForm(props.name, null, props.id)
     }
 
     return (

@@ -2,6 +2,7 @@ import CheckSVG from 'assets/svgComponents/checkSVG'
 import CloseSVG from 'assets/svgComponents/closeSVG'
 import AlertContext from 'components/utilities/alertContext'
 import React, { useContext, useEffect } from 'react'
+import { Transition } from 'react-spring/renderprops'
 
 
 const classTheme = {
@@ -32,6 +33,8 @@ function AlertDialog() {
     const alert = AlertCtx.alert
     const setAlert = AlertCtx.setAlert
 
+    const show = alert.open
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setAlert({ ...alert, open: false })
@@ -40,23 +43,30 @@ function AlertDialog() {
         return () => clearTimeout(timer)
     }, [alert, alert.open, setAlert])
 
-    const classAppend = `${alert.open ? 'tw-bottom-8 sm:tw-bottom-16' : 'tw--bottom-8 sm:tw--bottom-16'}`
-
     const closeAlert = () => {
         setAlert({ ...alert, open: false })
     }
 
     return (
-        <div className={`tw-fixed tw-w-full tw-flex tw-justify-center tw-transition-all tw-duration-500 ${classAppend}`}>
-            <div className={`tw-inline-flex tw-items-center tw-flex-grow tw-mx-2 sm:tw-max-w-lg sm:tw-mx-0 tw-shadow-md tw-rounded-lg tw-p-2 tw-z-10 ${classTheme.bgColor[alert.variant]}`}>
-                <p className="tw-ml-2 tw-flex-grow tw-text-center tw-text-white tw-font-semibold">
-                    {alert.msg}
-                </p>
-                <button className={`tw-ml-2 tw-rounded-lg focus:tw-outline-none ${classTheme.btnColor[alert.variant]} active:${classTheme.btnActiveColor[alert.variant]}`} onClick={closeAlert}>
-                    <CloseSVG className={`tw-w-6 tw-h-6 ${classTheme.svgColor[alert.variant]}`} />
-                </button>
-            </div>
-        </div >
+        <Transition items={show}
+            from={{ bottom: window.innerWidth < 640 ? '-32px' : '-48px' }}
+            enter={{ bottom: window.innerWidth < 640 ? '32px' : '48px' }}
+            leave={{ bottom: window.innerWidth < 640 ? '-32px' : '-48px' }}>
+            {
+                show => show && (props =>
+                    <div style={props} className="tw-fixed tw-w-full tw-flex tw-justify-center">
+                        <div className={`tw-inline-flex tw-items-center tw-flex-grow tw-mx-2 tw-text-sm sm:tw-text-base sm:tw-max-w-lg sm:tw-mx-0 tw-shadow-md tw-rounded-lg tw-p-2 tw-z-10 ${classTheme.bgColor[alert.variant]}`}>
+                            <p className="tw-ml-2 tw-flex-grow tw-text-center tw-text-white tw-font-semibold">
+                                {alert.msg}
+                            </p>
+                            <button className={`tw-ml-2 tw-rounded-lg focus:tw-outline-none ${classTheme.btnColor[alert.variant]} active:${classTheme.btnActiveColor[alert.variant]}`} onClick={closeAlert}>
+                                <CloseSVG className={`tw-w-6 tw-h-6 ${classTheme.svgColor[alert.variant]}`} />
+                            </button>
+                        </div>
+                    </div >
+                )
+            }
+        </Transition>
     )
 }
 

@@ -43,10 +43,10 @@ function UrugudulDirectors() {
 
     const handleAdd = () => {
         const newObj = {
-            position: '',
-            director_name: '',
-            employed_date: '',
-            project_contribution: '',
+            position: null,
+            director_name: null,
+            employed_date: null,
+            project_contribution: null,
         }
 
         setForm([...form, newObj])
@@ -87,6 +87,7 @@ function UrugudulDirectors() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'АНН мэдээлэл хадгалагдлаа.' })
+                    setTimeout(() => history.push('/urgudul/4'), 3000)
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -116,21 +117,21 @@ function UrugudulDirectors() {
                                     <SearchSelect label="Албан тушаал" data={occupations} value={item.position} name="position" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
                                 </div>
 
-                                <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.director_name} name="director_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                                <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.director_name || ''} name="director_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
-                                <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" value={item.employed_date} name="employed_date" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                                <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" value={item.employed_date || ''} name="employed_date" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
                             </div>
 
                             <div className="tw-w-full tw-border tw-border-dashed">
                                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                                    <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
                                     <span className="tw-ml-2 tw-text-sm tw-font-medium">Энэхүү төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр</span>
 
                                     <HelpPopup classAppend="tw-ml-auto" main="Тухайлбал ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
                                 </div>
 
                                 <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                                    <FormRichText modules="small" value={item.project_contribution} name="project_contribution" id={i} setForm={handleSetForm} />
+                                    <FormRichText modules="small" value={item.project_contribution || ''} name="project_contribution" id={i} setForm={handleSetForm} />
                                 </div>
                             </div>
                         </div>

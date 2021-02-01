@@ -46,6 +46,7 @@ function UrgudulOverview() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Танилцуулга мэдээлэл хадгалагдлаа.' })
+                    setTimeout(() => history.push('/urgudul/5'), 3000)
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -75,7 +76,7 @@ function UrgudulOverview() {
             </div>
 
             <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                <FormRichText modules="full" value={form.applicant_overview} name="applicant_overview" setForm={handleSetForm} />
+                <FormRichText modules="full" value={form.applicant_overview || ''} name="applicant_overview" setForm={handleSetForm} />
             </div>
 
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
@@ -86,7 +87,7 @@ function UrgudulOverview() {
             </div>
 
             <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                <FormRichText modules="full" value={form.applicant_experience} name="applicant_experience" setForm={handleSetForm} />
+                <FormRichText modules="full" value={form.applicant_experience || ''} name="applicant_experience" setForm={handleSetForm} />
             </div>
 
             <div className="tw-flex tw-justify-end">

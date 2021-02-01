@@ -31,11 +31,11 @@ function UrgudulNoticeCluster() {
 
     const UrgudulCtx = useContext(UrgudulContext)
 
-    // useEffect(() => {
-    //     if (UrgudulCtx.data.notices && UrgudulCtx.data.notices?.length) {
-    //         setForm(UrgudulCtx.data.notices)
-    //     }
-    // }, [UrgudulCtx.data.id])
+    useEffect(() => {
+        if (UrgudulCtx.data.noticeClusters && UrgudulCtx.data.noticeClusters?.length) {
+            setForm(UrgudulCtx.data.noticeClusters)
+        }
+    }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {
         const newForm = form
@@ -55,7 +55,7 @@ function UrgudulNoticeCluster() {
     const handleAdd = () => {
         const newObj = {
             applicant: null,
-            company_id: null,
+            companyId: null,
             representative_positionId: null,
             representative_name: null,
             representative_signature: null,
@@ -97,6 +97,7 @@ function UrgudulNoticeCluster() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хамтрагч талуудын мэдээлэл хадгалагдлаа.' })
+                    setTimeout(() => history.push('/urgudul/10'), 3000)
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -172,7 +173,7 @@ function UrgudulNoticeCluster() {
                     <span className="tw-text-sm tw-font-medium">ААН нэгжийн нэр:</span>
                     {
                         companyName &&
-                        <span className="tw-ml-3 tw-bg-indigo-100 tw-rounded-lg py-1 tw-px-2 tw-text-sm">{companyName}</span>
+                        <span className="tw-ml-3 tw-bg-indigo-50 tw-rounded-lg tw-py-1 tw-px-2 tw-text-sm tw-text-indigo-500 tw-font-medium">{companyName}</span>
                     }
                 </div>
 
@@ -180,18 +181,18 @@ function UrgudulNoticeCluster() {
                     <SearchSelect label="Албан тушаал" data={occupations} value={applicantItem.representative_positionId} name="representative_positionId" id={applicantIndex} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" />
                 </div>
 
-                <FormInline label="Овог, нэр" type="text" value={applicantItem.representative_name} name="representative_name" id={applicantIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-80" />
+                <FormInline label="Овог, нэр" type="text" value={applicantItem.representative_name || ''} name="representative_name" id={applicantIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-80" />
 
                 <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-row-span-2">
                     <div className="tw-flex tw-items-center tw-p-2">
-                        <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                        <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
                         <span className="tw-ml-2 tw-text-sm tw-font-medium">Гарын үсэг</span>
                     </div>
 
                     <FormSignature value={applicantItem.representative_signature} name="representative_signature" id={applicantIndex} setForm={handleSetForm} classAppend="tw-px-2 tw-pb-3 tw-justify-center" canvasProps={{ width: 300, height: 80 }} />
                 </div>
 
-                <FormInline label="Огноо" type="date" value={applicantItem.submitDate} name="submitDate" id={applicantIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="Огноо" type="date" value={applicantItem.submitDate || ''} name="submitDate" id={applicantIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
             </div>
 
             <div className="tw-p-2 tw-pl-4 tw-p-t-4 tw-text-blue-500 tw-font-medium">
@@ -205,25 +206,25 @@ function UrgudulNoticeCluster() {
                         <div className="tw-flex even:tw-bg-gray-50" key={i}>
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
-                                    <FormSelect label="АНН нэр" data={clusters} value={item.company_id} name="company_id" id={i} setForm={handleSetForm} displayName="company_name" classAppend="tw-w-96" />
+                                    <FormSelect label="АНН нэр" data={clusters} value={item.companyId} name="companyId" id={i} setForm={handleSetForm} displayName="company_name" classAppend="tw-w-96" />
                                 </div>
 
                                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
                                     <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} />
                                 </div>
 
-                                <FormInline label="Овог, нэр" type="text" value={item.representative_name} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
+                                <FormInline label="Овог, нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
 
                                 <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-row-span-2">
                                     <div className="tw-flex tw-items-center tw-p-2">
-                                        <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                                        <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
                                         <span className="tw-ml-2 tw-text-sm tw-font-medium">Гарын үсэг</span>
                                     </div>
 
                                     <FormSignature value={item.representative_signature} name="representative_signature" id={i} setForm={handleSetForm} classAppend="tw-px-2 tw-pb-3 tw-justify-center" canvasProps={{ width: 300, height: 80 }} />
                                 </div>
 
-                                <FormInline label="Огноо" type="date" value={item.submitDate} name="submitDate" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                                <FormInline label="Огноо" type="date" value={item.submitDate || ''} name="submitDate" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
                             </div>
 
                             <div className="tw-flex tw-items-center">

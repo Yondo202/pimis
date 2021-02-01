@@ -10,14 +10,14 @@ function SearchSelect(props) {
     useEffect(() => {
         if (props.data) {
             setFetch(props.data)
-            props.value && setSearch(props.data.filter(obj => obj.id === props.value)[0][props.displayName])
+            props.value && setSearch(props.data.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
         } else {
             axios.get(props.api)
                 .then(res => {
                     console.log(res.data)
                     const data = props.keys.reduce((a, v) => a[v], res.data)
                     setFetch(data)
-                    props.value && setSearch(data.filter(obj => obj.id === props.value)[0][props.displayName])
+                    props.value && setSearch(data.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
                 }).catch(err => {
                     console.log(err.response?.data)
                 })
@@ -55,8 +55,7 @@ function SearchSelect(props) {
         if (fetch.map(obj => obj[props.displayName]).includes(search)) {
             handleSetForm(fetch.filter(obj => obj[props.displayName] === search)[0].id)
         } else {
-            handleSetForm('')
-            setSearch('')
+            setSearch(fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
         }
         setFocused(false)
     }
@@ -67,12 +66,12 @@ function SearchSelect(props) {
     }
 
     return (
-        <div className={`tw-relative tw-pl-11 tw-pr-3 tw-pt-8 tw-pb-3 tw-flex tw-flex-col ${props.classAppend}`}>
+        <div className={`tw-relative tw-pl-10 tw-pr-3 tw-pt-8 tw-pb-3 tw-flex tw-flex-col ${props.classAppend}`}>
             <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-font-medium tw-whitespace-nowrap ${props.classLabel} ${focused ? 'tw-text-sm tw-top-2 tw-left-8' : 'tw-text-xs tw-top-6 tw-left-12'} tw-transition-all tw-duration-300`}>
                 {props.label}
             </label>
 
-            <PenSVG className={`tw-absolute tw-w-6 tw-h-6 tw-top-9 tw-left-3 tw-flex-shrink-0 ${focused && 'tw-text-blue-500'} tw-transition-colors tw-duration-300`} />
+            <PenSVG className={`tw-absolute tw-w-5 tw-h-5 tw-top-10 tw-left-3 tw-flex-shrink-0 ${focused ? 'tw-text-blue-500' : 'tw-text-gray-600'} tw-transition-colors tw-duration-300`} />
 
             <div className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border tw-border-gray-400 tw-rounded-md tw-pt-2 tw-pb-1 tw-pl-2 tw-pr-1 focus-within:tw-border-blue-500 tw-transition-colors tw-duration-300 tw-placeholder-gray-400 ${props.classInput}`}>
                 <input className="tw-mr-1 tw-bg-transparent tw-outline-none tw-flex-grow" type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} />

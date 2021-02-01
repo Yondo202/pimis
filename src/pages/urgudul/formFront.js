@@ -5,6 +5,7 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import AlertContext from 'components/utilities/alertContext'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import { useHistory } from 'react-router-dom'
 
 
 const initialState = {
@@ -36,21 +37,22 @@ function UrgudulFront() {
 
     const AlertCtx = useContext(AlertContext)
 
+    const history = useHistory()
+
     const handleSubmit = () => {
         axios.post('projects', form, {
             headers: {
                 'Authorization': getLoggedUserToken()
             }
+        }).then(res => {
+            console.log(res.data)
+            UrgudulCtx.setData(res.data.data)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
+            setTimeout(() => history.push('/urgudul/2'), 3000)
+        }).catch(err => {
+            console.log(err.response?.data)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
         })
-            .then(res => {
-                console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
-                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
-            })
-            .catch(err => {
-                console.log(err.response?.data)
-                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
-            })
     }
 
     const handleSubmitEdit = () => {
@@ -62,6 +64,7 @@ function UrgudulFront() {
             console.log(res.data)
             UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээлэл хадгалагдлаа.' })
+            setTimeout(() => history.push('/urgudul/2'), 3000)
         }).catch(err => {
             console.log(err.response?.data)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
@@ -98,9 +101,9 @@ function UrgudulFront() {
                         </button>
                     </div>
 
-                    <FormInline label={form.project_type === 'cluster' ? 'Кластерын тэргүүлэгч байгууллагын нэр:' : 'Аж ахуйн нэгжийн нэр'} type="text" value={form.company_name} name="company_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
+                    <FormInline label={form.project_type === 'cluster' ? 'Кластерын тэргүүлэгч байгууллагын нэр:' : 'Аж ахуйн нэгжийн нэр'} type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
 
-                    <FormInline label="Төслийн нэр" type="text" value={form.project_name} name="project_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
+                    <FormInline label="Төслийн нэр" type="text" value={form.project_name || ''} name="project_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
 
                     {
                         UrgudulCtx.data.id ?

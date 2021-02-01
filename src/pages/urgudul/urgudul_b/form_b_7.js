@@ -55,6 +55,7 @@ function UrgudulBenefits() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Төслийн үр ашгийн талаарх мэдээлэл хадгалагдлаа.' })
+                    setTimeout(() => history.push('/urgudul/8'), 3000)
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -80,31 +81,31 @@ function UrgudulBenefits() {
             </div>
 
             <div className="tw-flex-grow tw-flex tw-flex-wrap">
-                <FormInline label="Борлуулалт:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.sales_growth} name="sales_growth" onChange={handleInputFormat} classInput="tw-w-24" />
+                <FormInline label="Борлуулалт:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.sales_growth || ''} name="sales_growth" onChange={handleInputFormat} classInput="tw-w-24" />
 
-                <FormInline label="Экспорт:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.export_growth} name="export_growth" onChange={handleInputFormat} classInput="tw-w-24" />
+                <FormInline label="Экспорт:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.export_growth || ''} name="export_growth" onChange={handleInputFormat} classInput="tw-w-24" />
 
-                <FormInline label="Ашиг:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.profit_growth} name="profit_growth" onChange={handleInputFormat} classInput="tw-w-24" />
+                <FormInline label="Ашиг:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.profit_growth || ''} name="profit_growth" onChange={handleInputFormat} classInput="tw-w-24" />
 
-                <FormInline label="Бүтээмж:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.efficiency_growth} name="efficiency_growth" onChange={handleInputFormat} classInput="tw-w-24" />
+                <FormInline label="Бүтээмж:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.efficiency_growth || ''} name="efficiency_growth" onChange={handleInputFormat} classInput="tw-w-24" />
 
-                <FormInline label="Ажлын байр:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.workplace_growth} name="workplace_growth" onChange={handleInputFormat} classInput="tw-w-24" />
+                <FormInline label="Ажлын байр:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.workplace_growth || ''} name="workplace_growth" onChange={handleInputFormat} classInput="tw-w-24" />
             </div>
 
             <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                <FormRichText modules="small" value={form.growths_explanation} name="growths_explanation" setForm={handleSetForm} />
+                <FormRichText modules="small" value={form.growths_explanation || ''} name="growths_explanation" setForm={handleSetForm} />
             </div>
 
             <div className="tw-w-full tw-border tw-border-dashed">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                    <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
                     <span className="tw-ml-2 tw-text-sm tw-font-medium">Таамаглал</span>
 
                     <HelpPopup classAppend="tw-ml-auto" main="Дээр дурдсан таамаглалыг тооцоолсон үндэслэл, шалтгааныг энд тайлбарлана уу." position="top-left" />
                 </div>
 
                 <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                    <FormRichText modules="small" value={form.assumptions} name="assumptions" setForm={handleSetForm} />
+                    <FormRichText modules="small" value={form.assumptions || ''} name="assumptions" setForm={handleSetForm} />
                 </div>
             </div>
 

@@ -46,7 +46,14 @@ function UrgudulActivities() {
     }
 
     const handleAdd = () => {
-        setForm([...form, { ...initialState[0] }])
+        const newObj = {
+            activity: null,
+            budget_cost: null,
+            edp_funding: null,
+            applicant_contribution: null,
+        }
+
+        setForm([...form, newObj])
     }
 
     const handleRemove = (index) => {
@@ -73,6 +80,7 @@ function UrgudulActivities() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагааны талаарх мэдээлэл хадгалагдлаа.' })
+                    setTimeout(() => history.push('/urgudul/7'), 3000)
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -106,14 +114,14 @@ function UrgudulActivities() {
                         <div className="tw-flex-grow">
                             <div className="tw-border tw-border-dashed">
                                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                                    <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
                                     <span className="tw-ml-2 tw-text-sm tw-font-medium">
                                         {`Үйл ажиллагаа ${i + 1}:`}
                                     </span>
                                 </div>
 
                                 <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                                    <FormRichText modules="small" value={item.activity} name="activity" id={i} setForm={handleSetForm} />
+                                    <FormRichText modules="small" value={item.activity || ''} name="activity" id={i} setForm={handleSetForm} />
                                 </div>
                             </div>
 
@@ -126,12 +134,12 @@ function UrgudulActivities() {
                             </div>
 
                             <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                <FormInline label="Үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost} name="budget_cost" id={i} onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
+                                <FormInline label="Үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
-                                <FormInline label="ЭДТ-өөс санхүүжүүлэгдэх нь, доллараар" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.edp_funding} name="edp_funding" id={i} onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
+                                <FormInline label="ЭДТ-өөс санхүүжүүлэгдэх нь, доллараар" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.edp_funding || ''} name="edp_funding" id={i} onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
                                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
-                                    <FormInline label="Өргөдөл гаргагчийн оролцоо (бэлэн мөнгө)" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.applicant_contribution} name="applicant_contribution" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
+                                    <FormInline label="Өргөдөл гаргагчийн оролцоо (бэлэн мөнгө)" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.applicant_contribution || ''} name="applicant_contribution" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
                                     <div className="tw-relative tw-w-2">
                                         <HelpPopup classAppend="tw-right-5 tw-top-1" main="/.../" position="top-left" />

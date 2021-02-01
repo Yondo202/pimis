@@ -9,14 +9,14 @@ function SearchSelectCompact(props) {
     useEffect(() => {
         if (props.data) {
             setFetch(props.data)
-            props.value && setSearch(props.data.filter(obj => obj.id === props.value)[0][props.displayName])
+            props.value && setSearch(props.data.filter(obj => obj.id === props.value)[0]?.[props.displayName])
         } else {
             axios.get(props.api)
                 .then(res => {
                     console.log(res.data)
                     const data = props.keys.reduce((a, v) => a[v], res.data)
                     setFetch(data)
-                    props.value && setSearch(data.filter(obj => obj.id === props.value)[0][props.displayName])
+                    props.value && setSearch(data.filter(obj => obj.id === props.value)[0]?.[props.displayName])
                 }).catch(err => {
                     console.log(err.response?.data)
                 })
@@ -44,7 +44,6 @@ function SearchSelectCompact(props) {
     const handleFocus = () => {
         setSearch('')
         setFocused(true)
-        // setChanged(true)
     }
 
     const handleSetForm = (value) => {
@@ -55,8 +54,7 @@ function SearchSelectCompact(props) {
         if (fetch.map(obj => obj[props.displayName]).includes(search)) {
             handleSetForm(fetch.filter(obj => obj[props.displayName] === search)[0].id)
         } else {
-            handleSetForm('')
-            setSearch('')
+            setSearch(fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
         }
         setFocused(false)
     }
@@ -74,7 +72,7 @@ function SearchSelectCompact(props) {
                 <SearchSVG className={`tw-w-4 tw-h-4 tw-flex-shrink-0 ${focused ? 'tw-text-blue-600' : 'tw-text-gray-700'} tw-transition-colors tw-duration-300`} />
             </div>
 
-            <div className={`tw-absolute tw-transform tw-translate-y-1 tw-w-full tw-h-60 tw-bg-white tw-z-10 tw-text-sm tw-rounded-md tw-shadow-sm tw-border tw-border-gray-400 tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focused ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`}>
+            <div className={`tw-absolute tw-transform tw-translate-y-1 ${!props.selectWidth && 'tw-w-full'} tw-h-60 tw-bg-white tw-z-10 tw-text-sm tw-rounded-md tw-shadow-sm tw-border tw-border-gray-400 tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focused ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} style={{ width: props.selectWidth }}>
                 {
                     fetch.filter(obj => filter(obj, search)).length ?
                         fetch.filter(obj => filter(obj, search)).sort(compare).map((item, i) =>

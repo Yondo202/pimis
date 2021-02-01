@@ -125,6 +125,7 @@ function UrgudulApplicant() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдөл гаргагчийн мэдээлэл хадгалагдлаа.' })
+                    setTimeout(() => history.push('/urgudul/3'), 3000)
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -148,19 +149,19 @@ function UrgudulApplicant() {
             </div>
 
             <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                <FormInline label="Аж ахуй нэгжийн нэр" type="text" value={form.company_name} name="company_name" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                <FormInline label="Аж ахуй нэгжийн нэр" type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
 
-                <FormInline label="Аж ахуйн нэгжийг төлөөлөх албан тушаалтны овог нэр" type="text" value={form.representative_name} name="representative_name" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                <FormInline label="Аж ахуйн нэгжийг төлөөлөх албан тушаалтны овог нэр" type="text" value={form.representative_name || ''} name="representative_name" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
 
-                <FormInline label="Төлөөлөгчийн албан тушаал" type="text" value={form.representative_position} name="representative_position" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                <FormInline label="Төлөөлөгчийн албан тушаал" type="text" value={form.representative_position || ''} name="representative_position" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
 
-                <FormInline label="ААН бүртгүүлсэн огноо" type="date" value={form.registered_date} name="registered_date" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="ААН бүртгүүлсэн огноо" type="date" value={form.registered_date || ''} name="registered_date" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
 
-                <FormInline label="Регистерийн дугаар" type="numberFormat" formats={{ thousandSeparator: true }} value={form.registration_number} name="registration_number" onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="Регистерийн дугаар" type="numberFormat" value={form.registration_number || ''} name="registration_number" onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
 
                 <div className="tw-relative tw-border tw-border-dashed tw-w-full tw-max-w-lg">
                     <div className="tw-flex">
-                        <FormInline label="Албан ёсны хаяг" type="text" value={form.official_address} name="official_address" onChange={handleInput} classAppend="tw-flex-grow" classInput="tw-w-full" />
+                        <FormInline label="Албан ёсны хаяг" type="text" value={form.official_address || ''} name="official_address" onChange={handleInput} classAppend="tw-flex-grow" classInput="tw-w-full" />
 
                         <div className="tw-relative tw-w-2">
                             <HelpPopup classAppend="tw-right-5 tw-top-1" main="Улаанбаатар хотыг сонгосон үед дүүрэг сонгоно уу." position="top-left" />
@@ -177,19 +178,19 @@ function UrgudulApplicant() {
                     </div>
                 </div>
 
-                <FormInline label="Албан газрын утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={form.telephone} name="telephone" onChange={handleInputFormatted} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="Албан газрын утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={form.telephone || ''} name="telephone" onChange={handleInputFormatted} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
 
-                <FormInline label="Гар утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={form.handphone} name="handphone" onChange={handleInputFormatted} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="Гар утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={form.handphone || ''} name="handphone" onChange={handleInputFormatted} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
 
                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
-                    <FormInline label="Имэйл хаяг" type="email" value={form.email} name="email" onChange={handleInput} classAppend="tw-flex-grow" classInput="tw-w-full" validate={true} />
+                    <FormInline label="Имэйл хаяг" type="email" value={form.email || ''} name="email" onChange={handleInput} classAppend="tw-flex-grow" classInput="tw-w-full" validate={true} />
 
                     <div className="tw-relative tw-w-2">
                         <HelpPopup classAppend="tw-right-5 tw-top-1" main="Гол харилцааг авч явах имэйл хаягийг бичнэ үү." position="top-left" />
                     </div>
                 </div>
 
-                <FormInline label="Вэбсайт" type="text" value={form.website} name="website" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                <FormInline label="Вэбсайт" type="text" value={form.website || ''} name="website" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
 
                 <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
                     <FormOptions label="Компаний хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={form.company_size} name="company_size" setForm={handleSetForm} classAppend="tw-flex-grow" />
@@ -239,21 +240,21 @@ function UrgudulApplicant() {
                             <SearchSelect label="Аль улсаас гадаад хөрөнгө оруулалдаг болох нь" api="countries" keys={['data']} value={form.invested_countryid} name="invested_countryid" displayName="description_mon" setForm={handleSetForm} />
                         </div>
 
-                        <FormInline label="Гадаад хөрөнгө оруулалтын эзлэх хувь" type="numberFormat" formats={{ format: '### %' }} value={form.investment_percent} name="investment_percent" onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-16" />
+                        <FormInline label="Гадаад хөрөнгө оруулалтын эзлэх хувь" type="numberFormat" formats={{ format: '### %' }} value={form.investment_percent || ''} name="investment_percent" onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-16" />
                     </>
                 }
             </div>
 
             <div className="tw-w-full tw-border tw-border-dashed">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                    <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
                     <span className="tw-ml-2 tw-text-sm tw-font-medium">Төслийн төлөвлөлт, гүйцэтгэл дэх оролцоо</span>
 
                     <HelpPopup classAppend="tw-ml-auto" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв батлах, нийт төслийн удирдлага, худалдан авалтын удирдлага, төслийн тайлагнал, нөөцийн удирдлага гм." position="top-left" />
                 </div>
 
                 <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                    <FormRichText modules="small" value={form.project_plan} name="project_plan" setForm={handleSetForm} />
+                    <FormRichText modules="small" value={form.project_plan || ''} name="project_plan" setForm={handleSetForm} />
                 </div>
             </div>
 

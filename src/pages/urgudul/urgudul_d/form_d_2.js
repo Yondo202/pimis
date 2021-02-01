@@ -18,7 +18,7 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 const initialState = [
     {
         director: true,
-        representative_positionId: 4,
+        representative_positionId: null,
         representative_name: null,
         representative_signature: null,
         submitDate: null,
@@ -30,11 +30,11 @@ function UrgudulNoticeCompany() {
 
     const UrgudulCtx = useContext(UrgudulContext)
 
-    // useEffect(() => {
-    //     if (UrgudulCtx.data.notices && UrgudulCtx.data.notices?.le) {
-    //         setForm(UrgudulCtx.data.notices)
-    //     }
-    // }, [UrgudulCtx.data.id])
+    useEffect(() => {
+        if (UrgudulCtx.data.noticeCompany && UrgudulCtx.data.noticeCompany?.length) {
+            setForm(UrgudulCtx.data.noticeCompany)
+        }
+    }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {
         const newForm = form
@@ -83,7 +83,7 @@ function UrgudulNoticeCompany() {
 
     const handleSubmit = () => {
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, { noticeClusters: form }, {
+            axios.put(`projects/${UrgudulCtx.data.id}`, { noticeCompany: form }, {
                 headers: {
                     'Authorization': getLoggedUserToken()
                 }
@@ -92,6 +92,7 @@ function UrgudulNoticeCompany() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хамтрагч талуудын мэдээлэл хадгалагдлаа.' })
+                    setTimeout(() => history.push('/urgudul/10'), 3000)
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -104,7 +105,7 @@ function UrgudulNoticeCompany() {
     }
 
     return (
-        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">D</span>
                 - Мэдэгдэл
@@ -162,16 +163,16 @@ function UrgudulNoticeCompany() {
             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                 <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-flex tw-place-items-center tw-p-2 tw-pl-8">
                     <span className="tw-text-sm tw-font-medium">Албан тушаал:</span>
-                    <span className="tw-ml-3 tw-bg-indigo-100 tw-rounded-lg py-1 tw-px-2 tw-text-sm">Гүйцэтгэх захирал</span>
+                    <span className="tw-ml-3 tw-bg-indigo-50 tw-rounded-lg tw-py-1 tw-px-2 tw-text-sm tw-text-indigo-500 tw-font-medium">Гүйцэтгэх захирал</span>
                 </div>
 
-                <FormInline label="Овог, нэр" type="text" value={directorItem.representative_name} name="representative_name" id={directorIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-80" />
+                <FormInline label="Овог, нэр" type="text" value={directorItem.representative_name || ''} name="representative_name" id={directorIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-80" />
 
-                <FormInline label="Огноо" type="date" value={directorItem.submitDate} name="submitDate" id={directorIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="Огноо" type="date" value={directorItem.submitDate || ''} name="submitDate" id={directorIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
 
                 <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg">
                     <div className="tw-flex tw-items-center tw-p-2">
-                        <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                        <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
                         <span className="tw-ml-2 tw-text-sm tw-font-medium">Гарын үсэг</span>
                     </div>
 
@@ -193,13 +194,13 @@ function UrgudulNoticeCompany() {
                                     <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} />
                                 </div>
 
-                                <FormInline label="Овог, нэр" type="text" value={item.representative_name} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
+                                <FormInline label="Овог, нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
 
-                                <FormInline label="Огноо" type="date" value={item.submitDate} name="submitDate" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                                <FormInline label="Огноо" type="date" value={item.submitDate || ''} name="submitDate" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
 
                                 <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg">
                                     <div className="tw-flex tw-items-center tw-p-2">
-                                        <PenSVG className="tw-w-6 tw-h-6 tw-text-gray-600" />
+                                        <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
                                         <span className="tw-ml-2 tw-text-sm tw-font-medium">Гарын үсэг</span>
                                     </div>
 
