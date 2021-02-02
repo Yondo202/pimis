@@ -173,7 +173,7 @@ function BusinessSectorEditor() {
                             </button>
                         </th>
                         <th className="tw-px-4 tw-sticky tw-top-0 tw-bg-gray-100">
-                            <button className="tw-flex tw-items-center tw-text-sm tw-font-bold tw-uppercase tw-text-gray-500 tw-rounded-md tw-focus:outline-none tw-active:bg-gray-200 tw-py-2 tw-px-2" onClick={() => sortBy('bdescription_mon')}>
+                            <button className="tw-flex tw-items-center tw-text-sm tw-font-bold tw-uppercase tw-text-gray-500 tw-rounded-md focus:tw-outline-none active:tw-bg-gray-200 tw-py-2 tw-px-2" onClick={() => sortBy('bdescription_mon')}>
                                 <span className={`${sort.by === 'bdescription_mon' && 'tw-text-blue-500'} tw-transition tw-duration-300`}>Салбар</span>
                                 <ArrowSVG className={`tw-w-4 tw-h-4 tw-transform ${sort.by === 'bdescription_mon' ? (sort.asc ? 'tw-rotate-90 tw-text-blue-600' : 'tw--rotate-90 tw-text-blue-600') : 'tw-rotate-90 tw-animate-pulse'}`} />
                             </button>

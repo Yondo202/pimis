@@ -5,7 +5,7 @@ const AlertContext = createContext()
 
 const initialState = {
     open: false,
-    variant: '',    //success or error
+    variant: '',    //success, error, normal
     msg: '',
 }
 

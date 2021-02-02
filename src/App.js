@@ -21,6 +21,7 @@ import ProductsEditor from 'pages/products_edit/editorPage'
 import { AlertStore } from 'components/utilities/alertContext'
 import AlertDialog from 'components/alert_dialog/alertDialog'
 import UrgudulNavigator from 'pages/urgudul/page'
+import LetterOfInterest from 'pages/sonirhol_ilerhiileh_at/page';
 
 
 function App() {
@@ -66,14 +67,17 @@ function App() {
                 <Route path="/email" component={EmialSender} />
                 <Route path="/email2" component={EmialSender2} />
               </Switch>
+
               <Switch>
+                <Route path="/letter-of-interest" component={LetterOfInterest} />
                 <UrgudulStore>
                   <Route path="/urgudul/:page" component={UrgudulNavigator} />
                 </UrgudulStore>
               </Switch>
+
               <Switch>
-                <Route exact path='/sector-edit' component={BusinessSectorEditor} />
-                <Route path='/product-edit' component={ProductsEditor} />
+                <Route path="/sector-edit" component={BusinessSectorEditor} />
+                <Route path="/product-edit" component={ProductsEditor} />
               </Switch>
             </>
           ) : (
