@@ -42,9 +42,10 @@ function Menu(props) {
     };
 
     const clickhandle2 = ()=>{
-      setTimeout(()=>{
-        window.location.reload(false);
-      },100)
+      console.log("done");
+      // setTimeout(()=>{
+      //   window.location.reload(false);
+      // },100)
     };
 
     useEffect(() => {
@@ -109,10 +110,10 @@ function Menu(props) {
                                 <Link to="/maygt-1">Өргөдөлийн маягт</Link>
                                 <div  className={`line ${activeMenu.Maygt}`}></div>
                               </div>
-                              <div className="items">
+                              {/* <div className="items">
                                 <Link to="/comp-check">Шалгах</Link>
                                 <div  className={`line ${activeMenu.Check}`}></div>
-                              </div>
+                              </div> */}
                               <div className="items">
                                 <Link to="/comp-test">Test</Link>
                                 <div  className={`line ${activeMenu.Check}`}></div>

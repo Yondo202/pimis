@@ -166,7 +166,7 @@ function TableFour(props) {
                     setFinalTextScale("1");
                     setFinalText("Та шалгуур хангаж байна...");
                     setOpacity2("0");
-                    alert("gg");
+                    // alert("gg");
                     finalEnd.PPS4["esm"] = "F"
                     console.log(finalEnd, "other F");
                     axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(F) res 4 $$")}).catch((err)=>{ console.log(err, "err");});

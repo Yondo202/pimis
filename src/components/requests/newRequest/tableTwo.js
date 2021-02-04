@@ -23,9 +23,6 @@ function TableTwo() {
       let storageToken = localStorage.getItem("edp_loggedUser", []);
       setUserToken(storageToken);
     },[]);
-        
-
-    console.log(helperContext.tableId, "my table ID");
 
     const clickHandles = (e) =>{
         // scroll.scrollTo(0);
@@ -39,7 +36,6 @@ function TableTwo() {
                 condition.push(value);
             }
         })
-
 
         const FilesSend =(AllData)=>{
             const TestArr = [];
@@ -101,7 +97,7 @@ function TableTwo() {
                 originalTest.push(el);
            }
         })
-        // console.log(originalTest.length, "test");
+        console.log(originalTest.length, "test");
 
         let rs4 = document.querySelectorAll(".getUser2");
         let arr4 = Array.from(rs4);
