@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {fontFamily, textColor,fontSize,Color,ColorRgb} from '../theme'
-import {VscCalendar,VscGoToFile,VscRepoPush,VscNewFile} from 'react-icons/vsc'
+import {VscCalendar,VscGoToFile,VscNewFile} from 'react-icons/vsc'
 import {GiSandsOfTime} from 'react-icons/gi'
 import {GrNewWindow} from 'react-icons/gr'
 import {FcNext} from 'react-icons/fc'
-import {IoResizeOutline,IoEyeOutline} from 'react-icons/io5'
+import {IoResizeOutline} from 'react-icons/io5'
 import {  Link } from "react-router-dom";
 import axios from '../../axiosbase'
 import UserContext from '../../context/UserContext'
@@ -17,8 +17,8 @@ function RequestHome() {
     useEffect(async ()=>{
         const localToken = localStorage.getItem("edp_loggedUser", []);
         let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${localToken}`}});
-        if(resData){setAllData(resData.data.data)}
-        // console.log(resData.data.data, " my data");
+        if(resData){setAllData(resData.data.data)};
+        console.log(resData, " ** my data");
     },[]);
 
     return (

@@ -1,4 +1,3 @@
-
 import React,{useEffect, useState, useRef, useContext} from 'react';
 import styled from 'styled-components'
 import { Link, animateScroll as scroll } from "react-scroll";
@@ -19,11 +18,7 @@ function TableFour() {
       const [ finalTextScale, setFinalTextScale] = useState('0');
       const [procent, setProcent] = useState('0');
       const [ finalMsg, setFinalMsg ] = useState("0");
-      const [visible, setVisible] = useState(false);
-      const [dataFinal, setData] = useState({});
-      const [dataDetail, setDataDetal] = useState([]);
       const [FinalErrorText, setFinalErrorText] = useState("");
-
       const StyleContext = useContext(UserContext);
       const helperContext = useContext(HelperContext);
       console.log(helperContext.tableId, " $ table Id 4 $ ");
@@ -33,12 +28,6 @@ function TableFour() {
           let storageToken = localStorage.getItem("edp_loggedUser", []);
           setUserToken(storageToken);
       });
-
-      // useEffect(async () => {
-      //   const result = await axios.get('http://192.168.88.78:3000/api/questions?page=1&pageSize=3');
-      //   const Data1 = result.data.data.docs[1]
-      //   setData(Data1); setDataDetal(Data1.questiondetails);
-      // },[]);
 
       const clickHandles = (e) =>{
             let finalOne = {};
@@ -53,11 +42,9 @@ function TableFour() {
                   let value = element.value;
                   soloObject2["rownum"] = field
                   soloObject2["rowvalue"] = value
-                  // soloObject2[`pps${field}`] = value;
                   finalOne2.push(soloObject2);
                 }
             });
-
 
             let rs4 = document.querySelectorAll(".getUserInp");
             let arr4 = Array.from(rs4);
@@ -81,10 +68,6 @@ function TableFour() {
             const FinalProcent = Math.round(Procent);
 
             console.log(finalEnd , "pps4 final end");
-            // console.log(JSON.stringify(finalEnd));
-
-            console.log(finalOne2[3].rowvalue, "dadad");
-
 
             if(finalOne2.length < 15){
               setOpacity("1");

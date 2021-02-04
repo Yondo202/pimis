@@ -43,7 +43,7 @@ function CompCheck() {
               console.log(cond , " my condddd");
 
               let finalCond = Object.keys(cond);
-              console.log(finalCond.length, " cond length")
+              console.log(finalCond.length, " cond length");
 
 
               let keys = Object.keys(soloObject2);
@@ -70,7 +70,7 @@ function CompCheck() {
     return (
         <Component1 className="container" >
             <div className="boxShadow">
-                <div className="rowHeader">1. Шалгуур хангалтыг тулгах хуудас? <span className="tseg">*</span></div>
+                <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
                 {allData.map((el,i)=>{
                     return(
                         <div key={i} className="formTwoParent ">

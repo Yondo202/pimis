@@ -54,27 +54,16 @@ function TableThree(props) {
             // tableCondition.push(Lala);
             finalOne2.push(Lala);
         });
-        // let keys = Object.keys(tableCondition[0]);
 
         let rs4 = document.querySelectorAll(".getUserInp3");
         let arr4 = Array.from(rs4);
         let userInp = {};
 
-        arr4.map(element=>{
-            let field = element.name;
-            let value = element.value;
-            userInp[field] = value;
-        });
-
+        arr4.map(element=>{let field = element.name; let value = element.value;  userInp[field] = value; });
         let confirm = document.getElementById("GetcheckBtn3").checked;
 
-        finalOne["request"] = finalOne2;
-        finalOne["name"] = userInp.name;
-        finalOne["date"] = userInp.date;
-        finalEnd["PPS3"] = finalOne;
-
+        finalOne["request"] = finalOne2; finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS3"] = finalOne;
         console.log(finalEnd, "final");
-        // console.log(JSON.stringify(finalEnd));
 
         if(userInp.name === "" || userInp.date === ""){
             setOpacity2("1");

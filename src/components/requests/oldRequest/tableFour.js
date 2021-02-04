@@ -179,8 +179,6 @@ function TableFour(props) {
             // scroll.scrollTo(0);
             // StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
         }
-//   console.log(trimmedDataURL, "signature url");
-// console.log(initialData, " 444 my initial finalll")
     return (
         <Component1 className="container" >
             <div className="boxShadow">

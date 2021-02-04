@@ -41,15 +41,6 @@ function MainHome() {
                 </div>
                 <div style={{borderRight:`1px solid rgba(${ColorRgb},0.7)`}} className="col-md-6">
                 <div className="row">
-                        {/* <div style={{borderRight:`1px solid rgba(${ColorRgb},0.2)`}} className="col-md-4">
-                                    <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                                        <div className="iconPar"><img src="one3.svg" alt="EDP-img" /></div>
-                                    </motion.div>
-                                    <div className="ItemPar">
-                                        <div className="checkIconRed"></div>
-                                    <div className="texts">Санхүүгийн дэмжлэг хүссэн өргөдөл</div>
-                                </div>
-                        </div> */}
                         <div style={{borderRight:`1px solid rgba(${ColorRgb},0.2)`}} className="col-md-4">
                             <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
                                  <div className="iconPar"><img src="one4.svg" alt="EDP-img" /></div>

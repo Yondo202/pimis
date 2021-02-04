@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect,useCallback } from 'react'
 import styled from 'styled-components'
 import {Color,ColorRgb, textColor} from "../theme"
 import Modal from 'react-awesome-modal';
@@ -27,6 +27,7 @@ function Signup() {
       specialChar: null
     });
 
+
     const openModal=()=> { setVisible(false); setVisible2(true); }
     const closeModal=()=> { setVisible(false); }
     const closeModal3=()=> { setVisible2(false);  setVisible(false); }
@@ -39,6 +40,15 @@ function Signup() {
       }
     }
 
+    const keyPress = useCallback(e=>{
+      if(e.key === 'F2'){
+        openModal();
+      }
+    },[]);
+    useEffect( async ()=>{
+        document.addEventListener('keydown', keyPress);
+        return () => document.removeEventListener('keydown', keyPress)
+    },[keyPress]);
 
     const onChangePassword =password =>{
       setPassword(password);
@@ -51,7 +61,6 @@ function Signup() {
     }
     
     const handleClick = async (e) =>{
-        // e.preventDefault();
              let rs = document.querySelectorAll(".userInp");
              let arr = Array.from(rs);
              let finalOne = {};
@@ -60,7 +69,6 @@ function Signup() {
                   let value = element.value;
                   finalOne[field] = value;
             });
-            // console.log(finalOne, "my final");
             if(passwordValidity.minChar === false || passwordValidity.number === false || passwordValidity.specialChar === false){
               setPassText("Нууц үг хийх хэсэгээ шалгана уу..");
             }else if(finalOne.password !== finalOne.passwordagain) {

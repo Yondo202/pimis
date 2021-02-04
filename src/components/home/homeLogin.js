@@ -2,15 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import Login from './login'
 import {fontFamily} from "../theme"
-import { motion } from "framer-motion";
-import Content from './content'
 
 function HomeLogin() {
     return (
         <ComponentHome >
-            {/* <div className="mainContentPar">
-                <Content />
-            </div> */}
             <div className="ghost" style={{backgroundImage:`url(/background1.jpg)`}}>
                 <div className="ghostChild"></div>
             </div>

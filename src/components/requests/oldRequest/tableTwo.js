@@ -39,124 +39,64 @@ function TableTwo(props) {
     console.log(initialData, " 222  my initial Data");
 
 
-    const onChangeHandle = (event) =>{
-        const finalData = []
-          tableData.map((el,i)=>{
-           props.initialData.map(elem=> elem);
-           finalData.push(el);
+    const onChangeHandle = (event) =>{ const finalData = [];
+          tableData.map((el,i)=>{props.initialData.map(elem=> elem); finalData.push(el);
        });
         finalData.map((el, i )=>{
-            if(el.id.toString() === event.target.id){
-                 el["name"] = event.target.value
-            }
-        });
+            if(el.id.toString() === event.target.id){ el["name"] = event.target.value }});
        setInitialData(finalData);
     }
 
-    const onChangeGetDate = (event) =>{
-        const finalData = []
-        tableData.map((el,i)=>{
-            props.initialData.map(elem=> elem);
-            finalData.push(el);
-        });
+    const onChangeGetDate = (event) =>{const finalData = []
+        tableData.map((el,i)=>{ props.initialData.map(elem=> elem); finalData.push(el); });
         finalData.map((el, i )=>{
-            if(el.id.toString() === event.target.id){
-                el["getDate"] = event.target.value
-            }
-        });
+            if(el.id.toString() === event.target.id){el["getDate"] = event.target.value }  });
         setInitialData(finalData);
     }
 
-    const onChangeRecentDate = (event) =>{
-        const finalData = []
-        tableData.map((el,i)=>{
-            props.initialData.map(elem=> elem);
-            finalData.push(el);
-        });
-        finalData.map((el, i )=>{
-            if(el.id.toString() === event.target.id){
-                el["recentDate"] = event.target.value
-            }
-        });
+    const onChangeRecentDate = (event) =>{ const finalData = []
+        tableData.map((el,i)=>{props.initialData.map(elem=> elem);finalData.push(el);  });
+        finalData.map((el, i )=>{if(el.id.toString() === event.target.id){ el["recentDate"] = event.target.value }});
         setInitialData(finalData);
     }
 
     const onChangeFile = (event) =>{
-        console.log(event.target, " my event");
-        const finalData = []
-        tableData.map((el,i)=>{
-            props.initialData.map(elem=> elem);
-            finalData.push(el);
-        });
+        const finalData = [];
+        tableData.map((el,i)=>{props.initialData.map(elem=> elem);finalData.push(el); });
 
-        finalData.map((el, i )=>{
-            if(el.id.toString() === event.target.id){
-                el["fileurl"] = event.target.files[0].name
-            }
-        });
+        finalData.map((el, i )=>{ if(el.id.toString() === event.target.id){ el["fileurl"] = event.target.files[0].name }  });
         setInitialData(finalData);
     }
 
     const changeHandleName = (e) =>{   setDname(e.target.value);  }
-      const changeHandleDate = (e)=>{  setDdate(e.target.value);  }
+    const changeHandleDate = (e)=>{  setDdate(e.target.value);  }
 
 
     const clickHandles = (e) =>{
-        let getFile = document.querySelectorAll(".GetFilesData");
-        let myArr1 = Array.from(getFile);
-        let condition = []
-        myArr1.map((el,i)=>{
-            let value = {}
-            value = el.files[0];
-            if(value !== undefined){
-                condition.push(value);
-            }
+        let getFile = document.querySelectorAll(".GetFilesData");  let myArr1 = Array.from(getFile);  let condition = []
+        myArr1.map((el,i)=>{let value = {};   value = el.files[0];
+            if(value !== undefined){ condition.push(value); }
         })
 
         const FilesSend = (FileData) =>{
             const TestArr = [];
-                myArr1.map((el,i)=>{
-                    let value = el.files[0]
-                    if(value === undefined){
-                        value = {}
-                    }
-                    FileData.map((element, index)=>{
-                            if( i === index){
-                                value["tableId"] = element.id
-                                TestArr.push(value);
-                            }
-                    })
+                myArr1.map((el,i)=>{ let value = el.files[0]
+                    if(value === undefined){value = {}}
+                    FileData.map((element, index)=>{  if( i === index){value["tableId"] = element.id;TestArr.push(value); }})
                 });
-                console.log(TestArr, " test arrrrr");
-            TestArr.map((el,i)=>{
-                    const data = new FormData();
-                    data.append(el.name, el);
-                    axios.put(`pps-request/${el.tableId}/upload-pps2`, data, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{
-                        console.log(res, 'ress');
-                    }).catch((err)=> console.log(err))
+            TestArr.map((el,i)=>{ const data = new FormData();   data.append(el.name, el);
+                    axios.put(`pps-request/${el.tableId}/upload-pps2`, data, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{console.log(res,'ress'); })
+                    .catch((err)=> console.log(err))
             });
         }
 
         e.preventDefault();
-        let finalOne = {};
-        let finalEnd = {};
-        let rs2 = document.querySelectorAll(".GetItem");
-        let arr2 = Array.from(rs2);
-        let finalOne2 = [];
+        let finalOne = {};  let finalEnd = {}; let rs2 = document.querySelectorAll(".GetItem"); let arr2 = Array.from(rs2); let finalOne2 = [];
         
         arr2.map((el,i)=>{
-            const Lala = {}
-            let rs2 = document.querySelectorAll(`.PPS${i + 1}`);
-            let arr23 = Array.from(rs2);
+            const Lala = {};  let rs2 = document.querySelectorAll(`.PPS${i + 1}`);  let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
-                if(el.value !== ""){
-                    let field = el.name;
-                    let value = el.value;
-                    if(props.initialData[0]){
-                        Lala["id"] = el.id
-                    }  Lala[field] = value;
-                }
-              
+                if(el.value !== ""){ let field = el.name; let value = el.value; if(props.initialData[0]){   Lala["id"] = el.id;}  Lala[field] = value; }
             });
             finalOne2.push(Lala);
         });
@@ -189,20 +129,16 @@ function TableTwo(props) {
         console.log(originalTest.length, "hevellee");
 
         if(originalTest.length < 10){
-            setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
-            setOpacity2("1");
-            // scroll.scrollTo(0);
+            setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү"); setOpacity2("1");
         }else if(userInp.name === "" || userInp.date === ""){
-            setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
-            setOpacity2("1");
+            setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү"); setOpacity2("1");
         }
         // else if(condition.length < 10){
         //     setFinalErrorText("Шаардлагатай материал бүрэн хавсаргаагүй байна...");
         //     setOpacity2("1");
         // }
         else if(confirm === false){
-            setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
-            setOpacity2("1");
+            setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
         }else{
             setOpacity2("0");
             axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res); FilesSend(res.data.data.ppsRequest2Detail); })

@@ -25,7 +25,6 @@ function TableTwo() {
     },[]);
 
     const clickHandles = (e) =>{
-        // scroll.scrollTo(0);
         let getFile = document.querySelectorAll(".GetFilesData");
         let myArr1 = Array.from(getFile);
         let condition = []
@@ -61,9 +60,6 @@ function TableTwo() {
             });
         }
 
-        // console.log(ConditionFile.length, " ** condition length");
-        // console.log(TestArr, "my files");
-
         e.preventDefault();
         let finalOne = {};
         let finalEnd = {};
@@ -77,7 +73,6 @@ function TableTwo() {
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
                 if(el.value !== ""){
-                    let conditionbefore = {}
                     let field = el.name;
                     let value = el.value;
                     Lala[field] = value;
@@ -90,9 +85,7 @@ function TableTwo() {
 
         let originalTest = []
          finalOne2.map(el =>{
-        //  console.log(el, " my elementssss");
           let  conditon1 = Object.keys(el)
-        //   console.log(conditon1.length);
            if(conditon1.length === 3){
                 originalTest.push(el);
            }
@@ -114,12 +107,6 @@ function TableTwo() {
         finalOne["name"] = userInp.name;
         finalOne["date"] = userInp.date;
         finalEnd["PPS2"] = finalOne;
-
-   
-
-
-   
-        console.log(condition.length, "legth;");
 
         if(originalTest.length < 10){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
@@ -153,14 +140,8 @@ function TableTwo() {
         }
         
         console.log(finalEnd, "my all");
-        // console.log(JSON.stringify(finalEnd), "myddd");
     }
     
-
-    // youtube.com/watch?v=PEGUFi9Sx-U
-
-    // https://www.youtube.com/watch?v=0TTa5Ulmgds
-   
     return (
         <Component2 className="container">
             <div className="shadow" >
