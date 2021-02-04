@@ -1,6 +1,6 @@
 import React,{useState, useContext} from 'react';
-import styled from 'styled-components'
-import { Link, animateScroll as scroll } from "react-scroll";
+import styled from 'styled-components';
+import { useHistory } from 'react-router-dom'
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
 import {AiOutlineSend} from 'react-icons/ai'
 import {CgDanger} from 'react-icons/cg'
@@ -9,6 +9,7 @@ import HelperContext from '../../context/HelperContext'
 import axios from '../../axiosbase'
 
 function CompCheck() {
+    const history = useHistory();
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
@@ -38,14 +39,11 @@ function CompCheck() {
                   }
 
               });
-              console.log(soloObject2, "final two two");
-              // console.log(condititon, " condition");
-              console.log(cond , " my condddd");
+              // console.log(soloObject2, "final two two");
+              // console.log(cond , " my condddd");
 
               let finalCond = Object.keys(cond);
-              console.log(finalCond.length, " cond length");
-
-
+              // console.log(finalCond.length, " cond length");
               let keys = Object.keys(soloObject2);
               console.log(keys.length, " my urt");
               const Procent = keys.length * 100 / 25;
@@ -63,6 +61,7 @@ function CompCheck() {
                 setOpacity2("0");
                 setFinalTextScale("0");
                 alert("gg");
+                history.push('/');
                 // scroll.scrollTo(0);
               }
       }
