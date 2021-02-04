@@ -22,6 +22,10 @@
     outline-color: #3B82F6;
 }
 
+.quill .ql-editing {
+    z-index: 10;
+}
+
 /* not working */
 
 .quil .ql-toolbar .ql-formats button {

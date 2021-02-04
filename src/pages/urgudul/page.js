@@ -16,7 +16,6 @@ import UrgudulNoticeCompany from './urgudul_d/form_d_2'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import { useTransition, animated } from 'react-spring'
 import CloseSVG from 'assets/svgComponents/closeSVG'
-import PlusSVG from 'assets/svgComponents/plusSVG'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
@@ -199,7 +198,7 @@ function UrgudulNavigator() {
                                         <CloseSVG className="tw-w-6 tw-h-6" />
                                     </button>
 
-                                    <div className="tw-flex tw-flex-wrap tw-justify-center">
+                                    <div className="tw-flex tw-flex-wrap tw-justify-start">
                                         {
                                             projects.map((item, i) =>
                                                 <div className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300" onClick={() => loadProject(item.id)}>

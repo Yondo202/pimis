@@ -21,7 +21,7 @@ import ProductsEditor from 'pages/products_edit/editorPage'
 import { AlertStore } from 'components/utilities/alertContext'
 import AlertDialog from 'components/alert_dialog/alertDialog'
 import UrgudulNavigator from 'pages/urgudul/page'
-import LetterOfInterest from 'pages/sonirhol_ilerhiileh_at/page';
+import LetterOfInterest from 'pages/letter_of_interest/page'
 
 
 function App() {

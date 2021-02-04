@@ -49,7 +49,7 @@ function FormRichText(props) {
     }
 
     return (
-        <ReactQuill theme="snow" bounds={'quill'} modules={modules} tabIndex={0} value={props.value} onChange={handleOnChange} />
+        <ReactQuill theme="snow" modules={modules} tabIndex={0} value={props.value} onChange={handleOnChange} />
     )
 }
 
