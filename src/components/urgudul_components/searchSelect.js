@@ -3,20 +3,21 @@ import SearchSVG from 'assets/svgComponents/searchSVG'
 import axios from 'axiosbase'
 import PenSVG from 'assets/svgComponents/penSVG'
 
+
 function SearchSelect(props) {
     const [fetch, setFetch] = useState([])
 
     useEffect(() => {
-        if (props.data && props.data.length) {
+        if (props.data) {
             setFetch(props.data)
-            props.value && setSearch(props.data.filter(obj => obj.id === props.value)[0][props.description])
+            props.value && setSearch(props.data.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
         } else {
             axios.get(props.api)
                 .then(res => {
                     console.log(res.data)
                     const data = props.keys.reduce((a, v) => a[v], res.data)
                     setFetch(data)
-                    props.value && setSearch(data.filter(obj => obj.id === props.value)[0][props.description])
+                    props.value && setSearch(data.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
                 }).catch(err => {
                     console.log(err.response?.data)
                 })
@@ -25,15 +26,15 @@ function SearchSelect(props) {
 
     const filter = (obj, searchState) => {
         if (obj) {
-            const str = ('' + obj[props.description_mon]).toLowerCase()
+            const str = ('' + obj[props.displayName]).toLowerCase()
             return str.includes(searchState.toLowerCase())
         }
     }
 
     const compare = (a, b) => {
-        if (a[props.description_mon] > b[props.description_mon]) {
+        if (a[props.displayName] > b[props.displayName]) {
             return 1
-        } else if (a[props.description_mon] < b[props.description_mon]) {
+        } else if (a[props.displayName] < b[props.displayName]) {
             return -1
         } else return 0
     }
@@ -44,7 +45,6 @@ function SearchSelect(props) {
     const handleFocus = () => {
         setSearch('')
         setFocused(true)
-        // setChanged(true)
     }
 
     const handleSetForm = (value) => {
@@ -52,11 +52,10 @@ function SearchSelect(props) {
     }
 
     const handleBlur = () => {
-        if (fetch.map(obj => obj[props.description_mon]).includes(search)) {
-            handleSetForm(fetch.filter(obj => obj[props.description_mon] === search)[0].id)
+        if (fetch.map(obj => obj[props.displayName]).includes(search)) {
+            handleSetForm(fetch.filter(obj => obj[props.displayName] === search)[0].id)
         } else {
-            handleSetForm('')
-            setSearch('')
+            setSearch(fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
         }
         setFocused(false)
     }
@@ -67,12 +66,12 @@ function SearchSelect(props) {
     }
 
     return (
-        <div className={`tw-relative tw-pl-11 tw-pr-3 tw-pt-8 tw-pb-3 tw-flex tw-flex-col ${props.classAppend}`}>
-            <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-font-medium tw-whitespace-nowrap tw-top-2 tw-left-8 ${props.classLabel} ${focused ? 'tw-text-sm' : 'tw-text-xs tw-top-6 tw-left-12'} tw-transition-all tw-duration-300`}>
+        <div className={`tw-relative tw-pl-10 tw-pr-3 tw-pt-8 tw-pb-3 tw-flex tw-flex-col ${props.classAppend}`}>
+            <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-font-medium tw-whitespace-nowrap ${props.classLabel} ${focused ? 'tw-text-sm tw-top-2 tw-left-8' : 'tw-text-xs tw-top-6 tw-left-12'} tw-transition-all tw-duration-300`}>
                 {props.label}
             </label>
 
-            <PenSVG className={`tw-absolute tw-w-6 tw-h-6 tw-top-9 tw-left-3 tw-flex-shrink-0 ${focused && 'tw-text-blue-500'} tw-transition-colors tw-duration-300`} />
+            <PenSVG className={`tw-absolute tw-w-5 tw-h-5 tw-top-10 tw-left-3 tw-flex-shrink-0 ${focused ? 'tw-text-blue-500' : 'tw-text-gray-600'} tw-transition-colors tw-duration-300`} />
 
             <div className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border tw-border-gray-400 tw-rounded-md tw-pt-2 tw-pb-1 tw-pl-2 tw-pr-1 focus-within:tw-border-blue-500 tw-transition-colors tw-duration-300 tw-placeholder-gray-400 ${props.classInput}`}>
                 <input className="tw-mr-1 tw-bg-transparent tw-outline-none tw-flex-grow" type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} />
@@ -84,9 +83,9 @@ function SearchSelect(props) {
                 {
                     fetch.filter(obj => filter(obj, search)).length ?
                         fetch.filter(obj => filter(obj, search)).sort(compare).map((item, i) =>
-                            <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelect(item.id, item[props.description_mon])} key={item.id}>
+                            <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelect(item.id, item[props.displayName])} key={item.id}>
                                 <span className="tw-font-medium tw-pr-2">{i + 1}.</span>
-                                {item[props.description_mon]}
+                                {item[props.displayName]}
                             </div>)
                         :
                         <p className="tw-p-1 tw-text-xs tw-text-center tw-mt-4 tw-italic tw-opacity-80">Хайлт олдсонгүй.</p>

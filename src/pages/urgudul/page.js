@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Switch, Route, useHistory, useParams, useLocation } from 'react-router-dom'
 import UrgudulFront from './formFront'
 import UrgudulApplicant from './urgudul_a/form_a_1'
@@ -15,6 +15,12 @@ import UrgudulNoticeCluster from './urgudul_d/form_d_1'
 import UrgudulNoticeCompany from './urgudul_d/form_d_2'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import { useTransition, animated } from 'react-spring'
+import CloseSVG from 'assets/svgComponents/closeSVG'
+import PlusSVG from 'assets/svgComponents/plusSVG'
+import axios from 'axiosbase'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import AlertContext from 'components/utilities/alertContext'
+import HomeSVG from 'assets/svgComponents/homeSVG'
 
 
 function UrgudulNavigator() {
@@ -44,15 +50,69 @@ function UrgudulNavigator() {
 
     const UrgudulCtx = useContext(UrgudulContext)
 
-    const isCluster = UrgudulCtx.data.project_type === 1
+    const isCluster = UrgudulCtx.data?.project_type === 1 || false
 
     const location = useLocation()
 
-    const transitions = useTransition(location, location => location.pathname, {
+    const transitionsPages = useTransition(location, location => location.pathname, {
         from: { opacity: 0, transform: slideLeft ? 'translateX(-100px)' : 'translateX(100px)' },
         enter: { opacity: 1, transform: 'translateX(0)' },
         leave: { display: 'none' },
         initial: { opacity: 1 },
+    })
+
+    const [modalOpen, setModalOpen] = useState(true)
+
+    const [projects, setProjects] = useState([])
+
+    const AlertCtx = useContext(AlertContext)
+
+    useEffect(() => {
+        if (modalOpen) {
+            axios.get('projects', {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
+            }).then(res => {
+                console.log(res.data)
+                setProjects(res.data.data)
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+        }
+    }, [modalOpen])
+
+    const loadProject = (id) => {
+        axios.get(`projects/${id}`, {
+            headers: {
+                'Authorization': getLoggedUserToken(),
+            }
+        }).then(res => {
+            console.log(res.data)
+            UrgudulCtx.setData(res.data.data)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээллийг амжилттай уншлаа.' })
+            setModalOpen(false)
+        }).catch(err => {
+            console.log(err.response?.data)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
+        })
+    }
+
+    const createProject = () => {
+        setModalOpen(false)
+        history.push('/urgudul/1')
+    }
+
+    const transitionsModal = useTransition(modalOpen, null, {
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+    })
+
+    const transitionsModalContent = useTransition(modalOpen, null, {
+        from: { transform: 'translate3d(0, -20px, 0)' },
+        enter: { transform: 'translate3d(0, 0, 0)' },
+        leave: { transform: 'translate3d(0, 20px, 0)' },
     })
 
     return (
@@ -62,7 +122,6 @@ function UrgudulNavigator() {
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90" />
                     <span className="tw-mr-1">Prev</span>
                 </button>
-
                 {
                     [...Array(5)].map((item, i) =>
                         <button className={`tw-mx-2 tw-px-2 tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === startPage + i && 'tw-bg-indigo-500 tw-text-white'} tw-transition-colors tw-duration-300`} key={i} onClick={() => handleJump(startPage + i)}>
@@ -70,7 +129,6 @@ function UrgudulNavigator() {
                         </button>
                     )
                 }
-
                 <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 10 && 'tw-invisible'}`} onClick={handleNext}>
                     <span className="tw-ml-1">Next</span>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw--rotate-90" />
@@ -78,7 +136,7 @@ function UrgudulNavigator() {
             </div>
 
             {
-                transitions.map(({ item, props, key }) =>
+                transitionsPages.map(({ item, props, key }) =>
                     <animated.div key={key} style={props}>
                         <Switch location={item}>
                             <Route exact path="/urgudul/1">
@@ -90,11 +148,9 @@ function UrgudulNavigator() {
                             </Route>
 
                             <Route path="/urgudul/3">
-                                {/* {
+                                {
                                     isCluster ? <UrugudulClusters /> : <UrugudulDirectors />
-                                } */}
-                                <UrugudulClusters />
-                                <UrugudulDirectors />
+                                }
                             </Route>
 
                             <Route path="/urgudul/4">
@@ -118,11 +174,9 @@ function UrgudulNavigator() {
                             </Route>
 
                             <Route path="/urgudul/9">
-                                {/* {
+                                {
                                     isCluster ? <UrgudulNoticeCluster /> : <UrgudulNoticeCompany />
-                                } */}
-                                <UrgudulNoticeCluster />
-                                <UrgudulNoticeCompany />
+                                }
                             </Route>
 
                             <Route path="/urgudul/10">
@@ -132,7 +186,61 @@ function UrgudulNavigator() {
                     </animated.div>
                 )
             }
-        </div >
+
+            {
+                transitionsModal.map(({ item, key, props }) =>
+                    item &&
+                    <animated.div key={key} style={props} className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10">
+                        {
+                            transitionsModalContent.map(({ item, key, props }) =>
+                                item &&
+                                <animated.div key={key} style={props} className="tw-bg-white tw-relative tw-rounded-md tw-shadow-lg tw-p-4 tw-m-8 tw-w-full tw-max-w-3xl tw-flex tw-flex-col tw-items-center">
+                                    <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-2 tw-right-2" onClick={() => setModalOpen(false)}>
+                                        <CloseSVG className="tw-w-6 tw-h-6" />
+                                    </button>
+
+                                    <div className="tw-flex tw-flex-wrap tw-justify-center">
+                                        {
+                                            projects.map((item, i) =>
+                                                <div className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300" onClick={() => loadProject(item.id)}>
+                                                    <div className={`tw-h-24 tw-rounded-t-md tw-flex tw-justify-center tw-items-center tw-text-white tw-text-lg tw-font-bold ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
+                                                        ID: {item.id}
+                                                    </div>
+                                                    <div className="tw-pl-2 tw-mt-1 tw-truncate w-full tw-text-xs tw-font-medium">
+                                                        {
+                                                            {
+                                                                1: 'Кластер',
+                                                                0: 'ААН',
+                                                            }[item.project_type] || '--/--'
+                                                        }
+                                                    </div>
+                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate w-full tw-text-xs tw-font-medium">
+                                                        {item.company_name}
+                                                    </div>
+                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate w-full tw-text-xs tw-font-medium">
+                                                        {item.project_name}
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+
+                                        <div className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300" onClick={createProject}>
+                                            <div className="tw-relative tw-h-24 tw-bg-gray-400 tw-rounded-t-md tw-flex tw-justify-center tw-items-center">
+                                                <HomeSVG className="tw-w-10 tw-h-10 tw-text-white" />
+                                            </div>
+                                            <div className="tw-pl-2 tw-mt-2 w-full tw-text-xs tw-font-medium tw-text-center">
+                                                Шинээр маягт бөглөх
+                                            </div>
+                                        </div>
+                                    </div>
+                                </animated.div>
+                            )
+                        }
+
+                    </animated.div>
+                )
+            }
+        </div>
     )
 }
 

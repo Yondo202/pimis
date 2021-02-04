@@ -1,8 +1,11 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import HelpPopup from 'components/help_popup/helpPopup'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import AlertContext from 'components/utilities/alertContext'
+import { useHistory } from 'react-router-dom'
 
 
 const initialState = {
@@ -17,21 +20,46 @@ const initialState = {
 function UrgudulChecklist() {
     const [form, setForm] = useState(initialState)
 
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    useEffect(() => {
+        if (UrgudulCtx.data.confirmed) {
+            let temp = {}
+            Object.keys(initialState).forEach(key => {
+                temp[key] = true
+            })
+            setForm(temp)
+        }
+    }, [UrgudulCtx.data.id])
+
     const handleInputCheckbox = (e) => {
         setForm({ ...form, [e.target.name]: e.target.checked })
     }
 
-    const UrgudulCtx = useContext(UrgudulContext)
+    const AlertCtx = useContext(AlertContext)
+
+    const history = useHistory()
 
     const handleSubmit = () => {
-        axios.put(`projects/${UrgudulCtx.data.id}`, form)
-            .then(res => {
-                console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
+        if (UrgudulCtx.data.id) {
+            axios.put(`projects/${UrgudulCtx.data.id}`, { confirmed: Object.values(form).every(bool => bool) }, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
             })
-            .catch(err => {
-                console.log(err.response?.data)
-            })
+                .then(res => {
+                    console.log(res.data)
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Шалгах хуудсын мэдээлэл хадгалагдлаа.' })
+                })
+                .catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
+            setTimeout(() => history.push('/urgudul/1'), 3000)
+        }
     }
 
     return (

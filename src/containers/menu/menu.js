@@ -55,7 +55,7 @@ function Menu(props) {
       if(currentPath === "/"){setActiveMenu({Home:'line2',Req:'',Check:'',Maygt:''})}
       if(currentPath === "/comp-request"){setActiveMenu({Home: '',Req:'line2',Check: '',Maygt:''})}
       if(currentPath === "/comp-check"){setActiveMenu({Home: '',Req:'',Check:'line2',Maygt: ''})}
-      if(currentPath === "/maygt-1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }
+      if(currentPath === "/urgudul/1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }
     }, [location]);
     //   useEffect(() => {
     //     window.addEventListener("scroll", handleScroll);
@@ -107,7 +107,7 @@ function Menu(props) {
                                 <div style={{transform:`${activeMenu.Check}`}} className={`line ${activeMenu.Req}`}></div>
                               </div>
                               <div className="items">
-                                <Link to="/maygt-1">Өргөдөлийн маягт</Link>
+                                <Link to="/urgudul/1">Өргөдөлийн маягт</Link>
                                 <div  className={`line ${activeMenu.Maygt}`}></div>
                               </div>
                               {/* <div className="items">

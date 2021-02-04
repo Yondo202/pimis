@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import HelpPopup from 'components/help_popup/helpPopup'
 import FormRichText from 'components/urgudul_components/formRichText'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
@@ -6,21 +6,30 @@ import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 
 const initialState = {
-    applicant_overview: '',
-    applicant_experience: '',
+    applicant_overview: null,
+    applicant_experience: null,
 }
 
 function UrgudulOverview() {
     const [form, setForm] = useState(initialState)
 
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    useEffect(() => {
+        let temp = {}
+        Object.keys(initialState).forEach(key => {
+            if (UrgudulCtx.data[key]) temp[key] = UrgudulCtx.data[key]
+        })
+        setForm({ ...form, ...temp })
+    }, [UrgudulCtx.data.id])
+
     const handleSetForm = (key, value) => {
         setForm({ ...form, [key]: value })
     }
-
-    const UrgudulCtx = useContext(UrgudulContext)
 
     const AlertCtx = useContext(AlertContext)
 
@@ -28,11 +37,16 @@ function UrgudulOverview() {
 
     const handleSubmit = () => {
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, form)
+            axios.put(`projects/${UrgudulCtx.data.id}`, form, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
+            })
                 .then(res => {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Танилцуулга мэдээлэл хадгалагдлаа.' })
+                    setTimeout(() => history.push('/urgudul/5'), 3000)
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -62,7 +76,7 @@ function UrgudulOverview() {
             </div>
 
             <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                <FormRichText modules="full" value={form.applicant_overview} name="applicant_overview" setForm={handleSetForm} />
+                <FormRichText modules="full" value={form.applicant_overview || ''} name="applicant_overview" setForm={handleSetForm} />
             </div>
 
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
@@ -73,7 +87,7 @@ function UrgudulOverview() {
             </div>
 
             <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                <FormRichText modules="full" value={form.applicant_experience} name="applicant_experience" setForm={handleSetForm} />
+                <FormRichText modules="full" value={form.applicant_experience || ''} name="applicant_experience" setForm={handleSetForm} />
             </div>
 
             <div className="tw-flex tw-justify-end">

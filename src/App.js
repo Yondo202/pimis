@@ -4,7 +4,7 @@ import Menu from './containers/menu/menu'
 import UserContext from "./context/UserContext";
 import { HelpStore } from './context/HelperContext'
 import HomeLogin from './components/home/homeLogin'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import MainForm from './containers/checkComp/MainForm';
 import CheckComp from './components/check/compCheck'
 import SignUp from './components/signup/Signup'
@@ -15,30 +15,29 @@ import EmialSender2 from './components/emailSend/EmailSend2'
 import LoginDoneHome from './components/LoginDoneHome/MainHome'
 import ReqHome from './components/LoginDoneHome/RequestHome'
 import MainRequestOld from './containers/requestComp/mainRequestOld'
-import ProjectIntro from 'pages/project_intro/form'
-import ProjectBudget from 'pages/project_budget/form'
-import ApplicantAgreement from 'pages/applicant_agreement/form'
 import { UrgudulStore } from "components/utilities/urgudulContext"
 import BusinessSectorEditor from 'pages/business_sector_edit/editorPage'
 import ProductsEditor from 'pages/products_edit/editorPage'
-import ApplicationForm from 'pages/application_form/form'
 import { AlertStore } from 'components/utilities/alertContext'
 import AlertDialog from 'components/alert_dialog/alertDialog'
-import UrgudulFront from 'pages/urgudul/formFront';
-import UrgudulNavigator from 'pages/urgudul/page';
+import UrgudulNavigator from 'pages/urgudul/page'
+import LetterOfInterest from 'pages/sonirhol_ilerhiileh_at/page';
 
 
 function App() {
   const ctxUser = useContext(UserContext);
+
   const [userId, setUserId] = useState();
   const [userName, setUserName] = useState();
+
   useEffect(() => {
     const userId = localStorage.getItem("userId", []);
     const userName = localStorage.getItem("userName", []);
     setUserId(userId);
     setUserName(userName);
   }, []);
-  // const clickhandle = ()=>{
+
+  // const clickhandle = () =>{
   //     ctxUser.logout();
   //     setTimeout(() => {
   //       window.location.reload(false);
@@ -68,18 +67,17 @@ function App() {
                 <Route path="/email" component={EmialSender} />
                 <Route path="/email2" component={EmialSender2} />
               </Switch>
+
               <Switch>
+                <Route path="/letter-of-interest" component={LetterOfInterest} />
                 <UrgudulStore>
-                  <Route exact path='/maygt-1' component={ApplicationForm} />
-                  <Route path='/maygt-2' component={ProjectIntro} />
-                  <Route path='/maygt-3' component={ProjectBudget} />
-                  <Route path='/maygt-4' component={ApplicantAgreement} />
                   <Route path="/urgudul/:page" component={UrgudulNavigator} />
                 </UrgudulStore>
               </Switch>
+
               <Switch>
-                <Route exact path='/sector-edit' component={BusinessSectorEditor} />
-                <Route path='/product-edit' component={ProductsEditor} />
+                <Route path="/sector-edit" component={BusinessSectorEditor} />
+                <Route path="/product-edit" component={ProductsEditor} />
               </Switch>
             </>
           ) : (

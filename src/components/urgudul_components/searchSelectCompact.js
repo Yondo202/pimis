@@ -2,20 +2,21 @@ import React, { useState, useEffect } from 'react'
 import SearchSVG from 'assets/svgComponents/searchSVG'
 import axios from 'axiosbase'
 
+
 function SearchSelectCompact(props) {
     const [fetch, setFetch] = useState([])
 
     useEffect(() => {
-        if (props.data && props.data.length) {
+        if (props.data) {
             setFetch(props.data)
-            props.value && setSearch(props.data.filter(obj => obj.id === props.value)[0][props.description])
+            props.value && setSearch(props.data.filter(obj => obj.id === props.value)[0]?.[props.displayName])
         } else {
             axios.get(props.api)
                 .then(res => {
                     console.log(res.data)
                     const data = props.keys.reduce((a, v) => a[v], res.data)
                     setFetch(data)
-                    props.value && setSearch(data.filter(obj => obj.id === props.value)[0][props.description])
+                    props.value && setSearch(data.filter(obj => obj.id === props.value)[0]?.[props.displayName])
                 }).catch(err => {
                     console.log(err.response?.data)
                 })
@@ -24,15 +25,15 @@ function SearchSelectCompact(props) {
 
     const filter = (obj, searchState) => {
         if (obj) {
-            const str = ('' + obj[props.description_mon]).toLowerCase()
+            const str = ('' + obj[props.displayName]).toLowerCase()
             return str.includes(searchState.toLowerCase())
         }
     }
 
     const compare = (a, b) => {
-        if (a[props.description_mon] > b[props.description_mon]) {
+        if (a[props.displayName] > b[props.displayName]) {
             return 1
-        } else if (a[props.description_mon] < b[props.description_mon]) {
+        } else if (a[props.displayName] < b[props.displayName]) {
             return -1
         } else return 0
     }
@@ -43,7 +44,6 @@ function SearchSelectCompact(props) {
     const handleFocus = () => {
         setSearch('')
         setFocused(true)
-        // setChanged(true)
     }
 
     const handleSetForm = (value) => {
@@ -51,11 +51,10 @@ function SearchSelectCompact(props) {
     }
 
     const handleBlur = () => {
-        if (fetch.map(obj => obj[props.description_mon]).includes(search)) {
-            handleSetForm(fetch.filter(obj => obj[props.description_mon] === search)[0].id)
+        if (fetch.map(obj => obj[props.displayName]).includes(search)) {
+            handleSetForm(fetch.filter(obj => obj[props.displayName] === search)[0].id)
         } else {
-            handleSetForm('')
-            setSearch('')
+            setSearch(fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
         }
         setFocused(false)
     }
@@ -73,13 +72,13 @@ function SearchSelectCompact(props) {
                 <SearchSVG className={`tw-w-4 tw-h-4 tw-flex-shrink-0 ${focused ? 'tw-text-blue-600' : 'tw-text-gray-700'} tw-transition-colors tw-duration-300`} />
             </div>
 
-            <div className={`tw-absolute tw-transform tw-translate-y-1 tw-w-full tw-h-60 tw-bg-white tw-z-10 tw-text-sm tw-rounded-md tw-shadow-sm tw-border tw-border-gray-400 tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focused ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`}>
+            <div className={`tw-absolute tw-transform tw-translate-y-1 ${!props.selectWidth && 'tw-w-full'} tw-h-60 tw-bg-white tw-z-10 tw-text-sm tw-rounded-md tw-shadow-sm tw-border tw-border-gray-400 tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focused ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} style={{ width: props.selectWidth }}>
                 {
                     fetch.filter(obj => filter(obj, search)).length ?
                         fetch.filter(obj => filter(obj, search)).sort(compare).map((item, i) =>
-                            <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelect(item.id, item[props.description_mon])} key={item.id}>
+                            <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelect(item.id, item[props.displayName])} key={item.id}>
                                 <span className="tw-font-medium tw-pr-2">{i + 1}.</span>
-                                {item[props.description_mon]}
+                                {item[props.displayName]}
                             </div>)
                         :
                         <p className="tw-p-1 tw-text-xs tw-text-center tw-mt-4 tw-italic tw-opacity-80">Хайлт олдсонгүй.</p>

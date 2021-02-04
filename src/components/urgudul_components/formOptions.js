@@ -15,11 +15,11 @@ function FormOptions(props) {
 
     return (
         <div className={`tw-relative tw-px-3 tw-pt-8 tw-pb-3 tw-flex tw-items-center ${props.classAppend}`}>
-            <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-font-medium tw-whitespace-nowrap tw-top-2 tw-left-8 ${focused ? 'tw-text-sm' : 'tw-text-xs tw-top-6 tw-left-12'} tw-transition-all tw-duration-300`}>
+            <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-font-medium tw-whitespace-nowrap ${focused ? 'tw-text-sm tw-top-2 tw-left-8' : 'tw-text-xs tw-top-6 tw-left-12'} tw-transition-all tw-duration-300`}>
                 {props.label}
             </label>
 
-            <PenAltSVG className={`tw-relative tw-top-1 tw-w-6 tw-h-6 tw-flex-shrink-0 ${focused ? 'tw-text-blue-500' : 'tw-text-gray-600'} tw-transition-colors tw-duration-300`} />
+            <PenAltSVG className={`tw-relative tw-top-1 tw-w-5 tw-h-5 tw-flex-shrink-0 ${focused ? 'tw-text-blue-500' : 'tw-text-gray-600'} tw-transition-colors tw-duration-300`} />
 
             <div className="tw-ml-2 tw-text-sm tw-pt-3 tw-pb-1 tw-px-2 focus:tw-outline-none tw-flex tw-flex-wrap tw-items-center" tabIndex="0" onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}>
                 {

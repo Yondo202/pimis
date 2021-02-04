@@ -9,6 +9,7 @@ import NumberFormat from 'react-number-format'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 
 const year = new Date().getFullYear()
@@ -26,14 +27,14 @@ const dates = [
 ]
 
 const datesObj = {
-    'baseYear': '',
-    'year--': '',
-    'year-': '',
-    'submitDate': '',
-    'endDate': '',
-    'year+': '',
-    'year++': '',
-    'year+++': '',
+    'baseYear': null,
+    'year--': null,
+    'year-': null,
+    'submitDate': null,
+    'endDate': null,
+    'year+': null,
+    'year++': null,
+    'year+++': null,
 }
 
 const initialState = {
@@ -48,11 +49,11 @@ const initialState = {
     },
     export_details: [
         {
-            countryId: '',
+            countryId: null,
             export_products: [
                 {
                     ...datesObj,
-                    productId: '',
+                    productId: null,
                 },
             ],
         },
@@ -62,14 +63,52 @@ const initialState = {
         month: month,
     },
     endDate: {
-        year: 2222,
-        month: 11,
+        year: null,
+        month: null,
     },
     baseYear: 2016,
 }
 
 function UrgudulCalculations() {
     const [form, setForm] = useState(initialState)
+
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    useEffect(() => {
+        if (UrgudulCtx.data.exportDatas) {
+            let temp = {}
+
+            const arr = ['sales', 'fullTime_workplace', 'productivity']
+            arr.forEach(key => {
+                temp[key] = { ...datesObj, ...UrgudulCtx.data.exportDatas?.[key] }
+            })
+
+            if (!UrgudulCtx.data.exportDatas?.export_details?.length) {
+                temp.export_details = [
+                    {
+                        countryId: null,
+                        export_products: [
+                            {
+                                ...datesObj,
+                                productId: null,
+                            },
+                        ],
+                    },
+                ]
+            }
+
+            if (!UrgudulCtx.data.exportDatas?.endDate) {
+                if (UrgudulCtx.data.end_data) {
+                    temp.endDate = {
+                        year: UrgudulCtx.data.endDate.split('-')[0],
+                        month: UrgudulCtx.data.endDate.split('-')[1],
+                    }
+                }
+            }
+
+            setForm({ ...form, ...temp })
+        }
+    }, [UrgudulCtx.data.id])
 
     const handleInput = (key, value, objName) => {
         setForm({ ...form, [objName]: { ...form[objName], [key]: value } })
@@ -112,11 +151,11 @@ function UrgudulCalculations() {
 
     const handleAddCountry = () => {
         const newCountry = {
-            countryId: '',
+            countryId: null,
             export_products: [
                 {
                     ...datesObj,
-                    productId: '',
+                    productId: null,
                 },
             ],
         }
@@ -132,7 +171,7 @@ function UrgudulCalculations() {
         const newProducts = form.export_details[countryIndex].export_products
         const newProduct = {
             ...datesObj,
-            product_name: '',
+            product_name: null,
         }
         newCountries[countryIndex].export_products = [...newProducts, newProduct]
         setForm({ ...form, export_details: newCountries })
@@ -155,19 +194,22 @@ function UrgudulCalculations() {
         }
     }
 
-    const UrgudulCtx = useContext(UrgudulContext)
-
     const AlertCtx = useContext(AlertContext)
 
     const history = useHistory()
 
     const handleSubmit = () => {
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${3}`, { exportDatas: form })
+            axios.put(`projects/${3}`, { exportDatas: form }, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
+            })
                 .then(res => {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Борлуулалт, экспортын тооцоолол хадгалагдлаа.' })
+                    setTimeout(() => history.push('/urgudul/9'), 3000)
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -216,7 +258,7 @@ function UrgudulCalculations() {
                                 dates.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.sales[item]} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'sales')} />
+                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.sales[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'sales')} />
                                         </div>
                                     </td>
                                 )
@@ -235,7 +277,7 @@ function UrgudulCalculations() {
                                 dates.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.fullTime_workplace[item]} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} />
+                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.fullTime_workplace[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} />
                                         </div>
                                     </td>
                                 )
@@ -254,7 +296,7 @@ function UrgudulCalculations() {
                                 dates.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.productivity[item]} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'productivity')} />
+                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.productivity[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'productivity')} />
                                         </div>
                                     </td>
                                 )
@@ -283,7 +325,7 @@ function UrgudulCalculations() {
                                 <>
                                     <tr className="tw-h-9" key={i}>
                                         <td className="tw-border tw-px-1">
-                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} description="description" description_mon="description_mon" setForm={handleSetFormCountry} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" />
+                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" />
                                         </td>
                                         <td className="tw-border tw-px-2" colSpan="8">
                                             <button className="tw-float-right tw-px-1 tw-py-0.5 tw-text-red-400 tw-text-xs tw-font-semibold tw-rounded focus:tw-outline-none tw-border tw-border-red-400 active:tw-bg-red-100" onClick={() => handleRemoveCountry(i)}>
@@ -296,13 +338,13 @@ function UrgudulCalculations() {
                                         country.export_products.map((product, j) =>
                                             <tr className="tw-h-9">
                                                 <td className="tw-border tw-px-1">
-                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={country.productId} name="productId" id={j} id2={i} description="description" description_mon="description_mon" setForm={handleSetFormProduct} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" />
+                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={country.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" selectWidth={window.innerWidth > 922 ? '922px' : `${window.innerWidth - 128}px`} />
                                                 </td>
                                                 {
                                                     dates.map((key, k) =>
                                                         <td className="tw-border tw-px-1" key={k}>
                                                             <div className="tw-flex tw-justify-center">
-                                                                <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={product[key]} thousandSeparator={true} onValueChange={values => handleInputProductExport(key, values.value, j, i)} />
+                                                                <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={product[key] || ''} thousandSeparator={true} onValueChange={values => handleInputProductExport(key, values.value, j, i)} />
                                                             </div>
                                                         </td>
                                                     )

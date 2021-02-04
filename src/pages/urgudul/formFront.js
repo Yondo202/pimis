@@ -1,19 +1,31 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import AlertContext from 'components/utilities/alertContext'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import { useHistory } from 'react-router-dom'
 
 
 const initialState = {
-    project_type: '',
-    company_name: '',
-    project_name: '',
+    project_type: null,
+    company_name: null,
+    project_name: null,
 }
 
 function UrgudulFront() {
     const [form, setForm] = useState(initialState)
+
+    const UrgudulCtx = useContext(UrgudulContext)
+
+    useEffect(() => {
+        let temp = {}
+        Object.keys(initialState).forEach(key => {
+            if (UrgudulCtx.data[key]) temp[key] = UrgudulCtx.data[key]
+        })
+        setForm({ ...form, ...temp })
+    }, [UrgudulCtx.data.id])
 
     const handleClickForm = (key, value) => {
         setForm({ ...form, [key]: value })
@@ -23,21 +35,40 @@ function UrgudulFront() {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
 
-    const UrgudulCtx = useContext(UrgudulContext)
-
     const AlertCtx = useContext(AlertContext)
 
+    const history = useHistory()
+
     const handleSubmit = () => {
-        axios.post('projects', form)
-            .then(res => {
-                console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
-                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
-            })
-            .catch(err => {
-                console.log(err.response?.data)
-                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
-            })
+        axios.post('projects', form, {
+            headers: {
+                'Authorization': getLoggedUserToken()
+            }
+        }).then(res => {
+            console.log(res.data)
+            UrgudulCtx.setData(res.data.data)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
+            setTimeout(() => history.push('/urgudul/2'), 3000)
+        }).catch(err => {
+            console.log(err.response?.data)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
+        })
+    }
+
+    const handleSubmitEdit = () => {
+        axios.put(`projects/${UrgudulCtx.data.id}`, form, {
+            headers: {
+                'Authorization': getLoggedUserToken()
+            }
+        }).then(res => {
+            console.log(res.data)
+            UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээлэл хадгалагдлаа.' })
+            setTimeout(() => history.push('/urgudul/2'), 3000)
+        }).catch(err => {
+            console.log(err.response?.data)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+        })
     }
 
     return (
@@ -47,7 +78,7 @@ function UrgudulFront() {
                     Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт
                 </div>
 
-                <div className="tw-my-2 tw-flex tw-flex-col tw-items-center">
+                <div className="tw-p-2 tw-pb-5 tw-flex tw-flex-col tw-items-center">
                     <div className="tw-pl-11 tw-pr-3 tw-flex tw-flex-col tw-w-full tw-max-w-md">
                         <div className="tw-mt-4 tw-font-medium">
                             Өргөдлийн төрөл:
@@ -70,11 +101,16 @@ function UrgudulFront() {
                         </button>
                     </div>
 
-                    <FormInline label={form.project_type === 'cluster' ? 'Кластерын тэргүүлэгч байгууллагын нэр:' : 'Аж ахуйн нэгжийн нэр'} type="text" value={form.company_name} name="company_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
+                    <FormInline label={form.project_type === 'cluster' ? 'Кластерын тэргүүлэгч байгууллагын нэр:' : 'Аж ахуйн нэгжийн нэр'} type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
 
-                    <FormInline label="Төслийн нэр" type="text" value={form.project_name} name="project_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
+                    <FormInline label="Төслийн нэр" type="text" value={form.project_name || ''} name="project_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
 
-                    <ButtonTooltip classAppend="tw-mt-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Маягт үүсгэх" onClick={handleSubmit} />
+                    {
+                        UrgudulCtx.data.id ?
+                            <ButtonTooltip classAppend="tw-mt-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmitEdit} />
+                            :
+                            <ButtonTooltip classAppend="tw-mt-4" classButton="tw-px-2 tw-py-1 tw-bg-green-500 active:tw-bg-green-600" classLabel="tw-text-white" label="Маягт үүсгэх" onClick={handleSubmit} />
+                    }
                 </div>
             </div>
         </div>

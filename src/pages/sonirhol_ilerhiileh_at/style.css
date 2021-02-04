@@ -1,0 +1,32 @@
+.letter-container {
+    width: 21cm;
+    height: 29.7cm;
+    margin: 15mm auto;
+    padding: 8px;
+    position: relative;
+    background-color: white;
+    overflow-y: hidden;
+}
+
+.quill .ql-toolbar {
+    border: none;
+}
+
+.quill .ql-container {
+    border: none;
+    border-radius: 0;
+    background-color: whitesmoke;
+}
+
+.quill .ql-editor {
+    padding: 4px 8px;
+}
+
+.letter-container .divider {
+    position: absolute;
+    top: 352px;
+    left: 281px;
+    background-color: #374151;
+    width: 2px;
+    height: 490px;
+}
