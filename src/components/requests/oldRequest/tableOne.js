@@ -29,7 +29,6 @@ function TableOne(props) {
      })
      setInitialData(finalData);
     },[]);
-    // console.log(initialData, "*****initial dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
     const radioChange = (event)=> {
       let finalData = []
@@ -63,10 +62,11 @@ function TableOne(props) {
                   setOpacity("0"); setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү"); setOpacity2("1");
               }else{
                 setOpacity("0"); setOpacity2("0");
-               await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "res");  })
-               .catch((err)=>{console.log(err, "err");});
-                scroll.scrollTo(0);
-                StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
+               await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ 
+               console.log(res, "******res"); scroll.scrollTo(0); StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
+                })
+               .catch((err)=>{ tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
+                
             }
             console.log(finalEnd, "final end");
       }

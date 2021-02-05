@@ -21,7 +21,7 @@ export const UserStore= (props) =>{
     }
     
     const loginUserSuccess = (id,token,expireDate,name)=>{
-        setUserInfo( { userId: id, token, expireDate,name }  )  
+        setUserInfo( { userId: id, token, expireDate,name })
           localStorage.setItem("edp_loggedUser",token);
           localStorage.setItem("userId",id);
           localStorage.setItem("userName",name);

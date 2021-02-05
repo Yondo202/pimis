@@ -9,7 +9,6 @@ import UserContext from '../../../../context/UserContext'
 
 function TableThreeDetails(props) {
     const StyleContext  = useContext(UserContext);
-
     const initialList = [{id: 1}];
     const [ addItem, setAddItem ] = useState(initialList);
     const AddHandle = ()=>{
@@ -72,8 +71,8 @@ function TableThreeDetails(props) {
                         <div className="topTitle">
                             <div className="Title"> {i + 1} . Торгууль / Шийтгэл / Санал гомдлууд :</div>
                             <div className="null">
-                                Байхгүй:
-                                <input className="checkBtn" type="checkbox" name="null" />
+                                {/* Байхгүй:
+                                <input className="checkBtn" type="checkbox" name="null" /> */}
                             </div>
                         </div>
                     <div className="formOneParent">
@@ -231,14 +230,14 @@ const Component3Detail = styled.div`
             align-items:center;
             justify-content:space-between;
             .Title{
-                font-size:16px;  
+                font-size:14px;  
                 font-weight:500;
                 margin-bottom:10px;
             }
             .null{
                 display:flex;
                 text-aling:center;
-                font-size:16px;  
+                font-size:14px;  
                 font-weight:500;
                 margin-bottom:10px;
                 .checkBtn{

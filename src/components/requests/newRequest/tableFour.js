@@ -1,13 +1,12 @@
 import React,{useEffect, useState, useRef, useContext} from 'react';
 import styled from 'styled-components'
-import { Link, animateScroll as scroll } from "react-scroll";
+import { animateScroll as scroll } from "react-scroll";
 import axios from '../../../axiosbase';
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
 import {RiMailSendLine} from 'react-icons/ri'
 
@@ -19,9 +18,7 @@ function TableFour() {
       const [procent, setProcent] = useState('0');
       const [ finalMsg, setFinalMsg ] = useState("0");
       const [FinalErrorText, setFinalErrorText] = useState("");
-      const StyleContext = useContext(UserContext);
       const helperContext = useContext(HelperContext);
-      console.log(helperContext.tableId, " $ table Id 4 $ ");
 
       const [ UserToken, setUserToken ] = useState(null);
         useEffect(()=>{
@@ -46,9 +43,7 @@ function TableFour() {
                 }
             });
 
-            let rs4 = document.querySelectorAll(".getUserInp");
-            let arr4 = Array.from(rs4);
-            let userInp = {};
+            let rs4 = document.querySelectorAll(".getUserInp"); let arr4 = Array.from(rs4); let userInp = {};
 
             arr4.map(element=>{
                 let field = element.name;
@@ -145,7 +140,6 @@ function TableFour() {
             // scroll.scrollTo(0);
             // StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
         }
-//   console.log(trimmedDataURL, "signature url");
     return (
         <Component1 className="container" >
             <div className="boxShadow">
@@ -171,7 +165,6 @@ function TableFour() {
                     return(
                     <div className="headerParchild" key={i}>
                         <div className="row" >
-                        {/* <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div> */}
                         <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">{i + 1}</div><div className="mainText">{el.name}</div> </div></div>
                         <div className="radios col-md-1 col-sm-1 col-1"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value={true}/></div>
                         <div className="radios col-md-1 col-sm-1 col-1"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value={false}/></div>

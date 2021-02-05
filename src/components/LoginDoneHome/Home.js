@@ -33,13 +33,13 @@ function Home() {
                 </div>
             </div>
             
-            <div className="row">
-                    <div className="col-md-2 col-sm-2 itemsCol">
+            <div style={{marginTop:25}} className="row">
+                    <div className="col-md-2 col-sm-2 itemsCol ActiveCol">
                         <div className="itemsPar">
                             <div className="mains">
-                                <Link to="/comp-test"  className="itemsActive">1. Шалгуур хангалтыг тулгах хуудас </Link>
+                                <Link to="/comp-test"  className="itemsActive ">1. Шалгуур хангалтыг тулгах хуудас </Link>
                                 <div className="line line2" ></div>
-                                <Link to={cond===false?`/comp-request/new`:`/comp-request`} className="itemsActive">2. Байгаль орчны үнэлгээний асуумж </Link>
+                                <Link to={cond===false?`/comp-request/new`:`/comp-request/old`} className="itemsActive">2. Байгаль орчны үнэлгээний асуумж </Link>
                                 <div className="line line2" ></div>
                                 <Link to="/letter-of-interest" className="itemsActive">3. Сонирхол илэрхийлэх албан тоот</Link>
                                 <div className="line line2" ></div>
@@ -53,7 +53,7 @@ function Home() {
                     <div className="col-md-2 col-sm-2 itemsCol">
                         <div className="itemsPar">
                             <div className="mains">
-                                <a href="https://edp-plan.vercel.app/" target="_blank" style={{backgroundColor:`#F7FF48`}} className="itemsActive">1.Экспорт хөгжлийн төлөвлөгөө</a>
+                                <a href="https://edp-plan.vercel.app/" target="_blank" style={{backgroundColor:`#F7FF48`}} className="itemsActive arrHelp arrHelpActive"><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
                                 <div className="line line2" ></div>
                                 <Link to="#" style={{backgroundColor:`#F7FF48`}} className="items itemsActive">2.Нотлох бичиг баримтууд </Link>
                                
@@ -68,7 +68,7 @@ function Home() {
                     <div className="col-md-2 col-sm-2 itemsCol">
                         <div className="itemsPar">
                             <div className="mains">
-                                <div className="items">Анхан шатны үнэлгээний хуудас </div>
+                                <div className="items arrHelp"><div className="helpArr"></div> Анхан шатны үнэлгээний хуудас </div>
                             </div>
                             <div className="lineFull" ></div>
                             <div className="resultDesable">Экспортын бүтээгдэхүүн үйлчилгээгээ бүрэн тодорхойлсон </div>
@@ -78,7 +78,7 @@ function Home() {
                     <div className="col-md-2 col-sm-2 itemsCol">
                         <div className="itemsPar">
                             <div className="mains">
-                                <div className="items">1.Баримтжуулах бүрдүүлбэрийн шалгах хуудас </div>
+                                <div className="items  arrHelp"><div className="helpArr"></div> 1.Баримтжуулах бүрдүүлбэрийн шалгах хуудас </div>
                                 <div className="line " ></div>
                                 <div className="items">2.Бизнес шинжээчийн шинжилгээний тайлан </div>
                                 <div className="line " ></div>
@@ -94,17 +94,17 @@ function Home() {
                     <div className="col-md-2 col-sm-2 itemsCol">
                         <div className="itemsPar">
                             <div className="mains">
-                                <div className="items">Гүйцэтгэлийн үнэлгээ </div>
+                                <div className="items arrHelp"><div className="helpArr"></div> Гүйцэтгэлийн үнэлгээ </div>
                             </div>
                             <div className="lineFull" ></div>
                             <div className="resultDesable">Гүйцэтгэлийн үнэлгээ бүрэн</div>
                         </div>
                     </div>
 
-                    <div style={{borderRight:`none`}} className="col-md-2 col-sm-2 itemsCol">
+                    <div style={{borderRight:`none`}} className="col-md-2 col-sm-2 itemsCol itemsColA">
                         <div className="itemsPar">
                             <div className="mains">
-                                <div className="items">Хүлээгдэж байна...</div>
+                                <div className="items arrHelp"><div className="helpArr"></div> Хүлээгдэж байна...</div>
                             </div>
                             <div className="lineFull" ></div>
                             <div className="resultDesable">Хүлээгдэж байна...</div>
@@ -124,9 +124,19 @@ const HomeComponent = styled.div`
     a{
         text-decoration:none;
     }
+    
     .itemsCol{
-        border-right:1px solid rgba(0,0,0,0.3);
-        border-right-style:dashed;
+        // border-right:1px solid rgba(0,0,0,0.3);
+        // border-right-style:dashed;
+        &:before{
+            content:"";
+            right:0;
+            top:4%;
+            width:1px;
+            height:96%;
+            background-color:#C1C1C1;
+            position:absolute;
+        }
         .itemsPar{
             height:70vh;
             width:100%;
@@ -135,6 +145,7 @@ const HomeComponent = styled.div`
             align-items:center;
             justify-content:space-between;
             margin-top:30px;
+            
             .mains{
                 width:100%;
                 display:flex;
@@ -190,7 +201,6 @@ const HomeComponent = styled.div`
                         border-radius:50%;
                     }
                 }
-
                 .line{
                     position:relative;
                     height:6vh;
@@ -261,6 +271,19 @@ const HomeComponent = styled.div`
                     height:18px;
                     border-radius:50%;
                 }
+                &::after{
+                    content:"";
+                    position:absolute;
+                    z-index:1;
+                    bottom:-43px;
+                    right:-21px;
+                    height:42px;
+                    width:90px;
+                    border-right:1px solid #C1C1C1; 
+                    border-bottom:1px solid #C1C1C1;
+                    border-left:1px solid #C1C1C1;
+                    border-radius: 0 0 90px 90px;
+                }
             }
             .resultActive{
                 height:92px;
@@ -289,6 +312,19 @@ const HomeComponent = styled.div`
                     height:18px;
                     border-radius:50%;
                 }
+                &::after{
+                    content:"";
+                    position:absolute;
+                    z-index:1;
+                    bottom:-43px;
+                    right:-21px;
+                    height:42px;
+                    width:90px;
+                    border-right:1px solid #535352; 
+                    border-bottom:1px solid #535352;
+                    border-left:1px solid #535352;
+                    border-radius: 0 0 90px 90px;
+                }
             }
             .resultWaiting{
                 height:92px;
@@ -316,12 +352,102 @@ const HomeComponent = styled.div`
                     height:18px;
                     border-radius:50%;
                 }
+                &::after{
+                    content:"";
+                    position:absolute;
+                    z-index:1;
+                    bottom:-43px;
+                    right:-21px;
+                    height:42px;
+                    width:90px;
+                    border-right:1px solid #C1C1C1; 
+                    border-bottom:1px solid #C1C1C1;
+                    border-left:1px solid #C1C1C1;
+                    border-radius: 0 0 90px 90px;
+                }
+            }
+            
+            .arrHelp{
+                position:relative;
+                &::after{
+                    content:"";
+                    position:absolute;
+                    z-index:1;
+                    top:-46px;
+                    left:-22px;
+                    height:45px;
+                    width:95px;
+                    border-right:1px solid #C1C1C1; 
+                    border-top:1px solid #C1C1C1;
+                    border-left:1px solid #C1C1C1;
+                    border-radius: 90px 90px 0 0;
+                }
+                .helpArr{
+                    z-index:333;
+                    top:-12px;
+                    left:66px;
+                    position:absolute;
+                    height:12px;
+                    width:12px;
+                    background-color:#C1C1C1;
+                    clip-path: polygon(53% 31%, 100% 0, 50% 100%, 0 0)
+                }
+            }
+
+            .arrHelpActive{
+                &::after{
+                    content:"";
+                    position:absolute;
+                    z-index:1;
+                    top:-46px;
+                    left:-22px;
+                    height:45px;
+                    width:96px;
+                    border-right:1px solid #535352; 
+                    border-top:1px solid #535352;
+                    border-left:1px solid #535352;
+                    border-radius: 90px 90px 0 0;
+                }
+                
+                .helpArr{
+                    z-index:333;
+                    top:-12px;
+                    left:67px;
+                    position:absolute;
+                    height:12px;
+                    width:12px;
+                    background-color:#535352;
+                    clip-path: polygon(53% 31%, 100% 0, 50% 100%, 0 0)
+                }
+            }
+            
+        }
+    }
+    .ActiveCol{
+        &:before{
+            content:"";
+            right:0;
+            top:4%;
+            width:1px;
+            height:96%;
+            background-color:#535352;
+            position:absolute;
+            
+        }
+    }
+    .itemsColA{
+        &::before{
+            display:none;
+        }
+        .resultDesable{
+            &::after{
+                display:none;
             }
         }
     }
     .headerPar{
         background-color: rgba(${ColorRgb},0.9);
-        margin-top:20px;
+        margin-top:15px;
         .header{
             .headItems{
                 display:flex;

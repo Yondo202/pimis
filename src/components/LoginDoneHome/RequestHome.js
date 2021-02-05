@@ -11,7 +11,7 @@ import axios from '../../axiosbase'
 import UserContext from '../../context/UserContext'
 
 function RequestHome() {
-    const UserCtx = useContext(UserContext)
+    const UserCtx = useContext(UserContext);
     const [ allData, setAllData ] = useState([])
 
     useEffect(async ()=>{
@@ -24,14 +24,8 @@ function RequestHome() {
     return (
         <Reqhome className="container">
             <div className="cardParent">
-            <div className="RequestPar">
-                <VscNewFile />
-                <div className="header">
-                    <Link to="comp-request/new">
-                        <a> Шинээр хүсэлт илгээх </a>
-                    </Link>
-                </div>
-            </div>
+                {allData[0]? <></> : (<div className="RequestPar"><VscNewFile /><div className="header"><Link to="comp-request/new"><a> Шинээр хүсэлт илгээх </a></Link></div></div>) }
+            
                 <div className="row">
                     {allData[0]? allData.map((el,i)=>{
                             return(
@@ -74,9 +68,9 @@ function RequestHome() {
                                         </div>
                                             <div className="oldReq">
                                                     <Link to="comp-request/old">
-                                                        <a onClick={()=>(UserCtx.idPass(el.id))}>
-                                                            Дэлгэрэнгүй 
-                                                        </a>
+                                                        {/* <a onClick={()=>(UserCtx.idPass(el.id))}> */}
+                                                            Үргэлжлүүлэх
+                                                        {/* </a> */}
                                                     </Link>
                                                 <FcNext />
                                             </div>
@@ -102,7 +96,7 @@ const Reqhome = styled.div`
         width:100%;
         .infoPar{
             border-top:5px solid ${Color};
-            padding:30px 50px;
+            padding:30px 30px;
             border-radius:8px;
             // border:1px solid black;
             background-color:white;

@@ -9,9 +9,11 @@ import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../../context/UserContext'
 import axios from '../../../axiosbase'
+import HelperContext from '../../../context/HelperContext'
 
 function TableTwo(props) {
     const StyleContext  = useContext(UserContext);
+    const helpCtx  = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [ initialData, setInitialData ] = useState([]);
@@ -140,11 +142,10 @@ function TableTwo(props) {
         else if(confirm === false){
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
         }else{
-            setOpacity2("0");
-            axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res); FilesSend(res.data.data.ppsRequest2Detail); })
-            .catch((err)=>{ console.log(err) });
-            StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");
-            scroll.scrollTo(0);
+            setOpacity2("0"); axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}})
+            .then((res)=>{ console.log(res); FilesSend(res.data.data.ppsRequest2Detail); helpCtx.alertText('green', "Амжилттай боллоо", true); StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%"); scroll.scrollTo(0); })
+            .catch((err)=>{ helpCtx.alertText('orange', "Алдаа гарлаа", true); console.log(err) });
+            
         }
         
         console.log(finalEnd, "my all");
