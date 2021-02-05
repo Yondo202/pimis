@@ -201,7 +201,6 @@ const HomeComponent = styled.div`
                         border-radius:50%;
                     }
                 }
-
                 .line{
                     position:relative;
                     height:6vh;
@@ -374,16 +373,15 @@ const HomeComponent = styled.div`
                     content:"";
                     position:absolute;
                     z-index:1;
-                    top:-44px;
+                    top:-46px;
                     left:-22px;
-                    height:43px;
+                    height:45px;
                     width:95px;
                     border-right:1px solid #C1C1C1; 
                     border-top:1px solid #C1C1C1;
                     border-left:1px solid #C1C1C1;
                     border-radius: 90px 90px 0 0;
                 }
-                
                 .helpArr{
                     z-index:333;
                     top:-12px;
@@ -401,10 +399,10 @@ const HomeComponent = styled.div`
                     content:"";
                     position:absolute;
                     z-index:1;
-                    top:-44px;
+                    top:-46px;
                     left:-22px;
-                    height:43px;
-                    width:95px;
+                    height:45px;
+                    width:96px;
                     border-right:1px solid #535352; 
                     border-top:1px solid #535352;
                     border-left:1px solid #535352;

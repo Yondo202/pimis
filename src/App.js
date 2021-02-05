@@ -23,6 +23,7 @@ import { AlertStore } from 'components/utilities/alertContext'
 import AlertDialog from 'components/alert_dialog/alertDialog'
 import UrgudulNavigator from 'pages/urgudul/page'
 import LetterOfInterest from 'pages/sonirhol_ilerhiileh_at/page';
+import MainPage from './components/notifyPage/MainPage'
 
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
                 <Route path="/comp-test" component={CheckComp} />
                 <Route path="/comp-check" component={MainForm} />
                 <Route path="/comp-request" component={ReqHome} exact />
+                <Route path="/notfy-page" component={MainPage} exact />
                 <HelpStore>
                   <Route path="/comp-request/new" component={MainRequest} />
                   <Route path="/comp-request/old" component={MainRequestOld} />
