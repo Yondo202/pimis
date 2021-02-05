@@ -22,16 +22,12 @@ import ProductsEditor from 'pages/products_edit/editorPage'
 import { AlertStore } from 'components/utilities/alertContext'
 import AlertDialog from 'components/alert_dialog/alertDialog'
 import UrgudulNavigator from 'pages/urgudul/page'
-<<<<<<< HEAD
 import LetterOfInterest from 'pages/letter_of_interest/page'
 import FirstEvaluation from 'pages/decision_making/page_5a'
 import CompilationCheck from 'pages/decision_making/page_5b'
 import AnalystReport from 'pages/decision_making/page_5c';
 import AttachmentUploads from 'pages/attachments/page';
-=======
-import LetterOfInterest from 'pages/sonirhol_ilerhiileh_at/page';
-import MainPage from './components/notifyPage/MainPage'
->>>>>>> 2dc7910fb33fe4119ee3723fcec33ac11cabe35c
+import MainPage from 'components/notifyPage/MainPage'
 
 
 function App() {
@@ -60,7 +56,6 @@ function App() {
         <Router>
           {userId && <Menu />}
           {userId ? (
-<<<<<<< HEAD
             <HelpStore>
               <UrgudulStore>
                 <Switch>
@@ -74,22 +69,8 @@ function App() {
                   <Route path="/comp-test" component={CheckComp} />
                   <Route path="/comp-check" component={MainForm} />
                   <Route path="/comp-request" component={ReqHome} exact />
+                  <Route path="/notfy-page" component={MainPage} exact />
 
-=======
-            <>
-              <Switch>
-                <Route path="/" exact>
-                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                    {/* <LoginDoneHome /> */}
-                    <LoginDoneHome2 />
-                  </motion.div>
-                </Route>
-                <Route path="/comp-test" component={CheckComp} />
-                <Route path="/comp-check" component={MainForm} />
-                <Route path="/comp-request" component={ReqHome} exact />
-                <Route path="/notfy-page" component={MainPage} exact />
-                <HelpStore>
->>>>>>> 2dc7910fb33fe4119ee3723fcec33ac11cabe35c
                   <Route path="/comp-request/new" component={MainRequest} />
                   <Route path="/comp-request/old" component={MainRequestOld} />
 
