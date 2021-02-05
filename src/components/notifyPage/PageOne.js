@@ -56,5 +56,4 @@ const A4Format = styled.div`
 const Components = styled.div`
     font-size:13px;
     // margin-top:25px;
-   
 `
