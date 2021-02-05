@@ -72,16 +72,13 @@ function TableThree(props) {
             setOpacity2("1");
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
         }else{
-            // axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{
             axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{
                 console.log(res, "$$ ressssss 3 $$");
-              }).catch((err)=>{
-                console.log(err, "err");
-              });
-            StyleContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
-            scroll.scrollTo(0);
+                helperContext.alertText('green', "Амжилттай ", true);
+                StyleContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
+                scroll.scrollTo(0);
+              }).catch((err)=>{console.log(err, "err"); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
         }
-
     }
 
     return (

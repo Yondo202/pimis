@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Link, animateScroll as scroll } from "react-scroll";
+import {IoCheckmarkCircleOutline  } from 'react-icons/io5';
+import { CgDanger } from 'react-icons/cg';
 import {VscOpenPreview} from 'react-icons/vsc'
 import TableOne from '../../components/requests/oldRequest/tableOne';
 import TableTwo from '../../components/requests/oldRequest/tableTwo';
@@ -10,7 +11,7 @@ import TableSix from '../../components/requests/oldRequest/tableSix';
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import UserContext from '../../context/UserContext'
-import { HelpStore } from '../../context/HelperContext'
+import HelpContext from '../../context/HelperContext'
 import {Modal} from '../../components/requests/MainModal/Modal'
 import axios from '../../axiosbase'
 import {ColorRgb, textColor} from '../../components/theme'
@@ -20,27 +21,27 @@ function MainRequest(props) {
     const [ showModal, setShowModal ] = useState(false);
     const ModalOpen = () => {  setShowModal(prev => !prev); }
     const StyleContext = useContext(UserContext);
+    const helpCtx = useContext(HelpContext);
+
     const [Loading, setLoading] = useState(true);
     const [ initialData, setInitialData ] = useState([]);
     const [ ScrollClass, setScrollClass ] = useState("");
     const [ tokens, setTokens ] = useState("");
-
+    const [ userID, setUserId ] = useState();
 
     useEffect( async()=>{
         let storageToken = localStorage.getItem("edp_loggedUser", []);
-        setTokens(storageToken);
+        let myLocal = localStorage.getItem('userId'); 
+        setTokens(storageToken); setUserId(myLocal);
         window.addEventListener("scroll", handleScroll);
-        let resData = await axios.get(`pps-request/${StyleContext.reqID}`, {headers: {Authorization:`bearer ${storageToken}`}});
+        let resData = await axios.get(`pps-request/${myLocal}`, {headers: {Authorization:`bearer ${storageToken}`}});
+        console.log(resData, " ^^ ress");
         if(resData.data.data){ setInitialData(resData.data.data); setLoading(false); }
       },[]);
       const handleScroll = () => {
-          if(window.pageYOffset > 50){
-            setScrollClass("modalBtn2");
-          }else{
-            setScrollClass("");
-          }
+          if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); }
       }
-    console.log(" ^^^^^^^^^^ initial",initialData );
+
     const func = StyleContext.StyleComp
     const One = StyleContext.GlobalStyle.tableOne
     const Two = StyleContext.GlobalStyle.tableTwo
@@ -74,29 +75,34 @@ function MainRequest(props) {
                     <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
                         <div style={{left:`${One}`, opacity:`${One === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                             <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                                <TableOne  initialData={initialData.ppsRequest1Details} initialName={initialData.name1} initialDate={initialData.date1} id={StyleContext.reqID} token={tokens} />
+                                <TableOne  initialData={initialData.ppsRequest1Details} initialName={initialData.name1} initialDate={initialData.date1} id={userID} token={tokens} />
                             </motion.div>
                         </div>
                         <div style={{left:`${Two}`, opacity:`${Two === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableTwo initialData={initialData.ppsRequest2Details}  initialName={initialData.name2}  initialDate={initialData.date2} id={StyleContext.reqID} token={tokens} />
+                            <TableTwo initialData={initialData.ppsRequest2Details}  initialName={initialData.name2}  initialDate={initialData.date2} id={userID} token={tokens} />
                         </div>
                         <div style={{left:`${Three}`, opacity:`${Three === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableThree initialData={initialData.ppsRequest3Details}  initialName={initialData.name3}  initialDate={initialData.date3} id={StyleContext.reqID} token={tokens} />
+                            <TableThree initialData={initialData.ppsRequest3Details}  initialName={initialData.name3}  initialDate={initialData.date3} id={userID} token={tokens} />
                         </div>
                         
                         <div style={{left:`${Four}`, opacity:`${Four === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableFour initialData={initialData.ppsRequest4Details}  initialName={initialData.name4}  initialDate={initialData.date4} id={StyleContext.reqID} token={tokens} />
+                            <TableFour initialData={initialData.ppsRequest4Details}  initialName={initialData.name4}  initialDate={initialData.date4} id={userID} token={tokens} />
                         </div>
 
                         <div style={{left:`${Five}`, opacity:`${Five === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableFive initialData={initialData.ppsRequest5Detail}  initialName={initialData.name5}  initialDate={initialData.date5} id={StyleContext.reqID} token={tokens}  />
+                            <TableFive initialData={initialData.ppsRequest5Detail}  initialName={initialData.name5}  initialDate={initialData.date5} id={userID} token={tokens}  />
                         </div>
                         <div style={{left:`${Six}`, opacity:`${Six === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableSix initialData={initialData.ppsRequest6Detail}  initialName={initialData.name6}  initialDate={initialData.date6} id={StyleContext.reqID} token={tokens} />
+                            <TableSix initialData={initialData.ppsRequest6Detail}  initialName={initialData.name6}  initialDate={initialData.date6} id={userID} token={tokens} />
                         </div> 
                     </ParentComp>
                     </>
                 ) }
+
+                <AlertStyle style={helpCtx.alert.cond === true ? {bottom:`100px`, opacity:`1`, borderLeft:`4px solid ${helpCtx.alert.color}`} : {bottom:`50px`, opacity:`0`}} >
+                    {helpCtx.alert.color=== "green"?<IoCheckmarkCircleOutline style={{color:`${helpCtx.alert.color}`}} className="true" /> : <CgDanger style={{color:`${helpCtx.alert.color}`}} className="true" /> }
+                    <span>{helpCtx.alert.text}</span>
+                </AlertStyle>
             </>
     )
 }
@@ -230,6 +236,32 @@ const PreviewBtn = styled.div`
             }
         }
     }
+`
+const AlertStyle = styled.div`
+    z-index:1010;  
+    transition:all 0.5s ease;
+    position:fixed;
+    height:80px;
+    bottom:100px;
+    left:30%;
+    display:flex;
+    align-items:center;
+    border:1px solid rgba(0,0,0,0.2);
+    // border-left:4px solid green;
+    background-color:white;
+    padding:20px 30px; 
+    font-weight:400;
+    color:black;
+    border-radius:6px;
+    font-size:17px;
+    opacity:1;
+    .true{
+        margin-right:10px;
+        font-size:24px;
+        // color:green;
+
+    }
+
 `
 
 const GifPar = styled.div`

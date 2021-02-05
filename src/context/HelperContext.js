@@ -10,12 +10,14 @@ export const HelpStore = (props) =>{
     const [ tableSee, setTableSee ] = useState(initialSee);
     const [ tableId, setTableId ] = useState(null);
     const [ GlobalStyle, setGlobalStyle ] = useState(initialStyle);
+    const [ alert, setAlert ] = useState({
+      color:'yellow',
+      text: 'null',
+      cond: false
+  });
     
     const TableControl = (valueOne)=>{ setTableSee({tableOneData: valueOne}); }
-    const TableIdControl = (tableId) => {
-        console.log(tableId, " $$ global tableID $$");
-        setTableId(tableId);
-    }
+    const TableIdControl = (tableId) => {  console.log(tableId, " $$ global tableID $$");setTableId(tableId); }
 
     const StyleComp = (valueOne,valueTwo, valueThree,valueFour,valueFive,valueSix) =>{
         if(valueOne === "0%"){
@@ -35,6 +37,12 @@ export const HelpStore = (props) =>{
         }
       }
 
+      const alertText = ( color, text, cond ) =>{
+        setAlert({ color:color, text:text, cond:cond });
+        setTimeout(()=>{
+            setAlert({ cond:false });
+        },[4000]);
+    }
 
     return (
        <HelperContext.Provider
@@ -44,7 +52,9 @@ export const HelpStore = (props) =>{
              TableIdControl,
              tableId,
              StyleComp,
-             GlobalStyle
+             GlobalStyle,
+             alertText,
+             alert
         }}
         >
        {props.children}    

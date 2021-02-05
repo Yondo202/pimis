@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react'
-// import { HelpStore } from '../../context/HelperContext'
+import {IoCheckmarkCircleOutline  } from 'react-icons/io5';
+import { CgDanger } from 'react-icons/cg';
 import TableOne from '../../components/requests/newRequest/tableOne'
 import { motion } from 'framer-motion'
 import { positions, Provider } from "react-alert";
-// import AlertTemplate from "react-alert-template-basic";
 import AlertMUITemplate from "react-alert-template-mui";
 import TableTwo from '../../components/requests/newRequest/tableTwo';
 import styled from 'styled-components'
@@ -12,41 +12,16 @@ import UserContext from '../../context/HelperContext'
 import TableFour from '../../components/requests/newRequest/tableFour'
 import TableFive from '../../components/requests/newRequest/tableFive'
 import TableSix from '../../components/requests/newRequest/tableSix'
-import { Modal } from '../../components/requests/MainModal/Modal';
 import {ColorRgb, textColor} from '../../components/theme'
 
-const options = {
-    timeout: 10000,
-    position: positions.BOTTOM_CENTER,
-    offset: '120px',
-    width:'500px'
-  };
+const options = { timeout: 10000, position: positions.BOTTOM_CENTER, offset: '120px', width:'500px' };
 
-function MainRequest(props) {
-    const [ showModal, setShowModal ] = useState(false);
-    const [ ScrollClass, setScrollClass ] = useState("");
-    const ModalOpen = () => {   setShowModal(prev => !prev);}
-
-      useEffect( async()=>{
-        window.addEventListener("scroll", handleScroll);
-        // let resData = await axios.get(`pps-request/76`);
-        // if(resData.data.data){ setInitialData(resData.data.data); setLoading(false); }
-      },[]);
-      const handleScroll = () => {
-          if(window.pageYOffset > 50){  setScrollClass("modalBtn2"); }else{ setScrollClass(""); }
-      }
-    const StyleContext = useContext(UserContext);
-
-    const One = StyleContext.GlobalStyle.tableOne
-    const Two = StyleContext.GlobalStyle.tableTwo
-    const Three = StyleContext.GlobalStyle.tableThree
-    const Four = StyleContext.GlobalStyle.tableFour
-
+function MainRequest() {
+    const StyleContext = useContext(UserContext);const One = StyleContext.GlobalStyle.tableOne; const Two = StyleContext.GlobalStyle.tableTwo; const Three = StyleContext.GlobalStyle.tableThree; const Four = StyleContext.GlobalStyle.tableFour;
     return (
             <>
                 <PreviewBtn >
-                    <div className={`modalBtn ${ScrollClass}`}>
-                        {/* <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button> */}
+                    <div className={`modalBtn`}>
                         <div className="countPar container">
                             <div className="itemsPar">
                                 <div className={`${One==="0%"? `borderPar2`: `borderPar`}`}  ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
@@ -57,11 +32,9 @@ function MainRequest(props) {
                         </div>
                     </div>
                 </PreviewBtn>
-                {/* <Modal showModal={showModal} setShowModal={setShowModal}  /> */}
+
                 <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
-                    
                     <div style={{left:`${StyleContext.GlobalStyle.tableOne}`, opacity:`${StyleContext.GlobalStyle.tableOne === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                        
                         <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
                                 <TableOne  />
                         </motion.div>
@@ -71,7 +44,6 @@ function MainRequest(props) {
                             <TableTwo />
                         </Provider>
                     </div>
-                    
                     <div style={{left:`${StyleContext.GlobalStyle.tableThree}`, opacity:`${StyleContext.GlobalStyle.tableThree === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                         <TableThree />
                     </div>
@@ -87,6 +59,11 @@ function MainRequest(props) {
                         <TableSix />
                     </div>
                 </ParentComp>
+
+                <AlertStyle style={StyleContext.alert.cond === true ? {bottom:`100px`, opacity:`1`, borderLeft:`4px solid ${StyleContext.alert.color}`} : {bottom:`50px`, opacity:`0`}} >
+                    {StyleContext.alert.color=== "green"?<IoCheckmarkCircleOutline style={{color:`${StyleContext.alert.color}`}} className="true" /> : <CgDanger style={{color:`${StyleContext.alert.color}`}} className="true" /> }
+                    <span>{StyleContext.alert.text}</span>
+                </AlertStyle>
             </>
     )
 }
@@ -97,13 +74,12 @@ let easing = [0, 0, 0.56, 0.95];
 const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
     enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
 
-
 const ParentComp = styled.div`
     width:100%;
     overflow:hidden;
     position:relative;
     // transition:all 0.6s ease;
-    margin-top:60px;
+    margin-top:30px;
     .handleSlidePAr1{
         width:100%;
         position:absolute;
@@ -114,7 +90,32 @@ const ParentComp = styled.div`
         height:1000vh !important;
     }
 `
+const AlertStyle = styled.div`
+    z-index:1010;  
+    transition:all 0.5s ease;
+    position:fixed;
+    height:80px;
+    bottom:100px;
+    left:30%;
+    display:flex;
+    align-items:center;
+    border:1px solid rgba(0,0,0,0.2);
+    // border-left:4px solid green;
+    background-color:white;
+    padding:20px 30px; 
+    font-weight:400;
+    color:black;
+    border-radius:6px;
+    font-size:17px;
+    opacity:1;
+    .true{
+        margin-right:10px;
+        font-size:24px;
+        // color:green;
 
+    }
+
+`
 const PreviewBtn = styled.div`
     .modalBtn{
         // background-color:rgba(0,0,0,0.1);

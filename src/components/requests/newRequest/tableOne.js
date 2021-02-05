@@ -6,19 +6,17 @@ import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../../context/UserContext'
 import {Modal} from '../MainModal/Modal'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 
 function TableOne() {
+    const [ spnBtn, setSpnBtn ] = useState(false);
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
     const [ UserToken, setUserToken ] = useState(null);
-    const [ finalTextScale, setFinalTextScale] = useState('0');
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const StyleContext = useContext(UserContext);
     const tablesContext = useContext(HelperContext);
 
     useEffect(()=>{
@@ -26,96 +24,44 @@ function TableOne() {
       setUserToken(storageToken);
     })
 
-    // console.log("** userToken:",UserToken );
-    
-    // let [sigCanvas, setSigCanvas] = useState({});
-    // let [trimmedDataURL, setTrimmedDataURL] = useState(null);
-    // useEffect(async () => {
-    // },[]);
-    // const openModal=()=> { setVisible(true);}
-    // const closeModal=()=> { setVisible(false);}
-    // const clear = () => sigCanvas.clear();
-    // const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png'));
-    // setTimeout(()=>{ closeModal() },1000) };
-
-
-    // console.log(StyleContext.userInfo, " my user Info .........");
-
     const clickHandles = (e) =>{
-              let finalOne = {};
-              let finalEnd = {};
+              let finalOne = {};  let finalEnd = {};
               let rs2 = document.querySelectorAll(".inpTest3");
-              let arr2 = Array.from(rs2);
-              let finalOne2 = [];
+              let arr2 = Array.from(rs2); let finalOne2 = [];
 
               arr2.map(element=>{
                   if(element.checked === true){
-                    let soloObject2 = {}
-                    let field = element.name;
-                    let value = element.value;
-                    soloObject2["rownum"] = field;
-                    soloObject2["rvalue"] = value;
-                    finalOne2.push(soloObject2);
+                    let soloObject2 = {};  let field = element.name; let value = element.value;
+                    soloObject2["rownum"] = field; soloObject2["rvalue"] = value; finalOne2.push(soloObject2);
                   }
               });
 
-              console.log(finalOne2, "final data");
-
               tablesContext.TableControl(finalOne2);
-
-
-              let rs4 = document.querySelectorAll(".getUserInp1");
-              let arr4 = Array.from(rs4);
-              let userInp = {};
+              let rs4 = document.querySelectorAll(".getUserInp1");   let arr4 = Array.from(rs4); let userInp = {};
 
               arr4.map(element=>{
-                  let field = element.name;
-                  let value = element.value;
-                  userInp[field] = value;
+                  let field = element.name; let value = element.value; userInp[field] = value;
               });
-              // console.log(userInp, "userInp");
               let confirm = document.getElementById("GetcheckBtn").checked;
-              // console.log(confirm, "my checkbtn");
 
-              finalOne["request"] = finalOne2;
-              finalOne["name"] = userInp.name;
-              finalOne["date"] = userInp.date;
-              // finalOne["signature"] = trimmedDataURL;
-              // finalEnd["ppsRequest1Details"] = finalOne;
-              finalEnd["PPS1"] = finalOne;
+              finalOne["request"] = finalOne2; finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS1"] = finalOne;
 
               let keys = Object.keys(finalOne2);
               const Procent = keys.length * 100 / 13;
               const FinalProcent = Math.round(Procent);
-              // console.log(JSON.stringify(finalEnd));
 
               if(keys.length < 12){
-                setOpacity("1");
-                setProcent(FinalProcent);
-                scroll.scrollTo(0);
+                setOpacity("1"); setProcent(FinalProcent); scroll.scrollTo(0);
               }else if(userInp.name === "" || userInp.date === ""){
-                  setOpacity("0");
-                  setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү");
-                  setOpacity2("1");
+                  setOpacity("0"); setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү"); setOpacity2("1");
               }else if(confirm === false){
-                setOpacity("0");
-                setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
-                setOpacity2("1");
+                setOpacity("0"); setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
               }else{
-                setOpacity("0");
-                setOpacity2("0");
-                setFinalTextScale("0");
+                setSpnBtn(true);  setOpacity("0"); setOpacity2("0");
                 axios.post("pps-request", finalEnd, {headers: { Authorization:`bearer ${UserToken} `} })
-                .then((res)=>{
-                  console.log(res, "res");
-                  tablesContext.TableIdControl(res.data.data.id);
-                }).catch((err)=>{
-                  console.log(err, "err");
-                })
-                
-                tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
-                scroll.scrollTo(0);
-            }
+                .then((res)=>{tablesContext.alertText('green', "Амжилттай хадаглагдлаа", true); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); scroll.scrollTo(0); setSpnBtn(false); tablesContext.TableIdControl(res.data.data.id);
+                }).catch((err)=>{ console.log(err, "err"); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); })
+              }
             console.log(finalEnd, "final end");
       }
 
@@ -185,41 +131,16 @@ function TableOne() {
                                             <div className="name"> <BiPen />
                                                 <div className="form__group">
                                                     <input id="GetcheckBtn" className="checkBtn" type="checkbox" name="check" />
-                                                 
-                                                  {/* <label for="check">dada</label> */}
-                                                    {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
                                                 </div>
                                             </div>
                                     </div>
                                 </div>
-                                
-                                {/* {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
-
-                                <Modal visible={visible}  width="420" height="300"effect="fadeInDown" onClickAway={closeModal}>
-                                    <div className="modalPar">
-                                        <div className="Canvass">
-                                            <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 420, height: 200, className: 'sigCanvas'}} />
-                                        </div>
-                                        <div className="BtnPar">
-                                            <button onClick={clear}>Цэвэрлэх</button>
-                                            <button onClick={trim}>Хадгалах</button>
-                                            <button onClick={closeModal}>X</button>
-                                        </div>
-                                    </div>
-                                </Modal> */}
                             </div>
                         </div>
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                                {/* <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div> */}
-                                {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
-                            <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+                            <button onClick={clickHandles} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gifff.gif" alt="spin" />  } </button>
                         </div>
-
-                    {/* <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">Та шалгуур хангахгүй байна. </h6> </div> */}
-                    {/* <div >dadadad</div> */}
-                    {/* <h5 className="finalText">{resText}</h5> */}
-
                 </div>
              </div>
             </div>
@@ -530,15 +451,18 @@ const Component1 = styled.div`
                     padding:5px 0px;
                     color:white;
                     background-color:${Color};
-                    font-size:18px;
+                    font-size:17px;
                     text-align:center;
                     transition:all 0.3s ease;
                     display:flex;
                     align-items:center;
                     justify-content:space-around;
                     border:1px solid rgba(63, 81, 181,0.5);
-                    width:50%;
+                    width:40%;
                     border-radius:6px;
+                    img{
+                      width:25px;
+                    }
                     .hide{
                       transition:all 0.3s ease;
                       transform:scale(0);

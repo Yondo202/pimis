@@ -1,19 +1,18 @@
 import React, {useState, useContext, useEffect} from 'react'
 import TableThreeDetails from './deitals/tableThreeDetails'
-import { Link, animateScroll as scroll } from "react-scroll";
+import { animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 
 function TableThree() {
+    const [ spnBtn, setSpnBtn ] = useState(false);
     const helperContext = useContext(HelperContext);
-    const StyleContext  = useContext(UserContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
 
@@ -23,26 +22,12 @@ function TableThree() {
       setUserToken(storageToken);
     });
 
-    console.log(helperContext.tableId, "my tableId 3");
-
     const clickHandles = () => {
-        let finalOne = {};
-        let finalEnd = {};
-        let rs2 = document.querySelectorAll(".GetItemAdd33");
-        let arr2 = Array.from(rs2);
-        let finalOne2 = [];
+        let finalOne = {};let finalEnd = {};  let rs2 = document.querySelectorAll(".GetItemAdd33");  let arr2 = Array.from(rs2); let finalOne2 = [];
 
         arr2.map((el,i)=>{
-            const Lala = {}
-            let rs2 = document.querySelectorAll(`.PPPS${i + 1}`);
-            let arr23 = Array.from(rs2);
-            arr23.map((el,i)=>{
-                if(el.value !== ""){
-                    let field = el.name;
-                    let value = el.value;
-                    Lala[field] = value;
-                }
-            });
+            const Lala = {};  let rs2 = document.querySelectorAll(`.PPPS${i + 1}`); let arr23 = Array.from(rs2);
+            arr23.map(el=>{if(el.value !== ""){ let field = el.name;let value = el.value;  Lala[field] = value; } });
             finalOne2.push(Lala);
         });
 
@@ -50,38 +35,22 @@ function TableThree() {
         let arr4 = Array.from(rs4);
         let userInp = {};
 
-        arr4.map(element=>{
-            let field = element.name;
-            let value = element.value;
-            userInp[field] = value;
-        });
-
+        arr4.map(element=>{ let field = element.name; let value = element.value; userInp[field] = value; });
         let confirm = document.getElementById("GetcheckBtn3").checked;
-
-        finalOne["request"] = finalOne2;
-        finalOne["name"] = userInp.name;
-        finalOne["date"] = userInp.date;
-        finalEnd["PPS3"] = finalOne;
-
-        console.log(finalEnd, "final");
+        finalOne["request"] = finalOne2;  finalOne["name"] = userInp.name;  finalOne["date"] = userInp.date; finalEnd["PPS3"] = finalOne;
 
         if(userInp.name === "" || userInp.date === ""){
-            setOpacity2("1");
-            setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
+            setOpacity2("1"); setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
         }else if(confirm === false){
-            setOpacity2("1");
-            setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
+            setOpacity2("1");  setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
         }else{
-            // alert("gg");
+            setSpnBtn(true);
             axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}} ).then((res)=>{
-                console.log(res, "$$ ressssss 3 $$");
-              }).catch((err)=>{
-                console.log(err, "err");
-              });
-              helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
+                helperContext.alertText('green', "Амжилттай хадаглалаа", true);setSpnBtn(false); helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
+              }).catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true); setSpnBtn(false); });
             scroll.scrollTo(0);
         }
-
+        console.log(finalEnd, "final");
     }
 
     return (
@@ -127,9 +96,8 @@ function TableThree() {
                         </div>
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                                {/* <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div> */}
-                                {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
-                            <button onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+                            <button onClick={clickHandles} className="SubmitButton" type="button">{spnBtn===false? <>Илгээх<div className="flexchild"><AiOutlineSend/>
+                             <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> :<img style={{width:25}} src="/gifff.gif" alt="gif" />  } </button>
                         </div>
             </div>
         </Component3>
