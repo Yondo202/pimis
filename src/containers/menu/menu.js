@@ -14,6 +14,7 @@ function Menu(props) {
     const userCtx = useContext(UserContext);
     const [userId, setUserId] = useState();
     const [userName, setUserName] = useState();
+    const [ currPath, setCurrPath ] = useState();
     const [ diplayNone, setDisplayNone ] = useState("block");
     const [ headerHeight, setheaderHeight ] = useState("50px");
     const [open, close] = useState('');
@@ -42,13 +43,15 @@ function Menu(props) {
     };
 
     const clickhandle2 = ()=>{
-      setTimeout(()=>{
-        window.location.reload(false);
-      },100)
+      console.log("done");
+      // setTimeout(()=>{
+      //   window.location.reload(false);
+      // },100)
     };
 
     useEffect(() => {
       const currentPath = location.pathname;
+      setCurrPath(currentPath);
       if(currentPath !== "/" && currentPath !== "/comp-request"){  setDisplayNone("none");  setheaderHeight("50px");
       }else{setDisplayNone("block"); setheaderHeight("50px");}
       if(currentPath === "/"){setActiveMenu({Home:'line2',Req:'',Check:'',Maygt:''})}
@@ -71,14 +74,14 @@ function Menu(props) {
     // }
   return (
     <Componentss>
-      <div style={{display:diplayNone}} className="Background">
+      {/* <div style={{display:diplayNone}} className="Background">
         <div style={{padding:`0px 0px`}} className="LogoHeadPar container">
             <div style={{backgroundImage:`url(/head.jpg)`}} className="logoPar"></div>
         </div>
-      </div>
+      </div> */}
      
       <div style={{height:headerHeight}} className="MainMenus">
-            <div style={{padding:`0px 0px`}} className="container">
+            <div style={{padding:`0px 0px`}} style={currPath === "/"? {maxWidth:`1160px`}:{maxWidth:1000}} className="container">
                <input type="checkbox" id="check" name="check" />
                 <span className="menuPar">
                       <div className="backgroundGhost"></div>
@@ -109,12 +112,12 @@ function Menu(props) {
                                 <Link to="/urgudul/1">Өргөдөлийн маягт</Link>
                                 <div  className={`line ${activeMenu.Maygt}`}></div>
                               </div>
-                              <div className="items">
+                              {/* <div className="items">
                                 <Link to="/comp-check">Шалгах</Link>
                                 <div  className={`line ${activeMenu.Check}`}></div>
-                              </div>
+                              </div> */}
                               <div className="items">
-                                <Link to="/comp-test">Test</Link>
+                                <Link to="/comp-test">Шалгуур</Link>
                                 <div  className={`line ${activeMenu.Check}`}></div>
                               </div>
                         </div>
@@ -192,6 +195,7 @@ const Componentss = styled.div`
       align-items:center;
       width: 100%;
       box-shadow: 0px 2px 8px -2px rgba(${ColorRgb}, 0.5);
+    
         .MobileMenu{
           display:none;
           .checkBtnHome{
@@ -310,7 +314,7 @@ const Componentss = styled.div`
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 39%;
+            width: 36%;
             .items {
                 font-size:16px;
                 font-weight:500;

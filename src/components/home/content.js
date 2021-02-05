@@ -1,32 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
-import About from './About';
-import { motion } from 'framer-motion'
 
-let easing = [0, 0, 0.56, 0.95];
-const textVariants = {exit: { y: -80, opacity: 0, transition: { duration: 0.9, ease: easing } },
-    enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 1, ease: easing }}};
-const textVariants2 = {exit: { y: 80, opacity: 0, transition: { duration: 0.9, ease: easing } },
-    enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 1, ease: easing }}};
+// let easing = [0, 0, 0.56, 0.95];
+// const textVariants = {exit: { y: -80, opacity: 0, transition: { duration: 0.9, ease: easing } },
+//     enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 1, ease: easing }}};
+// const textVariants2 = {exit: { y: 80, opacity: 0, transition: { duration: 0.9, ease: easing } },
+//     enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 1, ease: easing }}};
 
 function Content() {
     return (
         <Component>
-            {/* <div className="contentPar">
-            <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants}>
-                <div className="checkCompPar">
-                    <span className="title">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ шалгаж үзнэ үү</span>
-                    <Switch>
-                        <Link to="/comp-check"><a><button className="checkBtn">ШАЛГАХ</button></a></Link>
-                    </Switch>
-                </div>
-            </motion.div>
-
-                <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                    <About />
-                </motion.div>
-            </div> */}
             <div className="ghost" style={{backgroundImage:`url(/background1.jpg)`}}>
                 <div className="ghostChild"></div>
             </div>

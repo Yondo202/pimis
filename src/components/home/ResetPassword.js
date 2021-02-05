@@ -12,7 +12,6 @@ import PasswordInducator from './PasswordIndicator'
 const isNumberRegx = /\d/;
 const specialCharacterRegx = /[ ~@#$%^&*()_+\-=[\]{;':\\|,.<>\/?]/;
 
-
 function ResetPassword() {
     const {id}  = useParams();
     const [scale, setScale] = useState("0");
@@ -106,14 +105,6 @@ function ResetPassword() {
                   <span className="headText">Нууц үг сэргээх</span>
                   </div>
                     <div className="inputPar">
-                        {/* <div className="name">
-                            <BiLockOpen />
-                                <div className="form__group">
-                                    <input type={hidden ? "password" : "text"} className="Password form__field" placeholder="Регистерийн дугаар" name="password" required />
-                                    <label for="name" className="form__label">Шинэ нууц үг</label>
-                                </div>
-                                <div className="toggleSvg" onClick={toggleShow}><IoEyeOutline /></div>
-                        </div> */}
                         <div className="name">
                             <BiLockOpen />
                                 <div className="form__group">

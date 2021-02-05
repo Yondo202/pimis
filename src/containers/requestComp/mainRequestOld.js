@@ -56,10 +56,14 @@ function MainRequest(props) {
                         <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button>
                         <div className="countPar container">
                             <div className="itemsPar">
-                                <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("0%", "100%", "200%","300%"),scroll.scrollTo(0))} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
+                                {/* <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("0%", "100%", "200%","300%"),scroll.scrollTo(0))} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
                                 <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} onClick={()=> (func("-100%", "0%", "100%","200%"),scroll.scrollTo(0))}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
                                 <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-200%", "-100%", "0%","100%"),scroll.scrollTo(0))}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
-                                <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-300%", "-200%", "-100%","0%"),scroll.scrollTo(0))}><span className="items">4</span></div> 
+                                <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-300%", "-200%", "-100%","0%"),scroll.scrollTo(0))}><span className="items">4</span></div>  */}
+                                <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
+                                <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
+                                <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
+                                <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">4</span></div> 
                             </div>
                         </div>
                     </div>

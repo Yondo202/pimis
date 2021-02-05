@@ -19,109 +19,51 @@ function TableFive(props) {
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [ Dname, setDname ] = useState(props.initialName);
     const [Ddate, setDdate] = useState(props.initialDate);
-
-    const changeNameHandle = (event) =>{
-        setDname(event.target.value);
-    }
-    const changeDateHandle = (event) =>{
-        setDdate(event.target.value);
-    }
+    const changeNameHandle = (event) =>{ setDname(event.target.value); };
+    const changeDateHandle = (event) =>{ setDdate(event.target.value); };
 
     const clickHandles = () => {
-        let finalOne = {};
-        let finalEnd = {};
-        let rs2 = document.querySelectorAll(".GetItemAdd55");
-        let arr2 = Array.from(rs2);
-        let finalOne2 = [];
-
-        let tableCondition1 = [];
+        let finalOne = {}; let finalEnd = {}; let rs2 = document.querySelectorAll(".GetItemAdd55"); let arr2 = Array.from(rs2); let finalOne2 = []; let tableCondition1 = [];
         arr2.map((el,i)=>{
             const Lala = {}
             let rs2 = document.querySelectorAll(`.PASS${i + 1}`);
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
-                if(el.value !== ""){
-                    let field = el.name;
-                    let value = el.value;
-                    Lala["id"] = el.id;
-                    Lala[field] = value;
-                }
-            });
-              tableCondition1.push(Lala);
-              finalOne2.push(Lala);
+                if(el.value !== ""){ let field = el.name;let value = el.value; Lala["id"] = el.id; Lala[field] = value; }
+            }); tableCondition1.push(Lala); finalOne2.push(Lala);
         });
+        let keys1 = Object.keys(tableCondition1[0]); console.log(keys1.length, "my length");
 
-        let keys1 = Object.keys(tableCondition1[0]);
-        console.log(keys1.length, "my length");
-
-        let tableCondition2 = [];
-        let rs22 = document.querySelectorAll(".GetItemAdd555");
-        let arr22 = Array.from(rs22);
-        let finalOne22 = [];
+        let tableCondition2 = []; let rs22 = document.querySelectorAll(".GetItemAdd555"); let arr22 = Array.from(rs22); let finalOne22 = [];
         arr22.map((el,i)=>{
             const Lala = {}
             let rs2 = document.querySelectorAll(`.passa${i + 1}`);
             let arr23 = Array.from(rs2);
-            arr23.map((el,i)=>{
-                if(el.value !== ""){
-                    let field = el.name;
-                    let value = el.value;
-                    Lala["id"] = el.id;
-                    Lala[field] = value;
-                }
-            });
-            tableCondition2.push(Lala);
-            finalOne22.push(Lala);
+            arr23.map((el,i)=>{ if(el.value !== ""){let field = el.name; let value = el.value; Lala["id"] = el.id; Lala[field] = value; }});
+            tableCondition2.push(Lala); finalOne22.push(Lala);
         });
         let keys2 = Object.keys(tableCondition2[0]);
-        console.log(keys2.length , "keys2");
+        // console.log(keys2.length , "keys2");
+        let rs4 = document.querySelectorAll(".getUserInp222"); let arr4 = Array.from(rs4); let userInp = {};
+        arr4.map(element=>{let field = element.name; let value = element.value; userInp[field] = value; });
+        let confirm = document.getElementById("GetcheckBtn5").checked; console.log(confirm, "my confirm");
 
-        let rs4 = document.querySelectorAll(".getUserInp222");
-        let arr4 = Array.from(rs4);
-        let userInp = {};
-        arr4.map(element=>{
-            let field = element.name;
-            let value = element.value;
-            userInp[field] = value;
-        });
-
-        let confirm = document.getElementById("GetcheckBtn5").checked;
-        console.log(confirm, "my confirm");
-
-        finalOne["requestOne"] = finalOne2;
-        finalOne["requestTwo"] = finalOne22;
-        finalOne["name"] = userInp.name;
-        finalOne["date"] = userInp.date;
-        // finalOne["signature"] = trimmedDataURL;
-        finalEnd["PPS5"] = finalOne;
-
+        finalOne["requestOne"] = finalOne2; finalOne["requestTwo"] = finalOne22; finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS5"] = finalOne;
         console.log(finalEnd, "final");
-        // console.log(JSON.stringify(finalEnd));
-        
         
         if(keys1.length < 8 || keys2.length < 8){
-            setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
-            setOpacity2("1");
+            setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү"); setOpacity2("1");
         }else if(userInp.name === "" || userInp.date === ""){
-            setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
-            setOpacity2("1");
+            setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү"); setOpacity2("1");
         }else if(confirm === false){
-            setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
-            setOpacity2("1");
+            setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
         }else{
             setOpacity2("0");
-            // alert("gg");
             axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
-
-            scroll.scrollTo(0);
-            StyleContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
-
+            scroll.scrollTo(0); StyleContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
         }
-
     }
-
     // console.log(props.initialData.requestOne, " $$ 5 $$");
-
     return (
         <Component3 className="container">
             {props.initialData.requestOne ? (
@@ -129,7 +71,6 @@ function TableFive(props) {
             <TableFiveDetails2 initialData={props.initialData.requestTwo} /></>
             ) : <div>Мэдээлэл байхгүй</div> }
             
-
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
@@ -146,7 +87,6 @@ function TableFive(props) {
                                 </div>
                                 
                                 <div className="NextChild">
-                                   
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
@@ -156,7 +96,6 @@ function TableFive(props) {
                                             </div>
                                         </div>
                                     </div>
-
                                     <div className="inpChild next">
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
                                             <div className="name"> <BiPen />
@@ -180,7 +119,6 @@ function TableFive(props) {
 }
 
 export default TableFive
-
 
 const Component3 = styled.div`
     color:rgba(${textColor},0.9);
@@ -359,7 +297,6 @@ const Component3 = styled.div`
                         &:required,&:invalid { box-shadow:none; }
                       }
                 }
-                
               }
            }
         }

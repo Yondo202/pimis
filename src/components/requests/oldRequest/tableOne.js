@@ -28,10 +28,8 @@ function TableOne(props) {
         finalData.push(el);
      })
      setInitialData(finalData);
-      console.log("----------------------------------------------------");
     },[]);
-
-    console.log(initialData, "*****initial dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    // console.log(initialData, "*****initial dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
     const radioChange = (event)=> {
       let finalData = []
@@ -42,91 +40,34 @@ function TableOne(props) {
        setInitialData(finalData);
     }
 
-    const changeHandle = (e) =>{
-      setDname(e.target.value);
-    }
-    const changeHandleDate = (e)=>{
-      setDdate(e.target.value);
-    }
+    const changeHandle = (e) =>{ setDname(e.target.value); }
+    const changeHandleDate = (e)=>{ setDdate(e.target.value);}
 
     const clickHandles = async (e) =>{
-              let finalOne = {};
-              let finalEnd = {};
-              let rs2 = document.querySelectorAll(".inpTest3");
-              let arr2 = Array.from(rs2);
-              let finalOne2 = [];
+              let finalOne = {};  let finalEnd = {};  let rs2 = document.querySelectorAll(".inpTest3"); let arr2 = Array.from(rs2);  let finalOne2 = [];
               arr2.map(element=>{
                   if(element.checked === true){
-                    let soloObject2 = {}
-                    let rownum = element.name;
-                    let value = element.value;
-                    soloObject2["id"] = element.id;
-                    soloObject2["rvalue"] = value;
-                    soloObject2["rownum"] = rownum;
-                    finalOne2.push(soloObject2);
+                    let soloObject2 = {}; let rownum = element.name; let value = element.value;
+                    soloObject2["id"] = element.id; soloObject2["rvalue"] = value;  soloObject2["rownum"] = rownum; finalOne2.push(soloObject2);
                   }
               });
-              console.log(finalOne2, "final data");
-              tablesContext.TableControl(finalOne2);
-              let rs4 = document.querySelectorAll(".getUserInp1");
-              let arr4 = Array.from(rs4);
-              let userInp = {};
+              tablesContext.TableControl(finalOne2); let rs4 = document.querySelectorAll(".getUserInp1");  let arr4 = Array.from(rs4); let userInp = {};
+              arr4.map(el=>{let field = el.name; let value = el.value; userInp[field] = value;  });
 
-              arr4.map(element=>{
-                  let field = element.name;
-                  let value = element.value;
-                  userInp[field] = value;
-              });
-
-              finalOne["request"] = finalOne2;
-              finalOne["name"] = userInp.name;
-              finalOne["date"] = userInp.date;
-              finalEnd["PPS1"] = finalOne;
-
-              let keys = Object.keys(finalOne2);
-              const Procent = keys.length * 100 / 13;
-              const FinalProcent = Math.round(Procent);
+              finalOne["request"] = finalOne2;  finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS1"] = finalOne;
+              let keys = Object.keys(finalOne2); const Procent = keys.length * 100 / 13; const FinalProcent = Math.round(Procent);
 
               if(keys.length < 12){
-                setOpacity("1");
-                setProcent(FinalProcent);
-                // scroll.scrollTo(0);
+                setOpacity("1"); setProcent(FinalProcent);
               }else if(userInp.name === "" || userInp.date === ""){
-                  setOpacity("0");
-                  setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү");
-                  setOpacity2("1");
+                  setOpacity("0"); setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү"); setOpacity2("1");
               }else{
-                setOpacity("0");
-                setOpacity2("0");
-               await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{
-                  console.log(res, "res");
-                  // tablesContext.TableIdControl(res.data.data.id);
-                }).catch((err)=>{
-                  console.log(err, "err");
-                });
+                setOpacity("0"); setOpacity2("0");
+               await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "res");  })
+               .catch((err)=>{console.log(err, "err");});
                 scroll.scrollTo(0);
                 StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%");
-
-
-                // const resData = await axios.get(`http://192.168.88.78:3000/api/pps-request/60`);
-                // const finalData = []
-                //   dataOne.map((el,i)=>{
-                //     resData.data.data.ppsRequest1Details.map(elem=>{ if(i + 1 === elem.rownum){ el["id"] = elem.id; el["rvalue"] = elem.rvalue; el["rownum"] = elem.rownum } })
-                //     finalData.push(el);
-                //   });
-                // setInitialData(finalData);
-                // setDname(resData.data.data.name1);
-                // setDdate(resData.data.data.date1);
-
-               
             }
-
-              // else if(confirm === false){
-              //   setOpacity("0");
-              //   setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
-              //   setOpacity2("1");
-              // }
-            // console.log(JSON.stringify(finalEnd));
             console.log(finalEnd, "final end");
       }
 
@@ -138,7 +79,6 @@ function TableOne(props) {
                     <div className="italicTitle">ХҮСНЭГТ 1. ХОРИГЛОСОН ҮЙЛ АЖИЛЛАГААНЫ ЖАГСААЛТ</div>
                 </div>
               <div className="formTwoParent ">
-
                 <div className="headerPar">
                     <div className="row" >
                     <div className="head1 col-md-9 col-sm-5 col-5">Шалгуур</div>
@@ -147,7 +87,6 @@ function TableOne(props) {
                     <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
                     </div>
                 </div>
-                
                 { initialData.map((el, i)=>{
                     return(
                       <div className="headerParchild" key={i}>
@@ -161,12 +100,10 @@ function TableOne(props) {
                     </div>
                     )
                 })}
-                
                 <div className="FinalBtn">
                     <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
                     <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                 </div>
-
               <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
@@ -192,14 +129,6 @@ function TableOne(props) {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* <div className="inpChild next">
-                                        <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
-                                            <div className="name"> <BiPen />
-                                                <div className="form__group">
-                                                    <input id="GetcheckBtn" className="checkBtn" type="checkbox" name="check" />
-                                                </div>
-                                            </div>
-                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -217,9 +146,7 @@ function TableOne(props) {
 export default TableOne
 
 const dataOne = [
-  {
-      name: "Цэрэг армийн ямар нэг зэвсэг"
-  },
+  {  name: "Цэрэг армийн ямар нэг зэвсэг" },
   {
       name: "Зэрлэг амьтан, ургамлын ховордсон төрөл зүйлийг олон улсын хэмжээнд худалдаалах тухай конвенц (CITES)-ийн хүрээнд хориглодог ан амьтан, ургамлын худалдаа"
   },

@@ -1,6 +1,6 @@
 import React,{useEffect, useState, useRef, useContext} from 'react';
 import styled from 'styled-components'
-import { Link, animateScroll as scroll } from "react-scroll";
+import { animateScroll as scroll } from "react-scroll";
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
@@ -17,11 +17,7 @@ function TableOne() {
     const [procent, setProcent] = useState('0');
     const [ UserToken, setUserToken ] = useState(null);
     const [ finalTextScale, setFinalTextScale] = useState('0');
-    // const [visible, setVisible] = useState(false);
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [dataFinal, setData] = useState({});
-    const [dataDetail, setDataDetal] = useState([]);
-    const [ text, setText ] = useState("dadada");
     const StyleContext = useContext(UserContext);
     const tablesContext = useContext(HelperContext);
 

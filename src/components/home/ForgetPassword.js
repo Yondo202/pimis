@@ -7,7 +7,6 @@ import Modal from 'react-awesome-modal';
 import UserContext from '../../context/UserContext'
 import axios from "../../axiosbase";
 
-
 function ForgetPassword() {
     const signUpCtx = useContext(UserContext);
 
@@ -15,12 +14,10 @@ function ForgetPassword() {
     const [visible, setVisible] = useState(false);
     const [Errmsg, setErrmsg] = useState("0");
     const [color, setColor] = useState("red");
-
     const openModal=()=> { setVisible(true); }
     const closeModal=()=> { setVisible(false); }
 
     const handleClick = async (e) =>{
-        // e.preventDefault();
              let rs = document.querySelectorAll(".Email");
              let arr = Array.from(rs);
              let finalOne = {};

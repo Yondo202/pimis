@@ -32,7 +32,6 @@ function TableThree() {
         let arr2 = Array.from(rs2);
         let finalOne2 = [];
 
-        // const tableCondition = [];
         arr2.map((el,i)=>{
             const Lala = {}
             let rs2 = document.querySelectorAll(`.PPPS${i + 1}`);
@@ -44,10 +43,8 @@ function TableThree() {
                     Lala[field] = value;
                 }
             });
-            // tableCondition.push(Lala);
             finalOne2.push(Lala);
         });
-        // let keys = Object.keys(tableCondition[0]);
 
         let rs4 = document.querySelectorAll(".getUserInp3");
         let arr4 = Array.from(rs4);
@@ -67,7 +64,6 @@ function TableThree() {
         finalEnd["PPS3"] = finalOne;
 
         console.log(finalEnd, "final");
-        // console.log(JSON.stringify(finalEnd));
 
         if(userInp.name === "" || userInp.date === ""){
             setOpacity2("1");

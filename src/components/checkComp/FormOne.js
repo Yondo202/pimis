@@ -5,7 +5,6 @@ import { Link, animateScroll as scroll } from "react-scroll";
 import axios from'axios';
 import {fontFamily2,fontFamily} from '../theme'
 
-
 function FormOne() {
   const [childStyle, setChildStyle] = React.useState('0');
   const [resTextstyle, setResTextstyle] = React.useState('black');
@@ -16,26 +15,16 @@ function FormOne() {
   
   useEffect(async () => {
     const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=1&pageSize=3' );
- 
     const Data1 = result.data.data.docs[0]
-    // console.log(Data1, "data 1");
     setData(Data1);
     setDataDetal(Data1.questiondetails)
   },[]);
 
   const clickHandle = (element) =>{
-    // e.preventDefault();
-            let rs = document.querySelectorAll(".inpTest");
-            let arr = Array.from(rs);
-            let finalOne = {};
+            let rs = document.querySelectorAll(".inpTest"); let arr = Array.from(rs); let finalOne = {};
           arr.map(element=>{
-              if(element.checked === true){
-                let field = element.name;
-                let value = element.value;
-                finalOne[field] = value
-              }
+              if(element.checked === true){ let field = element.name; let value = element.value; finalOne[field] = value }
           });
-          // console.log(finalOne.o1ne, "its my final2 2 2 ");
           if(finalOne.o1ne === "91"){
             setResponseText("Түншлэлийн хөтөлбөрт хамрагдах боломжгүй байна...");
             setResponseTextscale("1");

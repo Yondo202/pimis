@@ -23,12 +23,8 @@ function TableTwo() {
       let storageToken = localStorage.getItem("edp_loggedUser", []);
       setUserToken(storageToken);
     },[]);
-        
-
-    console.log(helperContext.tableId, "my table ID");
 
     const clickHandles = (e) =>{
-        // scroll.scrollTo(0);
         let getFile = document.querySelectorAll(".GetFilesData");
         let myArr1 = Array.from(getFile);
         let condition = []
@@ -39,7 +35,6 @@ function TableTwo() {
                 condition.push(value);
             }
         })
-
 
         const FilesSend =(AllData)=>{
             const TestArr = [];
@@ -65,9 +60,6 @@ function TableTwo() {
             });
         }
 
-        // console.log(ConditionFile.length, " ** condition length");
-        // console.log(TestArr, "my files");
-
         e.preventDefault();
         let finalOne = {};
         let finalEnd = {};
@@ -81,7 +73,6 @@ function TableTwo() {
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
                 if(el.value !== ""){
-                    let conditionbefore = {}
                     let field = el.name;
                     let value = el.value;
                     Lala[field] = value;
@@ -94,14 +85,12 @@ function TableTwo() {
 
         let originalTest = []
          finalOne2.map(el =>{
-        //  console.log(el, " my elementssss");
           let  conditon1 = Object.keys(el)
-        //   console.log(conditon1.length);
            if(conditon1.length === 3){
                 originalTest.push(el);
            }
         })
-        // console.log(originalTest.length, "test");
+        console.log(originalTest.length, "test");
 
         let rs4 = document.querySelectorAll(".getUser2");
         let arr4 = Array.from(rs4);
@@ -118,12 +107,6 @@ function TableTwo() {
         finalOne["name"] = userInp.name;
         finalOne["date"] = userInp.date;
         finalEnd["PPS2"] = finalOne;
-
-   
-
-
-   
-        console.log(condition.length, "legth;");
 
         if(originalTest.length < 10){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
@@ -157,14 +140,8 @@ function TableTwo() {
         }
         
         console.log(finalEnd, "my all");
-        // console.log(JSON.stringify(finalEnd), "myddd");
     }
     
-
-    // youtube.com/watch?v=PEGUFi9Sx-U
-
-    // https://www.youtube.com/watch?v=0TTa5Ulmgds
-   
     return (
         <Component2 className="container">
             <div className="shadow" >

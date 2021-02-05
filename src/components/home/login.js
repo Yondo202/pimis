@@ -1,5 +1,4 @@
-import React,{useContext, useEffect, useState} from 'react'
-
+import React,{useContext, useEffect, useState, useCallback} from 'react'
 import styled from 'styled-components'
 import {CgProfile} from 'react-icons/cg'
 import {BiLockOpen} from 'react-icons/bi'
@@ -9,18 +8,36 @@ import {fontFamily, Color,ColorRgb} from "../theme"
 import Signup from './signup'
 import ForgetPassword from './ForgetPassword'
 
-
 function Login() {
 
   const [userIdLocalStorage, setUserId] = useState();
-  // const [ loginMsg, setLoginMsg ] = useState();
-  // useEffect(() => {
-  //   const userIdLocalStorage = localStorage.getItem("userId", []);
-  //   setUserId(userIdLocalStorage);
-  // }, []);
-  // console.log(userIdLocalStorage, "user id App js local storage");
+  const userCtx = useContext(UserContext);
 
-    const userCtx = useContext(UserContext);
+    const keyPress = useCallback(e=>{
+      if(e.key === 'Enter'){
+        let Username = document.querySelectorAll(".LoginInpName");
+        let User = Array.from(Username);
+        const finalOneUser = {}
+        User.map(element=>{
+            let field = element.name;
+            let value = element.value;
+            finalOneUser[field] = value;
+        });
+        userCtx.loginUser(finalOneUser.name,finalOneUser.password);
+        setTimeout(() => {
+          const userId = localStorage.getItem("userId", []);
+          if(userId){
+            window.location.reload(true);
+          }else{  console.log('false');  }
+        }, 1000);
+      }
+
+     
+    },[userCtx]);
+    useEffect( async ()=>{
+        document.addEventListener('keydown', keyPress);
+        return () => document.removeEventListener('keydown', keyPress)
+    },[keyPress]);
 
     const handleClick = (e) =>{
         e.preventDefault();
@@ -45,7 +62,6 @@ function Login() {
           }
          }, 1000);
     }
-    // console.log(userCtx.userInfo.userId, "my user Id");
     return (
         <Component>
             {/* <form onSubmit={handleClick}> */}

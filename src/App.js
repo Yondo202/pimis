@@ -13,6 +13,7 @@ import MainRequest from './containers/requestComp/mainRequest'
 import EmialSender from './components/emailSend/EmailSend'
 import EmialSender2 from './components/emailSend/EmailSend2'
 import LoginDoneHome from './components/LoginDoneHome/MainHome'
+import LoginDoneHome2 from './components/LoginDoneHome/Home'
 import ReqHome from './components/LoginDoneHome/RequestHome'
 import MainRequestOld from './containers/requestComp/mainRequestOld'
 import { UrgudulStore } from "components/utilities/urgudulContext"
@@ -44,6 +45,9 @@ function App() {
   //      }, 100);
   // }
 
+
+
+
   return (
     <div className="App">
       <AlertStore>
@@ -54,7 +58,8 @@ function App() {
               <Switch>
                 <Route path="/" exact>
                   <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                    <LoginDoneHome />
+                    {/* <LoginDoneHome /> */}
+                    <LoginDoneHome2 />
                   </motion.div>
                 </Route>
                 <Route path="/comp-test" component={CheckComp} />
