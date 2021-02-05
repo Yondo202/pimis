@@ -23,8 +23,6 @@ export default class PageOne extends React.Component {
     }
   }
 
-
-
 const A4Format = styled.div`
         padding:10px 40px;
         background-color:white;
