@@ -209,7 +209,7 @@ function LetterOfInterest() {
                     <input type="file" className="tw-invisible tw-absolute" onChange={handleUploadLogo} ref={inputRefLogo} />
 
                     <div className="tw-flex-grow tw-p-2 tw-pl-8">
-                        <input className="tw-bg-transparent focus:tw-outline-none hover:tw-shadow-md tw-px-1 tw-uppercase tw-text-gray-500 tw-text-2xl tw-font-semibold tw-w-full" type="text" value={form.company_name || ''} onChange={e => handleInput('company_name', e.target.value)} placeholder="ААН албан ёсны нэр" />
+                        <input className="tw-bg-transparent focus:tw-outline-none hover:tw-shadow-md tw-px-1 tw-text-gray-500 tw-text-2xl tw-font-semibold tw-w-full" type="text" value={form.company_name || ''} onChange={e => handleInput('company_name', e.target.value)} placeholder="ААН албан ёсны нэр" />
 
                         <input className="tw-bg-transparent focus:tw-outline-none tw-mt-6 hover:tw-shadow-md tw-px-1 tw-w-full tw-text-sm tw-font-medium" type="text" value={form.company_address || ''} onChange={e => handleInput('company_address', e.target.value)} placeholder="ААН хаяг бүтнээр" />
 

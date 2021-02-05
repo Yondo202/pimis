@@ -45,9 +45,6 @@ function App() {
   //      }, 100);
   // }
 
-
-
-
   return (
     <div className="App">
       <AlertStore>
