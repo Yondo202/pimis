@@ -77,7 +77,7 @@ export default ForgetPassword
 
 const Component = styled.div`
     .forget{
-        font-size:15px;
+        font-size:14px;
         color:#036 !important;
         font-weight:500;
         cursor:pointer;

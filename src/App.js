@@ -86,7 +86,6 @@ function App() {
                   <Route path="/5c" component={AnalystReport} />
 
                   <Route path="/attachments" component={AttachmentUploads} />
-
                   <Route path="/sector-edit" component={BusinessSectorEditor} />
                   <Route path="/product-edit" component={ProductsEditor} />
                 </Switch>

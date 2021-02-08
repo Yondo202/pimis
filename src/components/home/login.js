@@ -70,7 +70,7 @@ function Login() {
                     <div className="text">Экспортыг дэмжих төсөл</div>
                 </div>
                 <div className="formOneParent">
-                <div className="headPar"><span className="headText">Нэвтрэх</span></div>
+                {/* <div className="headPar"><span className="headText">Нэвтрэх</span></div> */}
                     <div className="inputPar">
                         <div className="inpChild">
                             <div className="labels"><span>Нэвтрэх нэр</span> </div>
@@ -112,20 +112,21 @@ export default Login
 
 const Component = styled.div`
     font-family:${fontFamily};
-    height:75vh;
-    padding-top:30px;
+    height:65vh;
+    padding-top:10px;
+    font-size:13px;
     .imgPar{
         text-align:center;
-        padding:30px 0px;
+        padding:15px 0px;
         img{
           width:100%;
             // width:128px;
             // height:93px;
-            margin-bottom:20px;
+            margin-bottom:10px;
         }
 
         .text{
-          font-size:16px;
+          font-size:14px;
             font-weight:400;
             color:#888888;
         }
@@ -133,12 +134,12 @@ const Component = styled.div`
     .formOneParent{
         border-top:3px solid ${Color};
         background-color:white;
-        border-radius:8px;
+        border-radius:5px;
         margin-bottom:16px;
         padding-bottom:20px 0px;
         .headPar{
         padding:16px 0;
-        font-size:1.3rem;
+        font-size:1rem;
         border-bottom:1px solid rgba(63, 81, 181,0.5);
         color:black;
       }
@@ -147,6 +148,7 @@ const Component = styled.div`
        flex-direction:column;
        align-items:flex;
        justify-content:center;
+       padding-top:15px;
        .inpChild{
            margin:12px 0px;
            display:flex;
@@ -155,7 +157,7 @@ const Component = styled.div`
                display:flex;
                flex-direction:row;
                justify-content:space-between;
-               font-size:14px;
+               font-size:13px;
                span{
                    color:rgba(0,0,0,0.7);
                    font-weight:500;
@@ -291,7 +293,7 @@ const Component = styled.div`
  
       .SubmitButton{
         border-style:none;
-        border-radius:6px;
+        border-radius:4px;
         cursor:pointer;
         padding:5px 0px;
         color:white;
@@ -304,7 +306,7 @@ const Component = styled.div`
         justify-content:space-around;
         border:1px solid rgba(63, 81, 181,0.5);
         width:100%;
-        border-radius:6px;
+        border-radius:4px;
         .hide{
           transition:all 0.3s ease;
           transform:scale(0);
@@ -351,6 +353,25 @@ const Component = styled.div`
       
   }
 
+  @media only screen and (max-width:1308px){
+    padding-top:0px;
+    height:80vh;
+    .SubmitButtonPar{
+        .SubmitButton{
+            width:100%;
+        }
+      }
+      .formOneParent{
+        .headPar{
+            font-size:1em;
+        }
+        .inputPar{
+            .name{
+                width:100%;
+            }
+        }
+      }
+  }
   @media only screen and (max-width:768px){
     padding-top:50px;
     height:100vh;

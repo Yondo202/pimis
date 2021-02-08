@@ -22,7 +22,7 @@ function TableOne() {
     useEffect(()=>{
       let storageToken = localStorage.getItem("edp_loggedUser", []);
       setUserToken(storageToken);
-    })
+    });
 
     const clickHandles = (e) =>{
               let finalOne = {};  let finalEnd = {};

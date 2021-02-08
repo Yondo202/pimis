@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 import styled from 'styled-components'
 import { Link, animateScroll as scroll } from "react-scroll";
-import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
+import { fontFamily, textColor, ColorRgb,fontSize,PrevBtn,NextBtn } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {RiUpload2Line} from 'react-icons/ri'
@@ -297,11 +297,12 @@ function TableTwo(props) {
                                 </div>
                             </div>
                         </div>
+
+
+                        <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
-                            <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                                {/* <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div> */}
-                                {/* <span onClick={clickHandles} className="TestButton">NEXT</span> */}
-                            <button id="myInput" onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+                            <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); StyleContext.StyleComp("0%", "100%", "200%", "300%", "400%","500%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
+                            <NextBtn id="myInput" onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                         </div>
             </div>
         </div>
@@ -644,71 +645,25 @@ const Component2 = styled.div`
                   }
                }
             }
+            .errtext{
+                transition:all 0.4s ease;
+                text-align:center;
+                background-color: #f6c343;
+                border-radius:5px;
+                font-size:15px !important;
+                font-weight:400;
+                color:black !important;
+                line-height:34px;
+                padding:0px 20px;
+              }
             .buttonPar{
                 margin:10px 0px;
                 display:flex;
                 flex-direction:row;
                 align-items:center;
                 justify-content:space-between;
-               
-                  .errtext{
-                    transition:all 0.4s ease;
-                    text-align:center;
-                    background-color: #f6c343;
-                    border-radius:5px;
-                    font-size:15px !important;
-                    font-weight:400;
-                    color:black !important;
-                    line-height:34px;
-                    padding:0px 20px;
-                  }
-  
-                  .SubmitButton{
-                      margin:10px 0px;
-                      margin-bottom:10px;
-                      border-style:none;
-                      border-radius:6px;
-                      cursor:pointer;
-                      padding:5px 0px;
-                      color:white;
-                      background-color:${Color};
-                      font-size:18px;
-                      text-align:center;
-                      transition:all 0.3s ease;
-                      display:flex;
-                      align-items:center;
-                      justify-content:space-around;
-                      border:1px solid rgba(63, 81, 181,0.5);
-                      width:50%;
-                      border-radius:6px;
-                      .hide{
-                        transition:all 0.3s ease;
-                        transform:scale(0);
-                        font-size:22px;
-                      }
-                      .hide1{
-                        transition:all 0.7s ease;
-                        transform:scale(0);
-                        font-size:26px;
-                      }
-                      &:hover{
-                        box-shadow:1px 1px 15px -2px black;
-                        .hide{
-                          transition:all 0.3s ease;
-                          transform:scale(1);
-                        }
-                        .hide1{
-                          transition:all 0.7s ease;
-                          transform:scale(1);
-                        }
-                      }
-                      .flexchild{
-                        display:flex;
-                        align-items:center;
-                        justify-content:space-around;
-                      }
-                  }
-              }
+
+            }
         }
         
     }

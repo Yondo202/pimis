@@ -34,7 +34,7 @@ const ComponentHome = styled.div`
         .mainFormPar{
             border-radius:10px;
             background-color: white;
-            padding:0px 60px;
+            padding:0px 45px;
             width:35%;
             align-items:center;
         }
