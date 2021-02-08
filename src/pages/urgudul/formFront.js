@@ -48,7 +48,7 @@ function UrgudulFront() {
             console.log(res.data)
             UrgudulCtx.setData(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
-            setTimeout(() => history.push('/urgudul/2'), 3000)
+            history.push('/urgudul/2')
         }).catch(err => {
             console.log(err.response?.data)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
@@ -64,7 +64,7 @@ function UrgudulFront() {
             console.log(res.data)
             UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээлэл хадгалагдлаа.' })
-            setTimeout(() => history.push('/urgudul/2'), 3000)
+            history.push('/urgudul/2')
         }).catch(err => {
             console.log(err.response?.data)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })

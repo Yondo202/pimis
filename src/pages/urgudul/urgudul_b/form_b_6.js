@@ -80,7 +80,7 @@ function UrgudulActivities() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагааны талаарх мэдээлэл хадгалагдлаа.' })
-                    setTimeout(() => history.push('/urgudul/7'), 3000)
+                    history.push('/urgudul/7')
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -88,7 +88,7 @@ function UrgudulActivities() {
                 })
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
-            setTimeout(() => history.push('/urgudul/1'), 3000)
+            history.push('/urgudul/1')
         }
     }
 
@@ -157,7 +157,7 @@ function UrgudulActivities() {
 
             <div className="tw-flex tw-justify-end tw-items-center tw-py-1">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
-                    {form.length}ш үйл ажиллагаа нэмсэн байна.
+                    Үйл ажиллагаанууд
                 </div>
 
                 <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />
