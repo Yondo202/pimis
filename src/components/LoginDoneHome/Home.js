@@ -46,7 +46,7 @@ function Home() {
                                 <Link to="/urgudul/1" className="itemsActive">4. Өргөдлийн маягт </Link>
                             </div>
                             <div className="lineFull lineFull2" ></div>
-                            <div className="resultActive">Баримт бүрдүүлэлт бүрэн</div>
+                            <div className="resultActive">Анхан шатны үнэлгээ хийгдсэн</div>
                         </div>
                     </div>
 
@@ -59,7 +59,7 @@ function Home() {
                                
                             </div>
                             <div className="lineFull" ></div>
-                            <div className="resultWaiting">Баримт бүрдүүлэлт <br /> 2-р шат бүрэн</div>
+                            <div className="resultWaiting">Баримт бүрдүүлэлт <br/> 2-р шат бүрэн</div>
                         </div>
                     </div>
 

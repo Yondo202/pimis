@@ -10,6 +10,7 @@ import { useReactToPrint } from "react-to-print";
 export default class PageOne extends React.Component {
     render() {
       return (
+          <>
             <A4Format className="A4formatParent">
                     <div className="headImg">
                         <div className="imgItem"><img className="main" src="edp_logo.png" alt="edp" /></div>
@@ -19,6 +20,7 @@ export default class PageOne extends React.Component {
                     <div className="line"></div>
                     <div className="title">Ашиг сонирхлын зөрчилгүй тухай мэдэгдэх хуудас</div>
             </A4Format>
+            </>
         )
     }
   }
@@ -26,8 +28,8 @@ export default class PageOne extends React.Component {
 const A4Format = styled.div`
         padding:10px 40px;
         background-color:white;
-        width:1200px;
-        height:1585px;
+        width:1140px;
+        height:1611px;
         border:1px solid black;
         .headImg{
             height:44px;

@@ -29,7 +29,8 @@ export const UserStore= (props) =>{
 
     const loginUser= (email,password)=>{
         axios.post('users/login', {email: email,password: password,})
-        .then((res)=>{ console.log(res, "login res"); loginUserSuccess(res.data.user.id, res.data.token, res.data.token.expireDate, res.data.user.name); }).catch((e)=>{ setErrMsg(e.response.data.error.message); setUserInfo(initialUserInfo); });
+        .then((res)=>{ console.log(res, "login res"); loginUserSuccess(res.data.user.id, res.data.token, res.data.token.expireDate, res.data.user.name); })
+        .catch((e)=>{ if(e){ setErrMsg(e.response.data.error.message); } setUserInfo(initialUserInfo); });
       }
 
     const signUpUser= (name,email,password)=>{

@@ -16,9 +16,13 @@ function MainPage() {
     return (
         <>
         <PrintBtn className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</PrintBtn>
-        {/* <PrintParent ref={componentRef}> */}
+        
+        <PrintParent >
            <PageOne ref={componentRef} />
-        {/* </PrintParent> */}
+           <PageOne ref={componentRef} />
+           <PageOne ref={componentRef} />
+           <PageOne ref={componentRef} />
+        </PrintParent>
         </>
     )
 }
@@ -49,5 +53,8 @@ const PrintBtn = styled.div`
         }
 `
 const PrintParent = styled.div`
-        width:595px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
 `

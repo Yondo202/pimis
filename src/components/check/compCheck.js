@@ -1,4 +1,4 @@
-import React,{useState, useContext} from 'react';
+import React,{useState, useContext,useEffect} from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom'
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
@@ -9,41 +9,46 @@ import HelperContext from '../../context/HelperContext'
 import axios from '../../axiosbase'
 
 function CompCheck() {
+    const ctx = useContext(HelperContext);
     const history = useHistory();
+    const [ initialData, setInitialData ] = useState({});
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
+    const [ UserToken, setUserToken ] = useState(null);
     const [ finalTextScale, setFinalTextScale] = useState('0');
     const [FinalErrorText, setFinalErrorText] = useState("");
     const StyleContext = useContext(UserContext);
 
+    useEffect(async()=>{
+      let storageToken = localStorage.getItem("edp_loggedUser", []);
+      setUserToken(storageToken);
+      const data =  await axios.get(`criterias`,{ headers: { Authorization:`bearer ${storageToken}` } });
+      let keys = Object.keys(data.data.data);
+      console.log(keys, " my keys");
+
+      if(keys.length > 0){ setInitialData(data.data.data); console.log("^^data irseee") }else{ console.log("^^data alga") }
+    },[]);
+
+
+    console.log(initialData, " state data");
     const clickHandles = (e) =>{
               let rs2 = document.querySelectorAll(".inpTest333");
               let arr2 = Array.from(rs2);
               let soloObject2 = {}
-              const cond = {}
+              const cond = {};
 
               arr2.map((element,i)=>{ 
                   if(element.checked === true){
-                    let field = element.name;
-                    let value = element.value;
-                    let id = element.id;
-                    soloObject2[id + field] = value;
+                    let field = element.name; let value = element.value;  let id = element.id; soloObject2[id + field] = value;
                   }
-
                   if( element.checked === true && element.id + element.name !== "a6" && element.id + element.name !== "a7" && element.value !== "false"){
-                    let field = element.name;
-                    let value = element.value;
-                    let id = element.id;
-                    cond[id + field] = value;
+                    let field = element.name; let value = element.value;  let id = element.id; cond[id + field] = value;
                   }
 
               });
-              // console.log(soloObject2, "final two two");
-              // console.log(cond , " my condddd");
 
               let finalCond = Object.keys(cond);
-              // console.log(finalCond.length, " cond length");
               let keys = Object.keys(soloObject2);
               console.log(keys.length, " my urt");
               const Procent = keys.length * 100 / 25;
@@ -61,8 +66,11 @@ function CompCheck() {
                 setOpacity2("0");
                 setFinalTextScale("0");
                 alert("gg");
-                history.push('/');
+                // history.push('/');
                 // scroll.scrollTo(0);
+                axios.post(`criterias`, soloObject2, {headers:{ Authorization:`bearer ${UserToken}` } }).then(res=>{
+                  console.log(res, "ress"); ctx.alertText('green, Амжилттай', true);
+                }).catch(err=>console.log(err));
               }
       }
 
@@ -86,7 +94,7 @@ function CompCheck() {
                                   <div className="row" >
                                   <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
                                   <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
-                                  <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
+                                  <div className="radios col-md-1 col-sm-2 col-2"><input  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
                                   <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
                               </div>
                               </div>
@@ -358,7 +366,7 @@ const allData = [
            {  name: "*Сүүлийн 2 жил тус бүр НДШ төлдөг бүтэн цагийн ажилчдын тоо 10-250 хооронд байсан эсэх"},
        ]
    }, 
-    { 
+   {
        group: "b",
        title: "Өр төлбөрийн шалгуур хангалт",
        items: [

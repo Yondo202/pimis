@@ -60,8 +60,7 @@ export const Modal = ({ showModal,setShowModal, initialData }) => {
                             <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
                             <button className="esc" onClick={()=> setShowModal(prev => !prev)} > X </button>
                         </div>
-                      
-
+                        
                         <div  ref={componentRef}>
                           <ModalOne  DataOne={DataOne.ppsRequest1Details} />
                           <ModalTwo Data2={DataOne.ppsRequest2Details} />
