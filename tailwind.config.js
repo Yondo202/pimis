@@ -16,9 +16,8 @@ module.exports = {
       textColor: ['active'],
       borderColor: ['active'],
       boxShadow: ['active'],
+      visibility: ['hover'],
     },
   },
-  plugins: [
-    // require('@tailwindcss/forms')
-  ]
+  plugins: [],
 }

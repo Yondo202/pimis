@@ -1,0 +1,35 @@
+.letter-container {
+    width: 21cm;
+    height: 29.7cm;
+    margin: 0 auto;
+    padding: 8px;
+    position: relative;
+    background-color: white;
+}
+
+@media print {
+    .letter-container {
+        size: portrait A4;
+    }
+}
+
+.letter-container .quill .ql-toolbar {
+    border: none;
+}
+
+.letter-container .quill .ql-container {
+    border: none;
+    border-radius: 0;
+}
+
+.letter-container .quill .ql-container:hover {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.letter-container .quill .ql-editor {
+    padding: 4px 8px;
+}
+
+.letter-container .quill .ql-tooltip {
+    z-index: 10;
+}

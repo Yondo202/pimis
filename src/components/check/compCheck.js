@@ -11,7 +11,7 @@ import axios from '../../axiosbase'
 function CompCheck() {
     const ctx = useContext(HelperContext);
     const history = useHistory();
-    const [ initialData, setInitialData ] = useState({});
+    const [ initialData, setInitialData ] = useState(allData);
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
@@ -25,9 +25,29 @@ function CompCheck() {
       setUserToken(storageToken);
       const data =  await axios.get(`criterias`,{ headers: { Authorization:`bearer ${storageToken}` } });
       let keys = Object.keys(data.data.data);
-      console.log(keys, " my keys");
+     
+      if(keys.length > 0){
+        let filterArr = []
+        let value = Object.values(data.data.data);
+        keys.map((el,i)=>{
+          let obj1 = {}; value.map((elem,ind)=>{  if(i===ind){ obj1["keys"] = el;  obj1["values"] = elem; }}); filterArr.push(obj1);
+        });
+        console.log('filterArr', filterArr);
 
-      if(keys.length > 0){ setInitialData(data.data.data); console.log("^^data irseee") }else{ console.log("^^data alga") }
+        // allData.map((el,i)=>{
+        //     el.items.map((elem,ind)=>{
+
+        //         if(el.group`${ind + 1}` === ){
+
+        //         }
+        //     })
+        // });
+
+        // setInitialData(data.data.data); 
+        console.log("^^data irseee");
+      }else{ console.log("^^data alga") }
+
+
     },[]);
 
 
@@ -78,7 +98,7 @@ function CompCheck() {
         <Component1 className="container" >
             <div className="boxShadow">
                 <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
-                {allData.map((el,i)=>{
+                {initialData.map((el,i)=>{
                     return(
                         <div key={i} className="formTwoParent ">
                           <div className="headerPar">

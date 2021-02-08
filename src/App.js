@@ -22,8 +22,12 @@ import ProductsEditor from 'pages/products_edit/editorPage'
 import { AlertStore } from 'components/utilities/alertContext'
 import AlertDialog from 'components/alert_dialog/alertDialog'
 import UrgudulNavigator from 'pages/urgudul/page'
-import LetterOfInterest from 'pages/sonirhol_ilerhiileh_at/page';
-import MainPage from './components/notifyPage/MainPage'
+import LetterOfInterest from 'pages/letter_of_interest/page'
+import FirstEvaluation from 'pages/decision_making/page_5a'
+import CompilationCheck from 'pages/decision_making/page_5b'
+import AnalystReport from 'pages/decision_making/page_5c';
+import AttachmentUploads from 'pages/attachments/page';
+import MainPage from 'components/notifyPage/MainPage'
 
 
 function App() {
@@ -46,47 +50,47 @@ function App() {
   //      }, 100);
   // }
 
-
-
-
   return (
     <div className="App">
       <AlertStore>
         <Router>
-          {userId ? <Menu /> : <></>}
+          {userId && <Menu />}
           {userId ? (
-            <>
-              <Switch>
-                <Route path="/" exact>
-                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                    {/* <LoginDoneHome /> */}
-                    <LoginDoneHome2 />
-                  </motion.div>
-                </Route>
-                <Route path="/comp-test" component={CheckComp} />
-                <Route path="/comp-check" component={MainForm} />
-                <Route path="/comp-request" component={ReqHome} exact />
-                <Route path="/notfy-page" component={MainPage} exact />
-                <HelpStore>
+            <HelpStore>
+              <UrgudulStore>
+                <Switch>
+                  <Route path="/" exact>
+                    <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                      {/* <LoginDoneHome /> */}
+                      <LoginDoneHome2 />
+                    </motion.div>
+                  </Route>
+
+                  <Route path="/comp-test" component={CheckComp} />
+                  <Route path="/comp-check" component={MainForm} />
+                  <Route path="/comp-request" component={ReqHome} exact />
+                  <Route path="/notfy-page" component={MainPage} exact />
+
                   <Route path="/comp-request/new" component={MainRequest} />
                   <Route path="/comp-request/old" component={MainRequestOld} />
-                </HelpStore>
-                <Route path="/email" component={EmialSender} />
-                <Route path="/email2" component={EmialSender2} />
-              </Switch>
 
-              <Switch>
-                <Route path="/letter-of-interest" component={LetterOfInterest} />
-                <UrgudulStore>
+                  <Route path="/email" component={EmialSender} />
+                  <Route path="/email2" component={EmialSender2} />
+
+                  <Route path="/letter-of-interest" component={LetterOfInterest} />
+
                   <Route path="/urgudul/:page" component={UrgudulNavigator} />
-                </UrgudulStore>
-              </Switch>
 
-              <Switch>
-                <Route path="/sector-edit" component={BusinessSectorEditor} />
-                <Route path="/product-edit" component={ProductsEditor} />
-              </Switch>
-            </>
+                  <Route path="/5a" component={FirstEvaluation} />
+                  <Route path="/5b" component={CompilationCheck} />
+                  <Route path="/5c" component={AnalystReport} />
+
+                  <Route path="/attachments" component={AttachmentUploads} />
+                  <Route path="/sector-edit" component={BusinessSectorEditor} />
+                  <Route path="/product-edit" component={ProductsEditor} />
+                </Switch>
+              </UrgudulStore>
+            </HelpStore>
           ) : (
               <Switch>
                 <Route path="/" exact>
