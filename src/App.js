@@ -81,11 +81,12 @@ function App() {
 
                   <Route path="/urgudul/:page" component={UrgudulNavigator} />
 
+                  <Route path="/attachments" component={AttachmentUploads} />
+
                   <Route path="/5a" component={FirstEvaluation} />
                   <Route path="/5b" component={CompilationCheck} />
                   <Route path="/5c" component={AnalystReport} />
 
-                  <Route path="/attachments" component={AttachmentUploads} />
                   <Route path="/sector-edit" component={BusinessSectorEditor} />
                   <Route path="/product-edit" component={ProductsEditor} />
                 </Switch>
