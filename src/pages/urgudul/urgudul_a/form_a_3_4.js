@@ -46,7 +46,7 @@ function UrgudulOverview() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Танилцуулга мэдээлэл хадгалагдлаа.' })
-                    setTimeout(() => history.push('/urgudul/5'), 3000)
+                    history.push('/urgudul/5')
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -54,7 +54,7 @@ function UrgudulOverview() {
                 })
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
-            setTimeout(() => history.push('/urgudul/1'), 3000)
+            history.push('/urgudul/1')
         }
     }
 

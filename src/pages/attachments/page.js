@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
-import CloseSVG from 'assets/svgComponents/closeSVG'
 import FileCard from './fileCard'
 
 
@@ -87,7 +86,7 @@ export default function AttachmentUploads() {
         formData.append(files)
 
         axios.post('', formData, {
-            hearder: {
+            header: {
                 'Authorization': getLoggedUserToken(),
                 'Content-Type': 'multipart/form-data',
             },

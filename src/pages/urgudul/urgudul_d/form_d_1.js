@@ -97,7 +97,7 @@ function UrgudulNoticeCluster() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хамтрагч талуудын мэдээлэл хадгалагдлаа.' })
-                    setTimeout(() => history.push('/urgudul/10'), 3000)
+                    history.push('/urgudul/10')
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -105,7 +105,7 @@ function UrgudulNoticeCluster() {
                 })
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
-            setTimeout(() => history.push('/urgudul/1'), 3000)
+            history.push('/urgudul/1')
         }
     }
 
@@ -237,9 +237,7 @@ function UrgudulNoticeCluster() {
 
             <div className="tw-flex tw-justify-end tw-items-center tw-py-1">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
-                    {
-                        form.length > 1 ? `${form.length - 1}ш кластерын гишүүн ААН нэмсэн байна.` : 'Кластерийн гишүүн ААН нэмээгүй байна.'
-                    }
+                    ААН-ийн төлөөлөгчид
                 </div>
 
                 <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />

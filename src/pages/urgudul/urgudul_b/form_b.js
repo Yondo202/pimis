@@ -62,7 +62,7 @@ function UrgudulBreakdown() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Төслийн задаргаа хадгалагдлаа.' })
-                    setTimeout(() => history.push('/urgudul/6'), 3000)
+                    history.push('/urgudul/6')
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -70,7 +70,7 @@ function UrgudulBreakdown() {
                 })
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
-            setTimeout(() => history.push('/urgudul/1'), 3000)
+            history.push('/urgudul/1')
         }
     }
 
@@ -92,9 +92,9 @@ function UrgudulBreakdown() {
                     </div>
                 </div>
 
-                <FormInline label="Төслийн үргэлжлэх хугацаа" type="date" value={form.project_start || ''} name="project_start" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="Төслийн эхлэх хугацаа" type="date" value={form.project_start || ''} name="project_start" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
 
-                <FormInline label="Төслийн үргэлжлэх хугацаа" type="date" value={form.project_end || ''} name="project_end" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="Төслийн дуусах хугацаа" type="date" value={form.project_end || ''} name="project_end" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
             </div>
 
             <div className="tw-w-full tw-border tw-border-dashed">

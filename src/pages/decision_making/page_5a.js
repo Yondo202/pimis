@@ -5,22 +5,42 @@ import HelpPopup from "components/help_popup/helpPopup";
 const FirstEvaluation = () => {
   const [rows, setRows] = useState(initialState);
 
-  const onUpdateItem = (index, isChecked) => {
-    setRows((prevstate) => {
-      const list = prevstate.map((item, j) => {
-        if (j === index) {
-          item.isChecked = isChecked;
-          return item;
-        } else {
-          return item;
-        }
-      });
+  const handleInput = (key, value, rowcode) => {
+    const index = rows.findIndex(row => row.rowcode === rowcode)
+    const newRows = rows
+    newRows[index][key] = value
+    setRows([...newRows])
+  }
 
-      return list;
-    });
-  };
+  const isCheckedA = rows.filter(row => row.category === 'A' && row.rowcode !== 'a').every(row => row.isChecked)
+  const isCheckedB = rows.filter(row => row.category === 'B' && row.rowcode !== 'b').every(row => row.isChecked)
+  const isCheckedC = rows.filter(row => row.category === 'C' && row.rowcode !== 'c').every(row => row.isChecked)
 
-  const isCheckedA = rows.filter(row => row.category === 'A').every(row => row.category)
+  useEffect(() => {
+    if (isCheckedA) {
+      handleInput('isChecked', true, 'a')
+    } else {
+      handleInput('isChecked', false, 'a')
+    }
+
+    if (isCheckedB) {
+      handleInput('isChecked', true, 'b')
+    } else {
+      handleInput('isChecked', false, 'b')
+    }
+
+    if (isCheckedC) {
+      handleInput('isChecked', true, 'c')
+    } else {
+      handleInput('isChecked', false, 'c')
+    }
+
+    if (isCheckedA && isCheckedB && isCheckedC) {
+      handleInput('isChecked', true, 'z')
+    } else {
+      handleInput('isChecked', false, 'z')
+    }
+  }, [isCheckedA, isCheckedB, isCheckedC])
 
   return (
     <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2">
@@ -36,13 +56,26 @@ const FirstEvaluation = () => {
         {rows.map((row, index) => (
           <div
             key={row.order}
-            className={`tw-flex tw-items-center tw-justify-between tw-text-sm ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" ? "tw-bg-gray-50" : ""}`}
+            className={`tw-flex tw-items-center tw-justify-between tw-text-sm ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === 'z' ? "tw-bg-gray-50" : ""}`}
           >
-            <span className={`tw-px-3 tw-py-2.5 ${row.rowcode === 'z' && 'tw-pl-6 tw-font-medium tw-text-base'} ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" ? "tw-font-medium" : ""}`}>
+            <span className={`tw-px-4 tw-py-2.5 ${row.rowcode === 'z' && 'tw-pl-6 tw-font-medium'} ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" ? "tw-font-medium" : ""}`}>
               {row.description}
             </span>
 
+<<<<<<< HEAD
             <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={(e) => { onUpdateItem(index, e.target.checked) }} />
+=======
+            {
+              {
+                'z': <input className="tw-w-4 tw-h-4 tw-mr-8 tw-ml-2 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} disabled />,
+                'a': <input className="tw-w-4 tw-h-4 tw-mr-6 tw-ml-2 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} disabled />,
+                'b': <input className="tw-w-4 tw-h-4 tw-mr-6 tw-ml-2 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} disabled />,
+                'c': <input className="tw-w-4 tw-h-4 tw-mr-6 tw-ml-2 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} disabled />,
+              }[row.rowcode]
+              || <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
+            }
+
+>>>>>>> e09b26a5c82811b73ccd48339ecca6ad414ee896
           </div>
         ))}
       </div>

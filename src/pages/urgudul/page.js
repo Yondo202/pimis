@@ -119,7 +119,6 @@ function UrgudulNavigator() {
             <div className="tw-mt-8 tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
                 <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 1 && 'tw-invisible'}`} onClick={handlePrev}>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90" />
-                    <span className="tw-mr-1">Prev</span>
                 </button>
                 {
                     [...Array(5)].map((item, i) =>
@@ -129,7 +128,6 @@ function UrgudulNavigator() {
                     )
                 }
                 <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 10 && 'tw-invisible'}`} onClick={handleNext}>
-                    <span className="tw-ml-1">Next</span>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw--rotate-90" />
                 </button>
             </div>
@@ -201,7 +199,7 @@ function UrgudulNavigator() {
                                     <div className="tw-flex tw-flex-wrap tw-justify-start">
                                         {
                                             projects.map((item, i) =>
-                                                <div className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300" onClick={() => loadProject(item.id)}>
+                                                <div className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300" key={item.id} onClick={() => loadProject(item.id)}>
                                                     <div className={`tw-h-24 tw-rounded-t-md tw-flex tw-justify-center tw-items-center tw-text-white tw-text-lg tw-font-bold ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
                                                         ID: {item.id}
                                                     </div>

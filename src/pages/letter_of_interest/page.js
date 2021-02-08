@@ -255,7 +255,7 @@ function LetterOfInterest() {
                     <div className="tw-flex tw-justify-center tw-items-end tw-mt-2">
                         <span className="tw-font-medium">Гарын үсэг:</span>
 
-                        <SignaturePad canvasProps={{ className: 'hover:tw-shadow-md hover:tw-bg-indigo-50 tw-ml-4 tw-border-b tw-border-gray-700', width: 240, height: 80 }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
+                        <SignaturePad canvasProps={{ className: 'hover:tw-shadow-md hover:tw-bg-indigo-50 tw-transition-colors tw-ml-4 tw-border-b tw-border-gray-700', width: 240, height: 80 }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
 
                         <CloseSVG className="tw-self-start tw-relative tw-right-6 tw-w-6 tw-h-6 tw-text-red-500 tw-opacity-0 hover:tw-opacity-90 hover:tw-shadow-md tw-transition-opacity" onClick={handleClearSignature} />
                     </div>

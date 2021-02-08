@@ -209,7 +209,7 @@ function UrgudulCalculations() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Борлуулалт, экспортын тооцоолол хадгалагдлаа.' })
-                    setTimeout(() => history.push('/urgudul/9'), 3000)
+                    history.push('/urgudul/9')
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -217,7 +217,7 @@ function UrgudulCalculations() {
                 })
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
-            setTimeout(() => history.push('/urgudul/1'), 3000)
+            history.push('/urgudul/1')
         }
     }
 
@@ -325,7 +325,7 @@ function UrgudulCalculations() {
                                 <>
                                     <tr className="tw-h-9" key={i}>
                                         <td className="tw-border tw-px-1">
-                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" />
+                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent tw-font-medium" />
                                         </td>
                                         <td className="tw-border tw-px-2" colSpan="8">
                                             <button className="tw-float-right tw-px-1 tw-py-0.5 tw-text-red-400 tw-text-xs tw-font-semibold tw-rounded focus:tw-outline-none tw-border tw-border-red-400 active:tw-bg-red-100" onClick={() => handleRemoveCountry(i)}>
@@ -338,7 +338,7 @@ function UrgudulCalculations() {
                                         country.export_products.map((product, j) =>
                                             <tr className="tw-h-9">
                                                 <td className="tw-border tw-px-1">
-                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={country.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent" selectWidth={window.innerWidth > 922 ? '922px' : `${window.innerWidth - 128}px`} />
+                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={country.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={window.innerWidth > 922 ? '922px' : `${window.innerWidth - 128}px`} />
                                                 </td>
                                                 {
                                                     dates.map((key, k) =>

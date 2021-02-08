@@ -58,7 +58,7 @@ function UrgudulChecklist() {
                 })
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
-            setTimeout(() => history.push('/urgudul/1'), 3000)
+            history.push('/urgudul/1')
         }
     }
 

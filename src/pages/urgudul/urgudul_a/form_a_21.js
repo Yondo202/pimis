@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import HelpPopup from 'components/help_popup/helpPopup'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
@@ -12,15 +12,23 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import SearchSelect from 'components/urgudul_components/searchSelect'
+import FormFile from 'components/urgudul_components/formFile'
+import UploadSVG from 'assets/svgComponents/uploadSVG'
+import FileCard from 'pages/attachments/fileCard'
 
 
 const initialState = [
     {
         company_name: null,
         representative_name: null,
+        representative_phone: null,
+        representative_email: null,
+        business_sectorId: null,
         company_size: null,
         support_recipient: null,
         project_contribution: null,
+        cooperation_agreement: null,
     },
 ]
 
@@ -41,13 +49,44 @@ function UrugudulClusters() {
         setForm([...newForm])
     }
 
+    const handleInputFormatted = (values, key, index) => {
+        const newForm = form
+        newForm[index][key] = values.formattedValue
+        setForm([...newForm])
+    }
+
+    const [editIndex, setEditIndex] = useState()
+
+    const fileInputRef = useRef()
+
+    const handleFileInputClick = (index) => {
+        setEditIndex(index)
+        fileInputRef.current.click()
+    }
+
+    const handleInputFile = (e) => {
+        const newForm = form
+        newForm[editIndex].cooperation_agreement = e.target.files[0]
+        setForm([...newForm])
+    }
+
+    const handleRemoveFile = (index) => {
+        const newForm = form
+        newForm[index].cooperation_agreement = null
+        setForm([...newForm])
+    }
+
     const handleAdd = () => {
         const newObj = {
             company_name: null,
             representative_name: null,
+            representative_phone: null,
+            representative_email: null,
+            business_sectorId: null,
             company_size: null,
             support_recipient: null,
             project_contribution: null,
+            cooperation_agreement: null,
         }
 
         setForm([...form, newObj])
@@ -78,7 +117,7 @@ function UrugudulClusters() {
                     console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Кластерийн мэдээлэл хадгалагдлаа.' })
-                    setTimeout(() => history.push('/urgudul/4'), 3000)
+                    history.push('/urgudul/4')
                 })
                 .catch(err => {
                     console.log(err.response?.data)
@@ -86,12 +125,12 @@ function UrugudulClusters() {
                 })
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
-            setTimeout(() => history.push('/urgudul/1'), 3000)
+            history.push('/urgudul/1')
         }
     }
 
     return (
-        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-relative tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
                 - Кластерын гишүүн байгууллагууд
@@ -99,18 +138,26 @@ function UrugudulClusters() {
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Тухайн кластерт оролцогч, бусад аж ахуйн нэгжүүдийг жагсаалт, тэдгээрийн төлөөлөх албан тушаалтан, овог нэрийн хамт." position="bottom" />
             </div>
 
+            <input className="tw-absolute tw-invisible" type="file" onChange={handleInputFile} ref={fileInputRef} />
+
             {
                 form.map((item, i) =>
-                    <div className="tw-flex odd:tw-bg-gray-50" key={i}>
+                    <div className="tw-flex even:tw-bg-gray-50" key={i}>
                         <div className="tw-flex-grow">
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-center">
                                 <FormInline label="Кластерын гишүүн аж ахуйн нэгж" type="text" value={item.company_name || ''} name="company_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
                                 <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
-                                <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
+                                <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.representative_phone || ''} name="representative_phone" id={i} onChange={handleInputFormatted} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
 
-                                <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх?" options={['Тийм', 'Үгүй']} values={[1, 0]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
+                                <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.representative_email || ''} name="representative_email" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} />
+
+                                <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
+
+                                <SearchSelect label="Салбар" api="business-sector" keys={['data']} value={item.business_sectorId} name="business_sectorId" id={i} displayName="bdescription_mon" setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
+
+                                <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх?" options={['Тийм', 'Үгүй']} values={[1, 0]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
                             </div>
 
                             <div className="tw-w-full tw-border tw-border-dashed">
@@ -125,6 +172,25 @@ function UrugudulClusters() {
                                     <FormRichText modules="small" value={item.project_contribution || ''} name="project_contribution" id={i} setForm={handleSetForm} />
                                 </div>
                             </div>
+
+                            {/* <FormFile label="Кластерийн хамтын ажиллагааны гэрээ" /> */}
+
+                            <div className="">
+                                <div>
+                                    Кластерийн хамтын ажиллагааны гэрээ
+                                    </div>
+
+                                <UploadSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
+
+                                <button className="" onClick={() => handleFileInputClick(i)}>
+                                    Файл оруулах
+                                    </button>
+
+                                {
+                                    item.cooperation_agreement &&
+                                    <FileCard name={item.cooperation_agreement.name} type={item.cooperation_agreement.type.split('/')[1]} size={item.cooperation_agreement.size} removeFile={() => handleRemoveFile(i)} />
+                                }
+                            </div>
                         </div>
 
                         <div className="tw-flex tw-items-center">
@@ -136,7 +202,7 @@ function UrugudulClusters() {
 
             <div className="tw-flex tw-justify-end tw-items-center tw-pt-2">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
-                    {form.length}ш кластерийн гишүүн байгууллага байна.
+                    Кластерийн гишүүн байгууллагууд
                 </div>
 
                 <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classButton="tw-text-green-500 active:tw-text-green-600 tw-mr-2" />
