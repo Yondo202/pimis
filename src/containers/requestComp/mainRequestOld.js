@@ -34,9 +34,13 @@ function MainRequest(props) {
         let myLocal = localStorage.getItem('userId'); 
         setTokens(storageToken); setUserId(myLocal);
         window.addEventListener("scroll", handleScroll);
-        let resData = await axios.get(`pps-request/${myLocal}`, {headers: {Authorization:`bearer ${storageToken}`}});
+        let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${storageToken}`}});
         console.log(resData, " ^^ ress");
+
         if(resData.data.data){ setInitialData(resData.data.data); setLoading(false); }
+        // let reponsesData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${storageToken}`}});
+        // console.log(reponsesData, " ** my original");
+        
       },[]);
       const handleScroll = () => {
           if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); }

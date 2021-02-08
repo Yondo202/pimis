@@ -1,4 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
+import { useHistory } from 'react-router-dom'
 import TableSixDetails from './deitals/tableSixDetail'
 import TableSixDetails2 from './deitals/tableSixDetail2'
 import { Link, animateScroll as scroll } from "react-scroll";
@@ -13,6 +14,7 @@ import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 
 function TableSix() {
+    const history = useHistory();
     const StyleContext  = useContext(UserContext);
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
@@ -104,10 +106,11 @@ function TableSix() {
             setOpacity2("1");
         }else{
             setOpacity2("0");
-            alert("gg");
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{
+                helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000);
+            }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
         }
-        // StyleContext.StyleComp("-300%", "-200%", "-100%", "0%");
+
     }
 
     return (

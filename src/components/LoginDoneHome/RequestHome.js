@@ -17,9 +17,13 @@ function RequestHome() {
     useEffect(async ()=>{
         const localToken = localStorage.getItem("edp_loggedUser", []);
         let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${localToken}`}});
-        if(resData){setAllData(resData.data.data)};
+        let data = []; data.push(resData.data.data)
+        if(resData){ setAllData(data) };
         console.log(resData, " ** my data");
+        
     },[]);
+
+    console.log(allData, " my obj");
 
     return (
         <Reqhome className="container">

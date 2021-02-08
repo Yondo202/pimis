@@ -42,11 +42,6 @@ const FirstEvaluation = () => {
               {row.description}
             </span>
 
-            {
-              {
-                'z': <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={(e) => { onUpdateItem(index, e.target.checked) }} />
-              }
-            }
             <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={(e) => { onUpdateItem(index, e.target.checked) }} />
           </div>
         ))}

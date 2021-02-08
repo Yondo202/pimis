@@ -18,8 +18,8 @@ function TableSixDetails() {
     return (
         <Component3Detail>
             <div className="rowHeader">
-                <div className="boldTitle">ХАВСРАЛТ 2 А.</div>
-                <div className="italicTitle">ХҮСНЭГТ 1. ХОРИГЛОСОН ҮЙЛ АЖИЛЛАГААНЫ ЖАГСААЛТ</div>
+                <div className="boldTitle">Хавсралт 2Е</div>
+                <div className="italicTitle">Хүснэгт 6. Мониторингийн төлөвлөгөөний загвар</div>
             </div>
 
             {addItem.map((el,i)=>{

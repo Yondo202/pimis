@@ -1,4 +1,5 @@
 import React,{useEffect, useState, useRef, useContext} from 'react';
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import { animateScroll as scroll } from "react-scroll";
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
@@ -11,6 +12,7 @@ import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 
 function TableOne() {
+    const history = useHistory();
     const [ spnBtn, setSpnBtn ] = useState(false);
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
@@ -24,19 +26,22 @@ function TableOne() {
       setUserToken(storageToken);
     });
 
+    console.log(UserToken, " my user Token");
+
     const clickHandles = (e) =>{
               let finalOne = {};  let finalEnd = {};
               let rs2 = document.querySelectorAll(".inpTest3");
-              let arr2 = Array.from(rs2); let finalOne2 = [];
+              let arr2 = Array.from(rs2); let finalOne2 = []; let cond = [];
 
               arr2.map(element=>{
                   if(element.checked === true){
                     let soloObject2 = {};  let field = element.name; let value = element.value;
                     soloObject2["rownum"] = field; soloObject2["rvalue"] = value; finalOne2.push(soloObject2);
+                    if(element.value === "true"){ soloObject2["rownum"] = field; soloObject2["rvalue"] = value; cond.push(soloObject2); }
                   }
               });
 
-              tablesContext.TableControl(finalOne2);
+              // tablesContext.TableControl(finalOne2);
               let rs4 = document.querySelectorAll(".getUserInp1");   let arr4 = Array.from(rs4); let userInp = {};
 
               arr4.map(element=>{
@@ -56,13 +61,17 @@ function TableOne() {
                   setOpacity("0"); setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү"); setOpacity2("1");
               }else if(confirm === false){
                 setOpacity("0"); setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
+              }else if(cond.length > 0){
+                setOpacity("0"); setFinalErrorText("Та шалгуур хангалтанд тэнцэхгүй байна"); setOpacity2("1");
+                tablesContext.alertText('orange', "Та шалгуур хангалтанд тэнцэхгүй байна", true );
+                setTimeout(()=>{  history.push('/');  },4000);
               }else{
-                setSpnBtn(true);  setOpacity("0"); setOpacity2("0");
-                axios.post("pps-request", finalEnd, {headers: { Authorization:`bearer ${UserToken} `} })
-                .then((res)=>{tablesContext.alertText('green', "Амжилттай хадаглагдлаа", true); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); scroll.scrollTo(0); setSpnBtn(false); tablesContext.TableIdControl(res.data.data.id);
-                }).catch((err)=>{ console.log(err, "err"); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); })
+                  setSpnBtn(true);  setOpacity("0"); setOpacity2("0");
+                  axios.post("pps-request", finalEnd, {headers: { Authorization:`bearer ${UserToken} `} })
+                  .then((res)=>{tablesContext.alertText('green', "Амжилттай хадаглагдлаа", true); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); scroll.scrollTo(0); setSpnBtn(false); tablesContext.TableIdControl(res.data.data.id);
+                  }).catch((err)=>{ console.log(err, "err"); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
               }
-            console.log(finalEnd, "final end");
+            // console.log(finalEnd, "final end");
       }
 
 

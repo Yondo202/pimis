@@ -1,4 +1,5 @@
 import React,{useEffect, useState, useRef, useContext} from 'react';
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components'
 import { animateScroll as scroll } from "react-scroll";
 import axios from '../../../axiosbase';
@@ -11,6 +12,7 @@ import HelperContext from '../../../context/HelperContext'
 import {RiMailSendLine} from 'react-icons/ri'
 
 function TableFour() {
+      const history = useHistory();
       const [opacity, setOpacity] = useState("0");
       const [opacity2, setOpacity2] = useState("0");
       const [ finalText, setFinalText] = useState('');
@@ -96,7 +98,10 @@ function TableFour() {
                     setOpacity2("0");
                     setFinalMsg("0");
                     console.log(finalEnd, "myfinal End (A)");
-                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ 
+                    helperContext.alertText('orange', "Та шалгуур хангахгүй байна!", true); setTimeout(()=>{ history.push("/"); },4000);
+                    console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа...", true); console.log(err, "err");});
+                    
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "true" && finalOne2[3].rowvalue === "false"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
@@ -107,7 +112,10 @@ function TableFour() {
                     setFinalMsg("0");
                     finalEnd.PPS4["esm"] = "C"
                     console.log(finalEnd, "myfinal End (C)");
-                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{
+                      helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000);
+                      console.log(res, "$$(A) res 4 $$")}).catch((err)=>{helperContext.alertText('green', "Алдаа гарлаа", true);});
+                    setTimeout(()=>{ history.push("/"); },4000);
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "false" && finalOne2[3].rowvalue === "true"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
@@ -117,12 +125,9 @@ function TableFour() {
                     setOpacity2("0");
                     finalEnd.PPS4["esm"] = "B"
                     console.log(finalEnd, "myfinal End (B)");
-                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
-                    setTimeout(()=>{
-                      helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
-                    },3000);
-                    
-                    // setFinalMsg("1");
+                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{
+                    helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{scroll.scrollTo(0); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%") },3000); })
+                    .catch(err=>{ helperContext.alertText('orange', "Алдаа гарлаа", true);});
             }else{
                    // Тэнцээгүй биш гэхдээ асууна
                    setFinalMsg("0");
@@ -132,7 +137,9 @@ function TableFour() {
                     alert("gg");
                     finalEnd.PPS4["esm"] = "F"
                     console.log(finalEnd, "other F");
-                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ 
+                    helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000); })
+                    .catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true);});
                   }
                   //  StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
         }

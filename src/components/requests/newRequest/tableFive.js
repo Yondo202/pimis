@@ -68,8 +68,6 @@ function TableFive() {
             finalOne22.push(Lala);
         });
         let keys2 = Object.keys(tableCondition2[0]);
-        // console.log(keys2.length , "keys2");
-
 
         let rs4 = document.querySelectorAll(".getUserInp222");
         let arr4 = Array.from(rs4);
@@ -87,11 +85,9 @@ function TableFive() {
         finalOne["requestTwo"] = finalOne22;
         finalOne["name"] = userInp.name;
         finalOne["date"] = userInp.date;
-        // finalOne["signature"] = trimmedDataURL;
         finalEnd["PPS5"] = finalOne;
 
         console.log(finalEnd, "final");
-        // console.log(JSON.stringify(finalEnd));
         
         if(keys1.length < 8 || keys2.length < 8){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
@@ -103,11 +99,9 @@ function TableFive() {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
             setOpacity2("1");
         }else{
-            // setOpacity2("0");
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
-
-            helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
-            scroll.scrollTo(0);
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{
+                helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%"); scroll.scrollTo(0);
+            }).catch((err)=>{helperContext.alertText('orange', 'Алдаа гарлаа', true);});
         }
 
     }

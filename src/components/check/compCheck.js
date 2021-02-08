@@ -11,6 +11,7 @@ import axios from '../../axiosbase'
 function CompCheck() {
     const ctx = useContext(HelperContext);
     const history = useHistory();
+    const [ updateMount, setUpdateMount ] = useState(false);
     const [ initialData, setInitialData ] = useState(allData);
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
@@ -27,28 +28,18 @@ function CompCheck() {
       let keys = Object.keys(data.data.data);
      
       if(keys.length > 0){
-        let filterArr = []
-        let value = Object.values(data.data.data);
-        keys.map((el,i)=>{
-          let obj1 = {}; value.map((elem,ind)=>{  if(i===ind){ obj1["keys"] = el;  obj1["values"] = elem; }}); filterArr.push(obj1);
+        let filterArr = []; let value = Object.values(data.data.data);
+        keys.map((el,i)=>{ let obj1 = {}; value.map((elem,ind)=>{  if(i===ind){ obj1["keys"] = el;  obj1["values"] = elem; }}); filterArr.push(obj1); });
+        allData.map(el=>{ el.items.map((elem,ind)=>{filterArr.map(element=>{
+                if(el.group + (ind + 1) === element.keys){ elem["value"] = element.values }
+              })
+            })
         });
-        console.log('filterArr', filterArr);
-
-        // allData.map((el,i)=>{
-        //     el.items.map((elem,ind)=>{
-
-        //         if(el.group`${ind + 1}` === ){
-
-        //         }
-        //     })
-        // });
-
-        // setInitialData(data.data.data); 
-        console.log("^^data irseee");
+        setInitialData(allData);
+        setUpdateMount(true);
       }else{ console.log("^^data alga") }
 
-
-    },[]);
+    },[updateMount]);
 
 
     console.log(initialData, " state data");
@@ -114,8 +105,9 @@ function CompCheck() {
                                   <div className="row" >
                                   <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
                                   <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
-                                  <div className="radios col-md-1 col-sm-2 col-2"><input  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
-                                  <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
+                                   
+                                  <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==false? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
+                                  <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==false? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
                               </div>
                               </div>
                               )

@@ -11,8 +11,10 @@ function Home() {
        try{
         let storageToken = localStorage.getItem("edp_loggedUser", []);
         let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${storageToken}`}});
-        if(resData.data.data[0]){ setCond(true); }else{ setCond(false); }
+        console.log(resData, " ____")
+        if(resData.data.data.id){ setCond(true); }else{ setCond(false); }
        }catch{console.log("Алдаа гарсан"); }
+
    },[cond]);
 
    console.log(cond,"lalala");
@@ -46,7 +48,7 @@ function Home() {
                                 <Link to="/urgudul/1" className="itemsActive">4. Өргөдлийн маягт </Link>
                             </div>
                             <div className="lineFull lineFull2" ></div>
-                            <div className="resultActive">МЭДЭГДЭЛ: Анхан шатны үнэлгээ</div>
+                            <Link to="/5a" className="resultActive">МЭДЭГДЭЛ: Анхан шатны үнэлгээ</Link>
                         </div>
                     </div>
 
@@ -78,9 +80,9 @@ function Home() {
                     <div className="col-md-2 col-sm-2 itemsCol">
                         <div className="itemsPar">
                             <div className="mains">
-                                <div className="items  arrHelp"><div className="helpArr"></div> 1.Баримтжуулах бүрдүүлбэрийн шалгах хуудас </div>
+                                <Link to="/5b" className="items  arrHelp"><div className="helpArr"></div> 1.Баримтжуулах бүрдүүлбэрийн шалгах хуудас </Link>
                                 <div className="line " ></div>
-                                <div className="items">2.Бизнес шинжээчийн шинжилгээний тайлан </div>
+                                <Link to="/5c" className="items">2.Бизнес шинжээчийн шинжилгээний тайлан </Link>
                                 <div className="line " ></div>
                                 <div className="items">3. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас  </div>
                                 <div className="line " ></div>

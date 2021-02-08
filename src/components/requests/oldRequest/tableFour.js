@@ -1,6 +1,7 @@
 
 import React,{useEffect, useState, useRef, useContext} from 'react';
-import styled from 'styled-components'
+import {useHistory} from 'react-router-dom';
+import styled from 'styled-components';
 import { Link, animateScroll as scroll } from "react-scroll";
 import axios from'../../../axiosbase';
 import { fontFamily, textColor, ColorRgb, Color,fontSize,PrevBtn,NextBtn  } from '../../theme';
@@ -13,6 +14,7 @@ import HelperContext from '../../../context/HelperContext'
 import {RiMailSendLine} from 'react-icons/ri'
 
 function TableFour(props) {
+      const history = useHistory();
       const [opacity, setOpacity] = useState("0");
       const [opacity2, setOpacity2] = useState("0");
       const [ initialData, setInitialData ] = useState([]);
@@ -133,9 +135,8 @@ function TableFour(props) {
                     setFinalTextScale("1");
                     setOpacity2("0");
                     setFinalMsg("0");
-                    console.log(finalEnd, "myfinal End (A)");
-                    // axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
-                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{ console.log(err, "err");});
+                    
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "true" && finalOne2[3].rowvalue === "false"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
@@ -145,8 +146,7 @@ function TableFour(props) {
                     setOpacity2("0");
                     setFinalMsg("0");
                     finalEnd.PPS4["esm"] = "C"
-                    console.log(finalEnd, "myfinal End (C)");
-                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{ console.log(err, "err");});
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "false" && finalOne2[3].rowvalue === "true"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
@@ -155,24 +155,15 @@ function TableFour(props) {
                     setFinalTextScale("1");
                     setOpacity2("0");
                     finalEnd.PPS4["esm"] = "B"
-                    console.log(finalEnd, "myfinal End (B)");
-                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(B) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
+                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{  StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0)})
+                    .catch((err)=>{  setFinalText("Алдаа гарлаа"); setFinalTextScale("1"); console.log(err, "err");});
 
-                    // StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
-                    // scroll.scrollTo(0);
-
-                    // setFinalMsg("1");
             }else{
                    // Тэнцээгүй биш гэхдээ асууна
-                   setFinalMsg("0");
-                    setFinalTextScale("1");
-                    setFinalText("Та шалгуур хангаж байна...");
-                    setOpacity2("0");
-                    // alert("gg");
-                    finalEnd.PPS4["esm"] = "F"
-                    console.log(finalEnd, "other F");
-                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(F) res 4 $$")}).catch((err)=>{ console.log(err, "err");});
-                    // StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
+                   setFinalMsg("0"); setFinalTextScale("1"); setFinalText("Та шалгуур хангаж байна..."); setOpacity2("0");
+                    finalEnd.PPS4["esm"] = "F";
+                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ setTimeout(()=>{
+                      StyleContext.alertText('green', 'Та шалгуур хангаж байна..', true);history.push("/"); },2000) }).catch((err)=>{ StyleContext.alertText('orange', 'Алдаа гарлаа', true);});
                   }
         }
 
@@ -212,7 +203,6 @@ function TableFour(props) {
                                 <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">{i + 1}</div><div className="mainText">{el.name}</div> </div></div>
                                 <div className="radios col-md-1 col-sm-1 col-1"> <input className={`inpTest34`} type="radio" name={i + 1} id={el.id} onChange={radioChange} checked={el.rowvalue === "true" ? true: false} value={true}/></div>
                                 <div className="radios col-md-1 col-sm-1 col-1"><input className={`inpTest34`} type="radio" name={i + 1} id={el.id} onChange={radioChange} checked={el.rowvalue === "false" ? true: false} value={false}/></div>
-
 
                                 <div className="radios col-md-2 col-sm-2 col-2">{el.nameTwo}</div>
                                 <div className="radios col-md-3 col-sm-3 col-3"><div style={{padding:"6px 15px"}}>{el.nameThree}</div></div>

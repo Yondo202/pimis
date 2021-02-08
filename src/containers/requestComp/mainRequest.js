@@ -36,7 +36,7 @@ function MainRequest() {
                 <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
                     <div style={{left:`${StyleContext.GlobalStyle.tableOne}`, opacity:`${StyleContext.GlobalStyle.tableOne === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                         <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                                <TableOne  />
+                            <TableOne  />
                         </motion.div>
                     </div>
                     <div style={{left:`${StyleContext.GlobalStyle.tableTwo}`, opacity:`${StyleContext.GlobalStyle.tableTwo === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">

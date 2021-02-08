@@ -1,4 +1,5 @@
 import React, {useState, useContext} from 'react'
+import { useHistory } from 'react-router-dom'
 import TableSixDetails from './deitals/tableSixDetail'
 import TableSixDetails2 from './deitals/tableSixDetail2'
 import { Link, animateScroll as scroll } from "react-scroll";
@@ -13,6 +14,7 @@ import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 
 function TableSix(props) {
+    const history = useHistory();
     const StyleContext  = useContext(UserContext);
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
@@ -51,7 +53,6 @@ function TableSix(props) {
               tableCondition1.push(Lala);
         });
         let keys1 = Object.keys(tableCondition1[0]);
-        console.log(keys1.length, "keys1");
 
 
         let rs22 = document.querySelectorAll(".GetItemAdd666");
@@ -97,7 +98,6 @@ function TableSix(props) {
         finalEnd["PPS6"] = finalOne;
 
         console.log(finalEnd, "final");
-        // console.log(JSON.stringify(finalEnd));
         
         if(keys1.length < 8 || keys2.length < 8){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
@@ -110,19 +110,16 @@ function TableSix(props) {
             setOpacity2("1");
         }else{
             setOpacity2("0");
-            alert("gg");
-            // axios.put(`pps-request/${helperContext.tableId}`, finalEnd).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
-            axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(A) res 6 $$")}).catch((err)=>{ console.log(err, "err");});
+            axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{
+                helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000); console.log(res, " ress");
+            }).catch((err)=>{console.log(err, " ress"); helperContext.alertText('orange', 'Алдаа гарлаа', true);});
         }
-        // StyleContext.StyleComp("-300%", "-200%", "-100%", "0%");
     }
 
     return (
         <Component3 className="container">
-
             <TableSixDetails initialData={props.initialData.requestOne} />
             <TableSixDetails2 initialData={props.initialData.requestTwo} />
-
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>

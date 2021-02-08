@@ -129,7 +129,7 @@ function TableFiveDetails(props) {
                                 <div className="labels"><span>Нөлөөллийг бууруулах үйл ажиллагааны зардал :</span> </div>
                                 <div className="name"> <VscFoldDown />
                                     <div className="form__group">
-                                        <input type="number" id={el.id} onChange={changeHandle5} value={el.reduce_cost} className={`PASS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce_cost" required />
+                                        <input type="number" style={{textAlign:`right`}} id={el.id} onChange={changeHandle5} value={el.reduce_cost} className={`PASS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce_cost" required />
                                         <label for="name" className=" form__label">Үйл ажиллагааны зардал</label>
                                     </div>
                                 </div>
