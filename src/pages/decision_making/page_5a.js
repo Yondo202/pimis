@@ -22,37 +22,35 @@ const FirstEvaluation = () => {
   };
 
   return (
-    <div className="tw-bg-gray-100 tw-flex tw-items-center tw-justify-center tw-text-sm ">
-      <div className="tw-w-11/12 tw-max-w-5xl tw-bg-white tw-mt-4 tw-border tw-rounded-md tw-shadow-md tw-p-2">
-        <div className="tw-text-2xl tw-text-center tw-mt-4">АНХАН ШАТНЫ ҮНЭЛГЭЭНИЙ ХУУДАС</div>
-        <div className="tw-mt-5">
-          <span>
-            Үнэлгээний шалгуурууд нь хэсэг болон дэд бүрэлдэхүүн хэсгүүдэд хуваагдаж байгаа бөгөөд хэрэв аль нэг хэсэгт N (Үгүй) гэж сонгогдсон бол өргөдөл гаргагчийн материал нь дараагийн шатанд
-            шалгарах боломжгүй болно.
+    <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-border tw-rounded-lg tw-shadow-md tw-p-2">
+      <div className="tw-text-2xl tw-text-center tw-mt-4">АНХАН ШАТНЫ ҮНЭЛГЭЭНИЙ ХУУДАС</div>
+      <div className="tw-mt-5">
+        <span>
+          Үнэлгээний шалгуурууд нь хэсэг болон дэд бүрэлдэхүүн хэсгүүдэд хуваагдаж байгаа бөгөөд хэрэв аль нэг хэсэгт N (Үгүй) гэж сонгогдсон бол өргөдөл гаргагчийн материал нь дараагийн шатанд
+          шалгарах боломжгүй болно.
           </span>
-        </div>
-        <div className="tw-border tw-rounded-sm tw-mt-2">
-          {rows.map((row, index) => (
-            <div
-              key={row.order}
-              className={`tw-flex tw-items-center tw-justify-between tw-text-sm ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" ? "tw-bg-gray-200" : "tw-bg-white"} `}
-            >
-              <span className="tw-px-4 tw-py-2">{row.description}</span>
-              <input
-                className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0"
-                type="checkbox"
-                checked={row.isChecked}
-                name={row.rowcode}
-                onChange={(e) => {
-                  onUpdateItem(index, e.target.checked);
-                }}
-              />
-            </div>
-          ))}
-        </div>
-        <div className="tw-flex tw-items-center tw-justify-end tw-m-2">
-          <button className="tw-border tw-bg-green-800 tw-p-2 tw-text-gray-100 tw-w-24 tw-rounded-md">Хадгалах</button>
-        </div>
+      </div>
+      <div className="tw-border tw-rounded-sm tw-mt-2">
+        {rows.map((row, index) => (
+          <div
+            key={row.order}
+            className={`tw-flex tw-items-center tw-justify-between tw-text-sm ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" ? "tw-bg-gray-200" : "tw-bg-white"} `}
+          >
+            <span className="tw-px-4 tw-py-2">{row.description}</span>
+            <input
+              className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0"
+              type="checkbox"
+              checked={row.isChecked}
+              name={row.rowcode}
+              onChange={(e) => {
+                onUpdateItem(index, e.target.checked);
+              }}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
+        <button className="tw-bg-blue-500 tw-text-white tw-font-medium tw-text-base tw-px-3 tw-py-1 tw-rounded-lg hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-600">Хадгалах</button>
       </div>
     </div>
   );
