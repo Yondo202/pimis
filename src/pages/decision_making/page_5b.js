@@ -281,17 +281,19 @@ export default function CompilationChecklist() {
     const [rows, setRows] = useState(initialState)
 
     const handleInput = (key, value, rowcode) => {
-        rows.findIndex(row => row.rowcode === rowcode)
+        const index = rows.findIndex(row => row.rowcode === rowcode)
         const newRows = rows
+        newRows[index][key] = value
+        setRows([...newRows])
     }
 
     return (
         <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-mt-8 tw-mb-20 tw-text-sm tw-text-gray-700 tw-bg-white tw-border tw-rounded-lg tw-shadow-md tw-p-2">
-            <div className="tw-text-2xl tw-text-center tw-mt-4">
+            <div className="tw-text-2xl tw-text-center tw-mt-4 tw-uppercase">
                 Бүрдүүлбэрийн нотлох баримтыг шалгах хуудас
             </div>
 
-            <table className="tw-border tw-rounded-sm tw-mt-2">
+            <table className="tw-border tw-rounded-sm tw-mt-6">
                 <thead>
                     <tr>
                         <th className="tw-px-2 tw-pt-2">Сүүлийн шатны баримт шалгах хуудас</th>
@@ -303,7 +305,7 @@ export default function CompilationChecklist() {
                 <tbody>
                     {
                         rows.map(((row, i) =>
-                            <tr className={`${row.rowcode === 'a' || row.rowcode === 'b' || row.rowcode === 'c' ? 'tw-bg-gray-200' : ''}`}>
+                            <tr className={`${row.rowcode === 'a' || row.rowcode === 'b' ? 'tw-bg-gray-200' : ''}`} key={row.rowcode}>
                                 <td className="tw-px-2">{row.description}</td>
 
                                 <td>

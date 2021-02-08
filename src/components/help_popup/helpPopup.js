@@ -64,15 +64,18 @@ function HelpPopup(props) {
                 <div className="tw-ml-2">
                     {props.main}
                 </div>
-                <ul className="tw-list-disc tw-pl-6 tw-mt-2">
-                    {
-                        props.list && props.list.map((item, i) =>
-                            <li key={i}>
-                                {item}
-                            </li>
-                        )
-                    }
-                </ul>
+                {
+                    props.list && <ul className="tw-list-disc tw-pl-6 tw-mt-2">
+                        {
+                            props.list.map((item, i) =>
+                                <li key={i}>
+                                    {item}
+                                </li>
+                            )
+                        }
+                    </ul>
+                }
+
             </div>
         </div>
     )
