@@ -108,15 +108,15 @@ export default function AttachmentUploads() {
                         <li className="tw-p-2 tw-pl-4 tw-font-medium odd:tw-bg-gray-50">
                             <span className="tw-text-sm">{list.title}</span>
 
-                            <button className="tw-ml-4 tw-py-1 tw-px-2 tw-bg-blue-500 tw-text-white tw-text-sm tw-font-medium tw-rounded-lg focus:tw-outline-none hover:tw-shadow-md active:tw-bg-blue-600 tw-inline-flex tw-items-center" onClick={() => handleButtonClick(list.key)}>
-                                Файл оруулах
+                            <button className="tw-ml-4 tw-py-0.5 tw-px-1.5 tw-text-sm tw-border tw-border-gray-600 tw-font-medium tw-rounded-lg focus:tw-outline-none hover:tw-shadow-md active:tw-text-blue-500 active:tw-border-blue-500 tw-inline-flex tw-items-center" onClick={() => handleButtonClick(list.key)}>
+                                <span className="tw-text-gray-700">Файл оруулах</span>
                                 <PaperClipSVG className="tw-w-4 tw-h-4 tw-ml-1" />
                             </button>
 
                             <div className="tw-flex tw-flex-wrap tw-mt-1">
                                 {
                                     files[list.key]?.map((file, j) =>
-                                        <FileCard name={file.name} type={file.type.split('/')[1]} size={file.size} removeFile={() => handleRemoveFile(list.key, j)} />
+                                        <FileCard name={file.name} type={file.type.split('/')[1]} size={file.size} removeFile={() => handleRemoveFile(list.key, j)} classAppend="tw-my-1 tw-mx-1.5" />
                                     )
                                 }
                             </div>

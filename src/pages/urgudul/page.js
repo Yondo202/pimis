@@ -19,7 +19,7 @@ import CloseSVG from 'assets/svgComponents/closeSVG'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
-import HomeSVG from 'assets/svgComponents/homeSVG'
+import DocAddSVG from 'assets/svgComponents/docAddSVG'
 
 
 function UrgudulNavigator() {
@@ -119,6 +119,7 @@ function UrgudulNavigator() {
             <div className="tw-mt-8 tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
                 <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 1 && 'tw-invisible'}`} onClick={handlePrev}>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90" />
+                    <span className="tw-mr-1">Өмнөх</span>
                 </button>
                 {
                     [...Array(5)].map((item, i) =>
@@ -128,6 +129,7 @@ function UrgudulNavigator() {
                     )
                 }
                 <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 10 && 'tw-invisible'}`} onClick={handleNext}>
+                    <span className="tw-ml-1">Дараах</span>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw--rotate-90" />
                 </button>
             </div>
@@ -199,11 +201,11 @@ function UrgudulNavigator() {
                                     <div className="tw-flex tw-flex-wrap tw-justify-start">
                                         {
                                             projects.map((item, i) =>
-                                                <div className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300" key={item.id} onClick={() => loadProject(item.id)}>
-                                                    <div className={`tw-h-24 tw-rounded-t-md tw-flex tw-justify-center tw-items-center tw-text-white tw-text-lg tw-font-bold ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
+                                                <button className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300 focus:tw-outline-none tw-inline-flex tw-flex-col" key={item.id} onClick={() => loadProject(item.id)}>
+                                                    <div className={`tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-justify-center tw-items-center tw-text-white tw-text-lg tw-font-bold ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
                                                         ID: {item.id}
                                                     </div>
-                                                    <div className="tw-pl-2 tw-mt-1 tw-truncate w-full tw-text-xs tw-font-medium">
+                                                    <div className="tw-pl-2 tw-mt-1 tw-truncate tw-text-xs tw-font-medium">
                                                         {
                                                             {
                                                                 1: 'Кластер',
@@ -211,24 +213,24 @@ function UrgudulNavigator() {
                                                             }[item.project_type] || '--/--'
                                                         }
                                                     </div>
-                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate w-full tw-text-xs tw-font-medium">
+                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium">
                                                         {item.company_name}
                                                     </div>
-                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate w-full tw-text-xs tw-font-medium">
+                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium">
                                                         {item.project_name}
                                                     </div>
-                                                </div>
+                                                </button>
                                             )
                                         }
 
-                                        <div className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300" onClick={createProject}>
-                                            <div className="tw-relative tw-h-24 tw-bg-gray-400 tw-rounded-t-md tw-flex tw-justify-center tw-items-center">
-                                                <HomeSVG className="tw-w-10 tw-h-10 tw-text-white" />
+                                        <button className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300 focus:tw-outline-none tw-inline-flex tw-flex-col" onClick={createProject}>
+                                            <div className="tw-w-32 tw-h-24 tw-bg-gray-400 tw-rounded-t-md tw-flex tw-justify-center tw-items-center">
+                                                <DocAddSVG className="tw-w-10 tw-h-10 tw-text-white" />
                                             </div>
-                                            <div className="tw-pl-2 tw-mt-2 w-full tw-text-xs tw-font-medium tw-text-center">
+                                            <div className="tw-px-2 tw-w-full tw-text-center tw-mt-2 tw-text-xs tw-font-medium">
                                                 Шинээр маягт бөглөх
                                             </div>
-                                        </div>
+                                        </button>
                                     </div>
                                 </animated.div>
                             )

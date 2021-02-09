@@ -13,14 +13,15 @@ function FormSelect(props) {
         if (props.data) {
             setFetch(props.data)
         } else {
-            axios.get(props.api)
-                .then(res => {
-                    console.log(res.data)
-                    const data = props.keys.reduce((a, v) => a[v], res.data)
-                    setFetch(data)
-                }).catch(err => {
-                    console.log(err.response?.data)
-                })
+            props.api &&
+                axios.get(props.api)
+                    .then(res => {
+                        console.log(res.data)
+                        const data = props.keys.reduce((a, v) => a[v], res.data)
+                        setFetch(data)
+                    }).catch(err => {
+                        console.log(err.response?.data)
+                    })
         }
     }, [props.data])
 

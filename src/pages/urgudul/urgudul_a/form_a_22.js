@@ -77,25 +77,51 @@ function UrugudulDirectors() {
     const history = useHistory()
 
     const handleSubmit = () => {
+        setValidate(true)
+        let allValid = true
+        for (const obj of form) {
+            allValid = allValid && Object.values(obj).every(value => !checkInvalid(value))
+        }
+
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, { directors: form }, {
-                headers: {
-                    'Authorization': getLoggedUserToken()
-                }
-            })
-                .then(res => {
-                    console.log(res.data)
-                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'АНН мэдээлэл хадгалагдлаа.' })
-                    history.push('/urgudul/4')
+            if (allValid) {
+                axios.put(`projects/${UrgudulCtx.data.id}`, { directors: form }, {
+                    headers: {
+                        'Authorization': getLoggedUserToken()
+                    }
                 })
-                .catch(err => {
-                    console.log(err.response?.data)
-                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                })
+                    .then(res => {
+                        console.log(res.data)
+                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'АНН мэдээлэл хадгалагдлаа.' })
+                        history.push('/urgudul/4')
+                    })
+                    .catch(err => {
+                        console.log(err.response?.data)
+                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                    })
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+            }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
             history.push('/urgudul/1')
+        }
+    }
+
+    const [validate, setValidate] = useState(false)
+
+    const checkInvalid = (value, type) => {
+        switch (value) {
+            case null:
+                return true
+            case '':
+                return true
+            case '<p><br></p>':
+                if (type === 'quill') return true
+                break
+            default:
+                return false
         }
     }
 
@@ -113,16 +139,16 @@ function UrugudulDirectors() {
                     <div className="tw-flex odd:tw-bg-gray-50" key={i}>
                         <div className="tw-flex-grow">
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-center">
-                                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.position) && 'tw-border-red-500'}`}>
                                     <SearchSelect label="Албан тушаал" data={occupations} value={item.position} name="position" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
                                 </div>
 
-                                <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.director_name || ''} name="director_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                                <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.director_name || ''} name="director_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.director_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
-                                <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" value={item.employed_date || ''} name="employed_date" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                                <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" value={item.employed_date || ''} name="employed_date" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.employed_date) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
                             </div>
 
-                            <div className="tw-w-full tw-border tw-border-dashed">
+                            <div className={`tw-w-full tw-border tw-border-dashed ${validate && checkInvalid(item.project_contribution, 'quill') && 'tw-border-red-500'}`}>
                                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
                                     <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
                                     <span className="tw-ml-2 tw-text-sm tw-font-medium">Энэхүү төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр</span>

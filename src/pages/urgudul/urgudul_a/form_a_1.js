@@ -115,25 +115,48 @@ function UrgudulApplicant() {
     const history = useHistory()
 
     const handleSubmit = () => {
+        setValidate(true)
+        const allValid = Object.values(form).every(value => !checkInvalid(value))
+
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, { company: form }, {
-                headers: {
-                    'Authorization': getLoggedUserToken()
-                }
-            })
-                .then(res => {
-                    console.log(res.data)
-                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдөл гаргагчийн мэдээлэл хадгалагдлаа.' })
-                    history.push('/urgudul/3')
+            if (allValid) {
+                axios.put(`projects/${UrgudulCtx.data.id}`, { company: form }, {
+                    headers: {
+                        'Authorization': getLoggedUserToken()
+                    }
                 })
-                .catch(err => {
-                    console.log(err.response?.data)
-                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                })
+                    .then(res => {
+                        console.log(res.data)
+                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдөл гаргагчийн мэдээлэл хадгалагдлаа.' })
+                        history.push('/urgudul/3')
+                    })
+                    .catch(err => {
+                        console.log(err.response?.data)
+                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                    })
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+            }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
             history.push('/urgudul/1')
+        }
+    }
+
+    const [validate, setValidate] = useState(false)
+
+    const checkInvalid = (value, type) => {
+        switch (value) {
+            case null:
+                return true
+            case '':
+                return true
+            case '<p><br></p>':
+                if (type === 'quill') return true
+                break
+            default:
+                return false
         }
     }
 
@@ -149,18 +172,18 @@ function UrgudulApplicant() {
             </div>
 
             <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                <FormInline label="Аж ахуй нэгжийн нэр" type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                <FormInline label="Аж ахуй нэгжийн нэр" type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.company_name) && 'tw-border-red-500'}`} classInput="tw-w-full" />
 
-                <FormInline label="Аж ахуйн нэгжийг төлөөлөх албан тушаалтны овог нэр" type="text" value={form.representative_name || ''} name="representative_name" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                <FormInline label="Аж ахуйн нэгжийг төлөөлөх албан тушаалтны овог нэр" type="text" value={form.representative_name || ''} name="representative_name" onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.representative_name) && 'tw-border-red-500'}`} classInput="tw-w-full" />
 
-                <FormInline label="Төлөөлөгчийн албан тушаал" type="text" value={form.representative_position || ''} name="representative_position" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                <FormInline label="Төлөөлөгчийн албан тушаал" type="text" value={form.representative_position || ''} name="representative_position" onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.representative_position) && 'tw-border-red-500'}`} classInput="tw-w-full" />
 
-                <FormInline label="ААН бүртгүүлсэн огноо" type="date" value={form.registered_date || ''} name="registered_date" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="ААН бүртгүүлсэн огноо" type="date" value={form.registered_date || ''} name="registered_date" onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.registered_date) && 'tw-border-red-500'}`} classInput="tw-w-40" />
 
-                <FormInline label="Регистерийн дугаар" type="numberFormat" value={form.registration_number || ''} name="registration_number" onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="Регистерийн дугаар" type="numberFormat" value={form.registration_number || ''} name="registration_number" onChange={handleInputFormat} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.registration_number) && 'tw-border-red-500'}`} classInput="tw-w-40" />
 
                 <div className="tw-relative tw-border tw-border-dashed tw-w-full tw-max-w-lg">
-                    <div className="tw-flex">
+                    <div className={`tw-flex ${validate && checkInvalid(form.official_address) && 'tw-border tw-border-dashed tw-border-red-500'}`}>
                         <FormInline label="Албан ёсны хаяг" type="text" value={form.official_address || ''} name="official_address" onChange={handleInput} classAppend="tw-flex-grow" classInput="tw-w-full" />
 
                         <div className="tw-relative tw-w-2">
@@ -169,20 +192,20 @@ function UrgudulApplicant() {
                     </div>
 
                     <div className="tw-flex tw-flex-wrap">
-                        <SearchSelect label="Байршил" api="locations" keys={['data']} value={form.locationId} name="locationId" setForm={handleSetForm} displayName="description_mon" classAppend="tw-w-60" />
+                        <SearchSelect label="Байршил" api="locations" keys={['data']} value={form.locationId} name="locationId" setForm={handleSetForm} displayName="description_mon" classAppend={`tw-w-60 ${validate && checkInvalid(form.locationId) && 'tw-border tw-border-dashed tw-border-red-500'}`} />
 
                         {
                             form.locationId === 39 &&
-                            <FormSelect label="Дүүрэг" data={districts} value={form.district_id} name="district_id" setForm={handleSetForm} displayName="description_mon" classAppend="tw-w-56" />
+                            <FormSelect label="Дүүрэг" data={districts} value={form.district_id} name="district_id" setForm={handleSetForm} displayName="description_mon" classAppend={`tw-w-56 ${validate && checkInvalid(form.district_id) && 'tw-border tw-border-dashed tw-border-red-500'}`} />
                         }
                     </div>
                 </div>
 
-                <FormInline label="Албан газрын утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={form.telephone || ''} name="telephone" onChange={handleInputFormatted} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="Албан газрын утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={form.telephone || ''} name="telephone" onChange={handleInputFormatted} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.telephone) && 'tw-border-red-500'}`} classInput="tw-w-40" />
 
-                <FormInline label="Гар утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={form.handphone || ''} name="handphone" onChange={handleInputFormatted} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="Гар утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={form.handphone || ''} name="handphone" onChange={handleInputFormatted} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.handphone) && 'tw-border-red-500'}`} classInput="tw-w-40" />
 
-                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(form.email) && 'tw-border-red-500'}`}>
                     <FormInline label="Имэйл хаяг" type="email" value={form.email || ''} name="email" onChange={handleInput} classAppend="tw-flex-grow" classInput="tw-w-full" validate={true} />
 
                     <div className="tw-relative tw-w-2">
@@ -190,9 +213,9 @@ function UrgudulApplicant() {
                     </div>
                 </div>
 
-                <FormInline label="Вэбсайт" type="text" value={form.website || ''} name="website" onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+                <FormInline label="Вэбсайт" type="text" value={form.website || ''} name="website" onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.website) && 'tw-border-red-500'}`} classInput="tw-w-full" />
 
-                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(form.company_size) && 'tw-border-red-500'}`}>
                     <FormOptions label="Компаний хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={form.company_size} name="company_size" setForm={handleSetForm} classAppend="tw-flex-grow" />
 
                     <div className="tw-relative tw-w-2 tw-ml-auto">
@@ -229,18 +252,18 @@ function UrgudulApplicant() {
                     </table>
                 </div>
 
-                <SearchSelect label="Салбар" api="business-sector" keys={['data']} value={form.business_sectorId} name="business_sectorId" displayName="bdescription_mon" setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
+                <SearchSelect label="Салбар" api="business-sector" keys={['data']} value={form.business_sectorId} name="business_sectorId" displayName="bdescription_mon" setForm={handleSetForm} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.business_sectorId) && 'tw-border-red-500'}`} />
 
-                <FormOptions label="Гадаад хөрөнгө оруулалттай эсэх" options={['Тийм', 'Үгүй']} values={[1, 0]} value={form.foreign_invested} name="foreign_invested" setForm={handleSetForm} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" />
+                <FormOptions label="Гадаад хөрөнгө оруулалттай эсэх" options={['Тийм', 'Үгүй']} values={[1, 0]} value={form.foreign_invested} name="foreign_invested" setForm={handleSetForm} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.foreign_invested) && 'tw-border-red-500'}`} />
 
                 {
                     form.foreign_invested === 1 &&
                     <>
-                        <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                        <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(form.invested_countryid) && 'tw-border-red-500'}`}>
                             <SearchSelect label="Аль улсаас гадаад хөрөнгө оруулалдаг болох нь" api="countries" keys={['data']} value={form.invested_countryid} name="invested_countryid" displayName="description_mon" setForm={handleSetForm} />
                         </div>
 
-                        <FormInline label="Гадаад хөрөнгө оруулалтын эзлэх хувь" type="numberFormat" formats={{ format: '### %' }} value={form.investment_percent || ''} name="investment_percent" onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-16" />
+                        <FormInline label="Гадаад хөрөнгө оруулалтын эзлэх хувь" type="numberFormat" formats={{ format: '### %' }} value={form.investment_percent || ''} name="investment_percent" onChange={handleInputFormat} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.investment_percent) && 'tw-border-red-500'}`} classInput="tw-w-16" />
                     </>
                 }
             </div>
@@ -253,7 +276,7 @@ function UrgudulApplicant() {
                     <HelpPopup classAppend="tw-ml-auto" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв батлах, нийт төслийн удирдлага, худалдан авалтын удирдлага, төслийн тайлагнал, нөөцийн удирдлага гм." position="top-left" />
                 </div>
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                <div className={`tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(form.project_plan, 'quill') && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.project_plan || ''} name="project_plan" setForm={handleSetForm} />
                 </div>
             </div>
