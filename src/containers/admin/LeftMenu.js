@@ -2,27 +2,43 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import { MenuColor,MainFontSize,fontFamily } from '../../components/admin/ThemeAdmin'
-import 'antd/dist/antd.css';
-import { Menu, Switch, Divider } from 'antd';
-import {  MailOutlined, CalendarOutlined, AppstoreOutlined, SettingOutlined} from '@ant-design/icons';
+// import 'antd/dist/antd.css';
+// import { Menu, Switch, Divider } from 'antd';
+// import {  MailOutlined, CalendarOutlined, AppstoreOutlined, SettingOutlined} from '@ant-design/icons';
 
-const { SubMenu } = Menu;
+
+import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
+import 'react-pro-sidebar/dist/css/styles.css';
+
+// const { SubMenu } = Menu;
 
 function LeftMenu() {
-    const [mode, setMode] = React.useState('inline');
-    const [theme, setTheme] = React.useState('dark');
+    // const [mode, setMode] = React.useState('inline');
+    // const [theme, setTheme] = React.useState('dark');
 
-    const changeMode = value => {
-        setMode(value ? 'vertical' : 'inline');
-    };
+    // const changeMode = value => {
+    //     setMode(value ? 'vertical' : 'inline');
+    // };
 
-    const changeTheme = value => {
-        setTheme(value ? 'light' : 'dark');
-    };
+    // const changeTheme = value => {
+    //     setTheme(value ? 'light' : 'dark');
+    // };
     return (
         <LeftMenuParent>
             <div className="headPar"> <Link to="/admin" className="item">EDP</Link> </div>
-            <Menu
+
+            <ProSidebar>
+                <Menu iconShape="square">
+                    <MenuItem >Dashboard</MenuItem>
+                    <SubMenu title="Components" >
+                    <MenuItem>Component 1</MenuItem>
+                    <MenuItem>Component 2</MenuItem>
+                    </SubMenu>
+                </Menu>
+            </ProSidebar>
+
+
+            {/* <Menu
                 style={{ width: 256 }}
                 // defaultSelectedKeys={['1']}
                 defaultOpenKeys={['sub1']}
@@ -49,18 +65,13 @@ function LeftMenu() {
                     <Menu.Item key="9">Option 9</Menu.Item>
                     <Menu.Item key="10">Option 10</Menu.Item>
                 </SubMenu>
-                {/* <Menu.Item key="link" icon={<LinkOutlined />}>
-                <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
-                    Ant Design
-                </a>
-                </Menu.Item> */}
-            </Menu>
+            </Menu> */}
 
-            <div className="footer">
+            {/* <div className="footer">
                 <Switch onChange={changeMode} /> Горим
                 <Divider type="vertical" />
                 <Switch onChange={changeTheme} /> Өнгө
-            </div>
+            </div> */}
         </LeftMenuParent>
     )
 }

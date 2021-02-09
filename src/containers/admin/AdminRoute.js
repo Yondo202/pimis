@@ -3,7 +3,6 @@ import LeftMenu from './LeftMenu'
 import HomeAdmin from '../../components/admin/Home'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from 'styled-components'
-import { SearchOutlined,CaretDownOutlined} from '@ant-design/icons';
 
 function AdminRoute() {
     return (
@@ -11,17 +10,16 @@ function AdminRoute() {
             <div className="MainParent">
                 <div className="leftMenuPar">
                      <LeftMenu />
-
                 </div>
                 <div className="container-fluid ContentPar">
                     <div className="row topMenuPar"> 
-                     <div className="svgPar"> <SearchOutlined /></div>
+                     {/* <div className="svgPar"> <SearchOutlined /></div> */}
+                     <div className="svgPar"> search</div>
                         <a className="Profile">
                             <img src='profile.jpg' alt="profile" />
-                            <CaretDownOutlined />
+                            {/* <CaretDownOutlined /> */}
                         </a>
                     </div>
-
                     <Switch>
                         <Route path="/admin" component={HomeAdmin} exact />
                     </Switch>

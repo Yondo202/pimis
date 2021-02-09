@@ -9,8 +9,6 @@ function Home() {
             <h1>   Its Home </h1>
 
             <h1>   Its Home </h1>
-          
-           
         </HomeComponents>
     )
 }
@@ -22,4 +20,5 @@ const HomeComponents = styled.div`
         // display:flex;
         width:100%;
         // background-color:red;
+        
 `
