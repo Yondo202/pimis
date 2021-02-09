@@ -42,7 +42,7 @@ function TableSixDetails() {
                                 <div className="labels"><span>Хаана өгөгдөхүүнийг хэмжих :</span> </div>
                                 <div className="name"> <VscChecklist />
                                     <div className="form__group">
-                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where_messure" required />
+                                        <input type="text" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where_messure" required />
                                         <label for="name" className=" form__label">Хаана өгөгдөхүүнийг хэмжих</label>
                                     </div>
                                 </div>
@@ -50,10 +50,10 @@ function TableSixDetails() {
                         </div>
                         <div className="inputPar">
                             <div className="inpChild">
-                                <div className="labels"><span>өгөгдөхүүнд мониторинг хийх (ашиглах тоног төхөөрөмж)	 :</span> </div>
+                                <div className="labels"><span>Өгөгдөхүүнд мониторинг хийх (ашиглах тоног төхөөрөмж)	 :</span> </div>
                                 <div className="name"> <VscCloudDownload />
                                     <div className="form__group">
-                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
+                                        <input type="text" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
                                         <label for="name" className=" form__label">Хэрхэн</label>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@ function TableSixDetails() {
                                 <div className="labels"><span>Мониторингийн давтамж буюу үргэлжлэх байдал :</span> </div>
                                 <div className="name"> <VscCloudUpload />
                                     <div className="form__group">
-                                        <input type="input" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor_duration" required />
+                                        <input type="text" className={`PAS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor_duration" required />
                                         <label for="name" className=" form__label">Хэзээ </label>
                                     </div>
                                 </div>

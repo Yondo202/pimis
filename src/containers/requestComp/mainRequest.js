@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
-import {IoCheckmarkCircleOutline  } from 'react-icons/io5';
+import { useHistory } from 'react-router-dom'
+import axios from '../../axiosbase'
+import {IoMdCheckmarkCircle  } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
 import TableOne from '../../components/requests/newRequest/tableOne'
 import { motion } from 'framer-motion'
@@ -14,9 +16,21 @@ import TableFive from '../../components/requests/newRequest/tableFive'
 import TableSix from '../../components/requests/newRequest/tableSix'
 import {ColorRgb, textColor} from '../../components/theme'
 
+
 const options = { timeout: 10000, position: positions.BOTTOM_CENTER, offset: '120px', width:'500px' };
 
 function MainRequest() {
+    const history = useHistory();
+    useEffect(async()=>{
+        try{
+         let storageToken = localStorage.getItem("edp_loggedUser", []);
+         let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${storageToken}`}});
+         if(resData.data.data.id){ history.push('/comp-request/old') }
+        }catch{console.log("Алдаа гарсан"); }
+    },[]);
+    
+
+
     const StyleContext = useContext(UserContext);const One = StyleContext.GlobalStyle.tableOne; const Two = StyleContext.GlobalStyle.tableTwo; const Three = StyleContext.GlobalStyle.tableThree; const Four = StyleContext.GlobalStyle.tableFour;
     return (
             <>
@@ -61,7 +75,7 @@ function MainRequest() {
                 </ParentComp>
 
                 <AlertStyle style={StyleContext.alert.cond === true ? {bottom:`100px`, opacity:`1`, borderLeft:`4px solid ${StyleContext.alert.color}`} : {bottom:`50px`, opacity:`0`}} >
-                    {StyleContext.alert.color=== "green"?<IoCheckmarkCircleOutline style={{color:`${StyleContext.alert.color}`}} className="true" /> : <CgDanger style={{color:`${StyleContext.alert.color}`}} className="true" /> }
+                    {StyleContext.alert.color=== "green"?<IoMdCheckmarkCircle style={{color:`${StyleContext.alert.color}`}} className="true" /> : <CgDanger style={{color:`${StyleContext.alert.color}`}} className="true" /> }
                     <span>{StyleContext.alert.text}</span>
                 </AlertStyle>
             </>
@@ -94,22 +108,23 @@ const AlertStyle = styled.div`
     z-index:1010;  
     transition:all 0.5s ease;
     position:fixed;
-    height:80px;
+    // height:80px;
     bottom:100px;
-    left:30%;
+    left:5%;
     display:flex;
     align-items:center;
     border:1px solid rgba(0,0,0,0.2);
     // border-left:4px solid green;
     background-color:white;
-    padding:20px 30px; 
+    padding:10px 40px; 
     font-weight:400;
     color:black;
     border-radius:6px;
     font-size:17px;
     opacity:1;
+    font-weight:600;
     .true{
-        margin-right:10px;
+        margin-right:14px;
         font-size:24px;
         // color:green;
 

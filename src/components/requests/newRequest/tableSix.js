@@ -112,6 +112,7 @@ function TableSix() {
         }
 
     }
+    console.log(helperContext.tableId, " table id");
 
     return (
         <Component3 className="container">

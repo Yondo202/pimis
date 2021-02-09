@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
-import {IoCheckmarkCircleOutline  } from 'react-icons/io5';
+import { animateScroll as scroll } from "react-scroll";
+import {IoMdCheckmarkCircle  } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
 import {VscOpenPreview} from 'react-icons/vsc'
 import TableOne from '../../components/requests/oldRequest/tableOne';
@@ -28,20 +29,15 @@ function MainRequest(props) {
     const [ ScrollClass, setScrollClass ] = useState("");
     const [ tokens, setTokens ] = useState("");
     const [ userID, setUserId ] = useState();
-
     useEffect( async()=>{
-        let storageToken = localStorage.getItem("edp_loggedUser", []);
-        let myLocal = localStorage.getItem('userId'); 
-        setTokens(storageToken); setUserId(myLocal);
+        StyleContext.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
+        let storageToken = localStorage.getItem("edp_loggedUser", []); setTokens(storageToken); 
         window.addEventListener("scroll", handleScroll);
         let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${storageToken}`}});
-        console.log(resData, " ^^ ress");
-
-        if(resData.data.data){ setInitialData(resData.data.data); setLoading(false); }
-        // let reponsesData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${storageToken}`}});
-        // console.log(reponsesData, " ** my original");
-        
+        // console.log(resData, " ^^ ress");
+        if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data); setLoading(false); }
       },[]);
+
       const handleScroll = () => {
           if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); }
       }
@@ -53,7 +49,7 @@ function MainRequest(props) {
     const Four = StyleContext.GlobalStyle.tableFour
     const Five = StyleContext.GlobalStyle.tableFive
     const Six = StyleContext.GlobalStyle.tableSix
-     
+
     return (
             <>
                 <PreviewBtn >
@@ -104,7 +100,7 @@ function MainRequest(props) {
                 ) }
 
                 <AlertStyle style={helpCtx.alert.cond === true ? {bottom:`100px`, opacity:`1`, borderLeft:`4px solid ${helpCtx.alert.color}`} : {bottom:`50px`, opacity:`0`}} >
-                    {helpCtx.alert.color=== "green"?<IoCheckmarkCircleOutline style={{color:`${helpCtx.alert.color}`}} className="true" /> : <CgDanger style={{color:`${helpCtx.alert.color}`}} className="true" /> }
+                    {helpCtx.alert.color=== "green"?<IoMdCheckmarkCircle style={{color:`${helpCtx.alert.color}`}} className="true" /> : <CgDanger style={{color:`${helpCtx.alert.color}`}} className="true" /> }
                     <span>{helpCtx.alert.text}</span>
                 </AlertStyle>
             </>
@@ -245,22 +241,23 @@ const AlertStyle = styled.div`
     z-index:1010;  
     transition:all 0.5s ease;
     position:fixed;
-    height:80px;
+    // height:80px;
     bottom:100px;
-    left:30%;
+    left:5%;
     display:flex;
     align-items:center;
     border:1px solid rgba(0,0,0,0.2);
     // border-left:4px solid green;
     background-color:white;
-    padding:20px 30px; 
+    padding:10px 40px; 
     font-weight:400;
     color:black;
     border-radius:6px;
     font-size:17px;
     opacity:1;
+    font-weight:600;
     .true{
-        margin-right:10px;
+        margin-right:14px;
         font-size:24px;
         // color:green;
 

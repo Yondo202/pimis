@@ -1,7 +1,8 @@
 import React,{useState, useContext,useEffect} from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom'
-import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../theme';
+import {IoMdCheckmarkCircle  } from 'react-icons/io';
+import { fontFamily, textColor, Color,fontSize } from '../theme';
 import {AiOutlineSend} from 'react-icons/ai'
 import {CgDanger} from 'react-icons/cg'
 import UserContext from '../../context/UserContext'
@@ -56,7 +57,6 @@ function CompCheck() {
                   if( element.checked === true && element.id + element.name !== "a6" && element.id + element.name !== "a7" && element.value !== "false"){
                     let field = element.name; let value = element.value;  let id = element.id; cond[id + field] = value;
                   }
-
               });
 
               let finalCond = Object.keys(cond);
@@ -72,11 +72,11 @@ function CompCheck() {
                 setOpacity("0");
                 setFinalErrorText("Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.");
                 setOpacity2("1");
+                setTimeout(()=>{history.push('/');},4000);
               }else{
                 setOpacity("0");
                 setOpacity2("0");
                 setFinalTextScale("0");
-                alert("gg");
                 // history.push('/');
                 // scroll.scrollTo(0);
                 axios.post(`criterias`, soloObject2, {headers:{ Authorization:`bearer ${UserToken}` } }).then(res=>{
@@ -119,10 +119,12 @@ function CompCheck() {
                         <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                     </div>
 
-                    <div className="buttonPar">
-                        <div style={{opacity:`${opacity2}`}} className="errtext"><CgDanger /> {FinalErrorText}</div>
-                        <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
-                    </div>
+                  {updateMount!==false? <div className="Success"><div className="item"><IoMdCheckmarkCircle /> Шалгуур хангалтыг тулгах хуудас Амжилттай </div></div> 
+                  :( <div className="buttonPar">
+                    <div style={{opacity:`${opacity2}`}} className="errtext"><CgDanger /> {FinalErrorText}</div>
+                    <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+                </div>)}
+                    
             </div>
         </Component1>
     )
@@ -141,6 +143,26 @@ const Component1 = styled.div`
         box-shadow:1px 1px 18px -5px;
         border-radius:6px;
         margin-bottom:80px;
+
+        .Success{
+          padding:0px 30px;
+          padding-bottom:30px;
+          display:flex;
+          justify-content:center;
+          .item{
+            display:flex;
+            align-item:center;
+            svg{
+              font-size:24px;
+              margin-right:10px;
+              color:green;
+              background-color:white;
+            }
+            border-radius:4px;
+            border:1px solid rgba(0,0,0,0.3);
+            padding:10px 30px;
+          }
+        }
           .rowHeader{
             border-radius:6px 6px 0px 0px;
             background-color:white;

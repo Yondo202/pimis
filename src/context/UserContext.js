@@ -7,7 +7,6 @@ const initialUserInfo = { userId:null, token:null,  expireDate:null, name:null}
 const initialSee = { tableOneData : {}, tableTwoData: {}, tableThree : {}, tableFour : {} }
 
 export const UserStore= (props) =>{
-
     const [userInfo,setUserInfo] = useState(initialUserInfo);
     const [errMsg, setErrMsg] = useState("");
     const [errMsgSignup, setErrMsgSignUp] = useState("");
@@ -37,15 +36,15 @@ export const UserStore= (props) =>{
         axios.post('users/register', { name, email, password, }  )
         .then((res)=>{loginUserSuccess(res.data.user.id,res.data.token,res.data.token.expireDate, res.data.user.name);})
         .catch((e)=>{ setErrMsgSignUp(e.response.data.error.message); setUserInfo(initialUserInfo); });
-      }
+    }
 
-    const logout=()=>{setUserInfo(initialUserInfo); localStorage.removeItem("userId"); localStorage.removeItem("userName"); localStorage.removeItem("edp_loggedUser"); }
+    const logout=()=>{localStorage.removeItem("userId"); localStorage.removeItem("userName"); localStorage.removeItem("edp_loggedUser"); setUserInfo({ userId: undefined }); }
 
     const StyleComp = (valueOne,valueTwo, valueThree,valueFour,valueFive,valueSix) =>{
       if(valueOne === "0%"){
         setGlobalStyle({  tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 190});
       }else if(valueTwo === "0%"){
-        setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 400 });
+        setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 430 });
       }else if(valueThree === "0%"){
         setGlobalStyle({tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 300 });
       }else if(valueFour === "0%"){

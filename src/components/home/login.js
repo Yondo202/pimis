@@ -24,12 +24,12 @@ function Login() {
             finalOneUser[field] = value;
         });
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-        setTimeout(() => {
-          const userId = localStorage.getItem("userId", []);
-          if(userId){
-            window.location.reload(true);
-          }else{  console.log('false');  }
-        }, 1000);
+        // setTimeout(() => {
+        //   const userId = localStorage.getItem("userId", []);
+        //   if(userId){
+        //     window.location.reload(true);
+        //   }else{  console.log('false');  }
+        // }, 1000);
       }
 
      
@@ -44,23 +44,20 @@ function Login() {
         let Username = document.querySelectorAll(".LoginInpName");
         let User = Array.from(Username);
         const finalOneUser = {}
-
         User.map(element=>{
             let field = element.name;
             let value = element.value;
             finalOneUser[field] = value;
         });
-        console.log(finalOneUser, "final user");
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-
-        setTimeout(() => {
-          const userId = localStorage.getItem("userId", []);
-          if(userId){
-            window.location.reload(true);
-          }else{
-            console.log('false');
-          }
-         }, 1000);
+        // setTimeout(() => {
+        //   const userId = localStorage.getItem("userId", []);
+        //   if(userId){
+        //     window.location.reload(true);
+        //   }else{
+        //     console.log('false');
+        //   }
+        //  }, 1000);
     }
     return (
         <Component>
