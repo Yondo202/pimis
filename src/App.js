@@ -50,7 +50,7 @@ function App() {
 
       <AlertStore>
         <Router>
-          {/* {userId && <Menu />} */}
+          {userId && <Menu />}
           {userId ? (
             <HelpStore>
               <UrgudulStore>

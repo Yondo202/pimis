@@ -21,5 +21,5 @@ const HomeComponents = styled.div`
         // min-width:915px;
         // display:flex;
         width:100%;
-        background-color:red;
+        // background-color:red;
 `

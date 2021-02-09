@@ -1,6 +1,6 @@
 import React,{useEffect, useState,useContext} from "react";
 import styled from "styled-components";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { fontFamily,ColorRgb, } from '../../components/theme';
 import {IoIosLogOut} from 'react-icons/io';
@@ -9,13 +9,12 @@ import {IoNotificationsOutline} from 'react-icons/io5';
 import { useLocation } from 'react-router-dom';
 import HamburgerMenu from 'react-hamburger-menu';
 
-function Menu(props) {
+function Menu() {
     const location = useLocation();
     const userCtx = useContext(UserContext);
-    const [userId, setUserId] = useState();
     const [userName, setUserName] = useState();
     const [ currPath, setCurrPath ] = useState();
-    const [ diplayNone, setDisplayNone ] = useState("block");
+    const [ diplayFlex, setDisplayNone ] = useState("flex");
     const [ headerHeight, setheaderHeight ] = useState("50px");
     const [open, close] = useState('');
     const [ activeMenu, setActiveMenu ]=useState({
@@ -27,7 +26,6 @@ function Menu(props) {
     useEffect(() => {
       const userId = localStorage.getItem("userId", []);
       const userName = localStorage.getItem("userName", []);
-      setUserId(userId);
       setUserName(userName);
     }, []);
 
@@ -52,9 +50,10 @@ function Menu(props) {
     useEffect(() => {
       const currentPath = location.pathname;
       setCurrPath(currentPath);
-      if(currentPath !== "/" && currentPath !== "/comp-request"){  setDisplayNone("none");  setheaderHeight("50px");
-      }else{setDisplayNone("block"); setheaderHeight("50px");}
+      if(currentPath !== "/" && currentPath !== "/comp-request"){  setheaderHeight("50px");
+      }else{ setheaderHeight("50px");}
       if(currentPath === "/"){setActiveMenu({Home:'line2',Req:'',Check:'',Maygt:''})}
+      if(currentPath === "/admin"){ setDisplayNone("none");}
       if(currentPath === "/comp-request"){setActiveMenu({Home: '',Req:'line2',Check: '',Maygt:''})}
       if(currentPath === "/comp-check"){setActiveMenu({Home: '',Req:'',Check:'line2',Maygt: ''})}
       if(currentPath === "/urgudul/1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }
@@ -81,7 +80,7 @@ function Menu(props) {
         </div>
       </div> */}
      
-      <div style={{height:headerHeight}} className="MainMenus">
+      <div style={{height:headerHeight,display:diplayFlex}} className="MainMenus">
             <div style={{padding:`0px 0px`}} style={currPath === "/"? {maxWidth:`1160px`}:{maxWidth:1000}} className="container">
                <input type="checkbox" id="check" name="check" />
                 <span className="menuPar">

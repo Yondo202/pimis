@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { MenuColor,MainFontSize,fontFamily } from '../../components/admin/ThemeAdmin'
 import 'antd/dist/antd.css';
 import { Menu, Switch, Divider } from 'antd';
-import {  MailOutlined, CalendarOutlined, AppstoreOutlined, SettingOutlined, LinkOutlined,} from '@ant-design/icons';
+import {  MailOutlined, CalendarOutlined, AppstoreOutlined, SettingOutlined} from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 
@@ -30,7 +30,7 @@ function LeftMenu() {
                 theme={theme}
             >
                 <Menu.Item key="1" icon={<MailOutlined />}>
-                  Navigation One
+                  Navigation One 
                 </Menu.Item>
                 <Menu.Item key="2" icon={<CalendarOutlined />}>
                   Navigation Two
@@ -79,10 +79,12 @@ const LeftMenuParent = styled.div`
     }
     .headPar{
         border-bottom:1px solid rgba(255,255,255,0.2);
-        padding:10px 0px;
         background-color:${MenuColor};
         display:flex;
         justify-content:start;
+        align-items:center;
+        height:40px;
+        margin-bottom:11px;
         .item{
             padding-left:24px;
             font-weight:600;
