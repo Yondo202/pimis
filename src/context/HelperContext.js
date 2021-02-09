@@ -17,13 +17,13 @@ export const HelpStore = (props) =>{
   });
     
     const TableControl = (valueOne)=>{ setTableSee({tableOneData: valueOne}); }
-    const TableIdControl = (tableId) => {  console.log(tableId, " $$ global tableID $$");setTableId(tableId); }
+    const TableIdControl = (tableId) => { console.log(tableId, " $$ global tableID $$"); setTableId(tableId); }
 
     const StyleComp = (valueOne,valueTwo, valueThree,valueFour,valueFive,valueSix) =>{
         if(valueOne === "0%"){
           setGlobalStyle({  tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 190});
         }else if(valueTwo === "0%"){
-          setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 400 });
+          setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 430 });
         }else if(valueThree === "0%"){
           setGlobalStyle({tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 300 });
         }else if(valueFour === "0%"){

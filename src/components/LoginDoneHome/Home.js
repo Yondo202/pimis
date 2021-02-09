@@ -17,8 +17,6 @@ function Home() {
 
    },[cond]);
 
-   console.log(cond,"lalala");
-
    const clickHandle = (event)=>{
        console.log(event);
     //    history.push('intro/3');

@@ -37,9 +37,9 @@ function Menu(props) {
 
     const clickhandle = ()=>{
       userCtx.logout();
-      setTimeout(()=>{
-        window.location.reload(false);
-      },600)
+      // setTimeout(()=>{
+      //   window.location.reload(false);
+      // },600);
     };
 
     const clickhandle2 = ()=>{
@@ -72,6 +72,7 @@ function Menu(props) {
     //       setHeadStyle("70px");
     //     }
     // }
+
   return (
     <Componentss>
       {/* <div style={{display:diplayNone}} className="Background">

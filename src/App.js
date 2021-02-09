@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { motion } from "framer-motion";
+import Admin from './containers/admin/AdminRoute'
 import Menu from './containers/menu/menu'
 import UserContext from "./context/UserContext";
 import { HelpStore } from './context/HelperContext'
@@ -12,7 +13,6 @@ import ResetPassword from './components/home/ResetPassword'
 import MainRequest from './containers/requestComp/mainRequest'
 import EmialSender from './components/emailSend/EmailSend'
 import EmialSender2 from './components/emailSend/EmailSend2'
-import LoginDoneHome from './components/LoginDoneHome/MainHome'
 import LoginDoneHome2 from './components/LoginDoneHome/Home'
 import ReqHome from './components/LoginDoneHome/RequestHome'
 import MainRequestOld from './containers/requestComp/mainRequestOld'
@@ -29,19 +29,14 @@ import AnalystReport from 'pages/decision_making/page_5c';
 import AttachmentUploads from 'pages/attachments/page';
 import MainPage from 'components/notifyPage/MainPage'
 
-
 function App() {
   const ctxUser = useContext(UserContext);
-
   const [userId, setUserId] = useState();
-  const [userName, setUserName] = useState();
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId", []);
-    const userName = localStorage.getItem("userName", []);
-    setUserId(userId);
-    setUserName(userName);
-  }, []);
+    const userId = localStorage.getItem("userId", []); setUserId(userId);
+    console.log(ctxUser.userInfo.userId, " user iddd");
+  }, [ctxUser.userInfo.userId]);
 
   // const clickhandle = () =>{
   //     ctxUser.logout();
@@ -52,9 +47,10 @@ function App() {
 
   return (
     <div className="App">
+
       <AlertStore>
         <Router>
-          {userId && <Menu />}
+          {/* {userId && <Menu />} */}
           {userId ? (
             <HelpStore>
               <UrgudulStore>
@@ -70,6 +66,7 @@ function App() {
                   <Route path="/comp-check" component={MainForm} />
                   <Route path="/comp-request" component={ReqHome} exact />
                   <Route path="/notfy-page" component={MainPage} exact />
+                  <Route path="/admin" component={Admin} />
 
                   <Route path="/comp-request/new" component={MainRequest} />
                   <Route path="/comp-request/old" component={MainRequestOld} />
