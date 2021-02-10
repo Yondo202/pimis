@@ -79,7 +79,7 @@ function TableTwo() {
             }
             setOpacity2("0");
             axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers: {Authorization:`bearer ${UserToken}`}} ).then((res)=>{
-                setTimeout(()=>{ helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0); },[6000]);setSpnBtn(false);
+                setTimeout(()=>{ helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0); },2000);setSpnBtn(false);
                 FilesSend(res.data.data.ppsRequest2Detail);
               }).catch((err)=>{ setSpnBtn(false);  helperContext.alertText('orange', "Алдаа гарлаа", true); });
         }
