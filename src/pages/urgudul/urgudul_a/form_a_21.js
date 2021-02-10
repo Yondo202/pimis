@@ -163,9 +163,6 @@ function UrugudulClusters() {
                         'Authorization': getLoggedUserToken()
                     }
                 })
-<<<<<<< HEAD
-        }else {
-=======
                     .then(res => {
                         console.log(res.data)
                         UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
@@ -180,7 +177,6 @@ function UrugudulClusters() {
                 AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
             }
         } else {
->>>>>>> 015041fa560204b6c910c4d6149c7dc9eafd556e
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
             history.push('/urgudul/1')
         }
