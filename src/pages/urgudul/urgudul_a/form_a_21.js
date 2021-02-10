@@ -28,7 +28,7 @@ const initialState = [
         company_size: null,
         support_recipient: null,
         project_contribution: null,
-        cooperation_agreement: null,
+        attachedFiles: null,
     },
 ]
 
@@ -66,12 +66,13 @@ function UrugudulClusters() {
 
     const handleInputFile = (e) => {
         const formData = new FormData()
-        formData.append(e.target.files[0].name, e.target.files[0])
+        formData.append('file', e.target.files[0])
+        formData.append('description', 'Кластерийн гишүүн байгууллагуудын хамтын ажиллагааны гэрээ')
         const newForm = form
-        newForm[editIndex].cooperation_agreement = 'loading'
+        newForm[editIndex].attachedFiles = 'loading'
         setForm([...newForm])
 
-        axios.post('/clusters/upload-files', formData, {
+        axios.post('attach-files', formData, {
             headers: {
                 'Authorization': getLoggedUserToken(),
                 'Content-Type': 'multipart/form-data',
@@ -79,44 +80,43 @@ function UrugudulClusters() {
         }).then(res => {
             console.log(res.data)
             const newForm = form
-            newForm[editIndex].cooperation_agreement = res.data.data
+            newForm[editIndex].attachedFiles = [res.data.data]
             setForm([...newForm])
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээний файл амжилттай хадгалагдлаа.' })
         }).catch(err => {
             console.log(err.response?.data)
             const newForm = form
-            newForm[editIndex].cooperation_agreement = null
+            newForm[editIndex].attachedFiles = null
             setForm([...newForm])
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Гэрээний файлыг хадгалж чадсангүй.' })
         })
     }
 
     const handleRemoveFile = (index) => {
-        axios.delete('', form[index].cooperation_agreement, {
-            headers: {
-                'Authorization': getLoggedUserToken(),
-            }
-        }).then(res => {
-            console.log(res.data)
-            const newForm = form
-            newForm[index].cooperation_agreement = null
-            setForm([...newForm])
-        }).catch(err => {
-            console.log(err.response?.data)
-        })
+        const newForm = form
+        newForm[index].attachedFiles = null
+        setForm([...newForm])
     }
 
     const handleDownloadFile = (index) => {
-        // axios.get('', form[index].cooperation_agreement, {
-        //     headers: {
-        //         'Authorization': getLoggedUserToken(),
-        //     }
-        // }).then(res => {
-        //     console.log(res.data)
-        // }).catch(err => {
-        //     console.log(err.response?.data)
-        // })
-        window.open(`http://192.168.88.78:3000/${form[index].cooperation_agreement.fileUrl.slice(7)}`)
+        // window.open(`http://192.168.88.78:3000/${form[index].attachedFiles[0].fileUrl.slice(7)}`)
+        axios.get(`attach-files/${form[index].attachedFiles[0].id}`, {
+            headers: {
+                'Authorization': getLoggedUserToken(),
+            },
+            responseType: 'blob',
+        }).then(res => {
+            console.log(res)
+            const url = window.URL.createObjectURL(res.data)
+            // const link = document.createElement('a')
+            // link.href = url
+            // link.setAttribute('download')
+            // document.body.appendChild(link)
+            // link.click()
+            window.open(url, form[index].attachedFiles[0].name)
+        }).catch(err => {
+            console.log(err.response?.data)
+        })
     }
 
     const handleAdd = () => {
@@ -129,7 +129,7 @@ function UrugudulClusters() {
             company_size: null,
             support_recipient: null,
             project_contribution: null,
-            cooperation_agreement: null,
+            attachedFiles: null,
         }
 
         setForm([...form, newObj])
@@ -252,9 +252,7 @@ function UrugudulClusters() {
                                 </div>
                             </div>
 
-                            {/* <FormFile label="Кластерийн хамтын ажиллагааны гэрээ" /> */}
-
-                            <div className={`tw-w-full tw-border tw-border-dashed ${validate && checkInvalid(item.cooperation_agreement) && 'tw-border-red-500'}`}>
+                            <div className={`tw-w-full tw-border tw-border-dashed ${validate && checkInvalid(item.attachedFiles) && 'tw-border-red-500'}`}>
                                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
                                     <UploadSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
                                     <span className="tw-ml-2 tw-text-sm tw-font-medium">Кластерийн хамтын ажиллагааны гэрээ</span>
@@ -263,8 +261,8 @@ function UrugudulClusters() {
                                 </div>
 
                                 {
-                                    item.cooperation_agreement ?
-                                        <FileCard name={item.cooperation_agreement.name} type={item.cooperation_agreement.type?.split('/')[1]} size={item.cooperation_agreement.size} classAppend="tw-ml-6 tw-mb-4" URL={item.cooperation_agreement.fileUrl} uploading={item.cooperation_agreement === 'loading' && true} removeFile={() => handleRemoveFile(i)} downloadFile={() => handleDownloadFile(i)} />
+                                    item.attachedFiles ?
+                                        <FileCard name={item.attachedFiles[0]?.name} type={item.attachedFiles[0]?.mimetype} size={item.attachedFiles[0]?.size} classAppend="tw-ml-6 tw-mb-4" uploading={item.attachedFiles === 'loading' && true} removeFile={() => handleRemoveFile(i)} downloadFile={() => handleDownloadFile(i)} />
                                         :
                                         <button className="tw-ml-6 tw-mb-4 tw-py-0.5 tw-px-1.5 tw-text-sm tw-border tw-border-gray-600 tw-font-medium tw-rounded-lg focus:tw-outline-none hover:tw-shadow-md active:tw-text-blue-500 active:tw-border-blue-500 tw-inline-flex tw-items-center" onClick={() => handleFileInputClick(i)}>
                                             <span className="tw-text-gray-700">Файл оруулах</span>

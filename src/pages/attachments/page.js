@@ -3,6 +3,7 @@ import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import FileCard from './fileCard'
+import PlusSVG from 'assets/svgComponents/plusSVG'
 
 
 const listItems = [
@@ -99,7 +100,7 @@ export default function AttachmentUploads() {
 
     return (
         <div className="tw-relative tw-text-gray-700">
-            <input className="tw-invisible tw-absolute" type="file" multiple="multiple" onChange={handleFileInput} ref={inputRef} />
+            <input className="tw-invisible tw-absolute" type="file" onChange={handleFileInput} ref={inputRef} />
 
             <ol className="tw-list-decimal tw-list-inside tw-m-4 tw-mb-6 tw-shadow-md">
 
@@ -119,6 +120,33 @@ export default function AttachmentUploads() {
                                         <FileCard name={file.name} type={file.type.split('/')[1]} size={file.size} removeFile={() => handleRemoveFile(list.key, j)} classAppend="tw-my-1 tw-mx-1.5" />
                                     )
                                 }
+
+                                <button className="tw-inline-flex tw-bg-indigo-300 tw-rounded-lg tw-my-1 tw-mx-1.5 focus:tw-outline-none" onClick={() => handleButtonClick(list.key)}>
+                                    <div className="tw-relative">
+                                        <svg className="tw-h-20" viewBox="0 0 285 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M0.725098 20.775C0.725098 9.78453 9.63483 0.875 20.6251 0.875H194.75L284.3 90.425V329.225C284.3 340.215 275.39 349.125 264.4 349.125H20.6251C9.63483 349.125 0.725098 340.215 0.725098 329.225V20.775Z" fill="url(#paint0_linear)" />
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M194.75 0.875V70.525C194.75 81.5153 203.66 90.425 214.65 90.425H284.3L194.75 0.875Z" fill="url(#paint1_linear)" />
+                                            <defs>
+                                                <linearGradient id="paint0_linear" x1="0.725098" y1="0.875" x2="0.725098" y2="349.125" gradientUnits="userSpaceOnUse">
+                                                    <stop stopColor="#FFDFB8" />
+                                                    <stop offset="1" stopColor="#FFCA8A" />
+                                                </linearGradient>
+                                                <linearGradient id="paint1_linear" x1="194.75" y1="0.875" x2="194.75" y2="90.425" gradientUnits="userSpaceOnUse">
+                                                    <stop stopColor="#FFCC8F" />
+                                                    <stop offset="1" stopColor="#FFBB69" />
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+
+                                        <span className="tw-absolute tw-top-1/2 tw-transform tw--translate-y-1/2 tw-left-1/2 tw--translate-x-1/2">
+                                            <PlusSVG className="tw-w-8 tw-h-8 tw-text-white" />
+                                        </span>
+                                    </div>
+
+                                    <div className="tw-p-2 tw-text-xs tw-font-medium tw-w-20 tw-h-20 tw-leading-tight tw-inline-flex tw-justify-center tw-items-center tw-text-white">
+                                        Файл нэмж оруулах
+                                    </div>
+                                </button>
                             </div>
                         </li>
                     )

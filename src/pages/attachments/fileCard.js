@@ -1,7 +1,7 @@
 import React from 'react'
 import CloseSVG from 'assets/svgComponents/closeSVG'
-import DownloadSVG from 'assets/svgComponents/downloadSVG';
-import ButtonTooltip from 'components/button_tooltip/buttonTooltip';
+import DownloadSVG from 'assets/svgComponents/downloadSVG'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 
 
 const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
@@ -33,7 +33,7 @@ export default function FileCard(props) {
                 </svg>
 
                 <span className="tw-absolute tw-top-1/2 tw-transform tw--translate-y-1/2 tw-left-1/2 tw--translate-x-1/2 tw-text-sm tw-font-medium tw-w-14 tw-text-center tw-truncate tw-uppercase">
-                    {props.type}
+                    {props.name?.split('.').pop()}
                 </span>
                 <span className="tw-absolute tw-bottom-1 tw-left-1/2 tw-transform tw--translate-x-1/2 tw-whitespace-nowrap tw-text-xs tw-font-medium">
                     ({bytesFormat(props.size)})

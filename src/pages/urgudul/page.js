@@ -93,7 +93,7 @@ function UrgudulNavigator() {
             setModalOpen(false)
         }).catch(err => {
             console.log(err.response?.data)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
         })
     }
 

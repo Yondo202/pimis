@@ -25,10 +25,14 @@ function SearchSelect(props) {
         }
     }, [props.data])
 
-    const filter = (obj, searchState) => {
+    useEffect(() => {
+        props.value && search === '' && setSearch(fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
+    }, [props.value, fetch])
+
+    const filter = (obj, searchStr) => {
         if (obj) {
             const str = ('' + obj[props.displayName]).toLowerCase()
-            return str.includes(searchState.toLowerCase())
+            return str.includes(searchStr.toLowerCase())
         }
     }
 

@@ -22,7 +22,7 @@ const initialState = {
     registration_number: null,
     official_address: null,
     locationId: null,
-    district_id: null,
+    districtId: null,
     telephone: null,
     handphone: null,
     email: null,
@@ -116,7 +116,25 @@ function UrgudulApplicant() {
 
     const handleSubmit = () => {
         setValidate(true)
-        const allValid = Object.values(form).every(value => !checkInvalid(value))
+        let allValid = true
+        // const allValid = Object.values(form).every(value => !checkInvalid(value))
+        Object.keys(initialState).forEach(key => {
+            switch (key) {
+                case 'districtId':
+                    if (form.locationId === 39) allValid = allValid && !checkInvalid(form.districtId)
+                    break
+                case 'invested_countryid':
+                    if (form.foreign_invested === 1) allValid = allValid && !checkInvalid(form.invested_countryid)
+                    break
+                case 'investment_percent':
+                    if (form.foreign_invested === 1) allValid = allValid && !checkInvalid(form.investment_percent)
+                    break
+                default:
+                    allValid = allValid && !checkInvalid(form[key])
+            }
+            console.log(key)
+            console.log(allValid)
+        })
 
         if (UrgudulCtx.data.id) {
             if (allValid) {
@@ -196,7 +214,7 @@ function UrgudulApplicant() {
 
                         {
                             form.locationId === 39 &&
-                            <FormSelect label="Дүүрэг" data={districts} value={form.district_id} name="district_id" setForm={handleSetForm} displayName="description_mon" classAppend={`tw-w-56 ${validate && checkInvalid(form.district_id) && 'tw-border tw-border-dashed tw-border-red-500'}`} />
+                            <FormSelect label="Дүүрэг" data={districts} value={form.districtId} name="districtId" setForm={handleSetForm} displayName="description_mon" classAppend={`tw-w-56 ${validate && checkInvalid(form.districtId) && 'tw-border tw-border-dashed tw-border-red-500'}`} />
                         }
                     </div>
                 </div>

@@ -55,7 +55,7 @@ function AlertDialog() {
             {
                 show => show && (props =>
                     <div style={props} className="tw-fixed tw-w-full tw-flex tw-justify-center">
-                        <div className={`tw-inline-flex tw-items-center tw-flex-grow tw-mx-2 tw-text-sm sm:tw-text-base sm:tw-max-w-lg sm:tw-mx-0 tw-shadow-md tw-rounded-lg tw-p-2 tw-z-10 ${classTheme.bgColor[alert.variant]}`}>
+                        <div className={`tw-inline-flex tw-items-center tw-flex-grow tw-mx-2 tw-text-sm sm:tw-text-base sm:tw-max-w-lg sm:tw-mx-0 tw-shadow-md tw-rounded-lg tw-p-2 tw-z-100 ${classTheme.bgColor[alert.variant]}`}>
                             <p className="tw-ml-2 tw-flex-grow tw-text-center tw-text-white tw-font-semibold">
                                 {alert.msg}
                             </p>
