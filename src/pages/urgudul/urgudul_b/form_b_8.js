@@ -199,25 +199,55 @@ function UrgudulCalculations() {
     const history = useHistory()
 
     const handleSubmit = () => {
+        setValidate(true)
+        let allValid = true
+        const arr = ['sales', 'fullTime_workplace', 'productivity']
+        arr.forEach(key => {
+            allValid = allValid && Object.values(form[key]).every(value => !checkInvalid(value))
+        })
+        for (const country of form.export_details) {
+            allValid = allValid && country.countryId
+            for (const product of country.export_products) {
+                allValid = allValid && Object.values(product).every(value => !checkInvalid(value))
+            }
+        }
+
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${3}`, { exportDatas: form }, {
-                headers: {
-                    'Authorization': getLoggedUserToken()
-                }
-            })
-                .then(res => {
-                    console.log(res.data)
-                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Борлуулалт, экспортын тооцоолол хадгалагдлаа.' })
-                    history.push('/urgudul/9')
+            if (allValid) {
+                axios.put(`projects/${3}`, { exportDatas: form }, {
+                    headers: {
+                        'Authorization': getLoggedUserToken()
+                    }
                 })
-                .catch(err => {
-                    console.log(err.response?.data)
-                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                })
+                    .then(res => {
+                        console.log(res.data)
+                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Борлуулалт, экспортын тооцоолол хадгалагдлаа.' })
+                        history.push('/urgudul/9')
+                    })
+                    .catch(err => {
+                        console.log(err.response?.data)
+                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                    })
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+            }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
             history.push('/urgudul/1')
+        }
+    }
+
+    const [validate, setValidate] = useState(false)
+
+    const checkInvalid = (value) => {
+        switch (value) {
+            case null:
+                return true
+            case '':
+                return true
+            default:
+                return false
         }
     }
 
@@ -258,7 +288,7 @@ function UrgudulCalculations() {
                                 dates.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.sales[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'sales')} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.sales[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.sales[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'sales')} />
                                         </div>
                                     </td>
                                 )
@@ -277,7 +307,7 @@ function UrgudulCalculations() {
                                 dates.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.fullTime_workplace[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.fullTime_workplace[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.fullTime_workplace[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} />
                                         </div>
                                     </td>
                                 )
@@ -296,7 +326,7 @@ function UrgudulCalculations() {
                                 dates.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={form.productivity[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'productivity')} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.productivity[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.productivity[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'productivity')} />
                                         </div>
                                     </td>
                                 )
@@ -325,7 +355,7 @@ function UrgudulCalculations() {
                                 <>
                                     <tr className="tw-h-9" key={i}>
                                         <td className="tw-border tw-px-1">
-                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent tw-font-medium" />
+                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" />
                                         </td>
                                         <td className="tw-border tw-px-2" colSpan="8">
                                             <button className="tw-float-right tw-px-1 tw-py-0.5 tw-text-red-400 tw-text-xs tw-font-semibold tw-rounded focus:tw-outline-none tw-border tw-border-red-400 active:tw-bg-red-100" onClick={() => handleRemoveCountry(i)}>
@@ -338,13 +368,13 @@ function UrgudulCalculations() {
                                         country.export_products.map((product, j) =>
                                             <tr className="tw-h-9">
                                                 <td className="tw-border tw-px-1">
-                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={country.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv="tw-py-0.5 tw-bg-indigo-50 tw-rounded" classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={window.innerWidth > 922 ? '922px' : `${window.innerWidth - 128}px`} />
+                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={product.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(product.productId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={window.innerWidth > 922 ? '922px' : `${window.innerWidth - 128}px`} />
                                                 </td>
                                                 {
                                                     dates.map((key, k) =>
                                                         <td className="tw-border tw-px-1" key={k}>
                                                             <div className="tw-flex tw-justify-center">
-                                                                <NumberFormat className="tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-bg-indigo-50 tw-rounded tw-text-right" value={product[key] || ''} thousandSeparator={true} onValueChange={values => handleInputProductExport(key, values.value, j, i)} />
+                                                                <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(product[key]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={product[key] || ''} thousandSeparator={true} onValueChange={values => handleInputProductExport(key, values.value, j, i)} />
                                                             </div>
                                                         </td>
                                                     )

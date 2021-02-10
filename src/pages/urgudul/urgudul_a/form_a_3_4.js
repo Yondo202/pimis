@@ -36,25 +36,47 @@ function UrgudulOverview() {
     const history = useHistory()
 
     const handleSubmit = () => {
+        setValidate(true)
+        const allValid = Object.values(form).every(value => !checkInvalid(value))
+
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, form, {
-                headers: {
-                    'Authorization': getLoggedUserToken()
-                }
-            })
-                .then(res => {
-                    console.log(res.data)
-                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Танилцуулга мэдээлэл хадгалагдлаа.' })
-                    history.push('/urgudul/5')
+            if (allValid) {
+                axios.put(`projects/${UrgudulCtx.data.id}`, form, {
+                    headers: {
+                        'Authorization': getLoggedUserToken()
+                    }
                 })
-                .catch(err => {
-                    console.log(err.response?.data)
-                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                })
+                    .then(res => {
+                        console.log(res.data)
+                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Танилцуулга мэдээлэл хадгалагдлаа.' })
+                        history.push('/urgudul/5')
+                    })
+                    .catch(err => {
+                        console.log(err.response?.data)
+                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                    })
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+            }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
             history.push('/urgudul/1')
+        }
+    }
+
+    const [validate, setValidate] = useState(false)
+
+    const checkInvalid = (value) => {
+        switch (value) {
+            case null:
+                return true
+            case '':
+                return true
+            case '<p><br></p>':
+                return true
+            default:
+                return false
         }
     }
 
@@ -75,7 +97,7 @@ function UrgudulOverview() {
                 }
             </div>
 
-            <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
+            <div className={`tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(form.applicant_overview) && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
                 <FormRichText modules="full" value={form.applicant_overview || ''} name="applicant_overview" setForm={handleSetForm} />
             </div>
 
@@ -86,7 +108,7 @@ function UrgudulOverview() {
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." position="bottom" />
             </div>
 
-            <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
+            <div className={`tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(form.applicant_experience) && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
                 <FormRichText modules="full" value={form.applicant_experience || ''} name="applicant_experience" setForm={handleSetForm} />
             </div>
 

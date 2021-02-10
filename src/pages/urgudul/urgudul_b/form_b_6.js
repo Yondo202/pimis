@@ -70,25 +70,51 @@ function UrgudulActivities() {
     const history = useHistory()
 
     const handleSubmit = () => {
+        setValidate(true)
+        let allValid = true
+        for (const obj of form) {
+            allValid = allValid && Object.values(obj).every(value => !checkInvalid(value))
+        }
+
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, { activities: form }, {
-                headers: {
-                    'Authorization': getLoggedUserToken()
-                }
-            })
-                .then(res => {
-                    console.log(res.data)
-                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагааны талаарх мэдээлэл хадгалагдлаа.' })
-                    history.push('/urgudul/7')
+            if (allValid) {
+                axios.put(`projects/${UrgudulCtx.data.id}`, { activities: form }, {
+                    headers: {
+                        'Authorization': getLoggedUserToken()
+                    }
                 })
-                .catch(err => {
-                    console.log(err.response?.data)
-                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                })
+                    .then(res => {
+                        console.log(res.data)
+                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагааны талаарх мэдээлэл хадгалагдлаа.' })
+                        history.push('/urgudul/7')
+                    })
+                    .catch(err => {
+                        console.log(err.response?.data)
+                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                    })
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+            }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
             history.push('/urgudul/1')
+        }
+    }
+
+    const [validate, setValidate] = useState(false)
+
+    const checkInvalid = (value, type) => {
+        switch (value) {
+            case null:
+                return true
+            case '':
+                return true
+            case '<p><br></p>':
+                if (type === 'quill') return true
+                break
+            default:
+                return false
         }
     }
 
@@ -120,7 +146,7 @@ function UrgudulActivities() {
                                     </span>
                                 </div>
 
-                                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                                <div className={`tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(item.activity, 'quill') && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
                                     <FormRichText modules="small" value={item.activity || ''} name="activity" id={i} setForm={handleSetForm} />
                                 </div>
                             </div>
@@ -134,11 +160,11 @@ function UrgudulActivities() {
                             </div>
 
                             <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                <FormInline label="Үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
+                                <FormInline label="Үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.budget_cost) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
-                                <FormInline label="ЭДТ-өөс санхүүжүүлэгдэх нь, доллараар" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.edp_funding || ''} name="edp_funding" id={i} onChange={handleInputFormat} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
+                                <FormInline label="ЭДТ-өөс санхүүжүүлэгдэх нь, доллараар" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.edp_funding || ''} name="edp_funding" id={i} onChange={handleInputFormat} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.edp_funding) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
-                                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.applicant_contribution) && 'tw-border-red-500'}`}>
                                     <FormInline label="Өргөдөл гаргагчийн оролцоо (бэлэн мөнгө)" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.applicant_contribution || ''} name="applicant_contribution" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
                                     <div className="tw-relative tw-w-2">

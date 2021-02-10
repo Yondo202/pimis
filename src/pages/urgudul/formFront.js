@@ -40,35 +40,62 @@ function UrgudulFront() {
     const history = useHistory()
 
     const handleSubmit = () => {
-        axios.post('projects', form, {
-            headers: {
-                'Authorization': getLoggedUserToken()
-            }
-        }).then(res => {
-            console.log(res.data)
-            UrgudulCtx.setData(res.data.data)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
-            history.push('/urgudul/2')
-        }).catch(err => {
-            console.log(err.response?.data)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
-        })
+        setValidate(true)
+        const allValid = Object.values(form).every(value => !checkInvalid(value))
+
+        if (allValid) {
+            axios.post('projects', form, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
+            }).then(res => {
+                console.log(res.data)
+                UrgudulCtx.setData(res.data.data)
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
+                history.push('/urgudul/2')
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
+            })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+        }
     }
 
     const handleSubmitEdit = () => {
-        axios.put(`projects/${UrgudulCtx.data.id}`, form, {
-            headers: {
-                'Authorization': getLoggedUserToken()
-            }
-        }).then(res => {
-            console.log(res.data)
-            UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээлэл хадгалагдлаа.' })
-            history.push('/urgudul/2')
-        }).catch(err => {
-            console.log(err.response?.data)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-        })
+        setValidate(true)
+        const allValid = Object.values(form).every(value => !checkInvalid(value))
+
+        if (allValid) {
+            axios.put(`projects/${UrgudulCtx.data.id}`, form, {
+                headers: {
+                    'Authorization': getLoggedUserToken()
+                }
+            }).then(res => {
+                console.log(res.data)
+                UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээлэл хадгалагдлаа.' })
+                history.push('/urgudul/2')
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+            })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+        }
+    }
+
+    const [validate, setValidate] = useState(false)
+
+    const checkInvalid = (value) => {
+        switch (value) {
+            case null:
+                return true
+            case '':
+                return true
+            default:
+                return false
+        }
     }
 
     return (
@@ -79,7 +106,7 @@ function UrgudulFront() {
                 </div>
 
                 <div className="tw-p-2 tw-pb-5 tw-flex tw-flex-col tw-items-center">
-                    <div className="tw-pl-11 tw-pr-3 tw-flex tw-flex-col tw-w-full tw-max-w-md">
+                    <div className={`tw-pl-11 tw-pr-3 tw-flex tw-flex-col tw-w-full tw-max-w-md ${validate && checkInvalid(form.project_type) && 'tw-border tw-border-dashed tw-border-red-500'}`}>
                         <div className="tw-mt-4 tw-font-medium">
                             Өргөдлийн төрөл:
                         </div>
@@ -101,9 +128,9 @@ function UrgudulFront() {
                         </button>
                     </div>
 
-                    <FormInline label={form.project_type === 'cluster' ? 'Кластерын тэргүүлэгч байгууллагын нэр:' : 'Аж ахуйн нэгжийн нэр'} type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
+                    <FormInline label={form.project_type === 'cluster' ? 'Кластерын тэргүүлэгч байгууллагын нэр:' : 'Аж ахуйн нэгжийн нэр'} type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend={`tw-w-full tw-max-w-md ${validate && checkInvalid(form.company_name) && 'tw-border tw-border-dashed tw-border-red-500'}`} classInput="tw-w-full" />
 
-                    <FormInline label="Төслийн нэр" type="text" value={form.project_name || ''} name="project_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
+                    <FormInline label="Төслийн нэр" type="text" value={form.project_name || ''} name="project_name" onChange={handleInput} classAppend={`tw-w-full tw-max-w-md ${validate && checkInvalid(form.project_name) && 'tw-border tw-border-dashed tw-border-red-500'}`} classInput="tw-w-full" />
 
                     {
                         UrgudulCtx.data.id ?

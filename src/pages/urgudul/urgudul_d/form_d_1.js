@@ -87,25 +87,48 @@ function UrgudulNoticeCluster() {
     const history = useHistory()
 
     const handleSubmit = () => {
+        setValidate(true)
+        let allValid = true
+        for (const obj of form) {
+            allValid = allValid && Object.values(obj).every(value => !checkInvalid(value))
+        }
+
         if (UrgudulCtx.data.id) {
-            axios.put(`projects/${UrgudulCtx.data.id}`, { noticeClusters: form }, {
-                headers: {
-                    'Authorization': getLoggedUserToken()
-                }
-            })
-                .then(res => {
-                    console.log(res.data)
-                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хамтрагч талуудын мэдээлэл хадгалагдлаа.' })
-                    history.push('/urgudul/10')
+            if (allValid) {
+                axios.put(`projects/${UrgudulCtx.data.id}`, { noticeClusters: form }, {
+                    headers: {
+                        'Authorization': getLoggedUserToken(),
+                    }
                 })
-                .catch(err => {
-                    console.log(err.response?.data)
-                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                })
+                    .then(res => {
+                        console.log(res.data)
+                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хамтрагч талуудын мэдээлэл хадгалагдлаа.' })
+                        history.push('/urgudul/10')
+                    })
+                    .catch(err => {
+                        console.log(err.response?.data)
+                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                    })
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+            }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
             history.push('/urgudul/1')
+        }
+    }
+
+    const [validate, setValidate] = useState(false)
+
+    const checkInvalid = (value) => {
+        switch (value) {
+            case null:
+                return true
+            case '':
+                return true
+            default:
+                return false
         }
     }
 
@@ -177,11 +200,11 @@ function UrgudulNoticeCluster() {
                     }
                 </div>
 
-                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(applicantItem.representative_positionId) && 'tw-border-red-500'}`}>
                     <SearchSelect label="Албан тушаал" data={occupations} value={applicantItem.representative_positionId} name="representative_positionId" id={applicantIndex} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" />
                 </div>
 
-                <FormInline label="Овог, нэр" type="text" value={applicantItem.representative_name || ''} name="representative_name" id={applicantIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-80" />
+                <FormInline label="Овог, нэр" type="text" value={applicantItem.representative_name || ''} name="representative_name" id={applicantIndex} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(applicantItem.representative_name) && 'tw-border-red-500'}`} classInput="tw-w-80" />
 
                 <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-row-span-2">
                     <div className="tw-flex tw-items-center tw-p-2">
@@ -189,10 +212,10 @@ function UrgudulNoticeCluster() {
                         <span className="tw-ml-2 tw-text-sm tw-font-medium">Гарын үсэг</span>
                     </div>
 
-                    <FormSignature value={applicantItem.representative_signature} name="representative_signature" id={applicantIndex} setForm={handleSetForm} classAppend="tw-px-2 tw-pb-3 tw-justify-center" canvasProps={{ width: 300, height: 80 }} />
+                    <FormSignature value={applicantItem.representative_signature} name="representative_signature" id={applicantIndex} setForm={handleSetForm} classAppend={`tw-px-2 tw-py-2 tw-justify-center ${validate && checkInvalid(applicantItem.representative_signature) && 'tw-border tw-border-dashed tw-border-red-500'}`} canvasProps={{ width: 300, height: 100 }} />
                 </div>
 
-                <FormInline label="Огноо" type="date" value={applicantItem.submitDate || ''} name="submitDate" id={applicantIndex} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+                <FormInline label="Огноо" type="date" value={applicantItem.submitDate || ''} name="submitDate" id={applicantIndex} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(applicantItem.submitDate) && 'tw-border-red-500'}`} classInput="tw-w-40" />
             </div>
 
             <div className="tw-p-2 tw-pl-4 tw-p-t-4 tw-text-blue-500 tw-font-medium">
@@ -205,15 +228,15 @@ function UrgudulNoticeCluster() {
                         i !== applicantIndex &&
                         <div className="tw-flex even:tw-bg-gray-50" key={i}>
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.companyId) && 'tw-border-red-500'}`}>
                                     <FormSelect label="АНН нэр" data={clusters} value={item.companyId} name="companyId" id={i} setForm={handleSetForm} displayName="company_name" classAppend="tw-w-96" />
                                 </div>
 
-                                <div className="tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex">
+                                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.representative_positionId) && 'tw-border-red-500'}`}>
                                     <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} />
                                 </div>
 
-                                <FormInline label="Овог, нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
+                                <FormInline label="Овог, нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.representative_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
 
                                 <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-row-span-2">
                                     <div className="tw-flex tw-items-center tw-p-2">
@@ -221,10 +244,10 @@ function UrgudulNoticeCluster() {
                                         <span className="tw-ml-2 tw-text-sm tw-font-medium">Гарын үсэг</span>
                                     </div>
 
-                                    <FormSignature value={item.representative_signature} name="representative_signature" id={i} setForm={handleSetForm} classAppend="tw-px-2 tw-pb-3 tw-justify-center" canvasProps={{ width: 300, height: 80 }} />
+                                    <FormSignature value={item.representative_signature} name="representative_signature" id={i} setForm={handleSetForm} classAppend={`tw-px-2 tw-py-2 tw-justify-center ${validate && checkInvalid(item.representative_signature) && 'tw-border tw-border-dashed tw-border-red-500'}`} canvasProps={{ width: 300, height: 100 }} />
                                 </div>
 
-                                <FormInline label="Огноо" type="date" value={item.submitDate || ''} name="submitDate" id={i} onChange={handleInput} classAppend="tw-border tw-border-dashed tw-w-full tw-max-w-lg" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                                <FormInline label="Огноо" type="date" value={item.submitDate || ''} name="submitDate" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.submitDate) && 'tw-border-red-500'}`} classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
                             </div>
 
                             <div className="tw-flex tw-items-center">
