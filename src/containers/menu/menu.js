@@ -53,7 +53,7 @@ function Menu() {
       if(currentPath !== "/" && currentPath !== "/comp-request"){  setheaderHeight("50px");
       }else{ setheaderHeight("50px");}
       if(currentPath === "/"){setActiveMenu({Home:'line2',Req:'',Check:'',Maygt:''})}
-      if(currentPath === "/admin"){ setDisplayNone("none");}
+      // if(currentPath === "/admin"){ setDisplayNone("none");}
       if(currentPath === "/comp-request"){setActiveMenu({Home: '',Req:'line2',Check: '',Maygt:''})}
       if(currentPath === "/comp-check"){setActiveMenu({Home: '',Req:'',Check:'line2',Maygt: ''})}
       if(currentPath === "/urgudul/1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }

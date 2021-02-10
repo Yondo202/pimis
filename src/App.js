@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { motion } from "framer-motion";
-import Admin from './containers/admin/AdminRoute'
+import Admin from './containers/admin/MainMenu'
 import Menu from './containers/menu/menu'
 import UserContext from "./context/UserContext";
 import { HelpStore } from './context/HelperContext'
@@ -47,6 +47,11 @@ function App() {
 
   return (
     <div className="App">
+      <Router>
+        <Switch>
+           <Route path="/admin" component={Admin} />
+        </Switch>
+      </Router>
 
       <AlertStore>
         <Router>
@@ -61,12 +66,11 @@ function App() {
                       <LoginDoneHome2 />
                     </motion.div>
                   </Route>
-
                   <Route path="/comp-test" component={CheckComp} />
                   <Route path="/comp-check" component={MainForm} />
                   <Route path="/comp-request" component={ReqHome} exact />
                   <Route path="/notfy-page" component={MainPage} exact />
-                  <Route path="/admin" component={Admin} />
+                  {/* <Route path="/admin" component={Admin} /> */}
 
                   <Route path="/comp-request/new" component={MainRequest} />
                   <Route path="/comp-request/old" component={MainRequestOld} />
