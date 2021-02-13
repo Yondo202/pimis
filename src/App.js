@@ -32,28 +32,31 @@ import MainPage from 'components/notifyPage/MainPage'
 function App() {
   const ctxUser = useContext(UserContext);
   const [userId, setUserId] = useState();
+  const [role, setRole] = useState();
 
   useEffect(() => {
     const userId = localStorage.getItem("userId", []); setUserId(userId);
+    const UserRole = localStorage.getItem("role", []); setRole(UserRole);
     console.log(ctxUser.userInfo.userId, " user iddd");
   }, [ctxUser.userInfo.userId]);
 
+
+  
   // const clickhandle = () =>{
   //     ctxUser.logout();
   //     setTimeout(() => {
   //       window.location.reload(false);
   //      }, 100);
   // }
+  console.log(role, " rolleee");
 
   return (
     <div className="App">
-      <Router>
+      {role==="admin"? (<Router>
         <Switch>
            <Route path="/admin" component={Admin} />
         </Switch>
-      </Router>
-
-      <AlertStore>
+      </Router>) : (<AlertStore>
         <Router>
           {userId && <Menu />}
           {userId ? (
@@ -119,7 +122,11 @@ function App() {
             )}
         </Router>
         <AlertDialog />
-      </AlertStore>
+      </AlertStore>) }
+
+     
+
+      
     </div>
   );
 }

@@ -24,7 +24,7 @@ const ComponentHome = styled.div`
         // background-color:rgba(0,0,0,0.5);
         display:flex;
         flex-direction:row;
-        align-items:center;
+        align-items:start;
         justify-content:center;
         // .mainContentPar{
         //     width:65%;
@@ -32,10 +32,11 @@ const ComponentHome = styled.div`
         // }
 
         .mainFormPar{
+            margin-top:10vh;
             border-radius:10px;
             background-color: white;
             padding:0px 45px;
-            width:35%;
+            width:40%;
             align-items:center;
         }
 
@@ -62,18 +63,18 @@ const ComponentHome = styled.div`
         }
 
 
-        @media only screen and (max-width:1500px){
-            flex-direction:column-reverse;
-            .mainFormPar{
-                width:50%;
-            }
-        }
-        @media only screen and (max-width:1400px){
-            flex-direction:column-reverse;
-            .mainFormPar{
-                width:50%;
-            }
-        }
+        // @media only screen and (max-width:1500px){
+        //     flex-direction:column-reverse;
+        //     .mainFormPar{
+        //         width:50%;
+        //     }
+        // }
+        // @media only screen and (max-width:1400px){
+        //     flex-direction:column-reverse;
+        //     .mainFormPar{
+        //         width:50%;
+        //     }
+        // }
         @media only screen and (max-width:968px){
             flex-direction:column-reverse;
             .mainContentPar{

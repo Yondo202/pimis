@@ -19,16 +19,17 @@ export const UserStore= (props) =>{
       setReqId(id);
     }
     
-    const loginUserSuccess = (id,token,expireDate,name)=>{
+    const loginUserSuccess = (id,token,expireDate,name, role)=>{
         setUserInfo( { userId: id, token, expireDate,name })
           localStorage.setItem("edp_loggedUser",token);
           localStorage.setItem("userId",id);
           localStorage.setItem("userName",name);
+          localStorage.setItem("role",role);
     }
 
     const loginUser= (email,password)=>{
         axios.post('users/login', {email: email,password: password,})
-        .then((res)=>{ console.log(res, "login res"); loginUserSuccess(res.data.user.id, res.data.token, res.data.token.expireDate, res.data.user.name); })
+        .then((res)=>{ console.log(res, "login res"); loginUserSuccess(res.data.user.id, res.data.token, res.data.token.expireDate, res.data.user.name, res.data.user.role); })
         .catch((e)=>{ if(e){ setErrMsg(e.response.data.error.message); } setUserInfo(initialUserInfo); });
       }
 
@@ -38,7 +39,7 @@ export const UserStore= (props) =>{
         .catch((e)=>{ setErrMsgSignUp(e.response.data.error.message); setUserInfo(initialUserInfo); });
     }
 
-    const logout=()=>{localStorage.removeItem("userId"); localStorage.removeItem("userName"); localStorage.removeItem("edp_loggedUser"); setUserInfo({ userId: undefined }); }
+    const logout=()=>{localStorage.removeItem("role"); localStorage.removeItem("userId"); localStorage.removeItem("userName"); localStorage.removeItem("edp_loggedUser"); setUserInfo({ userId: undefined }); }
 
     const StyleComp = (valueOne,valueTwo, valueThree,valueFour,valueFive,valueSix) =>{
       if(valueOne === "0%"){
