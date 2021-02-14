@@ -1,5 +1,6 @@
 import React,{useState} from "react";
 import axios from "../axiosbase";
+import { useHistory } from 'react-router-dom'
 
 const UserContext = React.createContext();
 const initialStyle ={tableOne: "0%", tableTwo: "100%",tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%", tableheight: 150,}
@@ -7,6 +8,7 @@ const initialUserInfo = { userId:null, token:null,  expireDate:null, name:null}
 const initialSee = { tableOneData : {}, tableTwoData: {}, tableThree : {}, tableFour : {} }
 
 export const UserStore= (props) =>{
+    const history = useHistory();
     const [userInfo,setUserInfo] = useState(initialUserInfo);
     const [errMsg, setErrMsg] = useState("");
     const [errMsgSignup, setErrMsgSignUp] = useState("");
@@ -39,7 +41,8 @@ export const UserStore= (props) =>{
         .catch((e)=>{ setErrMsgSignUp(e.response.data.error.message); setUserInfo(initialUserInfo); });
     }
 
-    const logout=()=>{localStorage.removeItem("role"); localStorage.removeItem("userId"); localStorage.removeItem("userName"); localStorage.removeItem("edp_loggedUser"); setUserInfo({ userId: undefined }); }
+    const logout=()=>{localStorage.removeItem("role"); localStorage.removeItem("userId"); localStorage.removeItem("userName"); localStorage.removeItem("edp_loggedUser");
+     setUserInfo({ userId: undefined }); }
 
     const StyleComp = (valueOne,valueTwo, valueThree,valueFour,valueFive,valueSix) =>{
       if(valueOne === "0%"){

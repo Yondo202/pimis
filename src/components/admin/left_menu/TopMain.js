@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { useIntl } from 'react-intl';
 import Switch from 'react-switch';
 import { FaHeart, FaBars } from 'react-icons/fa';
@@ -7,9 +7,11 @@ import { VscSearch } from 'react-icons/vsc'
 import { AiOutlineCaretRight } from 'react-icons/ai'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
 import {useSpring, animated} from 'react-spring';
+import UserContext from '../../../context/UserContext'
 // import reactLogo from './assets/logo.svg';
 
 const Main = ({ collapsed,rtl, image, handleToggleSidebar,handleCollapsedChange,handleRtlChange,handleImageChange,}) => {
+  const ctx = useContext(UserContext)
   const [ profileMenu, setProfileMenu ] = useState(false);
   const intl = useIntl();
 
@@ -74,7 +76,7 @@ const Main = ({ collapsed,rtl, image, handleToggleSidebar,handleCollapsedChange,
                     <img src='/profile.jpg' alt="profile" />
                     <AiOutlineCaretRight style={profileMenu? {transform:'rotate(90deg)' }: {transform:'rotate(0deg)'}} />
                 </div>
-              {profileMenu&&(<animated.div style={animation} ><div className="otherPar"><div className="logout"><RiLogoutBoxRLine /> Гарах</div></div></animated.div>) }
+              {profileMenu&&(<animated.div style={animation} ><div className="otherPar"><div onClick={()=>ctx.logout()} className="logout"><RiLogoutBoxRLine /> Гарах</div></div></animated.div>) }
                 
           </div>
     
