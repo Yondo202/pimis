@@ -1,22 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Switch from 'react-switch';
 import { FaHeart, FaBars } from 'react-icons/fa';
 import styled  from 'styled-components';
 import { VscSearch } from 'react-icons/vsc'
-import { GoTriangleDown } from 'react-icons/go'
+import { AiOutlineCaretRight } from 'react-icons/ai'
+import { RiLogoutBoxRLine } from 'react-icons/ri'
+import {useSpring, animated} from 'react-spring';
 // import reactLogo from './assets/logo.svg';
 
-const Main = ({
-  collapsed,
-  rtl,
-  image,
-  handleToggleSidebar,
-  handleCollapsedChange,
-  handleRtlChange,
-  handleImageChange,
-}) => {
+const Main = ({ collapsed,rtl, image, handleToggleSidebar,handleCollapsedChange,handleRtlChange,handleImageChange,}) => {
+  const [ profileMenu, setProfileMenu ] = useState(false);
   const intl = useIntl();
+
+  const animation = useSpring({
+    config:{  duration:100 },
+    opacity: profileMenu ? 1 : 0,
+    transform:profileMenu ? `scale(1)` : `scale(0.9)`
+});
+
+  const showHanlde = ()=>{ setProfileMenu(prev=>!prev); }
+
   return (
     <div className="row topMenuPar"> 
       <div className="btn-toggle" onClick={() => handleToggleSidebar(true)}>
@@ -65,11 +69,13 @@ const Main = ({
       </div>
      
         <div className="profilePar">
-          <div className="svgPar"> <VscSearch /></div>
-                <a className="Profile">
+          {/* <div className="svgPar"> <VscSearch /></div> */}
+                <div onClick={showHanlde} className="Profile">
                     <img src='/profile.jpg' alt="profile" />
-                    <GoTriangleDown />
-                </a>
+                    <AiOutlineCaretRight style={profileMenu? {transform:'rotate(90deg)' }: {transform:'rotate(0deg)'}} />
+                </div>
+              {profileMenu&&(<animated.div style={animation} ><div className="otherPar"><div className="logout"><RiLogoutBoxRLine /> Гарах</div></div></animated.div>) }
+                
           </div>
     
    </div>

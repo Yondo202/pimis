@@ -31,7 +31,8 @@ function Login() {
     },[userCtx]);
     useEffect( async ()=>{
       const UserRole = localStorage.getItem("role", []);
-      if(UserRole==="admin"){ history.push('/admin')}else{history.push('/')}
+      if(UserRole==="admin"){ history.push('/admin')}else{ history.push('/') }
+      console.log(UserRole, "adadadadad")
         document.addEventListener('keydown', keyPress);
         return () => document.removeEventListener('keydown', keyPress)
     },[keyPress]);

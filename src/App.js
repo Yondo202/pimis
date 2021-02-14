@@ -39,8 +39,6 @@ function App() {
     const UserRole = localStorage.getItem("role", []); setRole(UserRole);
     console.log(ctxUser.userInfo.userId, " user iddd");
   }, [ctxUser.userInfo.userId]);
-
-
   
   // const clickhandle = () =>{
   //     ctxUser.logout();

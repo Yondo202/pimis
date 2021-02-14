@@ -91,21 +91,37 @@ const AdminApp = styled.div`
             }
             .profilePar{
                 display:flex;
-                .svgPar{
-                    margin-right:30px;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    background-color:rgba(0,0,0,0.057);
-                    padding:5px 5px;
-                    font-size:18px;
-                    border-radius:50%;
-                    svg{
+                position:relative;
+                .otherPar{
+                    width:140px;
+                    background-color:white;
+                    position:absolute;
+                    bottom:-45px;
+                    right:-10px;
+                    // padding:5px 10px;
+                    border-radius:4px;
+                    text-align:left;
+                    .logout{
+                        padding:5px 16px;
                         cursor:pointer;
-                        color:rgba(0,30,80,1);
+                        color:#2c2945;
+                        text-align:left;
+                        display:flex;
+                        font-size:14px;
+                        align-items:center;
+                        &:hover{
+                            border-radius:4px;
+                            background-color:rgba(0,0,0,0.1);
+                        }
+                        svg{
+                            font-size:20px;
+                            margin-right:10px;
+                        }
                     }
                 }
+                
                 .Profile{
+                    cursor:pointer;
                     display:flex;
                     align-items:center;
                     img{
@@ -116,6 +132,7 @@ const AdminApp = styled.div`
                         border:1px solid rgba(0,30,80,0.1);
                     }
                     svg{
+                        transition:all 0.3s ease;
                         margin-left:2px;
                         font-size:12px;
                         color:rgba(0,30,80,1);
