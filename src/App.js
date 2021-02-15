@@ -25,6 +25,8 @@ import AnalystReport from "pages/decision_making/page_5c";
 import AttachmentUploads from "pages/attachments/page";
 import MainPage from "components/notifyPage/MainPage";
 import UnAuthContent from "UnauthContent";
+import { FilePreviewStore } from "components/utilities/filePreviewContext";
+import FilePreviewModal from "components/file_preview/filePreview";
 
 function App() {
   const ctxUser = useContext(UserContext);
@@ -56,49 +58,52 @@ function App() {
       </Router>
 
       <AlertStore>
-        <Router>
-          {ctxUser.userInfo.userId && <Menu />}
-          {ctxUser.userInfo.userId ? (
-            <HelpStore>
-              <UrgudulStore>
-                <Switch>
-                  <Route path="/" exact>
-                    <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                      {/* <LoginDoneHome /> */}
-                      <LoginDoneHome2 />
-                    </motion.div>
-                  </Route>
-                  <Route path="/comp-test" component={CheckComp} />
-                  {/* <Route path="/comp-check" component={MainForm} /> */}
-                  <Route path="/comp-request" component={ReqHome} exact />
-                  <Route path="/notfy-page" component={MainPage} exact />
-                  {/* <Route path="/admin" component={Admin} /> */}
+        <FilePreviewStore>
+          <Router>
+            {ctxUser.userInfo.userId && <Menu />}
+            {ctxUser.userInfo.userId ? (
+              <HelpStore>
+                <UrgudulStore>
+                  <Switch>
+                    <Route path="/" exact>
+                      <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        {/* <LoginDoneHome /> */}
+                        <LoginDoneHome2 />
+                      </motion.div>
+                    </Route>
+                    <Route path="/comp-test" component={CheckComp} />
+                    {/* <Route path="/comp-check" component={MainForm} /> */}
+                    <Route path="/comp-request" component={ReqHome} exact />
+                    <Route path="/notfy-page" component={MainPage} exact />
+                    {/* <Route path="/admin" component={Admin} /> */}
 
-                  <Route path="/comp-request/new" component={MainRequest} />
-                  <Route path="/comp-request/old" component={MainRequestOld} />
+                    <Route path="/comp-request/new" component={MainRequest} />
+                    <Route path="/comp-request/old" component={MainRequestOld} />
 
-                  <Route path="/email" component={EmialSender} />
-                  <Route path="/email2" component={EmialSender2} />
+                    <Route path="/email" component={EmialSender} />
+                    <Route path="/email2" component={EmialSender2} />
 
-                  <Route path="/letter-of-interest" component={LetterOfInterest} />
+                    <Route path="/letter-of-interest" component={LetterOfInterest} />
 
-                  <Route path="/urgudul/:page" component={UrgudulNavigator} />
+                    <Route path="/urgudul/:page" component={UrgudulNavigator} />
 
-                  <Route path="/attachments" component={AttachmentUploads} />
+                    <Route path="/attachments" component={AttachmentUploads} />
 
-                  <Route path="/5a" component={FirstEvaluation} />
-                  <Route path="/5b" component={CompilationCheck} />
-                  <Route path="/5c" component={AnalystReport} />
+                    <Route path="/5a" component={FirstEvaluation} />
+                    <Route path="/5b" component={CompilationCheck} />
+                    <Route path="/5c" component={AnalystReport} />
 
-                  <Route path="/sector-edit" component={BusinessSectorEditor} />
-                  <Route path="/product-edit" component={ProductsEditor} />
-                </Switch>
-              </UrgudulStore>
-            </HelpStore>
-          ) : (
-            <UnAuthContent />
-          )}
-        </Router>
+                    <Route path="/sector-edit" component={BusinessSectorEditor} />
+                    <Route path="/product-edit" component={ProductsEditor} />
+                  </Switch>
+                </UrgudulStore>
+              </HelpStore>
+            ) : (
+                <UnAuthContent />
+              )}
+          </Router>
+          <FilePreviewModal />
+        </FilePreviewStore>
         <AlertDialog />
       </AlertStore>
     </div>

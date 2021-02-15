@@ -1,3 +1,3 @@
 export default function getLoggedUserToken() {
-    return `Bearer ${localStorage.getItem('edp_loggedUser')}` || null
+    return `Bearer ${localStorage.getItem('accessToken') || ''}`
 }

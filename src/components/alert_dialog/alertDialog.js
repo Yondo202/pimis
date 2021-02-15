@@ -1,7 +1,6 @@
-import CheckSVG from 'assets/svgComponents/checkSVG'
+import React, { useContext, useEffect } from 'react'
 import CloseSVG from 'assets/svgComponents/closeSVG'
 import AlertContext from 'components/utilities/alertContext'
-import React, { useContext, useEffect } from 'react'
 import { Transition } from 'react-spring/renderprops'
 
 
