@@ -42,9 +42,7 @@ function Menu() {
 
     const clickhandle2 = ()=>{
       console.log("done");
-      // setTimeout(()=>{
-      //   window.location.reload(false);
-      // },100)
+     
     };
 
     useEffect(() => {
@@ -58,27 +56,10 @@ function Menu() {
       if(currentPath === "/comp-check"){setActiveMenu({Home: '',Req:'',Check:'line2',Maygt: ''})}
       if(currentPath === "/urgudul/1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }
     }, [location]);
-    //   useEffect(() => {
-    //     window.addEventListener("scroll", handleScroll);
-    // });
-    // const handleScroll = () => {
-    //     console.log('lalalall', window.pageYOffset);
-    //     if(window.pageYOffset > 100){
-    //       setClassNameId("MainMenusNormal");
-    //       setHeadStyle("50px");
-    //     }else{
-    //       setClassNameId("");
-    //       setHeadStyle("70px");
-    //     }
-    // }
+   
 
   return (
     <Componentss>
-      {/* <div style={{display:diplayNone}} className="Background">
-        <div style={{padding:`0px 0px`}} className="LogoHeadPar container">
-            <div style={{backgroundImage:`url(/head.jpg)`}} className="logoPar"></div>
-        </div>
-      </div> */}
      
       <div style={{height:headerHeight,display:diplayFlex}} className="MainMenus">
             <div style={{padding:`0px 0px`}} style={currPath === "/"? {maxWidth:`1160px`}:{maxWidth:1000}} className="container">
@@ -105,7 +86,7 @@ function Menu() {
                                   <div style={{transform:`${activeMenu.Home}`}} className={`line ${activeMenu.Home}`}></div>
                               </div>
                               <div className="items">
-                                <Link onClick={clickhandle2} to="/comp-request">Хүсэлт</Link>
+                                <Link to="/comp-request">Хүсэлт</Link>
                                 <div style={{transform:`${activeMenu.Check}`}} className={`line ${activeMenu.Req}`}></div>
                               </div>
                               <div className="items">
@@ -125,7 +106,7 @@ function Menu() {
                           {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
                           <div className="Notification"><Link to="#" content="2" ><IoNotificationsOutline /></Link> </div>
                           <span className="UserNameMenu" content={userName} ><Link to="#"><CgProfile /></Link> </span>
-                          <span className="Logout"><Link onClick={clickhandle} to="/"><span>Гарах</span><IoIosLogOut /></Link></span>
+                          <span className="Logout"><Link onClick={()=>userCtx.logout()} to="/"><span>Гарах</span><IoIosLogOut /></Link></span>
                         </div>
                 </span>
 

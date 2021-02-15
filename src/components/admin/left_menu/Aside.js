@@ -93,7 +93,7 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
                     title="Хэрэглэгчийн эрх"
                     icon={<FaUsers />}
                 >
-                    <MenuItem><Link to="/admin/users">Хэрэглэгчид</Link></MenuItem>
+                    <MenuItem><Link to="/users">Хэрэглэгчид</Link></MenuItem>
                 </SubMenu>
                 </Menu>
             </SidebarContent>

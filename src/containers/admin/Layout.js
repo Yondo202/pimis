@@ -28,7 +28,7 @@ function Layout({ setLocale }) {
   return (
     <AdminApp className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
         <div className="MainParent">
-            <Aside  image={image}  collapsed={collapsed} rtl={rtl}  toggled={toggled}    handleToggleSidebar={handleToggleSidebar}  />
+            <Aside  image={image}  collapsed={collapsed} rtl={rtl}  toggled={toggled} handleToggleSidebar={handleToggleSidebar}  />
         </div>
         
         <div className="container-fluid ContentPar">
@@ -41,12 +41,10 @@ function Layout({ setLocale }) {
       
             <div className="itemsPar">
                 <Switch>
-                    <Route path="/admin" component={HomeAdmin} exact />
-                    <Route path="/admin/users" component={UserHandle} />
+                    <Route path="/" component={HomeAdmin} exact />
+                    <Route path="/users" component={UserHandle} />
                 </Switch>
             </div>
-
-           
         </div>
 
    
