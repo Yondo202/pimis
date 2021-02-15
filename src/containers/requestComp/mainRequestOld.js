@@ -16,6 +16,7 @@ import HelpContext from '../../context/HelperContext'
 import {Modal} from '../../components/requests/MainModal/Modal'
 import axios from '../../axiosbase'
 import {ColorRgb, textColor} from '../../components/theme'
+import AccessToken from '../../context/accessToken'
 
 
 function MainRequest(props) {
@@ -31,9 +32,9 @@ function MainRequest(props) {
     const [ userID, setUserId ] = useState();
     useEffect( async()=>{
         StyleContext.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
-        let storageToken = localStorage.getItem("edp_loggedUser", []); setTokens(storageToken); 
+        let storageToken = AccessToken(); setTokens(storageToken); 
         window.addEventListener("scroll", handleScroll);
-        let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${storageToken}`}});
+        let resData = await axios.get(`pps-request`, {headers: {Authorization:AccessToken()}});
         // console.log(resData, " ^^ ress");
         if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data); setLoading(false); }
       },[]);

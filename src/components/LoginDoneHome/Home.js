@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {ColorRgb} from '../theme'
 import { BrowserRouter as Router, Switch, Route, Link,useHistory, useLocation } from "react-router-dom";
 import axios from '../../axiosbase';
+import AccessToken from '../../context/accessToken'
 
 function Home() {
    let history = useHistory();
@@ -10,10 +11,10 @@ function Home() {
    useEffect(async()=>{
        try{
         let storageToken = localStorage.getItem("edp_loggedUser", []);
-        let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${storageToken}`}});
+        let resData = await axios.get(`pps-request`, {headers: {Authorization: AccessToken()}});
         console.log(resData, " ____")
         if(resData.data.data.id){ setCond(true); }else{ setCond(false); }
-       }catch{console.log("Алдаа гарсан"); }
+       }catch{console.log("Алдаа гарсан..."); }
 
    },[cond]);
 

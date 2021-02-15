@@ -29,16 +29,17 @@ export const UserStore = (props) => {
   };
 
   const loginUser = (email, password) => {
-    axios
-      .post("users/login", { email: email, password: password })
+    axios.post("users/login", { email: email, password: password })
       .then((res) => {
         loginUserSuccess(res.data.token, res.data.refreshToken, res.data.expireDate, res.data.user);
-      })
-      .catch((e) => {
-        if (e) {
-          setErrMsg(e.response.data.error.message);
+      }).catch((err) => {
+        console.log(err, "User context deeer aldaa garlaa");
+        if (err) {
+          setErrMsg(err.response.data.error.message);
+        }else{
+          setUserInfo(initialUserInfo);
         }
-        setUserInfo(initialUserInfo);
+       
       });
   };
   const autoRenewTokenAfterMillisec = (milliSec) => {

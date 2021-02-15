@@ -2,28 +2,21 @@ import React, {useState, useContext, useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
 import TableSixDetails from './deitals/tableSixDetail'
 import TableSixDetails2 from './deitals/tableSixDetail2'
-import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
+import AccessToken from '../../../context/accessToken'
 import axios from '../../../axiosbase'
 
 function TableSix() {
     const history = useHistory();
-    const StyleContext  = useContext(UserContext);
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [ UserToken, setUserToken ] = useState(null);
-    useEffect(()=>{
-      let storageToken = localStorage.getItem("edp_loggedUser", []);
-      setUserToken(storageToken);
-    });
 
     const clickHandles = () => {
         let finalOne = {};
@@ -70,8 +63,6 @@ function TableSix() {
             tableCondition2.push(Lala);
         });
         let keys2 = Object.keys(tableCondition2[0]);
-        // console.log(keys2.length, "keys2");
-
 
         let rs4 = document.querySelectorAll(".getUserInp2");
         let arr4 = Array.from(rs4);
@@ -106,7 +97,7 @@ function TableSix() {
             setOpacity2("1");
         }else{
             setOpacity2("0");
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
                 helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000);
             }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
         }

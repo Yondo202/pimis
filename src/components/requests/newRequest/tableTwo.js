@@ -7,18 +7,15 @@ import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import HelperContext from '../../../context/HelperContext'
+import AccessToken from '../../../context/accessToken'
 import axios from '../../../axiosbase'
-import { useAlert } from "react-alert";
 
 function TableTwo() {
     const [ spnBtn, setSpnBtn ] = useState(false);
-    const alert = useAlert();
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [ UserToken, setUserToken ] = useState(null);
     
-    useEffect(()=>{ let storageToken = localStorage.getItem("edp_loggedUser", []);  setUserToken(storageToken); },[]);
 
     const clickHandles = (e) =>{
         let getFile = document.querySelectorAll(".GetFilesData");
@@ -34,7 +31,7 @@ function TableTwo() {
             });
             TestArr.map((el,i)=>{
                   const data = new FormData(); data.append(el.name, el);
-                  axios.put(`pps-request/${el.tableId}/upload-pps2`, data, {headers: {Authorization:`bearer ${UserToken}`}}).then((res)=>{ console.log(res, 'ress');  }).catch((err)=> console.log(err))
+                  axios.put(`pps-request/${el.tableId}/upload-pps2`, data, {headers: {Authorization:AccessToken()}}).then((res)=>{ console.log(res, 'ress');  }).catch((err)=> console.log(err))
             });
         }
 
@@ -78,7 +75,7 @@ function TableTwo() {
                 // scroll.scrollTo(0);
             }
             setOpacity2("0");
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers: {Authorization:`bearer ${UserToken}`}} ).then((res)=>{
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers: {Authorization:AccessToken()}} ).then((res)=>{
                 setTimeout(()=>{ helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0); },2000);setSpnBtn(false);
                 FilesSend(res.data.data.ppsRequest2Detail);
               }).catch((err)=>{ setSpnBtn(false);  helperContext.alertText('orange', "Алдаа гарлаа", true); });

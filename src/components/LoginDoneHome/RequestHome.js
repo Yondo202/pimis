@@ -9,6 +9,7 @@ import {IoResizeOutline} from 'react-icons/io5'
 import {  Link } from "react-router-dom";
 import axios from '../../axiosbase'
 import UserContext from '../../context/UserContext'
+import AccessToken from '../../context/accessToken'
 
 function RequestHome() {
     const UserCtx = useContext(UserContext);
@@ -16,14 +17,12 @@ function RequestHome() {
 
     useEffect(async ()=>{
         const localToken = localStorage.getItem("edp_loggedUser", []);
-        let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${localToken}`}});
+        let resData = await axios.get(`pps-request`, {headers: {Authorization: AccessToken()}});
         let data = []; data.push(resData.data.data)
         if(resData){ setAllData(data) };
         console.log(resData, " ** my data");
         
     },[]);
-
-    console.log(allData, " my obj");
 
     return (
         <Reqhome className="container">

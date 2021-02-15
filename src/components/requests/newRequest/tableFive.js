@@ -10,6 +10,7 @@ import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
+import AccessToken from '../../../context/accessToken'
 import axios from '../../../axiosbase'
 
 function TableFive() {
@@ -17,11 +18,6 @@ function TableFive() {
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [ UserToken, setUserToken ] = useState(null);
-    useEffect(()=>{
-      let storageToken = localStorage.getItem("edp_loggedUser", []);
-      setUserToken(storageToken);
-  });
 
     const clickHandles = () => {
         let finalOne = {};
@@ -99,7 +95,7 @@ function TableFive() {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
             setOpacity2("1");
         }else{
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}}).then((res)=>{
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
                 helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%"); scroll.scrollTo(0);
             }).catch((err)=>{helperContext.alertText('orange', 'Алдаа гарлаа', true);});
         }

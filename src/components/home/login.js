@@ -24,8 +24,9 @@ function Login() {
             finalOneUser[field] = value;
         });
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-        // const UserRole = localStorage.getItem("role", []);
-        // if(UserRole==="admin"){ history.push('/admin')}else{ history.push('/') }
+
+        const UserRole = localStorage.getItem("role", []);
+        if(UserRole==="admin"){ history.push('/')}else{ history.push('/') }
       }
     },[userCtx.userInfo.id]);
 
@@ -37,6 +38,7 @@ function Login() {
     },[keyPress]);
 
     const handleClick = (e) =>{
+      
         e.preventDefault();
         let Username = document.querySelectorAll(".LoginInpName");
         let User = Array.from(Username);
@@ -46,9 +48,11 @@ function Login() {
             let value = element.value;
             finalOneUser[field] = value;
         });
+        console.log(finalOneUser,"lalalal");
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
+
         const UserRole = localStorage.getItem("role", []);
-        if(UserRole==="admin"){ history.push('/admin')}else{ history.push('/') }
+        if(UserRole==="admin"){ history.push('/')}else{ history.push('/') }
     }
     return (
         <Component>

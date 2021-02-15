@@ -5,8 +5,8 @@ import {IoMdCheckmarkCircle  } from 'react-icons/io';
 import { fontFamily, textColor, Color,fontSize } from '../theme';
 import {AiOutlineSend} from 'react-icons/ai'
 import {CgDanger} from 'react-icons/cg'
-import UserContext from '../../context/UserContext'
 import HelperContext from '../../context/HelperContext'
+import AccessToken from '../../context/accessToken'
 import axios from '../../axiosbase'
 
 function CompCheck() {
@@ -17,15 +17,10 @@ function CompCheck() {
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
-    const [ UserToken, setUserToken ] = useState(null);
-    const [ finalTextScale, setFinalTextScale] = useState('0');
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const StyleContext = useContext(UserContext);
 
     useEffect(async()=>{
-      let storageToken = localStorage.getItem("edp_loggedUser", []);
-      setUserToken(storageToken);
-      const data =  await axios.get(`criterias`,{ headers: { Authorization:`bearer ${storageToken}` } });
+      const data =  await axios.get(`criterias`,{ headers: { Authorization:AccessToken() } });
       let keys = Object.keys(data.data.data);
      
       if(keys.length > 0){
@@ -39,7 +34,6 @@ function CompCheck() {
         setInitialData(allData);
         setUpdateMount(true);
       }else{ console.log("^^data alga") }
-
     },[updateMount]);
 
 
@@ -76,10 +70,9 @@ function CompCheck() {
               }else{
                 setOpacity("0");
                 setOpacity2("0");
-                setFinalTextScale("0");
                 // history.push('/');
                 // scroll.scrollTo(0);
-                axios.post(`criterias`, soloObject2, {headers:{ Authorization:`bearer ${UserToken}` } }).then(res=>{
+                axios.post(`criterias`, soloObject2, {headers:{ Authorization:AccessToken() } }).then(res=>{
                   console.log(res, "ress"); ctx.alertText('green, Амжилттай', true);
                 }).catch(err=>console.log(err));
               }

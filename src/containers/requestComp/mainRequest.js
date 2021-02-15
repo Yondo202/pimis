@@ -15,7 +15,7 @@ import TableFour from '../../components/requests/newRequest/tableFour'
 import TableFive from '../../components/requests/newRequest/tableFive'
 import TableSix from '../../components/requests/newRequest/tableSix'
 import {ColorRgb, textColor} from '../../components/theme'
-
+import AccessToken from '../../context/accessToken'
 
 const options = { timeout: 10000, position: positions.BOTTOM_CENTER, offset: '120px', width:'500px' };
 
@@ -23,8 +23,7 @@ function MainRequest() {
     const history = useHistory();
     useEffect(async()=>{
         try{
-         let storageToken = localStorage.getItem("edp_loggedUser", []);
-         let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${storageToken}`}});
+         let resData = await axios.get(`pps-request`, {headers: {Authorization:AccessToken()}});
          if(resData.data.data.id){ history.push('/comp-request/old') }
         }catch{console.log("Алдаа гарсан"); }
     },[]);
