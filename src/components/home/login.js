@@ -7,9 +7,10 @@ import UserContext from "../../context/UserContext";
 import {fontFamily, Color,ColorRgb} from "../theme"
 import Signup from './signup'
 import ForgetPassword from './ForgetPassword'
+import { useHistory } from 'react-router-dom'
 
 function Login() {
-
+  const history = useHistory();
   const [userIdLocalStorage, setUserId] = useState();
   const userCtx = useContext(UserContext);
 
@@ -24,17 +25,14 @@ function Login() {
             finalOneUser[field] = value;
         });
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-        // setTimeout(() => {
-        //   const userId = localStorage.getItem("userId", []);
-        //   if(userId){
-        //     window.location.reload(true);
-        //   }else{  console.log('false');  }
-        // }, 1000);
+        
       }
-
      
     },[userCtx]);
     useEffect( async ()=>{
+      const UserRole = localStorage.getItem("role", []);
+      if(UserRole==="admin"){ history.push('/admin')}else{ history.push('/') }
+      console.log(UserRole, "adadadadad")
         document.addEventListener('keydown', keyPress);
         return () => document.removeEventListener('keydown', keyPress)
     },[keyPress]);
@@ -109,16 +107,16 @@ export default Login
 
 const Component = styled.div`
     font-family:${fontFamily};
-    height:65vh;
+    height:75vh;
     padding-top:10px;
     font-size:13px;
     .imgPar{
         text-align:center;
         padding:15px 0px;
         img{
-          width:100%;
+          // width:100%;
             // width:128px;
-            // height:93px;
+            // height:50px;
             margin-bottom:10px;
         }
 

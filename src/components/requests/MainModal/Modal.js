@@ -53,24 +53,24 @@ export const Modal = ({ showModal,setShowModal, initialData }) => {
     return(
         <>
             {showModal ?
-            (<Background ref={modalRef} onClick={closeModal}>
-                <animated.div style={animation} >
-                    <div className="modalPar container">
-                        <div className="closeParent">
-                            <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
-                            <button className="esc" onClick={()=> setShowModal(prev => !prev)} > X </button>
-                        </div>
-                        
-                        <div  ref={componentRef}>
-                          <ModalOne  DataOne={DataOne.ppsRequest1Details} />
-                          <ModalTwo Data2={DataOne.ppsRequest2Details} />
-                          <ModalThree Data2={DataOne.ppsRequest3Details} />
-                          <ModalFour Data2={DataOne.ppsRequest4Details} />
-                        </div>
+              (<Background ref={modalRef} onClick={closeModal}>
+                  <animated.div style={animation} >
+                      <div className="modalPar container">
+                          <div className="closeParent">
+                              <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
+                              <button className="esc" onClick={()=> setShowModal(prev => !prev)} > X </button>
+                          </div>
+                          
+                          <div  ref={componentRef}>
+                            <ModalOne  DataOne={DataOne.ppsRequest1Details} />
+                            <ModalTwo Data2={DataOne.ppsRequest2Details} />
+                            <ModalThree Data2={DataOne.ppsRequest3Details} />
+                            <ModalFour Data2={DataOne.ppsRequest4Details} />
+                          </div>
 
-                    </div>
-                </animated.div>
-            </Background>)
+                      </div>
+                  </animated.div>
+              </Background>)
              : null}
         </>
     )
