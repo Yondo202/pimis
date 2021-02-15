@@ -1,4 +1,4 @@
-import React,{useContext, useEffect, useState, useCallback} from 'react'
+import React,{useContext, useEffect, useCallback} from 'react'
 import styled from 'styled-components'
 import {CgProfile} from 'react-icons/cg'
 import {BiLockOpen} from 'react-icons/bi'
@@ -11,7 +11,6 @@ import { useHistory } from 'react-router-dom'
 
 function Login() {
   const history = useHistory();
-  const [userIdLocalStorage, setUserId] = useState();
   const userCtx = useContext(UserContext);
 
     const keyPress = useCallback(e=>{
@@ -25,14 +24,14 @@ function Login() {
             finalOneUser[field] = value;
         });
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-        
+        // const UserRole = localStorage.getItem("role", []);
+        // if(UserRole==="admin"){ history.push('/admin')}else{ history.push('/') }
       }
-     
-    },[userCtx]);
+    },[userCtx.userInfo.id]);
+
     useEffect( async ()=>{
-      const UserRole = localStorage.getItem("role", []);
-      if(UserRole==="admin"){ history.push('/admin')}else{ history.push('/') }
-      console.log(UserRole, "adadadadad")
+      // const UserRole = localStorage.getItem("role", []);
+        // if(UserRole==="admin"){ history.push('/admin')}else{ history.push('/') }
         document.addEventListener('keydown', keyPress);
         return () => document.removeEventListener('keydown', keyPress)
     },[keyPress]);
@@ -48,14 +47,8 @@ function Login() {
             finalOneUser[field] = value;
         });
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-        // setTimeout(() => {
-        //   const userId = localStorage.getItem("userId", []);
-        //   if(userId){
-        //     window.location.reload(true);
-        //   }else{
-        //     console.log('false');
-        //   }
-        //  }, 1000);
+        const UserRole = localStorage.getItem("role", []);
+        if(UserRole==="admin"){ history.push('/admin')}else{ history.push('/') }
     }
     return (
         <Component>

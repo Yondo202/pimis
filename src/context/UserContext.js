@@ -25,6 +25,7 @@ export const UserStore = (props) => {
     localStorage.setItem("userId", user.id);
     localStorage.setItem("refreshToken", refreshToken);
     localStorage.setItem("expireDate", expireDate);
+    localStorage.setItem("role" ,user.role );
   };
 
   const loginUser = (email, password) => {
@@ -57,7 +58,6 @@ export const UserStore = (props) => {
       .catch((err) => {
         setUserInfo({
           ...userInfo,
-
           error: err.message,
           errorCode: err.code,
           token: null,
@@ -84,6 +84,7 @@ export const UserStore = (props) => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("expireDate");
+    localStorage.removeItem("role");
 
     setUserInfo({ userId: undefined });
   };
