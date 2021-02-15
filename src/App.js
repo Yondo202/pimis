@@ -1,73 +1,75 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext } from "react";
 import { motion } from "framer-motion";
-import Admin from './containers/admin/MainMenu'
-import Menu from './containers/menu/menu'
+import Admin from "./containers/admin/MainMenu";
+import Menu from "./containers/menu/menu";
 import UserContext from "./context/UserContext";
-import { HelpStore } from './context/HelperContext'
-import HomeLogin from './components/home/homeLogin'
+import { HelpStore } from "./context/HelperContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import MainForm from './containers/checkComp/MainForm';
-import CheckComp from './components/check/compCheck'
-import SignUp from './components/signup/Signup'
-import ResetPassword from './components/home/ResetPassword'
-import MainRequest from './containers/requestComp/mainRequest'
-import EmialSender from './components/emailSend/EmailSend'
-import EmialSender2 from './components/emailSend/EmailSend2'
-import LoginDoneHome2 from './components/LoginDoneHome/Home'
-import ReqHome from './components/LoginDoneHome/RequestHome'
-import MainRequestOld from './containers/requestComp/mainRequestOld'
-import { UrgudulStore } from "components/utilities/urgudulContext"
-import BusinessSectorEditor from 'pages/business_sector_edit/editorPage'
-import ProductsEditor from 'pages/products_edit/editorPage'
-import { AlertStore } from 'components/utilities/alertContext'
-import AlertDialog from 'components/alert_dialog/alertDialog'
-import UrgudulNavigator from 'pages/urgudul/page'
-import LetterOfInterest from 'pages/letter_of_interest/page'
-import FirstEvaluation from 'pages/decision_making/page_5a'
-import CompilationCheck from 'pages/decision_making/page_5b'
-import AnalystReport from 'pages/decision_making/page_5c';
-import AttachmentUploads from 'pages/attachments/page';
-import MainPage from 'components/notifyPage/MainPage'
+import CheckComp from "./components/check/compCheck";
+import MainRequest from "./containers/requestComp/mainRequest";
+import EmialSender from "./components/emailSend/EmailSend";
+import EmialSender2 from "./components/emailSend/EmailSend2";
+import LoginDoneHome2 from "./components/LoginDoneHome/Home";
+import ReqHome from "./components/LoginDoneHome/RequestHome";
+import MainRequestOld from "./containers/requestComp/mainRequestOld";
+import { UrgudulStore } from "components/utilities/urgudulContext";
+import BusinessSectorEditor from "pages/business_sector_edit/editorPage";
+import ProductsEditor from "pages/products_edit/editorPage";
+import { AlertStore } from "components/utilities/alertContext";
+import AlertDialog from "components/alert_dialog/alertDialog";
+import UrgudulNavigator from "pages/urgudul/page";
+import LetterOfInterest from "pages/letter_of_interest/page";
+import FirstEvaluation from "pages/decision_making/page_5a";
+import CompilationCheck from "pages/decision_making/page_5b";
+import AnalystReport from "pages/decision_making/page_5c";
+import AttachmentUploads from "pages/attachments/page";
+import MainPage from "components/notifyPage/MainPage";
+import UnAuthContent from "UnauthContent";
 
 function App() {
   const ctxUser = useContext(UserContext);
-  const [userId, setUserId] = useState();
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId", []); setUserId(userId);
-    console.log(ctxUser.userInfo.userId, " user iddd");
-  }, [ctxUser.userInfo.userId]);
+    const token = localStorage.getItem("accessToken");
+    const expireDate = new Date(localStorage.getItem("expireDate"));
 
-  // const clickhandle = () =>{
-  //     ctxUser.logout();
-  //     setTimeout(() => {
-  //       window.location.reload(false);
-  //      }, 100);
-  // }
+    if (token) {
+      if (expireDate > new Date()) {
+        console.log(expireDate);
+        // Hugatsaa n duusaaagui token baina, automat login hiine
+
+        ctxUser.autoRenewTokenAfterMillisec(expireDate.getTime() - new Date().getTime());
+      } else {
+        //Хугацаа дууссан байсанч токен байвал логин хийнэ
+        // Token - oo refresh hiij daraagiin refresh hiih hugatsaag tohiruulna
+        ctxUser.autoRenewTokenAfterMillisec(3600000);
+      }
+    }
+  }, []);
 
   return (
     <div className="App">
       <Router>
         <Switch>
-           <Route path="/admin" component={Admin} />
+          <Route path="/admin" component={Admin} />
         </Switch>
       </Router>
 
       <AlertStore>
         <Router>
-          {userId && <Menu />}
-          {userId ? (
+          {ctxUser.userInfo.userId && <Menu />}
+          {ctxUser.userInfo.userId ? (
             <HelpStore>
               <UrgudulStore>
                 <Switch>
                   <Route path="/" exact>
-                    <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+                    <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                       {/* <LoginDoneHome /> */}
                       <LoginDoneHome2 />
                     </motion.div>
                   </Route>
                   <Route path="/comp-test" component={CheckComp} />
-                  <Route path="/comp-check" component={MainForm} />
+                  {/* <Route path="/comp-check" component={MainForm} /> */}
                   <Route path="/comp-request" component={ReqHome} exact />
                   <Route path="/notfy-page" component={MainPage} exact />
                   {/* <Route path="/admin" component={Admin} /> */}
@@ -94,29 +96,8 @@ function App() {
               </UrgudulStore>
             </HelpStore>
           ) : (
-              <Switch>
-                <Route path="/" exact>
-                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                    <HomeLogin />
-                  </motion.div>
-                </Route>
-                <Route path="/comp-check">
-                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                    <MainForm />
-                  </motion.div>
-                </Route>
-                <Route path="/signup" >
-                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                    <SignUp />
-                  </motion.div>
-                </Route>
-                <Route path="/changepassword/:id" children={<ResetPassword />}>
-                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-                    <ResetPassword />
-                  </motion.div>
-                </Route>
-              </Switch>
-            )}
+            <UnAuthContent />
+          )}
         </Router>
         <AlertDialog />
       </AlertStore>
