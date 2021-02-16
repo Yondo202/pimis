@@ -5,3 +5,5 @@ export const MainFontSize = "14px";
 export const TextColor = "FFFFFFA6";
 export const fontFamily = "'Roboto', sans-serif";
 export const fontFamily2 = "'Montserrat', sans-serif";
+
+

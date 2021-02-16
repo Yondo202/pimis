@@ -10,18 +10,14 @@ export const HelpStore = (props) =>{
     const [ tableSee, setTableSee ] = useState(initialSee);
     const [ tableId, setTableId ] = useState(null);
     const [ GlobalStyle, setGlobalStyle ] = useState(initialStyle);
-    const [ alert, setAlert ] = useState({
-      color:'yellow',
-      text: 'null',
-      cond: false
-  });
+    const [ alert, setAlert ] = useState({ color:'yellow', text: 'null',cond: false });
     
     const TableControl = (valueOne)=>{ setTableSee({tableOneData: valueOne}); }
     const TableIdControl = (tableId) => { console.log(tableId, " $$ global tableID $$"); setTableId(tableId); }
 
     const StyleComp = (valueOne,valueTwo, valueThree,valueFour,valueFive,valueSix) =>{
         if(valueOne === "0%"){
-          setGlobalStyle({  tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 190});
+          setGlobalStyle({  tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 230});
         }else if(valueTwo === "0%"){
           setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 430 });
         }else if(valueThree === "0%"){
@@ -37,12 +33,7 @@ export const HelpStore = (props) =>{
         }
       }
 
-      const alertText = ( color, text, cond ) =>{
-        setAlert({ color:color, text:text, cond:cond });
-        setTimeout(()=>{
-            setAlert({ cond:false });
-        },[4000]);
-    }
+    const alertText = ( color, text, cond ) =>{   setAlert({ color:color, text:text, cond:cond });  setTimeout(()=>{ setAlert({ cond:false }); },[4000]); }
 
     return (
        <HelperContext.Provider

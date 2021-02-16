@@ -8,6 +8,7 @@ const initialSee = { tableOneData: {}, tableTwoData: {}, tableThree: {}, tableFo
 
 export const UserStore = (props) => {
   const [userInfo, setUserInfo] = useState(initialUserInfo);
+  const [ alert, setAlert ] = useState({ color:'white', text: '', cond: false });
   const [errMsg, setErrMsg] = useState("");
   const [errMsgSignup, setErrMsgSignUp] = useState("");
   const [GlobalStyle, setGlobalStyle] = useState(initialStyle);
@@ -68,10 +69,10 @@ export const UserStore = (props) => {
       });
   };
 
-  const signUpUser = (name, email, password) => {
-    axios
-      .post("users/register", { name, email, password })
+  const signUpUser = (userinfos) => {
+    axios.post("users/register", userinfos)
       .then((res) => {
+        // console.log(res, "^new user");
         loginUserSuccess(res.data.token, res.data.refreshToken, res.data.token.expireDate, res.data.user);
       })
       .catch((e) => {
@@ -92,7 +93,7 @@ export const UserStore = (props) => {
 
   const StyleComp = (valueOne, valueTwo, valueThree, valueFour, valueFive, valueSix) => {
     if (valueOne === "0%") {
-      setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableFour: valueFour, tableFive: valueFive, tableSix: valueSix, tableheight: 190 });
+      setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableFour: valueFour, tableFive: valueFive, tableSix: valueSix, tableheight: 230 });
     } else if (valueTwo === "0%") {
       setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableFour: valueFour, tableFive: valueFive, tableSix: valueSix, tableheight: 430 });
     } else if (valueThree === "0%") {
@@ -107,6 +108,11 @@ export const UserStore = (props) => {
       setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableFour: valueFour, tableFive: valueFive, tableSix: valueSix, tableheight: 250 });
     }
   };
+
+  const alertText = ( color, text, cond ) =>{
+    setAlert({ color:color, text:text, cond:cond });
+    setTimeout(()=>{  setAlert({ cond:false }); },[4000]);
+  }
 
   return (
     <UserContext.Provider
@@ -123,6 +129,8 @@ export const UserStore = (props) => {
         GlobalStyle,
         idPass,
         reqID,
+        alertText,
+        alert
       }}
     >
       {props.children}

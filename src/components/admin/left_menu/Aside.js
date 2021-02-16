@@ -30,19 +30,20 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
       </SidebarHeader>
 
       <SidebarContent>
-        <Menu iconShape="circle">
+        {/* <Menu iconShape="circle">
           <MenuItem icon={<FaTachometerAlt />} suffix={<span className="badge red">{intl.formatMessage({ id: "new" })}</span>}>
             {intl.formatMessage({ id: "dashboard" })}
           </MenuItem>
           <MenuItem icon={<FaGem />}> {intl.formatMessage({ id: "components" })}</MenuItem>
-        </Menu>
+        </Menu> */}
         <Menu iconShape="circle">
-          <SubMenu suffix={<span className="badge yellow">3</span>} title="Түншлэлийн хөтөлбөр" icon={<FaRegLaughWink />}>
+          <SubMenu title="Түншлэлийн хөтөлбөр" icon={<FaRegLaughWink />}>
             <MenuItem>Бүртгүүлсэн байгууллагууд</MenuItem>
             <MenuItem>Дэмжлэг хүссэн өргөдлийн маягтууд</MenuItem>
             <MenuItem>Санхүүжилт</MenuItem>
           </SubMenu>
-          <SubMenu prefix={<span className="badge gray">3</span>} title="Сургалт" icon={<FaHeart />}>
+          {/* prefix={<span className="badge gray">3</span>} */}
+          <SubMenu  title="Сургалт" icon={<FaHeart />}>
             <MenuItem>Зохион байгуулах хүсэлт</MenuItem>
             <MenuItem>Сургалтууд</MenuItem>
             <SubMenu title="Тайлангууд">
@@ -53,7 +54,7 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
           </SubMenu>
           <SubMenu title="Тохиргоо">
             <MenuItem>
-              <Link to="/admin/users">Хэрэглэгчид</Link>{" "}
+              <Link to="/users">Хэрэглэгчид</Link>{" "}
             </MenuItem>
             <MenuItem> Төслийн нэгжийн мэдээлэл </MenuItem>
             <SubMenu title="Түншлэлийн хөтөлбөр">
