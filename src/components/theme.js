@@ -89,4 +89,23 @@ export const NextBtn = styled.div`
         justify-content:space-around;
         }
 `
- 
+
+export const ButtonStyle = styled.button`
+        border-radius:5px;
+        padding:8px 40px;
+        // background-color:rgba(${ColorRgb});
+        background-color:#5a5278;
+        border-style:none;
+        color:white;
+        font-weight:500;
+        transition:all 0.2s ease;
+        outline: none !important;
+        img{
+            width:35px;
+        }
+        &:hover{
+            background-color:rgba(${ColorRgb},0.9);
+            box-shadow:1px 1px 10px -2px black;
+            outline: none;
+        }
+`

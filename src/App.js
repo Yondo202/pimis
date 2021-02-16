@@ -51,14 +51,22 @@ function App() {
 
   return (
     <div className="App">
+
+
       <AlertStore>
         <FilePreviewStore>
           <Router>
-            {/* {ctxUser.userInfo.userId && <Menu />} */}
-            {ctxUser.userInfo.userId ? ctxUser.userInfo.role === "admin" ? (
-              <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <Admin />
-              </motion.div>
+          {/* <Admin /> */}
+            {
+            ctxUser.userInfo.userId ? ctxUser.userInfo.role === "admin" ? (
+              <Switch>
+                <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <Route path="/" >
+                    <Admin />
+                  </Route>
+                </motion.div>
+              </Switch>
+              
               //  <Route path="/admin" component={Admin} /> 
             ) : (
                 <HelpStore>
@@ -99,7 +107,8 @@ function App() {
                   </UrgudulStore>
                 </HelpStore>
               )
-              : (<UnAuthContent />)}
+              : (<UnAuthContent />)
+              }
           </Router>
           <FilePreviewModal />
         </FilePreviewStore>

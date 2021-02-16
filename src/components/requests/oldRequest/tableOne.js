@@ -44,6 +44,9 @@ function TableOne(props) {
     const changeHandle = (e) =>{ setDname(e.target.value); }
     const changeHandleDate = (e)=>{ setDdate(e.target.value);}
 
+
+    console.log(props.token, "^my token");
+
     const clickHandles = async (e) =>{
               let finalOne = {};  let finalEnd = {};  let rs2 = document.querySelectorAll(".inpTest3"); let arr2 = Array.from(rs2);  let finalOne2 = []; let cond = [];
               arr2.map(element=>{
@@ -72,7 +75,7 @@ function TableOne(props) {
                 setTimeout(()=>{  history.push('/');  },4000);
               }else{
                 setOpacity("0"); setOpacity2("0");
-               await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ 
+               await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{ 
                console.log(res, "******res"); scroll.scrollTo(0); StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
                 })
                .catch((err)=>{ tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});

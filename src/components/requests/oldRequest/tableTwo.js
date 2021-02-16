@@ -87,7 +87,7 @@ function TableTwo(props) {
                     FileData.map((element, index)=>{  if( i === index){value["tableId"] = element.id;TestArr.push(value); }})
                 });
             TestArr.map((el,i)=>{ const data = new FormData();   data.append(el.name, el);
-                    axios.put(`pps-request/${el.tableId}/upload-pps2`, data, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{console.log(res,'ress'); })
+                    axios.put(`pps-request/${el.tableId}/upload-pps2`, data, {headers: {Authorization: props.token}}).then((res)=>{console.log(res,'ress'); })
                     .catch((err)=> console.log(err))
             });
         }

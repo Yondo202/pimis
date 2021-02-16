@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Aside from '../../components/admin/left_menu/Aside';
 import Main from '../../components/admin/left_menu/TopMain';
+import UserContext from '../../context/UserContext'
 import styled from 'styled-components'
 import HomeAdmin from '../../components/admin/Home'
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import UserHandle from 'components/admin/contents/UserHandle';
+import { IoMdCheckmarkCircle } from 'react-icons/io';
+import { CgDanger } from 'react-icons/cg';
+import { BrowserRouter as Switch, Route } from "react-router-dom";
+import UserHandle from 'components/admin/contents/users/UserHandle';
 import ProjectHandle from 'components/admin/contents/ProjectHandle';
 
 
 function Layout({ setLocale }) {
+    const ctx = useContext(UserContext);
     const [rtl, setRtl] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
     const [image, setImage] = useState(false);
@@ -41,13 +45,17 @@ function Layout({ setLocale }) {
                 />
 
                 <div className="itemsPar">
-                    <Switch>
-                        <Route path="/" component={HomeAdmin} exact />
-                        <Route path="/users" component={UserHandle} />
-                        <Route path="/projects" component={ProjectHandle} />
-                    </Switch>
+                    <Route path="/" component={HomeAdmin} exact />
+                    <Route path="/users" component={UserHandle} />
+                    <Route path="/projects" component={ProjectHandle} />
                 </div>
             </div>
+
+
+            <AlertStyle style={ctx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${ctx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
+                {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}
+                <span>{ctx.alert.text}</span>
+            </AlertStyle>
         </AdminApp>
     );
 }
@@ -147,4 +155,28 @@ const AdminApp = styled.div`
     }
 `
 
-
+const AlertStyle = styled.div`
+    z-index:1010;  
+    transition:all 0.5s ease;
+    position:fixed;
+    // height:80px;
+    bottom:100px;
+    left:2%;
+    display:flex;
+    align-items:center;
+    border:1px solid rgba(0,0,0,0.2);
+    // border-left:4px solid green;
+    background-color:white;
+    padding:10px 40px; 
+    font-weight:400;
+    color:black;
+    border-radius:6px;
+    font-size:17px;
+    opacity:1;
+    font-weight:600;
+    .true{
+        margin-right:14px;
+        font-size:24px;
+        // color:green;
+    }
+`
