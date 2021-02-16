@@ -5,52 +5,51 @@ import styled from 'styled-components'
 import HomeAdmin from '../../components/admin/Home'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import UserHandle from 'components/admin/contents/UserHandle';
+import ProjectHandle from 'components/admin/contents/ProjectHandle';
 
 
 function Layout({ setLocale }) {
-  const [rtl, setRtl] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
-  const [image, setImage] = useState(false);
-  const [toggled, setToggled] = useState(false);
+    const [rtl, setRtl] = useState(false);
+    const [collapsed, setCollapsed] = useState(false);
+    const [image, setImage] = useState(false);
+    const [toggled, setToggled] = useState(false);
 
-  const handleCollapsedChange = (checked) => {
-    setCollapsed(checked);
-  };
+    const handleCollapsedChange = (checked) => {
+        setCollapsed(checked);
+    };
 
-  const handleRtlChange = (checked) => {
-    setRtl(checked);
-    setLocale(checked ? 'ar' : 'en');
-  };
-  const handleImageChange = (checked) => { setImage(checked); };
+    const handleRtlChange = (checked) => {
+        setRtl(checked);
+        setLocale(checked ? 'ar' : 'en');
+    };
+    const handleImageChange = (checked) => { setImage(checked); };
 
-  const handleToggleSidebar = (value) => { setToggled(value); };
+    const handleToggleSidebar = (value) => { setToggled(value); };
 
-  return (
-    <AdminApp className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
-        <div className="MainParent">
-            <Aside  image={image}  collapsed={collapsed} rtl={rtl}  toggled={toggled} handleToggleSidebar={handleToggleSidebar}  />
-        </div>
-        
-        <div className="container-fluid ContentPar">
-            <Main  image={image}  toggled={toggled} collapsed={collapsed}  rtl={rtl} 
-                        handleToggleSidebar={handleToggleSidebar}
-                        handleCollapsedChange={handleCollapsedChange}
-                        handleRtlChange={handleRtlChange}
-                        handleImageChange={handleImageChange}
-            />
-      
-            <div className="itemsPar">
-                <Switch>
-                    <Route path="/" component={HomeAdmin} exact />
-                    <Route path="/users" component={UserHandle} />
-                </Switch>
+    return (
+        <AdminApp className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
+            <div className="MainParent">
+                <Aside image={image} collapsed={collapsed} rtl={rtl} toggled={toggled} handleToggleSidebar={handleToggleSidebar} />
             </div>
-        </div>
 
-   
-     
-    </AdminApp>
-  );
+            <div className="container-fluid ContentPar">
+                <Main image={image} toggled={toggled} collapsed={collapsed} rtl={rtl}
+                    handleToggleSidebar={handleToggleSidebar}
+                    handleCollapsedChange={handleCollapsedChange}
+                    handleRtlChange={handleRtlChange}
+                    handleImageChange={handleImageChange}
+                />
+
+                <div className="itemsPar">
+                    <Switch>
+                        <Route path="/" component={HomeAdmin} exact />
+                        <Route path="/users" component={UserHandle} />
+                        <Route path="/projects" component={ProjectHandle} />
+                    </Switch>
+                </div>
+            </div>
+        </AdminApp>
+    );
 }
 
 export default Layout;

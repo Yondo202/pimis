@@ -36,8 +36,8 @@ export default function FilePreviewModal() {
 
                             <embed src={src} className="tw-w-full tw-h-full tw-object-center tw-object-contain" title="Файлыг нээж харах" />
 
-                            <button className="tw-px-3 tw-py-1 tw-m-8 tw-rounded-lg focus:tw-outline-none hover:tw-shadow-md active:tw-bg-blue-600 tw-bg-blue-500 tw-text-sm text-white tw-flex tw-flex-col tw-items-center" onClick={handleDownload}>
-                                <DownloadSVG className="tw-w-10 tw-h-10" />
+                            <button className="tw-px-2 tw-py-1 tw-m-2 tw-rounded-lg focus:tw-outline-none hover:tw-shadow-md active:tw-bg-blue-600 tw-bg-blue-500 tw-text-xs text-white tw-flex tw-flex-col tw-items-center" onClick={handleDownload}>
+                                <DownloadSVG className="tw-w-8 tw-h-8" />
                                 Файлыг татаж авах
                             </button>
 
