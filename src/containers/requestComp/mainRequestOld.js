@@ -35,7 +35,6 @@ function MainRequest(props) {
         let storageToken = AccessToken(); setTokens(storageToken); 
         window.addEventListener("scroll", handleScroll);
         let resData = await axios.get(`pps-request`, {headers: {Authorization:AccessToken()}});
-        // console.log(resData, " ^^ ress");
         if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data); setLoading(false); }
       },[]);
 

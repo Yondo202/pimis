@@ -41,8 +41,10 @@ function UserHandle() {
                             <VscSearch className="searchIcon" />
                         </div>
                         <select className="roleFilter">
-                            <option>Roles</option>
-                            <option>Roles</option>
+                            <option selected disabled>Ажлын үүрэгээр шүүх</option>
+                            <option>edpuser</option>
+                            <option>trainer</option>
+                            <option>edpadmin</option>
                         </select>
                     </div>
                     <div onClick={ModalOpen} className="AddBtn">

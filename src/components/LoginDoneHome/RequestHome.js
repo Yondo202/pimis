@@ -16,21 +16,19 @@ function RequestHome() {
     const [ allData, setAllData ] = useState([])
 
     useEffect(async ()=>{
-        const localToken = localStorage.getItem("edp_loggedUser", []);
         let resData = await axios.get(`pps-request`, {headers: {Authorization: AccessToken()}});
-        let data = []; data.push(resData.data.data)
-        if(resData){ setAllData(data) };
-        console.log(resData, " ** my data");
-        
+        if(resData.data.data.id){
+            let data = []; data.push(resData.data.data); setAllData(data);
+        }else{ setAllData([]) }
     },[]);
 
     return (
         <Reqhome className="container">
             <div className="cardParent">
-                {allData[0]? <></> : (<div className="RequestPar"><VscNewFile /><div className="header"><Link to="comp-request/new"><a> Шинээр хүсэлт илгээх </a></Link></div></div>) }
+                {allData[0]!==undefined? <></> : (<div className="RequestPar"><VscNewFile /><div className="header"><Link to="comp-request/new"><a> Шинээр хүсэлт илгээх </a></Link></div></div>) }
             
                 <div className="row">
-                    {allData[0]? allData.map((el,i)=>{
+                    {allData[0]!==undefined? allData.map((el,i)=>{
                             return(
                                 <div key={i} style={{marginBottom:`30px`}} className="col-md-4">
                                     <div className="infoPar">

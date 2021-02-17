@@ -1,9 +1,9 @@
 import React, { useState,useContext } from 'react';
 import { useIntl } from 'react-intl';
 import Switch from 'react-switch';
+import { Link } from 'react-router-dom'
 import { FaHeart, FaBars } from 'react-icons/fa';
 import styled  from 'styled-components';
-import { VscSearch } from 'react-icons/vsc'
 import { AiOutlineCaretRight } from 'react-icons/ai'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
 import {useSpring, animated} from 'react-spring';
@@ -76,10 +76,9 @@ const Main = ({ collapsed,rtl, image, handleToggleSidebar,handleCollapsedChange,
                     <img src='/profile.jpg' alt="profile" />
                     <AiOutlineCaretRight style={profileMenu? {transform:'rotate(90deg)' }: {transform:'rotate(0deg)'}} />
                 </div>
-              {profileMenu&&(<animated.div style={animation} ><div className="otherPar"><div onClick={()=>ctx.logout()} className="logout"><RiLogoutBoxRLine /> Гарах</div></div></animated.div>) }
+              {profileMenu&&(<animated.div style={animation} ><div className="otherPar"><Link onClick={()=>ctx.logout()} to="/" className="logout"><RiLogoutBoxRLine /> Гарах</Link></div></animated.div>) }
                 
           </div>
-    
    </div>
   );
 };

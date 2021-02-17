@@ -28,12 +28,15 @@ export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
         let getInp2 = document.querySelectorAll('.getRoles');
         let arr2 = Array.from(getInp2); arr2.map(el => {  if(el.checked === true){ final[el.name] = el.value; cond.push(el.name);  } });
 ;
-        let permission = [];
         if(per==="edpuser"){
-            let getInp3 = document.querySelectorAll('.getPermission');
-            let arr3 = Array.from(getInp3); arr3.map(el => {  if(el.checked === true){ permission.push(el.value) } });final["permission"] = permission
-        }
+            let permission = []; let smObj = {};
+            let getInp3 = document.querySelectorAll('.getPermission'); 
+            let arr3 = Array.from(getInp3); arr3.map(el => {  if(el.checked === true){   smObj[el.value] = true }else{   smObj[el.value] = false }
+         });
+         permission.push(smObj); final["permission"] = permission
+        }else { final["permission"] = null }
 
+        console.log(final , "^final");
         console.log(cond.length, " my cond");
         if(cond.length < 6){
             seBtnSpin(false);
@@ -44,17 +47,14 @@ export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
                 console.log(res, "^ ress"); setUpdate(prev=>!prev); ctx.alertText("green", "Амжилттай", true ); seBtnSpin(false); setShowModal(prev=>!prev); 
             }).catch(error=>ctx.alertText("orange", "Алдаа гарлаа", true ));
         }
-         console.log(JSON.stringify(final) , "^final");
     }
-
     const roleHandle = (event)=>{setPer(event.target.value) }
-
 
    
     return(
         <>
                      {/* ref={modalRef} onClick={closeModal} */}
-            {showModal ? <Background ref={modalRef} onClick={closeModal} >
+            {showModal ? <Background  >
                 <animated.div  style={animation} >
                     <div className="modalPar container">
                         <div className="closeParent">
@@ -92,26 +92,32 @@ export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
                                 </div>
 
 
-                                <div className="HeadCheck"> 
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" value="edpuser" name="role" type="radio" /> <span>edp user</span></div>  
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" value="trainer" name="role" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>  
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div>  
-                                </div>
-                            
-                                {per==="edpuser"&&(<div className="edpUsers">
-                                    <div className="items"><input value="pps" name="permission" className="getPermission" type="checkbox" /> <span>Түншлэлийн хөтөлбөр</span></div>
-                                    <div className="items"><input value="training" name="permission" className="getPermission" type="checkbox" /> <span>Сургалт</span></div>
-                                    <div className="items"><input value="insurance" name="permission" className="getPermission" type="checkbox" /> <span>Даатгал</span></div>
-                                </div>)}
+                            <div className="otherPar">
+                                    <div className="HeadCheck"> 
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="edpuser" name="role" type="radio" /> <span>edp user</span></div>  
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="trainer" name="role" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="member" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="monitoring" name="role" type="radio" /> <span>Мониторинг</span></div> 
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div>  
+                                    </div>
+                                    
+                                        {per==="edpuser"&&(<div className="edpUsers">
+                                            <div className="items"><input value="pps" name="permission" className="getPermission" type="checkbox" /> <span>Түншлэлийн хөтөлбөр</span></div>
+                                            <div className="items"><input value="training" name="permission" className="getPermission" type="checkbox" /> <span>Сургалт</span></div>
+                                            <div className="items"><input value="insurance" name="permission" className="getPermission" type="checkbox" /> <span>Даатгал</span></div>
+                                        </div>)}
+                                        
+                                        {per==="trainer"&&(<div className="edpUsers">
+                                            <select className="trainer">
+                                                <option selected disabled>- Сонго -</option>
+                                                <option>Сургалт 2</option>
+                                                <option>Сургалт 3</option>
+                                                <option>Сургалт 4</option>
+                                            </select>
+                                        </div>)}
+                            </div>
+
                                 
-                                {per==="trainer"&&(<div className="edpUsers">
-                                    <select className="trainer">
-                                        <option selected disabled>- Сонго -</option>
-                                        <option>Сургалт 2</option>
-                                        <option>Сургалт 3</option>
-                                        <option>Сургалт 4</option>
-                                    </select>
-                                </div>)}
                                         
 
                                 <div className="BtnPar">
@@ -157,61 +163,74 @@ const Background = styled.div`
         background-color:white;
         width:650px;
         padding:20px 35px;
-        .edpUsers{
-            padding:10px 15px;
-            border:1px solid rgba(0,0,0,0.15);
-            margin-bottom:10px;
-            .trainer{
-                padding:4px 20px;
-                border:1px solid rgba(0,0,0,0.3);
-                border-radius:4px;
-            }
-            .items{
-                display:flex;
-                align-items:center;
-                padding:5px 0px;
-                input{
-                    transition:all 0.1s ease;
-                    cursor:pointer;
-                    height:15px;
-                    width:15px;
-                    &:checked{
-                        -webkit-transform: scale(1.2);
-                        transform: scale(1.2);
-                    }
-                }
-                span{
-                    margin-left:10px;
-                }
-            }
-           
-        }
-        .HeadCheck{
-            font-size:14px;
+
+
+        .otherPar{
             display:flex;
+            align-items:start;
             justify-content:space-between;
-            width:100%;
-            margin-bottom:15px;
-            .title{
+            .HeadCheck{
+                font-size:14px;
                 display:flex;
-                align-items:center;
-                input{
-                    cursor:pointer;
-                    width:17px;
-                    height:17px;
-                    transition:all 0.1s ease;
-                    &:checked{
-                        opacity: 1;
-                        -webkit-transform: scale(1.2);
-                        transform: scale(1.2);
-                        border-radius:50% !important;
+                flex-direction:column;
+                // justify-content:space-between;
+                width:50%;
+                margin-bottom:15px;
+                .title{
+                    padding:5px 0px;
+                    display:flex;
+                    align-items:center;
+                    input{
+                        cursor:pointer;
+                        width:17px;
+                        height:17px;
+                        transition:all 0.1s ease;
+                        &:checked{
+                            opacity: 1;
+                            -webkit-transform: scale(1.2);
+                            transform: scale(1.2);
+                            border-radius:50% !important;
+                        }
+                    }
+                    span{
+                        margin-left:5px;
                     }
                 }
-                span{
-                    margin-left:5px;
+            }
+
+            .edpUsers{
+                width:50%;
+                padding:10px 15px;
+                border:1px solid rgba(0,0,0,0.15);
+                margin-bottom:10px;
+                .trainer{
+                    padding:4px 20px;
+                    border:1px solid rgba(0,0,0,0.3);
+                    border-radius:4px;
                 }
+                .items{
+                    display:flex;
+                    align-items:center;
+                    padding:5px 0px;
+                    input{
+                        transition:all 0.1s ease;
+                        cursor:pointer;
+                        height:15px;
+                        width:15px;
+                        &:checked{
+                            -webkit-transform: scale(1.2);
+                            transform: scale(1.2);
+                        }
+                    }
+                    span{
+                        margin-left:10px;
+                    }
+                }
+               
             }
         }
+        
+        
         .BtnPar{
                 display:flex;
                 justify-content:space-between;
