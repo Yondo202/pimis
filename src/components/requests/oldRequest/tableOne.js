@@ -45,7 +45,6 @@ function TableOne(props) {
     const changeHandleDate = (e)=>{ setDdate(e.target.value);}
 
 
-    console.log(props.token, "^my token");
 
     const clickHandles = async (e) =>{
               let finalOne = {};  let finalEnd = {};  let rs2 = document.querySelectorAll(".inpTest3"); let arr2 = Array.from(rs2);  let finalOne2 = []; let cond = [];

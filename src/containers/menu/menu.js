@@ -15,7 +15,7 @@ function Menu() {
     const [userName, setUserName] = useState();
     const [ currPath, setCurrPath ] = useState();
     const [ diplayFlex, setDisplayNone ] = useState("flex");
-    const [ headerHeight, setheaderHeight ] = useState("50px");
+    const [ headerHeight, setheaderHeight ] = useState("45px");
     const [open, close] = useState('');
     const [ activeMenu, setActiveMenu ]=useState({
       Home: '',
@@ -48,8 +48,8 @@ function Menu() {
     useEffect(() => {
       const currentPath = location.pathname;
       setCurrPath(currentPath);
-      if(currentPath !== "/" && currentPath !== "/comp-request"){  setheaderHeight("50px");
-      }else{ setheaderHeight("50px");}
+      if(currentPath !== "/" && currentPath !== "/comp-request"){  setheaderHeight("45px");
+      }else{ setheaderHeight("45px");}
       if(currentPath === "/"){setActiveMenu({Home:'line2',Req:'',Check:'',Maygt:''})}
       // if(currentPath === "/admin"){ setDisplayNone("none");}
       if(currentPath === "/comp-request"){setActiveMenu({Home: '',Req:'line2',Check: '',Maygt:''})}
@@ -212,7 +212,7 @@ const Componentss = styled.div`
                 flex-direction:row;
                 align-items:center;
                 &::before{
-                  font-size:14px;
+                  font-size:12px;
                   font-weight:600;
                   display:flex;
                   align-items:center;
@@ -229,7 +229,7 @@ const Componentss = styled.div`
                 }
                 svg{
                   margin-left:8px;
-                  font-size:26px;
+                  font-size:21px;
                   color:rgba(255,255,255,0.9);
                   
                 }
@@ -269,7 +269,7 @@ const Componentss = styled.div`
                   text-decoration: none !important;
                   svg{
                     margin-left:8px;
-                    font-size:26px;
+                    font-size:21px;
                     color:rgba(255,255,255,0.9);
                   }
                 }
@@ -283,9 +283,10 @@ const Componentss = styled.div`
                 color:black;
                 text-decoration: none !important;
                 color:rgba(255,255,255,0.9);
+                font-size:15px;
                 svg{
                   margin-left:4px;
-                  font-size:22px;
+                  font-size:18px;
                   color:rgba(255,255,255,0.9);        
                 }
               }
@@ -297,7 +298,7 @@ const Componentss = styled.div`
             justify-content: space-between;
             width: 36%;
             .items {
-                font-size:16px;
+                font-size:15px;
                 font-weight:500;
                 &:hover{
                     .line{
@@ -403,7 +404,7 @@ const Componentss = styled.div`
           // transition-delay: 10s
           opacity:0;
           .items{
-            font-size:22px;
+            font-size:20px;
             a{
               color:black;
             }

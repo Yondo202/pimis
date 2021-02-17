@@ -12,9 +12,22 @@ import axios from '../../../axiosbase'
 
 function TableTwo() {
     const [ spnBtn, setSpnBtn ] = useState(false);
+    const [ fileSave, setFileSave ] = useState([]);
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
+
+
+    const onChangeFile = (event) =>{
+        const formData = new FormData()
+        formData.append('file', event.target.files[0]);
+        formData.append('description', event.target.id);
+        axios.post('attach-files',formData, {headers: { 'Authorization': AccessToken(), 'Content-Type': 'multipart/form-data', }})
+        .then((res)=>{ 
+            console.log(res.data.data, "---res");
+            setFileSave(prev=> prev.concat(res.data.data));
+        }).catch(err=>console.log(err));
+    }
     
 
     const clickHandles = (e) =>{
@@ -22,18 +35,19 @@ function TableTwo() {
         let myArr1 = Array.from(getFile); let condition = []
         myArr1.map((el,i)=>{let value = {}; value = el.files[0]; if(value !== undefined){  condition.push(value); } })
 
-        const FilesSend =(AllData)=>{
-            const TestArr = [];
-            myArr1.map((el,i)=>{
-                    let value = {};  value = el.files[0];
-                    if(value === undefined){ value = {"name" : null };}
-                    AllData.map((element, index)=>{if( i === index){ value["tableId"] = element.id; TestArr.push(value); } });
-            });
-            TestArr.map((el,i)=>{
-                  const data = new FormData(); data.append(el.name, el);
-                  axios.put(`pps-request/${el.tableId}/upload-pps2`, data, {headers: {Authorization:AccessToken()}}).then((res)=>{ console.log(res, 'ress');  }).catch((err)=> console.log(err))
-            });
-        }
+        // const FilesSend =(AllData)=>{
+        //     const TestArr = [];
+        //     myArr1.map((el,i)=>{
+        //             let value = {};  value = el.files[0];
+        //             if(value === undefined){ value = {"name" : null };}
+        //             AllData.map((element, index)=>{if( i === index){ value["tableId"] = element.id; TestArr.push(value); } });
+        //     });
+        //     TestArr.map((el,i)=>{
+        //           const data = new FormData(); data.append(el.name, el);
+        //           axios.put(`pps-request/${el.tableId}/upload-pps2`, data, {headers: {Authorization:AccessToken()}}).then((res)=>{ console.log(res, 'ress');  }).catch((err)=> console.log(err))
+        //     });
+        // }
+        
 
         e.preventDefault();
         let finalOne = {};  let finalEnd = {}; let rs2 = document.querySelectorAll(".GetItem");let arr2 = Array.from(rs2); let finalOne2 = [];
@@ -43,11 +57,14 @@ function TableTwo() {
             arr23.map((el,i)=>{
                 if(el.value !== ""){  let field = el.name; let value = el.value; Lala[field] = value;}else{  return false   }
             });
+            fileSave.map((elem,ind)=>{
+                if((i + 1)=== parseInt(elem.description)){  Lala["files"] = elem }
+            });
             finalOne2.push(Lala);
         });
 
         let originalTest = []
-         finalOne2.map(el =>{   let  conditon1 = Object.keys(el); if(conditon1.length === 3){ originalTest.push(el);  } })
+         finalOne2.map(el =>{   let  conditon1 = Object.keys(el); console.log(conditon1, " ---cond");  if(conditon1.length > 2){ originalTest.push(el);  } })
 
         let rs4 = document.querySelectorAll(".getUser2"); let arr4 = Array.from(rs4); let userInp = {};
 
@@ -55,6 +72,8 @@ function TableTwo() {
         let confirm = document.getElementById("GetcheckBtn2").checked;
 
         finalOne["request"] = finalOne2;   finalOne["name"] = userInp.name;  finalOne["date"] = userInp.date;  finalEnd["PPS2"] = finalOne;
+
+        console.log(originalTest.length, "lenghasd")
 
         if(originalTest.length < 10){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
@@ -67,17 +86,17 @@ function TableTwo() {
             setOpacity2("1");
         }else{
             setSpnBtn(true);
-            if(condition.length < 10){
-                helperContext.alertText('orange', "Шаардлагатай материал хавсаргаагүй тохиолдолд хүсэлт хүчингүй болно гэдэгийг анхаарна уу!!!", true);
-                // const str = "аардлагатай материал хавсаргаагүй тохиолдолд хүсэлт хүчингүй болно гэдэгийг анхаарна уу!!!";
-                // const str2 = "а хүсэлт гэсэн хэсэгээр орж бүрэн хавсаргах боломжтой..";
-                // alert.show("Т" + str2.toLowerCase(),{  title: "Ш" + str.toLowerCase() });
-                // scroll.scrollTo(0);
-            }
+            // if(condition.length < 10){
+            //     helperContext.alertText('orange', "Шаардлагатай материал хавсаргаагүй тохиолдолд хүсэлт хүчингүй болно гэдэгийг анхаарна уу!!!", true);
+            //     // const str = "аардлагатай материал хавсаргаагүй тохиолдолд хүсэлт хүчингүй болно гэдэгийг анхаарна уу!!!";
+            //     // const str2 = "а хүсэлт гэсэн хэсэгээр орж бүрэн хавсаргах боломжтой..";
+            //     // alert.show("Т" + str2.toLowerCase(),{  title: "Ш" + str.toLowerCase() });
+            //     // scroll.scrollTo(0);
+            // }
             setOpacity2("0");
             axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers: {Authorization:AccessToken()}} ).then((res)=>{
                 setTimeout(()=>{ helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0); },2000);setSpnBtn(false);
-                FilesSend(res.data.data.ppsRequest2Detail);
+                // FilesSend(res.data.data.ppsRequest2Detail);
               }).catch((err)=>{ setSpnBtn(false);  helperContext.alertText('orange', "Алдаа гарлаа", true); });
         }
         console.log(finalEnd, "my all");
@@ -132,7 +151,7 @@ function TableTwo() {
 
                                 <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> </div>
                                      <div className="name"> <FiUserCheck />  <div className="form__group">
-                                            <input type="file" accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={`GetFilesData LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="file" required />
+                                            <input type="file" id={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={`GetFilesData LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="file" required />
                                             <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
                                         </div></div> </div>
                                 </div>

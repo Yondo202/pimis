@@ -46,12 +46,10 @@ export const DeleteModal = ({ showModal,setShowModal,setUpdate, parent }) => {
                                 </div>
                             </div>
 
-
                             <div className="BtnPar">
                                 <span className="errTxt"></span>
                                 <ButtonStyle onClick={clickHandle} style={!btnSpin? {}: {padding:`0px 15px`}} className="finalBtn"> {!btnSpin? 'Устгах' : <img src="/gif1.gif" alt="gif" />} </ButtonStyle>
                             </div>
-
                     </div>
                 </animated.div>
             </Background>: null}

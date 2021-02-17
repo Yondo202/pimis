@@ -46,6 +46,7 @@ function MainRequest() {
                     </div>
                 </PreviewBtn>
 
+                {/* <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container"> */}
                 <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
                     <div style={{left:`${StyleContext.GlobalStyle.tableOne}`, opacity:`${StyleContext.GlobalStyle.tableOne === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                         <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
@@ -89,7 +90,7 @@ const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9,
 
 const ParentComp = styled.div`
     width:100%;
-    overflow:hidden;
+    // overflow:hidden;
     position:relative;
     // transition:all 0.6s ease;
     margin-top:30px;
