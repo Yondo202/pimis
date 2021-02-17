@@ -6,6 +6,7 @@ import PlusSVG from 'assets/svgComponents/plusSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import CloseSVG from 'assets/svgComponents/closeSVG'
+import axios from 'axiosbase'
 
 
 const initialState = {
@@ -72,11 +73,12 @@ function ProductsEditor() {
             open: true,
             id: id
         })
+        const match = products.filter(obj => obj.id === id)[0]
         setTemp({
             id: id,
-            description: products.filter(obj => obj.id === id)[0].description,
-            pcode: products.filter(obj => obj.id === id)[0].pcode,
-            description_mon: products.filter(obj => obj.id === id)[0].description_mon
+            description: match.description,
+            pcode: match.pcode,
+            description_mon: match.description_mon
         })
     }
 
@@ -103,9 +105,14 @@ function ProductsEditor() {
     })
 
     useEffect(() => {
-        fetch('http://192.168.88.78:3000/api/products')
-            .then(res => res.json())
-            .then(data => setProducts(data.data.docs))
+        axios.get('products')
+            .then(res => {
+                console.log(res.data)
+                setProducts(res.data.data.docs)
+            })
+            .catch(err => {
+                console.log(err.response?.data)
+            })
     }, [])
 
     const handleCreate = (id) => {
@@ -148,7 +155,10 @@ function ProductsEditor() {
                         </button>
                         <div className={`tw-absolute tw-transform tw-translate-y-2 tw-z-10 tw-bg-white tw-rounded-md tw-shadow-md tw-divide-y tw-divide-dashed ${dropdown ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} ref={dropdownRef}>
                             {
-                                products[0] && Object.keys(translation).map(key => <div className="tw-text-sm tw-font-semibold tw-py-2 tw-pl-2 tw-pr-8 hover:tw-bg-blue-100" onClick={() => { setFilterBy(key); setDropdown(false) }} key={key}>{translation[key]}</div>)
+                                products[0] && Object.keys(translation).map(key =>
+                                    <div className="tw-text-sm tw-font-semibold tw-py-2 tw-pl-2 tw-pr-8 hover:tw-bg-blue-100" onClick={() => { setFilterBy(key); setDropdown(false) }} key={key}>
+                                        {translation[key]}
+                                    </div>)
                             }
                         </div>
                     </div>

@@ -83,7 +83,7 @@ function App() {
                       {/* <Route path="/comp-check" component={MainForm} /> */}
                       <Route path="/comp-request" component={ReqHome} exact />
                       <Route path="/notfy-page" component={MainPage} exact />
-                      {/* <Route path="/admin" component={Admin} /> */}
+                      <Route path="/admin" component={Admin} />
 
                       <Route path="/comp-request/new" component={MainRequest} />
                       <Route path="/comp-request/old" component={MainRequestOld} />

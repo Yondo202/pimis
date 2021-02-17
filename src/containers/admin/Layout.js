@@ -1,61 +1,63 @@
 import React, { useContext, useState } from 'react';
 import Aside from '../../components/admin/left_menu/Aside';
 import Main from '../../components/admin/left_menu/TopMain';
-import UserContext  from '../../context/UserContext'
+import UserContext from '../../context/UserContext'
 import styled from 'styled-components'
 import HomeAdmin from '../../components/admin/Home'
-import {IoMdCheckmarkCircle  } from 'react-icons/io';
+import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
 import { BrowserRouter as Switch, Route } from "react-router-dom";
 import UserHandle from 'components/admin/contents/users/UserHandle';
+import ProjectHandle from 'components/admin/contents/ProjectHandle';
 
 
 function Layout({ setLocale }) {
-  const ctx = useContext(UserContext);
-  const [rtl, setRtl] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
-  const [image, setImage] = useState(false);
-  const [toggled, setToggled] = useState(false);
+    const ctx = useContext(UserContext);
+    const [rtl, setRtl] = useState(false);
+    const [collapsed, setCollapsed] = useState(false);
+    const [image, setImage] = useState(false);
+    const [toggled, setToggled] = useState(false);
 
-  const handleCollapsedChange = (checked) => {
-    setCollapsed(checked);
-  };
+    const handleCollapsedChange = (checked) => {
+        setCollapsed(checked);
+    };
 
-  const handleRtlChange = (checked) => {
-    setRtl(checked);
-    setLocale(checked ? 'ar' : 'en');
-  };
-  const handleImageChange = (checked) => { setImage(checked); };
+    const handleRtlChange = (checked) => {
+        setRtl(checked);
+        setLocale(checked ? 'ar' : 'en');
+    };
+    const handleImageChange = (checked) => { setImage(checked); };
 
-  const handleToggleSidebar = (value) => { setToggled(value); };
+    const handleToggleSidebar = (value) => { setToggled(value); };
 
-  return (
-    <AdminApp className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
-        <div className="MainParent">
-            <Aside  image={image}  collapsed={collapsed} rtl={rtl}  toggled={toggled} handleToggleSidebar={handleToggleSidebar}  />
-        </div>
-        
-        <div className="container-fluid ContentPar">
-            <Main  image={image}  toggled={toggled} collapsed={collapsed}  rtl={rtl} 
-                        handleToggleSidebar={handleToggleSidebar}
-                        handleCollapsedChange={handleCollapsedChange}
-                        handleRtlChange={handleRtlChange}
-                        handleImageChange={handleImageChange}
-            />
-      
-            <div className="itemsPar">
-                <Route path="/" component={HomeAdmin} exact />
-                <Route path="/users" component={UserHandle} />
+    return (
+        <AdminApp className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
+            <div className="MainParent">
+                <Aside image={image} collapsed={collapsed} rtl={rtl} toggled={toggled} handleToggleSidebar={handleToggleSidebar} />
             </div>
-        </div>
 
-   
-        <AlertStyle style={ctx.alert.cond === true ? {bottom:`100px`, opacity:`1`, borderLeft:`4px solid ${ctx.alert.color}`} : {bottom:`50px`, opacity:`0`}} >
-                {ctx.alert.color=== "green"?<IoMdCheckmarkCircle style={{color:`${ctx.alert.color}`}} className="true" /> : <CgDanger style={{color:`${ctx.alert.color}`}} className="true" /> }
+            <div className="container-fluid ContentPar">
+                <Main image={image} toggled={toggled} collapsed={collapsed} rtl={rtl}
+                    handleToggleSidebar={handleToggleSidebar}
+                    handleCollapsedChange={handleCollapsedChange}
+                    handleRtlChange={handleRtlChange}
+                    handleImageChange={handleImageChange}
+                />
+
+                <div className="itemsPar">
+                    <Route path="/" component={HomeAdmin} exact />
+                    <Route path="/users" component={UserHandle} />
+                    <Route path="/projects" component={ProjectHandle} />
+                </div>
+            </div>
+
+
+            <AlertStyle style={ctx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${ctx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
+                {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}
                 <span>{ctx.alert.text}</span>
-        </AlertStyle>
-    </AdminApp>
-  );
+            </AlertStyle>
+        </AdminApp>
+    );
 }
 
 export default Layout;
@@ -176,9 +178,5 @@ const AlertStyle = styled.div`
         margin-right:14px;
         font-size:24px;
         // color:green;
-
     }
-
 `
-
-

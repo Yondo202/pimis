@@ -6,6 +6,7 @@ import PlusSVG from 'assets/svgComponents/plusSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import CloseSVG from 'assets/svgComponents/closeSVG'
+import axios from 'axiosbase'
 
 
 const initialState = {
@@ -74,12 +75,13 @@ function BusinessSectorEditor() {
             open: true,
             id: id
         })
+        const match = businessSectors.filter(obj => obj.id === id)[0]
         setTemp({
             id: id,
-            bdescription: businessSectors.filter(obj => obj.id === id)[0].bdescription,
-            bcode: businessSectors.filter(obj => obj.id === id)[0].bcode,
-            ismining: businessSectors.filter(obj => obj.id === id)[0].ismining,
-            bdescription_mon: businessSectors.filter(obj => obj.id === id)[0].bdescription_mon
+            bdescription: match.bdescription,
+            bcode: match.bcode,
+            ismining: match.ismining,
+            bdescription_mon: match.bdescription_mon
         })
     }
 
@@ -110,9 +112,14 @@ function BusinessSectorEditor() {
     })
 
     useEffect(() => {
-        fetch('http://192.168.88.78:3000/api/business-sector')
-            .then(res => res.json())
-            .then(data => setBusinessSectors(data.data))
+        axios.get('business-sector')
+            .then(res => {
+                console.log(res.data)
+                setBusinessSectors(res.data.data)
+            })
+            .catch(err => {
+                console.log(err.response?.data)
+            })
     }, [])
 
     const handleCreate = (id) => {
@@ -155,7 +162,11 @@ function BusinessSectorEditor() {
                         </button>
                         <div className={`tw-absolute tw-transform tw-translate-y-2 tw-z-10 tw-bg-white tw-rounded-md tw-shadow-md tw-divide-y tw-divide-dashed ${dropdown ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} ref={dropdownRef}>
                             {
-                                businessSectors[0] && Object.keys(translation).map(key => <div className="tw-text-sm tw-font-semibold tw-py-2 tw-pl-2 tw-pr-8 hover:tw-bg-blue-100" onClick={() => { setFilterBy(key); setDropdown(false) }} key={key}>{translation[key]}</div>)
+                                businessSectors[0] && Object.keys(translation).map(key =>
+                                    <div className="tw-text-sm tw-font-semibold tw-py-2 tw-pl-2 tw-pr-8 hover:tw-bg-blue-100" onClick={() => { setFilterBy(key); setDropdown(false) }} key={key}>
+                                        {translation[key]}
+                                    </div>
+                                )
                             }
                         </div>
                     </div>

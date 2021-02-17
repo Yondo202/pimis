@@ -16,7 +16,6 @@ import SearchSelect from 'components/urgudul_components/searchSelect'
 import UploadSVG from 'assets/svgComponents/uploadSVG'
 import FileCard from 'pages/attachments/fileCard'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
-import CloseSVG from 'assets/svgComponents/closeSVG'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 
 
@@ -103,7 +102,6 @@ function UrugudulClusters() {
     const FilePreviewCtx = useContext(FilePreviewContext)
 
     const handleDownloadFile = (index) => {
-        // window.open(`http://192.168.88.78:3000/${form[index].attachedFiles[0].fileUrl.slice(7)}`)
         axios.get(`attach-files/${form[index].attachedFiles[0].id}`, {
             headers: {
                 'Authorization': getLoggedUserToken(),
@@ -112,12 +110,6 @@ function UrugudulClusters() {
         }).then(res => {
             console.log(res)
             const URL = window.URL.createObjectURL(res.data)
-            // window.open(url, form[index].attachedFiles[0].name)
-            // const link = document.createElement('a')
-            // link.href = url
-            // link.setAttribute('download')
-            // document.body.appendChild(link)
-            // link.click()
             FilePreviewCtx.setFile({ open: true, src: URL })
         }).catch(err => {
             console.log(err.response?.data)
@@ -212,10 +204,6 @@ function UrugudulClusters() {
                 setSectors(res.data.data)
             })
     }, [])
-
-    const [fileModalOpen, setFileModalOpen] = useState(false)
-
-    const iframeRef = useRef()
 
     return (
         <div className="tw-relative tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
