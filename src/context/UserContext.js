@@ -27,6 +27,7 @@ export const UserStore = (props) => {
     localStorage.setItem("refreshToken", refreshToken);
     localStorage.setItem("expireDate", expireDate);
     localStorage.setItem("role" ,user.role );
+    localStorage.setItem("username" ,user.name );
   };
 
   const loginUser = (email, password) => {
@@ -87,6 +88,7 @@ export const UserStore = (props) => {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("expireDate");
     localStorage.removeItem("role");
+    localStorage.removeItem("username");
 
     setUserInfo({ userId: undefined });
   };

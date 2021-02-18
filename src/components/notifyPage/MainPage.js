@@ -1,4 +1,4 @@
-import React,{useRef} from 'react'
+import React,{useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
 import { Color,ColorRgb } from '../theme'
 
@@ -6,13 +6,15 @@ import { Color,ColorRgb } from '../theme'
 
 
 function MainPage() {
+  const [username, setUserName]= useState();
+  useEffect(()=>{const username = localStorage.getItem("username");setUserName(username);})
     
     return (
         <Components className="container">
               <div className="MainPar">
                   <div className="title"> Ашиг сонирхлын зөрчилгүй тухай мэдэгдэх хуудас</div>
                   <div className="nameTitle">Үнэлгээний хорооны гишүүн:</div>
-                  <div className="MemeberInfo">Баатарын Баавардорж ( албан тушаал... )</div>
+                  <div className="MemeberInfo">{username} ( албан тушаал... )</div>
                   <div className="contentPar">
                           <div className="items">Би Түншлэлийн дэмжлэг хүсэгчийн өргөдлийг үнэлэх, Түншлэлийн дэмжлэг хүсэгчийн чадавхыг үнэлэх үнэлгээний хорооны гишүүнээр ажиллахыг зөвшөөрч байна. </div>
                           <div className="items">Би дараах мэдэгдлийг хийж байна: </div>
@@ -56,6 +58,8 @@ function MainPage() {
                       
                   </div>
               </div>
+
+              <button className="btn btn-primary">Илгээх</button>
         </Components>
     )
 }
@@ -63,7 +67,13 @@ function MainPage() {
 export default MainPage
 
 const Components = styled.div`
+    padding-bottom:40px;
+    .btn{
+      max-width:700px;
+      width:100%;
+    }
     .MainPar{
+      margin-bottom:30px;
       background-color:white;
       max-width:700px;
       margin-top:20px;
