@@ -16,7 +16,7 @@ function Approved() {
                      <Content  />
                 </div>
 
-                <button className="btn btn-primary">Илгээх</button>
+                
                 <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
             </MainContainter>
         )
@@ -25,7 +25,9 @@ function Approved() {
 
 
 const MainContainter = styled.div`
+    position:relative;
     .btn{
+        transition:all 0.4s ease;
         margin:10px 0px;
         max-width:700px;
         width:100%;

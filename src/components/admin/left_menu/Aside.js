@@ -15,7 +15,8 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
       <SidebarHeader>
         <div
           style={{
-            padding: "9px 24px",
+            backgroundColor:"white",
+            padding: "4px 3px",
             textTransform: "uppercase",
             fontWeight: "bold",
             fontSize: 14,
@@ -25,11 +26,11 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             whiteSpace: "nowrap",
           }}
         >
-          {intl.formatMessage({ id: "sidebarTitle" })}
+          <img style={{width:`100%`}} src="/head.jpg" alt="edp" />
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent >
         {/* <Menu iconShape="circle">
           <MenuItem icon={<FaTachometerAlt />} suffix={<span className="badge red">{intl.formatMessage({ id: "new" })}</span>}>
             {intl.formatMessage({ id: "dashboard" })}
