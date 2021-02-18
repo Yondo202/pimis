@@ -4,9 +4,6 @@ import { Color,ColorRgb } from '../theme'
 import {VscFilePdf} from 'react-icons/vsc';
 import { useReactToPrint } from "react-to-print";
 
-
-
-
 export default class PageOne extends React.Component {
     render() {
       return (
