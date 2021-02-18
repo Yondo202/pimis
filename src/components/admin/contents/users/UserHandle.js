@@ -233,6 +233,15 @@ const Users = styled.div`
               }
         }
     }
+    @media only screen and (max-width:768px){
+        .listHead{
+            flex-direction:column;
+            .Inputs{
+                margin:10px 0px;
+                flex-direction:column;
+            }
+        }
+    }
 `
 
 const UserData = [
