@@ -254,7 +254,7 @@ function UrgudulCalculations() {
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B8</span>
+                <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">B8</span>
                 - Өөрийн төслийн хувьд дараах тооцооллыг хийнэ үү
 
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />

@@ -6,6 +6,7 @@ import PlusSVG from 'assets/svgComponents/plusSVG'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import AlertContext from 'components/utilities/alertContext'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
+import HelpPopup from 'components/help_popup/helpPopup'
 
 
 const initialState = [
@@ -163,10 +164,18 @@ export default function AttachmentUploads() {
     }, [])
 
     return (
-        <div className="tw-relative tw-text-gray-700 tw-pb-20">
+        <div className="tw-relative tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2">
+            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
+                <span className="tw-text-blue-500 tw-text-xl tw-mx-2">2</span>
+                <span className="tw-text-lg">
+                    - Нотлох бичиг баримтууд
+                </span>
+                <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
+            </div>
+
             <input className="tw-invisible tw-absolute" type="file" onChange={handleFileInput} ref={inputRef} />
 
-            <ol className="tw-list-decimal tw-list-inside tw-m-4 tw-shadow-md">
+            <ol className="tw-list-decimal tw-list-inside tw-m-2 tw-rounded-sm tw-shadow-md tw-divide-y tw-divide-dashed">
                 {form.map(item =>
                     <li className="tw-p-2 tw-pl-4 tw-font-medium odd:tw-bg-gray-50" key={item.code}>
                         <span className="tw-text-sm">{item.description}</span>
@@ -199,9 +208,11 @@ export default function AttachmentUploads() {
                 )}
             </ol>
 
-            <button className="tw-absolute tw-bottom-8 tw-left-1/2 tw-transform tw--translate-x-1/2 tw-bg-blue-500 tw-text-white tw-rounded-md tw-py-1 tw-px-3 tw-font-medium hover:tw-shadow-md active:tw-bg-blue-600 focus:tw-outline-none" onClick={handleSubmit}>
-                Хадгалах
-            </button>
+            <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
+                <button className="tw-bg-blue-500 tw-text-white tw-font-medium tw-text-base tw-px-3 tw-py-1 tw-rounded-lg hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-600" onClick={handleSubmit}>
+                    Хадгалах
+                </button>
+            </div>
         </div>
     )
 }

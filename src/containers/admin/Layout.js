@@ -9,6 +9,7 @@ import { CgDanger } from 'react-icons/cg';
 import { BrowserRouter as Switch, Route } from "react-router-dom";
 import UserHandle from 'components/admin/contents/users/UserHandle';
 import ProjectHandle from 'components/admin/contents/ProjectHandle';
+import UrgudulNavigator from 'pages/urgudul/page';
 
 
 function Layout({ setLocale }) {
@@ -45,9 +46,15 @@ function Layout({ setLocale }) {
                 />
 
                 <div className="itemsPar">
-                    <Route path="/" component={HomeAdmin} exact />
-                    <Route path="/users" component={UserHandle} />
-                    <Route path="/projects" component={ProjectHandle} />
+                    <Switch>
+                        <Route path="/" component={HomeAdmin} exact />
+                        <Route path="/users" component={UserHandle} />
+                        <Route path="/projects" component={ProjectHandle} />
+                        
+                        <Route path="/urgudul/:page">
+                            <UrgudulNavigator preloaded={true} />
+                        </Route>
+                    </Switch>
                 </div>
             </div>
 

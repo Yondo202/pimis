@@ -70,32 +70,30 @@ export default function FilePreviewModal() {
             enter={{ opacity: 1 }}
             leave={{ opacity: 0 }}
             onDestroyed={!show && handleOnDestroyed}>
-            {
-                show => show && (props =>
-                    <div style={props} className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8">
-                        <div className={`tw-relative tw-bg-white tw-rounded-md tw-shadow-lg tw-p-2 tw-pt-10 tw-inline-flex tw-flex-col tw-items-center ${sizeFull && 'tw-w-full tw-h-full'}`} ref={modalRef}>
-                            <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-2 tw-right-2" onClick={handleClose}>
-                                <CloseSVG className="tw-w-6 tw-h-6" />
-                            </button>
+            {show => show && (props =>
+                <div style={props} className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8">
+                    <div className={`tw-relative tw-bg-white tw-rounded-md tw-shadow-lg tw-p-2 tw-pt-10 tw-inline-flex tw-flex-col tw-items-center ${sizeFull && 'tw-w-full tw-h-full'}`} ref={modalRef}>
+                        <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-2 tw-right-2" onClick={handleClose}>
+                            <CloseSVG className="tw-w-6 tw-h-6" />
+                        </button>
 
-                            <iframe src={src} className="tw-object-contain tw-object-center" width={size.width} height={size.height} onLoad={handleLoad} title="Файлыг нээж харах" ref={iframeRef} />
+                        <iframe src={src} className="tw-object-contain tw-object-center" width={size.width} height={size.height} onLoad={handleLoad} title="Файлыг нээж харах" ref={iframeRef} />
 
-                            {showDialog &&
-                                <div className="tw-p-4 tw-w-72 tw-text-gray-700 tw-text-sm text-center">
-                                    Хавсаргасан файл гарч ирэхгүй бол доорх товчоор татаж авна уу.
+                        {showDialog &&
+                            <div className="tw-p-4 tw-w-72 tw-text-gray-700 tw-text-sm text-center">
+                                Хавсаргасан файл гарч ирэхгүй бол доорх товчоор татаж авна уу.
                                 </div>
-                            }
+                        }
 
-                            <button className="tw-px-2 tw-py-1 tw-m-2 tw-mt-4 tw-rounded-lg focus:tw-outline-none hover:tw-shadow-md active:tw-bg-blue-600 tw-bg-blue-500 tw-text-xs tw-text-white tw-flex tw-flex-col tw-items-center" onClick={handleDownload}>
-                                <DownloadSVG className="tw-w-8 tw-h-8" />
+                        <button className="tw-px-2 tw-py-1 tw-m-2 tw-mt-4 tw-rounded-lg focus:tw-outline-none hover:tw-shadow-md active:tw-bg-blue-600 tw-bg-blue-500 tw-text-xs tw-text-white tw-flex tw-flex-col tw-items-center" onClick={handleDownload}>
+                            <DownloadSVG className="tw-w-8 tw-h-8" />
                                 Файлыг татаж авах
                             </button>
 
-                            <a className="tw-absolute tw-invisible" href={src} download ref={linkRef}> </a>
-                        </div>
+                        <a className="tw-absolute tw-invisible" href={src} download ref={linkRef}> </a>
                     </div>
-                )
-            }
+                </div>
+            )}
         </Transition>
     )
 }
