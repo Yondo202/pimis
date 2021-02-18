@@ -111,11 +111,19 @@ export const EditModal = ({ showModal,setShowModal,setUpdate, parent,parentEdit}
                                 <div className="otherPar">
 
                                     <div className="HeadCheck"> 
-                                        <div className="title"> <input onChange={roleHandle} checked={parent.role === "edpuser" ? true: false} className="getRoles" value="edpuser" name="role" type="radio" /> <span>edp user</span></div>  
-                                        <div className="title"> <input onChange={roleHandle} checked={parent.role === "trainer" ? true: false}  className="getRoles" value="trainer" name="role" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
-                                        <div className="title"> <input onChange={roleHandle} checked={parent.role === "member" ? true: false} className="getRoles" value="member" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
-                                        <div className="title"> <input onChange={roleHandle} checked={parent.role === "monitoring" ? true: false} className="getRoles" value="monitoring" name="role" type="radio" /> <span>Мониторинг</span></div>  
-                                        <div className="title"> <input onChange={roleHandle} checked={parent.role === "edpadmin" ? true: false}  className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div>  
+                                    <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Холбоотой Яамд</span></div>  
+                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Төслийн Захирал</span></div>  
+                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Төслийн зохицуулагч</span></div>  
+                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Ахлах БХШ</span></div>  
+                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>БХЗ</span></div>  
+                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>ҮДД-ын зөвлөх</span></div>  
+                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Хуулийн зөвлөх</span></div>  
+                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Санхүү</span></div>  
+                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Худалдаан авах ажиллагаа</span></div>  
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="trainer" name="role" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="member" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="monitoring" name="role" type="radio" /> <span>Мониторинг</span></div> 
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div> 
                                     </div>
                                 
                                     {parent.role==="edpuser"&&(<div className="edpUsers">
@@ -185,12 +193,14 @@ const Background = styled.div`
             align-items:start;
             justify-content:space-between;
             .HeadCheck{
+                height:170px;
+                overflow-y:scroll;
                 font-size:14px;
                 display:flex;
                 flex-direction:column;
-                // justify-content:space-between;
                 width:50%;
                 margin-bottom:15px;
+                padding-left:10px;
                 .title{
                     padding:5px 0px;
                     display:flex;
@@ -212,12 +222,12 @@ const Background = styled.div`
                     }
                 }
             }
-
             .edpUsers{
                 width:50%;
                 padding:10px 15px;
                 border:1px solid rgba(0,0,0,0.15);
                 margin-bottom:10px;
+                margin-left:10px;
                 .trainer{
                     padding:4px 20px;
                     border:1px solid rgba(0,0,0,0.3);

@@ -60,16 +60,14 @@ function App() {
             {/* <Admin /> */}
             {
               ctxUser.userInfo.userId ? ctxUser.userInfo.role === "admin" ? (
-                <UrgudulStore>
-                  <Switch>
-                    <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                      <Route path="/" >
-                        <Admin />
-                      </Route>
-                    </motion.div>
-                  </Switch>
-                </UrgudulStore>
-                //  <Route path="/admin" component={Admin} /> 
+                <Switch>
+                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <Route path="/" >
+                      <Admin />
+                    </Route>
+                  </motion.div>
+                </Switch>
+                //  <Route path="/admin" component={Admin} />
               ) : (
                   <HelpStore>
                     <Menu />
@@ -84,8 +82,7 @@ function App() {
                         <Route path="/comp-test" component={CheckComp} />
                         {/* <Route path="/comp-check" component={MainForm} /> */}
                         <Route path="/comp-request" component={ReqHome} exact />
-                        <Route path="/notify-page" component={MainPage} exact />
-                        <Route path="/admin" component={Admin} />
+                        <Route path="/notify-page/:paramId" component={MainPage} />
 
                         <Route path="/comp-request/new" component={MainRequest} />
                         <Route path="/comp-request/old" component={MainRequestOld} />
