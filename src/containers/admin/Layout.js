@@ -9,6 +9,8 @@ import { CgDanger } from 'react-icons/cg';
 import { BrowserRouter as Switch, Route } from "react-router-dom";
 import UserHandle from 'components/admin/contents/users/UserHandle';
 import ProjectHandle from 'components/admin/contents/ProjectHandle';
+import UrgudulNavigator from 'pages/urgudul/page';
+import { UrgudulStore } from 'components/utilities/urgudulContext';
 
 
 function Layout({ setLocale }) {
@@ -45,12 +47,19 @@ function Layout({ setLocale }) {
                 />
 
                 <div className="itemsPar">
-                    <Route path="/" component={HomeAdmin} exact />
-                    <Route path="/users" component={UserHandle} />
-                    <Route path="/projects" component={ProjectHandle} />
+                    <UrgudulStore>
+                        <Switch>
+                            <Route path="/" component={HomeAdmin} exact />
+                            <Route path="/users" component={UserHandle} />
+                            <Route path="/projects" component={ProjectHandle} />
+
+                            <Route path="/urgudul/:page">
+                                <UrgudulNavigator preloaded={true} />
+                            </Route>
+                        </Switch>
+                    </UrgudulStore>
                 </div>
             </div>
-
 
             <AlertStyle style={ctx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${ctx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
                 {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}

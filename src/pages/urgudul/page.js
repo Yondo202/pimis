@@ -22,7 +22,7 @@ import AlertContext from 'components/utilities/alertContext'
 import DocAddSVG from 'assets/svgComponents/docAddSVG'
 
 
-function UrgudulNavigator() {
+function UrgudulNavigator(props) {
     const history = useHistory()
     const params = useParams()
     const page = + params.page
@@ -60,7 +60,7 @@ function UrgudulNavigator() {
         initial: { opacity: 1 },
     })
 
-    const [modalOpen, setModalOpen] = useState(true)
+    const [modalOpen, setModalOpen] = useState(props.preloaded ? false : true)
 
     const [projects, setProjects] = useState([])
 
@@ -235,7 +235,6 @@ function UrgudulNavigator() {
                                 </animated.div>
                             )
                         }
-
                     </animated.div>
                 )
             }
