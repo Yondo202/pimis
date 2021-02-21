@@ -8,7 +8,7 @@ import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
 import { BrowserRouter as Switch, Route } from "react-router-dom";
 import UserHandle from 'components/admin/contents/users/UserHandle';
-import ProjectHandle from 'components/admin/contents/ProjectHandle';
+import ProjectHandle from 'components/admin/contents/projects/ProjectHandle';
 import UrgudulNavigator from 'pages/urgudul/page';
 import { UrgudulStore } from 'components/utilities/urgudulContext';
 
