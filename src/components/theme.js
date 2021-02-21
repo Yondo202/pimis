@@ -109,3 +109,66 @@ export const ButtonStyle = styled.button`
             outline: none;
         }
 `
+
+export const AlertStyle = styled.div`
+        z-index:2020;  
+        transition:all 0.5s ease;
+        position:fixed;
+        // height:80px;
+        bottom:100px;
+        left:2%;
+        display:flex;
+        align-items:center;
+        border:1px solid rgba(0,0,0,0.2);
+        // border-left:4px solid green;
+        background-color:white;
+        padding:10px 40px; 
+        font-weight:400;
+        color:black;
+        border-radius:6px;
+        font-size:17px;
+        opacity:1;
+        font-weight:600;
+        .true{
+            margin-right:14px;
+            font-size:24px;
+            // color:green;
+        }
+`
+
+export const InputStyle = styled.div`
+            // width:100%;
+            font-size:13px;
+            transition:all 0.3s ease;
+            position:relative;
+            display:flex;
+            align-items:end;
+            input {
+                align-self:flex-end;
+                width:100%;
+                border-bottom:1px solid rgba(0,0,0,0.2);
+                // padding:5px 5px;
+                padding-bottom:5px;
+                padding-left:5px;
+                transition:all 0.3s ease;
+                &:focus{ 
+                    outline-width: 0;
+                }
+                &:focus ~ .line {
+                    width:100%;
+                    left:0;
+                }
+            }
+            .line{
+                transition:all 0.3s ease;
+                position:absolute;
+                bottom:0;
+                left:50%;
+                width:0px;
+                height:2px;
+                background-color:black;
+                z-index:2;
+            }
+`
+
+

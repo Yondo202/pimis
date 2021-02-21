@@ -48,15 +48,12 @@ function Layout({ setLocale }) {
 
                 <div className="itemsPar">
                     <UrgudulStore>
-                        <Switch>
                             <Route path="/" component={HomeAdmin} exact />
                             <Route path="/users" component={UserHandle} />
                             <Route path="/projects" component={ProjectHandle} />
-
                             <Route path="/urgudul/:page">
                                 <UrgudulNavigator preloaded={true} />
                             </Route>
-                        </Switch>
                     </UrgudulStore>
                 </div>
             </div>

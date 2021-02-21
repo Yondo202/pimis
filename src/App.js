@@ -1,10 +1,11 @@
 import React, { useEffect, useContext } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { motion } from "framer-motion";
 import Admin from "./containers/admin/MainMenu";
 import Menu from "./containers/menu/menu";
 import UserContext from "./context/UserContext";
 import { HelpStore } from "./context/HelperContext";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Feedback from './components/feedback/Feedback'
 import CheckComp from "./components/check/compCheck";
 import MainRequest from "./containers/requestComp/mainRequest";
 import EmialSender from "./components/emailSend/EmailSend";
@@ -27,6 +28,7 @@ import MainPage from "components/notifyPage/MainPage";
 import UnAuthContent from "UnauthContent";
 import { FilePreviewStore } from "components/utilities/filePreviewContext";
 import FilePreviewModal from "components/file_preview/filePreview";
+
 
 
 function App() {
@@ -86,6 +88,7 @@ function App() {
 
                         <Route path="/comp-request/new" component={MainRequest} />
                         <Route path="/comp-request/old" component={MainRequestOld} />
+                        <Route path="/feedback" component={Feedback} />
 
                         <Route path="/email" component={EmialSender} />
                         <Route path="/email2" component={EmialSender2} />

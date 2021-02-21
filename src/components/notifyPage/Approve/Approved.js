@@ -53,7 +53,12 @@ const MainContainter = styled.div`
           font-size:18px;
         }
       }
-}
+  }
+  @media print {
+    .btn-primary{
+      display:none;
+    }
+  }
 `
 
 
