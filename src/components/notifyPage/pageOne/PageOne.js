@@ -4,7 +4,7 @@ import { useReactToPrint } from "react-to-print";
 import {VscFilePdf} from 'react-icons/vsc';
 import Content from './Content'
 
-function NotApproved() {
+function PageOne() {
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
@@ -16,15 +16,19 @@ function NotApproved() {
                      <Content  />
                 </div>
 
+                
                 <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
             </MainContainter>
         )
   }
-export default NotApproved
+
+export default PageOne
 
 
 const MainContainter = styled.div`
+    position:relative;
     .btn{
+        transition:all 0.4s ease;
         margin:10px 0px;
         max-width:700px;
         width:100%;
@@ -50,6 +54,11 @@ const MainContainter = styled.div`
           font-size:18px;
         }
       }
+  }
+  @media print {
+    .btn-primary{
+      display:none;
+    }
   }
 `
 

@@ -15,8 +15,6 @@ function NotAssist() {
                 <div className="parent" ref={componentRef}>
                      <Content  />
                 </div>
-
-                <button className="btn btn-primary">Илгээх</button>
                 <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
             </MainContainter>
         )

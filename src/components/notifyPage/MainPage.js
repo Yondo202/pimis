@@ -1,7 +1,7 @@
 import React,{useEffect, useRef, useState} from 'react'
 import { BrowserRouter as Router, Switch, Route, useParams } from "react-router-dom";
 import styled from 'styled-components'
-import PageOne from './PageOne'
+import PageOne from './pageOne/PageOne'
 import Approved from './Approve/Approved'
 import NotApproved from './notApprove/NotApproved'
 import AssistApprove from './assistApprove/AssistApprove';

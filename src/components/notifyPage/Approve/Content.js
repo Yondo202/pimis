@@ -4,6 +4,7 @@ import axios from '../../../axiosbase';
 import { Email, Item, Span, A, renderEmail, Box,Image} from 'react-html-email'
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
+import {AlertStyle} from '../../theme'
 
 export default class Content extends React.Component {
     constructor(props) {
@@ -53,7 +54,7 @@ export default class Content extends React.Component {
                 </MainPar> 
 
 
-                <button onClick={this.clickHandle} style={{transform:`scale(${this.state.Btn})`,opacity:`${this.state.Btn}`}} className="btn btn-primary">Илгээх</button>
+                <SendBtn onClick={this.clickHandle} style={{transform:`scale(${this.state.Btn})`,opacity:`${this.state.Btn}`}} className="btn btn-primary">Илгээх</SendBtn>
                 <AlertStyle style={this.state.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${this.state.color}` } : { bottom: `50px`, opacity: `0` }} >
                     {this.state.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${this.state.color}` }} className="true" /> : <CgDanger style={{ color: `${this.state.color}` }} className="true" />}
                     <span>{this.state.text}</span>
@@ -89,20 +90,13 @@ const EmailHTML = renderEmail(
                                     <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Он сар өдөр: </Span>
                                     <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > /......................../ </Span>
                                 </Item>
-                                <Box style={{textAlign:"start",width:"100%", margin:'16px 0px', fontSize:'13px'}}>Эрхэм хүндэт /.............../ танаа</Box>
+                                <Box style={{textAlign:"start",width:"100%", margin:'16px 0px', fontSize:'13px'}}>Эрхэм хүндэт /.............../ Танд,</Box>
 
-
-                                <Box style={{textAlign:"start",width:"100%", margin:'15px 0px',textIndent: "10px", fontSize:'13px'}}>Экспортыг дэмжих төслийн анхан шатны шалгаруулалтанд зориулж таны илгээсэн ………….. Дугаартай өргөдөл нь анхан шатны шалгаруулалтанд тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна. </Box>
-                                <Box style={{textAlign:"start",width:"100%", margin:'15px 0px',textIndent: "10px", fontSize:'13px'}}>Шаардлатай материалын жагсаалтыг хавсаргасан бөгөөд таныг энэхүү захидал илгээсэн өдрөөс эхлэн ажлын 10 хоногийн дотор буюу …. Оны ….. Сарын ….. Өдрийн 18 цагаас өмнө мэдээллээ ………...хаягаар илгээхийг хүсч байна. </Box>
-                                <Box style={{textAlign:"start",width:"100%", margin:'15px 0px',textIndent: "10px", fontSize:'13px'}}>Хэрэв дээр дурдсан хугацаанд материал ирээгүй тохиолдолд танай байгууллагыг энэхүү түншлэлийн хөтөлбөрт оролцох сонирхолгүй болсоноор тооцон таны өргөдлийн материал хаагдах болно.  Өргөдлийн материал хаагдсаны дараа та дахин оролцох хүсэлтэй бол шинээр процессыг эхэлж, дахин шалгаруулалтанд орох болно.</Box>
+                                <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Экспортыг дэмжих төслийн анхан шатны шалгаруулалтанд зориулж таны илгээсэн ………….. Дугаартай өргөдөл нь анхан шатны шалгаруулалтанд тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна. </Box>
+                                <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Шаардлатай материалын жагсаалтыг хавсаргасан бөгөөд таныг энэхүү захидал илгээсэн өдрөөс эхлэн ажлын 10 хоногийн дотор буюу …. Оны ….. Сарын ….. Өдрийн 18 цагаас өмнө мэдээллээ ………...хаягаар илгээхийг хүсч байна. </Box>
+                                <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Хэрэв дээр дурдсан хугацаанд материал ирээгүй тохиолдолд танай байгууллагыг энэхүү түншлэлийн хөтөлбөрт оролцох сонирхолгүй болсоноор тооцон таны өргөдлийн материал хаагдах болно.  Өргөдлийн материал хаагдсаны дараа та дахин оролцох хүсэлтэй бол шинээр процессыг эхэлж, дахин шалгаруулалтанд орох болно.</Box>
                             
-                                <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Шаардлагатай материалын жагсаалт:    /............................./</Box>
-
-
-                                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
-                                    <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Он сар өдөр: </Span>
-                                    <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} > /......................../ </Span>
-                                </Item>
+                                <Box style={{textAlign:"start",width:"100%",marginTop:'5px',marginBottom:'22px', fontSize:'13px'}}>Шаардлагатай материалын жагсаалт:    /............................./</Box>
 
                                 <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
                                     <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Хүндэтгэсэн: </Span>
@@ -122,7 +116,11 @@ const EmailHTML = renderEmail(
 )
 
 
-    
+const SendBtn = styled.div`
+@media print{
+    display:none;
+}
+`
 
 
 
@@ -187,28 +185,3 @@ const MainPar = styled.div`
 }
 `
 
-const AlertStyle = styled.div`
-    z-index:2020;  
-    transition:all 0.5s ease;
-    position:fixed;
-    // height:80px;
-    bottom:100px;
-    left:2%;
-    display:flex;
-    align-items:center;
-    border:1px solid rgba(0,0,0,0.2);
-    // border-left:4px solid green;
-    background-color:white;
-    padding:10px 40px; 
-    font-weight:400;
-    color:black;
-    border-radius:6px;
-    font-size:17px;
-    opacity:1;
-    font-weight:600;
-    .true{
-        margin-right:14px;
-        font-size:24px;
-        // color:green;
-    }
-`

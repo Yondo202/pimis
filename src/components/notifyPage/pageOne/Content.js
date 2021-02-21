@@ -1,19 +1,19 @@
 import React, {useRef, useEffect, useCallback, useContext, useState } from 'react'
 import styled from 'styled-components'
-import { Color,ColorRgb } from '../theme'
+import { Color,ColorRgb } from '../../theme'
 import {VscFilePdf} from 'react-icons/vsc';
 import { useReactToPrint } from "react-to-print";
 
+
+
 function PageOne() {
-    const [username, setUserName]= useState();
-    useEffect(()=>{const username = localStorage.getItem("username");setUserName(username);});
     
       return (
-            <MainPar>
-                <div className="MainPar">
+        <>
+            <MainPar className="MainPar">
                     <div className="title"> Ашиг сонирхлын зөрчилгүй тухай мэдэгдэх хуудас</div>
                     <div className="nameTitle">Үнэлгээний хорооны гишүүн:</div>
-                    <div className="MemeberInfo">{username} ( албан тушаал... )</div>
+                    <div className="MemeberInfo">/..................../ ( албан тушаал... )</div>
                     <div className="contentPar">
                             <div className="items">Би Түншлэлийн дэмжлэг хүсэгчийн өргөдлийг үнэлэх, Түншлэлийн дэмжлэг хүсэгчийн чадавхыг үнэлэх үнэлгээний хорооны гишүүнээр ажиллахыг зөвшөөрч байна. </div>
                             <div className="items">Би дараах мэдэгдлийг хийж байна: </div>
@@ -54,21 +54,14 @@ function PageOne() {
 
                     <div className="signature">
                         <div className="title"> Гарын үсэг: <div className="signatureItem">/........................................./ </div>  </div>
-                        
                     </div>
-                </div>
-                <button className="btn btn-primary">Илгээх</button>
              </MainPar>
+             </>
         )
   }
   export default PageOne
 
 const MainPar = styled.div`
-.btn{
-    max-width:700px;
-    width:100%;
-  }
-  .MainPar{
     margin-bottom:30px;
     background-color:white;
     max-width:700px;
@@ -135,13 +128,19 @@ const MainPar = styled.div`
           }
         }
       }
-      
     }
-   
-  }
+
+    @media print{
+      margin-bottom:30px;
+      background-color:white;
+      max-width:1200px;
+      margin-top:20px;
+      font-size:15px;
+      padding:15px 80px;
+      border:none;
+      .contentPar{
+        padding: 30px 25px;
+      }
+    }
 `
 
-const Components = styled.div`
-    font-size:13px;
-    // margin-top:25px;
-`
