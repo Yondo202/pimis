@@ -4,14 +4,14 @@ import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import { Link, animateScroll as scroll } from "react-scroll";
 import axios from'../../../axiosbase';
-import { fontFamily, textColor, ColorRgb, Color,fontSize,PrevBtn,NextBtn  } from '../../theme';
+import { fontFamily, textColor, ColorRgb, fontSize,PrevBtn,NextBtn  } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
 import {RiMailSendLine} from 'react-icons/ri'
+import AccessToken from '../../../context/accessToken'
 
 function TableFour(props) {
       const history = useHistory();
@@ -23,30 +23,32 @@ function TableFour(props) {
       const [procent, setProcent] = useState('0');
       const [ finalMsg, setFinalMsg ] = useState("0");
       const [FinalErrorText, setFinalErrorText] = useState("");
-      const [ Dname, setDname] = useState(props.initialName);
-      const [Ddate, setDdate] = useState(props.initialDate);
+      const [ Dname, setDname] = useState(null);
+      const [Ddate, setDdate] = useState(null);
 
-      const StyleContext = useContext(UserContext);
       const helperContext = useContext(HelperContext);
-      console.log(helperContext.tableId, " $ table Id 4 $ ");
-      console.log(props.initialData, " my initial kk");
 
       useEffect(() => {
           const finalData = []
           tableData.map((el,i)=>{
-            props.initialData.map(elem=>{ 
-              if(i + 1 === elem.rownum){ el["id"] = elem.id; el["rowvalue"] = elem.rowvalue.toString(); el["rownum"] = elem.rownum }
-            });
+            if(props.initialData){
+              props.initialData.map(elem=>{ 
+                if(i + 1 === elem.rownum){ el["id"] = elem.id; el["rowvalue"] = elem.rowvalue.toString(); el["rownum"] = elem.rownum }
+              });
+              setDname(props.initialName);setDdate(props.initialDate);
+            }
             finalData.push(el);
+            setInitialData(finalData);
           });
-          setInitialData(finalData);
-      },[]);
-      console.log(initialData, "444 ************");
+      },[props.initialData]);
 
       const radioChange = (event)=> {
         let finalData = []
-        tableData.map((el,i)=>{  props.initialData.map(elem=> elem); finalData.push(el); });
-
+        tableData.map((el,i)=>{ 
+            if(props.initialData){
+              props.initialData.map(elem=> elem);
+            }
+           finalData.push(el); });
         finalData.map((el,i)=>{
           if(el.id.toString() === event.target.id){ el["rowvalue"] = event.target.value}
         })
@@ -104,7 +106,7 @@ function TableFour(props) {
             console.log(finalEnd , "pps4 final end");
             // console.log(JSON.stringify(finalEnd));
 
-            console.log(finalOne2[3].rowvalue, "dadad");
+            console.log(confirm, "what is confirm");
 
             if(finalOne2.length < 15){
               setOpacity("1");
@@ -135,8 +137,14 @@ function TableFour(props) {
                     setFinalTextScale("1");
                     setOpacity2("0");
                     setFinalMsg("0");
-                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{ console.log(err, "err");});
-                    
+                    console.log("A Angilal");
+                    if(Dname){
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{ console.log(err, "err");});
+                    }else{
+                      axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{ 
+                        helperContext.alertText('orange', "Та шалгуур хангахгүй байна!", true); setTimeout(()=>{ history.push("/"); },4000);
+                        console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа...", true); console.log(err, "err");});
+                    }
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "true" && finalOne2[3].rowvalue === "false"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
@@ -146,7 +154,14 @@ function TableFour(props) {
                     setOpacity2("0");
                     setFinalMsg("0");
                     finalEnd.PPS4["esm"] = "C"
-                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{ console.log(err, "err");});
+                    console.log("C Angilal");
+                    if(Dname){
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{ console.log(err, "err");});
+                    }else{
+                      axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
+                        helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000);
+                        console.log(res, "$$(A) res 4 $$")}).catch((err)=>{helperContext.alertText('green', "Алдаа гарлаа", true);});
+                    }
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "false" && finalOne2[3].rowvalue === "true"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
@@ -155,22 +170,36 @@ function TableFour(props) {
                     setFinalTextScale("1");
                     setOpacity2("0");
                     finalEnd.PPS4["esm"] = "B"
-                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{  StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0)})
-                    .catch((err)=>{  setFinalText("Алдаа гарлаа"); setFinalTextScale("1"); console.log(err, "err");});
-
+                    console.log("B Angilal");
+                    if(Dname){
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{  helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0)})
+                      .catch((err)=>{  setFinalText("Алдаа гарлаа"); setFinalTextScale("1"); console.log(err, "err");});
+                    }else{
+                         axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
+                         helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{scroll.scrollTo(0); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%") },3000); })
+                        .catch(err=>{ helperContext.alertText('orange', "Алдаа гарлаа", true);});
+                    }
             }else{
                    // Тэнцээгүй биш гэхдээ асууна
                    setFinalMsg("0"); setFinalTextScale("1"); setFinalText("Та шалгуур хангаж байна..."); setOpacity2("0");
                     finalEnd.PPS4["esm"] = "F";
-                    axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setTimeout(()=>{
-                      StyleContext.alertText('green', 'Та шалгуур хангаж байна..', true);history.push("/"); },2000) }).catch((err)=>{ StyleContext.alertText('orange', 'Алдаа гарлаа', true);});
-                  }
+                    console.log("F Angilal");
+                    if(Dname){
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setTimeout(()=>{
+                      helperContext.alertText('green', 'Та шалгуур хангаж байна..', true);history.push("/"); },2000) }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+                    }else{
+                      axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{ 
+                      helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000); })
+                      .catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true);});
+                    }
+                   
+            }
         }
 
         
         const nextHandleBtn = () => {
             // scroll.scrollTo(0);
-            // StyleContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
+            // helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
         }
     return (
         <Component1 className="container" >
@@ -195,7 +224,7 @@ function TableFour(props) {
                     </div>
                 </div>
                 <form>
-                    {props.initialData[0] ? (initialData.map((el, i)=>{
+                    {Dname? (initialData.map((el, i)=>{
                             return(
                             <div className="headerParchild" key={i}>
                                 <div className="row" >
@@ -238,7 +267,7 @@ function TableFour(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" onChange={changeHandle} value={Dname} className="getUserInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" onChange={Dname&&changeHandle} value={Dname} className="getUserInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -250,7 +279,7 @@ function TableFour(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input max='3000-12-31' type="date" onChange={changeHandleDate} value={Ddate} placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input max='3000-12-31' type="date" onChange={Dname&&changeHandleDate} value={Ddate} placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
@@ -272,7 +301,7 @@ function TableFour(props) {
 
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
-                            <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
+                            <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
                             <NextBtn id="myInput" onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                        </div>
 

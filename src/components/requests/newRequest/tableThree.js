@@ -16,7 +16,6 @@ function TableThree() {
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
- 
 
     const clickHandles = () => {
         let finalOne = {};let finalEnd = {};  let rs2 = document.querySelectorAll(".GetItemAdd33");  let arr2 = Array.from(rs2); let finalOne2 = [];

@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import TableThreeDetails from './deitals/tableThreeDetails'
 import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
@@ -7,20 +7,24 @@ import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
+import AccessToken from '../../../context/accessToken'
 
 function TableThree(props) {
     const helperContext = useContext(HelperContext);
-    const StyleContext  = useContext(UserContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [Dname, setDname ] = useState(props.initialName);
-    const [Ddate, setDdate] = useState(props.initialDate);
+    const [Dname, setDname ] = useState(null);
+    const [Ddate, setDdate] = useState(null);
+    
 
-    console.log(helperContext.tableId, "my tableId 3");
-    console.log(props.initialData, " my initial Data 33");
+    useEffect(()=>{
+        if(props.initialName){
+            setDname(props.initialName);
+            setDdate(props.initialDate);
+        }
+    },[props.initialName])
 
     const changeNameHandle = (event) =>{
         setDname(event.target.value);
@@ -72,18 +76,26 @@ function TableThree(props) {
             setOpacity2("1");
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
         }else{
-            axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
-                console.log(res, "$$ ressssss 3 $$");
-                helperContext.alertText('green', "Амжилттай ", true);
-                StyleContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
-                scroll.scrollTo(0);
-              }).catch((err)=>{console.log(err, "err"); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
+            if(props.initialName){
+                axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
+                    helperContext.alertText('green', "Амжилттай ", true);
+                    helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%"); scroll.scrollTo(0);
+                  }).catch((err)=>{console.log(err, "err"); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
+            }else{
+                axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}} ).then((res)=>{
+                    helperContext.alertText('green', "Амжилттай хадаглалаа", true); helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");scroll.scrollTo(0);
+                  }).catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true);  });
+            }
+            
         }
     }
 
+    console.log(helperContext.tableId, "*** my Table dId");
+
+
     return (
         <Component3 className="container">
-            <TableThreeDetails initialData={props.initialData} />
+            {props.initialName? <TableThreeDetails initialData={props.initialData} />: <TableThreeDetails initialData={null} />} 
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
@@ -93,7 +105,7 @@ function TableThree(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" onChange={changeNameHandle} value={Dname} className="getUserInp3 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" onChange={Dname&&changeNameHandle} value={Dname} className="getUserInp3 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -104,7 +116,7 @@ function TableThree(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" onChange={changeDateHandle} value={Ddate} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" onChange={Dname&&changeDateHandle} value={Ddate} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
@@ -123,7 +135,7 @@ function TableThree(props) {
 
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
-                            <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); StyleContext.StyleComp("-100%", "0%", "100%", "200%", "300%","400%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
+                            <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("-100%", "0%", "100%", "200%", "300%","400%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
                             <NextBtn id="myInput" onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                         </div>
             </div>

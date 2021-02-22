@@ -1,8 +1,18 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {fontSize, textColor,InputStyle,ColorRgb} from '../theme'
+import {fontSize, textColor,InputStyle,ColorRgb,NextBtn,Color } from '../theme'
+import {AiOutlineSend} from 'react-icons/ai'
+
 
 function Feedback() {
+    const [FinalErrorText, setFinalErrorText] = useState("");
+    const [opacity2, setOpacity2] = useState("0");
+    
+    let inputFullName = React.useRef(null);
+    useEffect(()=>{
+        setTimeout(()=>{  inputFullName.current.focus();},3000);
+    },[])
+  
     return (
         <FeedBackCont className="container">
             <div className="contentPar">
@@ -13,8 +23,7 @@ function Feedback() {
 
                 <div className="compName">
                     <div className="title">Аж ахуйн нэгж/ Кластерын нэр :</div>
-                    {/* <input type="text" className="form-control" placeholder="нэрийг бүтнээр нь оруулна уу"  /> */}
-                    <InputStyle className="nameText"><input placeholder="бүтэн нэрийг оруулна үү..."  type="text" />  <div className="line"></div></InputStyle>
+                    <InputStyle  className="nameText"><input ref={inputFullName} placeholder="бүтэн нэрийг оруулна үү..."  type="text" />  <div className="line"></div></InputStyle>
                 </div>
 
                 <div className="infoWhere">
@@ -59,8 +68,8 @@ function Feedback() {
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
                             <div className="checkItem">
-                                <div className="item"><input className="radio" type="radio" /> <span>Yes</span></div>  
-                                <div className="item"><input className="radio" type="radio" /> <span>No</span></div>
+                                <div className="item"><input className="radio" type="radio" /> <span>Тийм</span></div>  
+                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
                             </div>
                         </div>
                         <div className="Title3">
@@ -118,15 +127,78 @@ function Feedback() {
                                         </tr>
                                     )
                                 })}
-                               
                             </table>
                         </div>
                 </div>
 
 
+                <div className="infoWhere">
+                        <div className="Title Title4"><span className="circle">⬤</span>Урьд өмнө хэрэгжүүлж байгаагүй энэ үйл ажиллагааг хэрэгжүүлснээр таныг бизнесээ цааш чиглүүлж явахад хувь нэмэр оруулна гэж бодож байна уу?</div>
+                        <div className="chekcPar">
+                            <span className="title">Аль нэгийг сонгоно уу [√] : </span>
+                            <div className="checkItem">
+                                <div className="item"><input className="radio" type="radio" /> <span>Тийм</span></div>  
+                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
+                            </div>
+                        </div>
+                        <div className="Title3">
+                            <div className="text">Яагаад?</div> 
+                            <InputStyle className="nameText"><input placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                         </div>
+                </div>
 
 
+                <div className="infoWhere">
+                        <div className="Title Title4"><span className="circle">⬤</span>Та дараагийн 12 сарын хугацаанд дахин санхүүгийн дэмжлэгийн хүсэлт гаргах уу?</div>
+                </div>
 
+                <div className="infoWhere">
+                        <div className="Title Title4"><span className="circle">⬤</span>Хэрэв тийм бол ямар үйл ажиллагааг санхүүжүүлэх вэ[√]?</div>
+                        <div className="chekcPar">
+                            <div className="checkItem">
+                                <div style={{marginLeft:0}} className="item"><input className="radio" type="radio" /> <span>1. Сургалт, семинар  </span></div>  
+                                <div className="item"><input className="radio" type="radio" /> <span>2. Зөвлөх үйлчилгээ </span></div>
+                                <div className="item"><span>3. Бусад  </span><InputStyle style={{marginLeft:10}} className="nameText"><input placeholder="энд бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle></div>
+                            </div>
+                        </div>
+
+                        <div className="Title3">
+                            <div style={{width:"30%"}} className="text">Хэрэв үгүй бол яагаад?</div> 
+                            <InputStyle className="nameText"><input placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                         </div>
+                </div>
+
+
+                <div className="infoWhere">
+                        <div className="Title Title4"><span className="circle">⬤</span>Энэхүү төслөөс хуримтлуулсан туршлага дээр үндэслэн санхүүгийн дэмжлэг болон ижил төрлийн программ байхгүй болсон тохиолдолд энэ төрлийн зардлыг танай байгууллага санхүүжүүлэх үү? [√] </div>
+                        <div className="chekcPar">
+                            <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
+                            <div className="checkItem">
+                                <div className="item"><input className="radio" type="radio" /> <span>Тийм, 100% санхүүжүүлнэ.</span></div>  
+                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
+                            </div>
+                        </div>
+                        <div className="Title3">
+                            <div style={{width:"30%"}} className="text">Шалтгааныг бичнэ үү:?</div> 
+                            <InputStyle className="nameText"><input placeholder="энд бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                         </div>
+                </div>
+
+                <div className="infoWhere">
+                        <div className="Title Title4"><span className="circle">⬤</span>Үйл ажиллагааны үр дүнгээс үл хамааран санхүүгийн дэмжлэгийн багийн үйлчилгээнд сэтгэл хангалуун байсан уу? [√] </div>
+                        <div className="chekcPar">
+                            <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
+                            <div className="checkItem">
+                                <div className="item"><input className="radio" type="radio" /> <span>Тийм</span></div>  
+                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
+                            </div>
+                        </div>
+                </div>
+
+                <div className="buttonPar">
+                            <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
+                            <NextBtn className="SubmitButton" type="button">Илгээх <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                </div>
             </div>
         </FeedBackCont>
     )
@@ -138,12 +210,12 @@ export default Feedback
 // #1890ff;
 const FeedBackCont = styled.div`
     color: rgba(${textColor});
+    padding-bottom:80px;
     .form-control{
        &:hover{
            border:1px solid #1890ff;
        }
     }
-    
     .contentPar{
         background-color:white;
         padding:20px 100px;
@@ -316,7 +388,30 @@ const FeedBackCont = styled.div`
             }
         }
     }
+    .buttonPar{
+        margin:10px 0px;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-between;
+          .errtext{
+            transition:all 0.4s ease;
+            text-align:center;
+            background-color: #f6c343;
+            border-radius:5px;
+            font-size:15px !important;
+            font-weight:400;
+            color:black !important;
+            line-height:34px;
+            padding:0px 20px;
+          }
+      }
 
+    @media only screen and (max-width:786px){
+        .contentPar{
+            padding: 20px 10px
+        }
+    }
 `
 
 const infoWhere = [
