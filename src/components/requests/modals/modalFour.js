@@ -4,10 +4,10 @@ import {fontFamily, textColor, ColorRgb, } from '../../theme';
 
 
 function ModalFour(props) {
-    console.log(props.Data2, "** 44 data")
 
     const [ DataOne, setDataOne ] = useState([]);
     useEffect(()=>{
+      if(props.Data2){
         setDataOne(props.DataOne);
         const finalData = []
             tableData.map((el,i)=>{
@@ -15,6 +15,10 @@ function ModalFour(props) {
                 finalData.push(el);
             });
         setDataOne(finalData);
+      }else{
+        setDataOne(tableData);
+      }
+        
 
     },[]);
 

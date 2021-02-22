@@ -5,15 +5,11 @@ import {FiUserCheck} from 'react-icons/fi'
 import {GoCalendar,GoMail} from 'react-icons/go'
 import {GiScales} from 'react-icons/gi'
 import {IoIosAddCircleOutline} from 'react-icons/io'
-import UserContext from '../../../../context/UserContext'
 
 function TableThreeDetails(props) {
-    const StyleContext  = useContext(UserContext);
     const initialList = [{id: 1}];
     const [ addItem, setAddItem ] = useState(initialList);
     const AddHandle = ()=>{
-        // console.log("nana");
-        StyleContext.StyleComp("-200%", "-100%", "0%", 100 + 100);
         const list = addItem.concat( {id: 1});
         setAddItem(list);
     }
@@ -21,8 +17,11 @@ function TableThreeDetails(props) {
     const [ initialData, setInitialData ] = useState([]);
 
     useEffect(() => {
-        setInitialData(props.initialData);
-    }, [])
+        if(props.initialData){
+            setInitialData(props.initialData);
+        }
+    }, [props.initialData]);
+
     const changeDateHandle = (event) =>{
         const finalData = []
         props.initialData.map((el,i)=>{
@@ -56,16 +55,16 @@ function TableThreeDetails(props) {
         })
         setInitialData(finalData);
     }
-    console.log(props.initialData, "***********")
 
-    // console.log(props.initialData, "detail inital 3");
+    console.log(props.initialData, " bainuu?>");
+
     return (
         <Component3Detail>
             <div className="rowHeader">
                 <div className="boldTitle">Хавсралт 2В</div>
                 <div className="italicTitle">ХҮСНЭГТ 3. ҮЙЛДВЭРЛЭГЧИЙН БАЙГАЛЬ ОРЧИН, НИЙГМИЙН УДИРДЛАГЫН ГҮЙЦЭТГЭЛИЙН ТАЛААРХ МЭДЭЭЛЛИЙН ТОВЧООН</div>
             </div>
-            {props.initialData[0] ? (initialData.map((el,i)=>{
+            {props.initialData? (initialData.map((el,i)=>{
                 return(
                     <div id={i}  className="GetItemAdd33 DetailPar" key={i}>
                         <div className="topTitle">
@@ -137,7 +136,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Огноо :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" onChange={changeDateHandle} id={el.id} value={el.pdate} max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
+                                        <input type="date"  max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
                                         <label for="name" className=" form__label">Огноо</label>
                                     </div>
                                 </div>
@@ -147,7 +146,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Асуудлын мөн чанар :</span> </div>
                                 <div className="name"> <GiScales />
                                     <div className="form__group">
-                                        <input type="input" onChange={changeDateHandle2} value={el.issue} id={el.id} className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
+                                        <input type="input"  className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
                                         <label for="name" className=" form__label">Асуудлын мөн чанар</label>
                                     </div>
                                 </div>
@@ -158,7 +157,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
                                 <div className="name"> <FiUserCheck />
                                     <div className="form__group">
-                                        <input type="date" id={el.id} onChange={changeDateHandle3} value={el.stepdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
+                                        <input type="date"  className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
                                         <label for="name" className=" form__label">огноо тус бүрээр</label>
                                     </div>
                                 </div>
@@ -168,7 +167,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Санал :</span> </div>
                                 <div className="name"> <GoMail />
                                     <div className="form__group">
-                                        <input type="input" id={el.id} value={el.vote} onChange={changeDateHandle4}  className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
+                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
                                         <label for="name" className=" form__label">Санал</label>
                                     </div>
                                 </div>
@@ -178,7 +177,7 @@ function TableThreeDetails(props) {
                  </div>
                 )
             })) }
-            {props.initialData[0] ? null : <div className="AddItemBtn"> <IoIosAddCircleOutline onClick={AddHandle} /> </div> }
+            {props.initialData ? null : <div className="AddItemBtn"> <IoIosAddCircleOutline onClick={AddHandle} /> </div> }
             
         </Component3Detail>
     )

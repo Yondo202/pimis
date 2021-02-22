@@ -13,13 +13,17 @@ function ModalOne(props) {
     const [ DataOne, setDataOne ] = useState([]);
     useEffect(()=>{
         // setDataOne(props.DataOne);
-        const finalData = []
+        if(props.DataOne){
+            const finalData = []
             dataOne.map((el,i)=>{
                 props.DataOne.map(elem=>{ if(i + 1 === elem.rownum){ el["rvalue"] = elem.rvalue; el["rownum"] = elem.rownum } });
                 finalData.push(el);
             });
-        setDataOne(finalData);
-        console.log(DataOne, " my data one"); 
+            setDataOne(finalData);
+        }else{
+            setDataOne(dataOne)
+        }
+        
     },[]);
 
     return (

@@ -39,7 +39,6 @@ export const Modal = ({ showModal,setShowModal, initialData }) => {
     useEffect( async ()=>{
         document.addEventListener('keydown', keyPress);
         await setDataOne(initialData);
-        console.log(initialData, " all data modal");
         return () => document.removeEventListener('keydown', keyPress)
     },[keyPress]);
 
@@ -49,6 +48,8 @@ export const Modal = ({ showModal,setShowModal, initialData }) => {
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
     });
+
+    console.log(DataOne, " Modal Data ");
    
     return(
         <>

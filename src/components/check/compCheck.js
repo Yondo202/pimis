@@ -2,7 +2,7 @@ import React,{useState, useContext,useEffect} from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom'
 import {IoMdCheckmarkCircle  } from 'react-icons/io';
-import { fontFamily, textColor, Color,fontSize } from '../theme';
+import { fontFamily, textColor, Color,fontSize,NextBtn } from '../theme';
 import {AiOutlineSend} from 'react-icons/ai'
 import {CgDanger} from 'react-icons/cg'
 import HelperContext from '../../context/HelperContext'
@@ -44,7 +44,7 @@ function CompCheck() {
               let soloObject2 = {}
               const cond = {};
 
-              arr2.map((element,i)=>{ 
+              arr2.map((element,i)=>{
                   if(element.checked === true){
                     let field = element.name; let value = element.value;  let id = element.id; soloObject2[id + field] = value;
                   }
@@ -112,11 +112,15 @@ function CompCheck() {
                         <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                     </div>
 
-                  {updateMount!==false? <div className="Success"><div className="item"><IoMdCheckmarkCircle /> Шалгуур хангалтыг тулгах хуудас Амжилттай </div></div> 
+                  {updateMount!==false?
+                   <div className="Success">
+                       <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div>
+                       <div>dadada</div>
+                    </div> 
                   :( <div className="buttonPar">
-                    <div style={{opacity:`${opacity2}`}} className="errtext"><CgDanger /> {FinalErrorText}</div>
-                    <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
-                </div>)}
+                      <div style={{opacity:`${opacity2}`}} className="errtext"><CgDanger /> {FinalErrorText}</div>
+                      <NextBtn onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                    </div>)}
                     
             </div>
         </Component1>
@@ -129,6 +133,7 @@ export default CompCheck
 
 const Component1 = styled.div`
     margin-top:40px;
+    padding-bottom:80px;
     color:rgba(${textColor},0.9);
     transition: all 0.5s ease-out;
     font-family: ${fontFamily};
@@ -141,19 +146,21 @@ const Component1 = styled.div`
           padding:0px 30px;
           padding-bottom:30px;
           display:flex;
-          justify-content:center;
+          align-items:center;
+          justify-content:space-between;
           .item{
+            font-size:15px;
             display:flex;
             align-item:center;
+            border-radius:4px;
+            border:1px solid rgba(0,0,0,0.3);
+            padding:10px 30px;
             svg{
               font-size:24px;
               margin-right:10px;
               color:green;
               background-color:white;
             }
-            border-radius:4px;
-            border:1px solid rgba(0,0,0,0.3);
-            padding:10px 30px;
           }
         }
           .rowHeader{

@@ -16,7 +16,7 @@ export default class Content extends React.Component {
          setTimeout(()=>{ this.setState({ color:color, text:text, cond:false })},[4000]);
      }
     clickHandle = () =>{
-        axios.post('send-pps-notice', { email: "yondooo61@gmail.com", emailBody:EmailHTML,})
+        axios.post('send-pps-notice', { email: "ganhuyag1@gmail.com", emailBody:EmailHTML,})
         .then((res)=>{ console.log(res, "^ress");  this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true);
               }).catch((e)=>{console.log(e, "^err");   this.alertText("orange", "Алдаа гарлаа", true);  });
     };

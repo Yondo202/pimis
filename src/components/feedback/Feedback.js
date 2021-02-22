@@ -1,9 +1,13 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {fontSize, textColor,InputStyle,ColorRgb} from '../theme'
+import {fontSize, textColor,InputStyle,ColorRgb,NextBtn,Color } from '../theme'
+import {AiOutlineSend} from 'react-icons/ai'
 
 
 function Feedback() {
+    const [FinalErrorText, setFinalErrorText] = useState("");
+    const [opacity2, setOpacity2] = useState("0");
+    
     let inputFullName = React.useRef(null);
     useEffect(()=>{
         setTimeout(()=>{  inputFullName.current.focus();},3000);
@@ -191,7 +195,10 @@ function Feedback() {
                         </div>
                 </div>
 
-
+                <div className="buttonPar">
+                            <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
+                            <NextBtn className="SubmitButton" type="button">Илгээх <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                </div>
             </div>
         </FeedBackCont>
     )
@@ -203,12 +210,12 @@ export default Feedback
 // #1890ff;
 const FeedBackCont = styled.div`
     color: rgba(${textColor});
+    padding-bottom:80px;
     .form-control{
        &:hover{
            border:1px solid #1890ff;
        }
     }
-    
     .contentPar{
         background-color:white;
         padding:20px 100px;
@@ -381,6 +388,24 @@ const FeedBackCont = styled.div`
             }
         }
     }
+    .buttonPar{
+        margin:10px 0px;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-between;
+          .errtext{
+            transition:all 0.4s ease;
+            text-align:center;
+            background-color: #f6c343;
+            border-radius:5px;
+            font-size:15px !important;
+            font-weight:400;
+            color:black !important;
+            line-height:34px;
+            padding:0px 20px;
+          }
+      }
 
     @media only screen and (max-width:786px){
         .contentPar{

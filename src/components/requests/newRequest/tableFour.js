@@ -92,7 +92,6 @@ function TableFour() {
                     setFinalTextScale("1");
                     setOpacity2("0");
                     setFinalMsg("0");
-                    console.log(finalEnd, "myfinal End (A)");
                     axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{ 
                     helperContext.alertText('orange', "Та шалгуур хангахгүй байна!", true); setTimeout(()=>{ history.push("/"); },4000);
                     console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа...", true); console.log(err, "err");});
@@ -105,7 +104,6 @@ function TableFour() {
                     setFinalTextScale("1");
                     setOpacity2("0");
                     setFinalMsg("0");
-                    finalEnd.PPS4["esm"] = "C"
                     console.log(finalEnd, "myfinal End (C)");
                     axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
                       helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000);
@@ -119,7 +117,6 @@ function TableFour() {
                     setFinalTextScale("1");
                     setOpacity2("0");
                     finalEnd.PPS4["esm"] = "B"
-                    console.log(finalEnd, "myfinal End (B)");
                     axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
                     helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{scroll.scrollTo(0); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%") },3000); })
                     .catch(err=>{ helperContext.alertText('orange', "Алдаа гарлаа", true);});
@@ -131,7 +128,6 @@ function TableFour() {
                     setOpacity2("0");
                     alert("gg");
                     finalEnd.PPS4["esm"] = "F"
-                    console.log(finalEnd, "other F");
                     axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{ 
                     helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000); })
                     .catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true);});

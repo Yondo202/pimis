@@ -28,8 +28,7 @@ import MainPage from "components/notifyPage/MainPage";
 import UnAuthContent from "UnauthContent";
 import { FilePreviewStore } from "components/utilities/filePreviewContext";
 import FilePreviewModal from "components/file_preview/filePreview";
-
-
+import WorkPerformance from './components/workPerformance/MainWorkPerformance'
 
 function App() {
   const ctxUser = useContext(UserContext);
@@ -37,7 +36,6 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     const expireDate = new Date(localStorage.getItem("expireDate"));
-
     if (token) {
       if (expireDate > new Date()) {
         console.log(expireDate);
@@ -58,7 +56,7 @@ function App() {
         <FilePreviewStore>
           <Router>
             {
-              ctxUser.userInfo.userId ? ctxUser.userInfo.role === "admin" ? (
+              ctxUser.userInfo.userId ? ctxUser.userInfo.role !== "user" ? (
                 <Switch>
                   <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <Route path="/" >
@@ -84,6 +82,7 @@ function App() {
                         <Route path="/comp-request/new" component={MainRequest} />
                         <Route path="/comp-request/old" component={MainRequestOld} />
                         <Route path="/feedback" component={Feedback} />
+                        <Route path="/workperformance" component={WorkPerformance} />
 
                         <Route path="/email" component={EmialSender} />
                         <Route path="/email2" component={EmialSender2} />
