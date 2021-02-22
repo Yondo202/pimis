@@ -17,8 +17,8 @@ const initialState = [
     {
         activity: null,
         budget_cost: null,
-        edp_funding: null,
-        applicant_contribution: null,
+        // edp_funding: null,
+        // applicant_contribution: null,
     },
 ]
 
@@ -49,8 +49,8 @@ function UrgudulActivities() {
         const newObj = {
             activity: null,
             budget_cost: null,
-            edp_funding: null,
-            applicant_contribution: null,
+            // edp_funding: null,
+            // applicant_contribution: null,
         }
 
         setForm([...form, newObj])
@@ -61,8 +61,10 @@ function UrgudulActivities() {
     }
 
     const net = form.map(item => + item.budget_cost).reduce((a, b) => a + b, 0)
-    const edp = form.map(item => + item.edp_funding).reduce((a, b) => a + b, 0)
-    const self = form.map(item => + item.applicant_contribution).reduce((a, b) => a + b, 0)
+    // const edp = form.map(item => + item.edp_funding).reduce((a, b) => a + b, 0)
+    // const self = form.map(item => + item.applicant_contribution).reduce((a, b) => a + b, 0)
+    const edp = net / 2
+    const self = net / 2
     const selfPerc = (self / net) * 100
 
     const AlertCtx = useContext(AlertContext)
@@ -151,18 +153,18 @@ function UrgudulActivities() {
                                 </div>
                             </div>
 
-                            <div className="tw-p-2 tw-pl-4 tw-border tw-border-dashed tw-flex">
+                            {/* <div className="tw-p-2 tw-pl-4 tw-border tw-border-dashed tw-flex">
                                 <span className="tw-text-sm tw-font-medium">
                                     Үйл ажиллагааны төсөөлж буй төсөв:
                                 </span>
 
                                 <HelpPopup classAppend="tw-ml-auto sm:tw-ml-12" main="Нийт дүнг тооцохдоо бодит өртөгөөс 20 хувиас дээш хэлбэлзэлтэй байж болохгүй тул бодитоор өртөгөөр тооцоолно уу." position="bottom" />
-                            </div>
+                            </div> */}
 
                             <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                                 <FormInline label="Үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.budget_cost) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
-                                <FormInline label="ЭДТ-өөс санхүүжүүлэгдэх нь, доллараар" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.edp_funding || ''} name="edp_funding" id={i} onChange={handleInputFormat} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.edp_funding) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
+                                {/* <FormInline label="ЭДТ-өөс санхүүжүүлэгдэх нь, доллараар" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.edp_funding || ''} name="edp_funding" id={i} onChange={handleInputFormat} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.edp_funding) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
                                 <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.applicant_contribution) && 'tw-border-red-500'}`}>
                                     <FormInline label="Өргөдөл гаргагчийн оролцоо (бэлэн мөнгө)" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.applicant_contribution || ''} name="applicant_contribution" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
@@ -170,7 +172,7 @@ function UrgudulActivities() {
                                     <div className="tw-relative tw-w-2">
                                         <HelpPopup classAppend="tw-right-5 tw-top-1" main="/.../" position="top-left" />
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
@@ -195,9 +197,16 @@ function UrgudulActivities() {
                     <span className="tw-ml-2 tw-text-base tw-font-medium">${net}</span>
                 </div>
 
-                <div className="tw-p-0.5 tw-text-sm">
-                    Үүнээс ЭДТ-өөс санхүүжүүлэгдэх нь:
-                    <span className="tw-ml-2 tw-text-base tw-font-medium">${edp}</span>
+                <div className="tw-p-0.5">
+                    <span className="tw-text-sm">
+                        Үүнээс ЭДТ-өөс санхүүжүүлэгдэх нь:
+                        <span className="tw-ml-2 tw-text-base tw-font-medium">
+                            ${edp}
+                        </span>
+                        {!isNaN(edp) && edp > 50000 &&
+                            <HelpPopup classAppend="tw-ml-4 tw-inline-flex tw-top-1.5" buttonClass="tw-text-red-400 active:tw-text-red-600" main="Экспортыг дэмжих төслөөс олгох санхүүжилт нь $50,000 хэтрэхгүй байх юм." position="top-left" />
+                        }
+                    </span>
                 </div>
 
                 <div className="tw-p-0.5 tw-text-sm">
@@ -208,10 +217,10 @@ function UrgudulActivities() {
                 <div className="tw-p-0.5">
                     <span className="tw-text-sm">
                         Өргөдөл гаргагчийн оролцоо нийт төслийн зардалд эзлэх хувиар (C/A %):
-
-                        <span className="tw-ml-2 tw-text-base tw-font-medium">{!isNaN(selfPerc) && `${+ selfPerc.toFixed(2)}%`}</span>
-                        {
-                            !(selfPerc >= 0 && selfPerc <= 100) && !isNaN(selfPerc) &&
+                        <span className="tw-ml-2 tw-text-base tw-font-medium">
+                            {!isNaN(selfPerc) && `${+ selfPerc.toFixed(2)}%`}
+                        </span>
+                        {!(selfPerc >= 0 && selfPerc <= 100) && !isNaN(selfPerc) &&
                             <HelpPopup classAppend="tw-ml-4 tw-inline-flex tw-top-1.5" buttonClass="tw-text-red-400 active:tw-text-red-600" main="Тоцоолол алдаатай байна. Өргөгдөл гаргагчийн оролцооны нийт эзлэх хувь нь 0-ээс бага эсвэл 100-аас их байх боломжгүй." position="top-left" />
                         }
                     </span>

@@ -1,12 +1,12 @@
 import CloseSVG from 'assets/svgComponents/closeSVG'
-import PlusSVG from 'assets/svgComponents/plusSVG'
+import axios from 'axiosbase'
 import React, { useEffect, useRef, useState } from 'react'
 import { config, Transition } from 'react-spring/renderprops'
 
 
 const nemsenGishuud = [
     { name: 'Bat' },
-    { name: 'Bold' }
+    { name: 'Bold' },
 ]
 
 const unelgeeniiHorooniiGishuud = [
@@ -41,6 +41,10 @@ export default function EvaluatorsModal(props) {
 
     const [evaluators, setEvaluators] = useState([])
 
+    useEffect(() => {
+        setEvaluators(nemsenGishuud)
+    }, [])
+
     const [search, setSearch] = useState('')
 
     const filter = (obj) => {
@@ -50,6 +54,20 @@ export default function EvaluatorsModal(props) {
         } else {
             return true
         }
+    }
+
+    const handleEvaluatorsSubmit = () => {
+        axios.post()
+    }
+
+    const evaluatorsMap = evaluators.map(obj => obj.name)
+
+    const handleRemove = (index) => {
+        setEvaluators(evaluators.filter((_, i) => i !== index))
+    }
+
+    const handleAdd = (obj) => {
+        setEvaluators([...evaluators, obj])
     }
 
     return (
@@ -72,10 +90,12 @@ export default function EvaluatorsModal(props) {
                         <div className="">Томилсон гишүүд:</div>
 
                         <div className="tw-h-20 tw-overflow-y-auto">
-                            {nemsenGishuud.map(evaluator =>
-                                <div className="tw-flex tw-justify-between tw-items-center hover:tw-bg-blue-100" key={evaluator.name}>
+                            {evaluators.map((evaluator, i) =>
+                                <div className="tw-flex tw-justify-between tw-items-center hover:tw-bg-blue-100" key={i}>
                                     {evaluator.name}
-                                    <CloseSVG className="tw-w-4 tw-h-4" />
+                                    <button className="" onClick={() => handleRemove(i)}>
+                                        <CloseSVG className="tw-w-4 tw-h-4" />
+                                    </button>
                                 </div>
                             )}
                         </div>
@@ -83,11 +103,17 @@ export default function EvaluatorsModal(props) {
                         <input className="tw-w-full tw-border" style={{ maxWidth: '240px' }} value={search} onChange={e => setSearch(e.target.value)} />
 
                         <div className="tw-h-32 tw-overflow-y-auto">
-                            {unelgeeniiHorooniiGishuud.filter(filter).map(evaluator =>
-                                <div className="hover:tw-bg-blue-100" key={evaluator.name}>
+                            {unelgeeniiHorooniiGishuud.filter(obj => !evaluatorsMap.includes(obj.name)).filter(filter).map(evaluator =>
+                                <div className="hover:tw-bg-blue-100" key={evaluator.name} onClick={() => handleAdd(evaluator)}>
                                     {evaluator.name}
                                 </div>
                             )}
+                        </div>
+
+                        <div className="tw-flex tw-justify-center tw-p-2">
+                            <button className="tw-py-1 tw-px-4 tw-bg-gray-500 tw-text-white tw-rounded-md focus:tw-outline-none active:tw-bg-gray-600 tw-transition-colors" onClick={handleEvaluatorsSubmit}>
+                                Хадгалах
+                            </button>
                         </div>
                     </div>
                 </div>

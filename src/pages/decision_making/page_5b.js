@@ -303,23 +303,21 @@ export default function CompilationChecklist() {
                 </thead>
 
                 <tbody>
-                    {
-                        rows.map(((row, i) =>
-                            <tr className={`${row.rowcode === 'a' || row.rowcode === 'b' ? 'tw-bg-gray-200' : ''}`} key={row.rowcode}>
-                                <td className="tw-px-2">{row.description}</td>
+                    {rows.map((row, i) =>
+                        <tr className={`${row.rowcode === 'a' || row.rowcode === 'b' ? 'tw-bg-gray-200' : ''}`} key={row.rowcode}>
+                            <td className="tw-px-2">{row.description}</td>
 
-                                <td>
-                                    <div className="tw-flex tw-justify-center tw-items-center">
-                                        <input className="tw-w-4 tw-h-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
-                                    </div>
-                                </td>
+                            <td>
+                                <div className="tw-flex tw-justify-center tw-items-center">
+                                    <input className="tw-w-4 tw-h-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
+                                </div>
+                            </td>
 
-                                <td>
-                                    <textarea className="tw-bg-transparent tw-border tw-border-gray-400 focus:tw-outline-none tw-w-60" value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} />
-                                </td>
-                            </tr>
-                        ))
-                    }
+                            <td>
+                                <textarea className="tw-bg-transparent tw-border tw-border-gray-400 focus:tw-outline-none tw-w-60" value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} />
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
 
