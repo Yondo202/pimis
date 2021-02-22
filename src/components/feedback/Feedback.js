@@ -1,8 +1,14 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import styled from 'styled-components'
 import {fontSize, textColor,InputStyle,ColorRgb} from '../theme'
 
+
 function Feedback() {
+    let inputFullName = React.useRef(null);
+    useEffect(()=>{
+        setTimeout(()=>{  inputFullName.current.focus();},3000);
+    },[])
+  
     return (
         <FeedBackCont className="container">
             <div className="contentPar">
@@ -13,8 +19,7 @@ function Feedback() {
 
                 <div className="compName">
                     <div className="title">Аж ахуйн нэгж/ Кластерын нэр :</div>
-                    {/* <input type="text" className="form-control" placeholder="нэрийг бүтнээр нь оруулна уу"  /> */}
-                    <InputStyle className="nameText"><input placeholder="бүтэн нэрийг оруулна үү..."  type="text" />  <div className="line"></div></InputStyle>
+                    <InputStyle  className="nameText"><input ref={inputFullName} placeholder="бүтэн нэрийг оруулна үү..."  type="text" />  <div className="line"></div></InputStyle>
                 </div>
 
                 <div className="infoWhere">
@@ -59,8 +64,8 @@ function Feedback() {
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
                             <div className="checkItem">
-                                <div className="item"><input className="radio" type="radio" /> <span>Yes</span></div>  
-                                <div className="item"><input className="radio" type="radio" /> <span>No</span></div>
+                                <div className="item"><input className="radio" type="radio" /> <span>Тийм</span></div>  
+                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
                             </div>
                         </div>
                         <div className="Title3">
@@ -118,13 +123,73 @@ function Feedback() {
                                         </tr>
                                     )
                                 })}
-                               
                             </table>
                         </div>
                 </div>
 
 
+                <div className="infoWhere">
+                        <div className="Title Title4"><span className="circle">⬤</span>Урьд өмнө хэрэгжүүлж байгаагүй энэ үйл ажиллагааг хэрэгжүүлснээр таныг бизнесээ цааш чиглүүлж явахад хувь нэмэр оруулна гэж бодож байна уу?</div>
+                        <div className="chekcPar">
+                            <span className="title">Аль нэгийг сонгоно уу [√] : </span>
+                            <div className="checkItem">
+                                <div className="item"><input className="radio" type="radio" /> <span>Тийм</span></div>  
+                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
+                            </div>
+                        </div>
+                        <div className="Title3">
+                            <div className="text">Яагаад?</div> 
+                            <InputStyle className="nameText"><input placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                         </div>
+                </div>
 
+
+                <div className="infoWhere">
+                        <div className="Title Title4"><span className="circle">⬤</span>Та дараагийн 12 сарын хугацаанд дахин санхүүгийн дэмжлэгийн хүсэлт гаргах уу?</div>
+                </div>
+
+                <div className="infoWhere">
+                        <div className="Title Title4"><span className="circle">⬤</span>Хэрэв тийм бол ямар үйл ажиллагааг санхүүжүүлэх вэ[√]?</div>
+                        <div className="chekcPar">
+                            <div className="checkItem">
+                                <div style={{marginLeft:0}} className="item"><input className="radio" type="radio" /> <span>1. Сургалт, семинар  </span></div>  
+                                <div className="item"><input className="radio" type="radio" /> <span>2. Зөвлөх үйлчилгээ </span></div>
+                                <div className="item"><span>3. Бусад  </span><InputStyle style={{marginLeft:10}} className="nameText"><input placeholder="энд бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle></div>
+                            </div>
+                        </div>
+
+                        <div className="Title3">
+                            <div style={{width:"30%"}} className="text">Хэрэв үгүй бол яагаад?</div> 
+                            <InputStyle className="nameText"><input placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                         </div>
+                </div>
+
+
+                <div className="infoWhere">
+                        <div className="Title Title4"><span className="circle">⬤</span>Энэхүү төслөөс хуримтлуулсан туршлага дээр үндэслэн санхүүгийн дэмжлэг болон ижил төрлийн программ байхгүй болсон тохиолдолд энэ төрлийн зардлыг танай байгууллага санхүүжүүлэх үү? [√] </div>
+                        <div className="chekcPar">
+                            <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
+                            <div className="checkItem">
+                                <div className="item"><input className="radio" type="radio" /> <span>Тийм, 100% санхүүжүүлнэ.</span></div>  
+                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
+                            </div>
+                        </div>
+                        <div className="Title3">
+                            <div style={{width:"30%"}} className="text">Шалтгааныг бичнэ үү:?</div> 
+                            <InputStyle className="nameText"><input placeholder="энд бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                         </div>
+                </div>
+
+                <div className="infoWhere">
+                        <div className="Title Title4"><span className="circle">⬤</span>Үйл ажиллагааны үр дүнгээс үл хамааран санхүүгийн дэмжлэгийн багийн үйлчилгээнд сэтгэл хангалуун байсан уу? [√] </div>
+                        <div className="chekcPar">
+                            <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
+                            <div className="checkItem">
+                                <div className="item"><input className="radio" type="radio" /> <span>Тийм</span></div>  
+                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
+                            </div>
+                        </div>
+                </div>
 
 
             </div>
@@ -317,6 +382,11 @@ const FeedBackCont = styled.div`
         }
     }
 
+    @media only screen and (max-width:786px){
+        .contentPar{
+            padding: 20px 10px
+        }
+    }
 `
 
 const infoWhere = [

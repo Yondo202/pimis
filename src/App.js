@@ -54,12 +54,9 @@ function App() {
 
   return (
     <div className="App">
-
-
       <AlertStore>
         <FilePreviewStore>
           <Router>
-            {/* <Admin /> */}
             {
               ctxUser.userInfo.userId ? ctxUser.userInfo.role === "admin" ? (
                 <Switch>
@@ -77,12 +74,10 @@ function App() {
                       <Switch>
                         <Route path="/" exact>
                           <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                            {/* <LoginDoneHome /> */}
                             <LoginDoneHome2 />
                           </motion.div>
                         </Route>
                         <Route path="/comp-test" component={CheckComp} />
-                        {/* <Route path="/comp-check" component={MainForm} /> */}
                         <Route path="/comp-request" component={ReqHome} exact />
                         <Route path="/notify-page/:paramId" component={MainPage} />
 
@@ -121,3 +116,6 @@ function App() {
 }
 
 export default App;
+
+
+
