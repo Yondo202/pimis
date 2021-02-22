@@ -20,7 +20,7 @@ export default class Content extends React.Component {
     clickHandle = () =>{
         axios.post('send-pps-notice', {
             // html: Html,
-            email: "yondooo61@gmail.com",
+            email: "ganhuyag1@gmail.com",
             emailBody:EmailHTML,
            }).then((res)=>{
                 console.log(res.data.success, "my Response");
