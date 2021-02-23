@@ -41,7 +41,8 @@ function TableFive(props) {
         });
         let keys1 = Object.keys(tableCondition1[0]); console.log(keys1.length, "my length");
 
-        let tableCondition2 = []; let rs22 = document.querySelectorAll(".GetItemAdd55"); let arr22 = Array.from(rs22); let finalOne22 = [];
+        let tableCondition2 = []; let rs22 = document.querySelectorAll(".GetItemAdd555"); let arr22 = Array.from(rs22); let finalOne22 = [];
+
         arr22.map((el,i)=>{
             const Lala = {}
             let rs2 = document.querySelectorAll(`.passa${i + 1}`);
@@ -49,6 +50,8 @@ function TableFive(props) {
             arr23.map((el,i)=>{ if(el.value !== ""){let field = el.name; let value = el.value; Lala["id"] = el.id; Lala[field] = value; }});
             tableCondition2.push(Lala); finalOne22.push(Lala);
         });
+
+
         let keys2 = Object.keys(tableCondition2[0]);
         // console.log(keys2.length , "keys2");
         let rs4 = document.querySelectorAll(".getUserInp222"); let arr4 = Array.from(rs4); let userInp = {};
@@ -56,7 +59,8 @@ function TableFive(props) {
         let confirm = document.getElementById("GetcheckBtn5").checked; console.log(confirm, "my confirm");
 
         finalOne["requestOne"] = finalOne2; finalOne["requestTwo"] = finalOne22; finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS5"] = finalOne;
-        console.log(finalEnd, "final");
+
+        console.log(finalEnd, "^^^final");
         
         if(keys1.length < 8 || keys2.length < 8){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү"); setOpacity2("1");
@@ -67,8 +71,9 @@ function TableFive(props) {
         }else{
             setOpacity2("0");
             if(Dname){
-                axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
-                scroll.scrollTo(0); helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
+                axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{scroll.scrollTo(0);helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");})
+                .catch((err)=>{helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+                
             }else{
                 axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
                     helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%"); scroll.scrollTo(0);
@@ -83,7 +88,7 @@ function TableFive(props) {
         <Component3 className="container">
             {Dname? (
             <><TableFiveDetails initialData={props.initialData.requestOne} />
-            <TableFiveDetails2 initialData={props.initialData.requestTwo} /></>
+              <TableFiveDetails2 initialData={props.initialData.requestTwo} /></>
             ) :  <><TableFiveDetails initialData={null} />
                    <TableFiveDetails2 initialData={null} /></> }
             
@@ -96,7 +101,10 @@ function TableFive(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" value={Dname} onChange={Dname&&changeNameHandle} className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            {Dname? <input type="input" value={Dname} onChange={changeNameHandle} className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                                    :<input type="input" className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            }
+                                            
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -107,7 +115,10 @@ function TableFive(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" value={Ddate} onChange={Dname&&changeDateHandle} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                {Dname?<input type="date" value={Ddate} onChange={changeDateHandle} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                        : <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                }
+                                                
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>

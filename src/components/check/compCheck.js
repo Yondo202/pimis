@@ -5,14 +5,15 @@ import {IoMdCheckmarkCircle  } from 'react-icons/io';
 import { fontFamily, textColor, Color,fontSize,NextBtn } from '../theme';
 import {AiOutlineSend} from 'react-icons/ai'
 import {CgDanger} from 'react-icons/cg'
-import HelperContext from '../../context/HelperContext'
+import UserContext from '../../context/UserContext'
 import AccessToken from '../../context/accessToken'
 import axios from '../../axiosbase'
 
 function CompCheck() {
-    const ctx = useContext(HelperContext);
+    const ctx = useContext(UserContext);
     const history = useHistory();
-    const [ updateMount, setUpdateMount ] = useState(false);
+    const [ BtnSpin, setBtnSpin ] = useState(false);
+    const [ updateMount, setUpdateMount ] = useState(0);
     const [ initialData, setInitialData ] = useState(allData);
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
@@ -22,7 +23,6 @@ function CompCheck() {
     useEffect(async()=>{
       const data =  await axios.get(`criterias`,{ headers: { Authorization:AccessToken() } });
       let keys = Object.keys(data.data.data);
-     
       if(keys.length > 0){
         let filterArr = []; let value = Object.values(data.data.data);
         keys.map((el,i)=>{ let obj1 = {}; value.map((elem,ind)=>{  if(i===ind){ obj1["keys"] = el;  obj1["values"] = elem; }}); filterArr.push(obj1); });
@@ -32,17 +32,16 @@ function CompCheck() {
             })
         });
         setInitialData(allData);
-        setUpdateMount(true);
+        setUpdateMount(1);
       }else{ console.log("^^data alga") }
+      console.log("---------------------------------------");
     },[updateMount]);
 
 
-    console.log(initialData, " state data");
+    const NextPageHandle = () =>{  history.push('/comp-request'); }
+
     const clickHandles = (e) =>{
-              let rs2 = document.querySelectorAll(".inpTest333");
-              let arr2 = Array.from(rs2);
-              let soloObject2 = {}
-              const cond = {};
+              let rs2 = document.querySelectorAll(".inpTest333"); let arr2 = Array.from(rs2); let soloObject2 = {}; const cond = {};
 
               arr2.map((element,i)=>{
                   if(element.checked === true){
@@ -55,7 +54,6 @@ function CompCheck() {
 
               let finalCond = Object.keys(cond);
               let keys = Object.keys(soloObject2);
-              console.log(keys.length, " my urt");
               const Procent = keys.length * 100 / 25;
               const FinalProcent = Math.round(Procent);
 
@@ -68,13 +66,13 @@ function CompCheck() {
                 setOpacity2("1");
                 setTimeout(()=>{history.push('/');},4000);
               }else{
+                setBtnSpin(true);
                 setOpacity("0");
                 setOpacity2("0");
-                // history.push('/');
-                // scroll.scrollTo(0);
                 axios.post(`criterias`, soloObject2, {headers:{ Authorization:AccessToken() } }).then(res=>{
-                  console.log(res, "ress"); ctx.alertText('green, Амжилттай', true);
-                }).catch(err=>console.log(err));
+                  console.log(res);
+                  setUpdateMount(2); ctx.alertText('green, Амжилттай', true); setBtnSpin(false);
+                }).catch(err=>{setFinalErrorText("Серверт алдаа гарлаа."); setBtnSpin(false);});
               }
       }
 
@@ -99,8 +97,8 @@ function CompCheck() {
                                   <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
                                   <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
                                    
-                                  <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==false? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
-                                  <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==false? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
+                                  <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==0? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
+                                  <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==0? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
                               </div>
                               </div>
                               )
@@ -112,14 +110,14 @@ function CompCheck() {
                         <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                     </div>
 
-                  {updateMount!==false?
+                  {updateMount!==0?
                    <div className="Success">
                        <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div>
-                       <div>dadada</div>
+                       <NextBtn onClick={NextPageHandle} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                     </div> 
                   :( <div className="buttonPar">
                       <div style={{opacity:`${opacity2}`}} className="errtext"><CgDanger /> {FinalErrorText}</div>
-                      <NextBtn onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                      <NextBtn onClick={clickHandles} style={BtnSpin===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button"> {BtnSpin===false? <>Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div> </> : <img src="/gifff.gif" /> } </NextBtn>
                     </div>)}
                     
             </div>
@@ -264,6 +262,14 @@ const Component1 = styled.div`
             
           }
         }
+        .NextPageBtn{
+          padding:5px 10px;
+          background-color: #FFFFFF;
+          color: rgba(${textColor});
+          font-size:15px;
+          text-decoration: underline;
+          text-decoration-color:blue;
+        }
 
         .buttonPar{
         //   margin:10px 0px;
@@ -290,6 +296,7 @@ const Component1 = styled.div`
                 font-size:25px;
               }
             }
+           
 
             .SubmitButton{
                 margin:10px 0px;

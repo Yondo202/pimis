@@ -113,7 +113,7 @@ function Feedback() {
                             <table id="customers">
                                 <tr>
                                   <th>№</th>
-                                   <th>Хүчин зүйлс</th>
+                                   <th>Хүчин зүйлс </th>
                                    <th ><span className="question">Тохирох хариулт[√]</span>Тохирох хариулт[√]<span className="question">Тохирох хариулт[√]</span><span className="question">Тохирох хариулт[√]</span></th>
                                    <th> Мөнгөн дүн болон  хувиар илэрхийлвэл?</th>
                                 </tr>

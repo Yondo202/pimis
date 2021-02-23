@@ -79,17 +79,16 @@ function App() {
                           </motion.div>
                         </Route>
                         <Route path="/comp-test" component={CheckComp} />
-                        <Route path="/comp-request" component={ReqHome} exact />
+                        {/* <Route path="/comp-request" component={ReqHome} exact /> */}
                         <Route path="/notify-page/:paramId" component={MainPage} />
 
-                        <Route path="/comp-request/new" component={MainRequest} />
-                        <Route path="/comp-request/old" component={MainRequestOld} />
+                        {/* <Route path="/comp-request" component={MainRequest} /> */}
+                        <Route path="/comp-request" component={MainRequestOld} />
                         <Route path="/feedback" component={Feedback} />
                         <Route path="/workperformance" component={WorkPerformance} />
 
                         <Route path="/email" component={EmialSender} />
                         <Route path="/email2" component={EmialSender2} />
-
                         <Route path="/letter-of-interest" component={LetterOfInterest} />
 
                         <Route path="/urgudul/:page" component={UrgudulNavigator} />

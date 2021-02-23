@@ -8,15 +8,15 @@ import AccessToken from '../../context/accessToken'
 function Home() {
    let history = useHistory();
    const [ cond, setCond ] = useState(false);
-   useEffect(async()=>{
-       try{
-        let storageToken = localStorage.getItem("edp_loggedUser", []);
-        let resData = await axios.get(`pps-request`, {headers: {Authorization: AccessToken()}});
-        console.log(resData, " ____")
-        if(resData.data.data.id){ setCond(true); }else{ setCond(false); }
-       }catch{console.log("Алдаа гарсан..."); }
+//    useEffect(async()=>{
+//        try{
+//         let storageToken = localStorage.getItem("edp_loggedUser", []);
+//         let resData = await axios.get(`pps-request`, {headers: {Authorization: AccessToken()}});
+//         console.log(resData, " ____")
+//         if(resData.data.data.id){ setCond(true); }else{ setCond(false); }
+//        }catch{console.log("Алдаа гарсан..."); }
 
-   },[cond]);
+//    },[cond]);
 
    const clickHandle = (event)=>{
        console.log(event);
@@ -45,7 +45,7 @@ function Home() {
                             <div className="mains">
                                 <Link to="/comp-test"  className="itemsActive ">1. Шалгуур хангалтыг тулгах хуудас </Link>
                                 <div className="line line2" ></div>
-                                <Link to={cond===false?`/comp-request/new`:`/comp-request/old`} className="itemsActive">2. Байгаль орчны үнэлгээний асуумж </Link>
+                                <Link to={`/comp-request`} className="itemsActive">2. Байгаль орчны үнэлгээний асуумж </Link>
                                 <div className="line line2" ></div>
                                 <Link to="/letter-of-interest" className="itemsActive">3. Сонирхол илэрхийлэх албан тоот</Link>
                                 {/* <div className="line line2" ></div>

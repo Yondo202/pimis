@@ -13,7 +13,7 @@ function ModalThree(props) {
         }else{
             setDataOne(tableData);
         }
-    },[]);
+    },[props.Data2]);
 
 
     return (

@@ -33,8 +33,6 @@ function TableOne() {
                     if(element.value === "true"){ soloObject2["rownum"] = field; soloObject2["rvalue"] = value; cond.push(soloObject2); }
                   }
               });
-
-              // tablesContext.TableControl(finalOne2);
               let rs4 = document.querySelectorAll(".getUserInp1");   let arr4 = Array.from(rs4); let userInp = {};
 
               arr4.map(element=>{
@@ -66,7 +64,6 @@ function TableOne() {
               }
             // console.log(finalEnd, "final end");
       }
-
 
     return (
         <Component1 className="container" >

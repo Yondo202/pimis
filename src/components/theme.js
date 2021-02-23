@@ -62,6 +62,10 @@ export const NextBtn = styled.div`
         border:1px solid rgba(63, 81, 181,0.5);
         width:40%;
         border-radius:6px;
+        img{
+            width:30px;
+            height:30px;
+        }
         .hide{
         transition:all 0.3s ease;
         transform:scale(0);
@@ -144,6 +148,22 @@ export const InputStyle = styled.div`
             display:flex;
             align-items:end;
             input {
+                align-self:flex-end;
+                width:100%;
+                border-bottom:1px solid rgba(0,0,0,0.2);
+                // padding:5px 5px;
+                padding-bottom:5px;
+                padding-left:5px;
+                transition:all 0.3s ease;
+                &:focus{ 
+                    outline-width: 0;
+                }
+                &:focus ~ .line {
+                    width:100%;
+                    left:0;
+                }
+            }
+            textarea{
                 align-self:flex-end;
                 width:100%;
                 border-bottom:1px solid rgba(0,0,0,0.2);

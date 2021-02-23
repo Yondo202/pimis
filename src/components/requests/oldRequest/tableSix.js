@@ -9,13 +9,12 @@ import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
+import AccessToken from '../../../context/accessToken'
 import axios from '../../../axiosbase'
 
 function TableSix(props) {
     const history = useHistory();
-    const StyleContext  = useContext(UserContext);
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
@@ -48,11 +47,16 @@ function TableSix(props) {
             const Lala = {}
             let rs2 = document.querySelectorAll(`.PAS${i + 1}`);
             let arr23 = Array.from(rs2);
+
+            console.log(arr23, " arr 23");
+            
             arr23.map((el,i)=>{
                 if(el.value !== ""){
                     let field = el.name;
                     let value = el.value;
-                    Lala["id"] = el.id;
+                    if(props.initialName){
+                        Lala["id"] = el.id;
+                    }
                     Lala[field] = value;
                 }
             });
@@ -74,16 +78,19 @@ function TableSix(props) {
                 if(el.value !== ""){
                     let field = el.name;
                     let value = el.value;
-                    Lala["id"] = el.id;
+                    if(props.initialName){
+                        Lala["id"] = el.id;
+                    }
                     Lala[field] = value;
                 }
             });
             finalOne22.push(Lala);
             tableCondition2.push(Lala);
         });
-        let keys2 = Object.keys(tableCondition2[0]);
-        // console.log(keys2.length, "keys2");
 
+        console.log(tableCondition2[0], " bainuu?");
+
+        let keys2 = Object.keys(tableCondition2[0]);
 
         let rs4 = document.querySelectorAll(".getUserInp2");
         let arr4 = Array.from(rs4);
@@ -104,7 +111,7 @@ function TableSix(props) {
         // finalOne["signature"] = trimmedDataURL;
         finalEnd["PPS6"] = finalOne;
 
-        console.log(finalEnd, "final");
+        console.log(finalEnd, "-+-+-++-+-+-+-+-final");
         
         if(keys1.length < 8 || keys2.length < 8){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
@@ -117,16 +124,23 @@ function TableSix(props) {
             setOpacity2("1");
         }else{
             setOpacity2("0");
-            axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
-                helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000); console.log(res, " ress");
-            }).catch((err)=>{console.log(err, " ress"); helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+            // if(props.initialName){
+            //     axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
+            //         helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000); console.log(res, " ress");
+            //     }).catch((err)=>{console.log(err, " ress"); helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+            // }else{
+            //     axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
+            //         helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000);
+            //     }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+            // }
+            
         }
     }
 
     return (
         <Component3 className="container">
-            {Dname? <> <TableSixDetails initialData={props.initialData.requestOne} />
-                                    <TableSixDetails2 initialData={props.initialData.requestTwo} /></> : 
+            {props.initialName? <> <TableSixDetails initialData={props.initialData.requestOne} />
+                        <TableSixDetails2 initialData={props.initialData.requestTwo} /></> : 
             <> <TableSixDetails initialData={null} />
                <TableSixDetails2 initialData={null} /></>
             }
@@ -140,7 +154,10 @@ function TableSix(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" value={Dname} onChange={changeNameHandle} className="getUserInp2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            {props.initialName ? <input type="input" value={Dname} onChange={changeNameHandle} className="getUserInp2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                                               : <input type="input" className="getUserInp2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            }
+                                            
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -152,7 +169,10 @@ function TableSix(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" value={Ddate} onChange={changeDateHandle} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                            {props.initialName ? <input type="date" value={Ddate} onChange={changeDateHandle} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                                :<input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />         
+                                            }
+                                                
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>

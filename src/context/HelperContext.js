@@ -11,12 +11,8 @@ export const HelpStore = (props) =>{
     const [ GlobalStyle, setGlobalStyle ] = useState(initialStyle);
     const [ alert, setAlert ] = useState({ color:'yellow', text: 'null',cond: false });
 
-    useEffect(()=>{
-      if(!tableId){ let localId = localStorage.getItem("tableId"); setTableId(localId); }
-    },[])
-
     const TableControl = (valueOne)=>{ setTableSee({tableOneData: valueOne}); }
-    const TableIdControl = (tableId) => { setTableId(tableId);}
+    const TableIdControl = (TableId) => { setTableId(TableId); }
 
     const StyleComp = (valueOne,valueTwo, valueThree,valueFour,valueFive,valueSix) =>{
         if(valueOne === "0%"){

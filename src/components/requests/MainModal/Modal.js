@@ -50,6 +50,7 @@ export const Modal = ({ showModal,setShowModal, initialData }) => {
     });
 
     console.log(DataOne, " Modal Data ");
+    
    
     return(
         <>
