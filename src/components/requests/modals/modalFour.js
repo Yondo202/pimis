@@ -20,7 +20,7 @@ function ModalFour(props) {
       }
         
 
-    },[]);
+    },[props.Data2]);
 
     console.log(DataOne, " my data foureee oneeeee"); 
 

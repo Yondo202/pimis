@@ -14,13 +14,14 @@ import AccessToken from '../../../context/accessToken'
 
 function TableTwo(props) {
     const helperContext  = useContext(HelperContext);
+    const [ spnBtn, setSpnBtn ] = useState(false);
     const [ fileSave, setFileSave ] = useState([]);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [ initialData, setInitialData ] = useState([]);
     const [ Dname, setDname ] = useState(null);
     const [Ddate, setDdate] = useState(null);
-    
+
     useEffect(()=>{
         if(props.initialData){
             const finalData = []
@@ -141,15 +142,16 @@ function TableTwo(props) {
         }else if(confirm === false){
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
         }else{
+            setSpnBtn(true);
             setOpacity2("0");
             if(Dname){
                 axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}})
-                .then((res)=>{ console.log(res); helperContext.alertText('green', "Амжилттай боллоо", true); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%"); scroll.scrollTo(0); })
-                .catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true); console.log(err) });
+                .then((res)=>{setSpnBtn(false); console.log(res); helperContext.alertText('green', "Амжилттай боллоо", true); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%"); scroll.scrollTo(0); })
+                .catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true); console.log(err) });
             }else{
                 axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers: {Authorization:AccessToken()}} ).then((res)=>{
-                    setTimeout(()=>{ helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0); },2000);
-                  }).catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true); });
+                    setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0);
+                  }).catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true); });
             }
             
 
@@ -232,7 +234,7 @@ function TableTwo(props) {
                             <div className=" row">
                                 <div className="col-md-4 col-sm-12 col-12 ">
                                     <div className="inpChild"><div className="labels"><span>(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага :</span> </div> <div className="name"> <FiUserCheck />
-                                            <div className="form__group"><input type="input" value={el.name} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="name" />
+                                            <div className="form__group"><input type="input" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="name" />
                                                     <label for="name" className=" form__label">Баталгааны хэлбэр</label>
                                                 </div>
                                             </div>
@@ -244,12 +246,12 @@ function TableTwo(props) {
                                         <div className="col-md-6 col-sm-6 col-6"> 
                                             <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
                                                 <div className="name"><div className="form__group">
-                                                        <input max='3000-12-31' value={el.getDate} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="getDate" required />
+                                                        <input max='3000-12-31'  type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" required />
                                                         <label for="name" className=" form__label">Хүлээн авсан</label> </div></div> </div></div>
                                         <div className="col-md-6 col-sm-6 col-6 headLeftBorder"> 
                                             <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
                                                 <div className="name"><div className="form__group">
-                                                        <input max='3000-12-31' type="date" value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="recentDate" required />
+                                                        <input max='3000-12-31' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="recentDate" required />
                                                         <label for="name" className=" form__label">Шинэчилсэн</label> </div> </div> </div>  </div>
                                               </div>
                                 </div>
@@ -274,7 +276,9 @@ function TableTwo(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" onChange={Dname&&changeHandleName} value={Dname} className="getUser2 LoginInpName form__field" name="name" required />
+                                            {Dname !== null ? <input type="input" onChange={changeHandleName} value={Dname} className="getUser2 LoginInpName form__field" name="name" required />
+                                            : <input type="input" className="getUser2 LoginInpName form__field" name="name" required />  }
+                                            
                                             <label for="name"   className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -285,7 +289,8 @@ function TableTwo(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input max='3000-12-31' onChange={Dname&&changeHandleDate} value={Ddate}  type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                            {Dname !== null ? <input max='3000-12-31' onChange={changeHandleDate} value={Ddate}  type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                            : <input max='3000-12-31' type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />  }
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
@@ -307,7 +312,7 @@ function TableTwo(props) {
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
                             <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("0%", "100%", "200%", "300%", "400%","500%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
-                            <NextBtn id="myInput" onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                            <NextBtn onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                         </div>
             </div>
         </div>

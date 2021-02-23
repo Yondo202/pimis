@@ -1,8 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import {fontSize, textColor,InputStyle,ColorRgb,NextBtn,Color } from '../theme'
+import {fontSize, textColor,InputStyle,ColorRgb } from '../theme'
+import {MdAddCircle} from 'react-icons/md';
+import Modal from 'react-awesome-modal';
+import SignatureCanvas from 'react-signature-canvas'
+import {FaPenNib} from 'react-icons/fa'
 
 function MainWorkPerformance() {
+    const initialList = [{ids: 1}];
+    const [ initialData, setInitialData ] = useState(initialList);
+    const [visible, setVisible] = useState(false);
+    let [sigCanvas, setSigCanvas] = useState({});
+    let [trimmedDataURL, setTrimmedDataURL] = useState(null);
+    const openModal=()=> { setVisible(true);}
+    const closeModal=()=> { setVisible(false);}
+    const clear = () => sigCanvas.clear();
+    const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png'));
+    setTimeout(()=>{ closeModal() },1000) };
+
+
+    const AddHandle = ()=>{
+        const list = initialData.concat( {ids: 1});
+        setInitialData(list);
+    }
+
+
+
     return (
         <WorkPerformance className="container">
             <div className="contentPar">
@@ -22,24 +45,84 @@ function MainWorkPerformance() {
                             </div>
                         </div>
                     </div>
-
-
                     <div className="rowItems">
                         <div className="row">
                             <div className="col-md-3 col-3"><div className="LeftHead">Түншлэлийн дэмжлэг хүртэгчийн нэр : </div> </div>
-                            <div className="col-md-9 col-9"><div className="RightHead"> AAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAA</div></div>
+                            <div className="col-md-9 col-9"><div className="RightHead"><InputStyle className="themeStyle" ><input placeholder="нэр..." type="number" /><div className="line" /></InputStyle></div></div>
                         </div>
                     </div>
                     <div className="rowItems">
                         <div className="row">
                             <div className="col-md-3 col-3"><div className="LeftHead">Утасны дугаар, e- mail: </div> </div>
-                            <div className="col-md-9 col-9"><div className="RightHead"> AAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAA</div></div>
+                            <div className="col-md-9 col-9"><div className="RightHead"><InputStyle className="themeStyle" ><input placeholder="example@example.com..." type="number" /><div className="line" /></InputStyle></div></div>
                         </div>
                     </div>
-                   
+                    <div className="rowItems">
+                        <div className="row">
+                            <div className="col-md-12 col-12"><div className="betweenItems">Энэхүү маягтад гарын үсэг зурагдсанаар дараах гүйцэтгэх ажлуудыг батлагдсанд тооцно. </div> </div>
+                        </div>
+                    </div>
+                    <div className="rowItems">
+                        {initialData.map((el,i)=>{
+                            return(
+                                <div className="row rowA" key={i}>
+                                    <div className="col-md-3 col-3"><div className="LeftHead">Гүйцэтгэх ажил {i + 1}:  {i===0?`Гүйцэтгэх ажлыг бичнэ үү :`: ""}  </div> </div>
+                                    {/* <div className="col-md-9 col-9"><div className="RightHead"><ReactQuill placeholder={`Ажил гүйцэтгэсэн түвшин, чанар...`} theme="bubble" value={text} onChange={handleChange} /> </div></div> */}
+                                    <div className="col-md-9 col-9"><div className="RightHead RightHeadA"><InputStyle className="themeStyle" ><textarea placeholder="Ажил гүйцэтгэсэн түвшин, чанар..." /><div className="line" /></InputStyle></div></div>
+                                </div>
+                            )
+                        })}
+                        <div onClick={AddHandle} className="addBtn"><MdAddCircle /></div>
+                    </div>
+                    <div className="rowItems">
+                        <div className="row">
+                            <div className="col-md-3 col-3"><div className="LeftHead">Баталсан: </div> </div>
+                            <div className="col-md-9 col-9"><div className="RightHead RightHeadB">Дээр дурдсан ажлуудыг хангалттай хэмжээнд гүйцэтгэсэн хэмээн ТХН, Түншлэлийн Хөтөлбөр зөвшөөрөв.</div></div>
+                        </div>
+                    </div>
 
+                    <div className="rowItems">
+                        <div className="row">
+                            <div className="col-md-3 col-3"><div className="LeftHead">Хянасан: </div> </div>
+                            <div className="col-md-9 col-9">
+                                <div className="RightHead">
+
+                                    <div className="userInfPar">
+                                            <div className="name">Нэр: А. Хашцэцэг</div>
+                                            <div>Албан тушаал: Төслийн зохицуулагч</div>
+                                            <div className="infItemPar">
+                                                    <div className="DatePar">
+                                                        <span>Огноо: </span><InputStyle className="themeStyle" > <input placeholder="example@example.com..." type="date" max='3000-12-31' /><div className="line" /></InputStyle>
+                                                    </div>
+                                                    <div className="drowPar">
+                                                       <div>Гарын үсэг:</div> <div className="SignBtn" onClick={openModal} ><FaPenNib /><span>Зурах</span></div>
+                                                         {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
+                                                            <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
+                                                                <div className="modalPar">
+                                                                    <div className="Canvass">
+                                                                        <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
+                                                                    </div>
+                                                                    <div className="BtnPar">
+                                                                        <button onClick={clear}>Цэвэрлэх</button>
+                                                                        <button onClick={trim}>Хадгалах</button>
+                                                                        <button onClick={closeModal}>X</button>
+                                                                    </div>
+                                                                </div>
+                                                        </Modal>
+                                                    </div>
+
+                                                    
+                                            </div>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
                </div>
-                
                 
             </div>
            
@@ -61,8 +144,27 @@ const WorkPerformance = styled.div`
         .tablePar{
             border:1px solid rgba(0,0,0,.2);
             .rowItems{
+                position:relative;
                 border-bottom:1px solid rgba(0,0,0,.2);
+                .addBtn{
+                    cursor:pointer;
+                    background-color:white;
+                    border-radius:50%;
+                    color:#228B22;
+                    font-size:22px;
+                    position:absolute;
+                    left:-10px;
+                    bottom:-10px;
+                    transition:transform 0.3s ease;
+                    &:hover{
+                        transform:scale(1.15);
+                    }
+                }
+               
                 .LeftHead{
+                    display:flex;
+                    align-items:center;
+                    height:100%;
                     background-color: rgba(63,81,181,0.1);
                     padding:8px 8px;
                     padding-right:0px;
@@ -74,6 +176,95 @@ const WorkPerformance = styled.div`
                     input{
                         width:100%;
                     }
+                    .userInfPar{
+                        padding: 10px 0px;
+                        margin-left:-30px;
+                        padding-left:30px;
+                        margin-right:-8px;
+                        padding-right: 8px;
+                        border-bottom:1px solid rgba(0,0,0,0.2);
+                        .name{
+                            margin-bottom:5px;
+                        }
+                        .infItemPar{
+                            padding:10px 0px;
+                            display:flex;
+                            align-items:start;
+                            flex-direction:column;
+                            .drowPar{
+                                display:flex;
+                                align-items:start;
+                                margin-top:20px;
+                                .SignBtn{
+                                    margin-left:30px;
+                                    margin-right:30px;
+                                    padding:3px 15px;
+                                    cursor:pointer;
+                                    display:flex;
+                                    align-items:center;
+                                    border:1px solid rgba(0,0,0,0.4);
+                                    svg{
+                                        margin-right:10px;
+                                    }
+                                    span{
+                                       font-weight:500;
+                                    }
+                                    &:hover{
+                                        background-color:rgba(0,0,0,.2);
+                                    }
+                                }
+                                
+                                .SingatureImg{
+                                    border:1px solid rgba(${ColorRgb},0.3);
+                                    width:200px;
+                                    height:100px;
+                               }
+
+                               .modalPar{
+                                text-align:center;
+                               .Canvass{
+                                   border:1px solid rgba(${ColorRgb},0.5);
+                               }
+                                .BtnPar{
+                                   padding:0px 10px;
+                                   margin:20px 0px;
+                                   display:flex;
+                                   flex-direction:row;
+                                   align-items:center;
+                                   justify-content:space-between;
+                                   button{
+                                       font-weight:500;
+                                       color:rgba(${textColor},0.9);
+                                       cursor:pointer;
+                                       border-style:none;
+                                       border-radius:4px;
+                                       padding:6px 14px;
+                                       background-color:white;
+                                       box-shadow:1px 1px 8px -2px;
+                                   }
+                                }
+                            }
+                            }
+                            
+
+                            .DatePar{
+                                padding:5px 0px;
+                                display:flex;
+                                align-items:center;
+                                input{ margin-left:10px; }
+                                span{
+                                    margin-right:10px;
+                                }
+                            }
+                        }
+                    }
+
+                    .quill{
+                        .ql-bubble{
+                            border-bottom-left-radius: 0;
+                            border-bottom-right-radius: 0;
+                        }
+                    }
                 }
                 .SingleSide{
                     height:100%;
@@ -82,6 +273,25 @@ const WorkPerformance = styled.div`
                     .themeStyle{
                         width:100%;
                     }
+                }
+                .betweenItems{
+                    background-color: rgba(63,81,181,0.3);
+                    padding:4px 15px;
+                }
+
+                .rowA{
+                    // border-bottom:1px solid rgba(0,0,0,.2);
+                    .LeftHead{border-bottom:1px solid rgba(0,0,0,.2);}
+                    .RightHead{border-bottom:1px solid rgba(0,0,0,.2);}
+                }
+                .RightHeadA{
+                    margin-left:-30px;
+                    padding-left:30px;
+                }
+                .RightHeadB{
+                    margin-left:-30px;
+                    padding-left:30px;
+                    background-color: rgba(63,81,181,0.1);
                 }
             }
         }
@@ -108,3 +318,5 @@ const WorkPerformance = styled.div`
         }
     }
 `
+
+

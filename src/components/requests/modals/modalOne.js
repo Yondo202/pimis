@@ -1,18 +1,11 @@
-
-
-// import React, {useContext, useEffect, useState} from 'react'
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components';
-import HelperContext from '../../../context/HelperContext'
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 
 
 function ModalOne(props) {
-    // const HelpContext = useContext(HelperContext);
-    // console.log(HelpContext.tableSee.tableOneData, "1 this my helper global context");
     const [ DataOne, setDataOne ] = useState([]);
     useEffect(()=>{
-        // setDataOne(props.DataOne);
         if(props.DataOne){
             const finalData = []
             dataOne.map((el,i)=>{
@@ -21,10 +14,9 @@ function ModalOne(props) {
             });
             setDataOne(finalData);
         }else{
-            setDataOne(dataOne)
+            setDataOne(dataOne);
         }
-        
-    },[]);
+    },[props.DataOne]);
 
     return (
         <TableOne >

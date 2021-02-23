@@ -9,16 +9,19 @@ import {IoIosAddCircleOutline} from 'react-icons/io'
 function TableThreeDetails(props) {
     const initialList = [{id: 1}];
     const [ addItem, setAddItem ] = useState(initialList);
+    const [ initialData, setInitialData ] = useState([]);
+
     const AddHandle = ()=>{
-        const list = addItem.concat( {id: 1});
-        setAddItem(list);
+        const list = initialData.concat( {id: 1});
+        setInitialData(list);
     }
 
-    const [ initialData, setInitialData ] = useState([]);
 
     useEffect(() => {
         if(props.initialData){
             setInitialData(props.initialData);
+        }else{
+            setInitialData(initialList);
         }
     }, [props.initialData]);
 
@@ -57,6 +60,9 @@ function TableThreeDetails(props) {
     }
 
     console.log(props.initialData, " bainuu?>");
+    
+
+
 
     return (
         <Component3Detail>
@@ -120,7 +126,7 @@ function TableThreeDetails(props) {
                     </div>
                  </div>
                 )
-            })) : (addItem.map((el,i)=>{
+            })) : (initialData.map((el,i)=>{
                 return(
                     <div id={i}  className="GetItemAdd33 DetailPar" key={i}>
                         <div className="topTitle">
@@ -157,7 +163,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
                                 <div className="name"> <FiUserCheck />
                                     <div className="form__group">
-                                        <input type="date"  className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
+                                        <input type="date"  max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
                                         <label for="name" className=" form__label">огноо тус бүрээр</label>
                                     </div>
                                 </div>

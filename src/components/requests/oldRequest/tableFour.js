@@ -28,6 +28,8 @@ function TableFour(props) {
 
       const helperContext = useContext(HelperContext);
 
+      console.log(props.initialData, " props data");
+
       useEffect(() => {
           const finalData = []
           tableData.map((el,i)=>{
@@ -43,6 +45,8 @@ function TableFour(props) {
       },[props.initialData]);
 
       const radioChange = (event)=> {
+        console.log(event.target.id, " target id")
+
         let finalData = []
         tableData.map((el,i)=>{ 
             if(props.initialData){
@@ -52,6 +56,7 @@ function TableFour(props) {
         finalData.map((el,i)=>{
           if(el.id.toString() === event.target.id){ el["rowvalue"] = event.target.value}
         })
+        
          setInitialData(finalData);
       }
 
@@ -73,7 +78,7 @@ function TableFour(props) {
                   let soloObject2 = {}
                   let field = element.name;
                   let value = element.value;
-                  if(props.initialData[0]){
+                  if(Dname){
                     soloObject2["id"] = parseInt(element.id);
                   }
                   soloObject2["rownum"] = field
@@ -196,6 +201,7 @@ function TableFour(props) {
             }
         }
 
+
         
         const nextHandleBtn = () => {
             // scroll.scrollTo(0);
@@ -224,7 +230,7 @@ function TableFour(props) {
                     </div>
                 </div>
                 <form>
-                    {Dname? (initialData.map((el, i)=>{
+                    {props.initialName? (initialData.map((el, i)=>{
                             return(
                             <div className="headerParchild" key={i}>
                                 <div className="row" >

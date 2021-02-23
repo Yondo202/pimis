@@ -2,18 +2,18 @@ import React,{useEffect, useState, useRef, useContext} from 'react';
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import {BiPen} from 'react-icons/bi'
-import { Link, animateScroll as scroll } from "react-scroll";
-import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
+import { animateScroll as scroll } from "react-scroll";
+import { fontFamily, textColor, ColorRgb, Color,fontSize, NextBtn } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 import AccessToken from '../../../context/accessToken'
 
 function TableOne(props) {
     const history = useHistory();
+    const [ spnBtn, setSpnBtn ] = useState(false);
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
@@ -21,7 +21,6 @@ function TableOne(props) {
     const [ initialData, setInitialData ] = useState([]);
     const [ Dname, setDname] = useState("");
     const [Ddate, setDdate] = useState("");
-    const StyleContext = useContext(UserContext);
     const tablesContext = useContext(HelperContext);
 
     
@@ -37,7 +36,6 @@ function TableOne(props) {
     },[props.initialData]);
 
    
-
     const radioChange = (event)=> {
       let finalData = []
        dataOne.map((el,i)=>{  props.initialData.map(elem=> elem); finalData.push(el); });
@@ -81,16 +79,16 @@ function TableOne(props) {
                 tablesContext.alertText('orange', "Та шалгуур хангалтанд тэнцэхгүй байна", true );
                 setTimeout(()=>{  history.push('/');  },4000);
               }else{
-                setOpacity("0"); setOpacity2("0");
+                setOpacity("0"); setOpacity2("0");setSpnBtn(true);
                 if(props.initialData){
                   await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{ 
-                    console.log(res, "******res"); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
+                    setSpnBtn(false); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
                      })
-                    .catch((err)=>{ tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
+                    .catch((err)=>{setSpnBtn(false); tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
                 }else{
                   axios.post("pps-request", finalEnd, {headers: { Authorization:AccessToken()} })
-                  .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true );
-                  }).catch((err)=>{ console.log(err, "err"); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
+                  .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); setSpnBtn(false);
+                  }).catch((err)=>{ setSpnBtn(false); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
                 }
               
             }
@@ -181,7 +179,7 @@ function TableOne(props) {
                         </div>
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                            <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+                            <NextBtn onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                         </div>
               </div>
              </div>
@@ -438,51 +436,7 @@ const Component1 = styled.div`
                   padding:0px 20px;
                 }
 
-                .SubmitButton{
-                    margin:10px 0px;
-                    margin-bottom:10px;
-                    border-style:none;
-                    border-radius:6px;
-                    cursor:pointer;
-                    padding:5px 0px;
-                    color:white;
-                    background-color:${Color};
-                    font-size:18px;
-                    text-align:center;
-                    transition:all 0.3s ease;
-                    display:flex;
-                    align-items:center;
-                    justify-content:space-around;
-                    border:1px solid rgba(63, 81, 181,0.5);
-                    width:50%;
-                    border-radius:6px;
-                    .hide{
-                      transition:all 0.3s ease;
-                      transform:scale(0);
-                      font-size:22px;
-                    }
-                    .hide1{
-                      transition:all 0.7s ease;
-                      transform:scale(0);
-                      font-size:26px;
-                    }
-                    &:hover{
-                      box-shadow:1px 1px 15px -2px black;
-                      .hide{
-                        transition:all 0.3s ease;
-                        transform:scale(1);
-                      }
-                      .hide1{
-                        transition:all 0.7s ease;
-                        transform:scale(1);
-                      }
-                    }
-                    .flexchild{
-                      display:flex;
-                      align-items:center;
-                      justify-content:space-around;
-                    }
-                }
+                
             }
             .headerPar{
               background-color: rgba(0, 51, 102,0.9);

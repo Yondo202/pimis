@@ -38,6 +38,8 @@ function MainRequest(props) {
         let resData = await axios.get(`pps-request`, {headers: {Authorization:AccessToken()}});
         if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data);
              //  setLoading(false); 
+             console.log(resData,"++++++++++++++++");
+             helpCtx.TableIdControl(resData.data.data.id);
         }
     },[]);
 

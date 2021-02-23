@@ -8,21 +8,21 @@ function ModalTwo(props) {
 
     const [ DataOne, setDataOne ] = useState([]);
     useEffect(()=>{
-        // setDataOne(props.DataOne);
         if(props.Data2){
             const finalData = []
             tableData.map((el,i)=>{
-                props.Data2.map((elem,index)=>{ if (i  === index){ el["name"] = elem.name; el["fileurl"] = elem.fileurl; el["getDate"] = elem.getDate ; el["recentDate"] = elem.recentDate} });
+                props.Data2.map((elem,index)=>{ if (i  === index){ el["name"] = elem.name; el["files"] = elem.files; el["getDate"] = elem.getDate ; el["recentDate"] = elem.recentDate} });
                 finalData.push(el);
             });
              setDataOne(finalData);
         }else{
             setDataOne(tableData);
         }
+    console.log(DataOne, "-------------- my data oneeeeedd"); 
         
-    },[]);
+    },[props.Data2]);
 
-    console.log(DataOne, " my data oneeeee"); 
+
 
     return (
         <TableTwo >
@@ -51,7 +51,7 @@ function ModalTwo(props) {
                                         <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`, }}  className="col-md-6 col-sm-6 col-6"><div className="question">{el.recentDate}</div></div>
                                     </div>
                                 </div>
-                                <div className="col-md-2 col-sm-2 col-2" style={{ overflow:`hidden`,borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:`rgba(63,255,181,0.2)`}}><div style={{ justifyContent:`start`}} className="question">{el.fileurl? <span>Хавсаргасан</span>: <span>Хавсаргаагүй</span>}</div></div>
+                                <div className="col-md-2 col-sm-2 col-2" style={{ overflow:`hidden`,borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:`rgba(63,255,181,0.2)`}}><div style={{ justifyContent:`start`}} className="question">{el.files? <span>Хавсаргасан</span>: <span>Хавсаргаагүй</span>}</div></div>
                         </div>
                     )
                 })}

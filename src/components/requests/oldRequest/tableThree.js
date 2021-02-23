@@ -13,12 +13,12 @@ import AccessToken from '../../../context/accessToken'
 
 function TableThree(props) {
     const helperContext = useContext(HelperContext);
+    const [ spnBtn, setSpnBtn ] = useState(false);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [Dname, setDname ] = useState(null);
     const [Ddate, setDdate] = useState(null);
     
-
     useEffect(()=>{
         if(props.initialName){
             setDname(props.initialName);
@@ -49,7 +49,7 @@ function TableThree(props) {
                 if(el.value !== ""){
                     let field = el.name;
                     let value = el.value;
-                    if(props.initialData[0]){
+                    if(props.initialName){
                         Lala["id"] = el.id;
                     }
                     Lala[field] = value;
@@ -76,21 +76,20 @@ function TableThree(props) {
             setOpacity2("1");
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
         }else{
+            setSpnBtn(true);
             if(props.initialName){
                 axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
-                    helperContext.alertText('green', "Амжилттай ", true);
+                    helperContext.alertText('green', "Амжилттай ", true); setSpnBtn(false);
                     helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%"); scroll.scrollTo(0);
-                  }).catch((err)=>{console.log(err, "err"); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
+                  }).catch((err)=>{console.log(err, "err"); setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
             }else{
                 axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}} ).then((res)=>{
-                    helperContext.alertText('green', "Амжилттай хадаглалаа", true); helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");scroll.scrollTo(0);
-                  }).catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true);  });
+                    setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглалаа", true); helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");scroll.scrollTo(0);
+                  }).catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
             }
             
         }
     }
-
-    console.log(helperContext.tableId, "*** my Table dId");
 
 
     return (
@@ -105,7 +104,9 @@ function TableThree(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" onChange={Dname&&changeNameHandle} value={Dname} className="getUserInp3 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            {Dname? <input type="input" onChange={changeNameHandle} value={Dname} className="getUserInp3 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            :<input type="input" className="getUserInp3 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />  }
+                                            
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -116,7 +117,10 @@ function TableThree(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" onChange={Dname&&changeDateHandle} value={Ddate} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                {Dname ?  <input type="date" onChange={changeDateHandle} value={Ddate} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                : <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                }
+                                               
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
@@ -136,7 +140,7 @@ function TableThree(props) {
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
                             <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("-100%", "0%", "100%", "200%", "300%","400%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
-                            <NextBtn id="myInput" onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                            <NextBtn onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                         </div>
             </div>
         </Component3>
