@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
 import TableSixDetails from './deitals/tableSixDetail'
 import TableSixDetails2 from './deitals/tableSixDetail2'
@@ -19,8 +19,15 @@ function TableSix(props) {
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [ Dname, setDname ] = useState(props.initialName);
-    const [Ddate, setDdate] = useState(props.initialDate);
+    const [Dname, setDname ] = useState(null);
+    const [Ddate, setDdate] = useState(null);
+
+    useEffect(()=>{
+        if(props.initialName){
+            setDname(props.initialName);
+            setDdate(props.initialDate);
+        }
+    },[props.initialName]);
 
     const changeNameHandle = (event) =>{
         setDname(event.target.value);
@@ -110,7 +117,7 @@ function TableSix(props) {
             setOpacity2("1");
         }else{
             setOpacity2("0");
-            axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{
+            axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
                 helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000); console.log(res, " ress");
             }).catch((err)=>{console.log(err, " ress"); helperContext.alertText('orange', 'Алдаа гарлаа', true);});
         }
@@ -118,8 +125,12 @@ function TableSix(props) {
 
     return (
         <Component3 className="container">
-            <TableSixDetails initialData={props.initialData.requestOne} />
-            <TableSixDetails2 initialData={props.initialData.requestTwo} />
+            {Dname? <> <TableSixDetails initialData={props.initialData.requestOne} />
+                                    <TableSixDetails2 initialData={props.initialData.requestTwo} /></> : 
+            <> <TableSixDetails initialData={null} />
+               <TableSixDetails2 initialData={null} /></>
+            }
+            
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>

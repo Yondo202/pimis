@@ -17,6 +17,38 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.pro-sidebar{
+  .pro-sidebar-inner{
+    background: #32373d;
+    // background: #3c4245;
+
+    // background: #212121;
+    // background: #37474F;
+    // background: #001529;
+    // background: #222222;
+    // background: #333333;
+    // background-color: rgba(51, 153, 255, 0.1);
+  }
+  .pro-menu{
+    .pro-menu-item{
+        font-size: 13px;
+        font-weight: 500;
+        .pro-inner-item{
+          .pro-icon-wrapper{
+            margin-right: 10px;
+            font-size: 13px;
+            width: 30px;
+            min-width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            display: inline-block;
+          }
+        }
+    }
+  }
+}
+
 #root {
   height: 100%;
 }

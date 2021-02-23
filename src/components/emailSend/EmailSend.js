@@ -33,12 +33,12 @@ function EmailSend() {
                     setScale("1");
                 }
           });
-      };
+    };
 
     return (
         <div style={{textAlign:"center"}}>
             <div style={{marginTop:20, width:"100%"}}>
-            <div style={{transition:`all 0.4s ease`,marginBottom:"15px", backgroundColor:color, padding:"5px 0px", transform:`scale(${Scale})`}}>{Text}</div>
+             <div style={{transition:`all 0.4s ease`,marginBottom:"15px", backgroundColor:color, padding:"5px 0px", transform:`scale(${Scale})`}}>{Text}</div>
                 <Email title="EDP">
                     <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
                         <Item style={{border:"1px solid rgba(0,0,0,0.2)",padding:'20px 20px',backgroundColor:"#f2f2f2"}} align="end">
@@ -76,7 +76,7 @@ export default EmailSend
 const EmailHTML = renderEmail(
     <Email title="EDP">
         <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
-            <Item style={{border:"1px solid rgba(0,0,0,0.2)",padding:'20px 20px',backgroundColor:"#f2f2f2"}} align="end">
+        <Item style={{border:"1px solid rgba(0,0,0,0.2)",padding:'20px 20px',backgroundColor:"#f2f2f2"}} align="end">
             <Box style={{textAlign:"center",width:"100%", margin:'20px 0px',fontWeight:'500', fontSize:'14px'}} > Санхүүгийн дэмжлэг олгохоос татгалзсан мэдэгдэл</Box>
             <Box style={{textAlign:"end",width:"100%", marginBottom:'20px', fontSize:'12px'}}> Хэнд: Example company танаа:</Box>
 
@@ -96,7 +96,7 @@ const EmailHTML = renderEmail(
 
             <Box style={{textAlign:"start",width:"100%", margin:'18px 0px', fontSize:'12px'}}>Хүндэтгэсэн: ...........</Box>
             <Box style={{textAlign:"start",width:"100%", margin:'18px 0px', fontSize:'12px'}}>Санхүүгийн дэмжлэгийн багийн зохицуулагч</Box>
-            </Item>
+        </Item>
     </Email>
   )
 

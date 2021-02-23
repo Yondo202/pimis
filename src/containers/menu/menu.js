@@ -15,7 +15,7 @@ function Menu() {
     const [userName, setUserName] = useState();
     const [ currPath, setCurrPath ] = useState();
     const [ diplayFlex, setDisplayNone ] = useState("flex");
-    const [ headerHeight, setheaderHeight ] = useState("50px");
+    const [ headerHeight, setheaderHeight ] = useState("45px");
     const [open, close] = useState('');
     const [ activeMenu, setActiveMenu ]=useState({
       Home: '',
@@ -42,43 +42,24 @@ function Menu() {
 
     const clickhandle2 = ()=>{
       console.log("done");
-      // setTimeout(()=>{
-      //   window.location.reload(false);
-      // },100)
+     
     };
 
     useEffect(() => {
       const currentPath = location.pathname;
       setCurrPath(currentPath);
-      if(currentPath !== "/" && currentPath !== "/comp-request"){  setheaderHeight("50px");
-      }else{ setheaderHeight("50px");}
+      if(currentPath !== "/" && currentPath !== "/comp-request"){  setheaderHeight("45px");
+      }else{ setheaderHeight("45px");}
       if(currentPath === "/"){setActiveMenu({Home:'line2',Req:'',Check:'',Maygt:''})}
       // if(currentPath === "/admin"){ setDisplayNone("none");}
       if(currentPath === "/comp-request"){setActiveMenu({Home: '',Req:'line2',Check: '',Maygt:''})}
       if(currentPath === "/comp-check"){setActiveMenu({Home: '',Req:'',Check:'line2',Maygt: ''})}
       if(currentPath === "/urgudul/1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }
     }, [location]);
-    //   useEffect(() => {
-    //     window.addEventListener("scroll", handleScroll);
-    // });
-    // const handleScroll = () => {
-    //     console.log('lalalall', window.pageYOffset);
-    //     if(window.pageYOffset > 100){
-    //       setClassNameId("MainMenusNormal");
-    //       setHeadStyle("50px");
-    //     }else{
-    //       setClassNameId("");
-    //       setHeadStyle("70px");
-    //     }
-    // }
+   
 
   return (
     <Componentss>
-      {/* <div style={{display:diplayNone}} className="Background">
-        <div style={{padding:`0px 0px`}} className="LogoHeadPar container">
-            <div style={{backgroundImage:`url(/head.jpg)`}} className="logoPar"></div>
-        </div>
-      </div> */}
      
       <div style={{height:headerHeight,display:diplayFlex}} className="MainMenus">
             <div style={{padding:`0px 0px`}} style={currPath === "/"? {maxWidth:`1160px`}:{maxWidth:1000}} className="container">
@@ -105,7 +86,7 @@ function Menu() {
                                   <div style={{transform:`${activeMenu.Home}`}} className={`line ${activeMenu.Home}`}></div>
                               </div>
                               <div className="items">
-                                <Link onClick={clickhandle2} to="/comp-request">Хүсэлт</Link>
+                                <Link to="/comp-request">Хүсэлт</Link>
                                 <div style={{transform:`${activeMenu.Check}`}} className={`line ${activeMenu.Req}`}></div>
                               </div>
                               <div className="items">
@@ -125,7 +106,7 @@ function Menu() {
                           {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
                           <div className="Notification"><Link to="#" content="2" ><IoNotificationsOutline /></Link> </div>
                           <span className="UserNameMenu" content={userName} ><Link to="#"><CgProfile /></Link> </span>
-                          <span className="Logout"><Link onClick={clickhandle} to="/"><span>Гарах</span><IoIosLogOut /></Link></span>
+                          <span className="Logout"><Link onClick={()=>userCtx.logout()} to="/"><span>Гарах</span><IoIosLogOut /></Link></span>
                         </div>
                 </span>
 
@@ -231,7 +212,7 @@ const Componentss = styled.div`
                 flex-direction:row;
                 align-items:center;
                 &::before{
-                  font-size:14px;
+                  font-size:12px;
                   font-weight:600;
                   display:flex;
                   align-items:center;
@@ -248,7 +229,7 @@ const Componentss = styled.div`
                 }
                 svg{
                   margin-left:8px;
-                  font-size:26px;
+                  font-size:21px;
                   color:rgba(255,255,255,0.9);
                   
                 }
@@ -288,7 +269,7 @@ const Componentss = styled.div`
                   text-decoration: none !important;
                   svg{
                     margin-left:8px;
-                    font-size:26px;
+                    font-size:21px;
                     color:rgba(255,255,255,0.9);
                   }
                 }
@@ -302,9 +283,10 @@ const Componentss = styled.div`
                 color:black;
                 text-decoration: none !important;
                 color:rgba(255,255,255,0.9);
+                font-size:15px;
                 svg{
                   margin-left:4px;
-                  font-size:22px;
+                  font-size:18px;
                   color:rgba(255,255,255,0.9);        
                 }
               }
@@ -316,7 +298,7 @@ const Componentss = styled.div`
             justify-content: space-between;
             width: 36%;
             .items {
-                font-size:16px;
+                font-size:15px;
                 font-weight:500;
                 &:hover{
                     .line{
@@ -422,7 +404,7 @@ const Componentss = styled.div`
           // transition-delay: 10s
           opacity:0;
           .items{
-            font-size:22px;
+            font-size:20px;
             a{
               color:black;
             }

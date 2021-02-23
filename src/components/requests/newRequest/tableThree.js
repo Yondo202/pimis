@@ -8,6 +8,7 @@ import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import HelperContext from '../../../context/HelperContext'
+import AccessToken from '../../../context/accessToken'
 import axios from '../../../axiosbase'
 
 function TableThree() {
@@ -15,12 +16,6 @@ function TableThree() {
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
-
-    const [ UserToken, setUserToken ] = useState(null);
-    useEffect(()=>{
-      let storageToken = localStorage.getItem("edp_loggedUser", []);
-      setUserToken(storageToken);
-    });
 
     const clickHandles = () => {
         let finalOne = {};let finalEnd = {};  let rs2 = document.querySelectorAll(".GetItemAdd33");  let arr2 = Array.from(rs2); let finalOne2 = [];
@@ -45,7 +40,7 @@ function TableThree() {
             setOpacity2("1");  setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
         }else{
             setSpnBtn(true);
-            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:`bearer ${UserToken}`}} ).then((res)=>{
+            axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}} ).then((res)=>{
                 helperContext.alertText('green', "Амжилттай хадаглалаа", true);setSpnBtn(false); helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");
               }).catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true); setSpnBtn(false); });
             scroll.scrollTo(0);

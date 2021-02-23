@@ -1,4 +1,4 @@
-import React,{useContext, useEffect, useState, useCallback} from 'react'
+import React,{useContext, useEffect, useCallback} from 'react'
 import styled from 'styled-components'
 import {CgProfile} from 'react-icons/cg'
 import {BiLockOpen} from 'react-icons/bi'
@@ -7,10 +7,10 @@ import UserContext from "../../context/UserContext";
 import {fontFamily, Color,ColorRgb} from "../theme"
 import Signup from './signup'
 import ForgetPassword from './ForgetPassword'
+import { useHistory } from 'react-router-dom'
 
 function Login() {
-
-  const [userIdLocalStorage, setUserId] = useState();
+  const history = useHistory();
   const userCtx = useContext(UserContext);
 
     const keyPress = useCallback(e=>{
@@ -24,22 +24,21 @@ function Login() {
             finalOneUser[field] = value;
         });
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-        // setTimeout(() => {
-        //   const userId = localStorage.getItem("userId", []);
-        //   if(userId){
-        //     window.location.reload(true);
-        //   }else{  console.log('false');  }
-        // }, 1000);
-      }
 
-     
-    },[userCtx]);
+        const UserRole = localStorage.getItem("role", []);
+        if(UserRole==="admin"){ history.push('/')}else{ history.push('/') }
+      }
+    },[userCtx.userInfo.id]);
+
     useEffect( async ()=>{
+      // const UserRole = localStorage.getItem("role", []);
+        // if(UserRole==="admin"){ history.push('/admin')}else{ history.push('/') }
         document.addEventListener('keydown', keyPress);
         return () => document.removeEventListener('keydown', keyPress)
     },[keyPress]);
 
     const handleClick = (e) =>{
+      
         e.preventDefault();
         let Username = document.querySelectorAll(".LoginInpName");
         let User = Array.from(Username);
@@ -49,15 +48,11 @@ function Login() {
             let value = element.value;
             finalOneUser[field] = value;
         });
+        console.log(finalOneUser,"lalalal");
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-        // setTimeout(() => {
-        //   const userId = localStorage.getItem("userId", []);
-        //   if(userId){
-        //     window.location.reload(true);
-        //   }else{
-        //     console.log('false');
-        //   }
-        //  }, 1000);
+
+        const UserRole = localStorage.getItem("role", []);
+        if(UserRole==="admin"){ history.push('/')}else{ history.push('/') }
     }
     return (
         <Component>
@@ -109,16 +104,16 @@ export default Login
 
 const Component = styled.div`
     font-family:${fontFamily};
-    height:65vh;
+    height:75vh;
     padding-top:10px;
     font-size:13px;
     .imgPar{
         text-align:center;
         padding:15px 0px;
         img{
-          width:100%;
+          // width:100%;
             // width:128px;
-            // height:93px;
+            // height:50px;
             margin-bottom:10px;
         }
 

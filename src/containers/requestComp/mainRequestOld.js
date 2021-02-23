@@ -16,39 +16,42 @@ import HelpContext from '../../context/HelperContext'
 import {Modal} from '../../components/requests/MainModal/Modal'
 import axios from '../../axiosbase'
 import {ColorRgb, textColor} from '../../components/theme'
+import AccessToken from '../../context/accessToken'
 
 
 function MainRequest(props) {
     const [ showModal, setShowModal ] = useState(false);
+    const [ updateMount, setUpdateMount ] = useState(false);
     const ModalOpen = () => {  setShowModal(prev => !prev); }
     const StyleContext = useContext(UserContext);
     const helpCtx = useContext(HelpContext);
-
-    const [Loading, setLoading] = useState(true);
+    const [Loading, setLoading] = useState(false);
     const [ initialData, setInitialData ] = useState([]);
     const [ ScrollClass, setScrollClass ] = useState("");
     const [ tokens, setTokens ] = useState("");
     const [ userID, setUserId ] = useState();
+    
     useEffect( async()=>{
-        StyleContext.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
-        let storageToken = localStorage.getItem("edp_loggedUser", []); setTokens(storageToken); 
+        helpCtx.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
+        let storageToken = AccessToken(); setTokens(storageToken); 
         window.addEventListener("scroll", handleScroll);
-        let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${storageToken}`}});
-        // console.log(resData, " ^^ ress");
-        if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data); setLoading(false); }
-      },[]);
+        let resData = await axios.get(`pps-request`, {headers: {Authorization:AccessToken()}});
+        if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data);
+             //  setLoading(false); 
+        }
+    },[]);
 
       const handleScroll = () => {
           if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); }
       }
 
-    const func = StyleContext.StyleComp
-    const One = StyleContext.GlobalStyle.tableOne
-    const Two = StyleContext.GlobalStyle.tableTwo
-    const Three = StyleContext.GlobalStyle.tableThree
-    const Four = StyleContext.GlobalStyle.tableFour
-    const Five = StyleContext.GlobalStyle.tableFive
-    const Six = StyleContext.GlobalStyle.tableSix
+    const func = helpCtx.StyleComp
+    const One = helpCtx.GlobalStyle.tableOne
+    const Two = helpCtx.GlobalStyle.tableTwo
+    const Three = helpCtx.GlobalStyle.tableThree
+    const Four = helpCtx.GlobalStyle.tableFour
+    const Five = helpCtx.GlobalStyle.tableFive
+    const Six = helpCtx.GlobalStyle.tableSix
 
     return (
             <>
@@ -72,7 +75,7 @@ function MainRequest(props) {
                 {Loading === true? <GifPar className="Gif"> <img src="https://media.giphy.com/media/52qtwCtj9OLTi/giphy.gif" alt="edp-gif" /></GifPar> : (
                     <>
                     <Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal}  />
-                    <ParentComp style={{height:`${StyleContext.GlobalStyle.tableheight}vh`}} className="container">
+                    <ParentComp style={{height:`${helpCtx.GlobalStyle.tableheight}vh`}} className="container">
                         <div style={{left:`${One}`, opacity:`${One === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                             <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
                                 <TableOne  initialData={initialData.ppsRequest1Details} initialName={initialData.name1} initialDate={initialData.date1} id={userID} token={tokens} />

@@ -8,12 +8,14 @@ import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../context/UserContext'
 import PasswordInducator from './PasswordIndicator'
+import axios from '../../axiosbase';
 
 const isNumberRegx = /\d/;
 const specialCharacterRegx = /[ ~@#$%^&*()_+\-=[\]{;':\\|,.<>\/?]/;
 
 function Signup() {
     const signUpCtx = useContext(UserContext);
+    const [ sectorData, setSectorData ] = useState([]);
     const [PassText, setPassText] = useState("");
     const [scale, setScale] = useState("1");
     const [visible, setVisible] = useState(false);
@@ -46,6 +48,7 @@ function Signup() {
       }
     },[]);
     useEffect( async ()=>{
+        const sectorData = await axios.get(`business-sector`); setSectorData(sectorData.data.data);
         document.addEventListener('keydown', keyPress);
         return () => document.removeEventListener('keydown', keyPress)
     },[keyPress]);
@@ -65,17 +68,26 @@ function Signup() {
              let arr = Array.from(rs);
              let finalOne = {};
             arr.map(element=>{
-                  let field = element.name;
-                  let value = element.value;
-                  finalOne[field] = value;
+              if(element.value !== "- Сонго -" && element.value !== "" ){
+                let field = element.name;
+                let value = element.value;
+                finalOne[field] = value;
+              }
             });
-            if(passwordValidity.minChar === false || passwordValidity.number === false || passwordValidity.specialChar === false){
+            let keys = Object.keys(finalOne)
+
+            console.log(finalOne, "^^ final");
+            console.log(keys.length, "^^ length");
+
+            if(keys.length < 7){
+              setPassText("Гүйцэд бөгөлнө үү");
+            }else if(passwordValidity.minChar === false || passwordValidity.number === false || passwordValidity.specialChar === false){
               setPassText("Нууц үг хийх хэсэгээ шалгана уу..");
             }else if(finalOne.password !== finalOne.passwordagain) {
               setPassText("Нууц үг адил биш байна...");
             }else{
               setPassText("");
-              signUpCtx.signUpUser(finalOne.name, finalOne.email, finalOne.password);
+              signUpCtx.signUpUser(finalOne);
               setScale("1");
               setTimeout(()=>{
                 const userId = localStorage.getItem("userId", []);
@@ -87,6 +99,9 @@ function Signup() {
               },1000);
             }
       }
+
+
+      console.log(sectorData, "^^ sector data")
  
     return (
         <Component className="SignUp">
@@ -190,6 +205,41 @@ function Signup() {
                             <a href="javascript:void(0);" onClick={closeModal}>X</a>
                             </div>
                                 <div className="inputPar">
+
+                                <div className="UserSectionMiddle">
+                                    <div className="inpChild">
+                                          <div className="labels"><span>Компаны нэр :</span> </div>
+                                          <div className="name">
+                                              <div className="form__group">
+                                                  <input type="input" className="userInp  form__field" name="companyname" required />
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div className="inpChild">
+                                          <div className="labels"><span>Регистрийн дугаар :</span> </div>
+                                          <div className="name">
+                                              <div className="form__group">
+                                                  <input type="number" className="userInp  form__field" name="companyregister" required />
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div className="inpChild sectorChild">
+                                          <div className="labels"><span>Салбарууд :</span> </div>
+                                          <div className="name">
+                                              <div className="form__group">
+                                                <select name="business_sectorId" className="userInp sectors" >
+                                                    <option disabled selected >- Сонго -</option>
+                                                    {sectorData.map((el,i)=>{
+                                                      return( <option key={i} value={el.id}>{el.bdescription_mon}</option> )
+                                                    })}
+                                                </select>
+                                                  {/* <input type="input" className="userInp  form__field" name="sectors" required />
+                                                  <label for="name" className="form__label"> </label> */}
+                                              </div>
+                                          </div>
+                                      </div>
+                                </div>
+
                                   <div className="UserSection">
                                     <div className="inpChild">
                                           <div className="labels"><span>Нэр :</span> </div>
@@ -197,7 +247,7 @@ function Signup() {
                                               <CgProfile />
                                               <div className="form__group">
                                                   <input type="input" className="userInp  form__field" name="name" required />
-                                                  <label for="name" className="form__label">өөрийн нэрээ оруулах </label>
+                                                  <label for="name" className="form__label">Өөрийн нэрээ оруулах </label>
                                               </div>
                                           </div>
                                       </div>
@@ -212,6 +262,20 @@ function Signup() {
                                           </div>
                                       </div>
                                   </div>
+                                 
+
+                                  {/* <div className="UserSection">
+                                    <div className="inpChild">
+                                          <div className="labels"><span>Компаны нэр :</span> </div>
+                                          <div className="name">
+                                              <CgProfile />
+                                              <div className="form__group">
+                                                  <input type="input" className="userInp  form__field" name="compname" required />
+                                                  <label for="name" className="form__label">Компаны нэрээ оруулах </label>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div> */}
                                    
                                   <div className="UserSection">
                                     <div className="inpChild">
@@ -350,7 +414,7 @@ const Component = styled.div`
             padding-bottom:20px 0px;
             padding:10px 60px;
             .headPar{
-            padding:16px 0;
+            padding:6px 0;
             font-size:1.3rem;
             border-bottom:1px solid rgba(63, 81, 181,0.3);
             color:black;
@@ -366,12 +430,39 @@ const Component = styled.div`
             flex-direction:column;
             align-items:flex;
             justify-content:center;
+            .UserSectionMiddle{
+              display:flex;
+              algin-items:center;
+              justify-content:space-between;
+              .inpChild{
+                .labels{
+                  span{
+                    font-size:14px;
+                  }
+                }
+              }
+              .sectorChild{
+                width:25%;
+                .sectors{
+                  border-radius: 6px;
+                  border:1px solid rgba(0,51,102,0.3);
+                  width:100%;
+                  padding:7px 0px;
+                  padding-left:10px;
+                  font-size: 1rem;
+                  option{
+
+                  }
+                }
+              }
+             
+            }
             .UserSection{
               display:flex;
               flex-direction:row;
               justify-content:space-between;
               .passIndPar{
-                margin-top:15px;
+                // margin-top:15px;
                 text-align:start;
                 font-size:13px;
               }
@@ -387,7 +478,7 @@ const Component = styled.div`
                       font-size:13px;
                       span{
                           font-size:14px;
-                          color:rgba(${textColor});
+                          color:rgba(0,0,0,0.7);
                           font-weight:500;
                       }
                       .forget{

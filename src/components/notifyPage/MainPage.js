@@ -1,60 +1,40 @@
-import React,{useRef} from 'react'
+import React,{useEffect, useRef, useState} from 'react'
+import { BrowserRouter as Router, Switch, Route, useParams } from "react-router-dom";
 import styled from 'styled-components'
-import { Color,ColorRgb } from '../theme'
-import PageOne from './PageOne'
-import {VscFilePdf} from 'react-icons/vsc';
-import { useReactToPrint } from "react-to-print";
-
-
+import PageOne from './pageOne/PageOne'
+import Approved from './Approve/Approved'
+import NotApproved from './notApprove/NotApproved'
+import AssistApprove from './assistApprove/AssistApprove';
+import NotAssist from './notAssist/NotAssist';
 
 
 function MainPage() {
-    const componentRef = useRef();
-    const handlePrint = useReactToPrint({
-      content: () => componentRef.current,
-    });
+  let { paramId } = useParams();
+
     return (
-        <>
-        <PrintBtn className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</PrintBtn>
-        
-        <PrintParent >
-           <PageOne ref={componentRef} />
-           <PageOne ref={componentRef} />
-           <PageOne ref={componentRef} />
-           <PageOne ref={componentRef} />
-        </PrintParent>
-        </>
+        <Components className="container">
+              {paramId==="1"&&<PageOne />} 
+              {paramId==="2"&&<Approved />} 
+              {paramId==="3"&&<NotApproved />} 
+              {paramId==="4"&&<AssistApprove /> } 
+              {paramId==="5"&&<NotAssist /> } 
+        </Components>
     )
 }
 
 export default MainPage
 
+const Components = styled.div`
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-bottom:40px;
+    
+`
 
-const PrintBtn = styled.div`
-        font-weight:500;
-        color:black;
-        // background-color:rgb(${ColorRgb});
-        // background-color:#008CBA;
-        // width:80%;
-        width:595px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        border:1px #008CBA;
-        border-style: dashed;
-        transition:all 0.4s ease;
-        margin-bottom:25px;
-        &:hover{
-        background-color:#009CBA;
-        }
-        svg{
-        margin-right:18px;
-        font-size:24px;
-        }
-`
-const PrintParent = styled.div`
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-`
+const One = [
+  { text: "Үнэлгээний явцад оролцогч талуудтай ямар нэгэн ашиг сонирхлын зөрчил үүсгэхгүй бөгөөд аливаа зөрчил үүсэж болзошгүй тохиолдолд нөхцөл байдлыг ил тодоор зарлаж үнэлгээний багаас огцрох болно. [Хэрэв танд Түншлэлийн дэмжлэг хүсэгч ААН, Кластер болон үнэлгээний хорооны бусад гишүүдтэй сонирхлын зөрчил байгаа бол үнэлгээний хорооноос өөрийн хүсэлтээр огцорно уу.] Түншлэлийн дэмжлэг хүсэгчтэй дараах ашиг сонирхлын зөрчил үүсэж байна " },
+  { text: "Үнэлгээний явцад оролцогч талуудтай ямар нэгэн ашиг сонирхлын зөрчил үүсгэхгүй бөгөөд аливаа зөрчил үүсэж болзошгүй тохиолдолд нөхцөл байдлыг ил тодоор зарлаж үнэлгээний багаас огцрох болно. [Хэрэв танд Түншлэлийн дэмжлэг хүсэгч ААН, Кластер болон үнэлгээний хорооны бусад гишүүдтэй сонирхлын зөрчил байгаа бол үнэлгээний хорооноос өөрийн хүсэлтээр огцорно уу.] Түншлэлийн дэмжлэг хүсэгчтэй дараах ашиг сонирхлын зөрчил үүсэж байна " }
+]
+
+

@@ -10,6 +10,7 @@ import {AiOutlineSend} from 'react-icons/ai'
 import {Modal} from '../MainModal/Modal'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
+import AccessToken from '../../../context/accessToken'
 
 function TableOne() {
     const history = useHistory();
@@ -17,16 +18,8 @@ function TableOne() {
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
-    const [ UserToken, setUserToken ] = useState(null);
     const [FinalErrorText, setFinalErrorText] = useState("");
     const tablesContext = useContext(HelperContext);
-
-    useEffect(()=>{
-      let storageToken = localStorage.getItem("edp_loggedUser", []);
-      setUserToken(storageToken);
-    });
-
-    console.log(UserToken, " my user Token");
 
     const clickHandles = (e) =>{
               let finalOne = {};  let finalEnd = {};
@@ -67,7 +60,7 @@ function TableOne() {
                 setTimeout(()=>{  history.push('/');  },4000);
               }else{
                   setSpnBtn(true);  setOpacity("0"); setOpacity2("0");
-                  axios.post("pps-request", finalEnd, {headers: { Authorization:`bearer ${UserToken} `} })
+                  axios.post("pps-request", finalEnd, {headers: { Authorization:AccessToken()} })
                   .then((res)=>{tablesContext.TableIdControl(res.data.data.id); tablesContext.alertText('green', "Амжилттай хадаглагдлаа", true); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); scroll.scrollTo(0); setSpnBtn(false); 
                   }).catch((err)=>{ console.log(err, "err"); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
               }

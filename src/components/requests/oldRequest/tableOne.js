@@ -1,6 +1,7 @@
 import React,{useEffect, useState, useRef, useContext} from 'react';
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
+import {BiPen} from 'react-icons/bi'
 import { Link, animateScroll as scroll } from "react-scroll";
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
@@ -9,6 +10,7 @@ import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
+import AccessToken from '../../../context/accessToken'
 
 function TableOne(props) {
     const history = useHistory();
@@ -17,20 +19,24 @@ function TableOne(props) {
     const [procent, setProcent] = useState('0');
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [ initialData, setInitialData ] = useState([]);
-    const [ Dname, setDname] = useState(props.initialName);
-    const [Ddate, setDdate] = useState(props.initialDate);
+    const [ Dname, setDname] = useState("");
+    const [Ddate, setDdate] = useState("");
     const StyleContext = useContext(UserContext);
     const tablesContext = useContext(HelperContext);
+
     
     useEffect(()=>{
       const finalData = []
       dataOne.map((el,i)=>{
+        if(props.initialData){
             props.initialData.map((elem,index)=>{ 
             if(i === index){el["id"] = elem.id; el["rvalue"] = elem.rvalue;  el["rownum"] = elem.rownum; }});
-        finalData.push(el);
-     })
-     setInitialData(finalData);
-    },[]);
+        } finalData.push(el);
+     });
+     setDname(props.initialName);setDdate(props.initialDate);setInitialData(finalData);
+    },[props.initialData]);
+
+   
 
     const radioChange = (event)=> {
       let finalData = []
@@ -62,20 +68,31 @@ function TableOne(props) {
               finalOne["request"] = finalOne2;  finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS1"] = finalOne;
               let keys = Object.keys(finalOne2); const Procent = keys.length * 100 / 13; const FinalProcent = Math.round(Procent);
 
+              let confirm = document.getElementById("GetcheckBtn").checked;
+
               if(keys.length < 12){
                 setOpacity("1"); setProcent(FinalProcent);
               }else if(userInp.name === "" || userInp.date === ""){
                   setOpacity("0"); setFinalErrorText("Мэдүүлэг хэсгийг бүрэн гүйцэд бөгөлнө үү"); setOpacity2("1");
+              }else if(confirm === false){
+                setOpacity("0"); setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
               }else if(cond.length > 0){
                 setOpacity("0"); setFinalErrorText("Та шалгуур хангалтанд тэнцэхгүй байна"); setOpacity2("1");
                 tablesContext.alertText('orange', "Та шалгуур хангалтанд тэнцэхгүй байна", true );
                 setTimeout(()=>{  history.push('/');  },4000);
               }else{
                 setOpacity("0"); setOpacity2("0");
-               await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ 
-               console.log(res, "******res"); scroll.scrollTo(0); StyleContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
-                })
-               .catch((err)=>{ tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
+                if(props.initialData){
+                  await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{ 
+                    console.log(res, "******res"); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
+                     })
+                    .catch((err)=>{ tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
+                }else{
+                  axios.post("pps-request", finalEnd, {headers: { Authorization:AccessToken()} })
+                  .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true );
+                  }).catch((err)=>{ console.log(err, "err"); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
+                }
+              
             }
             console.log(finalEnd, "final end");
       }
@@ -96,7 +113,7 @@ function TableOne(props) {
                     <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
                     </div>
                 </div>
-                { initialData.map((el, i)=>{
+                {props.initialData?  initialData.map((el, i)=>{
                     return(
                       <div className="headerParchild" key={i}>
                           <div className="row" >
@@ -108,7 +125,19 @@ function TableOne(props) {
                       </div>
                     </div>
                     )
-                })}
+                }): dataOne.map((el, i)=>{
+                  return(
+                    <div className="headerParchild" key={i}>
+                        <div className="row" >
+                        <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
+                        <div className="texts col-md-8 col-sm-4 col-4">{el.name}</div>
+                        <div className="radios col-md-1 col-sm-3 col-3"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="unconcern"/></div>
+                        <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="true"/></div>
+                        <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} type="radio" name={i + 1} value="false"/></div>
+                    </div>
+                  </div>
+                  )
+              }) }
                 <div className="FinalBtn">
                     <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
                     <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
@@ -138,13 +167,22 @@ function TableOne(props) {
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div className="inpChild next">
+                                        <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
+                                            <div className="name"> <BiPen />
+                                                <div className="form__group">
+                                                    <input id="GetcheckBtn" className="checkBtn" type="checkbox" name="check" />
+                                                </div>
+                                            </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                             <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
-                   </div>
+                        </div>
               </div>
              </div>
             </div>

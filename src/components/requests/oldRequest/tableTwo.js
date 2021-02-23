@@ -10,35 +10,35 @@ import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from '../../../context/UserContext'
 import axios from '../../../axiosbase'
 import HelperContext from '../../../context/HelperContext'
+import AccessToken from '../../../context/accessToken'
 
 function TableTwo(props) {
-    const StyleContext  = useContext(UserContext);
-    const helpCtx  = useContext(HelperContext);
+    const helperContext  = useContext(HelperContext);
+    const [ fileSave, setFileSave ] = useState([]);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [ initialData, setInitialData ] = useState([]);
-    const [ Dname, setDname ] = useState("");
-    const [Ddate, setDdate] = useState("");
-
+    const [ Dname, setDname ] = useState(null);
+    const [Ddate, setDdate] = useState(null);
+    
     useEffect(()=>{
-       const finalData = []
-       tableData.map((el,i)=>{
-           props.initialData.map((elem, index )=> {
-            if(i === index ){
-                el["name"] = elem.name;
-                el["recentDate"] = elem.recentDate
-                el["getDate"] = elem.getDate;
-                el["id"] = elem.id
-                el["fileurl"] = elem.fileurl
-            }
-           })
-           finalData.push(el);
-       });
-       setDname(props.initialName);
-       setDdate(props.initialDate);
-       setInitialData(finalData);
-    },[]);
-    console.log(initialData, " 222  my initial Data");
+        if(props.initialData){
+            const finalData = []
+            tableData.map((el,i)=>{
+                        props.initialData.map((elem, index )=> {
+                            if(i === index ){
+                                el["name"] = elem.name;
+                                el["recentDate"] = elem.recentDate
+                                el["getDate"] = elem.getDate;
+                                el["id"] = elem.id
+                                el["files"] = elem.files
+                            }
+                        })
+                finalData.push(el);
+            });
+            setDname(props.initialName); setDdate(props.initialDate); setInitialData(finalData);
+        }
+    },[props.initialData]);
 
 
     const onChangeHandle = (event) =>{ const finalData = [];
@@ -63,12 +63,16 @@ function TableTwo(props) {
     }
 
     const onChangeFile = (event) =>{
-        const finalData = [];
-        tableData.map((el,i)=>{props.initialData.map(elem=> elem);finalData.push(el); });
-
-        finalData.map((el, i )=>{ if(el.id.toString() === event.target.id){ el["fileurl"] = event.target.files[0].name }  });
-        setInitialData(finalData);
+        const formData = new FormData()
+        formData.append('file', event.target.files[0]);
+        formData.append('description', event.target.id);
+        axios.post('attach-files',formData, {headers: { 'Authorization': props.token, 'Content-Type': 'multipart/form-data', }})
+        .then((res)=>{ 
+            console.log(res.data.data, "---res");
+            setFileSave(prev=> prev.concat(res.data.data));
+        }).catch(err=>console.log(err));
     }
+   
 
     const changeHandleName = (e) =>{   setDname(e.target.value);  }
     const changeHandleDate = (e)=>{  setDdate(e.target.value);  }
@@ -76,41 +80,40 @@ function TableTwo(props) {
 
     const clickHandles = (e) =>{
         let getFile = document.querySelectorAll(".GetFilesData");  let myArr1 = Array.from(getFile);  let condition = []
-        myArr1.map((el,i)=>{let value = {};   value = el.files[0];
+        myArr1.map((el,i)=>{
+            let value = {};   value = el.files[0];
             if(value !== undefined){ condition.push(value); }
-        })
-
-        const FilesSend = (FileData) =>{
-            const TestArr = [];
-                myArr1.map((el,i)=>{ let value = el.files[0]
-                    if(value === undefined){value = {}}
-                    FileData.map((element, index)=>{  if( i === index){value["tableId"] = element.id;TestArr.push(value); }})
-                });
-            TestArr.map((el,i)=>{ const data = new FormData();   data.append(el.name, el);
-                    axios.put(`pps-request/${el.tableId}/upload-pps2`, data, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{console.log(res,'ress'); })
-                    .catch((err)=> console.log(err))
-            });
-        }
-
-        e.preventDefault();
+        });
+        
         let finalOne = {};  let finalEnd = {}; let rs2 = document.querySelectorAll(".GetItem"); let arr2 = Array.from(rs2); let finalOne2 = [];
         
         arr2.map((el,i)=>{
             const Lala = {};  let rs2 = document.querySelectorAll(`.PPS${i + 1}`);  let arr23 = Array.from(rs2);
-            arr23.map((el,i)=>{
-                if(el.value !== ""){ let field = el.name; let value = el.value; if(props.initialData[0]){   Lala["id"] = el.id;}  Lala[field] = value; }
+            arr23.map((el,index)=>{
+                if(el.value !== ""){ 
+                    let field = el.name; let value = el.value;
+                    if(Dname){ Lala["id"] = el.id;   }
+                    Lala[field] = value; 
+                }
+            });
+            fileSave.map((elem,ind)=>{
+                if((i + 1)=== parseInt(elem.description)){  Lala["files"] = elem }
             });
             finalOne2.push(Lala);
         });
 
         let originalTest = []
-         finalOne2.map(el =>{
-          let  conditon1 = Object.keys(el)
-            if(props.initialData[0]){
-                if(conditon1.length === 4){   originalTest.push(el); }
-            }else{ if(conditon1.length === 3){ originalTest.push(el); }
-            }
-        })
+        if(Dname !== null){
+            finalOne2.map(el =>{
+             let  conditon1 = Object.keys(el)
+               if(Dname){
+                   if(conditon1.length > 3){   originalTest.push(el); }
+               }else{ if(conditon1.length === 3){ originalTest.push(el); }
+               }
+           })
+        }else{
+             finalOne2.map(el =>{   let  conditon1 = Object.keys(el); if(conditon1.length > 2){ originalTest.push(el);  } })
+        }
 
         let rs4 = document.querySelectorAll(".getUser2");
         let arr4 = Array.from(rs4);
@@ -128,29 +131,34 @@ function TableTwo(props) {
         finalOne["date"] = userInp.date;
         finalEnd["PPS2"] = finalOne;
 
+
         console.log(originalTest.length, "hevellee");
 
         if(originalTest.length < 10){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү"); setOpacity2("1");
         }else if(userInp.name === "" || userInp.date === ""){
             setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү"); setOpacity2("1");
-        }
-        // else if(condition.length < 10){
-        //     setFinalErrorText("Шаардлагатай материал бүрэн хавсаргаагүй байна...");
-        //     setOpacity2("1");
-        // }
-        else if(confirm === false){
+        }else if(confirm === false){
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
         }else{
-            setOpacity2("0"); axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}})
-            .then((res)=>{ console.log(res); FilesSend(res.data.data.ppsRequest2Detail); helpCtx.alertText('green', "Амжилттай боллоо", true); StyleContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%"); scroll.scrollTo(0); })
-            .catch((err)=>{ helpCtx.alertText('orange', "Алдаа гарлаа", true); console.log(err) });
+            setOpacity2("0");
+            if(Dname){
+                axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}})
+                .then((res)=>{ console.log(res); helperContext.alertText('green', "Амжилттай боллоо", true); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%"); scroll.scrollTo(0); })
+                .catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true); console.log(err) });
+            }else{
+                axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers: {Authorization:AccessToken()}} ).then((res)=>{
+                    setTimeout(()=>{ helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0); },2000);
+                  }).catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true); });
+            }
             
+
         }
         
         console.log(finalEnd, "my all");
     }
-   
+
+
     return (
         <Component2 className="container">
             <div className="shadow" >
@@ -159,7 +167,7 @@ function TableTwo(props) {
                 <div className="italicTitle">ХҮСНЭГТ 2. БАТАЛГАА/ЗӨВШӨӨРӨЛ/ТУСГАЙ ЗӨВШӨӨРЛИЙН ҮНЭЛГЭЭ</div>
             </div>
             <div className="MainContPar">
-            {props.initialData[0]? (initialData.map((el,i)=>{
+            {Dname !== null? (initialData.map((el,i)=>{
                     return(
                         <div id={i}  className="GetItem ChildPar" key={i + 1}>
                             <div className="Title"> {i + 1}. {el.items} :
@@ -197,9 +205,9 @@ function TableTwo(props) {
                                               </div>
                                 </div>
 
-                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.fileurl}</div> </div>
+                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.files?el.files.name:""}</div> </div>
                                      <div className="name"> <RiUpload2Line />  <div className="form__group">
-                                            <input type="file"  id={el.id} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
+                                            <input type="file"  id={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
                                             <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
 
                                             {/* <input type="file" tabIndex={el.id} onChange={()=>onChangeFile()} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={`GetFilesData inputfile`} id="file" name="file"  />
@@ -245,13 +253,10 @@ function TableTwo(props) {
                                                         <label for="name" className=" form__label">Шинэчилсэн</label> </div> </div> </div>  </div>
                                               </div>
                                 </div>
-                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.fileurl}</div> </div>
+                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.files?el.files.name:""}</div> </div>
                                      <div className="name"> <RiUpload2Line />  <div className="form__group">
-                                            <input type="file"   accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
+                                            <input type="file" id={i + 1}  onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
                                             <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
-
-                                            {/* <input type="file" tabIndex={el.id} onChange={()=>onChangeFile()} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={`GetFilesData inputfile`} id="file" name="file"  />
-                                            <label for="file" >{el.fileurl}</label>  */}
                                         </div></div> </div>
                                 </div>
                             </div>
@@ -269,7 +274,7 @@ function TableTwo(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" onChange={changeHandleName} value={Dname} className="getUser2 LoginInpName form__field" name="name" required />
+                                            <input type="input" onChange={Dname&&changeHandleName} value={Dname} className="getUser2 LoginInpName form__field" name="name" required />
                                             <label for="name"   className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -280,7 +285,7 @@ function TableTwo(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input max='3000-12-31' onChange={changeHandleDate} value={Ddate}  type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input max='3000-12-31' onChange={Dname&&changeHandleDate} value={Ddate}  type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
@@ -301,7 +306,7 @@ function TableTwo(props) {
 
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
-                            <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); StyleContext.StyleComp("0%", "100%", "200%", "300%", "400%","500%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
+                            <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("0%", "100%", "200%", "300%", "400%","500%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
                             <NextBtn id="myInput" onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                         </div>
             </div>

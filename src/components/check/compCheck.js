@@ -2,11 +2,11 @@ import React,{useState, useContext,useEffect} from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom'
 import {IoMdCheckmarkCircle  } from 'react-icons/io';
-import { fontFamily, textColor, Color,fontSize } from '../theme';
+import { fontFamily, textColor, Color,fontSize,NextBtn } from '../theme';
 import {AiOutlineSend} from 'react-icons/ai'
 import {CgDanger} from 'react-icons/cg'
-import UserContext from '../../context/UserContext'
 import HelperContext from '../../context/HelperContext'
+import AccessToken from '../../context/accessToken'
 import axios from '../../axiosbase'
 
 function CompCheck() {
@@ -17,15 +17,10 @@ function CompCheck() {
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
     const [procent, setProcent] = useState('0');
-    const [ UserToken, setUserToken ] = useState(null);
-    const [ finalTextScale, setFinalTextScale] = useState('0');
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const StyleContext = useContext(UserContext);
 
     useEffect(async()=>{
-      let storageToken = localStorage.getItem("edp_loggedUser", []);
-      setUserToken(storageToken);
-      const data =  await axios.get(`criterias`,{ headers: { Authorization:`bearer ${storageToken}` } });
+      const data =  await axios.get(`criterias`,{ headers: { Authorization:AccessToken() } });
       let keys = Object.keys(data.data.data);
      
       if(keys.length > 0){
@@ -39,7 +34,6 @@ function CompCheck() {
         setInitialData(allData);
         setUpdateMount(true);
       }else{ console.log("^^data alga") }
-
     },[updateMount]);
 
 
@@ -50,7 +44,7 @@ function CompCheck() {
               let soloObject2 = {}
               const cond = {};
 
-              arr2.map((element,i)=>{ 
+              arr2.map((element,i)=>{
                   if(element.checked === true){
                     let field = element.name; let value = element.value;  let id = element.id; soloObject2[id + field] = value;
                   }
@@ -76,10 +70,9 @@ function CompCheck() {
               }else{
                 setOpacity("0");
                 setOpacity2("0");
-                setFinalTextScale("0");
                 // history.push('/');
                 // scroll.scrollTo(0);
-                axios.post(`criterias`, soloObject2, {headers:{ Authorization:`bearer ${UserToken}` } }).then(res=>{
+                axios.post(`criterias`, soloObject2, {headers:{ Authorization:AccessToken() } }).then(res=>{
                   console.log(res, "ress"); ctx.alertText('green, Амжилттай', true);
                 }).catch(err=>console.log(err));
               }
@@ -119,11 +112,15 @@ function CompCheck() {
                         <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                     </div>
 
-                  {updateMount!==false? <div className="Success"><div className="item"><IoMdCheckmarkCircle /> Шалгуур хангалтыг тулгах хуудас Амжилттай </div></div> 
+                  {updateMount!==false?
+                   <div className="Success">
+                       <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div>
+                       <div>dadada</div>
+                    </div> 
                   :( <div className="buttonPar">
-                    <div style={{opacity:`${opacity2}`}} className="errtext"><CgDanger /> {FinalErrorText}</div>
-                    <button onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
-                </div>)}
+                      <div style={{opacity:`${opacity2}`}} className="errtext"><CgDanger /> {FinalErrorText}</div>
+                      <NextBtn onClick={clickHandles} className="SubmitButton" type="button">Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                    </div>)}
                     
             </div>
         </Component1>
@@ -136,6 +133,7 @@ export default CompCheck
 
 const Component1 = styled.div`
     margin-top:40px;
+    padding-bottom:80px;
     color:rgba(${textColor},0.9);
     transition: all 0.5s ease-out;
     font-family: ${fontFamily};
@@ -148,19 +146,21 @@ const Component1 = styled.div`
           padding:0px 30px;
           padding-bottom:30px;
           display:flex;
-          justify-content:center;
+          align-items:center;
+          justify-content:space-between;
           .item{
+            font-size:15px;
             display:flex;
             align-item:center;
+            border-radius:4px;
+            border:1px solid rgba(0,0,0,0.3);
+            padding:10px 30px;
             svg{
               font-size:24px;
               margin-right:10px;
               color:green;
               background-color:white;
             }
-            border-radius:4px;
-            border:1px solid rgba(0,0,0,0.3);
-            padding:10px 30px;
           }
         }
           .rowHeader{

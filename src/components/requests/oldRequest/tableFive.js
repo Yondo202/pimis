@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState,useEffect, useContext} from 'react'
 import TableFiveDetails from './deitals/tableFiveDetail'
 import TableFiveDetails2 from './deitals/tableFiveDetail2'
 import { Link, animateScroll as scroll } from "react-scroll";
@@ -8,19 +8,26 @@ import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../../context/UserContext'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
+import AccessToken from '../../../context/accessToken'
 
 function TableFive(props) {
-    const StyleContext  = useContext(UserContext);
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [ Dname, setDname ] = useState(props.initialName);
-    const [Ddate, setDdate] = useState(props.initialDate);
+    const [ Dname, setDname ] = useState(null);
+    const [Ddate, setDdate] = useState(null);
     const changeNameHandle = (event) =>{ setDname(event.target.value); };
     const changeDateHandle = (event) =>{ setDdate(event.target.value); };
+
+
+    useEffect(()=>{
+        if(props.initialName){
+            setDname(props.initialName);
+            setDdate(props.initialDate);
+        }
+    },[props.initialName]);
 
     const clickHandles = () => {
         let finalOne = {}; let finalEnd = {}; let rs2 = document.querySelectorAll(".GetItemAdd55"); let arr2 = Array.from(rs2); let finalOne2 = []; let tableCondition1 = [];
@@ -34,7 +41,7 @@ function TableFive(props) {
         });
         let keys1 = Object.keys(tableCondition1[0]); console.log(keys1.length, "my length");
 
-        let tableCondition2 = []; let rs22 = document.querySelectorAll(".GetItemAdd555"); let arr22 = Array.from(rs22); let finalOne22 = [];
+        let tableCondition2 = []; let rs22 = document.querySelectorAll(".GetItemAdd55"); let arr22 = Array.from(rs22); let finalOne22 = [];
         arr22.map((el,i)=>{
             const Lala = {}
             let rs2 = document.querySelectorAll(`.passa${i + 1}`);
@@ -59,17 +66,26 @@ function TableFive(props) {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
         }else{
             setOpacity2("0");
-            axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:`bearer ${props.token}`}}).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
-            scroll.scrollTo(0); StyleContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
+            if(Dname){
+                axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ console.log(res, "$$(A) res 5 $$")}).catch((err)=>{ console.log(err, "err");});
+                scroll.scrollTo(0); helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");
+            }else{
+                axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
+                    helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%"); scroll.scrollTo(0);
+                }).catch((err)=>{helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+            }
+            
         }
     }
+
     // console.log(props.initialData.requestOne, " $$ 5 $$");
     return (
         <Component3 className="container">
-            {props.initialData.requestOne ? (
+            {Dname? (
             <><TableFiveDetails initialData={props.initialData.requestOne} />
             <TableFiveDetails2 initialData={props.initialData.requestTwo} /></>
-            ) : <div>Мэдээлэл байхгүй</div> }
+            ) :  <><TableFiveDetails initialData={null} />
+                   <TableFiveDetails2 initialData={null} /></> }
             
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
@@ -80,7 +96,7 @@ function TableFive(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <div className="form__group">
-                                            <input type="input" value={Dname} onChange={changeNameHandle} className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                            <input type="input" value={Dname} onChange={Dname&&changeNameHandle} className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
@@ -91,7 +107,7 @@ function TableFive(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                <input type="date" value={Ddate} onChange={changeDateHandle} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                <input type="date" value={Ddate} onChange={Dname&&changeDateHandle} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>

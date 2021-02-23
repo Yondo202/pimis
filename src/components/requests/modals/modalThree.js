@@ -8,10 +8,13 @@ function ModalThree(props) {
 
     const [ DataOne, setDataOne ] = useState([]);
     useEffect(()=>{
-        setDataOne(props.Data2);
+        if(props.Data2){
+             setDataOne(props.Data2);
+        }else{
+            setDataOne(tableData);
+        }
     },[]);
 
-    console.log(DataOne, " my data oneeeee"); 
 
     return (
         <TableTwo >

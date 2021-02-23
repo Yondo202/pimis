@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {ColorRgb} from '../theme'
 import { BrowserRouter as Router, Switch, Route, Link,useHistory, useLocation } from "react-router-dom";
 import axios from '../../axiosbase';
+import AccessToken from '../../context/accessToken'
 
 function Home() {
    let history = useHistory();
@@ -10,10 +11,10 @@ function Home() {
    useEffect(async()=>{
        try{
         let storageToken = localStorage.getItem("edp_loggedUser", []);
-        let resData = await axios.get(`pps-request`, {headers: {Authorization:`bearer ${storageToken}`}});
+        let resData = await axios.get(`pps-request`, {headers: {Authorization: AccessToken()}});
         console.log(resData, " ____")
         if(resData.data.data.id){ setCond(true); }else{ setCond(false); }
-       }catch{console.log("Алдаа гарсан"); }
+       }catch{console.log("Алдаа гарсан..."); }
 
    },[cond]);
 
@@ -26,10 +27,15 @@ function Home() {
         <HomeComponent className="container">
             <div className="headerPar">
                 <div className="header row">
-                    {/* <div className="headItems2 col-md-12 col-sm-12 col-12"><span className="text2">PIMIS код буруу байна</span></div> */}
-                    <div className="col-md-4"><div className="headItems"><span className="text">1. Баримт бүрдүүлэлт</span> </div></div>
-                    <div className="col-md-6"><div className="headItems"><span className="text">2. Үнэлгээ хийх</span> </div></div>
-                    <div className="col-md-2"><div className="headItems"><span className="text"> 3. Гэрээ байгуулах</span></div></div>
+                    <div className="col-md-4"><div className="headItems"><span className="text">1.Түншлэлийн хөтөлбөрт бүрдүүлэх баримт</span> </div></div>
+                    <div className="col-md-4"><div className="headItems"><span className="text">2. Үнэлгээ, шийдвэр гарах явц</span> </div></div>
+                    <div className="col-md-4"><div className="headItems"><span className="text"> 3. Гэрээ байгуулах, гүйцэтгэл санхүүжилтийн..</span></div></div>
+                </div>
+
+                <div className="otherHead row">
+                    <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
+                    {/* <div className="col-md-4"><div className="headItems"><span className="text">Бизнес хяналтын зөвлөх</span><span className="text">Үнэлгээний хорооны үнэлгээ, шийдвэр</span> </div></div> */}
+                    <div className="col-md-4"><div className="headItems"><span className="text">Бизнес хяналтын зөвлөх</span><span className="text">Үнэлгээ, шийдвэр</span> </div></div>
                 </div>
             </div>
             
@@ -42,11 +48,11 @@ function Home() {
                                 <Link to={cond===false?`/comp-request/new`:`/comp-request/old`} className="itemsActive">2. Байгаль орчны үнэлгээний асуумж </Link>
                                 <div className="line line2" ></div>
                                 <Link to="/letter-of-interest" className="itemsActive">3. Сонирхол илэрхийлэх албан тоот</Link>
-                                <div className="line line2" ></div>
-                                <Link to="/urgudul/1" className="itemsActive">4. Өргөдлийн маягт </Link>
+                                {/* <div className="line line2" ></div>
+                                <Link to="/urgudul/1" className="itemsActive">4. Өргөдлийн маягт </Link> */}
                             </div>
                             <div className="lineFull lineFull2" ></div>
-                            <Link to="/5a" className="resultActive">МЭДЭГДЭЛ: Анхан шатны үнэлгээ</Link>
+                            <Link to="/urgudul/1" className="resultActive">4. Өргөдлийн маягт </Link>
                         </div>
                     </div>
 
@@ -56,7 +62,6 @@ function Home() {
                                 <a href="https://edp-plan.vercel.app/" target="_blank" style={{backgroundColor:`#F7FF48`}} className="itemsActive arrHelp arrHelpActive"><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
                                 <div className="line line2" ></div>
                                 <Link to="/attachments" style={{backgroundColor:`#F7FF48`}} className="items itemsActive">2.Нотлох бичиг баримтууд </Link>
-                               
                             </div>
                             <div className="lineFull" ></div>
                             <div className="resultWaiting">Баримт бүрдүүлэлт <br/> 2-р шат бүрэн</div>
@@ -68,46 +73,51 @@ function Home() {
                     <div className="col-md-2 col-sm-2 itemsCol">
                         <div className="itemsPar">
                             <div className="mains">
-                                <div className="items arrHelp"><div className="helpArr"></div>...</div>
+                                <div className="items arrHelp"><div className="helpArr"></div>1. Анхан шатны үнэлгээ</div>
+                                <div className="line" ></div>
+                                <Link to="/5b" className="items "><div className="helpArr"></div> 2. Баримтжуулах бүрдүүлбэрийн шалгах хуудас </Link>
                             </div>
                             <div className="lineFull" ></div>
-                            <div className="resultDesable">....</div>
+                            <Link to="/5c" className="items resultDesable">3. Бизнес шинжээчийн шинжилгээний тайлан </Link>
                         </div>
                     </div>
 
                     <div className="col-md-2 col-sm-2 itemsCol">
                         <div className="itemsPar">
                             <div className="mains">
-                                <Link to="/5b" className="items  arrHelp"><div className="helpArr"></div> 1.Баримтжуулах бүрдүүлбэрийн шалгах хуудас </Link>
-                                <div className="line " ></div>
-                                <Link to="/5c" className="items">2.Бизнес шинжээчийн шинжилгээний тайлан </Link>
-                                <div className="line " ></div>
-                                <div className="items">3. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас  </div>
-                                <div className="line " ></div>
-                                <div className="items">4. Үнэлгээний хорооны хурал </div>
+                                <Link to="#" className="items  arrHelp"><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
                             </div>
                             <div className="lineFull" ></div>
-                            <div className="resultDesable">Үнэлгээний хорооны шийдвэр</div>
+                            <div className="resultDesable">2.Үнэлгээний хорооны шийдвэрийн хуудас</div>
                         </div>
                     </div>
+
+
 
                     <div className="col-md-2 col-sm-2 itemsCol">
                         <div className="itemsPar">
                             <div className="mains">
-                                <div className="items arrHelp"><div className="helpArr"></div> Гүйцэтгэлийн үнэлгээ </div>
+                                <div className="items arrHelp"><div className="helpArr"></div>1. Түншлэлийн гэрээ байгуулах </div>
+                                <div className="line" ></div>
+                                <Link to="#" className="items "><div className="helpArr"></div> 2. Гүйцэтгэлийг нотлох баримт(бусад байгууллагатай байгуулах гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан) </Link>
+                    
+
                             </div>
                             <div className="lineFull" ></div>
-                            <div className="resultDesable">Гүйцэтгэлийн үнэлгээ бүрэн</div>
+                            <div className="resultDesable">3. Түншлэлийн гэрээний гүйцэтгэлийн тайлан</div>
+                            
                         </div>
                     </div>
 
                     <div style={{borderRight:`none`}} className="col-md-2 col-sm-2 itemsCol itemsColA">
                         <div className="itemsPar">
                             <div className="mains">
-                                <div className="items arrHelp"><div className="helpArr"></div> Хүлээгдэж байна...</div>
+                                <div className="items arrHelp"><div className="helpArr"></div>4. Санхүүгийн баримтууд</div>
+                                <div className="line" ></div>
+                            <div className="resultDesable">5. Анхны гүйцэтгэлийг хүлээн авах /асууна/</div>
                             </div>
                             <div className="lineFull" ></div>
-                            <div className="resultDesable">Хүлээгдэж байна...</div>
+                            <div className="resultDesable">6. Гүйцэтгэлийн үнэлгээ бүрэн бөгөөд буцаан (санхүүжилтийн) олголтын хүсэлт</div>
                         </div>
                     </div>
                 </div>
@@ -446,16 +456,16 @@ const HomeComponent = styled.div`
         }
     }
     .headerPar{
-        background-color: rgba(${ColorRgb},0.9);
-        margin-top:15px;
+        margin-top:1px;
         .header{
+            background-color: rgba(${ColorRgb},1);
             .headItems{
                 display:flex;
                 align-items:center;
                 justify-content:center;
                 // height:70px;
-                padding-bottom:15px;
-                padding-top: 15px;
+                padding-bottom:10px;
+                padding-top: 10px;
                 padding-right:15px;
                 padding-left:15px;
                 .text{
@@ -479,6 +489,26 @@ const HomeComponent = styled.div`
                     width:70%;
                     background-color:rgba(255,255,102,0.9);
                     padding:4px 8px;
+                }
+            }
+        }
+        .otherHead{
+            padding:3px 0px;
+            font-size:12px;
+            border-bottom:1px solid rgba(0,0,0,.2);
+            border-style:dashed;
+            display:flex;
+            align-items:center;
+            .headItems{
+               margin-right:-15px;
+               display:flex;
+               align-items:center;
+               justify-content:space-between;
+                span{
+                    height:100%;
+                    padding-right:15px;
+                    border-right:1px solid rgba(0,0,0,0.1);
+                    width:45%;
                 }
             }
         }
