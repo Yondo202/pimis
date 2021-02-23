@@ -1,5 +1,5 @@
 import React from 'react'
-import { translation } from 'components/admin/contents/projects/ProjectHandle'
+import { translation } from 'components/admin/contents/projects1/ProjectHandle'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 
 

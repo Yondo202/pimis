@@ -9,15 +9,14 @@
     margin: 0;
   }
 }
-.container{
+
+.container {
   max-width: 1060px;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* font-family: "Montserrat", sans-serif !important; */
@@ -25,52 +24,59 @@ body {
   overflow-x: hidden;
   background-color: #f2f2f2;
 }
-.container{
+
+.container {
   max-width: 1000px;
 }
 
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px black;
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(40, 40, 40, 1);
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: black;
 }
 
-
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
-#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk  {
-  background-color: rgba(0,0,0,0.1);
+
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk {
+  background-color: rgba(0, 0, 0, 0.1);
 }
-#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalTitle__1TtY9  {
-    font-size: 30px;
+
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalTitle__1TtY9 {
+  font-size: 30px;
 }
-#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalContent__nuwvF  {
-    font-size: 24px;
+
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalContent__nuwvF {
+  font-size: 24px;
 }
-#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalButtonPlace__AYeOm  {
-    /* font-size: 24px; */
+
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalButtonPlace__AYeOm {
+  /* font-size: 24px; */
 }
-#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalButtonPlace__AYeOm .Button-module_--primary__1ZLkB  {
+
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalButtonPlace__AYeOm .Button-module_--primary__1ZLkB {
   transition: all 0.4s ease;
   cursor: pointer;
-    /* font-size: 24px; */
-}
-#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalButtonPlace__AYeOm .Button-module_--primary__1ZLkB:hover  {
-  box-shadow:1px 1px 15px -2px black;
+  /* font-size: 24px; */
 }
 
+#stfDialogPlace .stf__modalDialogsPlace .Modal-module_overlay__21YAk .Modal-module_modal__FqeFw .Modal-module_modalButtonPlace__AYeOm .Button-module_--primary__1ZLkB:hover {
+  box-shadow: 1px 1px 15px -2px black;
+}
 
-#__react-alert__{
-    background-color: black;
+#__react-alert__ {
+  background-color: black;
 }

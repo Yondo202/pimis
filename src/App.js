@@ -29,6 +29,9 @@ import UnAuthContent from "UnauthContent";
 import { FilePreviewStore } from "components/utilities/filePreviewContext";
 import FilePreviewModal from "components/file_preview/filePreview";
 import WorkPerformance from './components/workPerformance/MainWorkPerformance'
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.css';
+
 
 function App() {
   const ctxUser = useContext(UserContext);
