@@ -7,16 +7,50 @@ import SignatureCanvas from 'react-signature-canvas'
 import {FaPenNib} from 'react-icons/fa'
 
 function MainWorkPerformance() {
+    const userInitial = [{ids: 0,  url: null}];
     const initialList = [{ids: 1}];
+    const [ userInfo, setUserInfo ] = useState(userInitial);
     const [ initialData, setInitialData ] = useState(initialList);
     const [visible, setVisible] = useState(false);
+
     let [sigCanvas, setSigCanvas] = useState({});
-    let [trimmedDataURL, setTrimmedDataURL] = useState(null);
-    const openModal=()=> { setVisible(true);}
+    let [trimmedDataURL, setTrimmedDataURL] = useState(
+        [{id: null , url: null}]
+    );
+
+
+    const openModal=()=> {
+        
+         setVisible(true);
+    }
     const closeModal=()=> { setVisible(false);}
     const clear = () => sigCanvas.clear();
-    const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png'));
-    setTimeout(()=>{ closeModal() },1000) };
+    const trim = (id) =>{
+        // let addItem = userInfo.concat([{ id:id, url: sigCanvas.getTrimmedCanvas().toDataURL('image/png') }])
+
+        // userInitial.map((el,i)=>{
+        //     if(i === id){
+        //         addImg["ids"] = 1
+        //         addImg["url"] = sigCanvas.getTrimmedCanvas().toDataURL('image/png')
+        //     }
+        // })
+        let final = [];
+        userInfo.map((el,i)=>{
+            if((i+1) === id){
+                let addImg = {};
+                addImg["ids"] = 1
+                addImg["url"] = sigCanvas.getTrimmedCanvas().toDataURL('image/png');
+                // addImg.push(el);
+                final.push(addImg);
+            }
+            final.push(el);
+        })
+
+
+        setUserInfo( final );
+
+          setTimeout(()=>{ closeModal() },1000)
+     };
 
 
     const AddHandle = ()=>{
@@ -24,6 +58,11 @@ function MainWorkPerformance() {
         setInitialData(list);
     }
 
+    const AddHandleUser = ()=>{
+        const list = userInfo.concat( {ids: 1, url: null});
+        setUserInfo(list);
+    }
+    console.log(userInfo, " my user Info");
 
 
     return (
@@ -85,38 +124,44 @@ function MainWorkPerformance() {
                         <div className="row">
                             <div className="col-md-3 col-3"><div className="LeftHead">Хянасан: </div> </div>
                             <div className="col-md-9 col-9">
+
                                 <div className="RightHead">
-
-                                    <div className="userInfPar">
-                                            <div className="name">Нэр: А. Хашцэцэг</div>
-                                            <div>Албан тушаал: Төслийн зохицуулагч</div>
-                                            <div className="infItemPar">
-                                                    <div className="DatePar">
-                                                        <span>Огноо: </span><InputStyle className="themeStyle" > <input placeholder="example@example.com..." type="date" max='3000-12-31' /><div className="line" /></InputStyle>
-                                                    </div>
-                                                    <div className="drowPar">
-                                                       <div>Гарын үсэг:</div> <div className="SignBtn" onClick={openModal} ><FaPenNib /><span>Зурах</span></div>
-                                                         {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
-                                                            <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
-                                                                <div className="modalPar">
-                                                                    <div className="Canvass">
-                                                                        <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
-                                                                    </div>
-                                                                    <div className="BtnPar">
-                                                                        <button onClick={clear}>Цэвэрлэх</button>
-                                                                        <button onClick={trim}>Хадгалах</button>
-                                                                        <button onClick={closeModal}>X</button>
-                                                                    </div>
+                                    <div className="addInfoPar">
+                                        {userInfo.map((el,i)=>{
+                                            return(
+                                                    <div className="userInfPar" key={i}>
+                                                        <div className="name">Нэр: А. Хашцэцэг</div>
+                                                        <div>Албан тушаал: Төслийн зохицуулагч</div>
+                                                        <div className="infItemPar">
+                                                                <div className="DatePar">
+                                                                    <span>Огноо: </span><InputStyle className="themeStyle" > <input placeholder="example@example.com..." type="date" max='3000-12-31' /><div className="line" /></InputStyle>
                                                                 </div>
-                                                        </Modal>
-                                                    </div>
-
-                                                    
-                                            </div>
+                                                                <div className="drowPar">
+                                                                <div>Гарын үсэг:</div> <div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>
+                                                                    {el.url ? <img className="SingatureImg"  src={el.url}/> : null}
+                                                                        <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
+                                                                            <div className="modalPar">
+                                                                                <div className="Canvass">
+                                                                                    <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
+                                                                                </div>
+                                                                                <div className="BtnPar">
+                                                                                    <button onClick={clear}>Цэвэрлэх</button>
+                                                                                    <button onClick={()=>trim(i + 1)}>Хадгалах</button>
+                                                                                    <button onClick={closeModal}>X</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </Modal>
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                            )
+                                        })}
+                                         <div onClick={AddHandleUser} className="addBtn"><MdAddCircle /></div>
                                     </div>
 
-                                    
+                                    <div className="remark"><span className="title">Жич:</span>ТХН-н хяналт-шинжилгээ, үнэлгээний мэргэжилтэнд Түншлэлийн хөтөлбөрийн хэрэгжилтийн явцыг зөвхөн тайлагнах бөгөөд тус мэргэжилтэн нь дээр дурдсан гүйцэтгэх ажлуудын чанарын тухайд аливаа хариуцлага хүлээхгүйгээс гадна төлбөрийг хойшлуулж болохгүй.</div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -147,6 +192,7 @@ const WorkPerformance = styled.div`
                 position:relative;
                 border-bottom:1px solid rgba(0,0,0,.2);
                 .addBtn{
+                    z-index:2;
                     cursor:pointer;
                     background-color:white;
                     border-radius:50%;
@@ -173,91 +219,122 @@ const WorkPerformance = styled.div`
                 .RightHead{
                     padding:8px 8px;
                     padding-left:0px;
+                    .remark{
+                        padding:15px 0px;
+                        color: rgba(${textColor},0.9);
+                        font-size:12.3px;
+                        .title{
+                            font-weight:500;
+                            margin-right:10px;
+                        }
+                        font-style:italic;
+                    }
+                    
                     input{
                         width:100%;
                     }
-                    .userInfPar{
-                        padding: 10px 0px;
-                        margin-left:-30px;
-                        padding-left:30px;
-                        margin-right:-8px;
-                        padding-right: 8px;
-                        border-bottom:1px solid rgba(0,0,0,0.2);
-                        .name{
-                            margin-bottom:5px;
+                    .addInfoPar{
+                        position:relative;
+                        .addBtn{
+                            width:22px;
+                            height:22px;
+                            cursor:pointer;
+                            background-color:white;
+                            border-radius:50%;
+                            color:#228B22;
+                            font-size:22px;
+                            position:absolute;
+                            left: 99.5%;
+                            bottom:-8px;
+                            transition:transform 0.3s ease;
+                            &:hover{
+                                transform:scale(1.15);
+                            }
                         }
-                        .infItemPar{
-                            padding:10px 0px;
-                            display:flex;
-                            align-items:start;
-                            flex-direction:column;
-                            .drowPar{
+                        .userInfPar{
+                            padding: 10px 0px;
+                            margin-left:-30px;
+                            padding-left:30px;
+                            margin-right:-8px;
+                            padding-right: 8px;
+                            border-bottom:1px solid rgba(0,0,0,0.2);
+                            .name{
+                                margin-bottom:5px;
+                            }
+                            .infItemPar{
+                                padding:10px 0px;
                                 display:flex;
                                 align-items:start;
-                                margin-top:20px;
-                                .SignBtn{
-                                    margin-left:30px;
-                                    margin-right:30px;
-                                    padding:3px 15px;
-                                    cursor:pointer;
+                                flex-direction:column;
+                                .drowPar{
                                     display:flex;
-                                    align-items:center;
-                                    border:1px solid rgba(0,0,0,0.4);
-                                    svg{
-                                        margin-right:10px;
+                                    align-items:start;
+                                    margin-top:10px;
+                                    .SignBtn{
+                                        margin-left:30px;
+                                        margin-right:30px;
+                                        padding:3px 15px;
+                                        cursor:pointer;
+                                        display:flex;
+                                        align-items:center;
+                                        border:1px solid rgba(0,0,0,0.4);
+                                        svg{
+                                            margin-right:10px;
+                                        }
+                                        span{
+                                           font-weight:500;
+                                        }
+                                        &:hover{
+                                            background-color:rgba(0,0,0,.2);
+                                        }
                                     }
-                                    span{
-                                       font-weight:500;
+                                    
+                                    .SingatureImg{
+                                        border:1px solid rgba(${ColorRgb},0.3);
+                                        width:200px;
+                                        height:100px;
+                                   }
+    
+                                   .modalPar{
+                                    text-align:center;
+                                   .Canvass{
+                                       border:1px solid rgba(${ColorRgb},0.5);
+                                   }
+                                    .BtnPar{
+                                       padding:0px 10px;
+                                       margin:20px 0px;
+                                       display:flex;
+                                       flex-direction:row;
+                                       align-items:center;
+                                       justify-content:space-between;
+                                       button{
+                                           font-weight:500;
+                                           color:rgba(${textColor},0.9);
+                                           cursor:pointer;
+                                           border-style:none;
+                                           border-radius:4px;
+                                           padding:6px 14px;
+                                           background-color:white;
+                                           box-shadow:1px 1px 8px -2px;
+                                       }
                                     }
-                                    &:hover{
-                                        background-color:rgba(0,0,0,.2);
-                                    }
+                                }
                                 }
                                 
-                                .SingatureImg{
-                                    border:1px solid rgba(${ColorRgb},0.3);
-                                    width:200px;
-                                    height:100px;
-                               }
-
-                               .modalPar{
-                                text-align:center;
-                               .Canvass{
-                                   border:1px solid rgba(${ColorRgb},0.5);
-                               }
-                                .BtnPar{
-                                   padding:0px 10px;
-                                   margin:20px 0px;
-                                   display:flex;
-                                   flex-direction:row;
-                                   align-items:center;
-                                   justify-content:space-between;
-                                   button{
-                                       font-weight:500;
-                                       color:rgba(${textColor},0.9);
-                                       cursor:pointer;
-                                       border-style:none;
-                                       border-radius:4px;
-                                       padding:6px 14px;
-                                       background-color:white;
-                                       box-shadow:1px 1px 8px -2px;
-                                   }
-                                }
-                            }
-                            }
-                            
-
-                            .DatePar{
-                                padding:5px 0px;
-                                display:flex;
-                                align-items:center;
-                                input{ margin-left:10px; }
-                                span{
-                                    margin-right:10px;
+    
+                                .DatePar{
+                                    padding:5px 0px;
+                                    display:flex;
+                                    align-items:center;
+                                    input{ margin-left:10px; }
+                                    span{
+                                        margin-right:10px;
+                                    }
                                 }
                             }
                         }
                     }
+                    
 
                     .quill{
                         .ql-bubble{
@@ -265,6 +342,7 @@ const WorkPerformance = styled.div`
                             border-bottom-right-radius: 0;
                         }
                     }
+                    
                 }
                 .SingleSide{
                     height:100%;
