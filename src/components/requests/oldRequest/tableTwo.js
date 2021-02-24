@@ -1,13 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react'
 import styled from 'styled-components'
-import { Link, animateScroll as scroll } from "react-scroll";
-import { fontFamily, textColor, ColorRgb,fontSize,PrevBtn,NextBtn } from '../../theme';
+import { animateScroll as scroll } from "react-scroll";
+import { fontFamily, textColor, ColorRgb,fontSize,PrevBtn,NextBtn,InputStyle } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {RiUpload2Line} from 'react-icons/ri'
-import {BiPen} from 'react-icons/bi'
+import {BsArrowRightShort} from 'react-icons/bs'
 import {AiOutlineSend} from 'react-icons/ai'
-import UserContext from '../../../context/UserContext'
 import axios from '../../../axiosbase'
 import HelperContext from '../../../context/HelperContext'
 import AccessToken from '../../../context/accessToken'
@@ -27,13 +26,7 @@ function TableTwo(props) {
             const finalData = []
             tableData.map((el,i)=>{
                         props.initialData.map((elem, index )=> {
-                            if(i === index ){
-                                el["name"] = elem.name;
-                                el["recentDate"] = elem.recentDate
-                                el["getDate"] = elem.getDate;
-                                el["id"] = elem.id
-                                el["files"] = elem.files
-                            }
+                            if(i === index ){ el["name"] = elem.name; el["recentDate"] = elem.recentDate;  el["getDate"] = elem.getDate; el["id"] = elem.id; el["files"] = elem.files  }
                         })
                 finalData.push(el);
             });
@@ -69,7 +62,6 @@ function TableTwo(props) {
         formData.append('description', event.target.id);
         axios.post('attach-files',formData, {headers: { 'Authorization': props.token, 'Content-Type': 'multipart/form-data', }})
         .then((res)=>{ 
-            console.log(res.data.data, "---res");
             setFileSave(prev=> prev.concat(res.data.data));
         }).catch(err=>console.log(err));
     }
@@ -112,9 +104,7 @@ function TableTwo(props) {
                }else{ if(conditon1.length === 3){ originalTest.push(el); }
                }
            })
-        }else{
-             finalOne2.map(el =>{   let  conditon1 = Object.keys(el); if(conditon1.length > 2){ originalTest.push(el);  } })
-        }
+        }else{ finalOne2.map(el =>{   let  conditon1 = Object.keys(el); if(conditon1.length > 2){ originalTest.push(el);  } })  }
 
         let rs4 = document.querySelectorAll(".getUser2");
         let arr4 = Array.from(rs4);
@@ -171,7 +161,7 @@ function TableTwo(props) {
             <div className="MainContPar">
             {Dname !== null? (initialData.map((el,i)=>{
                     return(
-                        <div id={i}  className="GetItem ChildPar" key={i + 1}>
+                        <div id={i} className="GetItem ChildPar" key={i + 1}>
                             <div className="Title"> {i + 1}. {el.items} :
                                 {el.list.map((el,i)=>{
                                     return(
@@ -184,10 +174,11 @@ function TableTwo(props) {
                             <div className=" row">
                                 <div className="col-md-4 col-sm-12 col-12 ">
                                     <div className="inpChild"><div className="labels"><span>(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага :</span> </div> <div className="name"> <FiUserCheck />
-                                            <div className="form__group"><input type="input" id={el.id} value={el.name} onChange={onChangeHandle} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="name" />
-                                                    <label for="name" className=" form__label">Баталгааны хэлбэр</label>
-                                                </div>
-                                            </div>
+                                        <InputStyle className="newInp">
+                                            <input type="input" id={el.id} value={el.name} placeholder="..." onChange={onChangeHandle} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="name" />
+                                            <div className="line"></div>
+                                        </InputStyle>
+                                        </div>
                                     </div>
                                 </div>
     
@@ -196,25 +187,30 @@ function TableTwo(props) {
                                     <div className="row head-border-top">
                                         <div className="col-md-6 col-sm-6 col-6"> 
                                             <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
-                                                <div className="name"><div className="form__group">
-                                                        <input max='3000-12-31' onChange={onChangeGetDate} value={el.getDate} id={el.id} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="getDate" required />
-                                                        <label for="name" className=" form__label">Хүлээн авсан</label> </div></div> </div></div>
+                                                <div className="name">
+                                                <InputStyle className="newInp">
+                                                        <input max='3000-12-31' onChange={onChangeGetDate} value={el.getDate} id={el.id} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" required />
+                                                        <div className="line"></div>
+                                                </InputStyle>
+                                                        </div> </div></div>
                                         <div className="col-md-6 col-sm-6 col-6 headLeftBorder"> 
                                             <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
-                                                <div className="name"><div className="form__group">
+                                                <div className="name">
+                                                <InputStyle className="newInp">
                                                         <input max='3000-12-31' onChange={onChangeRecentDate} type="date" id={el.id} value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="recentDate" required />
-                                                        <label for="name" className=" form__label">Шинэчилсэн</label> </div> </div> </div>  </div>
+                                                        <div className="line"></div>
+                                                </InputStyle>
+                                                         </div> </div>  </div>
                                               </div>
                                 </div>
 
                                 <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.files?el.files.name:""}</div> </div>
-                                     <div className="name"> <RiUpload2Line />  <div className="form__group">
-                                            <input type="file"  id={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
-                                            <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
-
-                                            {/* <input type="file" tabIndex={el.id} onChange={()=>onChangeFile()} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={`GetFilesData inputfile`} id="file" name="file"  />
-                                            <label for="file" >{el.fileurl}</label>  */}
-                                        </div></div> </div>
+                                        <div className="name"> <RiUpload2Line />  
+                                        <InputStyle className="newInp">
+                                                <input type="file"  id={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
+                                                <div className="line"></div>
+                                        </InputStyle>
+                                        </div> </div>
                                 </div>
                             </div>
                         </div>
@@ -234,9 +230,10 @@ function TableTwo(props) {
                             <div className=" row">
                                 <div className="col-md-4 col-sm-12 col-12 ">
                                     <div className="inpChild"><div className="labels"><span>(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага :</span> </div> <div className="name"> <FiUserCheck />
-                                            <div className="form__group"><input type="input" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="name" />
-                                                    <label for="name" className=" form__label">Баталгааны хэлбэр</label>
-                                                </div>
+                                         <InputStyle className="newInp">
+                                                 <input type="text" placeholder="..." className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="name" />
+                                                <div className="line"></div>
+                                        </InputStyle>
                                             </div>
                                     </div>
                                 </div>
@@ -245,21 +242,31 @@ function TableTwo(props) {
                                     <div className="row head-border-top">
                                         <div className="col-md-6 col-sm-6 col-6"> 
                                             <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
-                                                <div className="name"><div className="form__group">
-                                                        <input max='3000-12-31'  type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" required />
-                                                        <label for="name" className=" form__label">Хүлээн авсан</label> </div></div> </div></div>
+                                                <div className="name">
+                                                    <InputStyle className="newInp">
+                                                            <input max='3000-12-31'  type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" required />
+                                                            <div className="line"></div>
+                                                    </InputStyle>
+                                                   
+                                                        
+                                                        </div> </div></div>
                                         <div className="col-md-6 col-sm-6 col-6 headLeftBorder"> 
                                             <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
-                                                <div className="name"><div className="form__group">
-                                                        <input max='3000-12-31' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="recentDate" required />
-                                                        <label for="name" className=" form__label">Шинэчилсэн</label> </div> </div> </div>  </div>
+                                                <div className="name">
+                                                     <InputStyle className="newInp">
+                                                            <input max='3000-12-31' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="recentDate" required />
+                                                            <div className="line"></div>
+                                                    </InputStyle>
+                                                        </div> </div>  </div>
                                               </div>
                                 </div>
                                 <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.files?el.files.name:""}</div> </div>
-                                     <div className="name"> <RiUpload2Line />  <div className="form__group">
+                                     <div className="name"> <RiUpload2Line /> 
+                                     <InputStyle className="newInp">
                                             <input type="file" id={i + 1}  onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
-                                            <label for="name" className=" form__label">Батлагдсан баримт бичгүүд</label>
-                                        </div></div> </div>
+                                            <div className="line"></div>
+                                    </InputStyle>
+                                        </div> </div>
                                 </div>
                             </div>
                         </div>
@@ -275,12 +282,12 @@ function TableTwo(props) {
                                 <div className="inpChild">
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
-                                        <div className="form__group">
-                                            {Dname !== null ? <input type="input" onChange={changeHandleName} value={Dname} className="getUser2 LoginInpName form__field" name="name" required />
-                                            : <input type="input" className="getUser2 LoginInpName form__field" name="name" required />  }
-                                            
-                                            <label for="name"   className=" form__label">Бүтэн нэрээ оруулна уу</label>
-                                        </div>
+                                        <InputStyle className="newInp">
+                                                {Dname !== null ? <input type="input" onChange={changeHandleName} value={Dname} className="getUser2 LoginInpName form__field" placeholder="Бүтэн нэрээ оруулна уу" name="name" required />
+                                                : <input type="input" className="getUser2 LoginInpName form__field" name="name" required />  }
+                                                <div className="line"></div>
+                                        </InputStyle>
+
                                     </div>
                                 </div>
                                 
@@ -288,30 +295,29 @@ function TableTwo(props) {
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
-                                            <div className="form__group">
-                                            {Dname !== null ? <input max='3000-12-31' onChange={changeHandleDate} value={Ddate}  type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
-                                                            : <input max='3000-12-31' type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />  }
-                                                <label for="password" className="form__label">Өдөр-Сар-Он </label>
-                                            </div>
+                                            <InputStyle className="newInp">
+                                                    {Dname !== null ? <input max='3000-12-31' onChange={changeHandleDate} value={Ddate}  type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                    : <input max='3000-12-31' type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />  }
+                                                    <div className="line"></div>
+                                            </InputStyle>
                                         </div>
                                     </div>
+
                                     <div className="inpChild next">
-                                        <div className="labels"><span>Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
-                                            <div className="name"> <BiPen />
-                                                <div className="form__group">
-                                                    {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
-                                                    <input id="GetcheckBtn2" className="checkBtn" type="checkbox" name="check" />
-                                                </div>
+                                        <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
+                                            <div className="name"> <BsArrowRightShort />
+                                              <InputStyle className="newInp">
+                                                     <input id="GetcheckBtn2" className="checkBtn" type="checkbox" name="check" />
+                                              </InputStyle>
                                             </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
-                            <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("0%", "100%", "200%", "300%", "400%","500%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
+                            {Dname !== null? (<PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("0%", "100%", "200%", "300%", "400%","500%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>) : null } 
                             <NextBtn onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                         </div>
             </div>
@@ -403,112 +409,29 @@ const Component2 = styled.div`
                         }
                      }
                      .name{
-                     display:flex;
-                     flex-direction:row;
-                     align-items:flex-end;
-                     justify-content:flex-end;
-                     width:100%;
-                     svg{
-                       color:rgba(${ColorRgb},0.7);
-                       font-size:24px;
-                       margin-right:15px;
-                       margin-bottom:10px;
-                     }
-                     .form__group{
-                      position:relative;
-                      padding: 15px 0 0;
-                      margin-top: 0px;
-                      width: 100%;
-                        .inputfile{
-                            width: 0.1px;
-                            height: 0.1px;
-                            opacity: 0;
-                            overflow: hidden;
-                            position: absolute;
-                            z-index: -1;
-                            &+label {
-                                border-radius:3px;
-                                padding:4px 10px;
-                                font-weight: 400;
-                                color: white;
-                                background-color: rgb(${ColorRgb});
-                                display: inline-block;
-                            }
-                            &:focus + label,
-                            & + label:hover {
-                                cursor:pointer;
-                                background-color: rgba(${ColorRgb},0.8);
-                            }
-                           
+                        padding:12px 0px;
+                        display:flex;
+                        flex-direction:row;
+                        align-items:center;
+                        justify-content:flex-end;
+                        width:100%;
+                        svg{
+                          color:rgba(${ColorRgb},0.7);
+                          font-size:24px;
+                          margin-right:15px;
                         }
-                       
-                         .form__field{
-                             font-family: inherit;
-                             width: 100%;
-                             border: 0;
-                             border-radius:6px;
-                             border-bottom: 1px solid rgba(${ColorRgb},0.3);
-                             border-right: 1px solid rgba(${ColorRgb},0.3);
-                             border-left: 1px solid rgba(${ColorRgb},0.3);
-                             border-top: 1px solid rgba(${ColorRgb},0.3);
-                             outline: 0;
-                             font-size: 0.8rem;
-                             color: black;
-                             padding: 10px 0px 10px 10px;
-                             background: transparent;
-                             transition: border-color 0.2s;
-                             transition:all 0.3s ease;
-                             position: relative;
-                             z-index: 1;
-                             &::placeholder {
-                               color: transparent;
-                             }
-                             &:placeholder-shown ~ .form__label {
-                               font-size: 0.8rem;
-                               cursor: text;
-                               top: 24px;
-                             }
-                         }
-                        
-                         .form__label {
-                             position: absolute;
-                             top: 0;
-                             display: block;
-                             transition: 0.2s;
-                             font-size: 0rem;
-                             color: gray;
-                             z-index: 0;
-                             padding:0px 10px;
-                             // background-color:black;
-                           }
-                           
-                           .form__field{
-                               &:focus {
-                                 ~ .form__label {
-                                   position: absolute;
-                                   top: 0;
-                                   display: block;
-                                   transition: 0.3s;
-                                   font-size: 0.8rem;
-                                   color: #11998e;
-                                   font-weight:400;    
-                                 }
-                                 // border-bottom: 1px solid gray;
-                                 border-right:none;
-                                 border-left:none;
-                                 border-top:none;
-                                 padding-bottom: 7px;
-                                 font-weight: 400;
-                                 border-width: 1px;
-                                 border-image: linear-gradient(to right, #11998e, #38ef7d);
-                                 border-image-slice: 1;
-                               }
-                           }
-                           /* reset input */
-                           .form__field{
-                             &:required,&:invalid { box-shadow:none; }
-                           }
-                     }
+                        .newInp{
+                          font-size:14px;
+                          width:100%;
+                        }
+
+                        .form__group{
+                          position:relative;
+                          padding: 15px 0 0;
+                          margin-top: 0px;
+                          width: 100%;
+                        }
+                      }
                      
                    }
                 }
@@ -566,93 +489,30 @@ const Component2 = styled.div`
                       
                     }
                     .name{
-                    display:flex;
-                    flex-direction:row;
-                    align-items:flex-end;
-                    justify-content:flex-end;
-                    width:100%;
-                    svg{
-                      color:rgba(${ColorRgb},0.7);
-                      font-size:28px;
-                      margin-right:15px;
-                      margin-bottom:5px;
-                    }
-                    .form__group{
-                     position:relative;
-                     padding: 15px 0 0;
-                     margin-top: 0px;
-                     width: 100%;
-                        .form__field{
-                            font-family: inherit;
-                            width: 100%;
-                            border: 0;
-                            border-radius:6px;
-                            border-bottom: 1px solid rgba(${ColorRgb},0.4);
-                            border-right: 1px solid rgba(${ColorRgb},0.4);
-                            border-left: 1px solid rgba(${ColorRgb},0.4);
-                            border-top: 1px solid rgba(${ColorRgb},0.4);
-                            outline: 0;
-                            font-size: 1rem;
-                            color: black;
-                            padding: 7px 0;
-                            padding-left:10px;
-                            font-size: 0.9rem;
-                            background: transparent;
-                            transition: border-color 0.2s;
-                            transition:all 0.3s ease;
-                            position: relative;
-                            z-index: 1;
-                            &::placeholder {
-                              color: transparent;
-                            }
-                            &:placeholder-shown ~ .form__label {
-                              font-size: 0.9rem;
-                              cursor: text;
-                              top: 24px;
-                            }
+                        padding:10px 0px;
+                        display:flex;
+                        flex-direction:row;
+                        align-items:center;
+                        justify-content:flex-end;
+                        width:100%;
+                        svg{
+                          color:rgba(${ColorRgb},0.7);
+                          font-size:24px;
+                          margin-right:15px;
                         }
-                       
-                        .form__label {
-                            position: absolute;
-                            top: 0;
-                            display: block;
-                            transition: 0.2s;
-                            font-size: 0rem;
-                            color: gray;
-                            z-index: 0;
-                            padding:0px 10px;
-                            // background-color:black;
-                          }
-                          
-                          .form__field{
-                              &:focus {
-                                ~ .form__label {
-                                  position: absolute;
-                                  top: 0;
-                                  display: block;
-                                  transition: 0.3s;
-                                  font-size: 0.8rem;
-                                  color: #11998e;
-                                  font-weight:400;    
-                                }
-                                // border-bottom: 1px solid gray;
-                                border-right:none;
-                                border-left:none;
-                                border-top:none;
-                                padding-bottom: 7px;
-                                font-weight: 400;
-                                border-width: 1px;
-                                border-image: linear-gradient(to right, #11998e, #38ef7d);
-                                border-image-slice: 1;
-                              }
-                          }
-                          /* reset input */
-                          .form__field{
-                            &:required,&:invalid { box-shadow:none; }
-                          }
+                        .newInp{
+                          font-size:14px;
+                          width:100%;
+                        }
+
+                        .form__group{
+                          position:relative;
+                          padding: 15px 0 0;
+                          margin-top: 0px;
+                          width: 100%;
+                        }
                     }
                     
-                  }
                }
             }
             .errtext{

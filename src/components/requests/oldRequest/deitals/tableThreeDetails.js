@@ -1,6 +1,6 @@
-import React, { useState,useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { textColor, ColorRgb } from '../../../theme';
+import { textColor, ColorRgb,InputStyle } from '../../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {GoCalendar,GoMail} from 'react-icons/go'
 import {GiScales} from 'react-icons/gi'
@@ -8,14 +8,12 @@ import {IoIosAddCircleOutline} from 'react-icons/io'
 
 function TableThreeDetails(props) {
     const initialList = [{id: 1}];
-    const [ addItem, setAddItem ] = useState(initialList);
     const [ initialData, setInitialData ] = useState([]);
 
     const AddHandle = ()=>{
         const list = initialData.concat( {id: 1});
         setInitialData(list);
     }
-
 
     useEffect(() => {
         if(props.initialData){
@@ -59,9 +57,6 @@ function TableThreeDetails(props) {
         setInitialData(finalData);
     }
 
-    console.log(props.initialData, " bainuu?>");
-    
-
 
 
     return (
@@ -85,20 +80,21 @@ function TableThreeDetails(props) {
                             <div className="inpChild">
                                 <div className="labels"><span>Огноо :</span> </div>
                                 <div className="name"> <GoCalendar />
-                                    <div className="form__group">
-                                        <input type="date" onChange={changeDateHandle} id={el.id} value={el.pdate} max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
-                                        <label for="name" className=" form__label">Огноо</label>
-                                    </div>
+                                     <InputStyle className="newInp">
+                                            <input type="date" onChange={changeDateHandle} id={el.id} value={el.pdate} max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
+                                            <div className="line"></div>
+                                    </InputStyle>
+                                   
                                 </div>
                             </div>
 
                             <div className="inpChild">
                                 <div className="labels"><span>Асуудлын мөн чанар :</span> </div>
                                 <div className="name"> <GiScales />
-                                    <div className="form__group">
-                                        <input type="input" onChange={changeDateHandle2} value={el.issue} id={el.id} className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
-                                        <label for="name" className=" form__label">Асуудлын мөн чанар</label>
-                                    </div>
+                                     <InputStyle className="newInp">
+                                            <input type="text" onChange={changeDateHandle2} value={el.issue} id={el.id} className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="мөн чанар..." name="issue" required />
+                                            <div className="line"></div>
+                                    </InputStyle>
                                 </div>
                             </div>
                         </div>
@@ -106,20 +102,20 @@ function TableThreeDetails(props) {
                             <div className="inpChild">
                                 <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
                                 <div className="name"> <FiUserCheck />
-                                    <div className="form__group">
-                                        <input type="date" max='3000-12-31' id={el.id} onChange={changeDateHandle3} value={el.stepdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
-                                        <label for="name" className=" form__label">огноо тус бүрээр</label>
-                                    </div>
+                                    <InputStyle className="newInp">
+                                            <input type="date" max='3000-12-31' id={el.id} onChange={changeDateHandle3} value={el.stepdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="огноо тус бүрээр" name="stepdate" required />
+                                            <div className="line"></div>
+                                    </InputStyle>
                                 </div>
                             </div>
 
                             <div className="inpChild">
                                 <div className="labels"><span>Санал :</span> </div>
                                 <div className="name"> <GoMail />
-                                    <div className="form__group">
-                                        <input type="input" id={el.id} value={el.vote} onChange={changeDateHandle4}  className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
-                                        <label for="name" className=" form__label">Санал</label>
-                                    </div>
+                                    <InputStyle className="newInp">
+                                        <input type="input" id={el.id} value={el.vote} onChange={changeDateHandle4}  className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Санал..." name="vote" required />
+                                        <div className="line"></div>
+                                    </InputStyle>
                                 </div>
                             </div>
                         </div>
@@ -141,20 +137,21 @@ function TableThreeDetails(props) {
                             <div className="inpChild">
                                 <div className="labels"><span>Огноо :</span> </div>
                                 <div className="name"> <GoCalendar />
-                                    <div className="form__group">
-                                        <input type="date"  max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
-                                        <label for="name" className=" form__label">Огноо</label>
-                                    </div>
+                                    <InputStyle className="newInp">
+                                            <input type="date"  max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} name="pdate" required />
+                                            <div className="line"></div>
+                                    </InputStyle>
+
                                 </div>
                             </div>
 
                             <div className="inpChild">
                                 <div className="labels"><span>Асуудлын мөн чанар :</span> </div>
                                 <div className="name"> <GiScales />
-                                    <div className="form__group">
-                                        <input type="input"  className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
-                                        <label for="name" className=" form__label">Асуудлын мөн чанар</label>
-                                    </div>
+                                     <InputStyle className="newInp">
+                                             <input type="input"  className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="мөн чанар..." name="issue" required />
+                                            <div className="line"></div>
+                                    </InputStyle>
                                 </div>
                             </div>
                         </div>
@@ -162,20 +159,20 @@ function TableThreeDetails(props) {
                             <div className="inpChild">
                                 <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
                                 <div className="name"> <FiUserCheck />
-                                    <div className="form__group">
-                                        <input type="date"  max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="stepdate" required />
-                                        <label for="name" className=" form__label">огноо тус бүрээр</label>
-                                    </div>
+                                    <InputStyle className="newInp">
+                                              <input type="date"  max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="огноо тус бүрээр" name="stepdate" required />
+                                            <div className="line"></div>
+                                    </InputStyle>
                                 </div>
                             </div>
 
                             <div className="inpChild">
                                 <div className="labels"><span>Санал :</span> </div>
                                 <div className="name"> <GoMail />
-                                    <div className="form__group">
-                                        <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="vote" required />
-                                        <label for="name" className=" form__label">Санал</label>
-                                    </div>
+                                    <InputStyle className="newInp">
+                                              <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Санал..." name="vote" required />
+                                            <div className="line"></div>
+                                    </InputStyle>
                                 </div>
                             </div>
                         </div>
@@ -285,91 +282,115 @@ const Component3Detail = styled.div`
                         }
                        
                     }
-                     .name{
-                     display:flex;
-                     flex-direction:row;
-                     align-items:flex-end;
-                     justify-content:flex-end;
-                     width:100%;
-                     svg{
-                       color:rgba(${ColorRgb},0.7);
-                       font-size:28px;
-                       margin-right:15px;
-                       margin-bottom:5px;
-                     }
-                     .form__group{
-                      position:relative;
-                      padding: 15px 0 0;
-                      margin-top: 0px;
-                      width: 100%;
-                         .form__field{
-                             font-family: inherit;
-                             width: 100%;
-                             border: 0;
-                             border-radius:6px;
-                             border-bottom: 1px solid rgba(${ColorRgb},0.2);
-                             border-right: 1px solid rgba(${ColorRgb},0.2);
-                             border-left: 1px solid rgba(${ColorRgb},0.2);
-                             border-top: 1px solid rgba(${ColorRgb},0.2);
-                             outline: 0;
-                             font-size: 1rem;
-                             color: black;
-                             padding: 7px 0;
-                             padding-left:10px;
-                             font-size: 0.9rem;
-                             background: transparent;
-                             transition: border-color 0.2s;
-                             transition:all 0.3s ease;
-                             position: relative;
-                             z-index: 1;
-                             &::placeholder {
-                               color: transparent;
-                             }
-                             &:placeholder-shown ~ .form__label {
-                               font-size: 0.9rem;
-                               cursor: text;
-                               top: 24px;
-                             }
-                         }
+                    .name{
+                        padding:12px 0px;
+                        display:flex;
+                        flex-direction:row;
+                        align-items:center;
+                        justify-content:flex-end;
+                        width:100%;
+                        svg{
+                          color:rgba(${ColorRgb},0.7);
+                          font-size:24px;
+                          margin-right:15px;
+                        }
+                        .newInp{
+                          font-size:14px;
+                          width:100%;
+                        }
+        
+                        .form__group{
+                          position:relative;
+                          padding: 8px 0 0;
+                          margin-top: 0px;
+                          width: 100%;
+                        }
+                    }
+                    //  .name{
+                    //  display:flex;
+                    //  flex-direction:row;
+                    //  align-items:flex-end;
+                    //  justify-content:flex-end;
+                    //  width:100%;
+                    //  svg{
+                    //    color:rgba(${ColorRgb},0.7);
+                    //    font-size:28px;
+                    //    margin-right:15px;
+                    //    margin-bottom:5px;
+                    //  }
+                    //  .form__group{
+                    //   position:relative;
+                    //   padding: 15px 0 0;
+                    //   margin-top: 0px;
+                    //   width: 100%;
+                    //      .form__field{
+                    //          font-family: inherit;
+                    //          width: 100%;
+                    //          border: 0;
+                    //          border-radius:6px;
+                    //          border-bottom: 1px solid rgba(${ColorRgb},0.2);
+                    //          border-right: 1px solid rgba(${ColorRgb},0.2);
+                    //          border-left: 1px solid rgba(${ColorRgb},0.2);
+                    //          border-top: 1px solid rgba(${ColorRgb},0.2);
+                    //          outline: 0;
+                    //          font-size: 1rem;
+                    //          color: black;
+                    //          padding: 7px 0;
+                    //          padding-left:10px;
+                    //          font-size: 0.9rem;
+                    //          background: transparent;
+                    //          transition: border-color 0.2s;
+                    //          transition:all 0.3s ease;
+                    //          position: relative;
+                    //          z-index: 1;
+                    //          &::placeholder {
+                    //            color: transparent;
+                    //          }
+                    //          &:placeholder-shown ~ .form__label {
+                    //            font-size: 0.9rem;
+                    //            cursor: text;
+                    //            top: 24px;
+                    //          }
+                    //      }
                         
-                         .form__label {
-                             position: absolute;
-                             top: 0;
-                             display: block;
-                             transition: 0.2s;
-                             font-size: 0rem;
-                             color: gray;
-                             z-index: 0;
-                             padding:0px 10px;
-                             // background-color:black;
-                           }
+                    //      .form__label {
+                    //          position: absolute;
+                    //          top: 0;
+                    //          display: block;
+                    //          transition: 0.2s;
+                    //          font-size: 0rem;
+                    //          color: gray;
+                    //          z-index: 0;
+                    //          padding:0px 10px;
+                    //          // background-color:black;
+                    //        }
                            
-                           .form__field{
-                               &:focus {
-                                 ~ .form__label {
-                                   position: absolute;
-                                   top: 0;
-                                   display: block;
-                                   transition: 0.3s;
-                                   font-size: 0.8rem;
-                                   color: #11998e;
-                                   font-weight:400;    
-                                 }
-                                 border-right:none;
-                                 border-left:none;
-                                 border-top:none;
-                                 padding-bottom: 7px;
-                                 font-weight: 400;
-                                 border-width: 1px;
-                                 border-image: linear-gradient(to right, #11998e, #38ef7d);
-                                 border-image-slice: 1;
-                               }
-                           }
-                           /* reset input */
-                           .form__field{
-                             &:required,&:invalid { box-shadow:none; }
-                           }
-                     }
+                    //        .form__field{
+                    //            &:focus {
+                    //              ~ .form__label {
+                    //                position: absolute;
+                    //                top: 0;
+                    //                display: block;
+                    //                transition: 0.3s;
+                    //                font-size: 0.8rem;
+                    //                color: #11998e;
+                    //                font-weight:400;    
+                    //              }
+                    //              border-right:none;
+                    //              border-left:none;
+                    //              border-top:none;
+                    //              padding-bottom: 7px;
+                    //              font-weight: 400;
+                    //              border-width: 1px;
+                    //              border-image: linear-gradient(to right, #11998e, #38ef7d);
+                    //              border-image-slice: 1;
+                    //            }
+                    //        }
+                    //        /* reset input */
+                    //        .form__field{
+                    //          &:required,&:invalid { box-shadow:none; }
+                    //        }
+                    //  }
                      
                    }
                 }

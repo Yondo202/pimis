@@ -1,13 +1,12 @@
-
-import React,{useEffect, useState, useRef, useContext} from 'react';
+import React,{useEffect, useState, useContext} from 'react';
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
-import { Link, animateScroll as scroll } from "react-scroll";
+import { animateScroll as scroll } from "react-scroll";
 import axios from'../../../axiosbase';
-import { fontFamily, textColor, ColorRgb, fontSize,PrevBtn,NextBtn  } from '../../theme';
+import {BsArrowRightShort} from 'react-icons/bs'
+import { fontFamily, textColor, ColorRgb, fontSize,PrevBtn,NextBtn,InputStyle  } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
-import {BiPen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import HelperContext from '../../../context/HelperContext'
 import {RiMailSendLine} from 'react-icons/ri'
@@ -28,20 +27,18 @@ function TableFour(props) {
 
       const helperContext = useContext(HelperContext);
 
-      console.log(props.initialData, " props data");
-
       useEffect(() => {
           const finalData = []
+        if(props.initialData){
           tableData.map((el,i)=>{
-            if(props.initialData){
               props.initialData.map(elem=>{ 
                 if(i + 1 === elem.rownum){ el["id"] = elem.id; el["rowvalue"] = elem.rowvalue.toString(); el["rownum"] = elem.rownum }
               });
               setDname(props.initialName);setDdate(props.initialDate);
-            }
-            finalData.push(el);
-            setInitialData(finalData);
+             finalData.push(el);
           });
+          setInitialData(finalData);
+        }
       },[props.initialData]);
 
       const radioChange = (event)=> {
@@ -53,8 +50,9 @@ function TableFour(props) {
               props.initialData.map(elem=> elem);
             }
            finalData.push(el); });
+
         finalData.map((el,i)=>{
-          if(el.id.toString() === event.target.id){ el["rowvalue"] = event.target.value}
+          if(el.id ===parseInt(event.target.id)){ el["rowvalue"] = event.target.value}
         })
         
          setInitialData(finalData);
@@ -83,7 +81,6 @@ function TableFour(props) {
                   }
                   soloObject2["rownum"] = field
                   soloObject2["rowvalue"] = value
-                  // soloObject2[`pps${field}`] = value;
                   finalOne2.push(soloObject2);
                 }
             });
@@ -109,14 +106,12 @@ function TableFour(props) {
             const FinalProcent = Math.round(Procent);
 
             console.log(finalEnd , "pps4 final end");
-            // console.log(JSON.stringify(finalEnd));
 
             console.log(confirm, "what is confirm");
 
             if(finalOne2.length < 15){
               setOpacity("1");
               setProcent(FinalProcent);
-              // scroll.scrollTo(0);
               setFinalTextScale("0");
               setFinalMsg("0");
             }else if(userInp.name === "" || userInp.date === ""){
@@ -207,6 +202,8 @@ function TableFour(props) {
             // scroll.scrollTo(0);
             // helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
         }
+
+        console.log(initialData, " my inital");
     return (
         <Component1 className="container" >
             <div className="boxShadow">
@@ -272,10 +269,11 @@ function TableFour(props) {
                                 <div className="inpChild">
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
-                                        <div className="form__group">
-                                            <input type="input" onChange={Dname&&changeHandle} value={Dname} className="getUserInp LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                            <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
-                                        </div>
+                                          <InputStyle className="newInp">
+                                                {props.initialName? <input type="input" onChange={changeHandle} value={Dname} className="getUserInp LoginInpName form__field" placeholder="Бүтэн нэрээ оруулна уу..." name="name" required />
+                                                                    :<input type="input" className="getUserInp LoginInpName form__field" placeholder="Бүтэн нэрээ оруулна уу..." name="name" required /> }
+                                                <div className="line"></div>
+                                          </InputStyle>
                                     </div>
                                 </div>
 
@@ -284,30 +282,30 @@ function TableFour(props) {
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
-                                            <div className="form__group">
-                                                <input max='3000-12-31' type="date" onChange={Dname&&changeHandleDate} value={Ddate} placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
-                                                <label for="password" className="form__label">Өдөр-Сар-Он </label>
-                                            </div>
+                                            <InputStyle className="newInp">
+                                                  {props.initialName?<input max='3000-12-31' type="date" onChange={changeHandleDate} value={Ddate} placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
+                                                                     :<input max='3000-12-31' type="date" placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required /> }
+                                                  <div className="line"></div>
+                                            </InputStyle>
                                         </div>
                                     </div>
 
+
                                     <div className="inpChild next">
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
-                                            <div className="name"> <BiPen />
-                                                <div className="form__group">
-                                                    {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
+                                            <div className="name"> <BsArrowRightShort />
+                                                <InputStyle className="newInp">
                                                     <input id="GetcheckBtn4" className="checkBtn" type="checkbox" name="check" />
-                                                </div>
+                                                </InputStyle>
                                             </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
 
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
-                            <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
+                            {props.initialName? (<PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>) : null } 
                             <NextBtn id="myInput" onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                        </div>
 
@@ -425,93 +423,28 @@ const Component1 = styled.div`
                            }
                           
                        }
-                        .name{
+                       .name{
+                        padding:12px 0px;
                         display:flex;
                         flex-direction:row;
-                        align-items:flex-end;
+                        align-items:center;
                         justify-content:flex-end;
                         width:100%;
                         svg{
                           color:rgba(${ColorRgb},0.7);
-                          font-size:28px;
+                          font-size:24px;
                           margin-right:15px;
-                          margin-bottom:5px;
+                        }
+                        .newInp{
+                          font-size:14px;
+                          width:100%;
                         }
                         .form__group{
-                         position:relative;
-                         padding: 15px 0 0;
-                         margin-top: 0px;
-                         width: 100%;
-                            .form__field{
-                                font-family: inherit;
-                                width: 100%;
-                                border: 0;
-                                border-radius:6px;
-                                border-bottom: 1px solid rgba(${ColorRgb},0.4);
-                                border-right: 1px solid rgba(${ColorRgb},0.4);
-                                border-left: 1px solid rgba(${ColorRgb},0.4);
-                                border-top: 1px solid rgba(${ColorRgb},0.4);
-                                outline: 0;
-                                font-size: 1rem;
-                                color: black;
-                                padding: 7px 0;
-                                padding-left:10px;
-                                font-size: 0.9rem;
-                                background: transparent;
-                                transition: border-color 0.2s;
-                                transition:all 0.3s ease;
-                                position: relative;
-                                z-index: 1;
-                                &::placeholder {
-                                  color: transparent;
-                                }
-                                &:placeholder-shown ~ .form__label {
-                                  font-size: 0.9rem;
-                                  cursor: text;
-                                  top: 24px;
-                                }
-                            }
-                           
-                            .form__label {
-                                position: absolute;
-                                top: 0;
-                                display: block;
-                                transition: 0.2s;
-                                font-size: 0rem;
-                                color: gray;
-                                z-index: 0;
-                                padding:0px 10px;
-                                // background-color:black;
-                              }
-                              
-                              .form__field{
-                                  &:focus {
-                                    ~ .form__label {
-                                      position: absolute;
-                                      top: 0;
-                                      display: block;
-                                      transition: 0.3s;
-                                      font-size: 0.8rem;
-                                      color: #11998e;
-                                      font-weight:400;    
-                                    }
-                                    // border-bottom: 1px solid gray;
-                                    border-right:none;
-                                    border-left:none;
-                                    border-top:none;
-                                    padding-bottom: 7px;
-                                    font-weight: 400;
-                                    border-width: 1px;
-                                    border-image: linear-gradient(to right, #11998e, #38ef7d);
-                                    border-image-slice: 1;
-                                  }
-                              }
-                              /* reset input */
-                              .form__field{
-                                &:required,&:invalid { box-shadow:none; }
-                              }
+                          position:relative;
+                          padding: 8px 0 0;
+                          margin-top: 0px;
+                          width: 100%;
                         }
-                        
                       }
                    }
                 }

@@ -1,15 +1,12 @@
-import React, {useState, useContext}from 'react'
+import React, {useState}from 'react'
 import styled from 'styled-components'
-import {ColorRgb} from "../theme"
+import {ColorRgb,InputStyle} from "../theme"
 import {GoMail} from 'react-icons/go'
 import {AiOutlineSend} from 'react-icons/ai'
 import Modal from 'react-awesome-modal';
-import UserContext from '../../context/UserContext'
 import axios from "../../axiosbase";
 
 function ForgetPassword() {
-    const signUpCtx = useContext(UserContext);
-
     const [scale, setScale] = useState("0");
     const [visible, setVisible] = useState(false);
     const [Errmsg, setErrmsg] = useState("0");
@@ -55,10 +52,9 @@ function ForgetPassword() {
                                         <div className="labels"><span>Email</span> </div>
                                         <div className="name">
                                             <GoMail />
-                                            <div className="form__group">
-                                                <input type="text" className="Email  form__field" placeholder="Аж ахуйн нэр" name="email" required />
-                                                <label for="name" className="form__label">Цахим шуудангаа оруулна уу</label>
-                                            </div>
+                                            <InputStyle className="newInp">
+                                                <input type="text" className="Email  form__field" placeholder="Цахим шуудангаа оруулна уу" name="email" required /><div className="line"></div>
+                                            </InputStyle>
                                         </div>
                                     </div>
                                     <div className="SubmitButtonPar">

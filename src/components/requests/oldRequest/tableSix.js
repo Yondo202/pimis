@@ -124,15 +124,15 @@ function TableSix(props) {
             setOpacity2("1");
         }else{
             setOpacity2("0");
-            // if(props.initialName){
-            //     axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
-            //         helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000); console.log(res, " ress");
-            //     }).catch((err)=>{console.log(err, " ress"); helperContext.alertText('orange', 'Алдаа гарлаа', true);});
-            // }else{
-            //     axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
-            //         helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000);
-            //     }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
-            // }
+            if(props.initialName){
+                axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
+                    helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000); console.log(res, " ress");
+                }).catch((err)=>{console.log(err, " ress"); helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+            }else{
+                axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
+                    helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000);
+                }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+            }
             
         }
     }

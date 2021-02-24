@@ -1,12 +1,21 @@
-import React, {useRef, useEffect, useCallback, useContext, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Color,ColorRgb } from '../../theme'
-import {VscFilePdf} from 'react-icons/vsc';
-import { useReactToPrint } from "react-to-print";
+import Modal from 'react-awesome-modal';
+import SignatureCanvas from 'react-signature-canvas'
+import {FaPenNib} from 'react-icons/fa'
+import { ColorRgb, textColor } from '../../theme'
 
 
 
 function PageOne() {
+      const [visible, setVisible] = useState(false);
+      let [sigCanvas, setSigCanvas] = useState({});
+      let [trimmedDataURL, setTrimmedDataURL] = useState(null);
+
+      const openModal=()=> { setVisible(true); }
+      const closeModal=()=> { setVisible(false);}
+      const clear = () => sigCanvas.clear();
+      const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); closeModal();};
     
       return (
         <>
@@ -53,7 +62,26 @@ function PageOne() {
                     </div>
 
                     <div className="signature">
-                        <div className="title"> Гарын үсэг: <div className="signatureItem">/........................................./ </div>  </div>
+                        {/* <div className="title"> Гарын үсэг: <div className="signatureItem">/........................................./ </div>  </div> */}
+
+                        <div className="drowPar">
+                              <div className="titleee">Гарын үсэг:</div> <div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>
+                                 {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
+                                    <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
+                                        <div className="modalPar">
+                                            <div className="Canvass">
+                                                <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
+                                            </div>
+                                            <div className="BtnPar">
+                                                <button onClick={clear}>Цэвэрлэх</button>
+                                                <button onClick={()=>trim()}>Хадгалах</button>
+                                                <button onClick={closeModal}>X</button>
+                                            </div>
+                                        </div>
+                                    </Modal>
+                          </div>
+
+                       
                     </div>
              </MainPar>
              </>
@@ -70,14 +98,66 @@ const MainPar = styled.div`
     padding:15px 50px;
     border:1px solid rgba(0,0,0,.3);
     .signature{
-      .title{
-        display:flex;
-        text-align:start;
-        padding:30px 0px;
-        .signatureItem{
-          margin-left:30px;
+      padding:30px 0px;
+          .drowPar{
+            display:flex;
+            align-items:start;
+            margin-top:10px;
+            .titleee{
+              font-weight:500;
+            }
+            .SignBtn{
+                margin-left:30px;
+                margin-right:30px;
+                padding:3px 15px;
+                cursor:pointer;
+                display:flex;
+                align-items:center;
+                border:1px solid rgba(0,0,0,0.4);
+                svg{
+                    margin-right:10px;
+                }
+                span{
+                  font-weight:500;
+                }
+                &:hover{
+                    background-color:rgba(0,0,0,.2);
+                }
+            }
+            
+            .SingatureImg{
+                border:1px solid rgba(${ColorRgb},0.3);
+                width:200px;
+                // height:100px;
+          }
+
+            .modalPar{
+                text-align:center;
+            .Canvass{
+                border:1px solid rgba(${ColorRgb},0.5);
+            }
+                .BtnPar{
+                padding:0px 10px;
+                margin:20px 0px;
+                display:flex;
+                flex-direction:row;
+                align-items:center;
+                justify-content:space-between;
+                button{
+                    font-weight:500;
+                    color:rgba(${textColor},0.9);
+                    cursor:pointer;
+                    border-style:none;
+                    border-radius:4px;
+                    padding:6px 14px;
+                    background-color:white;
+                    box-shadow:1px 1px 8px -2px;
+                }
+                }
+            }
         }
-      }
+
+
     }
     .title{
       font-weight:500;

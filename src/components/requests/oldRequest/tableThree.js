@@ -1,11 +1,11 @@
 import React, {useState, useContext, useEffect} from 'react'
 import TableThreeDetails from './deitals/tableThreeDetails'
-import { Link, animateScroll as scroll } from "react-scroll";
+import { animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
-import { fontFamily, textColor, ColorRgb,fontSize,PrevBtn,NextBtn } from '../../theme';
+import { fontFamily, textColor, ColorRgb,fontSize,PrevBtn,NextBtn,InputStyle } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
-import {BiPen} from 'react-icons/bi'
+import {BsArrowRightShort} from 'react-icons/bs'
 import {AiOutlineSend} from 'react-icons/ai'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
@@ -103,12 +103,11 @@ function TableThree(props) {
                                 <div className="inpChild">
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
-                                        <div className="form__group">
-                                            {Dname? <input type="input" onChange={changeNameHandle} value={Dname} className="getUserInp3 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                            :<input type="input" className="getUserInp3 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />  }
-                                            
-                                            <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
-                                        </div>
+                                        <InputStyle className="newInp">
+                                            {Dname? <input type="input" onChange={changeNameHandle} value={Dname} className="getUserInp3 LoginInpName form__field" placeholder="нэр..." name="name" required />
+                                            :<input type="input" className="getUserInp3 LoginInpName form__field" placeholder="нэр..." name="name" required />  }
+                                            <div className="line"></div>
+                                        </InputStyle>
                                     </div>
                                 </div>
                                 
@@ -116,21 +115,21 @@ function TableThree(props) {
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
-                                            <div className="form__group">
-                                                {Dname ?  <input type="date" onChange={changeDateHandle} value={Ddate} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
-                                                : <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
-                                                }
-                                               
-                                                <label for="password" className="form__label">Өдөр-Сар-Он </label>
-                                            </div>
+                                            <InputStyle className="newInp">
+                                                {Dname ?  <input type="date" onChange={changeDateHandle} value={Ddate} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" name="date" required />
+                                                        : <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" name="date" required /> }
+                                                <div className="line"></div>
+                                            </InputStyle>
                                         </div>
                                     </div>
+
+                                    
                                     <div className="inpChild next">
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
-                                            <div className="name"> <BiPen />
-                                                <div className="form__group">
+                                            <div className="name"> <BsArrowRightShort />
+                                                <InputStyle className="newInp">
                                                     <input id="GetcheckBtn3" className="checkBtn" type="checkbox" name="check" />
-                                                </div>
+                                                </InputStyle>
                                             </div>
                                     </div>
                                 </div>
@@ -139,7 +138,7 @@ function TableThree(props) {
 
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
-                            <PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("-100%", "0%", "100%", "200%", "300%","400%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>
+                           {props.initialName? (<PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("-100%", "0%", "100%", "200%", "300%","400%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>) : null } 
                             <NextBtn onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                         </div>
             </div>
@@ -195,7 +194,7 @@ const Component3 = styled.div`
                     height:25px;
                   }
                }
-           }
+            }
            .inpChild{
                margin:12px 0px;
                display:flex;
@@ -211,93 +210,31 @@ const Component3 = styled.div`
                    }
                   
                }
-                .name{
+               .name{
+                padding:12px 0px;
                 display:flex;
                 flex-direction:row;
-                align-items:flex-end;
+                align-items:center;
                 justify-content:flex-end;
                 width:100%;
                 svg{
                   color:rgba(${ColorRgb},0.7);
-                  font-size:28px;
+                  font-size:24px;
                   margin-right:15px;
-                  margin-bottom:5px;
                 }
+                .newInp{
+                  font-size:14px;
+                  width:100%;
+                }
+
                 .form__group{
-                 position:relative;
-                 padding: 15px 0 0;
-                 margin-top: 0px;
-                 width: 100%;
-                    .form__field{
-                        font-family: inherit;
-                        width: 100%;
-                        border: 0;
-                        border-radius:6px;
-                        border-bottom: 1px solid rgba(${ColorRgb},0.2);
-                        border-right: 1px solid rgba(${ColorRgb},0.2);
-                        border-left: 1px solid rgba(${ColorRgb},0.2);
-                        border-top: 1px solid rgba(${ColorRgb},0.2);
-                        outline: 0;
-                        font-size: 1rem;
-                        color: black;
-                        padding: 7px 0;
-                        padding-left:10px;
-                        font-size: 0.9rem;
-                        background: transparent;
-                        transition: border-color 0.2s;
-                        transition:all 0.3s ease;
-                        position: relative;
-                        z-index: 1;
-                        &::placeholder {
-                          color: transparent;
-                        }
-                        &:placeholder-shown ~ .form__label {
-                          font-size: 0.9rem;
-                          cursor: text;
-                          top: 24px;
-                        }
-                    }
-                   
-                    .form__label {
-                        position: absolute;
-                        top: 0;
-                        display: block;
-                        transition: 0.2s;
-                        font-size: 0rem;
-                        color: gray;
-                        z-index: 0;
-                        padding:0px 10px;
-                        // background-color:black;
-                      }
-                      
-                      .form__field{
-                          &:focus {
-                            ~ .form__label {
-                              position: absolute;
-                              top: 0;
-                              display: block;
-                              transition: 0.3s;
-                              font-size: 0.8rem;
-                              color: #11998e;
-                              font-weight:400;    
-                            }
-                            border-right:none;
-                            border-left:none;
-                            border-top:none;
-                            padding-bottom: 7px;
-                            font-weight: 400;
-                            border-width: 1px;
-                            border-image: linear-gradient(to right, #11998e, #38ef7d);
-                            border-image-slice: 1;
-                          }
-                      }
-                      /* reset input */
-                      .form__field{
-                        &:required,&:invalid { box-shadow:none; }
-                      }
+                  position:relative;
+                  padding: 8px 0 0;
+                  margin-top: 0px;
+                  width: 100%;
                 }
-                
               }
+               
            }
         }
         .errtext{

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect,useCallback } from 'react'
 import styled from 'styled-components'
-import {Color,ColorRgb, textColor} from "../theme"
+import {Color,ColorRgb,InputStyle,NextBtn} from "../theme"
 import Modal from 'react-awesome-modal';
 import {CgProfile} from 'react-icons/cg'
 import {GoMail} from 'react-icons/go'
@@ -64,20 +64,12 @@ function Signup() {
     }
     
     const handleClick = async (e) =>{
-             let rs = document.querySelectorAll(".userInp");
-             let arr = Array.from(rs);
-             let finalOne = {};
+             let rs = document.querySelectorAll(".userInp"); let arr = Array.from(rs);  let finalOne = {};
             arr.map(element=>{
               if(element.value !== "- Сонго -" && element.value !== "" ){
-                let field = element.name;
-                let value = element.value;
-                finalOne[field] = value;
-              }
+                let field = element.name;  let value = element.value;  finalOne[field] = value;  }
             });
-            let keys = Object.keys(finalOne)
-
-            console.log(finalOne, "^^ final");
-            console.log(keys.length, "^^ length");
+            let keys = Object.keys(finalOne);
 
             if(keys.length < 7){
               setPassText("Гүйцэд бөгөлнө үү");
@@ -86,22 +78,17 @@ function Signup() {
             }else if(finalOne.password !== finalOne.passwordagain) {
               setPassText("Нууц үг адил биш байна...");
             }else{
-              setPassText("");
-              signUpCtx.signUpUser(finalOne);
-              setScale("1");
-              setTimeout(()=>{
-                const userId = localStorage.getItem("userId", []);
-                if(userId){
-                  window.location.reload(true);
-                }else{
-                  console.log('false');
-                }
-              },1000);
+              setPassText("");   signUpCtx.signUpUser(finalOne); setScale("1");
+              // setTimeout(()=>{
+              //   const userId = localStorage.getItem("userId", []);
+              //   if(userId){
+              //     window.location.reload(true);
+              //   }else{
+              //     console.log('false');
+              //   }
+              // },1000);
             }
       }
-
-
-      console.log(sectorData, "^^ sector data")
  
     return (
         <Component className="SignUp">
@@ -210,17 +197,22 @@ function Signup() {
                                     <div className="inpChild">
                                           <div className="labels"><span>Компаны нэр :</span> </div>
                                           <div className="name">
-                                              <div className="form__group">
+                                          <InputStyle className="newInp">
+                                              <input type="input" className="userInp  form__field" placeholder="нэр..." name="companyname" required />
+                                              <div className="line"></div>
+                                          </InputStyle>
+                                              {/* <div className="form__group">
                                                   <input type="input" className="userInp  form__field" name="companyname" required />
-                                              </div>
+                                              </div> */}
                                           </div>
                                       </div>
                                       <div className="inpChild">
                                           <div className="labels"><span>Регистрийн дугаар :</span> </div>
                                           <div className="name">
-                                              <div className="form__group">
-                                                  <input type="number" className="userInp  form__field" name="companyregister" required />
-                                              </div>
+                                              <InputStyle className="newInp">
+                                                  <input type="number" className="userInp  form__field" placeholder="123..." name="companyregister" required />
+                                                  <div className="line"></div>
+                                              </InputStyle>
                                           </div>
                                       </div>
                                       <div className="inpChild sectorChild">
@@ -245,37 +237,29 @@ function Signup() {
                                           <div className="labels"><span>Нэр :</span> </div>
                                           <div className="name">
                                               <CgProfile />
-                                              <div className="form__group">
+                                              <InputStyle className="newInp">
+                                                   <input type="input" className="userInp form__field" placeholder="бүтэн нэрээ оруулна уу..." name="name" required />
+                                                  <div className="line"></div>
+                                              </InputStyle>
+                                              {/* <div className="form__group">
                                                   <input type="input" className="userInp  form__field" name="name" required />
                                                   <label for="name" className="form__label">Өөрийн нэрээ оруулах </label>
-                                              </div>
+                                              </div> */}
                                           </div>
                                       </div>
                                       <div className="inpChild">
                                           <div className="labels"><span>Email :</span> </div>
                                           <div className="name">
                                               <GoMail />
-                                              <div className="form__group">
-                                                  <input type="email" className="userInp  form__field" name="email" required />
-                                                  <label for="name" className="form__label">Цахим шуудан</label>
-                                              </div>
+
+                                              <InputStyle className="newInp">
+                                                   <input type="email" className="userInp  form__field" placeholder="Цахим шуудан" name="email" required />
+                                                  <div className="line"></div>
+                                              </InputStyle>
+
                                           </div>
                                       </div>
                                   </div>
-                                 
-
-                                  {/* <div className="UserSection">
-                                    <div className="inpChild">
-                                          <div className="labels"><span>Компаны нэр :</span> </div>
-                                          <div className="name">
-                                              <CgProfile />
-                                              <div className="form__group">
-                                                  <input type="input" className="userInp  form__field" name="compname" required />
-                                                  <label for="name" className="form__label">Компаны нэрээ оруулах </label>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div> */}
                                    
                                   <div className="UserSection">
                                     <div className="inpChild">
@@ -285,28 +269,29 @@ function Signup() {
                                           </div>
                                             <div className="name">
                                                 <BiLockOpen />
-                                                <div className="form__group">
-                                                    <input onFocus={()=> setPasswordFocused(true)} onBlur={()=> setPasswordFocused(false)} onChange={e => onChangePassword(e.target.value)} value={password} type="password" className="userInp  form__field" placeholder="Регистерийн дугаар" name="password" required />
-                                                    <label for="name" className="form__label">Нууц үг</label>
-                                                </div>
+                                                <InputStyle className="newInp">
+                                                    <input onFocus={()=> setPasswordFocused(true)} onBlur={()=> setPasswordFocused(false)} onChange={e => onChangePassword(e.target.value)} value={password} type="password" className="userInp  form__field" placeholder="Нууц үг" name="password" required />
+                                                    <div className="line"></div>
+                                                </InputStyle>
+
                                             </div>
                                          {passwordFocused && <PasswordInducator validity={passwordValidity} />}
                                       </div>
 
                                       <div className="inpChild">
-                                        <div className="labels"> <span> Нууц үг давтах </span> </div>
+                                           <div className="labels"> <span> Нууц үг давтах </span> </div>
                                             <div className="name">
                                                 <BiLockOpen />
-                                                <div className="form__group">
-                                                    <input  type="password" className="userInp  form__field" placeholder="Регистерийн дугаар" name="passwordagain" required />
-                                                    <label for="name" className="form__label">Нууц үгээ дахин оруулах</label>
-                                                </div>
+                                                <InputStyle className="newInp">
+                                                    <input  type="password" className="userInp  form__field" placeholder="Нууц үгээ дахин оруулах" name="passwordagain" required />
+                                                    <div className="line"></div>
+                                                </InputStyle>
                                             </div>
                                       </div>
                                   </div>
 
                                     <div className="SubmitButtonPar">
-                                          <button onClick={handleClick}  className="SubmitButton" type="button">Бүртгүүлэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
+                                          <NextBtn onClick={handleClick} className="SubmitButton" type="button">Бүртгүүлэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
                                           {signUpCtx.userInfo.userId ? <span className="colorTextgreen" style={{transform:`scale(${scale})`}}>Амжилттай нэвтэрлээ...</span> : PassText? (<span className="colorText" style={{transform:`scale(${scale})`}}>{PassText}</span>) :  (<span className="colorText" style={{transform:`scale(${scale})`}}>{signUpCtx.errMsgSignup}</span>)}  
                                     </div>
                                 </div>
@@ -444,8 +429,9 @@ const Component = styled.div`
               .sectorChild{
                 width:25%;
                 .sectors{
-                  border-radius: 6px;
-                  border:1px solid rgba(0,51,102,0.3);
+                  font-size:13px !important;
+                  border-radius: 2px;
+                  border:1px solid rgba(0,51,102,0.2);
                   width:100%;
                   padding:7px 0px;
                   padding-left:10px;
@@ -498,7 +484,7 @@ const Component = styled.div`
                    width:100%;
                    svg{
                      color:rgba(${ColorRgb},0.7);
-                     font-size:28px;
+                     font-size:24px;
                      margin-right:15px;
                      margin-bottom:5px;
                    }
@@ -507,70 +493,6 @@ const Component = styled.div`
                     padding: 15px 0 0;
                     margin-top: 0px;
                     width: 100%;
-                       .form__field{
-                           font-family: inherit;
-                           width: 100%;
-                           border: 0;
-                           border-radius:6px;
-                           border-bottom: 1px solid rgba(${ColorRgb},0.3);
-                           border-right: 1px solid rgba(${ColorRgb},0.3);
-                           border-left: 1px solid rgba(${ColorRgb},0.3);
-                           border-top: 1px solid rgba(${ColorRgb},0.3);
-                           outline: 0;
-                           font-size: 1rem;
-                           color: black;
-                           padding: 7px 10px;
-                           background: transparent;
-                           transition: border-color 0.2s;
-                           position: relative;
-                           z-index: 1;
-                           &::placeholder {
-                             color: transparent;
-                           }
-                           &:placeholder-shown ~ .form__label {
-                             font-size: 0.9rem;
-                             cursor: text;
-                             top: 24px;
-                           }
-                       }
-                      
-                       .form__label {
-                           position: absolute;
-                           top: 0;
-                           display: block;
-                           transition: 0.2s;
-                           font-size: 0rem;
-                           color: gray;
-                           z-index: 0;
-                           padding-left:10px;
-                         }
-                         
-                         .form__field{
-                             &:focus {
-                               ~ .form__label {
-                                 position: absolute;
-                                 top: 0;
-                                 display: block;
-                                 transition: 0.3s;
-                                 font-size: 0.8rem;
-                                 color: #11998e;
-                                 font-weight:400;    
-                               }
-                               // border-bottom: 1px solid gray;
-                               border-right:none;
-                               border-left:none;
-                               border-top:none;
-                               padding-bottom: 7px;
-                               font-weight: 400;
-                               border-width: 1px;
-                               border-image: linear-gradient(to right, #11998e, #38ef7d);
-                               border-image-slice: 1;
-                             }
-                         }
-                         /* reset input */
-                         .form__field{
-                           &:required,&:invalid { box-shadow:none; }
-                         }
                    }
                    
                  }
@@ -613,48 +535,9 @@ const Component = styled.div`
             }
          
               .SubmitButton{
-                border-style:none;
-                border-radius:6px;
-                cursor:pointer;
-                padding:5px 0px;
-                color:white;
-                background-color:${Color};
-                font-size:18px;
-                text-align:center;
-                transition:all 0.3s ease;
-                display:flex;
-                align-items:center;
-                justify-content:space-around;
-                border:1px solid rgba(63, 81, 181,0.5);
-                width:100%;
-                border-radius:6px;
-                .hide{
-                  transition:all 0.3s ease;
-                  transform:scale(0);
-                  font-size:22px;
+                  width:100%;
+                  font-size:14px;
                 }
-                .hide1{
-                  transition:all 0.7s ease;
-                  transform:scale(0);
-                  font-size:26px;
-                }
-                &:hover{
-                  box-shadow:1px 1px 15px -2px black;
-                  .hide{
-                    transition:all 0.3s ease;
-                    transform:scale(1);
-                  }
-                  .hide1{
-                    transition:all 0.7s ease;
-                    transform:scale(1);
-                  }
-                }
-                .flexchild{
-                  display:flex;
-                  align-items:center;
-                  justify-content:space-around;
-                }
-            }
           
           }
         }

@@ -1,8 +1,7 @@
 import React,{useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {fontSize, textColor,InputStyle,ColorRgb,NextBtn,Color } from '../theme'
+import {fontSize, textColor,InputStyle,ColorRgb,NextBtn } from '../theme'
 import {AiOutlineSend} from 'react-icons/ai'
-
 
 function Feedback() {
     const [FinalErrorText, setFinalErrorText] = useState("");
@@ -12,6 +11,31 @@ function Feedback() {
     useEffect(()=>{
         setTimeout(()=>{  inputFullName.current.focus();},3000);
     },[])
+
+    const ClickHandle = () =>{
+        let inp = document.querySelectorAll(".getInputt"); let arr = Array.from(inp); let final = {};
+        arr.map((el,i)=>{
+
+            if(el.type === "radio"){
+                if(el.checked === true){
+                    let obj = {}
+                    let next = document.querySelectorAll(`.${el.name}_why`);
+                    console.log(el.id, "el id");
+                    console.log(next.id, "next id");
+                    obj["checked"] = el.value;
+                    if(el.id === next.id ){
+                        obj[next.name] = next.value;
+                    }
+                    final[el.name] = obj
+                }
+            }else{
+                final[el.name] = el.value
+            }
+            
+        });
+        console.log(final, "^final");
+    }
+
   
     return (
         <FeedBackCont className="container">
@@ -23,7 +47,7 @@ function Feedback() {
 
                 <div className="compName">
                     <div className="title">Аж ахуйн нэгж/ Кластерын нэр :</div>
-                    <InputStyle  className="nameText"><input ref={inputFullName} placeholder="бүтэн нэрийг оруулна үү..."  type="text" />  <div className="line"></div></InputStyle>
+                    <InputStyle  className="nameText"><input className="getInputt" name="compname" ref={inputFullName} placeholder="бүтэн нэрийг оруулна үү..."  type="text" />  <div className="line"></div></InputStyle>
                 </div>
 
                 <div className="infoWhere">
@@ -33,9 +57,9 @@ function Feedback() {
                             {infoWhere.map((el,i)=>{
                                     return(
                                         <div className="items">
-                                            <input className="radio" type="radio" />
+                                            <input className="getInputt radio" id={i + 1} name="infhear" value={el.title} type="radio" />
                                             <div className="title">{el.title}</div>
-                                            {el.place&&<InputStyle className="nameText"><input placeholder={el.place}  type="text" /> <div className="line"></div></InputStyle>}
+                                            {el.place&&<InputStyle className="nameText"><input placeholder={el.place} className="infhear_why" name="other" id={ i + 1}  type="text" /> <div className="line"></div></InputStyle>}
                                         </div>
                                     )
                             })}
@@ -44,22 +68,26 @@ function Feedback() {
 
                 <div className="infoWhere">
                         <div className="Title Title2"><span className="circle">⬤</span>Түншлэлийн гэрээ өмнө нь хэдэн удаа байгуулж байсан бэ?
-                            <InputStyle className="nameText"><input placeholder="байгуулсан тоо..."  type="number" />  <div className="line"></div></InputStyle>
+                            <InputStyle className="nameText"><input className="getInputt" name="edpcount" placeholder="байгуулсан тоо..." type="number" />  <div className="line"></div></InputStyle>
                          </div>
                 </div>
 
                 <div className="infoWhere">
-                        <div className="Title"><span className="circle">⬤</span>  Түншлэлийн дэмжлэгийн талаар хэрхэн мэдээлэл авсан бэ?</div>
+                        <div className="Title"><span className="circle">⬤</span>Түншлэлийн дэмжлэгээр олгогдож буй санхүүжилтээр дараах үйл ажиллагаануудын алийг санхүүжүүлж байна вэ? <br />  / тэмдэглэнэ үү / :</div>
                         <div className="inpPar">
                             {infoWhere2.map((el,i)=>{
                                     return(
                                         <div className="items">
-                                            {!el.place&&<input className="radio" type="radio" />}  
+                                            <input className="radio getInputt" value={el.title}  name="financing" type="radio" />
                                             <div className="title">{el.title}</div>
-                                            {el.place&&<InputStyle className="nameText"><input placeholder={el.place}  type="text" /> <div className="line"></div></InputStyle>}
                                         </div>
                                     )
                             })}
+                            {/* zasna  */}
+                            <div className="items">
+                                <div className="title">Бусад :</div>
+                                <InputStyle className="nameText"><input placeholder="..." type="text" /> <div className="line"></div></InputStyle>
+                            </div>
                         </div>
                 </div>
 
@@ -68,15 +96,17 @@ function Feedback() {
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
                             <div className="checkItem">
-                                <div className="item"><input className="radio" type="radio" /> <span>Тийм</span></div>  
-                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
+                                <div className="item"><input className="radio getInputt" type="radio" name="nofinancing" value="true" /> <span>Тийм</span></div>  
+                                <div className="item"><input className="radio getInputt" type="radio" name="nofinancing" value="false" /> <span>Үгүй</span></div>
                             </div>
                         </div>
                         <div className="Title3">
                             <div className="text">Яагаад?</div> 
-                            <InputStyle className="nameText"><input placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
-                         </div>
+                            <InputStyle className="nameText"><textarea className="nofinancing_why" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                        </div>
                 </div>
+
+
 
                 <div className="infoWhere">
                         <div className="Title Title4"><span className="circle">⬤</span>Танай байгууллагад үзүүлсэн үйлчилгээг үнэлнэ үү,<br />Үнэлгээ: 1 (маш муу), 2 (муу), 3 (дунд), 4 (сайн), 5 (маш сайн) эсвэл 6 (онц сайн) </div>
@@ -137,13 +167,13 @@ function Feedback() {
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг сонгоно уу [√] : </span>
                             <div className="checkItem">
-                                <div className="item"><input className="radio" type="radio" /> <span>Тийм</span></div>  
-                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
+                                <div className="item"><input className="radio getInputt" type="radio" /> <span>Тийм</span></div>  
+                                <div className="item"><input className="radio getInputt" type="radio" /> <span>Үгүй</span></div>
                             </div>
                         </div>
                         <div className="Title3">
                             <div className="text">Яагаад?</div> 
-                            <InputStyle className="nameText"><input placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                            <InputStyle className="nameText"><textarea placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
                          </div>
                 </div>
 
@@ -164,7 +194,7 @@ function Feedback() {
 
                         <div className="Title3">
                             <div style={{width:"30%"}} className="text">Хэрэв үгүй бол яагаад?</div> 
-                            <InputStyle className="nameText"><input placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                            <InputStyle className="nameText"><textarea placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
                          </div>
                 </div>
 
@@ -180,7 +210,7 @@ function Feedback() {
                         </div>
                         <div className="Title3">
                             <div style={{width:"30%"}} className="text">Шалтгааныг бичнэ үү:?</div> 
-                            <InputStyle className="nameText"><input placeholder="энд бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                            <InputStyle className="nameText"><textarea placeholder="энд бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
                          </div>
                 </div>
 
@@ -197,7 +227,7 @@ function Feedback() {
 
                 <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                            <NextBtn className="SubmitButton" type="button">Илгээх <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                            <NextBtn onClick={ClickHandle} className="SubmitButton" type="button">Илгээх <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                 </div>
             </div>
         </FeedBackCont>
@@ -436,7 +466,7 @@ const infoWhere2 = [
     {  title: "Техник, эдийн засгийн судалгаа", place: null },
     {  title: "Дотоод зах зээл, борлуулалтын суваг", place: null},
     {  title: "ОУ-ын үзэсгэлэн, яармаг", place: null},
-    {  title: "Бусад:", place: "..." },
+    // {  title: "Бусад:", place: "..." },
 ]
 
 const tableData = [

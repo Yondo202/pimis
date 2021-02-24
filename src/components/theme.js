@@ -44,7 +44,8 @@ export const PrevBtn = styled.div`
 `
 
 export const NextBtn = styled.div`
-        padding:5px 0px;
+        font-family: inherit;       
+        padding:8px 0px;
         margin:10px 0px;
         margin-bottom:10px;
         border-style:none;
@@ -53,7 +54,7 @@ export const NextBtn = styled.div`
         padding:5px 0px;
         color:white;
         background-color:${Color};
-        font-size:16px;
+        font-size:14px;
         text-align:center;
         transition:all 0.3s ease;
         display:flex;
@@ -141,6 +142,7 @@ export const AlertStyle = styled.div`
 `
 
 export const InputStyle = styled.div`
+            font-family:"'Roboto', sans-serif";
             // width:100%;
             font-size:13px;
             transition:all 0.3s ease;
@@ -151,8 +153,9 @@ export const InputStyle = styled.div`
                 align-self:flex-end;
                 width:100%;
                 border-bottom:1px solid rgba(0,0,0,0.2);
-                // padding:5px 5px;
-                padding-bottom:5px;
+                // padding-bottom:5px;
+                // padding-left:5px;
+                padding:7px 0px;
                 padding-left:5px;
                 transition:all 0.3s ease;
                 &:focus{ 

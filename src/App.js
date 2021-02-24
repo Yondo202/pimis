@@ -7,11 +7,9 @@ import UserContext from "./context/UserContext";
 import { HelpStore } from "./context/HelperContext";
 import Feedback from './components/feedback/Feedback'
 import CheckComp from "./components/check/compCheck";
-import MainRequest from "./containers/requestComp/mainRequest";
 import EmialSender from "./components/emailSend/EmailSend";
 import EmialSender2 from "./components/emailSend/EmailSend2";
 import LoginDoneHome2 from "./components/LoginDoneHome/Home";
-import ReqHome from "./components/LoginDoneHome/RequestHome";
 import MainRequestOld from "./containers/requestComp/mainRequestOld";
 import { UrgudulStore } from "components/utilities/urgudulContext";
 import BusinessSectorEditor from "pages/business_sector_edit/editorPage";
@@ -79,7 +77,6 @@ function App() {
                           </motion.div>
                         </Route>
                         <Route path="/comp-test" component={CheckComp} />
-                        {/* <Route path="/comp-request" component={ReqHome} exact /> */}
                         <Route path="/notify-page/:paramId" component={MainPage} />
 
                         {/* <Route path="/comp-request" component={MainRequest} /> */}

@@ -1,10 +1,10 @@
-import React,{useContext, useEffect, useCallback} from 'react'
+import React,{ useContext } from 'react'
 import styled from 'styled-components'
 import {CgProfile} from 'react-icons/cg'
 import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from "../../context/UserContext";
-import {fontFamily, Color,ColorRgb} from "../theme"
+import {fontFamily, Color,ColorRgb,InputStyle} from "../theme"
 import Signup from './signup'
 import ForgetPassword from './ForgetPassword'
 import { useHistory } from 'react-router-dom'
@@ -56,22 +56,20 @@ function Login() {
     
     return (
         <Component>
-            {/* <form onSubmit={handleClick}> */}
                 <div className="imgPar">
                     <img src="/head.jpg" alt="edp_logo" />
                     <div className="text">Экспортыг дэмжих төсөл</div>
                 </div>
                 <div className="formOneParent">
-                {/* <div className="headPar"><span className="headText">Нэвтрэх</span></div> */}
                     <div className="inputPar">
                         <div className="inpChild">
                             <div className="labels"><span>Нэвтрэх нэр</span> </div>
                             <div className="name">
                                 <CgProfile />
-                                <div className="form__group">
-                                    <input type="input" className="LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                    <label for="name" className="form__label">Еmail хаягаараа нэвтэрнэ үү</label>
-                                </div>
+                                <InputStyle className="newInp">
+                                    <input type="input" className="LoginInpName" placeholder="Еmail хаягаараа нэвтэрнэ үү" name="name" required />
+                                    <div className="line"></div>
+                                </InputStyle>
                             </div>
                         </div>
                         <div className="inpChild">
@@ -81,20 +79,17 @@ function Login() {
                          </div>
                             <div className="name">
                                 <BiLockOpen />
-                                <div className="form__group">
-                                    <input type="password" className="LoginInpName form__field" placeholder="Регистерийн дугаар" name="password" required />
-                                    <label for="password" className="form__label">Нууц үг</label>
-                                </div>
+                                <InputStyle className="newInp">
+                                    <input type="password" className="LoginInpName form__field" placeholder="Регистерийн дугаар" name="password" required /><div className="line"></div>
+                                </InputStyle>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="SubmitButtonPar">
-                {/* <div className="red">{userCtx.errMsg}</div> */}
-                  {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
-                 <button onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+                    {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
+                     <button onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
                 </div>
-            {/* </form> */}
                 <Signup />
         </Component>
     )
@@ -157,10 +152,11 @@ const Component = styled.div`
               
            }
         .name{
+            padding:10px 0px;
             display:flex;
             flex-direction:row;
-            align-items:flex-end;
-            justify-content:flex-end;
+            align-items:center;
+            justify-content:start;
             width:100%;
             svg{
               color:rgba(${ColorRgb},0.7);
@@ -168,79 +164,10 @@ const Component = styled.div`
               margin-right:15px;
               margin-bottom:5px;
             }
-            .form__group{
-             position:relative;
-             padding: 15px 0 0;
-             margin-top: 0px;
-             width: 100%;
-                .form__field{
-                    font-family: inherit;
-                    width: 100%;
-                    border: 0;
-                    border-radius:6px;
-                    border-bottom: 1px solid rgba(${ColorRgb},0.4);
-                    border-right: 1px solid rgba(${ColorRgb},0.4);
-                    border-left: 1px solid rgba(${ColorRgb},0.4);
-                    border-top: 1px solid rgba(${ColorRgb},0.4);
-                    outline: 0;
-                    font-size: 1rem;
-                    color: black;
-                    padding: 7px 0;
-                    padding-left: 10px;
-                    background: transparent;
-                    transition: border-color 0.2s;
-                    transition:all 0.3s ease;
-                    position: relative;
-                    z-index: 1;
-                    &::placeholder {
-                      color: transparent;
-                    }
-                    &:placeholder-shown ~ .form__label {
-                      font-size: 0.9rem;
-                      cursor: text;
-                      top: 24px;
-                    }
-                }
-               
-                .form__label {
-                    position: absolute;
-                    top: 0;
-                    display: block;
-                    transition: 0.2s;
-                    font-size: 0rem;
-                    color: gray;
-                    z-index: 0;
-                    padding:0px 10px;
-                    // background-color:black;
-                  }
-                  
-                  .form__field{
-                      &:focus {
-                        ~ .form__label {
-                          position: absolute;
-                          top: 0;
-                          display: block;
-                          transition: 0.3s;
-                          font-size: 0.8rem;
-                          color: #11998e;
-                          font-weight:400;    
-                        }
-                        // border-bottom: 1px solid gray;
-                        border-right:none;
-                        border-left:none;
-                        border-top:none;
-                        padding-bottom: 7px;
-                        font-weight: 400;
-                        border-width: 1px;
-                        border-image: linear-gradient(to right, #11998e, #38ef7d);
-                        border-image-slice: 1;
-                      }
-                  }
-                  .form__field{
-                    &:required,&:invalid { box-shadow:none; }
-                  }
+            .newInp{
+              font-size:15px;
+              width:100%;
             }
-            
           }
        }
       
@@ -290,7 +217,7 @@ const Component = styled.div`
         padding:5px 0px;
         color:white;
         background-color:${Color};
-        font-size:18px;
+        font-size:15px;
         text-align:center;
         transition:all 0.3s ease;
         display:flex;

@@ -1,68 +1,30 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import {fontSize, textColor,InputStyle,ColorRgb } from '../theme'
+import {fontSize, textColor,InputStyle,ColorRgb, NextBtn } from '../theme'
 import {MdAddCircle} from 'react-icons/md';
-import Modal from 'react-awesome-modal';
-import SignatureCanvas from 'react-signature-canvas'
-import {FaPenNib} from 'react-icons/fa'
+import ModalOne from './one/ModalOne'
+import ModalTwo from './one/ModalTwo'
+import ModalThree from './one/ModalThree'
+import {AiOutlineSend} from 'react-icons/ai'
+
+import OneModalOne from './two/ModalOne'
+import TwoModalTwo from './two/ModalTwo'
+import ThreeModalThree from './two/ModalThree'
+
 
 function MainWorkPerformance() {
-    const userInitial = [{ids: 0,  url: null}];
     const initialList = [{ids: 1}];
-    const [ userInfo, setUserInfo ] = useState(userInitial);
+    const initialList2 = [{ids: 1}];
+    const [opacity2, setOpacity2] = useState("0");
+    const [ spnBtn, setSpnBtn ] = useState(false);
     const [ initialData, setInitialData ] = useState(initialList);
-    const [visible, setVisible] = useState(false);
-
-    let [sigCanvas, setSigCanvas] = useState({});
-    let [trimmedDataURL, setTrimmedDataURL] = useState(
-        [{id: null , url: null}]
-    );
+    const [ initialData2, setInitialData2 ] = useState(initialList2);
+    const AddHandle = ()=>{  const list = initialData.concat( {ids: 1}); setInitialData(list); }
+    const AddHandle2 = ()=>{  const list = initialData2.concat( {ids: 1}); setInitialData2(list); }
 
 
-    const openModal=()=> {
-        
-         setVisible(true);
-    }
-    const closeModal=()=> { setVisible(false);}
-    const clear = () => sigCanvas.clear();
-    const trim = (id) =>{
-        // let addItem = userInfo.concat([{ id:id, url: sigCanvas.getTrimmedCanvas().toDataURL('image/png') }])
+    
 
-        // userInitial.map((el,i)=>{
-        //     if(i === id){
-        //         addImg["ids"] = 1
-        //         addImg["url"] = sigCanvas.getTrimmedCanvas().toDataURL('image/png')
-        //     }
-        // })
-        let final = [];
-        userInfo.map((el,i)=>{
-            if((i+1) === id){
-                let addImg = {};
-                addImg["ids"] = 1
-                addImg["url"] = sigCanvas.getTrimmedCanvas().toDataURL('image/png');
-                // addImg.push(el);
-                final.push(addImg);
-            }
-            final.push(el);
-        })
-
-
-        setUserInfo( final );
-
-          setTimeout(()=>{ closeModal() },1000)
-     };
-
-
-    const AddHandle = ()=>{
-        const list = initialData.concat( {ids: 1});
-        setInitialData(list);
-    }
-
-    const AddHandleUser = ()=>{
-        const list = userInfo.concat( {ids: 1, url: null});
-        setUserInfo(list);
-    }
-    console.log(userInfo, " my user Info");
 
 
     return (
@@ -87,13 +49,13 @@ function MainWorkPerformance() {
                     <div className="rowItems">
                         <div className="row">
                             <div className="col-md-3 col-3"><div className="LeftHead">Түншлэлийн дэмжлэг хүртэгчийн нэр : </div> </div>
-                            <div className="col-md-9 col-9"><div className="RightHead"><InputStyle className="themeStyle" ><input placeholder="нэр..." type="number" /><div className="line" /></InputStyle></div></div>
+                            <div className="col-md-9 col-9"><div className="RightHead"><InputStyle className="themeStyle" ><input placeholder="нэр..." type="text" /><div className="line" /></InputStyle></div></div>
                         </div>
                     </div>
                     <div className="rowItems">
                         <div className="row">
                             <div className="col-md-3 col-3"><div className="LeftHead">Утасны дугаар, e- mail: </div> </div>
-                            <div className="col-md-9 col-9"><div className="RightHead"><InputStyle className="themeStyle" ><input placeholder="example@example.com..." type="number" /><div className="line" /></InputStyle></div></div>
+                            <div className="col-md-9 col-9"><div className="RightHead"><InputStyle className="themeStyle" ><input placeholder="example@example.com..." type="email" /><div className="line" /></InputStyle></div></div>
                         </div>
                     </div>
                     <div className="rowItems">
@@ -120,53 +82,62 @@ function MainWorkPerformance() {
                         </div>
                     </div>
 
+                    <ModalOne />
+                    <ModalTwo />
+                    <ModalThree />
+
                     <div className="rowItems">
                         <div className="row">
-                            <div className="col-md-3 col-3"><div className="LeftHead">Хянасан: </div> </div>
-                            <div className="col-md-9 col-9">
-
-                                <div className="RightHead">
-                                    <div className="addInfoPar">
-                                        {userInfo.map((el,i)=>{
-                                            return(
-                                                    <div className="userInfPar" key={i}>
-                                                        <div className="name">Нэр: А. Хашцэцэг</div>
-                                                        <div>Албан тушаал: Төслийн зохицуулагч</div>
-                                                        <div className="infItemPar">
-                                                                <div className="DatePar">
-                                                                    <span>Огноо: </span><InputStyle className="themeStyle" > <input placeholder="example@example.com..." type="date" max='3000-12-31' /><div className="line" /></InputStyle>
-                                                                </div>
-                                                                <div className="drowPar">
-                                                                <div>Гарын үсэг:</div> <div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>
-                                                                    {el.url ? <img className="SingatureImg"  src={el.url}/> : null}
-                                                                        <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
-                                                                            <div className="modalPar">
-                                                                                <div className="Canvass">
-                                                                                    <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
-                                                                                </div>
-                                                                                <div className="BtnPar">
-                                                                                    <button onClick={clear}>Цэвэрлэх</button>
-                                                                                    <button onClick={()=>trim(i + 1)}>Хадгалах</button>
-                                                                                    <button onClick={closeModal}>X</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </Modal>
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                            )
-                                        })}
-                                         <div onClick={AddHandleUser} className="addBtn"><MdAddCircle /></div>
-                                    </div>
-
-                                    <div className="remark"><span className="title">Жич:</span>ТХН-н хяналт-шинжилгээ, үнэлгээний мэргэжилтэнд Түншлэлийн хөтөлбөрийн хэрэгжилтийн явцыг зөвхөн тайлагнах бөгөөд тус мэргэжилтэн нь дээр дурдсан гүйцэтгэх ажлуудын чанарын тухайд аливаа хариуцлага хүлээхгүйгээс гадна төлбөрийг хойшлуулж болохгүй.</div>
-                                </div>
-
-                            </div>
+                            <div className="col-md-3 col-3"><div className="LeftHead">Хангалтгүй тохиолдолд: </div> </div>
+                            <div className="col-md-9 col-9"><div className="RightHead RightHeadB">Доор дурдсан ажлын гүйцэтгэлийг хангалтгүй эсвэл хийгээгүй гэж ТХН, ТХ үзэж байна.</div></div>
                         </div>
                     </div>
 
-                    
+                   
+                    <div className="rowItems">
+                        {initialData2.map((el,i)=>{
+                            return(
+                                <div className="row rowA" key={i}>
+                                    <div className="col-md-3 col-3"><div className="LeftHead">Гүйцэтгэх ажил {i + 1}:  {i===0?`Ажлыг бичих:`: ""}  </div> </div>
+                                    {/* <div className="col-md-9 col-9"><div className="RightHead"><ReactQuill placeholder={`Ажил гүйцэтгэсэн түвшин, чанар...`} theme="bubble" value={text} onChange={handleChange} /> </div></div> */}
+                                    <div className="col-md-9 col-9"><div className="RightHead RightHeadA"><InputStyle className="themeStyle" ><textarea placeholder="Гүйцэтгэсэн ажлын чанарыг бичнэ үү..." /><div className="line" /></InputStyle></div></div>
+                                </div>
+                            )
+                        })}
+                        <div onClick={AddHandle2} className="addBtn"><MdAddCircle /></div>
+                    </div>
+
+                    <div className="rowItems">
+                        <div className="row">
+                            <div className="col-md-3 col-3"><div className="LeftHead">Баталсан : </div> </div>
+                            <div className="col-md-9 col-9"><div style={{backgroundColor:"white"}} className="RightHead RightHeadB">ТХН болон Түншлэлийн хөтөлбөр дээр дурдсан ажлуудыг хангалттай хэмжээнд гүйцэтгэсэн хэмээн зөвшөөрч байна.</div></div>
+                        </div>
+                    </div>
+
+                    <OneModalOne />
+                    <TwoModalTwo />
+                    <ThreeModalThree />
+                    <div className="rowItems">
+                        <div className="row">
+                            <div className="col-md-12 col-12">
+                                <div className="LastPar">
+                                    <div className="title">Үүрэг, хариуцлага болон батлуулах журам: </div>
+                                    <ul>
+                                        <li>Түншлэлийн дэмжлэг хүртэгч нь Ажлын гүйцэтгэл хүлээн авах маягт бөглөнө; </li>
+                                        <li>БХШ баг нь гүйцэтгэх ажлын чанар, хэмжээг хянана;</li>
+                                        <li>Төслийн зохицуулагч Түншлэлийн хөтөлбөрөөс баталсан Ажил гүйцэтгэл хүлээн авах маягтад гарыг үсэг зурж баталгаажуулж төлбөрийн үйл явц эхэлнэ.</li>
+                                        <li>ТХН-н ХШҮМ-д Түншлэлийн хөтөлбөрийн хэрэгжилтийн тухай зөвхөн тайлагнах бөгөөд гүйцэтгэх ажлын чанар, хэмжээний тухайд аливаа хариуцлага хүлээхгүй. ХШҮМ-ний гарын үсэг төлбөрийн үйл явцын баталгаажуулалт болохгүй.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+
+
+               <div className="buttonPar">
+                    <div style={{opacity:`${opacity2}`}} className="errtext">Гүйцэд бөглөнө үү...</div>
+                    <NextBtn style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                </div>
                 
             </div>
@@ -191,6 +162,19 @@ const WorkPerformance = styled.div`
             .rowItems{
                 position:relative;
                 border-bottom:1px solid rgba(0,0,0,.2);
+                .LastPar{
+                    font-style: italic;
+                    font-size:13px;
+                    padding:15px;
+                    .title{
+                        margin-bottom:15px;
+                    }
+                    ul{
+                        font-size:12.5px;
+                        padding-left:30px;
+                        list-style-type: disc;
+                    }
+                }
                 .addBtn{
                     z-index:2;
                     cursor:pointer;
@@ -212,7 +196,7 @@ const WorkPerformance = styled.div`
                     align-items:center;
                     height:100%;
                     background-color: rgba(63,81,181,0.1);
-                    padding:8px 8px;
+                    padding:8px 12px;
                     padding-right:0px;
                     border-right:1px solid rgba(0,0,0,.2);
                 }
@@ -292,10 +276,10 @@ const WorkPerformance = styled.div`
                                     .SingatureImg{
                                         border:1px solid rgba(${ColorRgb},0.3);
                                         width:200px;
-                                        height:100px;
+                                        // height:100px;
                                    }
     
-                                   .modalPar{
+                                .modalPar{
                                     text-align:center;
                                    .Canvass{
                                        border:1px solid rgba(${ColorRgb},0.5);
@@ -353,7 +337,7 @@ const WorkPerformance = styled.div`
                     }
                 }
                 .betweenItems{
-                    background-color: rgba(63,81,181,0.3);
+                    background-color: rgba(63,81,181,0.1);
                     padding:4px 15px;
                 }
 
@@ -387,6 +371,25 @@ const WorkPerformance = styled.div`
                 font-style: italic;
             }
         }
+
+        .buttonPar{
+            margin:10px 0px;
+            display:flex;
+            flex-direction:row;
+            align-items:center;
+            justify-content:space-between;
+              .errtext{
+                transition:all 0.4s ease;
+                text-align:center;
+                background-color: #f6c343;
+                border-radius:5px;
+                font-size:14px !important;
+                font-weight:400;
+                color:black !important;
+                line-height:34px;
+                padding:0px 20px;
+              }
+          }
     }
 
 

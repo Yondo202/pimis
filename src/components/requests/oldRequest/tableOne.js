@@ -1,11 +1,11 @@
 import React,{useEffect, useState, useRef, useContext} from 'react';
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
-import {BiPen} from 'react-icons/bi'
 import { animateScroll as scroll } from "react-scroll";
-import { fontFamily, textColor, ColorRgb, Color,fontSize, NextBtn } from '../../theme';
+import { fontFamily, textColor, ColorRgb, fontSize, NextBtn,InputStyle} from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
+import {BsArrowRightShort} from 'react-icons/bs'
 import {AiOutlineSend} from 'react-icons/ai'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
@@ -19,8 +19,8 @@ function TableOne(props) {
     const [procent, setProcent] = useState('0');
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [ initialData, setInitialData ] = useState([]);
-    const [ Dname, setDname] = useState("");
-    const [Ddate, setDdate] = useState("");
+    const [ Dname, setDname] = useState(null);
+    const [Ddate, setDdate] = useState(null);
     const tablesContext = useContext(HelperContext);
 
     
@@ -148,10 +148,11 @@ function TableOne(props) {
                                 <div className="inpChild">
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
-                                        <div className="form__group">
-                                            <input type="text" value={Dname} onChange={changeHandle} className="getUserInp1 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" />
-                                            <label for="name"  className=" form__label">Бүтэн нэрээ оруулна уу</label>
-                                        </div>
+                                      <InputStyle className="newInp">
+                                          {props.initialData?<input type="text" value={Dname} onChange={changeHandle} className="getUserInp1 LoginInpName form__field" placeholder="Бүтэн нэрээ оруулна уу" name="name" />
+                                          : <input type="text" className="getUserInp1 LoginInpName form__field" placeholder="Бүтэн нэрээ оруулна уу" name="name" />  }
+                                          <div className="line"></div>
+                                      </InputStyle>
                                     </div>
                                 </div>
 
@@ -159,22 +160,28 @@ function TableOne(props) {
                                     <div className="inpChild next">
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
-                                            <div className="form__group">
-                                                <input type="date" value={Ddate} onChange={changeHandleDate} max='3000-12-31' placeholder="өдөр-сар-жил" va className="getUserInp1 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
-                                                <label for="password" className="form__label">Өдөр-Сар-Он </label>
-                                            </div>
+                                        <InputStyle className="newInp">
+                                            {props.initialData? <input type="date" value={Ddate} onChange={changeHandleDate} max='3000-12-31' placeholder="өдөр-сар-жил" va className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
+                                                              : <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" va className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
+                                            }
+                                                <div className="line"></div>
+                                        </InputStyle>
+
+                                          
                                         </div>
                                     </div>
 
                                     <div className="inpChild next">
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
-                                            <div className="name"> <BiPen />
-                                                <div className="form__group">
-                                                    <input id="GetcheckBtn" className="checkBtn" type="checkbox" name="check" />
-                                                </div>
+                                            <div className="name"> <BsArrowRightShort />
+                                              <InputStyle className="newInp">
+                                                   <input id="GetcheckBtn" className="checkBtn" type="checkbox" name="check" />
+                                              </InputStyle>
                                             </div>
                                     </div>
                                 </div>
+
+
                             </div>
                         </div>
                         <div className="buttonPar">
@@ -299,100 +306,35 @@ const Component1 = styled.div`
                            display:flex;
                            flex-direction:row;
                            justify-content:space-between;
-                           font-size:14px;
+                           font-size:13px;
                            span{
                                color:rgba(${textColor},.9);
                                font-weight:500;
                            }
-                          
                        }
-                        .name{
+                      .name{
+                        padding:10px 0px;
                         display:flex;
                         flex-direction:row;
-                        align-items:flex-end;
+                        align-items:center;
                         justify-content:flex-end;
                         width:100%;
                         svg{
                           color:rgba(${ColorRgb},0.7);
-                          font-size:28px;
+                          font-size:24px;
                           margin-right:15px;
-                          margin-bottom:5px;
                         }
+                        .newInp{
+                          font-size:14px;
+                          width:100%;
+                        }
+
                         .form__group{
-                         position:relative;
-                         padding: 15px 0 0;
-                         margin-top: 0px;
-                         width: 100%;
-                            .form__field{
-                                font-family: inherit;
-                                width: 100%;
-                                border: 0;
-                                border-radius:6px;
-                                border-bottom: 1px solid rgba(${ColorRgb},0.4);
-                                border-right: 1px solid rgba(${ColorRgb},0.4);
-                                border-left: 1px solid rgba(${ColorRgb},0.4);
-                                border-top: 1px solid rgba(${ColorRgb},0.4);
-                                outline: 0;
-                                font-size: 1rem;
-                                color: black;
-                                padding: 7px 0;
-                                padding-left:10px;
-                                font-size: 0.9rem;
-                                background: transparent;
-                                transition: border-color 0.2s;
-                                transition:all 0.3s ease;
-                                position: relative;
-                                z-index: 1;
-                                &::placeholder {
-                                  color: transparent;
-                                }
-                                &:placeholder-shown ~ .form__label {
-                                  font-size: 0.9rem;
-                                  cursor: text;
-                                  top: 24px;
-                                }
-                            }
-                           
-                            .form__label {
-                                position: absolute;
-                                top: 0;
-                                display: block;
-                                transition: 0.2s;
-                                font-size: 0rem;
-                                color: gray;
-                                z-index: 0;
-                                padding:0px 10px;
-                                // background-color:black;
-                              }
-                              
-                              .form__field{
-                                  &:focus {
-                                    ~ .form__label {
-                                      position: absolute;
-                                      top: 0;
-                                      display: block;
-                                      transition: 0.3s;
-                                      font-size: 0.8rem;
-                                      color: #11998e;
-                                      font-weight:400;    
-                                    }
-                                    // border-bottom: 1px solid gray;
-                                    border-right:none;
-                                    border-left:none;
-                                    border-top:none;
-                                    padding-bottom: 7px;
-                                    font-weight: 400;
-                                    border-width: 1px;
-                                    border-image: linear-gradient(to right, #11998e, #38ef7d);
-                                    border-image-slice: 1;
-                                  }
-                              }
-                              /* reset input */
-                              .form__field{
-                                &:required,&:invalid { box-shadow:none; }
-                              }
+                          position:relative;
+                          padding: 15px 0 0;
+                          margin-top: 0px;
+                          width: 100%;
                         }
-                        
                       }
                    }
                 }

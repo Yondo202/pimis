@@ -60,11 +60,12 @@ function Home() {
                         <div className="itemsPar">
                             <div className="mains">
                                 <a href="https://edp-plan.vercel.app/" target="_blank" style={{backgroundColor:`#F7FF48`}} className="itemsActive arrHelp arrHelpActive"><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
-                                <div className="line line2" ></div>
-                                <Link to="/attachments" style={{backgroundColor:`#F7FF48`}} className="items itemsActive">2.Нотлох бичиг баримтууд </Link>
+                                {/* <div className="line line2" ></div>
+                                <Link to="/attachments" style={{backgroundColor:`#F7FF48`}} className="items itemsActive">2.Нотлох бичиг баримтууд </Link> */}
                             </div>
                             <div className="lineFull" ></div>
-                            <div className="resultWaiting">Баримт бүрдүүлэлт <br/> 2-р шат бүрэн</div>
+                            <Link to="/attachments" style={{backgroundColor:`#F7FF48`}} className="resultWaiting">2.Нотлох бичиг баримтууд </Link>
+                            {/* <div className="resultWaiting">2.Нотлох бичиг баримтууд</div> */}
                         </div>
                     </div>
 
