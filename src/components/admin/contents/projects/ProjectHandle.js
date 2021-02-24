@@ -7,6 +7,7 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import './dataGrid.css'
+import PreviewModal from './previewModal'
 
 
 export default function ProjectHandle() {
@@ -44,9 +45,7 @@ export default function ProjectHandle() {
 
     const handleEditProject = (id) => {
         axios.get(`projects/${id}`, {
-            headers: {
-                'Authorization': getLoggedUserToken(),
-            }
+            headers: { 'Authorization': getLoggedUserToken() }
         }).then(res => {
             console.log(res.data)
             UrgudulCtx.setData(res.data.data)
@@ -57,6 +56,11 @@ export default function ProjectHandle() {
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
         })
     }
+
+    const [previewModal, setPreviewModal] = useState({
+        open: false,
+        id: '',
+    })
 
     return (
         <div className="tw-text-sm tw-text-gray-700" ref={containerRef}>
@@ -99,8 +103,10 @@ export default function ProjectHandle() {
                 <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} />
                 <Column dataField="firstEvalution.description" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell} />
                 <Column dataField="lastEvalution.description" caption="Сүүлийн шатны үнэлгээ" headerCellRender={HeaderCell} />
-                <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} />} headerCellRender={HeaderCell} width={124} />
+                <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} />} headerCellRender={HeaderCell} width={216} />
             </DataGrid>
+
+            <PreviewModal previewModal={previewModal} setPreviewModal={setPreviewModal} />
         </div>
     )
 }

@@ -1,0 +1,14 @@
+.preview-container {
+    width: 21cm;
+    height: 29.7cm;
+    margin: 0 auto;
+    padding: 8px;
+    position: relative;
+    background-color: white;
+}
+
+@media print {
+    .preview-container {
+        size: portrait A4;
+    }
+}

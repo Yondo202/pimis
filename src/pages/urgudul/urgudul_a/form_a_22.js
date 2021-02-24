@@ -16,7 +16,6 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 const initialState = [
     {
-        company_id: null,
         position: null,
         director_name: null,
         employed_date: null,
@@ -80,7 +79,7 @@ function UrugudulDirectors() {
         setValidate(true)
         let allValid = true
         for (const obj of form) {
-            allValid = allValid && Object.keys(initialState).every(key => !checkInvalid(obj[key]))
+            allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key]))
         }
 
         if (UrgudulCtx.data.id) {
@@ -129,7 +128,7 @@ function UrugudulDirectors() {
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">A2</span>
-                - ААН
+                - Аж ахуйн нэгж
 
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Түлхүүр албан тушаалтны жагсаалт, тэдгээрийн овог нэр, албан тушаалын хамт." position="bottom" />
             </div>

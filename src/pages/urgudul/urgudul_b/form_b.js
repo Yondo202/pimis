@@ -12,14 +12,14 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 
 const initialState = {
-    project_duration: '',
-    project_start: '',
-    project_end: '',
-    project_introduction: '',
-    preperation: '',
-    identified_problems: '',
-    suggested_solutions: '',
-    expected_result: '',
+    project_duration: null,
+    project_start: null,
+    project_end: null,
+    project_introduction: null,
+    preperation: null,
+    identified_problems: null,
+    suggested_solutions: null,
+    expected_result: null,
 }
 
 function UrgudulBreakdown() {

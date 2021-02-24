@@ -97,11 +97,11 @@ function UrgudulCalculations() {
                 ]
             }
 
-            if (!UrgudulCtx.data.exportDatas?.endDate) {
-                if (UrgudulCtx.data.end_data) {
+            if (!UrgudulCtx.data.exportDatas?.endDate || UrgudulCtx.data.exportDatas?.endDate === {}) {
+                if (UrgudulCtx.data.project_end) {
                     temp.endDate = {
-                        year: UrgudulCtx.data.endDate.split('-')[0],
-                        month: UrgudulCtx.data.endDate.split('-')[1],
+                        year: UrgudulCtx.data.project_end.split('-')[0],
+                        month: UrgudulCtx.data.project_end.split('-')[1],
                     }
                 }
             }
@@ -203,18 +203,18 @@ function UrgudulCalculations() {
         let allValid = true
         const arr = ['sales', 'fullTime_workplace', 'productivity']
         arr.forEach(key => {
-            allValid = allValid && Object.values(form[key]).every(value => !checkInvalid(value))
+            allValid = allValid && dates.every(item => !checkInvalid(form[key][item]))
         })
         for (const country of form.export_details) {
             allValid = allValid && country.countryId
             for (const product of country.export_products) {
-                allValid = allValid && Object.values(product).every(value => !checkInvalid(value))
+                allValid = allValid && dates.every(item => !checkInvalid(product[item]))
             }
         }
 
         if (UrgudulCtx.data.id) {
             if (allValid) {
-                axios.put(`projects/${3}`, { exportDatas: form }, {
+                axios.put(`projects/${UrgudulCtx.data.id}`, { exportDatas: form }, {
                     headers: {
                         'Authorization': getLoggedUserToken()
                     }

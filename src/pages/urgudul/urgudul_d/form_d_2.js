@@ -84,7 +84,7 @@ function UrgudulNoticeCompany() {
         setValidate(true)
         let allValid = true
         for (const obj of form) {
-            allValid = allValid && Object.values(obj).every(value => !checkInvalid(value))
+            allValid = allValid && Object.keys(initialState[0]).filter(item => item !== 'director').every(key => !checkInvalid(obj[key]))
         }
 
         if (UrgudulCtx.data.id) {
@@ -188,7 +188,7 @@ function UrgudulNoticeCompany() {
                     <span className="tw-ml-3 tw-bg-indigo-50 tw-rounded-lg tw-py-1 tw-px-2 tw-text-sm tw-text-indigo-500 tw-font-medium">Гүйцэтгэх захирал</span>
                 </div>
 
-                <FormInline label="Овог, нэр" type="text" value={directorItem.representative_name || ''} name="representative_name" id={directorIndex} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(directorItem.representative_name) && 'tw-border-red-500'}`} classInput="tw-w-80" />
+                <FormInline label="Овог нэр" type="text" value={directorItem.representative_name || ''} name="representative_name" id={directorIndex} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(directorItem.representative_name) && 'tw-border-red-500'}`} classInput="tw-w-80" />
 
                 <FormInline label="Огноо" type="date" value={directorItem.submitDate || ''} name="submitDate" id={directorIndex} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(directorItem.submitDate) && 'tw-border-red-500'}`} classInput="tw-w-40" />
 
@@ -216,7 +216,7 @@ function UrgudulNoticeCompany() {
                                     <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} />
                                 </div>
 
-                                <FormInline label="Овог, нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.representative_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
+                                <FormInline label="Овог нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.representative_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
 
                                 <FormInline label="Огноо" type="date" value={item.submitDate || ''} name="submitDate" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.submitDate) && 'tw-border-red-500'}`} classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-40" />
 
