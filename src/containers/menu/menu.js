@@ -63,7 +63,7 @@ function Menu() {
     <Componentss>
      
       <div style={{height:headerHeight,display:diplayFlex}} className="MainMenus">
-            <div style={{padding:`0px 0px`}} style={currPath === "/"? {maxWidth:`1160px`}:{maxWidth:1000}} className="container">
+            <div style={currPath === "/"? {maxWidth:`1160px`,padding:`0px 0px`}:{maxWidth:1000}} className="container">
                <input type="checkbox" id="check" name="check" />
                 <span className="menuPar">
                       <div className="backgroundGhost"></div>
@@ -83,10 +83,10 @@ function Menu() {
                       </label>
                         <div className="menus">
                               <div className="items">
-                                  <Link to="/">Нүүр</Link>
-                                  <div style={{transform:`${activeMenu.Home}`}} className={`line ${activeMenu.Home}`}></div>
+                                  <Link to="/">Нүүр хуудас</Link>
+                                  {/* <div style={{transform:`${activeMenu.Home}`}} className={`line ${activeMenu.Home}`}></div> */}
                               </div>
-                              <div className="items">
+                              {/* <div className="items">
                                 <Link to="/comp-request">Хүсэлт</Link>
                                 <div style={{transform:`${activeMenu.Check}`}} className={`line ${activeMenu.Req}`}></div>
                               </div>
@@ -94,14 +94,14 @@ function Menu() {
                                 <Link to="/urgudul/1">Өргөдөлийн маягт</Link>
                                 <div  className={`line ${activeMenu.Maygt}`}></div>
                               </div>
+                              <div className="items">
+                                <Link to="/comp-test">Шалгуур</Link>
+                                <div  className={`line ${activeMenu.Check}`}></div>
+                              </div> */}
                               {/* <div className="items">
                                 <Link to="/comp-check">Шалгах</Link>
                                 <div  className={`line ${activeMenu.Check}`}></div>
                               </div> */}
-                              <div className="items">
-                                <Link to="/comp-test">Шалгуур</Link>
-                                <div  className={`line ${activeMenu.Check}`}></div>
-                              </div>
                         </div>
                         <div className="userMenuPar">
                           {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
