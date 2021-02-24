@@ -46,7 +46,7 @@ function UrgudulBenefits() {
 
     const handleSubmit = () => {
         setValidate(true)
-        const allValid = Object.values(form).every(value => !checkInvalid(value))
+        const allValid = Object.keys(initialState).every(key => !checkInvalid(form[key]))
 
         if (UrgudulCtx.data.id) {
             if (allValid) {

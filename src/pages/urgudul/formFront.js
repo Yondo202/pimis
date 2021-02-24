@@ -128,7 +128,7 @@ function UrgudulFront() {
                         </button>
                     </div>
 
-                    <FormInline label={form.project_type === 'cluster' ? 'Кластерын тэргүүлэгч байгууллагын нэр:' : 'Аж ахуйн нэгжийн нэр'} type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend={`tw-w-full tw-max-w-md ${validate && checkInvalid(form.company_name) && 'tw-border tw-border-dashed tw-border-red-500'}`} classInput="tw-w-full" />
+                    <FormInline label={form.project_type === 1 ? 'Кластерын тэргүүлэгч байгууллагын нэр:' : 'Аж ахуйн нэгжийн нэр'} type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend={`tw-w-full tw-max-w-md ${validate && checkInvalid(form.company_name) && 'tw-border tw-border-dashed tw-border-red-500'}`} classInput="tw-w-full" />
 
                     <FormInline label="Төслийн нэр" type="text" value={form.project_name || ''} name="project_name" onChange={handleInput} classAppend={`tw-w-full tw-max-w-md ${validate && checkInvalid(form.project_name) && 'tw-border tw-border-dashed tw-border-red-500'}`} classInput="tw-w-full" />
 

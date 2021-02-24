@@ -150,7 +150,7 @@ function UrugudulClusters() {
         setValidate(true)
         let allValid = true
         for (const obj of form) {
-            allValid = allValid && Object.keys(initialState).every(key => !checkInvalid(obj[key]))
+            allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key]))
         }
 
         if (UrgudulCtx.data.id) {
@@ -233,7 +233,7 @@ function UrugudulClusters() {
 
                                 <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.company_size) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
 
-                                <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх?" options={['Тийм', 'Үгүй']} values={[true, false]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.support_recipient) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
+                                <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх" options={['Тийм', 'Үгүй']} values={[true, false]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.support_recipient) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
                             </div>
 
                             <div className={`tw-w-full tw-border tw-border-dashed ${validate && checkInvalid(item.project_contribution, 'quill') && 'tw-border-red-500'}`}>

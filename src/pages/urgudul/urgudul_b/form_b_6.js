@@ -31,6 +31,7 @@ function UrgudulActivities() {
         if (UrgudulCtx.data.activities && UrgudulCtx.data.activities?.length) {
             setForm(UrgudulCtx.data.activities)
         }
+        UrgudulCtx.data.project_type === 1 && setIsCluster(true)
     }, [UrgudulCtx.data.id])
 
     const handleInputFormat = (values, key, index) => {
@@ -75,7 +76,7 @@ function UrgudulActivities() {
         setValidate(true)
         let allValid = true
         for (const obj of form) {
-            allValid = allValid && Object.values(obj).every(value => !checkInvalid(value))
+            allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key]))
         }
 
         if (UrgudulCtx.data.id) {
@@ -120,16 +121,18 @@ function UrgudulActivities() {
         }
     }
 
+    const [isCluster, setIsCluster] = useState(false)
+
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">B6</span>
                 {
-                    'cluster_' ? '- Кластераар хийх үйл ажиллагаа' : '- Аж ахуйн нэгжээр хийх үйл ажиллагаа'
+                    isCluster ? '- Кластераар хийх үйл ажиллагаа' : '- Аж ахуйн нэгжээр хийх үйл ажиллагаа'
                 }
 
                 {
-                    'cluster_' ?
+                    isCluster ?
                         <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерт нийтэд нь нөлөөлөх үйл ажиллагаа, үр өгөөжийн талаар бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
                         :
                         <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Аж ахуйн нэгжийн хийг гүйцэтгэх үйл ажиллагааг бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />

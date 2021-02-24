@@ -33,12 +33,12 @@ function UrgudulNoticeCluster() {
 
     useEffect(() => {
         if (UrgudulCtx.data.noticeClusters && UrgudulCtx.data.noticeClusters?.length) {
-            setForm(prevState => { return UrgudulCtx.data.noticeClusters })
+            setForm(prevState => UrgudulCtx.data.noticeClusters)
         }
 
         const newForm = form
         newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
-        setForm(prevState => { return newForm })
+        setForm(prevState => newForm)
     }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {
@@ -94,7 +94,7 @@ function UrgudulNoticeCluster() {
         setValidate(true)
         let allValid = true
         for (const obj of form) {
-            allValid = allValid && Object.values(obj).every(value => !checkInvalid(value))
+            allValid = allValid && Object.keys(initialState[0]).filter(item => item !== 'applicant').every(key => !checkInvalid(obj[key]))
         }
 
         if (UrgudulCtx.data.id) {
@@ -197,7 +197,7 @@ function UrgudulNoticeCluster() {
 
             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                 <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-flex tw-place-items-center tw-p-2 tw-pl-8">
-                    <span className="tw-text-sm tw-font-medium">ААН нэгжийн нэр:</span>
+                    <span className="tw-text-sm tw-font-medium">Аж ахуйн нэгжийн нэр:</span>
                     {
                         companyName &&
                         <span className="tw-ml-3 tw-bg-indigo-50 tw-rounded-lg tw-py-1 tw-px-2 tw-text-sm tw-text-indigo-500 tw-font-medium">{companyName}</span>
@@ -208,7 +208,7 @@ function UrgudulNoticeCluster() {
                     <SearchSelect label="Албан тушаал" data={occupations} value={applicantItem.representative_positionId} name="representative_positionId" id={applicantIndex} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" />
                 </div>
 
-                <FormInline label="Овог, нэр" type="text" value={applicantItem.representative_name || ''} name="representative_name" id={applicantIndex} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(applicantItem.representative_name) && 'tw-border-red-500'}`} classInput="tw-w-80" />
+                <FormInline label="Овог нэр" type="text" value={applicantItem.representative_name || ''} name="representative_name" id={applicantIndex} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(applicantItem.representative_name) && 'tw-border-red-500'}`} classInput="tw-w-80" />
 
                 <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-row-span-2">
                     <div className="tw-flex tw-items-center tw-p-2">
@@ -233,14 +233,14 @@ function UrgudulNoticeCluster() {
                         <div className="tw-flex even:tw-bg-gray-50" key={i}>
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                                 <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.companyId) && 'tw-border-red-500'}`}>
-                                    <FormSelect label="АНН нэр" data={clusters} value={item.companyId} name="companyId" id={i} setForm={handleSetForm} displayName="company_name" classAppend="tw-w-96" />
+                                    <FormSelect label="Аж ахуйн нэгжийн нэр" data={clusters} value={item.companyId} name="companyId" id={i} setForm={handleSetForm} displayName="company_name" classAppend="tw-w-96" />
                                 </div>
 
                                 <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.representative_positionId) && 'tw-border-red-500'}`}>
                                     <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} />
                                 </div>
 
-                                <FormInline label="Овог, нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.representative_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
+                                <FormInline label="Овог нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.representative_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-80" />
 
                                 <div className="tw-border tw-border-dashed tw-w-full tw-h-full tw-max-w-lg tw-row-span-2">
                                     <div className="tw-flex tw-items-center tw-p-2">

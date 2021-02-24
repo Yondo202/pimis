@@ -35,7 +35,7 @@ const initialState = {
     investment_percent: null,
 }
 
-const districts = [
+export const districts = [
     {
         id: 1,
         description_mon: 'Багануур',
@@ -92,6 +92,7 @@ function UrgudulApplicant() {
         if (UrgudulCtx.data.company) {
             setForm({ ...form, ...UrgudulCtx.data.company })
         }
+        UrgudulCtx.data.project_type === 1 && setIsCluster(true)
     }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {
@@ -117,7 +118,6 @@ function UrgudulApplicant() {
     const handleSubmit = () => {
         setValidate(true)
         let allValid = true
-        // const allValid = Object.values(form).every(value => !checkInvalid(value))
         Object.keys(initialState).forEach(key => {
             switch (key) {
                 case 'districtId':
@@ -176,6 +176,8 @@ function UrgudulApplicant() {
         }
     }
 
+    const [isCluster, setIsCluster] = useState(false)
+
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
@@ -183,12 +185,12 @@ function UrgudulApplicant() {
                 - Өргөдөл гаргагч
 
                 {
-                    'cluster_' && <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." position="bottom" />
+                    isCluster && <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." position="bottom" />
                 }
             </div>
 
             <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                <FormInline label="Аж ахуй нэгжийн нэр" type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.company_name) && 'tw-border-red-500'}`} classInput="tw-w-full" />
+                <FormInline label="Аж ахуйн нэгжийн нэр" type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.company_name) && 'tw-border-red-500'}`} classInput="tw-w-full" />
 
                 <FormInline label="Аж ахуйн нэгжийг төлөөлөх албан тушаалтны овог нэр" type="text" value={form.representative_name || ''} name="representative_name" onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.representative_name) && 'tw-border-red-500'}`} classInput="tw-w-full" />
 

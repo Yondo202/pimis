@@ -49,7 +49,7 @@ function UrgudulNavigator(props) {
 
     const UrgudulCtx = useContext(UrgudulContext)
 
-    const isCluster = UrgudulCtx.data?.project_type === 1 || false
+    const isCluster = UrgudulCtx.data.project_type === 1 || false
 
     const location = useLocation()
 
@@ -123,7 +123,7 @@ function UrgudulNavigator(props) {
                 </button>
                 {
                     [...Array(5)].map((item, i) =>
-                        <button className={`tw-mx-2 tw-px-2 tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === startPage + i && 'tw-bg-indigo-500 tw-text-white'} tw-transition-colors tw-duration-300`} key={i} onClick={() => handleJump(startPage + i)}>
+                        <button className={`tw-mx-2 tw-px-2 tw-py-0.5 tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === startPage + i && 'tw-bg-indigo-500 tw-text-white'} tw-transition-colors tw-duration-300`} key={i} onClick={() => handleJump(startPage + i)}>
                             {startPage + i}
                         </button>
                     )
@@ -205,7 +205,7 @@ function UrgudulNavigator(props) {
                                                     <div className={`tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-justify-center tw-items-center tw-text-white tw-text-lg tw-font-bold ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
                                                         ID: {item.id}
                                                     </div>
-                                                    <div className="tw-pl-2 tw-mt-1 tw-truncate tw-text-xs tw-font-medium">
+                                                    <div className="tw-pl-2 tw-mt-1 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
                                                         {
                                                             {
                                                                 1: 'Кластер',
@@ -213,10 +213,10 @@ function UrgudulNavigator(props) {
                                                             }[item.project_type] || '--/--'
                                                         }
                                                     </div>
-                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium">
+                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
                                                         {item.company_name}
                                                     </div>
-                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium">
+                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
                                                         {item.project_name}
                                                     </div>
                                                 </button>
