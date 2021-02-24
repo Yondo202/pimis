@@ -150,7 +150,7 @@ function UrugudulClusters() {
         setValidate(true)
         let allValid = true
         for (const obj of form) {
-            allValid = allValid && Object.values(obj).every(value => !checkInvalid(value))
+            allValid = allValid && Object.keys(initialState).every(key => !checkInvalid(obj[key]))
         }
 
         if (UrgudulCtx.data.id) {

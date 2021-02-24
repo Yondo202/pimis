@@ -1,4 +1,5 @@
 import CloseSVG from 'assets/svgComponents/closeSVG'
+import SearchSVG from 'assets/svgComponents/searchSVG'
 import axios from 'axiosbase'
 import React, { useEffect, useRef, useState } from 'react'
 import { config, Transition } from 'react-spring/renderprops'
@@ -89,7 +90,7 @@ export default function EvaluatorsModal(props) {
 
                         <div className="">Томилсон гишүүд:</div>
 
-                        <div className="tw-h-20 tw-overflow-y-auto">
+                        <div className="tw-h-20 tw-overflow-y-auto tw-border">
                             {evaluators.map((evaluator, i) =>
                                 <div className="tw-flex tw-justify-between tw-items-center hover:tw-bg-blue-100" key={i}>
                                     {evaluator.name}
@@ -100,9 +101,12 @@ export default function EvaluatorsModal(props) {
                             )}
                         </div>
 
-                        <input className="tw-w-full tw-border" style={{ maxWidth: '240px' }} value={search} onChange={e => setSearch(e.target.value)} />
+                        <div className="tw-inline-flex tw-items-center tw-border tw-px-2">
+                            <input className="tw-py-1 focus:tw-outline-none" type="text" value={search} onChange={e => setSearch(e.target.value)} />
+                            <SearchSVG className="tw-w-4 tw-h-4" />
+                        </div>
 
-                        <div className="tw-h-32 tw-overflow-y-auto">
+                        <div className="tw-h-32 tw-overflow-y-auto tw-border">
                             {unelgeeniiHorooniiGishuud.filter(obj => !evaluatorsMap.includes(obj.name)).filter(filter).map(evaluator =>
                                 <div className="hover:tw-bg-blue-100" key={evaluator.name} onClick={() => handleAdd(evaluator)}>
                                     {evaluator.name}

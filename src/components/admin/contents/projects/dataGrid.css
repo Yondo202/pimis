@@ -1,0 +1,11 @@
+#gridContainer .dx-toolbar {
+    margin-top: 10px;
+}
+
+#gridContainer .dx-datagrid-search-panel {
+    margin-right: 10px;
+}
+
+#gridContainer .dx-scrollable-wrapper {
+    padding-bottom: 10px;
+}

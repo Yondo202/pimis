@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { translation } from 'components/admin/contents/projects/ProjectHandle'
+import { translation } from 'components/admin/contents/projects1/ProjectHandle'
 import { config, Transition } from 'react-spring/renderprops'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 
@@ -24,7 +24,7 @@ export default function FilterDropDown(props) {
         props.setFilterBy(key)
         setDropdown(false)
     }
-    
+
     return (
         <div className="tw-relative tw-border-l tw-border-gray-500 tw-pl-1">
             <button className="tw-flex tw-items-center tw-px-1 tw-rounded-md focus:tw-outline-none active:tw-bg-gray-100" onClick={() => setDropdown(!dropdown)} ref={buttonRef}>
@@ -42,7 +42,7 @@ export default function FilterDropDown(props) {
                 {dropdown => dropdown && (props =>
                     <div style={props} className="tw-absolute tw-top-8 tw--right-2 tw-w-40 tw-grid tw-grid-cols-1 tw-z-10 tw-bg-white tw-rounded-md tw-shadow-md tw-divide-y tw-divide-dashed" ref={dropdownRef}>
                         {Object.keys(translation).map(key =>
-                            <button className="tw-font-medium tw-p-2 tw-pl-3 hover:tw-bg-blue-100 tw-whitespace-nowrap tw-text-left first:tw-rounded-t-md last:tw-rounded-b-md focus:tw-outline-none" style={{fontSize: '13px'}} key={key} onClick={() => handleSelect(key)}>
+                            <button className="tw-font-medium tw-p-2 tw-pl-3 hover:tw-bg-blue-100 tw-whitespace-nowrap tw-text-left first:tw-rounded-t-md last:tw-rounded-b-md focus:tw-outline-none" style={{ fontSize: '13px' }} key={key} onClick={() => handleSelect(key)}>
                                 {translation[key]}
                             </button>
                         )}

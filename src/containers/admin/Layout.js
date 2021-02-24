@@ -6,11 +6,12 @@ import styled from 'styled-components'
 import HomeAdmin from '../../components/admin/Home'
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
-import { BrowserRouter as Switch, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import UserHandle from 'components/admin/contents/users/UserHandle';
-import ProjectHandle from 'components/admin/contents/projects/ProjectHandle';
-import UrgudulNavigator from 'pages/urgudul/page';
-import { UrgudulStore } from 'components/utilities/urgudulContext';
+import ProjectHandle from 'components/admin/contents/projects/ProjectHandle'
+import UrgudulNavigator from 'pages/urgudul/page'
+import { UrgudulStore } from 'components/utilities/urgudulContext'
+import ProjectHandle1 from 'components/admin/contents/projects1/ProjectHandle'
 
 
 function Layout({ setLocale }) {
@@ -48,12 +49,13 @@ function Layout({ setLocale }) {
 
                 <div className="itemsPar">
                     <UrgudulStore>
-                            <Route path="/" component={HomeAdmin} exact />
-                            <Route path="/users" component={UserHandle} />
-                            <Route path="/projects" component={ProjectHandle} />
-                            <Route path="/urgudul/:page">
-                                <UrgudulNavigator preloaded={true} />
-                            </Route>
+                        <Route path="/" component={HomeAdmin} exact />
+                        <Route path="/users" component={UserHandle} />
+                        <Route path="/projects" component={ProjectHandle} />
+                        <Route path="/projects1" component={ProjectHandle1} />
+                        <Route path="/urgudul/:page">
+                            <UrgudulNavigator preloaded={true} />
+                        </Route>
                     </UrgudulStore>
                 </div>
             </div>

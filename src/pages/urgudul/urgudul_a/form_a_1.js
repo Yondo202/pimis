@@ -132,8 +132,6 @@ function UrgudulApplicant() {
                 default:
                     allValid = allValid && !checkInvalid(form[key])
             }
-            console.log(key)
-            console.log(allValid)
         })
 
         if (UrgudulCtx.data.id) {
