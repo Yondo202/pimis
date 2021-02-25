@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import DataGrid, { Column, FilterRow, HeaderFilter, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
+import DataGrid, { Column, FilterRow, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import EditDropdown from './editDropdown'
@@ -8,7 +8,29 @@ import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import './dataGrid.css'
 import PreviewModal from './previewModal'
+import { loadMessages } from 'devextreme/localization'
 
+
+loadMessages({
+    "en": {
+        "dxDataGrid-filterRowOperationContains": "Агуулсан",
+        "dxDataGrid-filterRowOperationNotContains": "Агуулаагүй",
+        "dxDataGrid-filterRowOperationStartsWith": "Эхэлсэн",
+        "dxDataGrid-filterRowOperationEndsWith": "Төгссөн",
+        "dxDataGrid-filterRowOperationEquals": "Тэнцүү",
+        "dxDataGrid-filterRowOperationNotEquals": "Тэнцэхгүй",
+        "dxDataGrid-filterRowResetOperationText": "Хайх",
+        "dxDataGrid-trueText": "Тийм",
+        "dxDataGrid-falseText": "Үгүй",
+        "dxList-selectAll": "Бүгдийг сонгох",
+        "dxDataGrid-headerFilterOK": "Хэрэгжүүлэх",
+        "dxDataGrid-headerFilterCancel": "Болих",
+        "dxDiagram-dialogButtonOK": "Хэрэгжүүлэх",
+        "dxDiagram-dialogButtonCancel": "Болих",
+        "dxDataGrid-headerFilterEmptyValue": "(Хоосон)",
+        "dxDataGrid-filterRowShowAllText": "(Бүгд)",
+    }
+})
 
 export default function ProjectHandle() {
     const [data, setData] = useState([])
@@ -69,17 +91,22 @@ export default function ProjectHandle() {
             </div>
 
             <DataGrid
-                elementAttr={{ id: 'gridContainer' }}
+                elementAttr={{ id: 'registered-companies-data-grid' }}
                 dataSource={data}
                 showBorders={true}
                 wordWrapEnabled={true}
                 rowAlternationEnabled={true}
                 columnAutoWidth={true}
                 width={width && `${width - 2}px`}
+                showRowLines={true}
+                showColumnLines={true}
+                showScrollbar={true}
+                loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
             >
                 <SearchPanel visible={true} width={240} placeholder="Хайх..." />
                 <Scrolling mode="standart" columnRenderingMode="standart" showScrollbar="onHover" />
-                <Paging enabled={false} />
+                <Paging defaultPageSize={20} />
+                <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
                 <HeaderFilter visible={true} />
                 <FilterRow visible={true} />
 
@@ -90,7 +117,7 @@ export default function ProjectHandle() {
                 <Column dataField="esm" caption="Байгаль орчны үнэлгээ" headerCellRender={HeaderCell} />
                 <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} />
 
-                <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellFirst}>
+                <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
                     <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} />
                     <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} />
                     <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} />
@@ -102,8 +129,8 @@ export default function ProjectHandle() {
                 <Column dataField="evidence" caption="Нотлох бичиг баримтууд" headerCellRender={HeaderCell} />
                 <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} />
                 <Column dataField="firstEvalution.description" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell} />
-                <Column dataField="lastEvalution.description" caption="Сүүлийн шатны үнэлгээ" headerCellRender={HeaderCell} />
-                <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} />} headerCellRender={HeaderCell} width={216} />
+                <Column dataField="lastEvalution.description" caption="Бизнес шинжээчийн үнэлгээ" headerCellRender={HeaderCell} />
+                <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} />} headerCellRender={HeaderCell} width={134} />
             </DataGrid>
 
             <PreviewModal previewModal={previewModal} setPreviewModal={setPreviewModal} />
@@ -112,13 +139,13 @@ export default function ProjectHandle() {
 }
 
 const HeaderCell = (data) => (
-    <div className="tw-text-center tw-font-medium tw-text-gray-700 tw-text-sm">
+    <div className="tw-text-center tw-font-medium tw-text-gray-700" style={{ fontSize: '13px' }}>
         {data.column.caption}
     </div>
 )
 
-const HeaderCellFirst = (data) => (
-    <div className="tw-font-medium tw-text-gray-700 tw-text-sm tw-pl-4">
+const HeaderCellMultiHeader = (data) => (
+    <div className="tw-font-medium tw-text-gray-70 tw-pl-4" style={{ fontSize: '13px' }}>
         {data.column.caption}
     </div>
 )

@@ -10,12 +10,13 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import { Fragment } from 'react'
 
 
 const year = new Date().getFullYear()
 const month = new Date().getMonth() + 1
 
-const dates = [
+export const dates = [
     'baseYear',
     'year--',
     'year-',
@@ -26,16 +27,7 @@ const dates = [
     'year+++',
 ]
 
-const datesObj = {
-    'baseYear': null,
-    'year--': null,
-    'year-': null,
-    'submitDate': null,
-    'endDate': null,
-    'year+': null,
-    'year++': null,
-    'year+++': null,
-}
+const datesObj = dates.reduce((acc, cur) => ({ ...acc, [cur]: null }), {})
 
 const initialState = {
     sales: {
@@ -352,8 +344,8 @@ function UrgudulCalculations() {
                         </tr>
                         {
                             form.export_details.map((country, i) =>
-                                <>
-                                    <tr className="tw-h-9" key={i}>
+                                <Fragment key={i}>
+                                    <tr className="tw-h-9">
                                         <td className="tw-border tw-px-1">
                                             <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" />
                                         </td>
@@ -366,7 +358,7 @@ function UrgudulCalculations() {
                                     </tr>
                                     {
                                         country.export_products.map((product, j) =>
-                                            <tr className="tw-h-9">
+                                            <tr className="tw-h-9" key={j}>
                                                 <td className="tw-border tw-px-1">
                                                     <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={product.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(product.productId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={window.innerWidth > 922 ? '922px' : `${window.innerWidth - 128}px`} />
                                                 </td>
@@ -398,7 +390,7 @@ function UrgudulCalculations() {
                                             </div>
                                         </td>
                                     </tr>
-                                </>
+                                </Fragment>
                             )
                         }
                         <tr className="tw-h-9">

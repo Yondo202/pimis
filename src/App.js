@@ -27,8 +27,8 @@ import UnAuthContent from "UnauthContent";
 import { FilePreviewStore } from "components/utilities/filePreviewContext";
 import FilePreviewModal from "components/file_preview/filePreview";
 import WorkPerformance from './components/workPerformance/MainWorkPerformance'
-import 'devextreme/dist/css/dx.common.css';
-import 'devextreme/dist/css/dx.light.css';
+import 'devextreme/dist/css/dx.common.css'
+import 'assets/devExtremeTheme/dx.material.blue-light-compact.css'
 
 
 function App() {

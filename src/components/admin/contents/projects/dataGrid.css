@@ -1,11 +1,15 @@
-#gridContainer .dx-toolbar {
+/* #registered-companies-data-grid .dx-toolbar {
     margin-top: 10px;
 }
 
-#gridContainer .dx-datagrid-search-panel {
+#registered-companies-data-grid .dx-datagrid-search-panel {
     margin-right: 10px;
+} */
+
+#registered-companies-data-grid .dx-scrollable-wrapper {
+    padding-bottom: 5px;
 }
 
-#gridContainer .dx-scrollable-wrapper {
-    padding-bottom: 10px;
+#registered-companies-data-grid #dropdown-button .dx-button-text {
+    font-size: 11px;
 }
