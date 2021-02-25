@@ -10,7 +10,7 @@ function ActiveComp(props) {
                                 <Link to={!props.prew&&`/comp-test`} className={props.data.criteria ===true?`itemsActive`: `items`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
                                 {/* <div className="line line2" ></div> */}
                                 <div className="line" ></div>
-                                <Link to={!props.prew&&`/comp-request`} className={props.data.esm ===true?`itemsActive`: `items`}>2. Байгаль орчны үнэлгээний асуумж </Link>
+                                <Link to={!props.prew&&`/comp-request`} className={props.data.esq ===true?`itemsActive`: `items`}>2. Байгаль орчны үнэлгээний асуумж </Link>
                                 <div className="line" ></div>
                                 <Link to={!props.prew&&`/letter-of-interest`} className={props.data.letterOfInterst ===true?`itemsActive`: `items`} >3. Сонирхол илэрхийлэх албан тоот</Link>                        
                             </div>
