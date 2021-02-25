@@ -16,7 +16,7 @@ import BusinessSectorEditor from "pages/business_sector_edit/editorPage";
 import ProductsEditor from "pages/products_edit/editorPage";
 import { AlertStore } from "components/utilities/alertContext";
 import AlertDialog from "components/alert_dialog/alertDialog";
-import UrgudulNavigator from "pages/urgudul/Page";
+import UrgudulNavigator from "pages/urgudul/page";
 import LetterOfInterest from "pages/letter_of_interest/page";
 import FirstEvaluation from "pages/decision_making/page_5a";
 import CompilationCheck from "pages/decision_making/page_5b";

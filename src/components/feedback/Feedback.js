@@ -6,37 +6,91 @@ import {AiOutlineSend} from 'react-icons/ai'
 function Feedback() {
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
+
+    const [otherOne, setOtherOne] = useState({Cname: "getInputt", checked:null, self:""  });
+    const [otherTwo, setOtherTwo] = useState({Cname: "getInputt", checked:null, self:"" });
     
     let inputFullName = React.useRef(null);
     useEffect(()=>{
         setTimeout(()=>{  inputFullName.current.focus();},3000);
-    },[])
+    },[]);
+
+    const onChange1 = (e) =>{
+        if(e.target.value.length > 1){ setOtherOne({ Cname:"", checked:false, self:"getInputt" })
+        }else{setOtherOne({ Cname:"getInputt", checked:null, self:"" })}
+    }
+    const onChange2 = (e) =>{
+        if(e.target.value.length > 1){ setOtherTwo({ Cname:"", checked:false, self:"getInputt" })
+        }else{setOtherTwo({ Cname:"getInputt", checked:null, self:"" })}
+    }
+    const reasonNo = (el) =>{
+        if(el.target.value.length > 1){
+            setOtherTwo({ Cname:"", checked:false, self:"" })
+            el.target.className ="getInputt"
+        }else{ el.target.className ="zz"; setOtherTwo({ Cname:"getInputt", checked:null, self:"" })  }
+    }
+
 
     const ClickHandle = () =>{
         let inp = document.querySelectorAll(".getInputt"); let arr = Array.from(inp); let final = {};
-        arr.map((el,i)=>{
-
+        arr.map(el=>{
             if(el.type === "radio"){
                 if(el.checked === true){
                     let obj = {}
-                    let next = document.querySelectorAll(`.${el.name}_why`);
-                    console.log(el.id, "el id");
-                    console.log(next.id, "next id");
+                    let next = document.querySelectorAll(`.${el.name}${el.id}_why`); let otherArr = Array.from(next);
+                    otherArr.map(elem=>{
+                        if(elem.id){
+                            obj[elem.name] = elem.value;
+                        }else{
+                            obj[elem.name] = elem.value;
+                        }
+                    });
                     obj["checked"] = el.value;
-                    if(el.id === next.id ){
-                        obj[next.name] = next.value;
-                    }
-                    final[el.name] = obj
+                    final[el.name] = obj;
                 }
             }else{
-                final[el.name] = el.value
+                if(el.name==="financing"){
+                    let dd = {};  dd["checked"] = el.value;  final["financing"] = dd
+                }else if(el.name==="finance_req"){
+                    let nn = {}; nn["checked"] = el.value; final["finance_req"] =nn
+                } else if(el.name==="finance_req_no"){
+                    let nn = {}; nn["checked_no"] = el.value; final["finance_req"] =nn
+                }
+                else{
+                    final[el.name] = el.value;
+                }
             }
-            
         });
-        console.log(final, "^final");
+
+        let getT = document.querySelectorAll(".getTable1"); let tableArr = Array.from(getT); let tableOne = [];
+        tableArr.map((el,i)=>{
+            let obj = {};
+            let tb = document.querySelectorAll(`.tableItem${i+1}`); let itemarr = Array.from(tb);
+            itemarr.map((elem,ind)=>{
+                if(elem.checked===true){
+                    obj["checked"] = elem.value
+                    obj["title"] = elem.name
+                }
+            });
+            tableOne.push(obj);
+        });
+        let getT2 = document.querySelectorAll(".getTable2"); let tableArr2 = Array.from(getT2); let tableTwo = [];
+        tableArr2.map((el,i)=>{
+            let obj = {}; obj["title"] = el.id; let tb2 = document.querySelectorAll(`.itemOne${i+1}`); let itemarr2 = Array.from(tb2); 
+            itemarr2.map((elem,index)=>{
+                obj[elem.name] = elem.value
+            });
+            tableTwo.push(obj);
+        })
+
+        final["service_assess"] = tableOne;
+        final["efficiency"] = tableTwo;
+
+
+
+        console.log(JSON.stringify(final) , "^final");
     }
 
-  
     return (
         <FeedBackCont className="container">
             <div className="contentPar">
@@ -59,7 +113,7 @@ function Feedback() {
                                         <div className="items">
                                             <input className="getInputt radio" id={i + 1} name="infhear" value={el.title} type="radio" />
                                             <div className="title">{el.title}</div>
-                                            {el.place&&<InputStyle className="nameText"><input placeholder={el.place} className="infhear_why" name="other" id={ i + 1}  type="text" /> <div className="line"></div></InputStyle>}
+                                            {el.place&&<InputStyle className="nameText"><input placeholder={el.place} className={`infhear${i + 1}_why`} name="other" id={i + 1}  type="text" /> <div className="line"></div></InputStyle>}
                                         </div>
                                     )
                             })}
@@ -78,7 +132,7 @@ function Feedback() {
                             {infoWhere2.map((el,i)=>{
                                     return(
                                         <div className="items">
-                                            <input className="radio getInputt" value={el.title}  name="financing" type="radio" />
+                                            <input className={`radio ${otherOne.Cname}`} value={el.title} checked={otherOne.checked} name="financing" type="radio" />
                                             <div className="title">{el.title}</div>
                                         </div>
                                     )
@@ -86,7 +140,7 @@ function Feedback() {
                             {/* zasna  */}
                             <div className="items">
                                 <div className="title">Бусад :</div>
-                                <InputStyle className="nameText"><input placeholder="..." type="text" /> <div className="line"></div></InputStyle>
+                                <InputStyle className="nameText"><input className={otherOne.self} onChange={onChange1} name="financing" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
                             </div>
                         </div>
                 </div>
@@ -102,11 +156,9 @@ function Feedback() {
                         </div>
                         <div className="Title3">
                             <div className="text">Яагаад?</div> 
-                            <InputStyle className="nameText"><textarea className="nofinancing_why" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                            <InputStyle className="nameText"><textarea className="nofinancing_why" name="reason" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
                         </div>
                 </div>
-
-
 
                 <div className="infoWhere">
                         <div className="Title Title4"><span className="circle">⬤</span>Танай байгууллагад үзүүлсэн үйлчилгээг үнэлнэ үү,<br />Үнэлгээ: 1 (маш муу), 2 (муу), 3 (дунд), 4 (сайн), 5 (маш сайн) эсвэл 6 (онц сайн) </div>
@@ -118,15 +170,15 @@ function Feedback() {
                                 </tr>
                                 {tableData.map((el,i)=>{
                                     return(
-                                        <tr>
+                                        <tr className="getTable1">
                                             <td>{i + 1}</td>
                                             <td>{el.title}</td>
-                                            <td><input className="radio" type="radio" /></td>
-                                            <td><input className="radio"  type="radio" /></td>
-                                            <td><input className="radio"  type="radio" /></td>
-                                            <td><input className="radio"  type="radio" /></td>
-                                            <td><input className="radio"  type="radio" /></td>
-                                            <td><input className="radio"  type="radio" /></td>
+                                            <td><input className={`radio tableItem${i+1}`} value={1} name={el.title} type="radio" /></td>
+                                            <td><input className={`radio tableItem${i+1}`} value={2} name={el.title} type="radio" /></td>
+                                            <td><input className={`radio tableItem${i+1}`} value={3} name={el.title} type="radio" /></td>
+                                            <td><input className={`radio tableItem${i+1}`} value={4} name={el.title} type="radio" /></td>
+                                            <td><input className={`radio tableItem${i+1}`} value={5} name={el.title} type="radio" /></td>
+                                            <td><input className={`radio tableItem${i+1}`} value={6} name={el.title} type="radio" /></td>
                                         </tr>
                                     )
                                 })}
@@ -134,7 +186,6 @@ function Feedback() {
                             </table>
                         </div>
                 </div>
-
 
                 <div className="infoWhere">
                         <div className="Title Title4"><span className="circle">⬤</span>Энэ үйл ажиллагааг хэрэгжүүлснээр танай байгууллагад ямар үр ашиг бий болсон бэ? Хүснэгтээс өөрт тохирох нэг болон түүнээс дээш мөрийг бөглөнө үү.</div>
@@ -149,11 +200,11 @@ function Feedback() {
                                 </tr>
                                 {tableData2.map((el,i)=>{
                                     return(
-                                        <tr>
+                                        <tr id={el.title} className="getTable2">
                                             <td>{i+1}</td>
                                             <td>{el.title}</td>
-                                            <td ><InputStyle className="nameText"><input placeholder="тохирх харулт..."  type="text" />  <div className="line"></div></InputStyle></td>
-                                            <td ><InputStyle className="nameText"><input style={{textAlign:`right`}} placeholder=" ..."  type="text" />  <div className="line"></div></InputStyle></td>
+                                            <td ><InputStyle className="nameText"><input className={`itemOne${i+1}`} name="appoint_answer"  placeholder="тохирх харулт..."  type="text" />  <div className="line"></div></InputStyle></td>
+                                            <td ><InputStyle className="nameText"><input className={`itemOne${i+1}`} name="amount" style={{textAlign:`right`}} placeholder=" ..."  type="text" />  <div className="line"></div></InputStyle></td>
                                         </tr>
                                     )
                                 })}
@@ -161,19 +212,18 @@ function Feedback() {
                         </div>
                 </div>
 
-
                 <div className="infoWhere">
                         <div className="Title Title4"><span className="circle">⬤</span>Урьд өмнө хэрэгжүүлж байгаагүй энэ үйл ажиллагааг хэрэгжүүлснээр таныг бизнесээ цааш чиглүүлж явахад хувь нэмэр оруулна гэж бодож байна уу?</div>
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг сонгоно уу [√] : </span>
                             <div className="checkItem">
-                                <div className="item"><input className="radio getInputt" type="radio" /> <span>Тийм</span></div>  
-                                <div className="item"><input className="radio getInputt" type="radio" /> <span>Үгүй</span></div>
+                                <div className="item"><input className="radio getInputt" name="direct_addition" value="true" type="radio" /> <span>Тийм</span></div>  
+                                <div className="item"><input className="radio getInputt" name="direct_addition" value="true" type="radio" /> <span>Үгүй</span></div>
                             </div>
                         </div>
                         <div className="Title3">
                             <div className="text">Яагаад?</div> 
-                            <InputStyle className="nameText"><textarea placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                            <InputStyle className="nameText"><textarea name="reason" className="direct_addition_why" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
                          </div>
                 </div>
 
@@ -186,31 +236,33 @@ function Feedback() {
                         <div className="Title Title4"><span className="circle">⬤</span>Хэрэв тийм бол ямар үйл ажиллагааг санхүүжүүлэх вэ[√]?</div>
                         <div className="chekcPar">
                             <div className="checkItem">
-                                <div style={{marginLeft:0}} className="item"><input className="radio" type="radio" /> <span>1. Сургалт, семинар  </span></div>  
-                                <div className="item"><input className="radio" type="radio" /> <span>2. Зөвлөх үйлчилгээ </span></div>
-                                <div className="item"><span>3. Бусад  </span><InputStyle style={{marginLeft:10}} className="nameText"><input placeholder="энд бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle></div>
+                                <div style={{marginLeft:0}} className="item">
+                                    <input className={`radio ${otherTwo.Cname}`} checked={otherTwo.checked} name="finance_req" type="radio" value="Сургалт, семинар" /> <span>1. Сургалт, семинар  </span></div>  
+                                <div className="item">
+                                    <input className={`radio ${otherTwo.Cname}`} checked={otherTwo.checked} type="radio" value="Зөвлөх үйлчилгээ" name="finance_req" /> <span>2. Зөвлөх үйлчилгээ </span></div>
+                                <div className="item"><span>3. Бусад  </span><InputStyle style={{marginLeft:10}} className="nameText">
+                                    <input onChange={onChange2} name="finance_req" placeholder="энд бичнэ үү..." className={otherTwo.self}  type="text" />  <div className="line"></div></InputStyle></div>
                             </div>
                         </div>
 
                         <div className="Title3">
                             <div style={{width:"30%"}} className="text">Хэрэв үгүй бол яагаад?</div> 
-                            <InputStyle className="nameText"><textarea placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                            <InputStyle className="nameText"><textarea onChange={reasonNo} name="finance_req_no" placeholder="шалтгаанаа бичнэ үү..." type="text" />  <div className="line"></div></InputStyle>
                          </div>
                 </div>
-
 
                 <div className="infoWhere">
                         <div className="Title Title4"><span className="circle">⬤</span>Энэхүү төслөөс хуримтлуулсан туршлага дээр үндэслэн санхүүгийн дэмжлэг болон ижил төрлийн программ байхгүй болсон тохиолдолд энэ төрлийн зардлыг танай байгууллага санхүүжүүлэх үү? [√] </div>
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
                             <div className="checkItem">
-                                <div className="item"><input className="radio" type="radio" /> <span>Тийм, 100% санхүүжүүлнэ.</span></div>  
-                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
+                                <div className="item"><input className="radio getInputt" type="radio" value="true" name="spend_finance" /> <span>Тийм, 100% санхүүжүүлнэ.</span></div>  
+                                <div className="item"><input className="radio getInputt" type="radio" value="false" name="spend_finance" /> <span>Үгүй</span></div>
                             </div>
                         </div>
                         <div className="Title3">
                             <div style={{width:"30%"}} className="text">Шалтгааныг бичнэ үү:?</div> 
-                            <InputStyle className="nameText"><textarea placeholder="энд бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                            <InputStyle className="nameText"><textarea name="spend_finance_why" placeholder="энд бичнэ үү..."  type="text" /><div className="line"></div></InputStyle>
                          </div>
                 </div>
 
@@ -219,8 +271,8 @@ function Feedback() {
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
                             <div className="checkItem">
-                                <div className="item"><input className="radio" type="radio" /> <span>Тийм</span></div>  
-                                <div className="item"><input className="radio" type="radio" /> <span>Үгүй</span></div>
+                                <div className="item"><input className="radio getInputt" type="radio" name="edp_impression" value="true" /> <span>Тийм</span></div>  
+                                <div className="item"><input className="radio getInputt" type="radio" name="edp_impression" value="false" /> <span>Үгүй</span></div>
                             </div>
                         </div>
                 </div>
@@ -470,11 +522,11 @@ const infoWhere2 = [
 ]
 
 const tableData = [
-    {  title: "Та зөвлөх хөлсөлж ажиллуулсан бол хэрхэн үнэлэх вэ?" },
-    {   title: "Монгол улсад сургалт, семинарт хамрагдсан бол сургалтын чанар, үр дүнг хэрхэн үнэлэх вэ?"},
-    {   title: "Гадаад оронд сургалтад хамрагдсан бол сургалтын чанар, үр дүнг хэрхэн үнэлэх вэ?"},
-    {   title: "Бизнес хөгжлийн шинжээчийн танд тусалсан байдал, чадварыг хэрхэн үнэлэх вэ?"},
-    {   title: "Бизнес хөгжлийн шинжээчийн  бизнесийн чадварыг хэрхэн үнэлэх вэ?"}
+    {  title: "Та зөвлөх хөлсөлж ажиллуулсан бол хэрхэн үнэлэх вэ?", name: "tablerow1" },
+    {   title: "Монгол улсад сургалт, семинарт хамрагдсан бол сургалтын чанар, үр дүнг хэрхэн үнэлэх вэ?", name: "tablerow2" },
+    {   title: "Гадаад оронд сургалтад хамрагдсан бол сургалтын чанар, үр дүнг хэрхэн үнэлэх вэ?", name: "tablerow3" },
+    {   title: "Бизнес хөгжлийн шинжээчийн танд тусалсан байдал, чадварыг хэрхэн үнэлэх вэ?", name: "tablerow4" },
+    {   title: "Бизнес хөгжлийн шинжээчийн  бизнесийн чадварыг хэрхэн үнэлэх вэ?", name: "tablerow5" }
 ]
 
 

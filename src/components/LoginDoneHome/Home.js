@@ -1,27 +1,25 @@
 import React,{useEffect,useState} from 'react'
 import styled from 'styled-components'
 import {ColorRgb} from '../theme'
-import { BrowserRouter as Router, Switch, Route, Link,useHistory, useLocation } from "react-router-dom";
+import {Link,useHistory} from "react-router-dom";
 import axios from '../../axiosbase';
 import AccessToken from '../../context/accessToken'
+import ActiveComp from './ActiveComp'
+import InitialComp from './initialComp'
 
-function Home() {
+
+function Home(props) {
    let history = useHistory();
-   const [ cond, setCond ] = useState(false);
-//    useEffect(async()=>{
-//        try{
-//         let storageToken = localStorage.getItem("edp_loggedUser", []);
-//         let resData = await axios.get(`pps-request`, {headers: {Authorization: AccessToken()}});
-//         console.log(resData, " ____")
-//         if(resData.data.data.id){ setCond(true); }else{ setCond(false); }
-//        }catch{console.log("Алдаа гарсан..."); }
+   const [ infData, setInfData ] = useState(null);
+   const [ propData, setPropData ] = useState(props.data ? true : false);
 
-//    },[cond]);
-
-   const clickHandle = (event)=>{
-       console.log(event);
-    //    history.push('intro/3');
-   }
+   useEffect(async()=>{
+       if(!props.data){
+          let userID = localStorage.getItem("userId");
+          await axios.get(`pps-infos/registered-companies?userId=${userID}`, { headers: { Authorization: AccessToken()} }).then((res)=>{
+              console.log(res, " ress");  if(res.data.data[0]){setInfData(res.data.data[0])}  })
+       }else{ setInfData(props.data); }
+   },[]);
 
     return (
         <HomeComponent className="container">
@@ -34,94 +32,12 @@ function Home() {
 
                 <div className="otherHead row">
                     <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
-                    {/* <div className="col-md-4"><div className="headItems"><span className="text">Бизнес хяналтын зөвлөх</span><span className="text">Үнэлгээний хорооны үнэлгээ, шийдвэр</span> </div></div> */}
                     <div className="col-md-4"><div className="headItems"><span className="text">Бизнес хяналтын зөвлөх</span><span className="text">Үнэлгээ, шийдвэр</span> </div></div>
                 </div>
             </div>
+
+            {infData===null? <InitialComp /> : <ActiveComp prew={propData} data={infData} /> }
             
-            <div style={{marginTop:25}} className="row">
-                    <div className="col-md-2 col-sm-2 itemsCol ActiveCol">
-                        <div className="itemsPar">
-                            <div className="mains">
-                                <Link to="/comp-test"  className="itemsActive ">1. Шалгуур хангалтыг тулгах хуудас </Link>
-                                <div className="line line2" ></div>
-                                <Link to={`/comp-request`} className="itemsActive">2. Байгаль орчны үнэлгээний асуумж </Link>
-                                <div className="line line2" ></div>
-                                <Link to="/letter-of-interest" className="itemsActive">3. Сонирхол илэрхийлэх албан тоот</Link>
-                                {/* <div className="line line2" ></div>
-                                <Link to="/urgudul/1" className="itemsActive">4. Өргөдлийн маягт </Link> */}
-                            </div>
-                            <div className="lineFull lineFull2" ></div>
-                            <Link to="/urgudul/1" className="resultActive">4. Өргөдлийн маягт </Link>
-                        </div>
-                    </div>
-
-                    <div className="col-md-2 col-sm-2 itemsCol">
-                        <div className="itemsPar">
-                            <div className="mains">
-                                <a href="https://edp-plan.vercel.app/" target="_blank" style={{backgroundColor:`#F7FF48`}} className="itemsActive arrHelp arrHelpActive"><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
-                                {/* <div className="line line2" ></div>
-                                <Link to="/attachments" style={{backgroundColor:`#F7FF48`}} className="items itemsActive">2.Нотлох бичиг баримтууд </Link> */}
-                            </div>
-                            <div className="lineFull" ></div>
-                            <Link to="/attachments" style={{backgroundColor:`#F7FF48`}} className="resultWaiting">2.Нотлох бичиг баримтууд </Link>
-                            {/* <div className="resultWaiting">2.Нотлох бичиг баримтууд</div> */}
-                        </div>
-                    </div>
-
-
-
-                    <div className="col-md-2 col-sm-2 itemsCol">
-                        <div className="itemsPar">
-                            <div className="mains">
-                                <div className="items arrHelp"><div className="helpArr"></div>1. Анхан шатны үнэлгээ</div>
-                                <div className="line" ></div>
-                                <Link to="/5b" className="items "><div className="helpArr"></div> 2. Баримтжуулах бүрдүүлбэрийн шалгах хуудас </Link>
-                            </div>
-                            <div className="lineFull" ></div>
-                            <Link to="/5c" className="items resultDesable">3. Бизнес шинжээчийн шинжилгээний тайлан </Link>
-                        </div>
-                    </div>
-
-                    <div className="col-md-2 col-sm-2 itemsCol">
-                        <div className="itemsPar">
-                            <div className="mains">
-                                <Link to="#" className="items  arrHelp"><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
-                            </div>
-                            <div className="lineFull" ></div>
-                            <div className="resultDesable">2.Үнэлгээний хорооны шийдвэрийн хуудас</div>
-                        </div>
-                    </div>
-
-
-
-                    <div className="col-md-2 col-sm-2 itemsCol">
-                        <div className="itemsPar">
-                            <div className="mains">
-                                <div className="items arrHelp"><div className="helpArr"></div>1. Түншлэлийн гэрээ байгуулах </div>
-                                <div className="line" ></div>
-                                <Link to="#" className="items "><div className="helpArr"></div> 2. Гүйцэтгэлийг нотлох баримт(бусад байгууллагатай байгуулах гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан) </Link>
-                    
-
-                            </div>
-                            <div className="lineFull" ></div>
-                            <div className="resultDesable">3. Түншлэлийн гэрээний гүйцэтгэлийн тайлан</div>
-                            
-                        </div>
-                    </div>
-
-                    <div style={{borderRight:`none`}} className="col-md-2 col-sm-2 itemsCol itemsColA">
-                        <div className="itemsPar">
-                            <div className="mains">
-                                <div className="items arrHelp"><div className="helpArr"></div>4. Санхүүгийн баримтууд</div>
-                                <div className="line" ></div>
-                            <div className="resultDesable">5. Анхны гүйцэтгэлийг хүлээн авах /асууна/</div>
-                            </div>
-                            <div className="lineFull" ></div>
-                            <div className="resultDesable">6. Гүйцэтгэлийн үнэлгээ бүрэн бөгөөд буцаан (санхүүжилтийн) олголтын хүсэлт</div>
-                        </div>
-                    </div>
-                </div>
         </HomeComponent>
     )
 }
@@ -515,5 +431,21 @@ const HomeComponent = styled.div`
         }
     }
     
+    @media only screen and (max-width:786px){
+        .itemsCol{
+            .itemsPar{
+                .resultDesable{
+                    &::after{
+                        display:none;
+                    }
+                }
+                .arrHelp{
+                    &::after{
+                        display:none;
+                    }
+                }
+            } 
+        } 
+    }
     
 `

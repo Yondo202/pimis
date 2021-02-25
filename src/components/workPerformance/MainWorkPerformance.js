@@ -25,7 +25,26 @@ function MainWorkPerformance() {
 
     
 
+    const clickHandle = () =>{
+        let inf = document.querySelectorAll(".getInp"); let arr = Array.from(inf); let final = {};
+        arr.map((el,i)=>{
+            final[el.name] = el.value;
+        });
 
+        let tb1 = document.querySelectorAll(".approve"); let tbarr2 = Array.from(tb1); let table1 = []; 
+        tbarr2.map((el,i)=>{
+            
+            let item = document.querySelectorAll(".appItems"); let itmarr = Array.from(item);
+            itmarr.map((el,i)=>{
+                let obj = {};
+                obj[el.name] = el.value;
+                table1.push(obj);
+            });
+           
+        });
+        final["todo_works"] = table1
+        console.log(final,"lalal");
+    }
 
     return (
         <WorkPerformance className="container">
@@ -41,7 +60,7 @@ function MainWorkPerformance() {
                             <div className="col-md-3 col-3"><div className="LeftHead">Түншлэлийн гэрээний дугаар: </div> </div>
                             <div className="col-md-9 col-9">
                                 <div className="RightHead SingleSide">
-                                  <InputStyle className="themeStyle" ><input placeholder="гэрээний дугаар..." type="number" /><div className="line" /></InputStyle>
+                                  <InputStyle className="themeStyle" ><input className="getInp" name="contact_num" placeholder="гэрээний дугаар..." type="number" /><div className="line" /></InputStyle>
                                 </div>
                             </div>
                         </div>
@@ -49,13 +68,13 @@ function MainWorkPerformance() {
                     <div className="rowItems">
                         <div className="row">
                             <div className="col-md-3 col-3"><div className="LeftHead">Түншлэлийн дэмжлэг хүртэгчийн нэр : </div> </div>
-                            <div className="col-md-9 col-9"><div className="RightHead"><InputStyle className="themeStyle" ><input placeholder="нэр..." type="text" /><div className="line" /></InputStyle></div></div>
+                            <div className="col-md-9 col-9"><div className="RightHead"><InputStyle className="themeStyle" ><input className="getInp" name="name" placeholder="нэр..." type="text" /><div className="line" /></InputStyle></div></div>
                         </div>
                     </div>
                     <div className="rowItems">
                         <div className="row">
                             <div className="col-md-3 col-3"><div className="LeftHead">Утасны дугаар, e- mail: </div> </div>
-                            <div className="col-md-9 col-9"><div className="RightHead"><InputStyle className="themeStyle" ><input placeholder="example@example.com..." type="email" /><div className="line" /></InputStyle></div></div>
+                            <div className="col-md-9 col-9"><div className="RightHead"><InputStyle className="themeStyle" ><input className="getInp" name="phone_email" placeholder="example@example.com..." type="text" /><div className="line" /></InputStyle></div></div>
                         </div>
                     </div>
                     <div className="rowItems">
@@ -63,18 +82,19 @@ function MainWorkPerformance() {
                             <div className="col-md-12 col-12"><div className="betweenItems">Энэхүү маягтад гарын үсэг зурагдсанаар дараах гүйцэтгэх ажлуудыг батлагдсанд тооцно. </div> </div>
                         </div>
                     </div>
-                    <div className="rowItems">
+
+                    <div className="rowItems approve">
                         {initialData.map((el,i)=>{
                             return(
                                 <div className="row rowA" key={i}>
                                     <div className="col-md-3 col-3"><div className="LeftHead">Гүйцэтгэх ажил {i + 1}:  {i===0?`Гүйцэтгэх ажлыг бичнэ үү :`: ""}  </div> </div>
-                                    {/* <div className="col-md-9 col-9"><div className="RightHead"><ReactQuill placeholder={`Ажил гүйцэтгэсэн түвшин, чанар...`} theme="bubble" value={text} onChange={handleChange} /> </div></div> */}
-                                    <div className="col-md-9 col-9"><div className="RightHead RightHeadA"><InputStyle className="themeStyle" ><textarea placeholder="Ажил гүйцэтгэсэн түвшин, чанар..." /><div className="line" /></InputStyle></div></div>
+                                    <div className="col-md-9 col-9"><div className="RightHead RightHeadA"><InputStyle className="themeStyle" ><textarea className="appItems" name={`work`} placeholder="Ажил гүйцэтгэсэн түвшин, чанар..." /><div className="line" /></InputStyle></div></div>
                                 </div>
                             )
                         })}
                         <div onClick={AddHandle} className="addBtn"><MdAddCircle /></div>
                     </div>
+
                     <div className="rowItems">
                         <div className="row">
                             <div className="col-md-3 col-3"><div className="LeftHead">Баталсан: </div> </div>
@@ -117,6 +137,7 @@ function MainWorkPerformance() {
                     <OneModalOne />
                     <TwoModalTwo />
                     <ThreeModalThree />
+
                     <div className="rowItems">
                         <div className="row">
                             <div className="col-md-12 col-12">
@@ -137,7 +158,7 @@ function MainWorkPerformance() {
 
                <div className="buttonPar">
                     <div style={{opacity:`${opacity2}`}} className="errtext">Гүйцэд бөглөнө үү...</div>
-                    <NextBtn style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
+                    <NextBtn onClick={clickHandle} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                </div>
                 
             </div>

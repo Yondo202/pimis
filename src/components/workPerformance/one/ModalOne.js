@@ -36,6 +36,7 @@ function ModalOne() {
 
     const AddHandleUser = ()=>{ const list = userInfo.concat( {ids: 1, url: null, visible: false, sigCanvas:{} }); setUserInfo(list); }
 
+    console.log(userInfo, " userInf0");
 
 
     return (
@@ -48,7 +49,7 @@ function ModalOne() {
                                 {userInfo.map((el,i)=>{
                                     return(
                                         <div className="userInfPar" key={i}>
-                                            <div className="name">Нэр: А. Хашцэцэг</div>
+                                            <div className="name">Нэр: А. Хашцэцэг </div>
                                             <div>Албан тушаал: Төслийн зохицуулагч</div>
                                             <div className="infItemPar">
                                                     <div className="DatePar">
