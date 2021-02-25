@@ -26,11 +26,6 @@ const ComponentHome = styled.div`
         flex-direction:row;
         align-items:start;
         justify-content:center;
-        // .mainContentPar{
-        //     width:65%;
-        //     // background-color:rgba(0,0,0,0.5);
-        // }
-
         .mainFormPar{
             margin-top:10vh;
             border-radius:10px;
@@ -39,7 +34,6 @@ const ComponentHome = styled.div`
             width:40%;
             align-items:center;
         }
-
         .ghost{
             background-repeat: no-repeat;
             background-size: cover;

@@ -80,7 +80,7 @@ function Login() {
                             <div className="name">
                                 <BiLockOpen />
                                 <InputStyle className="newInp">
-                                    <input type="password" className="LoginInpName form__field" placeholder="Регистерийн дугаар" name="password" required /><div className="line"></div>
+                                    <input type="password" className="LoginInpName form__field" placeholder="Нууц үгээ оруулна уу..." name="password" required /><div className="line"></div>
                                 </InputStyle>
                             </div>
                         </div>
@@ -99,9 +99,10 @@ export default Login
 
 const Component = styled.div`
     font-family:${fontFamily};
-    height:75vh;
+    // height:70vh;
     padding-top:10px;
     font-size:13px;
+    margin-bottom:50px;
     .imgPar{
         text-align:center;
         padding:15px 0px;
@@ -152,7 +153,7 @@ const Component = styled.div`
               
            }
         .name{
-            padding:10px 0px;
+            padding:15px 0px;
             display:flex;
             flex-direction:row;
             align-items:center;
@@ -274,7 +275,7 @@ const Component = styled.div`
 
   @media only screen and (max-width:1308px){
     padding-top:0px;
-    height:80vh;
+    // height:80vh;
     .SubmitButtonPar{
         .SubmitButton{
             width:100%;

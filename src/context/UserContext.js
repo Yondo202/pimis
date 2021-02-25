@@ -93,24 +93,6 @@ export const UserStore = (props) => {
     setUserInfo({ userId: undefined });
   };
 
-  // const StyleComp = (valueOne, valueTwo, valueThree, valueFour, valueFive, valueSix) => {
-  //   if (valueOne === "0%") {
-  //     setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableFour: valueFour, tableFive: valueFive, tableSix: valueSix, tableheight: 230 });
-  //   } else if (valueTwo === "0%") {
-  //     setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableFour: valueFour, tableFive: valueFive, tableSix: valueSix, tableheight: 450 });
-  //   } else if (valueThree === "0%") {
-  //     setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableFour: valueFour, tableFive: valueFive, tableSix: valueSix, tableheight: 300 });
-  //   } else if (valueFour === "0%") {
-  //     setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableFour: valueFour, tableFive: valueFive, tableSix: valueSix, tableheight: 400 });
-  //   } else if (valueFive === "0%") {
-  //     setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableFour: valueFour, tableFive: valueFive, tableSix: valueSix, tableheight: 500 });
-  //   } else if (valueFive === "0%") {
-  //     setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableFour: valueFour, tableFive: valueFive, tableSix: valueSix, tableheight: 500 });
-  //   } else {
-  //     setGlobalStyle({ tableOne: valueOne, tableTwo: valueTwo, tableThree: valueThree, tableFour: valueFour, tableFive: valueFive, tableSix: valueSix, tableheight: 250 });
-  //   }
-  // };
-
   const alertText = ( color, text, cond ) =>{
     setAlert({ color:color, text:text, cond:cond });
     setTimeout(()=>{  setAlert({ cond:false }); },[4000]);
@@ -127,7 +109,6 @@ export const UserStore = (props) => {
         logout,
         errMsg,
         errMsgSignup,
-        // StyleComp,
         GlobalStyle,
         idPass,
         reqID,
