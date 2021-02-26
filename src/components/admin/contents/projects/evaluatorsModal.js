@@ -1,8 +1,11 @@
 import CloseSVG from 'assets/svgComponents/closeSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
 import axios from 'axiosbase'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
+import { DateBox } from 'devextreme-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { config, Transition } from 'react-spring/renderprops'
+import ButtonHover from './buttonHover'
 
 
 const nemsenGishuud = [
@@ -20,6 +23,8 @@ const unelgeeniiHorooniiGishuud = [
     { name: 'Tuvshin' },
 ]
 
+const now = new Date()
+
 export default function EvaluatorsModal(props) {
     const showModal = props.evaluatorsModal.open
 
@@ -29,16 +34,16 @@ export default function EvaluatorsModal(props) {
 
     const modalRef = useRef()
 
-    const handleClickOutside = (e) => {
-        if (showModal && !modalRef.current?.contains(e.target)) {
-            handleEvaluatorsClose()
-        }
-    }
+    // const handleClickOutside = (e) => {
+    //     if (showModal && !modalRef.current?.contains(e.target)) {
+    //         handleEvaluatorsClose()
+    //     }
+    // }
 
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    })
+    // useEffect(() => {
+    //     document.addEventListener('mousedown', handleClickOutside)
+    //     return () => document.removeEventListener('mousedown', handleClickOutside)
+    // })
 
     const [evaluators, setEvaluators] = useState([])
 
@@ -71,6 +76,8 @@ export default function EvaluatorsModal(props) {
         setEvaluators([...evaluators, obj])
     }
 
+    const [dateTime, setDateTime] = useState(now)
+
     return (
         <Transition items={showModal}
             from={{ opacity: 0 }}
@@ -88,33 +95,38 @@ export default function EvaluatorsModal(props) {
                             Үнэлгээний хорооны гишүүд
                         </div>
 
-                        <div className="">Томилсон гишүүд:</div>
+                        <div className="tw-py-2" style={{ fontSize: '15px' }}>
+                            Томилсон гишүүд:
+                        </div>
 
-                        <div className="tw-h-20 tw-overflow-y-auto tw-border">
+                        <div className="tw-h-28 tw-border tw-border-gray-400 tw-rounded tw-w-full tw-grid tw-grid-cols-1 tw-place-content-start tw-overflow-y-auto" style={{ fontSize: '15px' }}>
                             {evaluators.map((evaluator, i) =>
-                                <div className="tw-flex tw-justify-between tw-items-center hover:tw-bg-blue-100" key={i}>
-                                    {evaluator.name}
-                                    <button className="" onClick={() => handleRemove(i)}>
-                                        <CloseSVG className="tw-w-4 tw-h-4" />
-                                    </button>
-                                </div>
+                                <ButtonHover label={evaluator.name} action="хасах" onClick={() => handleRemove(i)} key={i} />
                             )}
                         </div>
 
-                        <div className="tw-inline-flex tw-items-center tw-border tw-px-2">
-                            <input className="tw-py-1 focus:tw-outline-none" type="text" value={search} onChange={e => setSearch(e.target.value)} />
-                            <SearchSVG className="tw-w-4 tw-h-4" />
+                        <div className="tw-flex tw-items-center tw-mt-6 tw-mb-2">
+                            <span className="tw-mr-4">Гишүүд томилох:</span>
+                            <div className="tw-inline-flex tw-items-center tw-border tw-border-gray-400 tw-rounded tw-pl-2 tw-pr-1">
+                                <input className="tw-py-1 focus:tw-outline-none" type="text" value={search} onChange={e => setSearch(e.target.value)} />
+                                <SearchSVG className="tw-w-4 tw-h-4" />
+                            </div>
                         </div>
 
-                        <div className="tw-h-32 tw-overflow-y-auto tw-border">
-                            {unelgeeniiHorooniiGishuud.filter(obj => !evaluatorsMap.includes(obj.name)).filter(filter).map(evaluator =>
-                                <div className="hover:tw-bg-blue-100" key={evaluator.name} onClick={() => handleAdd(evaluator)}>
-                                    {evaluator.name}
-                                </div>
+                        <div className="tw-h-36 tw-border tw-border-gray-400 tw-rounded tw-w-full tw-grid tw-grid-cols-1 tw-place-content-start tw-overflow-y-auto" style={{ fontSize: '15px' }}>
+                            {unelgeeniiHorooniiGishuud.filter(obj => !evaluatorsMap.includes(obj.name)).filter(filter).map((evaluator, i) =>
+                                <ButtonHover label={evaluator.name} action="нэмэх" onClick={() => handleAdd(evaluator)} key={i} />
                             )}
                         </div>
 
-                        <div className="tw-flex tw-justify-center tw-p-2">
+                        <div className="tw-flex tw-flex-wrap sm:tw-flex-nowrap tw-mt-8">
+                            <div className="tw-w-full sm:tw-w-1/2">
+                                Уулзалтын цаг товлох:
+                            </div>
+                            <DateBox className="tw-w-full sm:tw-w-1/2" type="datetime" value={dateTime} onChange={e => setDateTime(e.value)} applyButtonText="Уулзалт товлох" cancelButtonText="Болих" />
+                        </div>
+
+                        <div className="tw-flex tw-justify-center tw-p-2 tw-mt-8">
                             <button className="tw-py-1 tw-px-4 tw-bg-gray-500 tw-text-white tw-rounded-md focus:tw-outline-none active:tw-bg-gray-600 tw-transition-colors" onClick={handleEvaluatorsSubmit}>
                                 Хадгалах
                             </button>
