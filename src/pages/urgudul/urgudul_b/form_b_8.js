@@ -75,7 +75,9 @@ function UrgudulCalculations() {
                 temp[key] = { ...datesObj, ...UrgudulCtx.data.exportDatas?.[key] }
             })
 
-            if (!UrgudulCtx.data.exportDatas?.export_details?.length) {
+            if (UrgudulCtx.data.exportDatas?.export_details?.length) {
+                temp.export_details = UrgudulCtx.data.exportDatas?.export_details
+            } else {
                 temp.export_details = [
                     {
                         countryId: null,

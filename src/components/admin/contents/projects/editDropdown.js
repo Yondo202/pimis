@@ -16,7 +16,6 @@ export default function EditDropdown(props) {
     const AlertCtx = useContext(AlertContext)
 
     const handleItemClick = (e) => {
-        console.log(e)
         const projectId = props.data.data.project?.id
 
         switch (e.itemData.id) {
@@ -31,6 +30,8 @@ export default function EditDropdown(props) {
             case items[2].id:
                 break
             case items[3].id:
+                projectId ? props.setEvaluatorsModal({ open: true, id: projectId })
+                    : AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Энэ ААН нь өргөдлийн маягт үүсгээгүй байна.' })
                 break
             default:
                 break

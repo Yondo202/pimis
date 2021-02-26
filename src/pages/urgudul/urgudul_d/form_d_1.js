@@ -33,12 +33,12 @@ function UrgudulNoticeCluster() {
 
     useEffect(() => {
         if (UrgudulCtx.data.noticeClusters && UrgudulCtx.data.noticeClusters?.length) {
-            setForm(prevState => UrgudulCtx.data.noticeClusters)
+            setForm(prevState => {
+                const newForm = UrgudulCtx.data.noticeClusters
+                newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
+                return newForm
+            })
         }
-
-        const newForm = form
-        newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
-        setForm(prevState => newForm)
     }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {

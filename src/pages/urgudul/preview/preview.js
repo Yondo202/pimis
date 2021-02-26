@@ -388,7 +388,7 @@ export default function UrgudulPreview(props) {
                         {project.exportDatas?.export_details?.map((country, i) =>
                             <Fragment key={i}>
                                 <tr>
-                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-3" colSpan={dates.length + 2}>{getCompanyName(country?.countryId)}</td>
+                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-3" colSpan={dates.length + 2}>{getCountryName(country?.countryId)} - экспорт хийсэн улс болон бүтээгдэхүүнүүд</td>
                                 </tr>
                                 {country?.export_products?.map((product, j) =>
                                     <tr key={j}>
