@@ -1,25 +1,30 @@
-import React,{useEffect,useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import {ColorRgb} from '../theme'
-import {Link,useHistory} from "react-router-dom";
+import { ColorRgb } from '../theme'
+import { Link, useHistory, useParams } from "react-router-dom";
 import axios from '../../axiosbase';
 import AccessToken from '../../context/accessToken'
 import ActiveComp from './ActiveComp'
 import InitialComp from './initialComp'
 
 
-function Home(props) {
-   let history = useHistory();
-   const [ infData, setInfData ] = useState(null);
-   const [ propData, setPropData ] = useState(props.data ? true : false);
+function Home() {
+    let history = useHistory();
 
-   useEffect(async()=>{
-       if(!props.data){
-          let userID = localStorage.getItem("userId");
-          await axios.get(`pps-infos/registered-companies?userId=${userID}`, { headers: { Authorization: AccessToken()} }).then((res)=>{
-              console.log(res, " ress");  if(res.data.data[0]){setInfData(res.data.data[0])}  })
-       }else{ setInfData(props.data); }
-   },[]);
+    const params = useParams();
+    const userId = params.userId;
+
+    const [infData, setInfData] = useState(null);
+    const [propData, setPropData] = useState(userId ? true : false);
+
+    useEffect(async () => {
+        if (userId) {
+            //   let userID = localStorage.getItem("userId");
+            await axios.get(`pps-infos/registered-companies?userId=${userId}`, { headers: { Authorization: AccessToken() } }).then((res) => {
+                console.log(res, " ress"); if (res.data.data[0]) { setInfData(res.data.data[0]) }
+            })
+        }
+    }, []);
 
     return (
         <HomeComponent className="container">
@@ -36,8 +41,8 @@ function Home(props) {
                 </div>
             </div>
 
-            {infData===null? <InitialComp /> : <ActiveComp prew={propData} data={infData} /> }
-            
+            {infData === null ? <InitialComp /> : <ActiveComp prew={userId} data={infData} />}
+
         </HomeComponent>
     )
 }
