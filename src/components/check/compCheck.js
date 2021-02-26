@@ -1,7 +1,9 @@
 import React,{useState, useContext,useEffect} from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom'
-import {IoMdCheckmarkCircle  } from 'react-icons/io';
+import {IoMdCheckmarkCircle,IoIosArrowBack  } from 'react-icons/io';
+// import { IoChevronBack } from 'react-icons/io5';
 import { fontFamily, textColor, Color,fontSize,NextBtn } from '../theme';
 import {AiOutlineSend} from 'react-icons/ai'
 import {CgDanger} from 'react-icons/cg'
@@ -10,6 +12,7 @@ import AccessToken from '../../context/accessToken'
 import axios from '../../axiosbase'
 
 function CompCheck() {
+    const param = useParams().url;
     const ctx = useContext(UserContext);
     const history = useHistory();
     const [ BtnSpin, setBtnSpin ] = useState(false);
@@ -21,24 +24,23 @@ function CompCheck() {
     const [FinalErrorText, setFinalErrorText] = useState("");
 
     useEffect(async()=>{
-      const data =  await axios.get(`criterias`,{ headers: { Authorization:AccessToken() } });
-      let keys = Object.keys(data.data.data);
-      if(keys.length > 0){
-        let filterArr = []; let value = Object.values(data.data.data);
-        keys.map((el,i)=>{ let obj1 = {}; value.map((elem,ind)=>{  if(i===ind){ obj1["keys"] = el;  obj1["values"] = elem; }}); filterArr.push(obj1); });
-        allData.map(el=>{ el.items.map((elem,ind)=>{filterArr.map(element=>{
-                if(el.group + (ind + 1) === element.keys){ elem["value"] = element.values }
+        const data =  await axios.get(`criterias${param!=="user"?`?userId=${param}`:''}`,{ headers: { Authorization:AccessToken() } });
+        console.log(data, " my data");
+        let keys = Object.keys(data.data.data);
+        if(keys.length > 0){
+          let filterArr = []; let value = Object.values(data.data.data);
+          keys.map((el,i)=>{ let obj1 = {}; value.map((elem,ind)=>{  if(i===ind){ obj1["keys"] = el;  obj1["values"] = elem; }}); filterArr.push(obj1); });
+          allData.map(el=>{ el.items.map((elem,ind)=>{filterArr.map(element=>{
+                  if(el.group + (ind + 1) === element.keys){ elem["value"] = element.values }
+                })
               })
-            })
-        });
-        setInitialData(allData);
-        setUpdateMount(1);
-      }else{ console.log("^^data alga") }
-      console.log("---------------------------------------");
+          });
+          setInitialData(allData);
+          setUpdateMount(1);
+        }else{ console.log("^^data alga") }
     },[updateMount]);
 
-
-    const NextPageHandle = () =>{  history.push('/comp-request'); }
+    const NextPageHandle = (el) =>{ history.push(el); }
 
     const clickHandles = (e) =>{
               let rs2 = document.querySelectorAll(".inpTest333"); let arr2 = Array.from(rs2); let soloObject2 = {}; const cond = {};
@@ -75,10 +77,12 @@ function CompCheck() {
                 }).catch(err=>{setFinalErrorText("Серверт алдаа гарлаа."); setBtnSpin(false);});
               }
       }
+      console.log(updateMount, "update mount");
+
 
     return (
         <Component1 className="container" >
-            <div className="boxShadow">
+          {param!=="user"? ( updateMount!==0?   <div className="boxShadow">
                 <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
                 {initialData.map((el,i)=>{
                     return(
@@ -96,7 +100,43 @@ function CompCheck() {
                                   <div className="row" >
                                   <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
                                   <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
-                                   
+                                  <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==0? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
+                                  <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==0? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
+                              </div>
+                              </div>
+                              )
+                          })}
+                    </div>)})}
+
+                    <div className="FinalBtn">
+                        <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
+                        <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
+                    </div>
+                    <div className="Success">
+                        <NextBtn onClick={()=>NextPageHandle(`/progress/${param}`)} className="NextPageBtn" type="button"><div className="flexchild"><IoIosArrowBack/><IoIosArrowBack className="hide" /> <IoIosArrowBack className="hide1" /></div>Буцах</NextBtn>
+                         <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div>
+                    </div> 
+            </div> :
+          ( <h1>Мэдээлэл оруулаагүй байна...</h1> ) )
+          :  (  <div className="boxShadow">
+                <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
+                {initialData.map((el,i)=>{
+                    return(
+                        <div key={i} className="formTwoParent ">
+                          <div className="headerPar">
+                              <div className="row" >
+                              <div className="head1 col-md-10 col-sm-8 col-8">{el.title}</div>
+                              <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
+                              <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
+                              </div>
+                          </div>
+                          {el.items.map((elem, ind)=>{
+                              return(
+                              <div className="headerParchild" key={ind}>
+                                  <div className="row" >
+                                  <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
+                                  <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
+                                  
                                   <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==0? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
                                   <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==0? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
                               </div>
@@ -111,16 +151,17 @@ function CompCheck() {
                     </div>
 
                   {updateMount!==0?
-                   <div className="Success">
-                       <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div>
-                       <NextBtn onClick={NextPageHandle} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                  <div className="Success">
+                      <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div>
+                      <NextBtn onClick={()=>NextPageHandle('/request/user')} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                     </div> 
                   :( <div className="buttonPar">
                       <div style={{opacity:`${opacity2}`}} className="errtext"><CgDanger /> {FinalErrorText}</div>
                       <NextBtn onClick={clickHandles} style={BtnSpin===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button"> {BtnSpin===false? <>Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div> </> : <img src="/gifff.gif" /> } </NextBtn>
                     </div>)}
-                    
-            </div>
+              </div>
+            ) }
+
         </Component1>
     )
 }

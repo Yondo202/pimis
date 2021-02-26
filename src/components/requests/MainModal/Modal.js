@@ -1,4 +1,5 @@
-import React, {useRef, useEffect, useCallback, useContext, useState } from 'react';
+import React, {useRef, useEffect, useCallback, useState } from 'react';
+import { useHistory } from "react-router-dom"
 import {useSpring, animated} from 'react-spring';
 import {VscFilePdf} from 'react-icons/vsc';
 import styled from 'styled-components'
@@ -10,10 +11,9 @@ import {ColorRgb} from '../../theme'
 
 import { useReactToPrint } from "react-to-print";
 
-// import HelperContext from '../../../context/HelperContext'
-
-export const Modal = ({ showModal,setShowModal, initialData }) => {
+export const Modal = ({ showModal,setShowModal, initialData, param }) => {
     // const HelpContext = useContext(HelperContext);
+    const history = useHistory();
     const [ DataOne, setDataOne ] = useState([]);
     const modalRef = useRef();
     const animation = useSpring({
@@ -49,21 +49,24 @@ export const Modal = ({ showModal,setShowModal, initialData }) => {
       content: () => componentRef.current,
     });
 
+    const backHanlde = () =>{
+        history.push(`/progress/${param}`);
+    }
+
     console.log(DataOne, " Modal Data ");
-    
-   
+
     return(
         <>
             {showModal ?
-              (<Background ref={modalRef} onClick={closeModal}>
+              (<Background style={param!=="user"?{left:"270px",paddingRight:"160px",justifyContent:"center"} :{left:"0"} } ref={modalRef} onClick={param!=="user"?backHanlde:closeModal}>
                   <animated.div style={animation} >
                       <div className="modalPar container">
                           <div className="closeParent">
                               <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
-                              <button className="esc" onClick={()=> setShowModal(prev => !prev)} > X </button>
+                              {param!=="user"? <button className="esc" onClick={backHanlde} > Буцах </button> :<button className="esc" onClick={()=> setShowModal(prev => !prev)} > X </button> }
                           </div>
                           
-                          <div  ref={componentRef}>
+                          <div ref={componentRef}>
                             <ModalOne  DataOne={DataOne.ppsRequest1Details} />
                             <ModalTwo Data2={DataOne.ppsRequest2Details} />
                             <ModalThree Data2={DataOne.ppsRequest3Details} />
@@ -84,7 +87,6 @@ const Background = styled.div`
     width: 100%;
     height: 100%;
     top:0;
-    left:0;
     right:0;
     bottom:0;
     background: rgba(0,0,0,0.5);

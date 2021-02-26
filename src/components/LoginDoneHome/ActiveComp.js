@@ -2,15 +2,17 @@ import React from 'react'
 import { Link } from "react-router-dom";
 
 function ActiveComp(props) {
+
+    console.log(props.prew, " my prev")
     return (
         <div style={{marginTop:25}} className="row">
                     <div className="col-md-2 col-sm-2 itemsCol">
                         <div className="itemsPar">
                             <div className="mains">
-                                <Link to={!props.prew&&`/comp-test`} className={props.data.criteria ===true?`itemsActive`: `items`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
+                                <Link to={!props.prew?`/check/user`:`/check/${props.prew}`} className={props.data.criteria ===true?`itemsActive`: `items`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
                                 {/* <div className="line line2" ></div> */}
                                 <div className="line" ></div>
-                                <Link to={!props.prew&&`/comp-request`} className={props.data.esq ===true?`itemsActive`: `items`}>2. Байгаль орчны үнэлгээний асуумж </Link>
+                                <Link to={!props.prew?`/request/user`:`/request/${props.prew}`} className={props.data.esq ===true?`itemsActive`: `items`}>2. Байгаль орчны үнэлгээний асуумж </Link>
                                 <div className="line" ></div>
                                 <Link to={!props.prew&&`/letter-of-interest`} className={props.data.letterOfInterst ===true?`itemsActive`: `items`} >3. Сонирхол илэрхийлэх албан тоот</Link>                        
                             </div>
@@ -79,7 +81,7 @@ function ActiveComp(props) {
                             <div className="resultDesable">6. Гүйцэтгэлийн үнэлгээ бүрэн бөгөөд буцаан (санхүүжилтийн) олголтын хүсэлт</div>
                         </div>
                     </div>
-                </div>
+        </div>
     )
 }
 
