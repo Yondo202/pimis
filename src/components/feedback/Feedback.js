@@ -55,9 +55,14 @@ function Feedback() {
                     let nn = {}; nn["checked"] = el.value; final["finance_req"] =nn
                 } else if(el.name==="finance_req_no"){
                     let nn = {}; nn["checked_no"] = el.value; final["finance_req"] =nn
-                }
-                else{
-                    final[el.name] = el.value;
+                }else{
+                    if(!el.value){
+                        el.classList += " RedPar"
+                    }else{
+                        final[el.name] = el.value;
+                        el.classList =- " RedPar"
+                        el.classList += " getInputt"
+                    }
                 }
             }
         });
@@ -86,9 +91,8 @@ function Feedback() {
         final["service_assess"] = tableOne;
         final["efficiency"] = tableTwo;
 
+        console.log(final, "^final");
 
-
-        console.log(JSON.stringify(final) , "^final");
     }
 
     return (
@@ -111,7 +115,7 @@ function Feedback() {
                             {infoWhere.map((el,i)=>{
                                     return(
                                         <div className="items">
-                                            <input className="getInputt radio" id={i + 1} name="infhear" value={el.title} type="radio" />
+                                            <input style={{backgroundColor:"#eee"}} className="getInputt radio" id={i + 1} name="infhear" value={el.title} type="radio" />
                                             <div className="title">{el.title}</div>
                                             {el.place&&<InputStyle className="nameText"><input placeholder={el.place} className={`infhear${i + 1}_why`} name="other" id={i + 1}  type="text" /> <div className="line"></div></InputStyle>}
                                         </div>

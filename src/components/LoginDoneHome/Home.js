@@ -7,7 +7,6 @@ import AccessToken from '../../context/accessToken'
 import ActiveComp from './ActiveComp'
 import InitialComp from './initialComp'
 
-
 function Home(props) {
    let history = useHistory();
    const [ infData, setInfData ] = useState(null);

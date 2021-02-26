@@ -149,7 +149,7 @@ export const InputStyle = styled.div`
             position:relative;
             display:flex;
             align-items:end;
-            input {
+            input{
                 align-self:flex-end;
                 width:100%;
                 border-bottom:1px solid rgba(0,0,0,0.2);
@@ -165,6 +165,9 @@ export const InputStyle = styled.div`
                     width:100%;
                     left:0;
                 }
+            }
+            .RedPar{
+                border-bottom:1px solid red;
             }
             textarea{
                 align-self:flex-end;
