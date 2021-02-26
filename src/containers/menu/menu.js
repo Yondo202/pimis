@@ -53,8 +53,8 @@ function Menu() {
       }else{ setheaderHeight("45px");}
       if(currentPath === "/"){setActiveMenu({Home:'line2',Req:'',Check:'',Maygt:''})}
       // if(currentPath === "/admin"){ setDisplayNone("none");}
-      if(currentPath === "/comp-request"){setActiveMenu({Home: '',Req:'line2',Check: '',Maygt:''})}
-      if(currentPath === "/comp-check"){setActiveMenu({Home: '',Req:'',Check:'line2',Maygt: ''})}
+      if(currentPath === "/request/user"){setActiveMenu({Home: '',Req:'line2',Check: '',Maygt:''})}
+      if(currentPath === "/check/user"){setActiveMenu({Home: '',Req:'',Check:'line2',Maygt: ''})}
       if(currentPath === "/urgudul/1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }
     }, [location]);
    

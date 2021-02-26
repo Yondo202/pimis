@@ -10,12 +10,8 @@ import InitialComp from './initialComp'
 
 function Home() {
     let history = useHistory();
-
-    const params = useParams();
-    const userId = params.userId;
-
+    const userId = useParams().userId;
     const [infData, setInfData] = useState(null);
-    const [propData, setPropData] = useState(userId ? true : false);
 
     useEffect(async () => {
         if (userId) {
@@ -31,7 +27,7 @@ function Home() {
     }, []);
 
     return (
-        <HomeComponent className="container">
+        <HomeComponent style={userId?{maxWidth:"2000px"}:{maxWidth:"1160px"}} className={`container`}>
             <div className="headerPar">
                 <div className="header row">
                     <div className="col-md-4"><div className="headItems"><span className="text">1.Түншлэлийн хөтөлбөрт бүрдүүлэх баримт</span> </div></div>
@@ -44,9 +40,7 @@ function Home() {
                     <div className="col-md-4"><div className="headItems"><span className="text">Бизнес хяналтын зөвлөх</span><span className="text">Үнэлгээ, шийдвэр</span> </div></div>
                 </div>
             </div>
-
             {infData === null ? <InitialComp /> : <ActiveComp prew={userId} data={infData} />}
-
         </HomeComponent>
     )
 }

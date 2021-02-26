@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom';
 import { animateScroll as scroll } from "react-scroll";
 import {IoMdCheckmarkCircle  } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
@@ -11,7 +12,6 @@ import TableFive from "../../components/requests/oldRequest/tableFive";
 import TableSix from '../../components/requests/oldRequest/tableSix';
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
-import UserContext from '../../context/UserContext'
 import HelpContext from '../../context/HelperContext'
 import {Modal} from '../../components/requests/MainModal/Modal'
 import axios from '../../axiosbase'
@@ -20,63 +20,79 @@ import AccessToken from '../../context/accessToken'
 
 
 function MainRequest(props) {
+    const initialParam = useParams();
+    const param = initialParam.url
     const [ showModal, setShowModal ] = useState(false);
     const [ updateMount, setUpdateMount ] = useState(false);
     const ModalOpen = () => {  setShowModal(prev => !prev); }
-    const StyleContext = useContext(UserContext);
     const helpCtx = useContext(HelpContext);
     const [Loading, setLoading] = useState(false);
     const [ initialData, setInitialData ] = useState([]);
     const [ ScrollClass, setScrollClass ] = useState("");
     const [ tokens, setTokens ] = useState("");
     const [ userID, setUserId ] = useState();
+
+
+    console.log(param, " my param");
     
     useEffect( async()=>{
-        helpCtx.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
-        let storageToken = AccessToken(); setTokens(storageToken); 
-        window.addEventListener("scroll", handleScroll);
-        let resData = await axios.get(`pps-request`, {headers: {Authorization:AccessToken()}});
-        if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data);
-             //  setLoading(false); 
-             console.log(resData,"++++++++++++++++");
-             helpCtx.TableIdControl(resData.data.data.id);
+        if(param==="user"){ 
+            helpCtx.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
+            let storageToken = AccessToken(); setTokens(storageToken); 
+            window.addEventListener("scroll", handleScroll);
+            let resData = await axios.get(`pps-request`, {headers: {Authorization:AccessToken()}});
+            if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data);
+                //  setLoading(false); 
+                console.log(resData,"++++++++++++++++");
+                helpCtx.TableIdControl(resData.data.data.id);
+            }
+        }else{
+            let storageToken = AccessToken(); setTokens(storageToken); 
+            window.addEventListener("scroll", handleScroll);
+            let resData = await axios.get(`pps-request?userId=${param}`, {headers: {Authorization:AccessToken()}});
+            if(resData.data.data.id){  setInitialData(resData.data.data); ModalOpen(true) }
         }
     },[]);
 
-      const handleScroll = () => {
-          if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); }
-      }
+    const handleScroll = () => {
+        if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); }
+    }
 
-    const func = helpCtx.StyleComp
-    const One = helpCtx.GlobalStyle.tableOne
-    const Two = helpCtx.GlobalStyle.tableTwo
-    const Three = helpCtx.GlobalStyle.tableThree
-    const Four = helpCtx.GlobalStyle.tableFour
-    const Five = helpCtx.GlobalStyle.tableFive
-    const Six = helpCtx.GlobalStyle.tableSix
+    const One = param === "user"&&helpCtx.GlobalStyle.tableOne
+    const Two = param === "user"&&helpCtx.GlobalStyle.tableTwo
+    const Three = param === "user"&&helpCtx.GlobalStyle.tableThree
+    const Four = param === "user"&&helpCtx.GlobalStyle.tableFour
+    const Five = param === "user"&&helpCtx.GlobalStyle.tableFive
+    const Six = param === "user"&&helpCtx.GlobalStyle.tableSix
+    
 
     return (
-            <>
-                <PreviewBtn >
-                    <div className={`modalBtn ${ScrollClass}`}>
-                        <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button>
-                        <div className="countPar container">
-                            <div className="itemsPar">
-                                {/* <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("0%", "100%", "200%","300%"),scroll.scrollTo(0))} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
-                                <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} onClick={()=> (func("-100%", "0%", "100%","200%"),scroll.scrollTo(0))}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
-                                <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-200%", "-100%", "0%","100%"),scroll.scrollTo(0))}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
-                                <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-300%", "-200%", "-100%","0%"),scroll.scrollTo(0))}><span className="items">4</span></div>  */}
-                                <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
-                                <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
-                                <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
-                                <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">4</span></div> 
-                            </div>
-                        </div>
-                    </div>
-                </PreviewBtn>
-                {Loading === true? <GifPar className="Gif"> <img src="https://media.giphy.com/media/52qtwCtj9OLTi/giphy.gif" alt="edp-gif" /></GifPar> : (
+        <>
+            {param !== "user"? (
+                <Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param}  />
+                // <h1>lalalla</h1>
+            ):(
+                <>
                     <>
-                    <Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal}  />
+                    <PreviewBtn >
+                            <div className={`modalBtn ${ScrollClass}`}>
+                                <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button>
+                                <div className="countPar container">
+                                    <div className="itemsPar">
+                                        {/* <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("0%", "100%", "200%","300%"),scroll.scrollTo(0))} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} onClick={()=> (func("-100%", "0%", "100%","200%"),scroll.scrollTo(0))}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-200%", "-100%", "0%","100%"),scroll.scrollTo(0))}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-300%", "-200%", "-100%","0%"),scroll.scrollTo(0))}><span className="items">4</span></div>  */}
+                                        <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">4</span></div> 
+                                    </div>
+                                </div>
+                            </div>
+                    </PreviewBtn>
+
+                    <Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />
                     <ParentComp style={{height:`${helpCtx.GlobalStyle.tableheight}vh`}} className="container">
                         <div style={{left:`${One}`, opacity:`${One === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                             <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
@@ -102,13 +118,16 @@ function MainRequest(props) {
                         </div> 
                     </ParentComp>
                     </>
-                ) }
 
                 <AlertStyle style={helpCtx.alert.cond === true ? {bottom:`100px`, opacity:`1`, borderLeft:`4px solid ${helpCtx.alert.color}`} : {bottom:`50px`, opacity:`0`}} >
                     {helpCtx.alert.color=== "green"?<IoMdCheckmarkCircle style={{color:`${helpCtx.alert.color}`}} className="true" /> : <CgDanger style={{color:`${helpCtx.alert.color}`}} className="true" /> }
                     <span>{helpCtx.alert.text}</span>
                 </AlertStyle>
             </>
+            )}
+
+    </>
+            
     )
 }
 

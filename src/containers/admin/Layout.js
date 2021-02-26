@@ -13,6 +13,8 @@ import UrgudulNavigator from 'pages/urgudul/Page'
 import { UrgudulStore } from 'components/utilities/urgudulContext'
 import ProjectHandle1 from 'components/admin/contents/projects1/ProjectHandle'
 import Home from 'components/LoginDoneHome/Home'
+import Request from 'containers/requestComp/mainRequestOld'
+import Check from 'components/check/compCheck'
 
 
 function Layout({ setLocale }) {
@@ -48,7 +50,7 @@ function Layout({ setLocale }) {
                     handleImageChange={handleImageChange}
                 />
 
-                <div className="itemsPar">
+                <div className="itemsPar2">
                     <UrgudulStore>
                         <Route path="/" component={HomeAdmin} exact />
                         <Route path="/users" component={UserHandle} />
@@ -58,6 +60,8 @@ function Layout({ setLocale }) {
                             <UrgudulNavigator preloaded={true} />
                         </Route>
                         <Route path="/progress/:userId" component={Home} />
+                        <Route path="/request/:url" component={Request} />
+                        <Route path="/check/:url" component={Check} />
                     </UrgudulStore>
                 </div>
             </div>
@@ -82,9 +86,11 @@ const AdminApp = styled.div`
         
     }
     .ContentPar{
+        position:relative;
         height:100vh;
         background-color: #f2f2f2;
-        .itemsPar{
+        .itemsPar2{
+            position:relative;
             margin-right:-15px;
             padding-right:25px;
             padding-top:25px;
@@ -108,12 +114,12 @@ const AdminApp = styled.div`
                 display:flex;
                 position:relative;
                 .otherPar{
+                    cursor:pointer;
                     width:140px;
                     background-color:white;
                     position:absolute;
                     bottom:-45px;
                     right:-10px;
-                    // padding:5px 10px;
                     border-radius:4px;
                     text-align:left;
                     .logout{
@@ -149,7 +155,7 @@ const AdminApp = styled.div`
                     svg{
                         transition:all 0.3s ease;
                         margin-left:2px;
-                        font-size:12px;
+                        font-size:14px;
                         color:rgba(0,30,80,1);
                     }
                 }

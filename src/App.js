@@ -76,11 +76,11 @@ function App() {
                             <LoginDoneHome2 />
                           </motion.div>
                         </Route>
-                        <Route path="/comp-test" component={CheckComp} />
+                        <Route path="/check/:url" component={CheckComp} />
                         <Route path="/notify-page/:paramId" component={MainPage} />
 
                         {/* <Route path="/comp-request" component={MainRequest} /> */}
-                        <Route path="/comp-request" component={MainRequestOld} />
+                        <Route path="/request/:url" component={MainRequestOld} />
                         <Route path="/feedback" component={Feedback} />
                         <Route path="/workperformance" component={WorkPerformance} />
 

@@ -2,11 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { MenuColor, MainFontSize, fontFamily } from "../ThemeAdmin";
-
 import { useIntl } from "react-intl";
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from "react-pro-sidebar";
-import { FaTachometerAlt, FaGem, FaList, FaRegLaughWink, FaHeart, FaUsers } from "react-icons/fa";
+import { FaChalkboardTeacher} from "react-icons/fa";
+import { MdSettings } from "react-icons/md";
+import { GiProgression } from "react-icons/gi";
 import sidebarBg from "./bg_image/bg1.jpg";
+
 
 const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
   const intl = useIntl();
@@ -38,12 +40,12 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
           <MenuItem icon={<FaGem />}> {intl.formatMessage({ id: "components" })}</MenuItem>
         </Menu> */}
         <Menu iconShape="circle">
-          <SubMenu title="Түншлэлийн хөтөлбөр" icon={<FaRegLaughWink />}>
+          <SubMenu title="Түншлэлийн хөтөлбөр" icon={<GiProgression />}>
             <MenuItem>  <Link to="/projects"> Бүртгүүлсэн байгууллагууд</Link> </MenuItem>
             <MenuItem>Санхүүжилт</MenuItem>
           </SubMenu>
           {/* prefix={<span className="badge gray">3</span>} */}
-          <SubMenu  title="Сургалт" icon={<FaHeart />}>
+          <SubMenu  title="Сургалт" icon={<FaChalkboardTeacher />}>
             <MenuItem>Зохион байгуулах хүсэлт</MenuItem>
             <MenuItem>Сургалтууд</MenuItem>
             <SubMenu title="Тайлангууд">
@@ -52,7 +54,7 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.3 </MenuItem>
             </SubMenu>
           </SubMenu>
-          <SubMenu title="Тохиргоо">
+          <SubMenu title="Тохиргоо" icon={<MdSettings />}>
             <MenuItem>
               <Link to="/users">Хэрэглэгчид</Link>{" "}
             </MenuItem>

@@ -8,10 +8,12 @@ import { AiOutlineCaretRight } from 'react-icons/ai'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
 import {useSpring, animated} from 'react-spring';
 import UserContext from '../../../context/UserContext'
+import Hamburger from 'hamburger-react'
 // import reactLogo from './assets/logo.svg';
 
 const Main = ({ collapsed,rtl, image, handleToggleSidebar,handleCollapsedChange,handleRtlChange,handleImageChange,}) => {
   const ctx = useContext(UserContext)
+  const [isOpen, setOpen] = useState(false);
   const [ profileMenu, setProfileMenu ] = useState(false);
   const intl = useIntl();
 
@@ -29,33 +31,10 @@ const Main = ({ collapsed,rtl, image, handleToggleSidebar,handleCollapsedChange,
           <FaBars />
       </div>
       <div className="SwitchPar">
-          <div className="block ">
-            <Switch
-              height={16}
-              width={30}
-              checkedIcon={false}
-              uncheckedIcon={false}
-              onChange={handleCollapsedChange}
-              checked={collapsed}
-              onColor="#219de9"
-              offColor="#bbbbbb"
-            />
-            <span> {intl.formatMessage({ id: 'collapsed' })}</span>
-          </div>
+          <ToggleMenu onClick={()=>handleCollapsedChange(prev=>!prev)} className="block ">
+             <Hamburger toggled={isOpen} toggle={setOpen} />
+          </ToggleMenu>
           {/* <div className="block">
-            <Switch
-              height={16}
-              width={30}
-              checkedIcon={false}
-              uncheckedIcon={false}
-              onChange={handleRtlChange}
-              checked={rtl}
-              onColor="#219de9"
-              offColor="#bbbbbb"
-            />
-            <span> {intl.formatMessage({ id: 'rtl' })}</span>
-          </div> */}
-          <div className="block">
             <Switch
               height={16}
               width={30}
@@ -67,16 +46,16 @@ const Main = ({ collapsed,rtl, image, handleToggleSidebar,handleCollapsedChange,
               offColor="#bbbbbb"
             />
             <span>{intl.formatMessage({ id: 'image' })}</span>
-          </div>
+          </div> */}
       </div>
      
         <div className="profilePar">
-          {/* <div className="svgPar"> <VscSearch /></div> */}
-                <div onClick={showHanlde} className="Profile">
+                {/* <Link  onClick={showHanlde} className="Profile"> */}
+                <Link onClick={()=>ctx.logout()} to="/"  className="Profile">
                     <img src='/profile.jpg' alt="profile" />
                     <AiOutlineCaretRight style={profileMenu? {transform:'rotate(90deg)' }: {transform:'rotate(0deg)'}} />
-                </div>
-              {profileMenu&&(<animated.div style={animation} ><div className="otherPar"><Link onClick={()=>ctx.logout()} to="/" className="logout"><RiLogoutBoxRLine /> Гарах</Link></div></animated.div>) }
+                </Link>
+              {/* {profileMenu&&(<animated.div style={animation} ><div className="otherPar"><Link onClick={()=>ctx.logout()} to="/" className="logout"><RiLogoutBoxRLine /> Гарах</Link></div></animated.div>) } */}
                 
           </div>
    </div>
@@ -86,6 +65,18 @@ const Main = ({ collapsed,rtl, image, handleToggleSidebar,handleCollapsedChange,
 export default Main;
 
 
-const TopMain = styled.div`
-  
+const ToggleMenu = styled.div`
+    .hamburger-react{
+        height: 43px !important;
+        width: 43px !important;
+      div{
+        background: currentcolor;
+        height: 2px !important;
+        left: 8px;
+        position: absolute;
+        width: 30px !important;
+        transition: all 0.4s cubic-bezier(0, 0, 0, 1) 0s;
+        transform: none;
+      }
+    }
 `
