@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ColorRgb } from '../theme'
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from '../../axiosbase';
 import AccessToken from '../../context/accessToken'
 import ActiveComp from './ActiveComp'
@@ -9,7 +9,6 @@ import InitialComp from './initialComp'
 
 
 function Home() {
-    let history = useHistory();
     const userId = useParams().userId;
     const [infData, setInfData] = useState(null);
 

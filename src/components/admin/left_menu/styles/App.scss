@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700,800,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
 $sidebar-bg-color2: #1d1d1d;
 $sidebar-bg-color: #001529;
@@ -21,7 +22,6 @@ body {
   .pro-sidebar-inner{
     background: #32373d;
     // background: #3c4245;
-
     // background: #212121;
     // background: #37474F;
     // background: #001529;
@@ -48,6 +48,23 @@ body {
             }
           }
         }
+    }
+  }
+}
+.pro-sidebar-layout{
+  .pro-sidebar-header{
+    .headPar{
+      font-family: 'Roboto', sans-serif;
+      background-color: #32373d;
+      padding:11.1px 3px;
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 1px;
+      font-weight: 800;
+      white-space: nowrap;
+      color: white;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.2);
     }
   }
 }

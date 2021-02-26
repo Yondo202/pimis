@@ -15,21 +15,7 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
   return (
     <ProSidebar image={image ? sidebarBg : false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
       <SidebarHeader>
-        <div
-          style={{
-            backgroundColor:"white",
-            padding: "4px 3px",
-            textTransform: "uppercase",
-            fontWeight: "bold",
-            fontSize: 14,
-            letterSpacing: "1px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          <img style={{width:`100%`}} src="/head.jpg" alt="edp" />
-        </div>
+        <div className="headPar" >Экспортыг дэмжих төсөл</div>
       </SidebarHeader>
 
       <SidebarContent >
@@ -75,10 +61,7 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
       </SidebarContent>
 
       <SidebarFooter style={{ textAlign: "center" }}>
-        <div className="sidebar-btn-wrapper" style={{ padding: "20px 24px" }}>
-          {" "}
-          footer{" "}
-        </div>
+        <div className="sidebar-btn-wrapper" style={{ padding: "10px 24px" }}>   {" "}  © 2021 EDP{" "} </div>
       </SidebarFooter>
     </ProSidebar>
   );

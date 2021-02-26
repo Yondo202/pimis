@@ -42,8 +42,6 @@ export const Modal = ({ showModal,setShowModal, initialData, param }) => {
         return () => document.removeEventListener('keydown', keyPress)
     },[keyPress]);
 
-    console.log(DataOne, "### data 11");
-
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
@@ -53,7 +51,8 @@ export const Modal = ({ showModal,setShowModal, initialData, param }) => {
         history.push(`/progress/${param}`);
     }
 
-    console.log(DataOne, " Modal Data ");
+    console.log(initialData, " Modal Data ");
+    console.log(param, "my param")
 
     return(
         <>
@@ -67,10 +66,10 @@ export const Modal = ({ showModal,setShowModal, initialData, param }) => {
                           </div>
                           
                           <div ref={componentRef}>
-                            <ModalOne  DataOne={DataOne.ppsRequest1Details} />
-                            <ModalTwo Data2={DataOne.ppsRequest2Details} />
-                            <ModalThree Data2={DataOne.ppsRequest3Details} />
-                            <ModalFour Data2={DataOne.ppsRequest4Details} />
+                            <ModalOne  DataOne={initialData&&initialData.ppsRequest1Details} />
+                            <ModalTwo Data2={initialData&&initialData.ppsRequest2Details} />
+                            <ModalThree Data2={initialData&&initialData.ppsRequest3Details} />
+                            <ModalFour Data2={initialData&&initialData.ppsRequest4Details} />
                           </div>
 
                       </div>
