@@ -103,7 +103,9 @@ const AdminApp = styled.div`
             align-items:center;
             justify-content:space-between;
             box-shadow: 0 1px 8px -2px rgba(0,80,180,0.2);
-            background-color:white;
+            // background-color:white;
+            background-color:#32373d;
+            
             padding:6px 30px;
             // margin-bottom:15px;
             .SwitchPar{
@@ -156,7 +158,8 @@ const AdminApp = styled.div`
                         transition:all 0.3s ease;
                         margin-left:2px;
                         font-size:14px;
-                        color:rgba(0,30,80,1);
+                        // color:rgba(0,30,80,1);
+                        color:rgba(255,255,255,.8);
                     }
                 }
             }

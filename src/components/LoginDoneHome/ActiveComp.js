@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 function ActiveComp(props) {
 
-    console.log(props.prew, " my prev")
     return (
         <div style={{marginTop:25}} className="row">
                     <div className="col-md-2 col-sm-2 itemsCol">

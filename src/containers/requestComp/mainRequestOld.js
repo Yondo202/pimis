@@ -20,14 +20,13 @@ import AccessToken from '../../context/accessToken'
 
 
 function MainRequest(props) {
-    const initialParam = useParams();
-    const param = initialParam.url
+    const param = useParams().url;
     const [ showModal, setShowModal ] = useState(false);
     const [ updateMount, setUpdateMount ] = useState(false);
     const ModalOpen = () => {  setShowModal(prev => !prev); }
     const helpCtx = useContext(HelpContext);
     const [Loading, setLoading] = useState(false);
-    const [ initialData, setInitialData ] = useState([]);
+    const [ initialData, setInitialData ] = useState(null);
     const [ ScrollClass, setScrollClass ] = useState("");
     const [ tokens, setTokens ] = useState("");
     const [ userID, setUserId ] = useState();
@@ -39,8 +38,9 @@ function MainRequest(props) {
         if(param==="user"){ 
             helpCtx.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
             let storageToken = AccessToken(); setTokens(storageToken); 
+            let LocalId = localStorage.getItem("userId")
             window.addEventListener("scroll", handleScroll);
-            let resData = await axios.get(`pps-request`, {headers: {Authorization:AccessToken()}});
+            let resData = await axios.get(`pps-request?userId=${LocalId}`, {headers: {Authorization:AccessToken()}});
             if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data);
                 //  setLoading(false); 
                 console.log(resData,"++++++++++++++++");
@@ -50,7 +50,8 @@ function MainRequest(props) {
             let storageToken = AccessToken(); setTokens(storageToken); 
             window.addEventListener("scroll", handleScroll);
             let resData = await axios.get(`pps-request?userId=${param}`, {headers: {Authorization:AccessToken()}});
-            if(resData.data.data.id){  setInitialData(resData.data.data); ModalOpen(true) }
+            
+            if(resData.data.data.id){ setInitialData(resData.data.data); ModalOpen(true); }
         }
     },[]);
 
@@ -64,15 +65,13 @@ function MainRequest(props) {
     const Four = param === "user"&&helpCtx.GlobalStyle.tableFour
     const Five = param === "user"&&helpCtx.GlobalStyle.tableFive
     const Six = param === "user"&&helpCtx.GlobalStyle.tableSix
-    
+
+    console.log(initialData, " my initail");
 
     return (
         <>
-            {param !== "user"? (
-                <Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param}  />
-                // <h1>lalalla</h1>
-            ):(
-                <>
+            {param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param}  />: <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> )
+            :( <>
                     <>
                     <PreviewBtn >
                             <div className={`modalBtn ${ScrollClass}`}>
@@ -92,29 +91,29 @@ function MainRequest(props) {
                             </div>
                     </PreviewBtn>
 
-                    <Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />
+                    <Modal initialData={initialData&&initialData} showModal={showModal} setShowModal={setShowModal} param={param} />
                     <ParentComp style={{height:`${helpCtx.GlobalStyle.tableheight}vh`}} className="container">
                         <div style={{left:`${One}`, opacity:`${One === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                             <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                                <TableOne  initialData={initialData.ppsRequest1Details} initialName={initialData.name1} initialDate={initialData.date1} id={userID} token={tokens} />
+                                <TableOne  initialData={initialData&&initialData.ppsRequest1Details} initialName={initialData&&initialData.name1} initialDate={initialData&&initialData.date1} id={userID} token={tokens} />
                             </motion.div>
                         </div>
                         <div style={{left:`${Two}`, opacity:`${Two === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableTwo initialData={initialData.ppsRequest2Details}  initialName={initialData.name2}  initialDate={initialData.date2} id={userID} token={tokens} />
+                            <TableTwo initialData={initialData&&initialData.ppsRequest2Details}  initialName={initialData&&initialData.name2}  initialDate={initialData&&initialData.date2} id={userID} token={tokens} />
                         </div>
                         <div style={{left:`${Three}`, opacity:`${Three === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableThree initialData={initialData.ppsRequest3Details}  initialName={initialData.name3}  initialDate={initialData.date3} id={userID} token={tokens} />
+                            <TableThree initialData={initialData&&initialData.ppsRequest3Details}  initialName={initialData&&initialData.name3}  initialDate={initialData&&initialData.date3} id={userID} token={tokens} />
                         </div>
                         
                         <div style={{left:`${Four}`, opacity:`${Four === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableFour initialData={initialData.ppsRequest4Details}  initialName={initialData.name4}  initialDate={initialData.date4} id={userID} token={tokens} />
+                            <TableFour initialData={initialData&&initialData.ppsRequest4Details}  initialName={initialData&&initialData.name4}  initialDate={initialData&&initialData.date4} id={userID} token={tokens} />
                         </div>
 
                         <div style={{left:`${Five}`, opacity:`${Five === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableFive initialData={initialData.ppsRequest5Detail}  initialName={initialData.name5}  initialDate={initialData.date5} id={userID} token={tokens}  />
+                            <TableFive initialData={initialData&&initialData.ppsRequest5Detail}  initialName={initialData&&initialData.name5}  initialDate={initialData&&initialData.date5} id={userID} token={tokens}  />
                         </div>
                         <div style={{left:`${Six}`, opacity:`${Six === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableSix initialData={initialData.ppsRequest6Detail}  initialName={initialData.name6}  initialDate={initialData.date6} id={userID} token={tokens} />
+                            <TableSix initialData={initialData&&initialData.ppsRequest6Detail}  initialName={initialData&&initialData.name6}  initialDate={initialData&&initialData.date6} id={userID} token={tokens} />
                         </div> 
                     </ParentComp>
                     </>

@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom'
 import {IoMdCheckmarkCircle,IoIosArrowBack  } from 'react-icons/io';
-// import { IoChevronBack } from 'react-icons/io5';
 import { fontFamily, textColor, Color,fontSize,NextBtn } from '../theme';
 import {AiOutlineSend} from 'react-icons/ai'
 import {CgDanger} from 'react-icons/cg'
@@ -24,7 +23,9 @@ function CompCheck() {
     const [FinalErrorText, setFinalErrorText] = useState("");
 
     useEffect(async()=>{
-        const data =  await axios.get(`criterias${param!=="user"?`?userId=${param}`:''}`,{ headers: { Authorization:AccessToken() } });
+        const localId = localStorage.getItem("userId");
+        console.log('localId', localId)
+        const data =  await axios.get(`criterias${param!=="user"?`?userId=${param}`:`?userId=${localId}`}`,{ headers: { Authorization:AccessToken() } });
         console.log(data, " my data");
         let keys = Object.keys(data.data.data);
         if(keys.length > 0){
@@ -38,7 +39,9 @@ function CompCheck() {
           setInitialData(allData);
           setUpdateMount(1);
         }else{ console.log("^^data alga") }
+
     },[updateMount]);
+
 
     const NextPageHandle = (el) =>{ history.push(el); }
 
@@ -77,12 +80,10 @@ function CompCheck() {
                 }).catch(err=>{setFinalErrorText("Серверт алдаа гарлаа."); setBtnSpin(false);});
               }
       }
-      console.log(updateMount, "update mount");
-
 
     return (
         <Component1 className="container" >
-          {param!=="user"? ( updateMount!==0?   <div className="boxShadow">
+          {param!=="user"? ( updateMount!==0? <div className="boxShadow">
                 <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
                 {initialData.map((el,i)=>{
                     return(
@@ -117,8 +118,7 @@ function CompCheck() {
                          <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div>
                     </div> 
             </div> :
-          ( <h1>Мэдээлэл оруулаагүй байна...</h1> ) )
-          :  (  <div className="boxShadow">
+          ( <h1>Мэдээлэл оруулаагүй байна...</h1> ) ) :  (  <div className="boxShadow">
                 <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
                 {initialData.map((el,i)=>{
                     return(

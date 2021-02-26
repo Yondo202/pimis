@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "../axiosbase";
+import { useHistory } from "react-router-dom"
 
 const UserContext = React.createContext();
 const initialStyle = { tableOne: "0%", tableTwo: "100%", tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%", tableheight: 150 };
@@ -7,6 +8,7 @@ const initialUserInfo = { userId: null, token: null, expireDate: null, name: nul
 const initialSee = { tableOneData: {}, tableTwoData: {}, tableThree: {}, tableFour: {} };
 
 export const UserStore = (props) => {
+  const history = useHistory();
   const [userInfo, setUserInfo] = useState(initialUserInfo);
   const [ alert, setAlert ] = useState({ color:'white', text: '', cond: false });
   const [errMsg, setErrMsg] = useState("");
@@ -89,8 +91,12 @@ export const UserStore = (props) => {
     localStorage.removeItem("expireDate");
     localStorage.removeItem("role");
     localStorage.removeItem("username");
-
+    localStorage.removeItem("tableId");
     setUserInfo({ userId: undefined });
+
+      setTimeout(()=>{
+        window.location.reload(false);
+      },100);
   };
 
   const alertText = ( color, text, cond ) =>{

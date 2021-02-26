@@ -107,7 +107,7 @@ function Menu() {
                           {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
                           <div className="Notification"><Link to="#" content="2" ><IoNotificationsOutline /></Link> </div>
                           <span className="UserNameMenu" content={userName} ><Link to="#"><CgProfile /></Link> </span>
-                          <span className="Logout"><Link onClick={()=>userCtx.logout()} to="/"><span>Гарах</span><IoIosLogOut /></Link></span>
+                          <span className="Logout"><Link  to="/" onClick={()=>userCtx.logout()}><span>Гарах</span><IoIosLogOut /></Link></span>
                         </div>
                 </span>
 
