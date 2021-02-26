@@ -220,7 +220,7 @@ function UrugudulClusters() {
                 form.map((item, i) =>
                     <div className="tw-flex even:tw-bg-gray-50" key={i}>
                         <div className="tw-flex-grow">
-                            <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-center">
+                            <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                                 <FormInline label="Кластерын гишүүн аж ахуйн нэгж" type="text" value={item.company_name || ''} name="company_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.company_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
                                 <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.representative_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
@@ -231,7 +231,42 @@ function UrugudulClusters() {
 
                                 <SearchSelect label="Салбар" data={sectors} value={item.business_sectorId} name="business_sectorId" id={i} displayName="bdescription_mon" setForm={handleSetForm} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.business_sectorId) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
 
-                                <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.company_size) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
+                                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.company_size) && 'tw-border-red-500'}`}>
+                                    <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
+
+                                    <div className="tw-relative tw-w-2 tw-ml-auto">
+                                        <HelpPopup classAppend="tw-right-5 tw-top-1" main="Аж ахуйн нэгжийн хэмжээ нь борлуулалт эсвэл бүтэн цагийн ажилтнуудын аль өндрөөр тогтоосноор ангилал нь тогтоно. Жишээ нь:" list={["$30M борлуулалттай 30 хүнтэй аж ахуйн нэгжийн хувьд Дунд ангиллын аж ахуйн нэгжид хамаарна."]} position="top-left" />
+                                    </div>
+                                </div>
+
+                                <div className="tw-p-2 tw-border tw-border-dashed tw-max-w-lg">
+                                    <table className="tw-text-sm tw-w-full">
+                                        <thead>
+                                            <tr className="tw-h-8">
+                                                <th className="tw-font-medium tw-text-center">Аж ахуйн нэгжийн хэмжээ</th>
+                                                <th className="tw-font-medium tw-text-center">Жилийн борлуулалт (ам.дол)</th>
+                                                <th className="tw-font-medium tw-text-center">Бүтэн цагийн ажилтны тоо</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr className="tw-h-8 tw-bg-blue-100">
+                                                <td className="tw-pl-2">Бичил</td>
+                                                <td className="tw-pl-2">{'< $50 мян'}</td>
+                                                <td className="tw-pl-2">{'< 10'}</td>
+                                            </tr>
+                                            <tr className="tw-h-8">
+                                                <td className="tw-pl-2">Жижиг</td>
+                                                <td className="tw-pl-2">{'> $50 мян ≤ $10 сая'}</td>
+                                                <td className="tw-pl-2">{'>=10, <50'}</td>
+                                            </tr>
+                                            <tr className="tw-h-8 tw-bg-blue-100">
+                                                <td className="tw-pl-2">Дунд</td>
+                                                <td className="tw-pl-2">{'> $10 сая ≤ $50 сая'}</td>
+                                                <td className="tw-pl-2">{'>=50, <250'}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
                                 <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх" options={['Тийм', 'Үгүй']} values={[true, false]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.support_recipient) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
                             </div>

@@ -9,9 +9,10 @@ import { CgDanger } from 'react-icons/cg';
 import { Route } from "react-router-dom";
 import UserHandle from 'components/admin/contents/users/UserHandle';
 import ProjectHandle from 'components/admin/contents/projects/ProjectHandle'
-import UrgudulNavigator from 'pages/urgudul/page'
+import UrgudulNavigator from 'pages/urgudul/Page'
 import { UrgudulStore } from 'components/utilities/urgudulContext'
 import ProjectHandle1 from 'components/admin/contents/projects1/ProjectHandle'
+import Home from 'components/LoginDoneHome/Home'
 
 
 function Layout({ setLocale }) {
@@ -56,6 +57,7 @@ function Layout({ setLocale }) {
                         <Route path="/urgudul/:page">
                             <UrgudulNavigator preloaded={true} />
                         </Route>
+                        <Route path="/progress/:userId" component={Home} />
                     </UrgudulStore>
                 </div>
             </div>

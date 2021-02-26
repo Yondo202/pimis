@@ -16,7 +16,7 @@ import BusinessSectorEditor from "pages/business_sector_edit/editorPage";
 import ProductsEditor from "pages/products_edit/editorPage";
 import { AlertStore } from "components/utilities/alertContext";
 import AlertDialog from "components/alert_dialog/alertDialog";
-import UrgudulNavigator from "pages/urgudul/page";
+import UrgudulNavigator from "pages/urgudul/Page";
 import LetterOfInterest from "pages/letter_of_interest/page";
 import FirstEvaluation from "pages/decision_making/page_5a";
 import CompilationCheck from "pages/decision_making/page_5b";
@@ -27,8 +27,8 @@ import UnAuthContent from "UnauthContent";
 import { FilePreviewStore } from "components/utilities/filePreviewContext";
 import FilePreviewModal from "components/file_preview/filePreview";
 import WorkPerformance from './components/workPerformance/MainWorkPerformance'
-import 'devextreme/dist/css/dx.common.css';
-import 'devextreme/dist/css/dx.light.css';
+import 'devextreme/dist/css/dx.common.css'
+import 'assets/devExtremeTheme/dx.material.blue-light-compact.css'
 
 
 function App() {

@@ -119,17 +119,17 @@ function UrgudulNavigator(props) {
             <div className="tw-mt-8 tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
                 <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 1 && 'tw-invisible'}`} onClick={handlePrev}>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90" />
-                    <span className="tw-mr-1">Өмнөх</span>
+                    <span className="tw-mr-1" style={{ fontSize: '13px' }}>Өмнөх</span>
                 </button>
                 {
                     [...Array(5)].map((item, i) =>
-                        <button className={`tw-mx-2 tw-px-2 tw-py-0.5 tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === startPage + i && 'tw-bg-indigo-500 tw-text-white'} tw-transition-colors tw-duration-300`} key={i} onClick={() => handleJump(startPage + i)}>
+                        <button className={`tw-mx-2 tw-px-2 tw-py-1 tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === startPage + i && 'tw-bg-indigo-500 tw-text-white'} tw-transition-colors tw-duration-300`} key={i} onClick={() => handleJump(startPage + i)}>
                             {startPage + i}
                         </button>
                     )
                 }
                 <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 10 && 'tw-invisible'}`} onClick={handleNext}>
-                    <span className="tw-ml-1">Дараах</span>
+                    <span className="tw-ml-1" style={{ fontSize: '13px' }}>Дараах</span>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw--rotate-90" />
                 </button>
             </div>
