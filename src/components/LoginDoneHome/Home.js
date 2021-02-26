@@ -7,16 +7,9 @@ import AccessToken from '../../context/accessToken'
 import ActiveComp from './ActiveComp'
 import InitialComp from './initialComp'
 
-<<<<<<< HEAD
-function Home(props) {
-   let history = useHistory();
-   const [ infData, setInfData ] = useState(null);
-   const [ propData, setPropData ] = useState(props.data ? true : false);
-=======
 
 function Home() {
     let history = useHistory();
->>>>>>> ecf80c5d1fc972a848d2627eed4de8ea540d4ce6
 
     const params = useParams();
     const userId = params.userId;
@@ -53,6 +46,7 @@ function Home() {
         </HomeComponent>
     )
 }
+
 
 export default Home
 
