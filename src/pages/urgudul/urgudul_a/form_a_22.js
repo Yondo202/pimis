@@ -18,6 +18,8 @@ const initialState = [
     {
         position: null,
         director_name: null,
+        director_phone: null,
+        director_email: null,
         employed_date: null,
         project_contribution: null,
     },
@@ -40,10 +42,18 @@ function UrugudulDirectors() {
         setForm([...newForm])
     }
 
+    const handleInputFormatted = (values, key, index) => {
+        const newForm = form
+        newForm[index][key] = values.formattedValue
+        setForm([...newForm])
+    }
+
     const handleAdd = () => {
         const newObj = {
             position: null,
             director_name: null,
+            director_phone: null,
+            director_email: null,
             employed_date: null,
             project_contribution: null,
         }
@@ -144,6 +154,10 @@ function UrugudulDirectors() {
 
                                 <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.director_name || ''} name="director_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.director_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
+                                <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.director_phone || ''} name="director_phone" id={i} onChange={handleInputFormatted} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.director_phone) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+
+                                <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.director_email || ''} name="director_email" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.director_email) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} />
+
                                 <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" value={item.employed_date || ''} name="employed_date" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.employed_date) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
                             </div>
 
@@ -177,7 +191,7 @@ function UrugudulDirectors() {
             </div>
 
             <div className="tw-flex tw-justify-end">
-                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600 tw-text-sm" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )

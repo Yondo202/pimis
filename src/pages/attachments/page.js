@@ -141,8 +141,10 @@ export default function AttachmentUploads() {
     }
 
     const handleSubmit = () => {
+        console.log(getLoggedUserToken())
+        console.log(form)
         axios.post('evidences', form, {
-            header: { 'Authorization': getLoggedUserToken() },
+            headers: { 'Authorization': getLoggedUserToken() },
         }).then(res => {
             console.log(res.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт файлуудыг амжилттай хадгаллаа.' })

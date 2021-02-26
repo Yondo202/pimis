@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom'
 import './dataGrid.css'
 import PreviewModal from './previewModal'
 import { loadMessages } from 'devextreme/localization'
+import EvaluatorsModal from './evaluatorsModal'
 
 
 loadMessages({
@@ -41,6 +42,16 @@ export default function ProjectHandle() {
         }).then(res => {
             console.log(res.data)
             setData(res.data.data)
+        }).catch(err => {
+            console.log(err.response?.data)
+        })
+
+        axios.get('users', {
+            headers: { Authorization: getLoggedUserToken() },
+            params: { role: 'member' }
+        }).then(res => {
+            console.log(res.data)
+            setMembers(res.data.data)
         }).catch(err => {
             console.log(err.response?.data)
         })
@@ -83,6 +94,13 @@ export default function ProjectHandle() {
         open: false,
         id: '',
     })
+
+    const [evaluatorsModal, setEvaluatorsModal] = useState({
+        open: false,
+        id: '',
+    })
+
+    const [members, setMembers] = useState([])
 
     return (
         <div className="tw-text-sm tw-text-gray-700" ref={containerRef}>
@@ -130,10 +148,12 @@ export default function ProjectHandle() {
                 <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} />
                 <Column dataField="firstEvalution.description" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell} />
                 <Column dataField="lastEvalution.description" caption="Бизнес шинжээчийн үнэлгээ" headerCellRender={HeaderCell} />
-                <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} />} headerCellRender={HeaderCell} width={134} />
+                <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} setEvaluatorsModal={setEvaluatorsModal} />} headerCellRender={HeaderCell} width={134} />
             </DataGrid>
 
             <PreviewModal previewModal={previewModal} setPreviewModal={setPreviewModal} />
+
+            <EvaluatorsModal evaluatorsModal={evaluatorsModal} setEvaluatorsModal={setEvaluatorsModal} />
         </div>
     )
 }

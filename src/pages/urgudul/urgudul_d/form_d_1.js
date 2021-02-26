@@ -33,12 +33,12 @@ function UrgudulNoticeCluster() {
 
     useEffect(() => {
         if (UrgudulCtx.data.noticeClusters && UrgudulCtx.data.noticeClusters?.length) {
-            setForm(prevState => UrgudulCtx.data.noticeClusters)
+            setForm(prevState => {
+                const newForm = UrgudulCtx.data.noticeClusters
+                newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
+                return newForm
+            })
         }
-
-        const newForm = form
-        newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
-        setForm(prevState => newForm)
     }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {
@@ -271,7 +271,7 @@ function UrgudulNoticeCluster() {
             </div>
 
             <div className="tw-flex tw-justify-end">
-                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600 tw-text-sm" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )
