@@ -20,6 +20,7 @@ module.exports = {
       borderColor: ['active'],
       boxShadow: ['active'],
       visibility: ['hover'],
+      borderWidth: ['first', 'last'],
     },
   },
   plugins: [],

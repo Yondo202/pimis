@@ -17,8 +17,6 @@ const initialState = [
     {
         activity: null,
         budget_cost: null,
-        // edp_funding: null,
-        // applicant_contribution: null,
     },
 ]
 
@@ -50,8 +48,6 @@ function UrgudulActivities() {
         const newObj = {
             activity: null,
             budget_cost: null,
-            // edp_funding: null,
-            // applicant_contribution: null,
         }
 
         setForm([...form, newObj])
@@ -62,11 +58,6 @@ function UrgudulActivities() {
     }
 
     const net = form.map(item => + item.budget_cost).reduce((a, b) => a + b, 0)
-    // const edp = form.map(item => + item.edp_funding).reduce((a, b) => a + b, 0)
-    // const self = form.map(item => + item.applicant_contribution).reduce((a, b) => a + b, 0)
-    const edp = net / 2
-    const self = net / 2
-    const selfPerc = (self / net) * 100
 
     const AlertCtx = useContext(AlertContext)
 
@@ -81,21 +72,25 @@ function UrgudulActivities() {
 
         if (UrgudulCtx.data.id) {
             if (allValid) {
-                axios.put(`projects/${UrgudulCtx.data.id}`, { activities: form }, {
-                    headers: {
-                        'Authorization': getLoggedUserToken()
-                    }
-                })
-                    .then(res => {
-                        console.log(res.data)
-                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагааны талаарх мэдээлэл хадгалагдлаа.' })
-                        history.push('/urgudul/7')
+                if (net / 2 <= 50000) {
+                    axios.put(`projects/${UrgudulCtx.data.id}`, { activities: form }, {
+                        headers: {
+                            'Authorization': getLoggedUserToken()
+                        }
                     })
-                    .catch(err => {
-                        console.log(err.response?.data)
-                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                    })
+                        .then(res => {
+                            console.log(res.data)
+                            UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагааны талаарх мэдээлэл хадгалагдлаа.' })
+                            history.push('/urgudul/7')
+                        })
+                        .catch(err => {
+                            console.log(err.response?.data)
+                            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                        })
+                } else {
+                    AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Экспортыг дэмжих төслөөс хүссэн санхүүжилт $50,000 -оос хэтэрсэн байна.' })
+                }
             } else {
                 AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
             }
@@ -156,26 +151,14 @@ function UrgudulActivities() {
                                 </div>
                             </div>
 
-                            {/* <div className="tw-p-2 tw-pl-4 tw-border tw-border-dashed tw-flex">
-                                <span className="tw-text-sm tw-font-medium">
-                                    Үйл ажиллагааны төсөөлж буй төсөв:
-                                </span>
-
-                                <HelpPopup classAppend="tw-ml-auto sm:tw-ml-12" main="Нийт дүнг тооцохдоо бодит өртөгөөс 20 хувиас дээш хэлбэлзэлтэй байж болохгүй тул бодитоор өртөгөөр тооцоолно уу." position="bottom" />
-                            </div> */}
-
                             <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                <FormInline label="Үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.budget_cost) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
-
-                                {/* <FormInline label="ЭДТ-өөс санхүүжүүлэгдэх нь, доллараар" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.edp_funding || ''} name="edp_funding" id={i} onChange={handleInputFormat} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.edp_funding) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
-
-                                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.applicant_contribution) && 'tw-border-red-500'}`}>
-                                    <FormInline label="Өргөдөл гаргагчийн оролцоо (бэлэн мөнгө)" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.applicant_contribution || ''} name="applicant_contribution" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" />
+                                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.budget_cost) && 'tw-border-red-500'}`}>
+                                    <FormInline label="Дээрх үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-32" />
 
                                     <div className="tw-relative tw-w-2">
-                                        <HelpPopup classAppend="tw-right-5 tw-top-1" main="/.../" position="top-left" />
+                                        <HelpPopup classAppend="tw-right-5 tw-top-1" main="Энэхүү зардлийн тал хувийг өргөдөл гаргагч өөрийн талаас, тал хувийг экспортыг дэмжих төслийн зүгээс гаргах юм." list={['Үйл ажиллагааны төсөвт дүнг тооцохдоо бодит өртөгөөс 20 хувиас дээш хэлбэлзэлтэй байж болохгүй тул бодитоор өртөгөөр тооцоолно уу.', 'Экспортыг дэмжих төслийн санхүүжилтийн дээд хэмжээ нь $50,000 гэдгийг анхаарна уу.']} position="top-left" />
                                     </div>
-                                </div> */}
+                                </div>
                             </div>
                         </div>
 
@@ -194,44 +177,37 @@ function UrgudulActivities() {
                 <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />
             </div>
 
-            <div className="tw-w-full tw-pl-2">
-                <div className="tw-p-0.5 tw-text-sm">
-                    Нийт үйл ажиллагааны төсөвт зардал:
-                    <span className="tw-ml-2 tw-text-base tw-font-medium">${net}</span>
+            <div className="tw-w-full tw-p-1 tw-pl-2">
+                <div className="tw-p-0.5 tw-text-sm tw-font-medium">
+                    Нийт үйл ажиллагаануудын төсөвт зардал:
+                    <span className="tw-ml-2 tw-text-base">${!isNaN(net) && net}</span>
                 </div>
 
-                <div className="tw-p-0.5">
+                <div className={`tw-p-0.5 tw-font-medium ${validate && net / 2 > 50000 && 'tw-border tw-border-dashed tw-border-red-500'}`}>
                     <span className="tw-text-sm">
-                        Үүнээс ЭДТ-өөс санхүүжүүлэгдэх нь:
-                        <span className="tw-ml-2 tw-text-base tw-font-medium">
-                            ${edp}
+                        Үүний ЭДТ-өөс санхүүжүүлэх нь:
+                        <span className="tw-ml-2 tw-text-base">
+                            ${!isNaN(net) && net / 2}
                         </span>
-                        {!isNaN(edp) && edp > 50000 &&
-                            <HelpPopup classAppend="tw-ml-4 tw-inline-flex tw-top-1.5" buttonClass="tw-text-red-400 active:tw-text-red-600" main="Экспортыг дэмжих төслөөс олгох санхүүжилт нь $50,000 хэтрэхгүй байх юм." position="top-left" />
+                        {!isNaN(net) && net / 2 > 50000 &&
+                            <HelpPopup classAppend="tw-ml-4 tw-inline-flex tw-top-1.5" buttonClass="tw-text-red-400 active:tw-text-red-600" main="Экспортыг дэмжих төслөөс олгох санхүүжилт нь $50,000 хэтрэхгүй байна." position="top-left" />
                         }
                     </span>
                 </div>
 
-                <div className="tw-p-0.5 tw-text-sm">
-                    Өргөдөл гаргагч талаас санхүүжүүлэгдэх нь:
-                    <span className="tw-ml-2 tw-text-base tw-font-medium">${self}</span>
+                <div className="tw-p-0.5 tw-text-sm tw-font-medium">
+                    Өргөдөл гаргагч талаас санхүүжүүлэх нь:
+                    <span className="tw-ml-2 tw-text-base">${!isNaN(net) && net / 2}</span>
                 </div>
 
-                <div className="tw-p-0.5">
-                    <span className="tw-text-sm">
-                        Өргөдөл гаргагчийн оролцоо нийт төслийн зардалд эзлэх хувиар (C/A %):
-                        <span className="tw-ml-2 tw-text-base tw-font-medium">
-                            {!isNaN(selfPerc) && `${+ selfPerc.toFixed(2)}%`}
-                        </span>
-                        {!(selfPerc >= 0 && selfPerc <= 100) && !isNaN(selfPerc) &&
-                            <HelpPopup classAppend="tw-ml-4 tw-inline-flex tw-top-1.5" buttonClass="tw-text-red-400 active:tw-text-red-600" main="Тоцоолол алдаатай байна. Өргөгдөл гаргагчийн оролцооны нийт эзлэх хувь нь 0-ээс бага эсвэл 100-аас их байх боломжгүй." position="top-left" />
-                        }
-                    </span>
+                <div className="tw-p-0.5 tw-text-sm tw-font-medium">
+                    Өргөдөл гаргагчийн оролцоо нийт төслийн зардалд эзлэх хувь нь (C/A %):
+                    <span className="tw-ml-2 tw-text-base">50%</span>
                 </div>
             </div>
 
             <div className="tw-flex tw-justify-end">
-                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600 tw-text-sm" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )

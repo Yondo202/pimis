@@ -134,9 +134,9 @@ function UrgudulFront() {
 
                     {
                         UrgudulCtx.data.id ?
-                            <ButtonTooltip classAppend="tw-mt-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmitEdit} />
+                            <ButtonTooltip classAppend="tw-mt-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600 tw-text-sm" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmitEdit} />
                             :
-                            <ButtonTooltip classAppend="tw-mt-4" classButton="tw-px-2 tw-py-1 tw-bg-green-500 active:tw-bg-green-600" classLabel="tw-text-white" label="Маягт үүсгэх" onClick={handleSubmit} />
+                            <ButtonTooltip classAppend="tw-mt-4" classButton="tw-px-2 tw-py-1 tw-bg-green-500 active:tw-bg-green-600 tw-text-sm" classLabel="tw-text-white" label="Маягт үүсгэх" onClick={handleSubmit} />
                     }
                 </div>
             </div>
