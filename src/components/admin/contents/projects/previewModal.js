@@ -11,7 +11,7 @@ export default function PreviewModal(props) {
         props.setPreviewModal({ ...props.previewModal, open: false })
     }
 
-    const modalRef = useRef()
+    const modalRef = useRef();
 
     const handleClickOutside = (e) => {
         if (showModal && !modalRef.current?.contains(e.target)) {

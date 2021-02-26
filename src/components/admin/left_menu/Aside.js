@@ -39,8 +39,7 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
         </Menu> */}
         <Menu iconShape="circle">
           <SubMenu title="Түншлэлийн хөтөлбөр" icon={<FaRegLaughWink />}>
-            <MenuItem>Бүртгүүлсэн байгууллагууд</MenuItem>
-            <MenuItem>Дэмжлэг хүссэн өргөдлийн маягтууд</MenuItem>
+            <MenuItem>  <Link to="/projects"> Бүртгүүлсэн байгууллагууд</Link> </MenuItem>
             <MenuItem>Санхүүжилт</MenuItem>
           </SubMenu>
           {/* prefix={<span className="badge gray">3</span>} */}

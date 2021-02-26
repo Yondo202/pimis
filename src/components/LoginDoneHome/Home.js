@@ -19,8 +19,12 @@ function Home() {
 
     useEffect(async () => {
         if (userId) {
-            //   let userID = localStorage.getItem("userId");
             await axios.get(`pps-infos/registered-companies?userId=${userId}`, { headers: { Authorization: AccessToken() } }).then((res) => {
+                console.log(res, " ress"); if (res.data.data[0]) { setInfData(res.data.data[0]) }
+            })
+        }else{
+             let userID = localStorage.getItem("userId");
+             await axios.get(`pps-infos/registered-companies?userId=${userID}`, { headers: { Authorization: AccessToken() } }).then((res) => {
                 console.log(res, " ress"); if (res.data.data[0]) { setInfData(res.data.data[0]) }
             })
         }
