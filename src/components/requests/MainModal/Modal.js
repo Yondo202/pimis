@@ -61,8 +61,8 @@ export const Modal = ({ showModal,setShowModal, initialData, param }) => {
                   <animated.div style={animation} >
                       <div className="modalPar container">
                           <div className="closeParent">
-                              <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
                               {param!=="user"? <button className="esc" onClick={backHanlde} > Буцах </button> :<button className="esc" onClick={()=> setShowModal(prev => !prev)} > X </button> }
+                              <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
                           </div>
                           
                           <div ref={componentRef}>

@@ -104,8 +104,8 @@ export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
                                             <div className="title"> <input className="getRoles" name="role" type="radio" value="huuliin_zowloh" /> <span>Хуулийн зөвлөх</span></div>  
                                             <div className="title"> <input className="getRoles" name="role" type="radio" value="sanhuu" /> <span>Санхүү</span></div>  
                                             <div className="title"> <input className="getRoles" name="role" type="radio" value="hudaldanavah_ajillagaa" /> <span>Худалдаан авах ажиллагаа</span></div>  
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" value="surgalt_zohionbaiguulagch" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="unelgeenii_horoonigishuun" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" value="trainer" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="member" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
                                             <div className="title"> <input onChange={roleHandle} className="getRoles" value="monitoring" name="role" type="radio" /> <span>Мониторинг</span></div> 
                                             <div className="title"> <input onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div>  
                                     </div>

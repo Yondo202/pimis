@@ -9,6 +9,8 @@ import {CgDanger} from 'react-icons/cg'
 import UserContext from '../../context/UserContext'
 import AccessToken from '../../context/accessToken'
 import axios from '../../axiosbase'
+import {RiArrowGoBackFill  } from 'react-icons/ri';
+
 
 function CompCheck() {
     const param = useParams().url;
@@ -118,7 +120,7 @@ function CompCheck() {
                          <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div>
                     </div> 
             </div> :
-          ( <h1>Мэдээлэл оруулаагүй байна...</h1> ) ) :  (  <div className="boxShadow">
+          ( <NullParent className="BtnPar"><button onClick={()=>NextPageHandle(`/progress/${param}`)}><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> ) ) :  (  <div className="boxShadow">
                 <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
                 {initialData.map((el,i)=>{
                     return(
@@ -167,6 +169,22 @@ function CompCheck() {
 }
 
 export default CompCheck
+
+
+const NullParent = styled.div`
+    dispaly:flex;
+    flex-direction:row;
+    align-items:center;
+    button{
+        padding:5px 10px;
+        border:1px solid rgba(0,0,0,0.2);
+        border-radius:3px;
+        display:flex;
+        svg{
+            margin-right:6px;
+        }
+    }
+`
 
 
 

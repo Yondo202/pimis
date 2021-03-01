@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams,useHistory } from 'react-router-dom';
 import { animateScroll as scroll } from "react-scroll";
 import {IoMdCheckmarkCircle  } from 'react-icons/io';
+import {RiArrowGoBackFill  } from 'react-icons/ri';
 import { CgDanger } from 'react-icons/cg';
 import {VscOpenPreview} from 'react-icons/vsc'
 import TableOne from '../../components/requests/oldRequest/tableOne';
@@ -20,6 +21,7 @@ import AccessToken from '../../context/accessToken'
 
 
 function MainRequest(props) {
+    const history = useHistory();
     const param = useParams().url;
     const [ showModal, setShowModal ] = useState(false);
     const [ updateMount, setUpdateMount ] = useState(false);
@@ -59,6 +61,10 @@ function MainRequest(props) {
         if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); }
     }
 
+    const backHanlde = () =>{
+        history.push(`/progress/${param}`);
+    }
+
     const One = param === "user"&&helpCtx.GlobalStyle.tableOne
     const Two = param === "user"&&helpCtx.GlobalStyle.tableTwo
     const Three = param === "user"&&helpCtx.GlobalStyle.tableThree
@@ -70,7 +76,7 @@ function MainRequest(props) {
 
     return (
         <>
-            {param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param}  />: <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> )
+            {param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />:<NullParent className="BtnPar"><button onClick={backHanlde} ><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> )
             :( <>
                     <>
                     <PreviewBtn >
@@ -137,6 +143,20 @@ const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9,
     enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
 
 
+const NullParent = styled.div`
+    dispaly:flex;
+    flex-direction:row;
+    align-items:center;
+    button{
+        padding:5px 10px;
+        border:1px solid rgba(0,0,0,0.2);
+        border-radius:3px;
+        display:flex;
+        svg{
+            margin-right:6px;
+        }
+    }
+`
 const PreviewBtn = styled.div`
     .modalBtn{
         // background-color:rgba(0,0,0,0.1);
