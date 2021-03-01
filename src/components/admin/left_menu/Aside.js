@@ -54,7 +54,6 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.2 </MenuItem>
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.3 </MenuItem>
             </SubMenu>
-            {ctxUser.userInfo.role!=="edpadmin"?null:<h1>hahahah</h1>}
           </SubMenu>
 
           <SubMenu title="Тохиргоо" icon={<MdSettings />}>
@@ -75,8 +74,8 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               </SubMenu>
             </SubMenu>
           
-          {ctxUser.userInfo.role==="edpadmin"?<SubMenu title="Тохиргоо" icon={<MdSettings />}> </SubMenu>
-          :<SubMenu ></SubMenu>}
+          {/* {ctxUser.userInfo.role==="edpadmin"?<SubMenu title="Тохиргоо" icon={<MdSettings />}> </SubMenu>
+          :<SubMenu ></SubMenu>} */}
            
         </Menu>
       </SidebarContent>
