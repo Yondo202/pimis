@@ -169,6 +169,30 @@ export const InputStyle = styled.div`
             .RedPar{
                 border-bottom:1px solid red;
             }
+            input[type="checkbox"]{
+                &:after{
+                    content: "";
+                    background: white;
+                    display: block;
+                    border-radius:50%;
+                    position: absolute;
+                    // transition: transform 1s ease;
+                    transition: all 0.8s ease;
+                    opacity: 0;
+                    left:0%;
+                    top:0%;
+                    -webkit-transform: scale(2);
+                    transform: scale(2);
+                    height:24px;
+                    width:24px !important;
+                  }
+                  &:active:after{
+                    opacity: 1;
+                    transition: 0s;
+                    -webkit-transform: scale(0);
+                    transform: scale(0);
+                  }
+            }
             textarea{
                 align-self:flex-end;
                 width:100%;

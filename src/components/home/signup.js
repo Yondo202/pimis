@@ -22,13 +22,12 @@ function Signup() {
     const [visible2, setVisible2] = useState(false);
     const [passwordFocused, setPasswordFocused] = useState(false);
     const [password, setPassword] = useState("");
-    const [ color1, setColor1 ] = useState("#339CFF");
+    const [ color1, setColor1 ] = useState("rgba(0,0,0,0.7)");
     const [passwordValidity, setPasswordValidity  ] = useState({
       minCar: null,
       number: null,
       specialChar: null
     });
-
 
     const openModal=()=> { setVisible(false); setVisible2(true); }
     const closeModal=()=> { setVisible(false); }
