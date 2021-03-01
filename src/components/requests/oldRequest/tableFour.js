@@ -587,7 +587,31 @@ const Component1 = styled.div`
                   opacity: 0.8;
                   ::-webkit-datetime-edit { 
                     font-size: 1.4rem;
-                }
+                    
+                   }
+                   &:after{
+                    content: "";
+                    background: white;
+                    display: block;
+                    border-radius:50%;
+                    position: absolute;
+                    // transition: transform 1s ease;
+                    transition: all 0.8s ease;
+                    opacity: 0;
+                    left:0%;
+                    top:0%;
+                    -webkit-transform: scale(2);
+                    transform: scale(2);
+                    height:24px;
+                    width:24px !important;
+                  }
+                  &:active:after{
+                    opacity: 1;
+                    transition: 0s;
+                    -webkit-transform: scale(0);
+                    transform: scale(0);
+                  }
+                
                   &:checked{
                     opacity: 1;
                     -webkit-transform: scale(1.25);

@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 
 function UserHandle() {
     const [ update, setUpdate ] =useState(false);
+    const [ filter, setFilter ] = useState("all")
     const [ targetElement, setTargetElement ] = useState({});
     const [ usersData, setUsersData ] = useState([]);
     const [ showModal, setShowModal ] = useState(false);
@@ -23,11 +24,12 @@ function UserHandle() {
 
     useEffect( async()=>{
         const usersData = await axios.get(`users?role=other`);
-        console.log(usersData, " -- users data");
         let final = [];
         usersData.data.data.map((el,i)=>{ Role.map(elem=>{ if(el.role === elem.value){ el["code"] = elem.title; } }); final.push(el);  })
         setUsersData(final);
     },[update]);
+
+    const filterHanlde = (event) =>{ setFilter(event.target.value); }
 
     return (
         <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -38,15 +40,13 @@ function UserHandle() {
             <div className="Title">Хэрэглэгчид</div>
                 <div className="listHead">
                     <div className="Inputs">
-                        <div className="searchInp">
+                        {/* <div className="searchInp">
                             <input placeholder="Хайх..." typ="text" />
                             <VscSearch className="searchIcon" />
-                        </div>
-                        <select className="roleFilter">
-                            <option selected disabled>Ажлын үүрэгээр шүүх</option>
-                            <option>edpuser</option>
-                            <option>trainer</option>
-                            <option>edpadmin</option>
+                        </div> */}
+                        <select onChange={filterHanlde} className="roleFilter">
+                            <option value="all"  selected>- Бүгд -</option>
+                            {Role.map((el,i)=>{  return( <option value={el.value} >{el.title}</option>  )  })}
                         </select>
                     </div>
                     <div onClick={ModalOpen} className="AddBtn">
@@ -73,22 +73,34 @@ function UserHandle() {
                                         <div className="col-md-2"><div className="items">95606006</div></div>
                                         <div className="col-md-2"><div className="items"><div className="edit"><img src="/edit.svg" /></div> <div className="delete"><img src="/delete.svg" /></div>   </div></div>
                                     </div>
-                            </div>) :
-                    (usersData.map((el,i)=>{
+                            </div>) : 
+                      (usersData.map((el,i)=>{
                         return(
-                            <div style={{backgroundColor: i % 2 === 0 || el.i === 0 ? `rgba(0,0,0,.04)` : `white`}} className="bodyCont">
-                                    <div className="row">
-                                        <div className="col-md-5"><div className="NamePar"><img src="/user1.svg" alt="src" /> 
-                                        <div className="textPar"><h5 className="name">{el.firstname} {el.lastname}</h5><div className="email">{el.email}</div> </div>
-                                            </div>
+                             filter==="all"? ( <div style={{backgroundColor: i % 2 === 0 || el.i === 0 ? `rgba(0,0,0,.04)` : `white`}} className="bodyCont">
+                                <div className="row">
+                                    <div className="col-md-5"><div className="NamePar"><img src="/user1.svg" alt="src" /> 
+                                    <div className="textPar"><h5 className="name">{el.firstname} {el.lastname}</h5><div className="email">{el.email}</div> </div>
                                         </div>
-                                        <div className="col-md-3"><div className="items">{el.code}</div></div>
-                                        <div className="col-md-2"><div className="items">{el.phone}</div></div>
-                                        <div className="col-md-2"><div className="items"><div onClick={()=>ModalOpen3(el)} className="edit"><img src="/edit.svg" /></div> <div onClick={()=>ModalOpen2(el)} className="delete"><img src="/delete.svg" /></div>   </div></div>
                                     </div>
-                            </div>
+                                    <div className="col-md-3"><div className="items">{el.code}</div></div>
+                                    <div className="col-md-2"><div className="items">{el.phone}</div></div>
+                                    <div className="col-md-2"><div className="items"><div onClick={()=>ModalOpen3(el)} className="edit"><img src="/edit.svg" /></div> <div onClick={()=>ModalOpen2(el)} className="delete"><img src="/delete.svg" /></div>   </div></div>
+                                </div>
+                            </div>): el.role === filter? (
+                                <div style={{backgroundColor: i % 2 === 0 || el.i === 0 ? `rgba(0,0,0,.04)` : `white`}} className="bodyCont">
+                                <div className="row">
+                                    <div className="col-md-5"><div className="NamePar"><img src="/user1.svg" alt="src" /> 
+                                    <div className="textPar"><h5 className="name">{el.firstname} {el.lastname}</h5><div className="email">{el.email}</div> </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-3"><div className="items">{el.code}</div></div>
+                                    <div className="col-md-2"><div className="items">{el.phone}</div></div>
+                                    <div className="col-md-2"><div className="items"><div onClick={()=>ModalOpen3(el)} className="edit"><img src="/edit.svg" /></div> <div onClick={()=>ModalOpen2(el)} className="delete"><img src="/delete.svg" /></div>   </div></div>
+                                </div>
+                            </div> ) : null 
+                           
                         )
-                    }))}
+                    })) }
                 </div>
                 
         </Users>
@@ -232,7 +244,7 @@ const Users = styled.div`
                 margin: 0;
                 opacity: 1;
                 transition: 0s
-              }
+            }
         }
     }
     @media only screen and (max-width:768px){
