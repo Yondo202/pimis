@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HelpPopup from "components/help_popup/helpPopup";
+import axios from "axiosbase";
+import getLoggedUserToken from "components/utilities/getLoggedUserToken";
 
 
 const FirstEvaluation = () => {
@@ -11,6 +13,19 @@ const FirstEvaluation = () => {
     newRows[index][key] = value
     setRows([...newRows])
   }
+
+  const [evalutions, setEvaluations] = useState(initialState)
+
+  useEffect(() => {
+    axios.get(`projects/${1}/first-evalutions`, {
+      headers: { Authorization: getLoggedUserToken() },
+    }).then(res => {
+      console.log(res.data)
+      setEvaluations(res.data.data)
+    }).catch(err => {
+      console.log(err.response?.data)
+    })
+  }, [])
 
   return (
     <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2">
@@ -32,6 +47,11 @@ const FirstEvaluation = () => {
             <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
           </div>
         )}
+      </div>
+
+      <div className="">
+        <span>Тайлбар</span>
+        <textarea />
       </div>
 
       <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
