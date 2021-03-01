@@ -23,6 +23,7 @@ function UserHandle() {
 
     useEffect( async()=>{
         const usersData = await axios.get(`users?role=other`);
+        console.log(usersData, " -- users data");
         let final = [];
         usersData.data.data.map((el,i)=>{ Role.map(elem=>{ if(el.role === elem.value){ el["code"] = elem.title; } }); final.push(el);  })
         setUsersData(final);
