@@ -50,6 +50,7 @@ export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
     }
     const roleHandle = (event)=>{setPer(event.target.value) }
 
+    
    
     return(
         <>
@@ -94,17 +95,17 @@ export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
 
                             <div className="otherPar">
                                     <div className="HeadCheck"> 
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Холбоотой Яамд</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Төслийн Захирал</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Төслийн зохицуулагч</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Ахлах БХШ</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>БХЗ</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>ҮДД-ын зөвлөх</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Хуулийн зөвлөх</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Санхүү</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Худалдаан авах ажиллагаа</span></div>  
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="trainer" name="role" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="member" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
+                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="holbootoi_yamd" /> <span>Холбоотой Яамд</span></div>  
+                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="tosliin_zahiral" /> <span>Төслийн Захирал</span></div>  
+                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="tosliin_zohitsuulagch" /> <span>Төслийн зохицуулагч</span></div>  
+                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="ahlah_bhsh" /> <span>Ахлах БХШ</span></div>  
+                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="bh_zovloh" /> <span>БХЗ</span></div>  
+                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="vdd_zovloh" /> <span>ҮДД-ын зөвлөх</span></div>  
+                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="huuliin_zowloh" /> <span>Хуулийн зөвлөх</span></div>  
+                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="sanhuu" /> <span>Санхүү</span></div>  
+                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="hudaldanavah_ajillagaa" /> <span>Худалдаан авах ажиллагаа</span></div>  
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" value="surgalt_zohionbaiguulagch" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
+                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="unelgeenii_horoonigishuun" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
                                             <div className="title"> <input onChange={roleHandle} className="getRoles" value="monitoring" name="role" type="radio" /> <span>Мониторинг</span></div> 
                                             <div className="title"> <input onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div>  
                                     </div>
@@ -125,7 +126,6 @@ export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
                                         </div>)}
                             </div>
 
-                                
                                         
 
                                 <div className="BtnPar">
@@ -134,13 +134,6 @@ export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
                                 </div>
                         </form>
 
-                
-
-                       
-
-
-
-                        
 
                     </div>
                 </animated.div>
@@ -150,6 +143,7 @@ export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
 }
 
 const Background = styled.div`
+    overflow-y:scroll;
     font-size:13px;
     width: 100%;
     height: 100%;
@@ -171,15 +165,13 @@ const Background = styled.div`
         background-color:white;
         width:650px;
         padding:20px 35px;
-
-
         .otherPar{
             display:flex;
             align-items:start;
             justify-content:space-between;
             .HeadCheck{
-                height:170px;
-                overflow-y:scroll;
+                // height:170px;
+                // overflow-y:scroll;
                 font-size:14px;
                 display:flex;
                 flex-direction:column;

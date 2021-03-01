@@ -13,7 +13,7 @@ function ActiveComp(props) {
                                 <div className="line" ></div>
                                 <Link to={!props.prew?`/request/user`:`/request/${props.prew}`} className={props.data.esq ===true?`itemsActive`: `items`}>2. Байгаль орчны үнэлгээний асуумж </Link>
                                 <div className="line" ></div>
-                                <Link to={!props.prew&&`/letter-of-interest`} className={props.data.letterOfInterst ===true?`itemsActive`: `items`} >3. Сонирхол илэрхийлэх албан тоот</Link>                        
+                                <Link to={!props.prew?`/letter-of-interest`:`/letter-of-interest` } className={props.data.letterOfInterst ===true?`itemsActive`: `items`} >3. Сонирхол илэрхийлэх албан тоот</Link>                        
                             </div>
                             <div className="lineFull" ></div>
                             <Link to="/urgudul/1" className={props.data.project&&props.data.project.confirmed === 1?`resultActive`: `resultDesable`} >4. Өргөдлийн маягт </Link>

@@ -19,31 +19,41 @@ function MainWorkPerformance() {
     const [ spnBtn, setSpnBtn ] = useState(false);
     const [ initialData, setInitialData ] = useState(initialList);
     const [ initialData2, setInitialData2 ] = useState(initialList2);
+    const [ success, setSuccess ] = useState();
+
     const AddHandle = ()=>{  const list = initialData.concat( {ids: 1}); setInitialData(list); }
     const AddHandle2 = ()=>{  const list = initialData2.concat( {ids: 1}); setInitialData2(list); }
 
 
-    
+
 
     const clickHandle = () =>{
         let inf = document.querySelectorAll(".getInp"); let arr = Array.from(inf); let final = {};
         arr.map((el,i)=>{
-            final[el.name] = el.value;
+            if(!el.value){
+                el.classList += " RedPar"
+            }else{
+                final[el.name] = el.value;
+                el.classList =- " RedPar"
+                el.classList += " getInp"
+            }
         });
 
         let tb1 = document.querySelectorAll(".approve"); let tbarr2 = Array.from(tb1); let table1 = []; 
         tbarr2.map((el,i)=>{
-            
             let item = document.querySelectorAll(".appItems"); let itmarr = Array.from(item);
             itmarr.map((el,i)=>{
-                let obj = {};
-                obj[el.name] = el.value;
-                table1.push(obj);
+                if(el.value){
+                    let obj = {};
+                    obj[el.name] = el.value;
+                    table1.push(obj);
+                }
             });
-           
         });
-        final["todo_works"] = table1
-        console.log(final,"lalal");
+        if(table1[0]){
+            final["todo_works"] = table1
+        };
+        console.log(final,"final");
     }
 
     return (
@@ -102,7 +112,7 @@ function MainWorkPerformance() {
                         </div>
                     </div>
 
-                    <ModalOne />
+                    <ModalOne setSuccess={setSuccess} />
                     <ModalTwo />
                     <ModalThree />
 

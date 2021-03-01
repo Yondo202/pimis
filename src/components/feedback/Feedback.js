@@ -1,7 +1,8 @@
-import React,{useEffect, useState} from 'react'
+import React,{useEffect, useState,useRef} from 'react'
 import styled from 'styled-components'
 import {fontSize, textColor,InputStyle,ColorRgb,NextBtn } from '../theme'
 import {AiOutlineSend} from 'react-icons/ai'
+import { animateScroll as scroll } from "react-scroll";
 
 function Feedback() {
     const [FinalErrorText, setFinalErrorText] = useState("");
@@ -10,7 +11,7 @@ function Feedback() {
     const [otherOne, setOtherOne] = useState({Cname: "getInputt", checked:null, self:""  });
     const [otherTwo, setOtherTwo] = useState({Cname: "getInputt", checked:null, self:"" });
     
-    let inputFullName = React.useRef(null);
+    let inputFullName = useRef(null);
     useEffect(()=>{
         setTimeout(()=>{  inputFullName.current.focus();},3000);
     },[]);
@@ -38,6 +39,7 @@ function Feedback() {
                 if(el.checked === true){
                     let obj = {}
                     let next = document.querySelectorAll(`.${el.name}${el.id}_why`); let otherArr = Array.from(next);
+                    console.log(next);
                     otherArr.map(elem=>{
                         if(elem.id){
                             obj[elem.name] = elem.value;
@@ -73,8 +75,8 @@ function Feedback() {
             let tb = document.querySelectorAll(`.tableItem${i+1}`); let itemarr = Array.from(tb);
             itemarr.map((elem,ind)=>{
                 if(elem.checked===true){
-                    obj["checked"] = elem.value
-                    obj["title"] = elem.name
+                    obj["checked"] = elem.value;
+                    obj["title"] = elem.name;
                 }
             });
             tableOne.push(obj);
@@ -90,9 +92,17 @@ function Feedback() {
 
         final["service_assess"] = tableOne;
         final["efficiency"] = tableTwo;
+        let keys = Object.keys(final); 
+        console.log(keys.length);
 
+        if(keys.length < 11){
+            setFinalErrorText("Та гүйцэд бөгөлнө үү...");
+            setOpacity2("1");
+            scroll.scrollTo(0);
+        }else{
+            console.log("done");
+        }
         console.log(final, "^final");
-
     }
 
     return (

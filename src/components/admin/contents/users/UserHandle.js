@@ -22,10 +22,11 @@ function UserHandle() {
     const ModalOpen3 = (el) => { setTargetElement(el); setShowModal3(prev => !prev); }
 
     useEffect( async()=>{
-        const usersData = await axios.get(`users`);
-        console.log(usersData.data.data);
-        setUsersData(usersData.data.data);
-    },[update])
+        const usersData = await axios.get(`users?role=other`);
+        let final = [];
+        usersData.data.data.map((el,i)=>{ Role.map(elem=>{ if(el.role === elem.value){ el["code"] = elem.title; } }); final.push(el);  })
+        setUsersData(final);
+    },[update]);
 
     return (
         <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -55,19 +56,19 @@ function UserHandle() {
                 <div className="listContPar">
                     <div className="usersHead">
                         <div className="row">
-                            <div className="col-md-6"><div className="itemsA">Овог нэр</div></div>
-                            <div className="col-md-2"><div className="items">Үүрэг</div></div>
+                            <div className="col-md-5"><div className="itemsA">Овог нэр</div></div>
+                            <div className="col-md-3"><div className="items">Үүрэг</div></div>
                             <div className="col-md-2"><div className="items">Дугаар</div></div>
                             <div className="col-md-2"><div className="items">Үйлдэл</div></div>
                         </div>
                     </div>
                     {!usersData[0]? (<div style={{backgroundColor:`white`}} className="bodyCont Example">
                                     <div className="row">
-                                        <div className="col-md-6"><div className="NamePar"><img src="/user1.svg" alt="src" /> 
+                                        <div className="col-md-5"><div className="NamePar"><img src="/user1.svg" alt="src" /> 
                                         <div className="textPar"><h5 className="name">Example</h5><div className="email">example@gmail.com</div> </div>
                                             </div>
                                         </div>
-                                        <div className="col-md-2"><div className="items">Admin</div></div>
+                                        <div className="col-md-3"><div className="items">Admin</div></div>
                                         <div className="col-md-2"><div className="items">95606006</div></div>
                                         <div className="col-md-2"><div className="items"><div className="edit"><img src="/edit.svg" /></div> <div className="delete"><img src="/delete.svg" /></div>   </div></div>
                                     </div>
@@ -76,11 +77,11 @@ function UserHandle() {
                         return(
                             <div style={{backgroundColor: i % 2 === 0 || el.i === 0 ? `rgba(0,0,0,.04)` : `white`}} className="bodyCont">
                                     <div className="row">
-                                        <div className="col-md-6"><div className="NamePar"><img src="/user1.svg" alt="src" /> 
+                                        <div className="col-md-5"><div className="NamePar"><img src="/user1.svg" alt="src" /> 
                                         <div className="textPar"><h5 className="name">{el.firstname} {el.lastname}</h5><div className="email">{el.email}</div> </div>
                                             </div>
                                         </div>
-                                        <div className="col-md-2"><div className="items">{el.role}</div></div>
+                                        <div className="col-md-3"><div className="items">{el.code}</div></div>
                                         <div className="col-md-2"><div className="items">{el.phone}</div></div>
                                         <div className="col-md-2"><div className="items"><div onClick={()=>ModalOpen3(el)} className="edit"><img src="/edit.svg" /></div> <div onClick={()=>ModalOpen2(el)} className="delete"><img src="/delete.svg" /></div>   </div></div>
                                     </div>
@@ -244,10 +245,18 @@ const Users = styled.div`
     }
 `
 
-const UserData = [
-  { first_name: "Гантулга", last_name: "Баасандорж", phone:"95301535", email:"gangsta@gmail.com", role:"хэрэглэгч"  },
-  { first_name: "Бадамсүрэн", last_name: "Бадамсүрэн", phone:"95301535", email:"badmaa123@gmail.com", role:"Админ"  },
-  { first_name: "Доржханд", last_name: "Бадамсүрэн", phone:"8816222", email:"edp@gmail.com", role:"хэрэглэгч"  },
-  { first_name: "Бамбай", last_name: "Лодойломбо", phone:"99551245", email:"bambai247@gmail.com", role:"Кластер"  },
-  { first_name: "Нандин-цэцэг", last_name: "Бадамсүрэн", phone:"95301535", email:"gangsta@gmail.com", role:"хэрэглэгч"  },
+const Role = [
+    {  title:"Холбоотой Яамд", value:"holbootoi_yamd",  },
+    {  title:"Төслийн Захирал", value:"tosliin_zahiral", },
+    {  title:"Төслийн зохицуулагч", value:"tosliin_zohitsuulagch",  },
+    {  title:"Ахлах БХШ", value:"ahlah_bhsh",  },
+    {  title:"БХЗ", value:"bh_zovloh",  },
+    {  title:"ҮДД-ын зөвлөх", value:"vdd_zovloh",  },
+    {  title:"Хуулийн зөвлөх", value:"huuliin_zowloh",  },
+    {  title:"Санхүү", value:"sanhuu",  },
+    {  title:"Худалдаан авах ажиллагаа", value:"hudaldanavah_ajillagaa",  },
+    {  title:"Сургалт зохион байгуулагч", value:"trainer",  },
+    {  title:"Үнэлгээний хорооны гишүүн", value:"member",  },
+    {  title:"Мониторинг", value:"monitoring",  },
+    {  title:"edp - админ", value:"edpadmin",  }
 ]

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Modal from 'react-awesome-modal';
 import SignatureCanvas from 'react-signature-canvas'
 import {FaPenNib} from 'react-icons/fa'
-import { ColorRgb, textColor } from '../../theme'
+import { ColorRgb, textColor,InputStyle } from '../../theme'
 
 
 
@@ -34,8 +34,12 @@ function PageOne() {
                                         [Хэрэв танд Түншлэлийн дэмжлэг хүсэгч ААН, Кластер болон үнэлгээний хорооны бусад гишүүдтэй сонирхлын зөрчил байгаа бол үнэлгээний хорооноос өөрийн хүсэлтээр огцорно уу.]<br />
                                         Түншлэлийн дэмжлэг хүсэгчтэй дараах ашиг сонирхлын зөрчил үүсэж байна: 
                                     </li>
-                                    <input placeholder="зөрчил үүсэж байгаа бол энд бичнэ үү..." className="form-control" />
-                                    <li className="items">
+                                    <InputStyle>
+                                      <textarea placeholder="зөрчил үүсэж байгаа бол энд бичнэ үү..." />
+                                      <div className="line"></div>
+                                    </InputStyle>
+
+                                    <li className="items"> 
                                         Түншлэлийн дэмжлэг олгох үйл ажиллагааг үнэлэх явцад оролцож буй талуудтай ямар нэгэн бизнес эсвэл гэр бүлийн харилцаа байхгүй гэдгийг үүгээр баталгаажуулж байна. Хэрэв ийм харилцаа гарч ирвэл төслийн захиралд нэн даруй мэдэгдэх болно. 
                                     </li>
                                     <div className="Titles">II-р хэсэг – Ашиг сонирхлын зөрчилгүйг мэдүүлэх</div>

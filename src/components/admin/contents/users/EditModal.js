@@ -8,15 +8,22 @@ import UserContext from '../../../../context/UserContext'
 export const EditModal = ({ showModal,setShowModal,setUpdate, parent,parentEdit}) => {
     const modalRef = useRef();
     const ctx = useContext(UserContext);
-    const [ per, setPer ] = useState(parent.role);
+    const [ per, setPer ] = useState(Role);
     const [ errText, setErrText ] = useState("0");
     const [ btnSpin, setBtnSpin  ] = useState(false);
+
+    useEffect(()=>{
+        const final = [];
+        Role.map(el=>{ if(el.value === parent.role){ el["code"] = true; }else{  el["code"] = false; } final.push(el); })
+        setPer(final);
+    },[showModal]);
 
     const animation = useSpring({
         config:{duration:330  },
         opacity: showModal ? 1 : 0,
-        transform: showModal ? `translateY(10%)` : `translateY(30%)`  
+        transform: showModal ? `translateY(10%)` : `translateY(30%)` 
     });
+
     const closeModal = e =>{ if(modalRef.current === e.target){ setShowModal(false); } }
 
     const clickHandle = (e) =>{
@@ -48,19 +55,10 @@ export const EditModal = ({ showModal,setShowModal,setUpdate, parent,parentEdit}
          console.log(JSON.stringify(final) , "^final");
     }
 
-    // const edpuserHandle = (event) =>{
-    //     let arr = [];
-    //     arr[event.target.value] = !event.target.checked;
-    //     arr = [...parent.permission];
-        
-       
-    //     parentEdit(parent["permission"] = arr);
-        
-    // }
-
     const roleHandle = (event)=>{ 
-        setPer(event.target.value);
-        let finall = {}; finall["role"] = event.target.value; finall["permission"] = parent.permission;  finall["id"] = parent.id; parentEdit(parent["finall"] = finall);
+        const final = []
+        Role.map(el=>{ if(el.value === event.target.value){ el["code"] = true; }else{  el["code"] = false; } final.push(el); })
+        setPer(final);
      }
 
     const editHandle = (event) =>{
@@ -111,19 +109,11 @@ export const EditModal = ({ showModal,setShowModal,setUpdate, parent,parentEdit}
                                 <div className="otherPar">
 
                                     <div className="HeadCheck"> 
-                                    <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Холбоотой Яамд</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Төслийн Захирал</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Төслийн зохицуулагч</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Ахлах БХШ</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>БХЗ</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>ҮДД-ын зөвлөх</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Хуулийн зөвлөх</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Санхүү</span></div>  
-                                            <div className="title"> <input className="getRoles" value="edpuser" name="role" type="radio" /> <span>Худалдаан авах ажиллагаа</span></div>  
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="trainer" name="role" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="member" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="monitoring" name="role" type="radio" /> <span>Мониторинг</span></div> 
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div> 
+                                            {per.map((el,i)=>{
+                                                return(
+                                                    <div key={i} className="title"> <input onChange={roleHandle} checked={el.code} className="getRoles" name="role" type="radio" value={el.value} /> <span>{el.title}</span></div>  
+                                                )
+                                            })}
                                     </div>
                                 
                                     {parent.role==="edpuser"&&(<div className="edpUsers">
@@ -151,14 +141,6 @@ export const EditModal = ({ showModal,setShowModal,setUpdate, parent,parentEdit}
                                 </div>
                         </form>
 
-                
-
-                       
-
-
-
-                        
-
                     </div>
                 </animated.div>
             </Background>: null}
@@ -167,9 +149,10 @@ export const EditModal = ({ showModal,setShowModal,setUpdate, parent,parentEdit}
 }
 
 const Background = styled.div`
+    overflow-y:scroll;
     font-size:13px;
     width: 100%;
-    height: 100%;
+    // height: 100%;
     top:0;
     left:0;
     right:0;
@@ -193,8 +176,8 @@ const Background = styled.div`
             align-items:start;
             justify-content:space-between;
             .HeadCheck{
-                height:170px;
-                overflow-y:scroll;
+                // height:170px;
+                // overflow-y:scroll;
                 font-size:14px;
                 display:flex;
                 flex-direction:column;
@@ -316,3 +299,20 @@ const Background = styled.div`
         }
     }
 `
+
+const Role = [
+    {  title:"Холбоотой Яамд", value:"holbootoi_yamd",  },
+    {  title:"Төслийн Захирал", value:"tosliin_zahiral", },
+    {  title:"Төслийн зохицуулагч", value:"tosliin_zohitsuulagch",  },
+    {  title:"Ахлах БХШ", value:"ahlah_bhsh",  },
+    {  title:"БХЗ", value:"bh_zovloh",  },
+    {  title:"ҮДД-ын зөвлөх", value:"vdd_zovloh",  },
+    {  title:"Хуулийн зөвлөх", value:"huuliin_zowloh",  },
+    {  title:"Санхүү", value:"sanhuu",  },
+    {  title:"Худалдаан авах ажиллагаа", value:"hudaldanavah_ajillagaa",  },
+    {  title:"Сургалт зохион байгуулагч", value:"trainer",  },
+    {  title:"Үнэлгээний хорооны гишүүн", value:"member",  },
+    {  title:"Мониторинг", value:"monitoring",  },
+    {  title:"edp - админ", value:"edpadmin",  }
+]
+

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {InputStyle} from '../../theme'
 import {MdAddCircle} from 'react-icons/md';
 import Modal from 'react-awesome-modal';
@@ -6,31 +6,40 @@ import SignatureCanvas from 'react-signature-canvas'
 import {FaPenNib} from 'react-icons/fa'
 
 
-function ModalOne() {
+function ModalOne(props) {
+    const dateRef = useRef();
     const userInitial = [{ids: 0,  url: null, visible: false, sigCanvas:{}}];
     const [ userInfo, setUserInfo ] = useState(userInitial);
    
     const openModal=(id)=> {
-        let final = [];
-        userInfo.map((el,i)=>{ if((i+1) === id){ let addImg = {}; addImg["ids"] = 1; addImg["url"] = el.sigCanvas.url; addImg["visible"] = true; final.push(addImg);}else{ final.push(el); }});
-          setUserInfo( final );
+        let get =  document.getElementById(`getInp${id}`);
+        if(!get.value){ get.focus();
+        }else{
+            let final = [];
+            userInfo.map((el,i)=>{ if((i+1) === id){ let addImg = {}; addImg[get.name]=get.value; addImg["ids"] = id; addImg["url"] = el.sigCanvas.url; addImg["visible"] = true; final.push(addImg);}else{ final.push(el); }});
+            setUserInfo( final );
+        }
+        // props.setSuccess();
     }
 
     const closeModal=(id)=> {
+        let get =  document.getElementById(`getInp${id}`);
         let final = [];
-         userInfo.map((el,i)=>{ if((i+1) === id){ let addImg = {}; addImg["ids"] = 1; addImg["url"] = el.sigCanvas.url; addImg["visible"]= false; final.push(addImg); }else{ final.push(el); }});
+         userInfo.map((el,i)=>{ if((i+1) === id){ let addImg = {}; addImg[get.name]=get.value; addImg["ids"] = id; addImg["url"] = el.sigCanvas.url; addImg["visible"]= false; final.push(addImg); }else{ final.push(el); }});
         setUserInfo( final );
     }
 
     const clear = (id) =>{ 
+        let get =  document.getElementById(`getInp${id}`);
          let final = [];
-         userInfo.map((el,i)=>{   if((i+1) === id){let addImg = {};  addImg["ids"] = 1; addImg["url"] = el.sigCanvas.clear(); addImg["visible"]= true;  final.push(addImg); }else{ final.push(el); } });
+         userInfo.map((el,i)=>{   if((i+1) === id){let addImg = {}; addImg[get.name]=get.value; addImg["ids"] = id; addImg["url"] = el.sigCanvas.clear(); addImg["visible"]= true;  final.push(addImg); }else{ final.push(el); } });
          setUserInfo( final );
     }
 
     const trim = (id) =>{
+        let get =  document.getElementById(`getInp${id}`);
         let final = [];
-        userInfo.map((el,i)=>{ if((i+1) === id){  let addImg = {};  addImg["ids"] = 1; addImg["url"] = el.sigCanvas.getTrimmedCanvas().toDataURL('image/png'); addImg["visible"] = false; final.push(addImg); }else{ final.push(el); } });
+        userInfo.map((el,i)=>{ if((i+1) === id){  let addImg = {}; addImg[get.name]=get.value; addImg["ids"] = id; addImg["url"] = el.sigCanvas.getTrimmedCanvas().toDataURL('image/png'); addImg["visible"] = false; final.push(addImg); }else{ final.push(el); } });
         setUserInfo( final );
      };
 
@@ -53,7 +62,7 @@ function ModalOne() {
                                             <div>Албан тушаал: Төслийн зохицуулагч</div>
                                             <div className="infItemPar">
                                                     <div className="DatePar">
-                                                        <span>Огноо: </span><InputStyle className="themeStyle" > <input placeholder="example@example.com..." type="date" max='3000-12-31' /><div className="line" /></InputStyle>
+                                                        <span>Огноо: </span><InputStyle className="themeStyle" > <input id={`getInp${i+1}`} name="date" placeholder="example@example.com..." type="date" max='3000-12-31' /><div className="line" /></InputStyle>
                                                     </div>
                                                     <div className="drowPar">
                                                     <div>Гарын үсэг:</div> <div className="SignBtn" onClick={()=>openModal(i+1)} ><FaPenNib /><span>Зурах</span></div>

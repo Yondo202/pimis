@@ -15,7 +15,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
   return (
     <ProSidebar image={image ? sidebarBg : false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
       <SidebarHeader>
-        <div className="headPar" >Экспортыг дэмжих төсөл</div>
+        <div className="headPar" >
+          <Link to="/"> Экспортыг дэмжих төсөл</Link>
+        </div>
       </SidebarHeader>
 
       <SidebarContent >
