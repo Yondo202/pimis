@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { config, Transition } from 'react-spring/renderprops'
 import CloseSVG from 'assets/svgComponents/closeSVG'
-import UrgudulPreview from 'pages/urgudul/preview/preview'
+import UrgudulPreview from 'pages/urgudul/preview/Preview'
 
 
 export default function PreviewModal(props) {

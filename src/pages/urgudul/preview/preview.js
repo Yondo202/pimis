@@ -10,6 +10,7 @@ import RowImage from './rowImage'
 import RowHtml from './rowHtml'
 import { districts } from 'pages/urgudul/urgudul_a/form_a_1'
 import { dates } from 'pages/urgudul/urgudul_b/form_b_8'
+import { useParams } from 'react-router-dom'
 
 
 const labels = {
@@ -128,8 +129,10 @@ export default function UrgudulPreview(props) {
 
     const AlertCtx = useContext(AlertContext)
 
+    const params = useParams()
+
     useEffect(() => {
-        props.id &&
+        if (props.id) {
             axios.get(`projects/${props.id}`, {
                 headers: { 'Authorization': getLoggedUserToken() }
             }).then(res => {
@@ -140,6 +143,18 @@ export default function UrgudulPreview(props) {
                 console.log(err.response?.data)
                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
             })
+        } else if (params.id) {
+            axios.get(`projects/${params.id}`, {
+                headers: { 'Authorization': getLoggedUserToken() }
+            }).then(res => {
+                console.log(res.data)
+                setProject(res.data.data)
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээллийг амжилттай уншлаа.' })
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
+            })
+        }
     }, [])
 
     const isCluster = project.project_type === 1 || false

@@ -9,12 +9,18 @@ import { CgDanger } from 'react-icons/cg';
 import { Route } from "react-router-dom";
 import UserHandle from 'components/admin/contents/users/UserHandle';
 import ProjectHandle from 'components/admin/contents/projects/ProjectHandle'
-import UrgudulNavigator from 'pages/urgudul/page'
+import UrgudulNavigator from 'pages/urgudul/Page'
 import { UrgudulStore } from 'components/utilities/urgudulContext'
 import ProjectHandle1 from 'components/admin/contents/projects1/ProjectHandle'
 import Home from 'components/LoginDoneHome/Home'
 import Request from 'containers/requestComp/mainRequestOld'
 import Check from 'components/check/compCheck'
+import LetterOfInterest from 'pages/letter_of_interest/page';
+import UrgudulPreview from 'pages/urgudul/preview/Preview';
+import AttachmentUploads from 'pages/attachments/page';
+import FirstEvaluation from 'pages/decision_making/page_5a';
+import CompilationChecklist from 'pages/decision_making/page_5b';
+import AnalystReport from 'pages/decision_making/page_5c';
 
 
 function Layout({ setLocale }) {
@@ -62,6 +68,12 @@ function Layout({ setLocale }) {
                         <Route path="/progress/:userId" component={Home} />
                         <Route path="/request/:url" component={Request} />
                         <Route path="/check/:url" component={Check} />
+                        <Route path="/letter-of-interest/:id" component={LetterOfInterest} />
+                        <Route path="/urgudul-preview/:id" component={UrgudulPreview} />
+                        <Route path="/attachments/:id" component={AttachmentUploads} />
+                        <Route path="/5a/:id" component={FirstEvaluation} />
+                        <Route path="/5b/:id" component={CompilationChecklist} />
+                        <Route path="/5c/:id" component={AnalystReport} />
                     </UrgudulStore>
                 </div>
             </div>
