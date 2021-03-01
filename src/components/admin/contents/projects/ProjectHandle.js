@@ -30,6 +30,7 @@ loadMessages({
         "dxDiagram-dialogButtonCancel": "Болих",
         "dxDataGrid-headerFilterEmptyValue": "(Хоосон)",
         "dxDataGrid-filterRowShowAllText": "(Бүгд)",
+        "dxCalendar-todayButtonText": "Өнөөдөр",
     }
 })
 
@@ -153,7 +154,7 @@ export default function ProjectHandle() {
 
             <PreviewModal previewModal={previewModal} setPreviewModal={setPreviewModal} />
 
-            <EvaluatorsModal evaluatorsModal={evaluatorsModal} setEvaluatorsModal={setEvaluatorsModal} />
+            <EvaluatorsModal evaluatorsModal={evaluatorsModal} setEvaluatorsModal={setEvaluatorsModal} members={members} />
         </div>
     )
 }
