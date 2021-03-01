@@ -7,6 +7,7 @@ import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import AlertContext from 'components/utilities/alertContext'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 import HelpPopup from 'components/help_popup/helpPopup'
+import { useParams } from 'react-router-dom'
 
 
 const initialState = [
@@ -154,15 +155,28 @@ export default function AttachmentUploads() {
         })
     }
 
+    const params = useParams()
+
     useEffect(() => {
-        axios.get('evidences', {
-            headers: { 'Authorization': getLoggedUserToken() },
-        }).then(res => {
-            console.log(res.data)
-            setForm(res.data.data)
-        }).catch(err => {
-            console.log(err.response?.data)
-        })
+        if (params.id) {
+            axios.get(`evidences/${params.id}`, {
+                headers: { 'Authorization': getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                setForm(res.data.data)
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+        } else {
+            axios.get('evidences', {
+                headers: { 'Authorization': getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                setForm(res.data.data)
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+        }
     }, [])
 
     return (

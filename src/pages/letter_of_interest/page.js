@@ -11,6 +11,7 @@ import AlertContext from 'components/utilities/alertContext'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import PrintSVG from 'assets/svgComponents/printSVG'
 import { animated, useTransition } from 'react-spring'
+import { useParams } from 'react-router-dom'
 
 
 const initialState = {
@@ -142,19 +143,32 @@ function LetterOfInterest() {
         }
     }
 
+    const params = useParams()
+
     useEffect(() => {
-        axios.get('letter-of-interests', {
-            headers: {
-                'Authorization': getLoggedUserToken(),
-            },
-        })
-            .then(res => {
+        if (params.id) {
+            axios.get(`letter-of-interests/${params.id}`, {
+                headers: {
+                    'Authorization': getLoggedUserToken(),
+                },
+            }).then(res => {
                 console.log(res.data)
                 setForm({ ...form, ...res.data.data })
-            })
-            .catch(err => {
+            }).catch(err => {
                 console.log(err.response?.data)
             })
+        } else {
+            axios.get('letter-of-interests', {
+                headers: {
+                    'Authorization': getLoggedUserToken(),
+                },
+            }).then(res => {
+                console.log(res.data)
+                setForm({ ...form, ...res.data.data })
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+        }
     }, [])
 
     const emptyDataURL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQYV2NgAAIAAAUAAarVyFEAAAAASUVORK5CYII='
