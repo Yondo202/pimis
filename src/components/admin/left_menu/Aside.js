@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { MenuColor, MainFontSize, fontFamily } from "../ThemeAdmin";
@@ -8,9 +8,22 @@ import { FaChalkboardTeacher} from "react-icons/fa";
 import { MdSettings } from "react-icons/md";
 import { GiProgression } from "react-icons/gi";
 import sidebarBg from "./bg_image/bg1.jpg";
+import UserContext from '../../../context/UserContext'
 
 
 const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
+  const ctxUser = useContext(UserContext);
+
+  useEffect(()=>{
+    let role = localStorage.getItem("role");
+    console.log(role);
+  },[ctxUser.userInfo.id]);
+
+
+  console.log(ctxUser.userInfo.role, "----user context");
+  
+
+
   const intl = useIntl();
   return (
     <ProSidebar image={image ? sidebarBg : false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
@@ -41,24 +54,30 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.2 </MenuItem>
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.3 </MenuItem>
             </SubMenu>
+            {ctxUser.userInfo.role!=="edpadmin"?null:<h1>hahahah</h1>}
           </SubMenu>
+
           <SubMenu title="Тохиргоо" icon={<MdSettings />}>
-            <MenuItem>
-              <Link to="/users">Хэрэглэгчид</Link>{" "}
-            </MenuItem>
-            <MenuItem> Төслийн нэгжийн мэдээлэл </MenuItem>
-            <SubMenu title="Түншлэлийн хөтөлбөр">
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.1 </MenuItem>
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.2 </MenuItem>
+              <MenuItem>
+                <Link to="/users">Хэрэглэгчид</Link>{" "}
+              </MenuItem>
+              <MenuItem> Төслийн нэгжийн мэдээлэл </MenuItem>
+              <SubMenu title="Түншлэлийн хөтөлбөр">
+                <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.1 </MenuItem>
+                <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.2 </MenuItem>
+              </SubMenu>
+              <SubMenu title="Сургалт">
+                <MenuItem>Сургалтын байгууллагууд</MenuItem>
+                <MenuItem>Сургалтын төрлүүд</MenuItem>
+              </SubMenu>
+              <SubMenu title="Даатгал">
+                <MenuItem>Тохиргоо -1</MenuItem>
+              </SubMenu>
             </SubMenu>
-            <SubMenu title="Сургалт">
-              <MenuItem>Сургалтын байгууллагууд</MenuItem>
-              <MenuItem>Сургалтын төрлүүд</MenuItem>
-            </SubMenu>
-            <SubMenu title="Даатгал">
-              <MenuItem>Тохиргоо -1</MenuItem>
-            </SubMenu>
-          </SubMenu>
+          
+          {ctxUser.userInfo.role==="edpadmin"?<SubMenu title="Тохиргоо" icon={<MdSettings />}> </SubMenu>
+          :<SubMenu ></SubMenu>}
+           
         </Menu>
       </SidebarContent>
 
