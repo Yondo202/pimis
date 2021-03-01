@@ -4,11 +4,11 @@ import styled from 'styled-components'
 function Home() {
     return (
         <HomeComponents >
-            <h1>   Its Home </h1>
+            {/* <h1>   Its Home </h1>
 
             <h1>   Its Home </h1>
 
-            <h1>   Its Home </h1>
+            <h1>   Its Home </h1> */}
         </HomeComponents>
     )
 }

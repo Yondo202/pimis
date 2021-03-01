@@ -76,7 +76,6 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
           
           {/* {ctxUser.userInfo.role==="edpadmin"?<SubMenu title="Тохиргоо" icon={<MdSettings />}> </SubMenu>
           :<SubMenu ></SubMenu>} */}
-           
         </Menu>
       </SidebarContent>
 

@@ -63,7 +63,7 @@ function Login() {
                 <div className="formOneParent">
                     <div className="inputPar">
                         <div className="inpChild">
-                            <div className="labels"><span>Нэвтрэх нэр</span> </div>
+                            <div className="labels"><span>Нэвтрэх</span> </div>
                             <div className="name">
                                 <CgProfile />
                                 <InputStyle className="newInp">

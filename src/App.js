@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { motion } from "framer-motion";
 import Admin from "./containers/admin/MainMenu";
@@ -32,9 +32,11 @@ import 'assets/devExtremeTheme/dx.material.blue-light-compact.css'
 
 
 function App() {
+  const [ userId, setUserId ] = useState(null);
   const ctxUser = useContext(UserContext);
 
   useEffect(() => {
+    setUserId(ctxUser.userInfo.id);
     const token = localStorage.getItem("accessToken");
     const expireDate = new Date(localStorage.getItem("expireDate"));
     if (token) {
@@ -49,7 +51,8 @@ function App() {
         ctxUser.autoRenewTokenAfterMillisec(3600000);
       }
     }
-  }, [ctxUser.userInfo.id]);
+  }, [userId]);
+
 
   return (
     <div className="App">
