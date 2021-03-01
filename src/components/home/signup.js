@@ -238,7 +238,7 @@ function Signup() {
                                           <div className="name">
                                               <CgProfile />
                                               <InputStyle className="newInp">
-                                                   <input type="input" className="userInp form__field" placeholder="бүтэн нэрээ оруулна уу..." name="name" required />
+                                                   <input type="input" className="userInp form__field" placeholder="нэр..." name="name" required />
                                                   <div className="line"></div>
                                               </InputStyle>
                                               {/* <div className="form__group">

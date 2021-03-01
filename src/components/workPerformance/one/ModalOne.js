@@ -41,6 +41,7 @@ function ModalOne(props) {
         let final = [];
         userInfo.map((el,i)=>{ if((i+1) === id){  let addImg = {}; addImg[get.name]=get.value; addImg["ids"] = id; addImg["url"] = el.sigCanvas.getTrimmedCanvas().toDataURL('image/png'); addImg["visible"] = false; final.push(addImg); }else{ final.push(el); } });
         setUserInfo( final );
+        props.setSuccess(final);
      };
 
     const AddHandleUser = ()=>{ const list = userInfo.concat( {ids: 1, url: null, visible: false, sigCanvas:{} }); setUserInfo(list); }

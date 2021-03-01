@@ -7,13 +7,22 @@ import {InputStyle} from '../../theme'
 
 function ModalTwo() {
     const [visible, setVisible] = useState(false);
+    const userInitial = { url: null, sigCanvas:{}, date:""};
+    const [ userInfo, setUserInfo ] = useState(userInitial);
     let [sigCanvas, setSigCanvas] = useState({});
-    let [trimmedDataURL, setTrimmedDataURL] = useState(null);
 
-    const openModal=()=> { setVisible(true); }
+    const openModal=()=> {
+        let get =  document.getElementById(`getInpTwo`);
+        if(!get.value){ get.focus(); }else{ setVisible(true); }
+    }
     const closeModal=()=> { setVisible(false);}
-    const clear = () => sigCanvas.clear();
-    const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); closeModal();};
+    const clear = () =>{ sigCanvas.clear(); setUserInfo(userInitial) }
+    const trim = () =>{ 
+        setSigCanvas(sigCanvas.getTrimmedCanvas().toDataURL('image/png'));
+        let final = {}; let get =  document.getElementById(`getInpTwo`);  final[get.name] = get.value;
+        final["url"] = sigCanvas.getTrimmedCanvas().toDataURL('image/png');
+        setUserInfo(final); closeModal();
+    };
 
     return (
         <div className="rowItems">
@@ -27,11 +36,11 @@ function ModalTwo() {
                                 <div>Албан тушаал: (Түншлэлийн хөтөлбөрөөс дэмжлэг хүртэгч байгууллага) </div>
                                 <div className="infItemPar">
                                         <div className="DatePar">
-                                            <span>Огноо: </span><InputStyle className="themeStyle" > <input placeholder="example@example.com..." type="date" max='3000-12-31' /><div className="line" /></InputStyle>
+                                            <span>Огноо: </span><InputStyle className="themeStyle" > <input id="getInpTwo" name="date" placeholder="example@example.com..." type="date" max='3000-12-31' /><div className="line" /></InputStyle>
                                         </div>
                                         <div className="drowPar">
                                         <div>Гарын үсэг:</div> <div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>
-                                            {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
+                                            {userInfo.url ? <img className="SingatureImg"  src={userInfo.url}/> : null}
                                                 <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
                                                     <div className="modalPar">
                                                         <div className="Canvass">

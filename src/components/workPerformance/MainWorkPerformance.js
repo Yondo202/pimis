@@ -56,6 +56,8 @@ function MainWorkPerformance() {
         console.log(final,"final");
     }
 
+    console.log(success, " succsess");
+
     return (
         <WorkPerformance className="container">
             <div className="contentPar">
