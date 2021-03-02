@@ -98,7 +98,7 @@ export default function ProjectHandle() {
 
     const [evaluatorsModal, setEvaluatorsModal] = useState({
         open: false,
-        id: '',
+        project: {},
     })
 
     const [members, setMembers] = useState([])
@@ -129,6 +129,7 @@ export default function ProjectHandle() {
                 <HeaderFilter visible={true} />
                 <FilterRow visible={true} />
 
+                <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} setEvaluatorsModal={setEvaluatorsModal} />} headerCellRender={HeaderCell} width={134} />
                 <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} />
                 <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} />
                 <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} />
@@ -149,7 +150,6 @@ export default function ProjectHandle() {
                 <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} />
                 <Column dataField="firstEvalution.description" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell} />
                 <Column dataField="lastEvalution.description" caption="Бизнес шинжээчийн үнэлгээ" headerCellRender={HeaderCell} />
-                <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} setEvaluatorsModal={setEvaluatorsModal} />} headerCellRender={HeaderCell} width={134} />
             </DataGrid>
 
             <PreviewModal previewModal={previewModal} setPreviewModal={setPreviewModal} />

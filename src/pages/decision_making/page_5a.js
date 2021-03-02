@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import HelpPopup from "components/help_popup/helpPopup";
 import axios from "axiosbase";
 import getLoggedUserToken from "components/utilities/getLoggedUserToken";
+import FormRichText from "components/urgudul_components/formRichText";
 
 
 const FirstEvaluation = () => {
@@ -14,7 +15,7 @@ const FirstEvaluation = () => {
     setRows([...newRows])
   }
 
-  const [evalutions, setEvaluations] = useState(initialState)
+  const [evaluations, setEvaluations] = useState(initialState)
 
   useEffect(() => {
     axios.get(`projects/${1}/first-evalutions`, {
@@ -27,31 +28,52 @@ const FirstEvaluation = () => {
     })
   }, [])
 
+  const zIsChecked = rows.filter(obj => obj.rowcode === 'z')[0].isChecked
+
   return (
     <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2">
       <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">5a</span>
+
         <span className="tw-text-lg">
           - Анхан шатны үнэлгээний хуудас
         </span>
+
         <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Үнэлгээний шалгуурууд нь хэсэг болон дэд бүрэлдэхүүн хэсгүүдэд хуваагдаж байгаа бөгөөд хэрэв аль нэг хэсэгт нь зөвлөгдөөгүй байх юм бол өргөдөл гаргагчийн материал нь дараагийн шатанд шалгарах боломжгүй болно." position="bottom" />
       </div>
 
       <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-50 tw-mx-2 tw-mt-2 tw-divide-y tw-divide-dashed">
-        {rows.map((row, index) =>
-          <div key={row.order} className={`tw-flex tw-items-center tw-justify-between tw-text-sm ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "tw-bg-gray-50" : ""}`}>
-            <span className={`tw-px-4 tw-py-2.5 ${row.rowcode === 'z' && 'tw-pl-6 tw-font-medium'} ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" ? "tw-font-medium" : ""}`}>
+        {rows.map(row =>
+          <div key={row.code} className={`tw-flex tw-items-center tw-justify-between tw-text-sm ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "" : ""}`}>
+            <span className={`tw-px-4 tw-py-2.5 ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "tw-font-medium" : ""}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
               {row.description}
             </span>
 
-            <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
+            {{
+              'z': <button className="tw-relative tw-flex tw-items-center tw-h-6 tw-leading-tight tw-bg-gray-100 focus:tw-outline-none tw-rounded-full tw-font-medium" style={{ fontSize: '13px' }} onClick={() => handleInput('isChecked', !zIsChecked, 'z')}>
+                <span className="tw-w-20 tw-text-center tw-z-10">
+                  Тэнцсэн
+                </span>
+                <span className="tw-w-20 tw-text-center tw-z-10">
+                  Тэнцээгүй
+                </span>
+                <span className={`tw-w-1/2 tw-h-7 tw-rounded-full tw-absolute ${zIsChecked ? 'tw-bg-green-300' : 'tw-transform-gpu tw-translate-x-20 tw-bg-gray-200'} tw-transition-transform tw-duration-300 tw-ease-in-out`} />
+              </button>,
+            }[row.rowcode]
+              || <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
+            }
           </div>
         )}
       </div>
 
       <div className="">
-        <span>Тайлбар</span>
-        <textarea />
+        <div className="tw-ml-3 tw-p-1 tw-mt-4 tw-text-sm tw-font-medium">
+          {zIsChecked ? 'Тэнцүүлсэн' : 'Тэнцүүлээгүй'} тайлбар
+        </div>
+
+        <div className="tw-py-1 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
+          <FormRichText modules="small" />
+        </div>
       </div>
 
       <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
