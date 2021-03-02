@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { config, Transition } from 'react-spring/renderprops'
-import UrgudulPreview from 'pages/urgudul/preview/Preview'
+import UrgudulPreview from 'pages/urgudul/preview/Preview1'
 import CloseSVG from 'assets/svgComponents/closeSVG'
 
 
