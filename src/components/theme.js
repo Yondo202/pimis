@@ -44,6 +44,7 @@ export const PrevBtn = styled.div`
 `
 
 export const NextBtn = styled.div`
+        position:relative;
         font-family: inherit;       
         padding:8px 0px;
         margin:10px 0px;
@@ -63,6 +64,28 @@ export const NextBtn = styled.div`
         border:1px solid rgba(63, 81, 181,0.5);
         width:40%;
         border-radius:6px;
+        overflow:hidden;
+        &:after{
+            content: "";
+            background: rgba(255,255,255,.3);
+            display: block;
+            border-radius:50%;
+            position: absolute;
+            transition: all 0.5s ease;
+            opacity: 0;
+            left:0%;
+            top:0%;
+            -webkit-transform: scale(2);
+            transform: scale(2);
+            height:100%;
+            width:100%;
+          }
+          &:active:after{
+            opacity: 1;
+            transition: 0s;
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        }
         img{
             width:30px;
             height:30px;
@@ -93,6 +116,7 @@ export const NextBtn = styled.div`
         align-items:center;
         justify-content:space-around;
         }
+
 `
 
 export const ButtonStyle = styled.button`
@@ -191,7 +215,7 @@ export const InputStyle = styled.div`
                     transition: 0s;
                     -webkit-transform: scale(0);
                     transform: scale(0);
-                  }
+                }
             }
             textarea{
                 align-self:flex-end;

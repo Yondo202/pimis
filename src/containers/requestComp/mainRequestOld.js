@@ -24,10 +24,8 @@ function MainRequest(props) {
     const history = useHistory();
     const param = useParams().url;
     const [ showModal, setShowModal ] = useState(false);
-    const [ updateMount, setUpdateMount ] = useState(false);
     const ModalOpen = () => {  setShowModal(prev => !prev); }
     const helpCtx = useContext(HelpContext);
-    const [Loading, setLoading] = useState(false);
     const [ initialData, setInitialData ] = useState(null);
     const [ ScrollClass, setScrollClass ] = useState("");
     const [ tokens, setTokens ] = useState("");
@@ -40,11 +38,10 @@ function MainRequest(props) {
         if(param==="user"){ 
             helpCtx.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
             let storageToken = AccessToken(); setTokens(storageToken); 
-            let LocalId = localStorage.getItem("userId")
+            let LocalId = localStorage.getItem("userId");
             window.addEventListener("scroll", handleScroll);
             let resData = await axios.get(`pps-request?userId=${LocalId}`, {headers: {Authorization:AccessToken()}});
             if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data);
-                //  setLoading(false); 
                 console.log(resData,"++++++++++++++++");
                 helpCtx.TableIdControl(resData.data.data.id);
             }
@@ -52,18 +49,12 @@ function MainRequest(props) {
             let storageToken = AccessToken(); setTokens(storageToken); 
             window.addEventListener("scroll", handleScroll);
             let resData = await axios.get(`pps-request?userId=${param}`, {headers: {Authorization:AccessToken()}});
-            
             if(resData.data.data.id){ setInitialData(resData.data.data); ModalOpen(true); }
         }
     },[]);
 
-    const handleScroll = () => {
-        if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); }
-    }
-
-    const backHanlde = () =>{
-        history.push(`/progress/${param}`);
-    }
+    const handleScroll = () => {  if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); } }
+    const backHanlde = () =>{ history.push(`/progress/${param}`); }
 
     const One = param === "user"&&helpCtx.GlobalStyle.tableOne
     const Two = param === "user"&&helpCtx.GlobalStyle.tableTwo
@@ -71,8 +62,6 @@ function MainRequest(props) {
     const Four = param === "user"&&helpCtx.GlobalStyle.tableFour
     const Five = param === "user"&&helpCtx.GlobalStyle.tableFive
     const Six = param === "user"&&helpCtx.GlobalStyle.tableSix
-
-    console.log(initialData, " my initail");
 
     return (
         <>

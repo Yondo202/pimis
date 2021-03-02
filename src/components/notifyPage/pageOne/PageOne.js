@@ -15,7 +15,6 @@ function PageOne() {
                 <div className="parent" ref={componentRef}>
                      <Content  />
                 </div>
-
                 
                 <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
             </MainContainter>
