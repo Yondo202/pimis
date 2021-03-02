@@ -1,8 +1,10 @@
 import React,{useEffect, useState,useRef} from 'react'
 import styled from 'styled-components'
-import {fontSize, textColor,InputStyle,ColorRgb,NextBtn } from '../../../theme'
+import {fontSize, textColor,InputStyle,NextBtn,ColorRgb } from '../../../theme'
 import {AiOutlineSend} from 'react-icons/ai'
 import { animateScroll as scroll } from "react-scroll";
+import Signature from './Signature'
+
 
 function Decision_main() {
     const [FinalErrorText, setFinalErrorText] = useState("");
@@ -10,6 +12,7 @@ function Decision_main() {
     const [otherOne, setOtherOne] = useState({Cname: "getInputt", checked:null, self:""  });
     
     let inputFullName = useRef(null);
+
     useEffect(()=>{
         setTimeout(()=>{  inputFullName.current.focus();},3000);
     },[]);
@@ -92,6 +95,8 @@ function Decision_main() {
         console.log(final, "^final");
     }
 
+    
+
     return (
         <FeedBackCont className="container">
             <div className="contentPar">
@@ -115,15 +120,13 @@ function Decision_main() {
                 </div>
                 <div className="compName">
                     <div className="title">Хурлын огноо:</div>
-                    <InputStyle  className="nameText"><input className="getInputt" name="compname" ref={inputFullName} placeholder="Хурлын огноо..."  type="number" />  <div className="line"></div></InputStyle>
+                    <InputStyle  className="nameText"><input className="getInputt" name="compname" ref={inputFullName} placeholder="Хурлын огноо..."  type="date" />  <div className="line"></div></InputStyle>
                 </div>
 
                 <div style={{marginBottom:35}} className="compName">
                     <div className="title">Үнэлгээний хорооны гишүүний овог, нэр:</div>
-                    <InputStyle  className="nameText"><input className="getInputt" name="compname" ref={inputFullName} placeholder="овог, нэр..."  type="date" />  <div className="line"></div></InputStyle>
+                    <InputStyle  className="nameText"><input className="getInputt" name="compname" ref={inputFullName} placeholder="овог, нэр..."  type="text" />  <div className="line"></div></InputStyle>
                 </div>
-
-
 
 
                 <div className="infoWhere">
@@ -156,6 +159,7 @@ function Decision_main() {
                         </div>
                 </div>
 
+                <Signature />
 
 
                 <div className="infoWhere">
@@ -175,9 +179,6 @@ function Decision_main() {
                             </div>
                         </div>
                 </div>
-
-
-
 
                 <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
@@ -206,6 +207,93 @@ const FeedBackCont = styled.div`
         font-size:${fontSize};
         margin-top:0px;
         border:1px solid rgba(0,0,0,.2);
+        .addInfoPar{
+            position:relative;
+            .addBtn{
+                width:22px;
+                height:22px;
+                cursor:pointer;
+                background-color:white;
+                border-radius:50%;
+                color:#228B22;
+                font-size:22px;
+                position:absolute;
+                left: 99.5%;
+                bottom:-8px;
+                transition:transform 0.3s ease;
+                &:hover{
+                    transform:scale(1.15);
+                }
+            }
+            .userInfPar{
+                margin-bottom:35px;
+                .infItemPar{
+                    display:flex;
+                    align-items:start;
+                    flex-direction:column;
+                    .drowPar{
+                        display:flex;
+                        align-items:start;
+                        // margin-top:10px;
+                        .SignBtn{
+                            margin-right:30px;
+                            padding:3px 15px;
+                            cursor:pointer;
+                            display:flex;
+                            align-items:center;
+                            border:1px solid rgba(0,0,0,0.4);
+                            svg{
+                                margin-right:10px;
+                            }
+                            span{
+                               font-weight:500;
+                            }
+                            &:hover{
+                                background-color:rgba(0,0,0,.2);
+                            }
+                        }
+                        .SingatureImg{
+                            border:1px solid rgba(${ColorRgb},0.3);
+                            width:200px;
+                       }
+                        .modalPar{
+                            text-align:center;
+                            .Canvass{
+                                border:1px solid rgba(${ColorRgb},0.5);
+                            }
+                            .BtnPar{
+                            padding:0px 10px;
+                            margin:20px 0px;
+                            display:flex;
+                            flex-direction:row;
+                            align-items:center;
+                            justify-content:space-between;
+                            button{
+                                font-weight:500;
+                                color:rgba(${textColor},0.9);
+                                cursor:pointer;
+                                border-style:none;
+                                border-radius:4px;
+                                padding:6px 14px;
+                                background-color:white;
+                                box-shadow:1px 1px 8px -2px;
+                            }
+                            }
+                        }
+                    }
+                    .DatePar{
+                        padding:5px 0px;
+                        display:flex;
+                        align-items:center;
+                        input{ margin-left:10px; }
+                        span{
+                            margin-right:10px;
+                        }
+                    }
+                }
+            }
+        }
+
         .TitlePar{
             padding:10px 0px;
             .title{

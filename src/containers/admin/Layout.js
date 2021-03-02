@@ -22,7 +22,8 @@ import FirstEvaluation from 'pages/decision_making/page_5a';
 import CompilationChecklist from 'pages/decision_making/page_5b';
 import AnalystReport from 'pages/decision_making/page_5c';
 import MemberDecision from '../../components/admin/contents/member_decision/Decision_main'
-
+import MainDecision from '../../components/admin/contents/main_decision/Main_decision'
+import NotifyPage1 from '../../components/notifyPage/MainPage'
 
 function Layout({ setLocale }) {
     const ctx = useContext(UserContext);
@@ -31,16 +32,9 @@ function Layout({ setLocale }) {
     const [image, setImage] = useState(false);
     const [toggled, setToggled] = useState(false);
 
-    const handleCollapsedChange = (checked) => {
-        setCollapsed(checked);
-    };
-
-    const handleRtlChange = (checked) => {
-        setRtl(checked);
-        setLocale(checked ? 'ar' : 'en');
-    };
+    const handleCollapsedChange = (checked) => { setCollapsed(checked); };
+    const handleRtlChange = (checked) => { setRtl(checked); setLocale(checked ? 'ar' : 'en'); };
     const handleImageChange = (checked) => { setImage(checked); };
-
     const handleToggleSidebar = (value) => { setToggled(value); };
 
     return (
@@ -48,7 +42,6 @@ function Layout({ setLocale }) {
             <div className="MainParent">
                 <Aside image={image} collapsed={collapsed} rtl={rtl} toggled={toggled} handleToggleSidebar={handleToggleSidebar} />
             </div>
-
             <div className="container-fluid ContentPar">
                 <Main image={image} toggled={toggled} collapsed={collapsed} rtl={rtl}
                     handleToggleSidebar={handleToggleSidebar}
@@ -68,7 +61,10 @@ function Layout({ setLocale }) {
                         <Route path="/progress/:userId" component={Home} />
                         <Route path="/request/:url" component={Request} />
                         <Route path="/check/:url" component={Check} />
-                        <Route path="/decision" component={MemberDecision} />
+                        <Route path="/notify-page/:paramId" component={NotifyPage1} />
+
+                        <Route path="/memberdecision" component={MemberDecision} />
+                        <Route path="/maindecision" component={MainDecision} />
 
                         <Route path="/letter-of-interest/:id" component={LetterOfInterest} />
                         <Route path="/urgudul-preview/:id" component={UrgudulPreview} />
@@ -97,7 +93,6 @@ const AdminApp = styled.div`
         .leftMenuPar{
             box-shadow: 5px 0 8px -4px rgba(0,80,180,0.2);
         }
-        
     }
     .ContentPar{
         position:relative;

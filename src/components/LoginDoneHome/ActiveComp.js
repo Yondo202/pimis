@@ -45,14 +45,12 @@ function ActiveComp(props) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <Link to="#" className="items  arrHelp"><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
+                        <Link to="/notify-page/1" className="items  arrHelp"><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
                     </div>
                     <div className="lineFull" ></div>
-                    <Link to="#" className={props.data.lastEvalution.value === 1 ? `resultActive` : `resultDesable`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
+                    <Link to="/maindecision" className={props.data.lastEvalution.value === 1 ? `resultActive` : `resultDesable`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
                 </div>
             </div>
-
-
 
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">

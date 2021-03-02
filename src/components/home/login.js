@@ -4,7 +4,7 @@ import {CgProfile} from 'react-icons/cg'
 import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import UserContext from "../../context/UserContext";
-import {fontFamily, Color,ColorRgb,InputStyle} from "../theme"
+import {fontFamily, Color,ColorRgb,InputStyle, NextBtn} from "../theme"
 import Signup from './signup'
 import ForgetPassword from './ForgetPassword'
 import { useHistory } from 'react-router-dom'
@@ -88,7 +88,7 @@ function Login() {
                 </div>
                 <div className="SubmitButtonPar">
                     {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
-                     <button onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+                     <NextBtn onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                 </div>
                 <Signup />
         </Component>
@@ -210,7 +210,6 @@ const Component = styled.div`
       font-size:18px;
       color:red;
     }
- 
       .SubmitButton{
         border-style:none;
         border-radius:4px;
@@ -227,32 +226,6 @@ const Component = styled.div`
         border:1px solid rgba(63, 81, 181,0.5);
         width:100%;
         border-radius:4px;
-        .hide{
-          transition:all 0.3s ease;
-          transform:scale(0);
-          font-size:22px;
-        }
-        .hide1{
-          transition:all 0.7s ease;
-          transform:scale(0);
-          font-size:26px;
-        }
-        &:hover{
-          box-shadow:1px 1px 15px -2px black;
-          .hide{
-            transition:all 0.3s ease;
-            transform:scale(1);
-          }
-          .hide1{
-            transition:all 0.7s ease;
-            transform:scale(1);
-          }
-        }
-        .flexchild{
-          display:flex;
-          align-items:center;
-          justify-content:space-around;
-        }
     }
   
   }
