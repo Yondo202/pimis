@@ -21,6 +21,8 @@ const initialState = {
     assumptions: null,
 }
 
+const quillTypes = ['growths_explanation', 'assumptions']
+
 function UrgudulBenefits() {
     const [form, setForm] = useState(initialState)
 
@@ -46,7 +48,7 @@ function UrgudulBenefits() {
 
     const handleSubmit = () => {
         setValidate(true)
-        const allValid = Object.keys(initialState).every(key => !checkInvalid(form[key]))
+        const allValid = Object.keys(initialState).every(key => !checkInvalid(form[key], quillTypes.includes(key) && 'quill'))
 
         if (UrgudulCtx.data.id) {
             if (allValid) {
@@ -92,42 +94,46 @@ function UrgudulBenefits() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
+            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center" style={{ fontSize: '15px' }}>
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">B7</span>
                 - Төслийн үр ашгийн талаар
 
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Экспортын орлогын өсөлт, ашгийн өсөлт, бүтээмжийн өсөлт, ажлын байрны өсөлт бүр дээр ямар үр ашиг хүлээгдэж буйг тоон хэмжээгээр болон тайлбарлан бичнэ үү." position="bottom" />
             </div>
 
-            <div className="tw-p-2 tw-pl-4 tw-text-sm tw-font-medium tw-border tw-border-dashed">
-                Өсөлтийн хувиудыг нь оруулна уу.
+            <div className="tw-w-full">
+                <div className={`tw-p-2 tw-pb-0 tw-pl-4 tw-text-sm tw-font-medium ${validate && checkInvalid(form.growths_explanation, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
+                    Төсөлд хамрагдсанаар дараах үзүүлэлтүүдэд гарах өсөлтийн хувиуд болон тайлбар
+                </div>
+
+                <div className="tw-flex-grow tw-flex tw-flex-wrap">
+                    <FormInline label="Борлуулалт:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.sales_growth || ''} name="sales_growth" onChange={handleInputFormat} classInput="tw-w-24" invalid={validate && checkInvalid(form.sales_growth)} />
+
+                    <FormInline label="Экспорт:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.export_growth || ''} name="export_growth" onChange={handleInputFormat} classInput="tw-w-24" invalid={validate && checkInvalid(form.export_growth)} />
+
+                    <FormInline label="Ашиг:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.profit_growth || ''} name="profit_growth" onChange={handleInputFormat} classInput="tw-w-24" invalid={validate && checkInvalid(form.profit_growth)} />
+
+                    <FormInline label="Бүтээмж:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.efficiency_growth || ''} name="efficiency_growth" onChange={handleInputFormat} classInput="tw-w-24" invalid={validate && checkInvalid(form.efficiency_growth)} />
+
+                    <FormInline label="Ажлын байр:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.workplace_growth || ''} name="workplace_growth" onChange={handleInputFormat} classInput="tw-w-24" invalid={validate && checkInvalid(form.workplace_growth)} />
+                </div>
+
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                    <FormRichText modules="small" value={form.growths_explanation || ''} name="growths_explanation" setForm={handleSetForm} />
+                </div>
             </div>
 
-            <div className="tw-flex-grow tw-flex tw-flex-wrap">
-                <FormInline label="Борлуулалт:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.sales_growth || ''} name="sales_growth" onChange={handleInputFormat} classAppend={validate && checkInvalid(form.sales_growth) && 'tw-border tw-border-dashed tw-border-red-500'} classInput="tw-w-24" />
-
-                <FormInline label="Экспорт:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.export_growth || ''} name="export_growth" onChange={handleInputFormat} classAppend={validate && checkInvalid(form.export_growth) && 'tw-border tw-border-dashed tw-border-red-500'} classInput="tw-w-24" />
-
-                <FormInline label="Ашиг:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.profit_growth || ''} name="profit_growth" onChange={handleInputFormat} classAppend={validate && checkInvalid(form.profit_growth) && 'tw-border tw-border-dashed tw-border-red-500'} classInput="tw-w-24" />
-
-                <FormInline label="Бүтээмж:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.efficiency_growth || ''} name="efficiency_growth" onChange={handleInputFormat} classAppend={validate && checkInvalid(form.efficiency_growth) && 'tw-border tw-border-dashed tw-border-red-500'} classInput="tw-w-24" />
-
-                <FormInline label="Ажлын байр:" type="numberFormat" formats={{ thousandSeparator: true, suffix: ' %' }} value={form.workplace_growth || ''} name="workplace_growth" onChange={handleInputFormat} classAppend={validate && checkInvalid(form.workplace_growth) && 'tw-border tw-border-dashed tw-border-red-500'} classInput="tw-w-24" />
-            </div>
-
-            <div className={`tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(form.growths_explanation, 'quill') && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
-                <FormRichText modules="small" value={form.growths_explanation || ''} name="growths_explanation" setForm={handleSetForm} />
-            </div>
-
-            <div className="tw-w-full tw-border tw-border-dashed">
+            <div className="tw-w-full">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
-                    <span className="tw-ml-2 tw-text-sm tw-font-medium">Таамаглал</span>
+                    <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(form.assumptions, 'quill') ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
+                    <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(form.assumptions, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
+                        Таамаглал
+                    </span>
 
                     <HelpPopup classAppend="tw-ml-auto" main="Дээр дурдсан таамаглалыг тооцоолсон үндэслэл, шалтгааныг энд тайлбарлана уу." position="top-left" />
                 </div>
 
-                <div className={`tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(form.assumptions, 'quill') && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.assumptions || ''} name="assumptions" setForm={handleSetForm} />
                 </div>
             </div>

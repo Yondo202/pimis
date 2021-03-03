@@ -10,7 +10,7 @@ import { Route } from "react-router-dom";
 import UserHandle from 'components/admin/contents/users/UserHandle';
 import ProjectHandle from 'components/admin/contents/projects/ProjectHandle'
 import { UrgudulStore } from 'components/utilities/urgudulContext'
-import UrgudulNavigator from 'pages/urgudul/Page1'
+import UrgudulNavigator from 'pages/urgudul/Page'
 import ProjectHandle1 from 'components/admin/contents/projects1/ProjectHandle'
 import Home from 'components/LoginDoneHome/Home'
 import Request from 'containers/requestComp/mainRequestOld'
@@ -20,7 +20,7 @@ import AttachmentUploads from 'pages/attachments/page';
 import FirstEvaluation from 'pages/decision_making/page_5a';
 import CompilationChecklist from 'pages/decision_making/page_5b';
 import AnalystReport from 'pages/decision_making/page_5c';
-import UrgudulPreview from 'pages/urgudul/preview/Preview1';
+import UrgudulPreview from 'pages/urgudul/preview/Preview';
 import MemberDecision from '../../components/admin/contents/member_decision/Decision_main'
 import MainDecision from '../../components/admin/contents/main_decision/Main_decision'
 import NotifyPage1 from '../../components/notifyPage/MainPage'

@@ -150,7 +150,7 @@ function UrugudulClusters() {
         setValidate(true)
         let allValid = true
         for (const obj of form) {
-            allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key]))
+            allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key], key === 'project_contribution' && 'quill'))
         }
 
         if (UrgudulCtx.data.id) {
@@ -207,7 +207,7 @@ function UrugudulClusters() {
 
     return (
         <div className="tw-relative tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
+            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center" style={{ fontSize: '15px' }}>
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
                 - Кластерын гишүүн байгууллагууд
 
@@ -216,100 +216,101 @@ function UrugudulClusters() {
 
             <input className="tw-absolute tw-invisible" type="file" onChange={handleInputFile} ref={fileInputRef} />
 
-            {
-                form.map((item, i) =>
-                    <div className="tw-flex even:tw-bg-gray-50" key={i}>
-                        <div className="tw-flex-grow">
-                            <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                <FormInline label="Кластерын гишүүн аж ахуйн нэгж" type="text" value={item.company_name || ''} name="company_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.company_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+            {form.map((item, i) =>
+                <div className="tw-flex even:tw-bg-gray-50" key={i}>
+                    <div className="tw-flex-grow">
+                        <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                            <FormInline label="Кластерын гишүүн аж ахуйн нэгж" type="text" value={item.company_name || ''} name="company_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.company_name)} />
 
-                                <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.representative_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                            <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.representative_name)} />
 
-                                <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.representative_phone || ''} name="representative_phone" id={i} onChange={handleInputFormatted} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.representative_phone) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                            <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.representative_phone || ''} name="representative_phone" id={i} onChange={handleInputFormatted} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.representative_phone)} />
 
-                                <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.representative_email || ''} name="representative_email" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.representative_email) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} />
+                            <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.representative_email || ''} name="representative_email" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.representative_email)} />
 
-                                <SearchSelect label="Салбар" data={sectors} value={item.business_sectorId} name="business_sectorId" id={i} displayName="bdescription_mon" setForm={handleSetForm} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.business_sectorId) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
+                            <SearchSelect label="Салбар" data={sectors} value={item.business_sectorId} name="business_sectorId" id={i} displayName="bdescription_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.business_sectorId)} />
 
-                                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.company_size) && 'tw-border-red-500'}`}>
-                                    <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
+                            <div className="tw-w-full tw-max-w-lg tw-flex">
+                                <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.company_size)} />
 
-                                    <div className="tw-relative tw-w-2 tw-ml-auto">
-                                        <HelpPopup classAppend="tw-right-5 tw-top-1" main="Аж ахуйн нэгжийн хэмжээ нь борлуулалт эсвэл бүтэн цагийн ажилтнуудын аль өндрөөр тогтоосноор ангилал нь тогтоно. Жишээ нь:" list={["$30M борлуулалттай 30 хүнтэй аж ахуйн нэгжийн хувьд Дунд ангиллын аж ахуйн нэгжид хамаарна."]} position="top-left" />
-                                    </div>
-                                </div>
-
-                                <div className="tw-p-2 tw-border tw-border-dashed tw-max-w-lg">
-                                    <table className="tw-text-sm tw-w-full">
-                                        <thead>
-                                            <tr className="tw-h-8">
-                                                <th className="tw-font-medium tw-text-center">Аж ахуйн нэгжийн хэмжээ</th>
-                                                <th className="tw-font-medium tw-text-center">Жилийн борлуулалт (ам.дол)</th>
-                                                <th className="tw-font-medium tw-text-center">Бүтэн цагийн ажилтны тоо</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr className="tw-h-8 tw-bg-blue-100">
-                                                <td className="tw-pl-2">Бичил</td>
-                                                <td className="tw-pl-2">{'< $50 мян'}</td>
-                                                <td className="tw-pl-2">{'< 10'}</td>
-                                            </tr>
-                                            <tr className="tw-h-8">
-                                                <td className="tw-pl-2">Жижиг</td>
-                                                <td className="tw-pl-2">{'> $50 мян ≤ $10 сая'}</td>
-                                                <td className="tw-pl-2">{'>=10, <50'}</td>
-                                            </tr>
-                                            <tr className="tw-h-8 tw-bg-blue-100">
-                                                <td className="tw-pl-2">Дунд</td>
-                                                <td className="tw-pl-2">{'> $10 сая ≤ $50 сая'}</td>
-                                                <td className="tw-pl-2">{'>=50, <250'}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх" options={['Тийм', 'Үгүй']} values={[true, false]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.support_recipient) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
-                            </div>
-
-                            <div className={`tw-w-full tw-border tw-border-dashed ${validate && checkInvalid(item.project_contribution, 'quill') && 'tw-border-red-500'}`}>
-                                <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
-                                    <span className="tw-ml-2 tw-text-sm tw-font-medium">Төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр</span>
-
-                                    <HelpPopup classAppend="tw-ml-auto" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
-                                </div>
-
-                                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                                    <FormRichText modules="small" value={item.project_contribution || ''} name="project_contribution" id={i} setForm={handleSetForm} />
+                                <div className="tw-relative tw-w-2 tw-ml-auto">
+                                    <HelpPopup classAppend="tw-right-5 tw-top-1" main="Аж ахуйн нэгжийн хэмжээ нь борлуулалт эсвэл бүтэн цагийн ажилтнуудын аль өндрөөр тогтоосноор ангилал нь тогтоно. Жишээ нь:" list={["$30M борлуулалттай 30 хүнтэй аж ахуйн нэгжийн хувьд Дунд ангиллын аж ахуйн нэгжид хамаарна."]} position="top-left" />
                                 </div>
                             </div>
 
-                            <div className={`tw-w-full tw-border tw-border-dashed ${validate && checkInvalid(item.attachedFiles) && 'tw-border-red-500'}`}>
-                                <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                                    <UploadSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
-                                    <span className="tw-ml-2 tw-text-sm tw-font-medium">Кластерийн хамтын ажиллагааны гэрээ</span>
+                            <div className="tw-p-2 tw-max-w-lg">
+                                <table className="tw-text-sm tw-w-full">
+                                    <thead>
+                                        <tr className="tw-h-8">
+                                            <th className="tw-font-medium tw-text-center">Аж ахуйн нэгжийн хэмжээ</th>
+                                            <th className="tw-font-medium tw-text-center">Жилийн борлуулалт (ам.дол)</th>
+                                            <th className="tw-font-medium tw-text-center">Бүтэн цагийн ажилтны тоо</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr className="tw-h-8 tw-bg-blue-100">
+                                            <td className="tw-pl-2">Бичил</td>
+                                            <td className="tw-pl-2">{'< $50 мян'}</td>
+                                            <td className="tw-pl-2">{'< 10'}</td>
+                                        </tr>
+                                        <tr className="tw-h-8">
+                                            <td className="tw-pl-2">Жижиг</td>
+                                            <td className="tw-pl-2">{'> $50 мян ≤ $10 сая'}</td>
+                                            <td className="tw-pl-2">{'>=10, <50'}</td>
+                                        </tr>
+                                        <tr className="tw-h-8 tw-bg-blue-100">
+                                            <td className="tw-pl-2">Дунд</td>
+                                            <td className="tw-pl-2">{'> $10 сая ≤ $50 сая'}</td>
+                                            <td className="tw-pl-2">{'>=50, <250'}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                                    <HelpPopup classAppend="tw-ml-auto" main="Кластерийн тэргүүлэгч ААН болоод гишүүн ААН талуудын хийсэн хамтын ажиллагааны гэрээгээ файлаар хавсаргана уу." position="top-left" />
-                                </div>
+                            <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх" options={['Тийм', 'Үгүй']} values={[true, false]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.support_recipient)} />
+                        </div>
 
-                                {
-                                    item.attachedFiles ?
-                                        <FileCard name={item.attachedFiles[0]?.name} type={item.attachedFiles[0]?.mimetype} size={item.attachedFiles[0]?.size} classAppend="tw-ml-6 tw-mb-4" uploading={item.attachedFiles === 'loading' && true} removeFile={() => handleRemoveFile(i)} downloadFile={() => handleDownloadFile(i)} />
-                                        :
-                                        <button className="tw-ml-6 tw-mb-4 tw-py-0.5 tw-px-1.5 tw-text-sm tw-border tw-border-gray-600 tw-font-medium tw-rounded-lg focus:tw-outline-none hover:tw-shadow-md active:tw-text-blue-500 active:tw-border-blue-500 tw-inline-flex tw-items-center" onClick={() => handleFileInputClick(i)}>
-                                            <span className="tw-text-gray-700">Файл оруулах</span>
-                                            <PaperClipSVG className="tw-w-4 tw-h-4 tw-ml-1" />
-                                        </button>
-                                }
+                        <div className="tw-w-full">
+                            <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
+                                <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(item.project_contribution, 'quill') ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
+                                <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(item.project_contribution, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
+                                    Төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр
+                                </span>
+
+                                <HelpPopup classAppend="tw-ml-auto" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
+                            </div>
+
+                            <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                                <FormRichText modules="small" value={item.project_contribution || ''} name="project_contribution" id={i} setForm={handleSetForm} />
                             </div>
                         </div>
 
-                        <div className="tw-flex tw-items-center">
-                            <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                        <div className="tw-w-full">
+                            <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
+                                <UploadSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(item.attachedFiles) ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
+                                <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(item.attachedFiles) && 'tw-text-red-500'} tw-transition-colors`}>
+                                    Кластерийн хамтын ажиллагааны гэрээ
+                                </span>
+
+                                <HelpPopup classAppend="tw-ml-auto" main="Кластерийн тэргүүлэгч ААН болоод гишүүн ААН талуудын хийсэн хамтын ажиллагааны гэрээгээ файлаар хавсаргана уу." position="top-left" />
+                            </div>
+
+                            {item.attachedFiles ?
+                                <FileCard name={item.attachedFiles[0]?.name} type={item.attachedFiles[0]?.mimetype} size={item.attachedFiles[0]?.size} classAppend="tw-ml-6 tw-mb-4" uploading={item.attachedFiles === 'loading' && true} removeFile={() => handleRemoveFile(i)} downloadFile={() => handleDownloadFile(i)} />
+                                :
+                                <button className="tw-ml-6 tw-mb-4 tw-py-0.5 tw-px-1.5 tw-text-sm tw-border tw-border-gray-600 tw-font-medium tw-rounded-lg focus:tw-outline-none hover:tw-shadow-md active:tw-text-blue-500 active:tw-border-blue-500 tw-inline-flex tw-items-center" onClick={() => handleFileInputClick(i)}>
+                                    <span className="tw-text-gray-700">Файл оруулах</span>
+                                    <PaperClipSVG className="tw-w-4 tw-h-4 tw-ml-1" />
+                                </button>
+                            }
                         </div>
                     </div>
-                )
-            }
+
+                    <div className="tw-flex tw-items-center">
+                        <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                    </div>
+                </div>
+            )}
 
             <div className="tw-flex tw-justify-end tw-items-center tw-pt-2">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">

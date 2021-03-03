@@ -22,6 +22,14 @@ const initialState = {
     expected_result: null,
 }
 
+const quillTypes = [
+    'project_introduction',
+    'preperation',
+    'identified_problems',
+    'suggested_solutions',
+    'expected_result',
+]
+
 function UrgudulBreakdown() {
     const [form, setForm] = useState(initialState)
 
@@ -30,7 +38,7 @@ function UrgudulBreakdown() {
     useEffect(() => {
         let temp = {}
         Object.keys(initialState).forEach(key => {
-            if (UrgudulCtx.data[key]) temp[key] = UrgudulCtx.data[key]
+            if (UrgudulCtx.data[key] && UrgudulCtx.data[key] !== null) temp[key] = UrgudulCtx.data[key]
         })
         setForm({ ...form, ...temp })
     }, [UrgudulCtx.data.id])
@@ -53,7 +61,7 @@ function UrgudulBreakdown() {
 
     const handleSubmit = () => {
         setValidate(true)
-        const allValid = Object.values(form).every(value => !checkInvalid(value))
+        const allValid = Object.keys(form).every(key => !checkInvalid(form[key], quillTypes.includes(key) && 'quill'))
 
         if (UrgudulCtx.data.id) {
             if (allValid) {
@@ -99,7 +107,7 @@ function UrgudulBreakdown() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
+            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center" style={{ fontSize: '15px' }}>
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">B</span>
                 - Төслийн задаргаа
 
@@ -107,80 +115,90 @@ function UrgudulBreakdown() {
             </div>
 
             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-center">
-                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(form.project_duration) && 'tw-border-red-500'}`}>
-                    <FormInline label="Төслийн үргэлжлэх хугацаа" type="numberFormat" formats={{ format: '# сар' }} value={form.project_duration || ''} name="project_duration" onChange={handleInputFormat} classAppend="tw-flex-grow" classInput="tw-w-20" />
+                <div className="tw-w-full tw-max-w-lg tw-flex">
+                    <FormInline label="Төслийн үргэлжлэх хугацаа" type="numberFormat" formats={{ format: '# сар' }} value={form.project_duration || ''} name="project_duration" onChange={handleInputFormat} classAppend="tw-flex-grow" classInput="tw-w-20" invalid={validate && checkInvalid(form.project_duration)} />
 
                     <div className="tw-relative tw-w-2">
                         <HelpPopup classAppend="tw-right-5 tw-top-1" main="Төслийг хэрэгжүүлэх нийт төслийн үргэлжлэх хугацаа. (Сараар)" position="top-left" />
                     </div>
                 </div>
 
-                <FormInline label="Төслийн эхлэх хугацаа" type="date" value={form.project_start || ''} name="project_start" onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.project_start) && 'tw-border-red-500'}`} classInput="tw-w-40" />
+                <FormInline label="Төслийн эхлэх хугацаа" type="date" value={form.project_start || ''} name="project_start" onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" invalid={validate && checkInvalid(form.project_start)} />
 
-                <FormInline label="Төслийн дуусах хугацаа" type="date" value={form.project_end || ''} name="project_end" onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(form.project_end) && 'tw-border-red-500'}`} classInput="tw-w-40" />
+                <FormInline label="Төслийн дуусах хугацаа" type="date" value={form.project_end || ''} name="project_end" onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" invalid={validate && checkInvalid(form.project_end)} />
             </div>
 
-            <div className="tw-w-full tw-border tw-border-dashed">
+            <div className="tw-w-full">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
-                    <span className="tw-ml-2 tw-text-sm tw-font-medium">Төслийн танилцуулга</span>
+                    <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(form.project_introduction, 'quill') ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
+                    <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(form.project_introduction, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
+                        Төслийн танилцуулга
+                    </span>
 
                     <HelpPopup classAppend="tw-ml-auto" main="Одоогийн нөхцөл байдал, гол асуудал, төслийн агуулгын талаар товч танилцуулна." list={['Ямар зах зээлийн боломж харагдаж буй ба үүнийг хэрхэн тодорхойлсон бэ?', 'Потенциалт худалдан авагч нар хэн бэ? гэх зэргийг нарийн тодорхойлоно уу.']} position="top-left" />
                 </div>
 
-                <div className={`tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(form.project_introduction, 'quill') && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.project_introduction || ''} name="project_introduction" setForm={handleSetForm} />
                 </div>
             </div>
 
-            <div className="tw-w-full tw-border tw-border-dashed">
+            <div className="tw-w-full">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
-                    <span className="tw-ml-2 tw-text-sm tw-font-medium">Бэлтгэл ажил</span>
+                    <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(form.preperation, 'quill') ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
+                    <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(form.preperation, 'quill') && 'tw-text-red-500'}`}>
+                        Бэлтгэл ажил
+                    </span>
 
                     <HelpPopup classAppend="tw-ml-auto" main="Төслийн бэлтгэл ажил хийгдсэн байгаа эсэх. Зорилтот зах зээлийн судалгаа, хэрэглэгчийн судалгаа хийсэн эсэх. Хэрэв тийм бол уг ажлын талаар товч тайлбар бичих. Бэлтгэл зах зээлийн судалгаа нь зах зээлийн боломжоо үр дүнтэй тодорхойлж чадаж буй эсэхэд хамгийн их нөлөөтэй болно." position="top-left" />
                 </div>
 
-                <div className={`tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(form.preperation, 'quill') && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.preperation || ''} name="preperation" setForm={handleSetForm} />
                 </div>
             </div>
 
-            <div className="tw-w-full tw-border tw-border-dashed">
+            <div className="tw-w-full">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
-                    <span className="tw-ml-2 tw-text-sm tw-font-medium">Тодорхойлсон асуудлууд</span>
+                    <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(form.identified_problems, 'quill') ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
+                    <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(form.identified_problems, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
+                        Тодорхойлсон асуудлууд
+                    </span>
 
                     <HelpPopup classAppend="tw-ml-auto" main="Уг төслөөр ямар асуудлуудыг шийдвэрлэж, төслийн танилцуулгад тодорхойлсон зах зээлийн боломжийг ашиглах боломжтой болох вэ?" position="top-left" />
                 </div>
 
-                <div className={`tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(form.identified_problems, 'quill') && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.identified_problems || ''} name="identified_problems" setForm={handleSetForm} />
                 </div>
             </div>
 
-            <div className="tw-w-full tw-border tw-border-dashed">
+            <div className="tw-w-full">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
-                    <span className="tw-ml-2 tw-text-sm tw-font-medium">Санал болгож буй шийдэл</span>
+                    <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(form.suggested_solutions, 'quill') ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
+                    <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(form.suggested_solutions, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
+                        Санал болгож буй шийдэл
+                    </span>
 
                     <HelpPopup classAppend="tw-ml-auto" main="Дээр тодорхойлсон асуудлуудыг шийдвэрлэхэд санал болгож буй ямар шийдлүүд байгаа вэ? Хувь аж ахуйн нэгжээрээ болон кластераар шийдвэрлэх үйл ажиллагааг санал болгоно уу." position="top-left" />
                 </div>
 
-                <div className={`tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(form.suggested_solutions, 'quill') && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.suggested_solutions || ''} name="suggested_solutions" setForm={handleSetForm} />
                 </div>
             </div>
 
-            <div className="tw-w-full tw-border tw-border-dashed">
+            <div className="tw-w-full">
                 <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
-                    <span className="tw-ml-2 tw-text-sm tw-font-medium">Төлөвлөсөн үйл ажиллагаа болон зорилтот хүлээгдэж буй үр дүн</span>
+                    <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(form.expected_result, 'quill') ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
+                    <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(form.expected_result, 'quill') && 'tw-text-red-500'}`}>
+                        Төлөвлөсөн үйл ажиллагаа болон зорилтот хүлээгдэж буй үр дүн
+                    </span>
 
                     <HelpPopup classAppend="tw-ml-auto" main="Уг төслийн хүрээнд хийхээр зорьж буй гол үйл ажиллагаануудыг тус бүрийн хүлээгдэж буй үр дүнтэй нь бичнэ үү" list={['Хэмжих хэмжүүрийг тодорхой бичнэ үү.', 'Үйл ажиллагаа нь практик бодит үр дүн авчрах ажил байхыг анхаарна уу.', '(Аж ахуйн нэгжийн болон кластераар хийх ажлуудыг тусад нь бичнэ.)']} position="top-left" />
                 </div>
 
-                <div className={`tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(form.expected_result, 'quill') && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
+                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
                     <FormRichText modules="small" value={form.expected_result || ''} name="expected_result" setForm={handleSetForm} />
                 </div>
             </div>
