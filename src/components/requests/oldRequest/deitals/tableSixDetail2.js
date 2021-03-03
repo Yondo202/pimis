@@ -5,6 +5,8 @@ import {GoCalendar} from 'react-icons/go'
 import {VscAccount,VscFoldDown,VscCloudUpload,VscCloudDownload,VscChecklist,VscOpenPreview} from 'react-icons/vsc'
 import {IoIosAddCircleOutline} from 'react-icons/io'
 
+const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
 
 function TableSixDetails2(props) {
     const initialList = [{id: 1}];
@@ -143,7 +145,7 @@ function TableSixDetails2(props) {
                                 <div className="labels"><span>Эхлэх хугацаа :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" value={el.startdate} onChange={changeHandle7} id={el.id} max='3000-12-31' className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
+                                        <input type="date" value={el.startdate} onChange={changeHandle7} id={el.id} max={Currentdate} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
                                         <label for="name"  className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
@@ -153,7 +155,7 @@ function TableSixDetails2(props) {
                                 <div className="labels"><span>Дуусах хугацаа :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
-                                        <input type="date" max='3000-12-31' value={el.enddate} onChange={changeHandle8} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
+                                        <input type="date" max={Currentdate} value={el.enddate} onChange={changeHandle8} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
                                         <label for="name" className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
@@ -239,7 +241,7 @@ function TableSixDetails2(props) {
                                     <div className="labels"><span>Эхлэх хугацаа :</span> </div>
                                     <div className="name"> <GoCalendar />
                                         <div className="form__group">
-                                            <input type="date" max='3000-12-31' className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
+                                            <input type="date" max={Currentdate} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
                                             <label for="name"  className=" form__label">Он-сар-өдөр</label>
                                         </div>
                                     </div>
@@ -249,7 +251,7 @@ function TableSixDetails2(props) {
                                     <div className="labels"><span>Дуусах хугацаа :</span> </div>
                                     <div className="name"> <GoCalendar />
                                         <div className="form__group">
-                                            <input type="date" max='3000-12-31'  className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
+                                            <input type="date" max={Currentdate}  className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
                                             <label for="name" className=" form__label">Он-сар-өдөр</label>
                                         </div>
                                     </div>

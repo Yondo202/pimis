@@ -12,6 +12,9 @@ import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 import AccessToken from '../../../context/accessToken'
 
+const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
+
 function TableFive(props) {
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
@@ -115,8 +118,8 @@ function TableFive(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                {Dname?<input type="date" value={Ddate} onChange={changeDateHandle} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
-                                                        : <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                {Dname?<input type="date" value={Ddate} onChange={changeDateHandle} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                        : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
                                                 }
                                                 
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>

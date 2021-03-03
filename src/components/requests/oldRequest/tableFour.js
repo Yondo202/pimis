@@ -12,6 +12,9 @@ import HelperContext from '../../../context/HelperContext'
 import {RiMailSendLine} from 'react-icons/ri'
 import AccessToken from '../../../context/accessToken'
 
+const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
+
 function TableFour(props) {
       const history = useHistory();
       const [opacity, setOpacity] = useState("0");
@@ -283,8 +286,8 @@ function TableFour(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <InputStyle className="newInp">
-                                                  {props.initialName?<input max='3000-12-31' type="date" onChange={changeHandleDate} value={Ddate} placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
-                                                                     :<input max='3000-12-31' type="date" placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required /> }
+                                                  {props.initialName?<input max={Currentdate} type="date" onChange={changeHandleDate} value={Ddate} placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
+                                                                     :<input max={Currentdate} type="date" placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required /> }
                                                   <div className="line"></div>
                                             </InputStyle>
                                         </div>

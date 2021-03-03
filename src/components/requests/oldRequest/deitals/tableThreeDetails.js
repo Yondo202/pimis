@@ -6,6 +6,9 @@ import {GoCalendar,GoMail} from 'react-icons/go'
 import {GiScales} from 'react-icons/gi'
 import {IoIosAddCircleOutline} from 'react-icons/io'
 
+const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
+
 function TableThreeDetails(props) {
     const initialList = [{id: 1}];
     const [ initialData, setInitialData ] = useState([]);
@@ -81,7 +84,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Огноо :</span> </div>
                                 <div className="name"> <GoCalendar />
                                      <InputStyle className="newInp">
-                                            <input type="date" onChange={changeDateHandle} id={el.id} value={el.pdate} max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
+                                            <input type="date" onChange={changeDateHandle} id={el.id} value={el.pdate} max={Currentdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
                                             <div className="line"></div>
                                     </InputStyle>
                                    
@@ -103,7 +106,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
                                 <div className="name"> <FiUserCheck />
                                     <InputStyle className="newInp">
-                                            <input type="date" max='3000-12-31' id={el.id} onChange={changeDateHandle3} value={el.stepdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="огноо тус бүрээр" name="stepdate" required />
+                                            <input type="date" max={Currentdate} id={el.id} onChange={changeDateHandle3} value={el.stepdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="огноо тус бүрээр" name="stepdate" required />
                                             <div className="line"></div>
                                     </InputStyle>
                                 </div>
@@ -138,7 +141,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Огноо :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <InputStyle className="newInp">
-                                            <input type="date"  max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} name="pdate" required />
+                                            <input type="date"  max={Currentdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} name="pdate" required />
                                             <div className="line"></div>
                                     </InputStyle>
 
@@ -160,7 +163,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
                                 <div className="name"> <FiUserCheck />
                                     <InputStyle className="newInp">
-                                              <input type="date"  max='3000-12-31' className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="огноо тус бүрээр" name="stepdate" required />
+                                              <input type="date"  max={Currentdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="огноо тус бүрээр" name="stepdate" required />
                                             <div className="line"></div>
                                     </InputStyle>
                                 </div>

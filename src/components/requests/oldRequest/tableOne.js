@@ -10,9 +10,17 @@ import {AiOutlineSend} from 'react-icons/ai'
 import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 import AccessToken from '../../../context/accessToken'
+import Modal from 'react-awesome-modal';
+
+const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
 
 function TableOne(props) {
+    const init = "once" 
     const history = useHistory();
+    const [ btnCond, setBtnCond ] = useState(init);
+    const [ secondChance, setSecondChance ] = useState([]);
+    const [visible2, setVisible2] = useState(false);
     const [ spnBtn, setSpnBtn ] = useState(false);
     const [opacity, setOpacity] = useState("0");
     const [opacity2, setOpacity2] = useState("0");
@@ -22,33 +30,32 @@ function TableOne(props) {
     const [ Dname, setDname] = useState(null);
     const [Ddate, setDdate] = useState(null);
     const tablesContext = useContext(HelperContext);
-
     
     useEffect(()=>{
-      const finalData = []
-      dataOne.map((el,i)=>{
-        if(props.initialData){
-            props.initialData.map((elem,index)=>{ 
-            if(i === index){el["id"] = elem.id; el["rvalue"] = elem.rvalue;  el["rownum"] = elem.rownum; }});
-        } finalData.push(el);
-     });
-     setDname(props.initialName);setDdate(props.initialDate);setInitialData(finalData);
+        const finalData = []
+        dataOne.map((el,i)=>{
+          if(props.initialData){
+              props.initialData.map((elem,index)=>{ 
+              if(i === index){el["id"] = elem.id; el["rvalue"] = elem.rvalue;  el["rownum"] = elem.rownum; }});
+          } finalData.push(el);
+      });
+      setDname(props.initialName);setDdate(props.initialDate);setInitialData(finalData);
     },[props.initialData]);
 
-   
     const radioChange = (event)=> {
-      let finalData = []
-       dataOne.map((el,i)=>{  props.initialData.map(elem=> elem); finalData.push(el); });
-      finalData.map((el,i)=>{
-        if(el.id.toString() === event.target.id){ el["rvalue"] = event.target.value}
-      })
-       setInitialData(finalData);
+        console.log(event);
+      // let finalData = []
+      //  dataOne.map((el,i)=>{  props.initialData.map(elem=> elem); finalData.push(el); });
+      // finalData.map((el,i)=>{
+      //   if(el.id.toString() === event.target.id){ el["rvalue"] = event.target.value}
+      // })
+      //  setInitialData(finalData);
     }
 
     const changeHandle = (e) =>{ setDname(e.target.value); }
     const changeHandleDate = (e)=>{ setDdate(e.target.value);}
 
-    const clickHandles = async (e) =>{
+    const clickHandles = async (btn) =>{
               let finalOne = {};  let finalEnd = {};  let rs2 = document.querySelectorAll(".inpTest3"); let arr2 = Array.from(rs2);  let finalOne2 = []; let cond = [];
               arr2.map(element=>{
                   if(element.checked === true){
@@ -68,6 +75,13 @@ function TableOne(props) {
 
               let confirm = document.getElementById("GetcheckBtn").checked;
 
+             console.log(finalEnd, "final end");
+
+
+             let arrs = [];  dataOne.map((el,i)=>{ finalOne2.map(elem=>{ if((i+1).toString()===elem.rownum && elem.rvalue === "true"){arrs.push(el.name); };});});
+             setSecondChance(arrs);
+
+
               if(keys.length < 12){
                 setOpacity("1"); setProcent(FinalProcent);
               }else if(userInp.name === "" || userInp.date === ""){
@@ -75,9 +89,20 @@ function TableOne(props) {
               }else if(confirm === false){
                 setOpacity("0"); setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
               }else if(cond.length > 0){
-                setOpacity("0"); setFinalErrorText("Та шалгуур хангалтанд тэнцэхгүй байна"); setOpacity2("1");
-                tablesContext.alertText('orange', "Та шалгуур хангалтанд тэнцэхгүй байна", true );
-                setTimeout(()=>{  history.push('/');  },4000);
+                setOpacity("0");
+                //  setFinalErrorText("Та шалгуур хангалтанд тэнцэхгүй байна"); setOpacity2("1");
+                // tablesContext.alertText('orange', "Та шалгуур хангалтанд тэнцэхгүй байна", true );
+                // setTimeout(()=>{  history.push('/');  },4000);
+                let arrs = []; dataOne.map((el,i)=>{  finalOne2.map(elem=>{ if((i+1).toString()===elem.rownum && elem.rvalue === "true"){arrs.push(el.name);}; }); });
+                setSecondChance(arrs);
+                
+                if(btn==="twice"){
+                  setVisible2(false);
+                  // Дата явна
+                }else if(btn==="once"){
+                  setVisible2(true);
+                  // Дахин нэг боломж
+                }
               }else{
                 setOpacity("0"); setOpacity2("0");setSpnBtn(true);
                 if(props.initialData){
@@ -92,12 +117,37 @@ function TableOne(props) {
                 }
               
             }
-            console.log(finalEnd, "final end");
+            console.log(secondChance, "-----dd secondChance");
       }
+      const closeModalX=()=>{ setVisible2(false); }
+      const closeModal=()=>{ setBtnCond("twice");  setVisible2(false); }
 
     return (
         <Component1 className="container" >
           <div className="boxShadow">
+              <Modal visible={visible2} width="800" effect="fadeInDown" >
+                  <div className="Modaltest">
+                    <div onClick={closeModalX} className="headPar">  <span >x</span></div>
+
+                      <div className="ModalTextPar">
+                        <div className="redPAr">
+                            <div className="redDesc">Таныг бөгөлсөн мэдээллээ дахин нэг шалгахыг хүсэж байна:</div>
+                        </div>
+
+                        <div className="mainText">
+                            <div className="title">Доорх асуултуудад "Тийм" гэж хариулсандаа итгэлтэй байна уу?:</div>
+                            <ul className="desc">
+                               {secondChance.map(el=><li>{el}</li>)}
+                            </ul>
+                        </div>
+                        <div className="btnPar">
+                            <button onClick={()=>{clickHandles("twice"); closeModal()}} class="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
+                            <button onClick={closeModal} class="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
+                        </div>
+                      </div>
+                  </div>
+              </Modal>
+
                 <div className="rowHeader">
                     <div className="boldTitle">ХАВСРАЛТ 2 А.</div>
                     <div className="italicTitle">ХҮСНЭГТ 1. ХОРИГЛОСОН ҮЙЛ АЖИЛЛАГААНЫ ЖАГСААЛТ</div>
@@ -161,8 +211,8 @@ function TableOne(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                         <InputStyle className="newInp">
-                                            {props.initialData? <input type="date" value={Ddate} onChange={changeHandleDate} max='3000-12-31' placeholder="өдөр-сар-жил" va className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
-                                                              : <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" va className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
+                                            {props.initialData? <input type="date" value={Ddate} onChange={changeHandleDate} max={Currentdate} placeholder="өдөр-сар-жил" va className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
+                                                              : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" va className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
                                             }
                                                 <div className="line"></div>
                                         </InputStyle>
@@ -186,7 +236,7 @@ function TableOne(props) {
                         </div>
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                            <NextBtn onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
+                            <NextBtn onClick={()=>clickHandles(btnCond)} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                         </div>
               </div>
              </div>
@@ -463,6 +513,99 @@ const Component1 = styled.div`
               }
             }
     
+        }
+        .Modaltest{
+          position:relative;
+          width:100%;
+          // height:100%;
+          // overflow-y:scroll;
+          background-color:white;
+          .headPar{
+            cursor:pointer;
+            font-size:1.3rem;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background-color:white;
+            position:absolute;
+            right:-10px;
+            top:-10px;
+            height:30px;
+            width:30px;
+            padding:5px 8px;
+            border-radius:50%;
+            a{
+              color:black;
+              text-decoration:none;
+            }
+          }
+          .ModalTextPar{
+            color:black;
+            font-size:14px;
+            padding:20px 50px;
+            .btnPar{
+              border-top:1px solid rgba(0,0,0,0.1);
+              padding:20px 0px;
+              padding-bottom:30px;
+              width:100%;
+              display:flex;
+              flex-direction:row;
+              align-items:center;
+              justify-content:space-between;
+              .text{
+                font-size:13px;
+                color:black;
+                padding-right:10px;
+                color:#339CFF;
+              }
+              .check{
+                cursor:pointer;
+                height:25px;
+                width:25px;
+                margin-right:30px;
+              }
+              button{
+                font-size:0.8rem;
+                padding: .275rem 2.5rem;
+              }
+            }
+            .mainText{
+              margin-bottom:20px;
+              text-align:start;
+              .title{
+                margin-bottom:6px;
+                font-size:14px;
+                font-weight:500;
+                .nemelt{
+                  font-size:13px;
+                  font-weight:400;
+                }
+              }
+              .desc{
+                list-style-position: outside;
+                list-style-type: circle;
+                margin-left:30px;
+                li{
+                  padding:5px 0px;
+                }
+              }
+            }
+            .redPAr{
+              margin-bottom:15px;
+              .redTitle{
+                font-size:15px;
+                font-weight:500;
+                color:#FF1300;
+                margin-bottom:15px;
+              }
+              .redDesc{
+                text-align:start;
+                color:#FF4333;
+              }
+            }
+
+
+          }
         }
       }
 

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import HomeLogin from "./components/home/homeLogin";
 import MainForm from "./containers/checkComp/MainForm";
 import ResetPassword from "./components/home/ResetPassword";
+import Email from "./components/emailSend/Email"
 
 const UnAuthContent = () => {
   return (
@@ -18,11 +19,11 @@ const UnAuthContent = () => {
           <MainForm />
         </motion.div>
       </Route>
-      {/* <Route path="/signup">
+      <Route path="/users/confirm/:id">
         <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <SignUp />
+          <Email />
         </motion.div>
-      </Route> */}
+      </Route>
       <Route path="/changepassword/:id" children={<ResetPassword />}>
         <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <ResetPassword />
