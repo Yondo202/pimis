@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom"
 
 const UserContext = React.createContext();
 const initialStyle = { tableOne: "0%", tableTwo: "100%", tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%", tableheight: 150 };
-const initialUserInfo = { userId: null, token: null, expireDate: null, name: null, refreshToken: null, role: null };
+const initialUserInfo = { userId: null, token: null, expireDate: null, name: null, refreshToken: null, role: null, email:null };
 const initialSee = { tableOneData: {}, tableTwoData: {}, tableThree: {}, tableFour: {} };
 
 export const UserStore = (props) => {
@@ -12,7 +12,7 @@ export const UserStore = (props) => {
   const [userInfo, setUserInfo] = useState(initialUserInfo);
   const [ alert, setAlert ] = useState({ color:'white', text: '', cond: false });
   const [errMsg, setErrMsg] = useState("");
-  const [errMsgSignup, setErrMsgSignUp] = useState("");
+  const [errMsgSignup, setErrMsgSignUp] = useState({msg:"", cond: false });
   const [GlobalStyle, setGlobalStyle] = useState(initialStyle);
   const [tableSee, setTableSee] = useState(initialSee);
   const [reqID, setReqId] = useState(0);
@@ -43,7 +43,6 @@ export const UserStore = (props) => {
         }else{
           setUserInfo(initialUserInfo);
         }
-       
       });
   };
   const autoRenewTokenAfterMillisec = (milliSec) => {
@@ -75,14 +74,16 @@ export const UserStore = (props) => {
   const signUpUser = (userinfos) => {
     axios.post("users/register", userinfos)
       .then((res) => {
-        // console.log(res, "^new user");
-        loginUserSuccess(res.data.token, res.data.refreshToken, res.data.token.expireDate, res.data.user);
+        console.log(res, "^new user");
+        setErrMsgSignUp({msg: `Таны бүртгүүлсэн "${res.data.user.email}" имэйл хаягаар бид имэйл илгээсэн тул та шалгаж БАТАЛГААЖУУЛАЛТ дээр дарна уу.`, cond:true});;
       })
       .catch((e) => {
-        setErrMsgSignUp(e.response.data.error.message);
+        setErrMsgSignUp({msg: e.response.data.error.message, cond:false});
         setUserInfo(initialUserInfo);
       });
   };
+
+
 
   const logout = () => {
     localStorage.removeItem("userId");

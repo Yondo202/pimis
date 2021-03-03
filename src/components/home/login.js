@@ -13,30 +13,6 @@ function Login() {
   const history = useHistory();
   const userCtx = useContext(UserContext);
 
-    // const keyPress = useCallback(e=>{
-    //   if(e.key === 'Enter'){
-    //     let Username = document.querySelectorAll(".LoginInpName");
-    //     let User = Array.from(Username);
-    //     const finalOneUser = {}
-    //     User.map(element=>{
-    //         let field = element.name;
-    //         let value = element.value;
-    //         finalOneUser[field] = value;
-    //     });
-    //     userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-
-    //     const UserRole = localStorage.getItem("role", []);
-    //     if(UserRole==="admin"){ history.push('/')}else{ history.push('/') }
-    //   }
-    // },[userCtx.userInfo.id]);
-
-    // useEffect( async ()=>{
-      // const UserRole = localStorage.getItem("role", []);
-        // if(UserRole==="admin"){ history.push('/admin')}else{ history.push('/') }
-        // document.addEventListener('keydown', keyPress);
-        // return () => document.removeEventListener('keydown', keyPress);
-    // },[keyPress]);
-
     const handleClick = (e) =>{
         e.preventDefault();
         let Username = document.querySelectorAll(".LoginInpName");

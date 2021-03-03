@@ -11,6 +11,10 @@ import axios from '../../../axiosbase'
 import HelperContext from '../../../context/HelperContext'
 import AccessToken from '../../../context/accessToken'
 
+
+const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
+
 function TableTwo(props) {
     const helperContext  = useContext(HelperContext);
     const [ spnBtn, setSpnBtn ] = useState(false);
@@ -189,7 +193,7 @@ function TableTwo(props) {
                                             <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
                                                 <div className="name">
                                                 <InputStyle className="newInp">
-                                                        <input max='3000-12-31' onChange={onChangeGetDate} value={el.getDate} id={el.id} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" required />
+                                                        <input max={Currentdate} onChange={onChangeGetDate} value={el.getDate} id={el.id} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" required />
                                                         <div className="line"></div>
                                                 </InputStyle>
                                                         </div> </div></div>
@@ -197,7 +201,7 @@ function TableTwo(props) {
                                             <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
                                                 <div className="name">
                                                 <InputStyle className="newInp">
-                                                        <input max='3000-12-31' onChange={onChangeRecentDate} type="date" id={el.id} value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="recentDate" required />
+                                                        <input max={Currentdate} onChange={onChangeRecentDate} type="date" id={el.id} value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="recentDate" required />
                                                         <div className="line"></div>
                                                 </InputStyle>
                                                          </div> </div>  </div>
@@ -244,7 +248,7 @@ function TableTwo(props) {
                                             <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
                                                 <div className="name">
                                                     <InputStyle className="newInp">
-                                                            <input max='3000-12-31'  type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" required />
+                                                            <input max={Currentdate}  type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" required />
                                                             <div className="line"></div>
                                                     </InputStyle>
                                                    
@@ -254,7 +258,7 @@ function TableTwo(props) {
                                             <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
                                                 <div className="name">
                                                      <InputStyle className="newInp">
-                                                            <input max='3000-12-31' type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="recentDate" required />
+                                                            <input max={Currentdate} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="recentDate" required />
                                                             <div className="line"></div>
                                                     </InputStyle>
                                                         </div> </div>  </div>
@@ -296,8 +300,8 @@ function TableTwo(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <InputStyle className="newInp">
-                                                    {Dname !== null ? <input max='3000-12-31' onChange={changeHandleDate} value={Ddate}  type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
-                                                    : <input max='3000-12-31' type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />  }
+                                                    {Dname !== null ? <input max={Currentdate} onChange={changeHandleDate} value={Ddate}  type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                    : <input max={Currentdate} type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />  }
                                                     <div className="line"></div>
                                             </InputStyle>
                                         </div>

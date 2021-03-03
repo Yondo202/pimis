@@ -1,22 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
-import Login from './login'
+import EmailAuth from './EmailAuth'
 import {fontFamily} from "../theme"
 
-function HomeLogin() {
+function Email() {
     return (
         <ComponentHome >
             <div className="ghost" style={{backgroundImage:`url(/background1.jpg)`}}>
                 <div className="ghostChild"></div>
             </div>
             <div className="mainFormPar">
-                <Login />
+                <EmailAuth />
             </div>
         </ComponentHome>
     )
 }
 
-export default HomeLogin
+export default Email
 
 const ComponentHome = styled.div`
         font-family: ${fontFamily};

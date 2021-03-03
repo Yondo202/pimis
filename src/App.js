@@ -7,7 +7,6 @@ import UserContext from "./context/UserContext";
 import { HelpStore } from "./context/HelperContext";
 import Feedback from './components/feedback/Feedback'
 import CheckComp from "./components/check/compCheck";
-import EmialSender from "./components/emailSend/EmailSend";
 import EmialSender2 from "./components/emailSend/EmailSend2";
 import LoginDoneHome2 from "./components/LoginDoneHome/Home";
 import MainRequestOld from "./containers/requestComp/mainRequestOld";
@@ -53,7 +52,6 @@ function App() {
     }
   }, [userId]);
 
-
   return (
     <div className="App">
       <AlertStore>
@@ -86,11 +84,9 @@ function App() {
                         <Route path="/request/:url" component={MainRequestOld} />
                         <Route path="/feedback" component={Feedback} />
                         <Route path="/workperformance" component={WorkPerformance} />
-
-                        <Route path="/email" component={EmialSender} />
                         <Route path="/email2" component={EmialSender2} />
-                        <Route path="/letter-of-interest" component={LetterOfInterest} />
 
+                        <Route path="/letter-of-interest" component={LetterOfInterest} />
                         <Route path="/urgudul/:page" component={UrgudulNavigator} />
 
                         <Route path="/attachments" component={AttachmentUploads} />

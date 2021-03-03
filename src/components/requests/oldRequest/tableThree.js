@@ -11,6 +11,9 @@ import HelperContext from '../../../context/HelperContext'
 import axios from '../../../axiosbase'
 import AccessToken from '../../../context/accessToken'
 
+const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
+
 function TableThree(props) {
     const helperContext = useContext(HelperContext);
     const [ spnBtn, setSpnBtn ] = useState(false);
@@ -116,8 +119,8 @@ function TableThree(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <InputStyle className="newInp">
-                                                {Dname ?  <input type="date" onChange={changeDateHandle} value={Ddate} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" name="date" required />
-                                                        : <input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" name="date" required /> }
+                                                {Dname ?  <input type="date" onChange={changeDateHandle} value={Ddate} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" name="date" required />
+                                                        : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" name="date" required /> }
                                                 <div className="line"></div>
                                             </InputStyle>
                                         </div>

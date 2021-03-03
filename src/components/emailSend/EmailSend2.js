@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from '../../axiosbase';
-import { Email, Item, Span, A, renderEmail, Box,Image} from 'react-html-email'
+import { Email, Item, renderEmail, Box,Image} from 'react-html-email'
 
 function EmailSend2() {
     const [ color, setColor ] =useState("#FFFF00");

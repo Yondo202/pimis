@@ -13,6 +13,9 @@ import HelperContext from '../../../context/HelperContext'
 import AccessToken from '../../../context/accessToken'
 import axios from '../../../axiosbase'
 
+const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
+
 function TableSix(props) {
     const history = useHistory();
     const helperContext = useContext(HelperContext);
@@ -169,8 +172,8 @@ function TableSix(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                            {props.initialName ? <input type="date" value={Ddate} onChange={changeDateHandle} max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
-                                                                :<input type="date" max='3000-12-31' placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />         
+                                            {props.initialName ? <input type="date" value={Ddate} onChange={changeDateHandle} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                                :<input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />         
                                             }
                                                 
                                                 <label for="password" className="form__label">Өдөр-Сар-Он </label>

@@ -62,7 +62,7 @@ function Signup() {
       });
     }
     
-    const handleClick = async (e) =>{
+    const handleClick = () =>{
              let rs = document.querySelectorAll(".userInp"); let arr = Array.from(rs);  let finalOne = {};
             arr.map(element=>{
               if(element.value !== "- Сонго -" && element.value !== "" ){
@@ -77,16 +77,9 @@ function Signup() {
             }else if(finalOne.password !== finalOne.passwordagain) {
               setPassText("Нууц үг адил биш байна...");
             }else{
-              setPassText("");   signUpCtx.signUpUser(finalOne); setScale("1");
-              // setTimeout(()=>{
-              //   const userId = localStorage.getItem("userId", []);
-              //   if(userId){
-              //     window.location.reload(true);
-              //   }else{
-              //     console.log('false');
-              //   }
-              // },1000);
+              setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1");
             }
+
       }
  
     return (
@@ -185,115 +178,116 @@ function Signup() {
                 </Modal>
 
 
-                  <Modal visible={visible} width="900" height="580" effect="fadeInDown" onClickAway={closeModal}  >
+                <Modal visible={visible} width="900" height="580" effect="fadeInDown" onClickAway={closeModal}  >
                             <div className="formOneParent">
-                            <div className="headPar"><span className="headText">Бүртгүүлэх</span>
-                            <a href="javascript:void(0);" onClick={closeModal}>X</a>
-                            </div>
-                                <div className="inputPar">
+                              <div className="headPar"><span className="headText">Бүртгүүлэх</span>
+                                <a href="javascript:void(0);" onClick={closeModal}>X</a>
+                              </div>
 
-                                <div className="UserSectionMiddle">
-                                    <div className="inpChild">
-                                          <div className="labels"><span>Компаны нэр :</span> </div>
-                                          <div className="name">
-                                          <InputStyle className="newInp">
-                                              <input type="input" className="userInp  form__field" placeholder="нэр..." name="companyname" required />
-                                              <div className="line"></div>
-                                          </InputStyle>
-                                              {/* <div className="form__group">
-                                                  <input type="input" className="userInp  form__field" name="companyname" required />
-                                              </div> */}
-                                          </div>
-                                      </div>
-                                      <div className="inpChild">
-                                          <div className="labels"><span>Регистрийн дугаар :</span> </div>
-                                          <div className="name">
-                                              <InputStyle className="newInp">
-                                                  <input type="number" className="userInp  form__field" placeholder="123..." name="companyregister" required />
-                                                  <div className="line"></div>
-                                              </InputStyle>
-                                          </div>
-                                      </div>
-                                      <div className="inpChild sectorChild">
-                                          <div className="labels"><span>Салбарууд :</span> </div>
-                                          <div className="name">
-                                              <div className="form__group">
-                                                <select name="business_sectorId" className="userInp sectors" >
-                                                    <option disabled selected >- Сонго -</option>
-                                                    {sectorData.map((el,i)=>{
-                                                      return( <option key={i} value={el.id}>{el.bdescription_mon}</option> )
-                                                    })}
-                                                </select>
-                                                  {/* <input type="input" className="userInp  form__field" name="sectors" required />
-                                                  <label for="name" className="form__label"> </label> */}
-                                              </div>
-                                          </div>
-                                      </div>
-                                </div>
-
-                                  <div className="UserSection">
-                                    <div className="inpChild">
-                                          <div className="labels"><span>Нэр :</span> </div>
-                                          <div className="name">
-                                              <CgProfile />
-                                              <InputStyle className="newInp">
-                                                   <input type="input" className="userInp form__field" placeholder="нэр..." name="name" required />
-                                                  <div className="line"></div>
-                                              </InputStyle>
-                                              {/* <div className="form__group">
-                                                  <input type="input" className="userInp  form__field" name="name" required />
-                                                  <label for="name" className="form__label">Өөрийн нэрээ оруулах </label>
-                                              </div> */}
-                                          </div>
-                                      </div>
-                                      <div className="inpChild">
-                                          <div className="labels"><span>Email :</span> </div>
-                                          <div className="name">
-                                              <GoMail />
-
-                                              <InputStyle className="newInp">
-                                                   <input type="email" className="userInp  form__field" placeholder="Цахим шуудан" name="email" required />
-                                                  <div className="line"></div>
-                                              </InputStyle>
-
-                                          </div>
-                                      </div>
-                                  </div>
-                                   
-                                  <div className="UserSection">
-                                    <div className="inpChild">
-                                        <div className="labels">
-                                            <span> Нууц үг </span>
-                                            <span className="forget"> 8-с дээш оронтой байх</span>
-                                          </div>
-                                            <div className="name">
-                                                <BiLockOpen />
+                              {signUpCtx.errMsgSignup.cond===false? (<div className="inputPar">
+                                      <div className="UserSectionMiddle">
+                                          <div className="inpChild">
+                                                <div className="labels"><span>Компаны нэр :</span> </div>
+                                                <div className="name">
                                                 <InputStyle className="newInp">
-                                                    <input onFocus={()=> setPasswordFocused(true)} onBlur={()=> setPasswordFocused(false)} onChange={e => onChangePassword(e.target.value)} value={password} type="password" className="userInp  form__field" placeholder="Нууц үг" name="password" required />
+                                                    <input type="input" className="userInp  form__field" placeholder="нэр..." name="companyname" required />
                                                     <div className="line"></div>
                                                 </InputStyle>
-
+                                                    {/* <div className="form__group">
+                                                        <input type="input" className="userInp  form__field" name="companyname" required />
+                                                    </div> */}
+                                                </div>
                                             </div>
-                                         {passwordFocused && <PasswordInducator validity={passwordValidity} />}
+                                            <div className="inpChild">
+                                                <div className="labels"><span>Регистрийн дугаар :</span> </div>
+                                                <div className="name">
+                                                    <InputStyle className="newInp">
+                                                        <input type="number" className="userInp  form__field" placeholder="123..." name="companyregister" required />
+                                                        <div className="line"></div>
+                                                    </InputStyle>
+                                                </div>
+                                            </div>
+                                            <div className="inpChild sectorChild">
+                                                <div className="labels"><span>Салбарууд :</span> </div>
+                                                <div className="name">
+                                                    <div className="form__group">
+                                                      <select name="business_sectorId" className="userInp sectors" >
+                                                          <option disabled selected >- Сонго -</option>
+                                                          {sectorData.map((el,i)=>{
+                                                            return( <option key={i} value={el.id}>{el.bdescription_mon}</option> )
+                                                          })}
+                                                      </select>
+                                                        {/* <input type="input" className="userInp  form__field" name="sectors" required />
+                                                        <label for="name" className="form__label"> </label> */}
+                                                    </div>
+                                                </div>
+                                            </div>
                                       </div>
 
-                                      <div className="inpChild">
-                                           <div className="labels"> <span> Нууц үг давтах </span> </div>
-                                            <div className="name">
-                                                <BiLockOpen />
-                                                <InputStyle className="newInp">
-                                                    <input  type="password" className="userInp  form__field" placeholder="Нууц үгээ дахин оруулах" name="passwordagain" required />
-                                                    <div className="line"></div>
-                                                </InputStyle>
+                                        <div className="UserSection">
+                                          <div className="inpChild">
+                                                <div className="labels"><span>Нэр :</span> </div>
+                                                <div className="name">
+                                                    <CgProfile />
+                                                    <InputStyle className="newInp">
+                                                        <input type="input" className="userInp form__field" placeholder="нэр..." name="name" required />
+                                                        <div className="line"></div>
+                                                    </InputStyle>
+                                                </div>
                                             </div>
-                                      </div>
-                                  </div>
+                                            <div className="inpChild">
+                                                <div className="labels"><span>Email :</span> </div>
+                                                <div className="name">
+                                                    <GoMail />
 
-                                    <div className="SubmitButtonPar">
-                                          <NextBtn onClick={handleClick} className="SubmitButton" type="button">Бүртгүүлэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
-                                          {signUpCtx.userInfo.userId ? <span className="colorTextgreen" style={{transform:`scale(${scale})`}}>Амжилттай нэвтэрлээ...</span> : PassText? (<span className="colorText" style={{transform:`scale(${scale})`}}>{PassText}</span>) :  (<span className="colorText" style={{transform:`scale(${scale})`}}>{signUpCtx.errMsgSignup}</span>)}  
-                                    </div>
-                                </div>
+                                                    <InputStyle className="newInp">
+                                                        <input type="email" className="userInp  form__field" placeholder="Цахим шуудан" name="email" required />
+                                                        <div className="line"></div>
+                                                    </InputStyle>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="UserSection">
+                                          <div className="inpChild">
+                                              <div className="labels">
+                                                  <span> Нууц үг </span>
+                                                  <span className="forget"> 8-с дээш оронтой байх</span>
+                                                </div>
+                                                  <div className="name">
+                                                      <BiLockOpen />
+                                                      <InputStyle className="newInp">
+                                                          <input onFocus={()=> setPasswordFocused(true)} onBlur={()=> setPasswordFocused(false)} onChange={e => onChangePassword(e.target.value)} value={password} type="password" className="userInp  form__field" placeholder="Нууц үг" name="password" required />
+                                                          <div className="line"></div>
+                                                      </InputStyle>
+
+                                                  </div>
+                                              {passwordFocused && <PasswordInducator validity={passwordValidity} />}
+                                            </div>
+
+                                            <div className="inpChild">
+                                                <div className="labels"> <span> Нууц үг давтах </span> </div>
+                                                  <div className="name">
+                                                      <BiLockOpen />
+                                                      <InputStyle className="newInp">
+                                                          <input  type="password" className="userInp  form__field" placeholder="Нууц үгээ дахин оруулах" name="passwordagain" required />
+                                                          <div className="line"></div>
+                                                      </InputStyle>
+                                                  </div>
+                                            </div>
+                                        </div>
+
+                                          <div className="SubmitButtonPar">
+                                                <NextBtn onClick={handleClick} className="SubmitButton" type="button">Бүртгүүлэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
+                                                {PassText? (<span className="colorText" style={{transform:`scale(${scale})`}}>{PassText}</span>) :  (<span className="colorText" style={{transform:`scale(${scale})`}}>{signUpCtx.errMsgSignup.msg}</span>)}  
+                                          </div>
+                                      </div>) 
+                                  :( <div className="success">
+                                        <h3 className="title">Тавтай морил</h3>
+                                        <span className="desc">{signUpCtx.errMsgSignup.msg}</span>
+                                     </div>   )}
+                                
                           </div>
                 </Modal>
                 {/* </form> */}
@@ -397,6 +391,17 @@ const Component = styled.div`
             margin-bottom:16px;
             padding-bottom:20px 0px;
             padding:10px 60px;
+            .success{
+              padding:50px 0px;
+              .title{
+                color:${Color};
+                padding:15px 0px;
+              }
+              .desc{
+                font-size:16px;
+              }
+            }
+
             .headPar{
             padding:6px 0;
             font-size:1.3rem;
