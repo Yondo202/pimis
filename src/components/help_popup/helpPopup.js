@@ -60,15 +60,15 @@ function HelpPopup(props) {
                 <QuestionMarkSVG className="tw-w-6 tw-h-6" />
             </button>
 
-            <div className={`tw-absolute ${props.popupClass || 'tw-w-72'} tw-text-sm tw-bg-indigo-600 tw-bg-opacity-90 tw-text-white tw-font-normal tw-italic tw-rounded-lg tw-shadow-md tw-p-2 tw-z-10 ${open ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} style={positionStyle} ref={divRef}>
+            <div className={`tw-absolute ${props.popupClass || 'tw-w-72'} tw-bg-indigo-600 tw-bg-opacity-90 tw-text-white tw-font-normal tw-rounded-lg tw-shadow-md tw-p-2 tw-z-10 ${open ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} style={{ ...positionStyle, fontSize: '13px' }} ref={divRef}>
                 <div className="tw-ml-2">
                     {props.main}
                 </div>
-                {
-                    props.list && <ul className="tw-list-disc tw-pl-6 tw-mt-2">
+                {props.list &&
+                    <ul className="tw-list-disc tw-pl-6 tw-mt-1">
                         {
                             props.list.map((item, i) =>
-                                <li key={i}>
+                                <li className="tw-py-1" key={i}>
                                     {item}
                                 </li>
                             )

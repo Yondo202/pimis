@@ -11,7 +11,7 @@ import EmialSender2 from "./components/emailSend/EmailSend2";
 import LoginDoneHome2 from "./components/LoginDoneHome/Home";
 import MainRequestOld from "./containers/requestComp/mainRequestOld";
 import { UrgudulStore } from "components/utilities/urgudulContext"
-import UrgudulNavigator from "pages/urgudul/Page1"
+import UrgudulNavigator from "pages/urgudul/Page"
 import BusinessSectorEditor from "pages/business_sector_edit/editorPage";
 import ProductsEditor from "pages/products_edit/editorPage";
 import { AlertStore } from "components/utilities/alertContext";

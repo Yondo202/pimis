@@ -67,7 +67,7 @@ function UrgudulActivities() {
         setValidate(true)
         let allValid = true
         for (const obj of form) {
-            allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key]))
+            allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key], key === 'activity' && 'quill'))
         }
 
         if (UrgudulCtx.data.id) {
@@ -120,54 +120,47 @@ function UrgudulActivities() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
+            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center" style={{ fontSize: '15px' }}>
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">B6</span>
-                {
-                    isCluster ? '- Кластераар хийх үйл ажиллагаа' : '- Аж ахуйн нэгжээр хийх үйл ажиллагаа'
-                }
+                {isCluster ? '- Кластераар хийх үйл ажиллагаа' : '- Аж ахуйн нэгжээр хийх үйл ажиллагаа'}
 
-                {
-                    isCluster ?
-                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерт нийтэд нь нөлөөлөх үйл ажиллагаа, үр өгөөжийн талаар бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
-                        :
-                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Аж ахуйн нэгжийн хийг гүйцэтгэх үйл ажиллагааг бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
+                {isCluster ?
+                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерт нийтэд нь нөлөөлөх үйл ажиллагаа, үр өгөөжийн талаар бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
+                    :
+                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Аж ахуйн нэгжийн хийг гүйцэтгэх үйл ажиллагааг бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
                 }
             </div>
 
-            {
-                form.map((item, i) =>
-                    <div className="tw-flex odd:tw-bg-gray-50" key={i}>
-                        <div className="tw-flex-grow">
-                            <div className="tw-border tw-border-dashed">
-                                <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
-                                    <span className="tw-ml-2 tw-text-sm tw-font-medium">
-                                        {`Үйл ажиллагаа ${i + 1}:`}
-                                    </span>
-                                </div>
-
-                                <div className={`tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden ${validate && checkInvalid(item.activity, 'quill') && 'tw-border tw-border-dashed tw-border-red-500'}`} style={{ minHeight: '128px', maxHeight: '768px' }}>
-                                    <FormRichText modules="small" value={item.activity || ''} name="activity" id={i} setForm={handleSetForm} />
-                                </div>
-                            </div>
-
-                            <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.budget_cost) && 'tw-border-red-500'}`}>
-                                    <FormInline label="Дээрх үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-32" />
-
-                                    <div className="tw-relative tw-w-2">
-                                        <HelpPopup classAppend="tw-right-5 tw-top-1" main="Энэхүү зардлийн тал хувийг өргөдөл гаргагч өөрийн талаас, тал хувийг экспортыг дэмжих төслийн зүгээс гаргах юм." list={['Үйл ажиллагааны төсөвт дүнг тооцохдоо бодит өртөгөөс 20 хувиас дээш хэлбэлзэлтэй байж болохгүй тул бодитоор өртөгөөр тооцоолно уу.', 'Экспортыг дэмжих төслийн санхүүжилтийн дээд хэмжээ нь $50,000 гэдгийг анхаарна уу.']} position="top-left" />
-                                    </div>
-                                </div>
-                            </div>
+            {form.map((item, i) =>
+                <div className="tw-flex odd:tw-bg-gray-50" key={i}>
+                    <div className="tw-flex-grow">
+                        <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
+                            <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(item.activity, 'quill') ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
+                            <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(item.activity, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
+                                {`Үйл ажиллагаа ${i + 1}:`}
+                            </span>
                         </div>
 
-                        <div className="tw-flex tw-items-center">
-                            <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                        <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                            <FormRichText modules="small" value={item.activity || ''} name="activity" id={i} setForm={handleSetForm} />
+                        </div>
+
+                        <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                            <div className="tw-w-full tw-max-w-lg tw-flex">
+                                <FormInline label="Дээрх үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-32" invalid={validate && checkInvalid(item.budget_cost)} />
+
+                                <div className="tw-relative tw-w-2">
+                                    <HelpPopup classAppend="tw-right-5 tw-top-1" main="Энэхүү зардлийн тал хувийг өргөдөл гаргагч өөрийн талаас, тал хувийг экспортыг дэмжих төслийн зүгээс гаргах юм." list={['Үйл ажиллагааны төсөвт дүнг тооцохдоо бодит өртөгөөс 20 хувиас дээш хэлбэлзэлтэй байж болохгүй тул бодитоор өртөгөөр тооцоолно уу.', 'Экспортыг дэмжих төслийн санхүүжилтийн дээд хэмжээ нь $50,000 гэдгийг анхаарна уу.']} position="top-left" />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                )
-            }
+
+                    <div className="tw-flex tw-items-center">
+                        <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                    </div>
+                </div>
+            )}
 
             <div className="tw-flex tw-justify-end tw-items-center tw-py-1">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
@@ -183,8 +176,8 @@ function UrgudulActivities() {
                     <span className="tw-ml-2 tw-text-base">${!isNaN(net) && net}</span>
                 </div>
 
-                <div className={`tw-p-0.5 tw-font-medium ${validate && net / 2 > 50000 && 'tw-border tw-border-dashed tw-border-red-500'}`}>
-                    <span className="tw-text-sm">
+                <div className="tw-p-0.5 tw-font-medium">
+                    <span className={`tw-text-sm ${validate && net / 2 > 50000 && 'tw-text-red-500'} tw-transition-colors tw-duration-300`}>
                         Үүний ЭДТ-өөс санхүүжүүлэх нь:
                         <span className="tw-ml-2 tw-text-base">
                             ${!isNaN(net) && net / 2}

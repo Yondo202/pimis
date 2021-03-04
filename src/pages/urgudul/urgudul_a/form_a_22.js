@@ -89,7 +89,7 @@ function UrugudulDirectors() {
         setValidate(true)
         let allValid = true
         for (const obj of form) {
-            allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key]))
+            allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key], key === 'project_contribution' && 'quill'))
         }
 
         if (UrgudulCtx.data.id) {
@@ -136,51 +136,49 @@ function UrugudulDirectors() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
+            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center" style={{ fontSize: '15px' }}>
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">A2</span>
                 - Аж ахуйн нэгжийг төлөөлөгчид
 
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Түлхүүр албан тушаалтны жагсаалт, тэдгээрийн овог нэр, албан тушаалын хамт." position="bottom" />
             </div>
 
-            {
-                form.map((item, i) =>
-                    <div className="tw-flex odd:tw-bg-gray-50" key={i}>
-                        <div className="tw-flex-grow">
-                            <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-center">
-                                <div className={`tw-border tw-border-dashed tw-w-full tw-max-w-lg tw-flex ${validate && checkInvalid(item.position) && 'tw-border-red-500'}`}>
-                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.position} name="position" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-96" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
-                                </div>
+            {form.map((item, i) =>
+                <div className="tw-flex odd:tw-bg-gray-50" key={i}>
+                    <div className="tw-flex-grow">
+                        <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                            <SearchSelect label="Албан тушаал" data={occupations} value={item.position} name="position" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-96" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.position)} />
 
-                                <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.director_name || ''} name="director_name" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.director_name) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                            <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.director_name || ''} name="director_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.director_name)} />
 
-                                <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.director_phone || ''} name="director_phone" id={i} onChange={handleInputFormatted} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.director_phone) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                            <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.director_phone || ''} name="director_phone" id={i} onChange={handleInputFormatted} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.director_phone)} />
 
-                                <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.director_email || ''} name="director_email" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.director_email) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} />
+                            <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.director_email || ''} name="director_email" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.director_email)} />
 
-                                <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" value={item.employed_date || ''} name="employed_date" id={i} onChange={handleInput} classAppend={`tw-border tw-border-dashed tw-w-full tw-max-w-lg ${validate && checkInvalid(item.employed_date) && 'tw-border-red-500'}`} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
-                            </div>
-
-                            <div className={`tw-w-full tw-border tw-border-dashed ${validate && checkInvalid(item.project_contribution, 'quill') && 'tw-border-red-500'}`}>
-                                <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                                    <PenSVG className="tw-w-5 tw-h-5 tw-text-gray-600" />
-                                    <span className="tw-ml-2 tw-text-sm tw-font-medium">Энэхүү төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр</span>
-
-                                    <HelpPopup classAppend="tw-ml-auto" main="Тухайлбал ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
-                                </div>
-
-                                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                                    <FormRichText modules="small" value={item.project_contribution || ''} name="project_contribution" id={i} setForm={handleSetForm} />
-                                </div>
-                            </div>
+                            <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" value={item.employed_date || ''} name="employed_date" id={i} onChange={handleInput} classAppend="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.employed_date)} />
                         </div>
 
-                        <div className="tw-flex tw-items-center">
-                            <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                        <div className="tw-w-full">
+                            <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
+                                <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(item.project_contribution, 'quill') ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
+                                <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(item.project_contribution, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
+                                    Энэхүү төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр
+                                </span>
+
+                                <HelpPopup classAppend="tw-ml-auto" main="Тухайлбал ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
+                            </div>
+
+                            <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                                <FormRichText modules="small" value={item.project_contribution || ''} name="project_contribution" id={i} setForm={handleSetForm} />
+                            </div>
                         </div>
                     </div>
-                )
-            }
+
+                    <div className="tw-flex tw-items-center">
+                        <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                    </div>
+                </div>
+            )}
 
             <div className="tw-flex tw-justify-end tw-items-center tw-pt-2">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
