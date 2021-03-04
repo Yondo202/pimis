@@ -67,8 +67,6 @@ function TableThree(props) {
         let arr4 = Array.from(rs4);
         let userInp = {};
 
-        // console.log(confirmNull, " ddd");
-
         arr4.map(el=>{let field = el.name; let value = el.value; if(value===""){ el.classList += " red"; }else{  el.classList =- " red";  el.classList += " getUserInp3"; };  userInp[field] = value; });
         let confirm = document.getElementById("GetcheckBtn3").checked;
         if(confirmNull===false){

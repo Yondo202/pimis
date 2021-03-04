@@ -66,9 +66,6 @@ function TableThreeDetails(props) {
         if(event.target.checked === true){setNullInf(false); }else{ setNullInf(true); }
     }
 
-    console.log(props.initialData, " initial");
-    console.log(props.na3, " na3 s");
-
     return (
         <Component3Detail>
             <div className="rowHeader">
