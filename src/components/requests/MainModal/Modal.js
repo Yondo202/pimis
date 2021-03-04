@@ -11,7 +11,7 @@ import {ColorRgb} from '../../theme'
 
 import { useReactToPrint } from "react-to-print";
 
-export const Modal = ({ showModal,setShowModal, initialData, param }) => {
+export const Modal = ({ showModal,setShowModal, initialData, param, na3 }) => {
     // const HelpContext = useContext(HelperContext);
     const history = useHistory();
     const [ DataOne, setDataOne ] = useState([]);
@@ -52,7 +52,9 @@ export const Modal = ({ showModal,setShowModal, initialData, param }) => {
     }
 
     console.log(initialData, " Modal Data ");
-    console.log(param, "my param")
+    console.log(param, "my param");
+
+    console.log(initialData , " initail data");
 
     return(
         <>
@@ -68,10 +70,9 @@ export const Modal = ({ showModal,setShowModal, initialData, param }) => {
                           <div ref={componentRef}>
                             <ModalOne  DataOne={initialData&&initialData.ppsRequest1Details} />
                             <ModalTwo Data2={initialData&&initialData.ppsRequest2Details} />
-                            <ModalThree Data2={initialData&&initialData.ppsRequest3Details} />
+                            <ModalThree Data2={initialData&&initialData.ppsRequest3Details} na3={na3} />
                             <ModalFour Data2={initialData&&initialData.ppsRequest4Details} />
                           </div>
-
                       </div>
                   </animated.div>
               </Background>)

@@ -15,6 +15,7 @@ const specialCharacterRegx = /[ ~@#$%^&*()_+\-=[\]{;':\\|,.<>\/?]/;
 
 function Signup() {
     const signUpCtx = useContext(UserContext);
+    const [ BtnSpin, setBtnSpin ] = useState(false);
     const [ sectorData, setSectorData ] = useState([]);
     const [PassText, setPassText] = useState("");
     const [scale, setScale] = useState("1");
@@ -48,6 +49,7 @@ function Signup() {
     },[]);
     useEffect( async ()=>{
         const sectorData = await axios.get(`business-sector`); setSectorData(sectorData.data.data);
+        console.log(sectorData," sector data");
         document.addEventListener('keydown', keyPress);
         return () => document.removeEventListener('keydown', keyPress)
     },[keyPress]);
@@ -69,7 +71,6 @@ function Signup() {
                 let field = element.name;  let value = element.value;  finalOne[field] = value;  }
             });
             let keys = Object.keys(finalOne);
-
             if(keys.length < 7){
               setPassText("Гүйцэд бөгөлнө үү");
             }else if(passwordValidity.minChar === false || passwordValidity.number === false || passwordValidity.specialChar === false){
@@ -77,10 +78,9 @@ function Signup() {
             }else if(finalOne.password !== finalOne.passwordagain) {
               setPassText("Нууц үг адил биш байна...");
             }else{
-              setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1");
+              setBtnSpin(true); setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1");
             }
-
-      }
+    }
  
     return (
         <Component className="SignUp">
@@ -279,7 +279,7 @@ function Signup() {
                                         </div>
 
                                           <div className="SubmitButtonPar">
-                                                <NextBtn onClick={handleClick} className="SubmitButton" type="button">Бүртгүүлэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
+                                                <NextBtn style={BtnSpin? {width:`20%`,opacity:`0.7`} :{width:`100%`,opacity:`1`}} disabled={true} onClick={handleClick} className="SubmitButton" type="button">{BtnSpin? <img src="/gif1.gif" /> : `Бүртгүүлэх` }  <div style={BtnSpin? {display:`none`} :{display:`flex`}} className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
                                                 {PassText? (<span className="colorText" style={{transform:`scale(${scale})`}}>{PassText}</span>) :  (<span className="colorText" style={{transform:`scale(${scale})`}}>{signUpCtx.errMsgSignup.msg}</span>)}  
                                           </div>
                                       </div>) 
@@ -445,7 +445,6 @@ const Component = styled.div`
                   }
                 }
               }
-             
             }
             .UserSection{
               display:flex;

@@ -32,7 +32,7 @@ function TableOne(props) {
     const tablesContext = useContext(HelperContext);
     
     useEffect(()=>{
-        const finalData = []
+        const finalData = [];
         dataOne.map((el,i)=>{
           if(props.initialData){
               props.initialData.map((elem,index)=>{ 
@@ -68,14 +68,16 @@ function TableOne(props) {
                   }
               });
               tablesContext.TableControl(finalOne2); let rs4 = document.querySelectorAll(".getUserInp1");  let arr4 = Array.from(rs4); let userInp = {};
-              arr4.map(el=>{let field = el.name; let value = el.value; userInp[field] = value;  });
+              arr4.map(el=>{
+                 let field = el.name; let value = el.value; if(value===""){ el.classList += " red"; }else{  el.classList =- " red";  el.classList += " getUserInp1"; }; userInp[field] = value;
+                });
 
               finalOne["request"] = finalOne2;  finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS1"] = finalOne;
               let keys = Object.keys(finalOne2); const Procent = keys.length * 100 / 13; const FinalProcent = Math.round(Procent);
 
               let confirm = document.getElementById("GetcheckBtn").checked;
 
-             console.log(finalEnd, "final end");
+              console.log(finalEnd, "final end");
 
 
              let arrs = [];  dataOne.map((el,i)=>{ finalOne2.map(elem=>{ if((i+1).toString()===elem.rownum && elem.rvalue === "true"){arrs.push(el.name); };});});
@@ -95,15 +97,29 @@ function TableOne(props) {
                 // setTimeout(()=>{  history.push('/');  },4000);
                 let arrs = []; dataOne.map((el,i)=>{  finalOne2.map(elem=>{ if((i+1).toString()===elem.rownum && elem.rvalue === "true"){arrs.push(el.name);}; }); });
                 setSecondChance(arrs);
-                
                 if(btn==="twice"){
+                   // Дата явна
+                  finalOne["approved"] = 1;
                   setVisible2(false);
-                  // Дата явна
+                  console.log(JSON.stringify(finalEnd) , "------------------");
+
+                  if(props.initialData){
+                    await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
+                      console.log(res, "333333333333333333333");
+                      setSpnBtn(false); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
+                       })
+                      .catch((err)=>{setSpnBtn(false); tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
+                  }else{
+                    axios.post("pps-request", finalEnd, {headers: { Authorization:AccessToken()} })
+                    .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); setSpnBtn(false);
+                    }).catch((err)=>{ setSpnBtn(false); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
+                  }
                 }else if(btn==="once"){
-                  setVisible2(true);
                   // Дахин нэг боломж
+                  setVisible2(true);
                 }
               }else{
+                finalOne["approved"] = 2;
                 setOpacity("0"); setOpacity2("0");setSpnBtn(true);
                 if(props.initialData){
                   await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{ 
@@ -147,7 +163,6 @@ function TableOne(props) {
                       </div>
                   </div>
               </Modal>
-
                 <div className="rowHeader">
                     <div className="boldTitle">ХАВСРАЛТ 2 А.</div>
                     <div className="italicTitle">ХҮСНЭГТ 1. ХОРИГЛОСОН ҮЙЛ АЖИЛЛАГААНЫ ЖАГСААЛТ</div>
@@ -216,8 +231,6 @@ function TableOne(props) {
                                             }
                                                 <div className="line"></div>
                                         </InputStyle>
-
-                                          
                                         </div>
                                     </div>
 
@@ -230,10 +243,9 @@ function TableOne(props) {
                                             </div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
+
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                             <NextBtn onClick={()=>clickHandles(btnCond)} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>

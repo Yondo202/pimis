@@ -91,9 +91,10 @@ function TableFour(props) {
             let arr4 = Array.from(rs4);
             let userInp = {};
 
-            arr4.map(element=>{
-                let field = element.name;
-                let value = element.value;
+            arr4.map(el=>{
+                let field = el.name;
+                let value = el.value;
+                if(value===""){ el.classList += " red"; }else{  el.classList =- " red";  el.classList += " getUserInp"; };
                 userInp[field] = value;
             });
 

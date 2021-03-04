@@ -15,12 +15,10 @@ function ModalThree(props) {
         }
     },[props.Data2]);
 
-
     return (
         <TableTwo >
             <h6>3. Үйлдвэрлэгчийн байгаль орчин, нийгмийн удирдлагын гүйцэтгэлийн талаарх мэдээллийн товчоон *</h6>
             <div className="table container">
-                
                 <div style={{borderBottom:`1px solid rgba(0,0,0,0.4)`}} className="Header row">
                         <div className="col-md-12 col-sm-12 col-12"><div className="question">Торгууль / Шийтгэл / Санал гомдлууд </div></div>
                 </div>
@@ -31,23 +29,21 @@ function ModalThree(props) {
                         <div className="col-md-3 col-sm-3 col-3" style={{borderLeft:`1px solid rgba(0,0,0,0.3)`}}><div className="question">Санал</div></div>
                 </div>
 
-                {DataOne.map((el,i)=>{
+                {props.na3!==1? DataOne.map((el,i)=>{
                     return(
                         <div key={i} className="items row">
+
                                 <div style={{borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:`rgba(63,255,181,0.2)`}} className="col-md-3 col-sm-3 col-3"><div className="question">{el.pdate}</div></div>
                                 <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:`rgba(63,255,181,0.2)`}} className="col-md-3 col-sm-3 col-3"><div className="question">{el.issue}</div></div>
                                 <div style={{textAlign:"center",borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:`rgba(63,255,181,0.2)`}} className="col-md-3 col-sm-3 col-3">
                                 <div className="question">{el.stepdate}</div>
                                 </div>
                                 <div className="col-md-3 col-sm-3 col-3" style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:`rgba(63,255,181,0.2)`}}><div className="question">{el.vote}</div></div>
+
                         </div>
                     )
-                })}
+                }):<div className="items row"><div style={{backgroundColor:`rgba(63,255,181,0.2)`}} className="col-md-12 col-sm-12 col-12"><div className="question A1">Байхгүй</div></div> </div>  }
             </div>
-          
-
-           
-            
         </TableTwo>
     )
 }
@@ -71,6 +67,7 @@ const TableTwo  = styled.div`
                 align-items:center;
                 height:100%;
             }
+            
         }
         .items{
             .question{
@@ -81,8 +78,13 @@ const TableTwo  = styled.div`
                 align-items:center;
                 height:100%;
             }
+            .A1{
+                font-weight:500;
+                font-size:15px;
+            }
         }
     }
+    
     
 `
 

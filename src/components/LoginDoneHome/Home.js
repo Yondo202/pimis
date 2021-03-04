@@ -131,6 +131,19 @@ const HomeComponent = styled.div`
                         border-radius:50%;
                     }
                 }
+                .itemsNotApproved{
+                    border:1px solid rgba(255,0,0,0.6);
+                    &::before{
+                        border:1px solid rgba(255,0,0,0.6);
+                    }
+                }
+
+                .itemsNotWait{
+                    border:1px solid rgba(0,255,0,0.6);
+                        &::before{
+                            border:1px solid rgba(0,255,0,0.6);
+                        }
+                }
                 .line{
                     position:relative;
                     height:6vh;

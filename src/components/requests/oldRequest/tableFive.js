@@ -39,7 +39,11 @@ function TableFive(props) {
             let rs2 = document.querySelectorAll(`.PASS${i + 1}`);
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
-                if(el.value !== ""){ let field = el.name;let value = el.value; Lala["id"] = el.id; Lala[field] = value; }
+                if(el.value !== ""){
+                     let field = el.name; let value = el.value; Lala["id"] = el.id; Lala[field] = value;
+                }else{
+                    let field = el.name; Lala["id"] = el.id; Lala[field] = null;
+                }
             }); tableCondition1.push(Lala); finalOne2.push(Lala);
         });
         let keys1 = Object.keys(tableCondition1[0]); console.log(keys1.length, "my length");
@@ -50,7 +54,12 @@ function TableFive(props) {
             const Lala = {}
             let rs2 = document.querySelectorAll(`.passa${i + 1}`);
             let arr23 = Array.from(rs2);
-            arr23.map((el,i)=>{ if(el.value !== ""){let field = el.name; let value = el.value; Lala["id"] = el.id; Lala[field] = value; }});
+            arr23.map((el,i)=>{ if(el.value !== ""){
+                let field = el.name; let value = el.value; Lala["id"] = el.id; Lala[field] = value;
+             }else{
+                let field = el.name; Lala["id"] = el.id; Lala[field] = null;
+             }
+            });
             tableCondition2.push(Lala); finalOne22.push(Lala);
         });
 
@@ -58,7 +67,7 @@ function TableFive(props) {
         let keys2 = Object.keys(tableCondition2[0]);
         // console.log(keys2.length , "keys2");
         let rs4 = document.querySelectorAll(".getUserInp222"); let arr4 = Array.from(rs4); let userInp = {};
-        arr4.map(element=>{let field = element.name; let value = element.value; userInp[field] = value; });
+        arr4.map(el=>{let field = el.name; let value = el.value; userInp[field] = value; });
         let confirm = document.getElementById("GetcheckBtn5").checked; console.log(confirm, "my confirm");
 
         finalOne["requestOne"] = finalOne2; finalOne["requestTwo"] = finalOne22; finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS5"] = finalOne;

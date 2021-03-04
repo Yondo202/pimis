@@ -70,7 +70,6 @@ function TableTwo(props) {
         }).catch(err=>console.log(err));
     }
    
-
     const changeHandleName = (e) =>{   setDname(e.target.value);  }
     const changeHandleDate = (e)=>{  setDdate(e.target.value);  }
 
@@ -87,10 +86,14 @@ function TableTwo(props) {
         arr2.map((el,i)=>{
             const Lala = {};  let rs2 = document.querySelectorAll(`.PPS${i + 1}`);  let arr23 = Array.from(rs2);
             arr23.map((el,index)=>{
-                if(el.value !== ""){ 
+                if(el.value !== ""){
                     let field = el.name; let value = el.value;
                     if(Dname){ Lala["id"] = el.id;   }
                     Lala[field] = value; 
+                }else{
+                    let field = el.name;
+                    if(Dname){ Lala["id"] = el.id;   }
+                    Lala[field] = null;
                 }
             });
             fileSave.map((elem,ind)=>{
@@ -114,10 +117,8 @@ function TableTwo(props) {
         let arr4 = Array.from(rs4);
         let userInp = {};
 
-        arr4.map(element=>{
-            let field = element.name;
-            let value = element.value;
-            userInp[field] = value;
+        arr4.map(el=>{
+            let field = el.name; let value = el.value; if(value===""){ el.classList += " red"; }else{  el.classList =- " red";  el.classList += " getUser2"; };  userInp[field] = value;
         });
         let confirm = document.getElementById("GetcheckBtn2").checked;
 
@@ -153,6 +154,11 @@ function TableTwo(props) {
         
         console.log(finalEnd, "my all");
     }
+
+
+    console.log(Dname, " my d name");
+
+    console.log(props.initialName, " my inital");
 
 
     return (
@@ -309,13 +315,14 @@ function TableTwo(props) {
 
                                     <div className="inpChild next">
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
-                                            <div className="name"> <BsArrowRightShort />
-                                              <InputStyle className="newInp">
-                                                     <input id="GetcheckBtn2" className="checkBtn" type="checkbox" name="check" />
-                                              </InputStyle>
-                                            </div>
+                                        <div className="name"> <BsArrowRightShort />
+                                            <InputStyle className="newInp">
+                                                    <input id="GetcheckBtn2" className="checkBtn" type="checkbox" name="check" />
+                                            </InputStyle>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
 

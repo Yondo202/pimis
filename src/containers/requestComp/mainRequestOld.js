@@ -19,8 +19,7 @@ import axios from '../../axiosbase'
 import {ColorRgb, textColor} from '../../components/theme'
 import AccessToken from '../../context/accessToken'
 
-
-function MainRequest(props) {
+function MainRequest() {
     const history = useHistory();
     const param = useParams().url;
     const [ showModal, setShowModal ] = useState(false);
@@ -30,10 +29,9 @@ function MainRequest(props) {
     const [ ScrollClass, setScrollClass ] = useState("");
     const [ tokens, setTokens ] = useState("");
     const [ userID, setUserId ] = useState();
+    const [ approved, setApproved ] = useState(0);
+    const [ na3, setNa3 ] = useState(0);
 
-
-    console.log(param, " my param");
-    
     useEffect( async()=>{
         if(param==="user"){ 
             helpCtx.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
@@ -42,30 +40,33 @@ function MainRequest(props) {
             window.addEventListener("scroll", handleScroll);
             let resData = await axios.get(`pps-request?userId=${LocalId}`, {headers: {Authorization:AccessToken()}});
             if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data);
-                console.log(resData,"++++++++++++++++");
+                console.log(resData,"++++++++++++++++ --- +++++++");
+                setApproved(resData.data.data.approved);
                 helpCtx.TableIdControl(resData.data.data.id);
+                setNa3(resData.data.data.na3);
             }
         }else{
-            let storageToken = AccessToken(); setTokens(storageToken); 
+            let storageToken = AccessToken(); setTokens(storageToken);
             window.addEventListener("scroll", handleScroll);
             let resData = await axios.get(`pps-request?userId=${param}`, {headers: {Authorization:AccessToken()}});
-            if(resData.data.data.id){ setInitialData(resData.data.data); ModalOpen(true); }
+            if(resData.data.data.id){ setNa3(resData.data.data.na3); setInitialData(resData.data.data); ModalOpen(true); }
         }
     },[]);
 
     const handleScroll = () => {  if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); } }
     const backHanlde = () =>{ history.push(`/progress/${param}`); }
+    const backHanlde2 = () =>{ history.push(`/`); }
 
-    const One = param === "user"&&helpCtx.GlobalStyle.tableOne
-    const Two = param === "user"&&helpCtx.GlobalStyle.tableTwo
-    const Three = param === "user"&&helpCtx.GlobalStyle.tableThree
-    const Four = param === "user"&&helpCtx.GlobalStyle.tableFour
-    const Five = param === "user"&&helpCtx.GlobalStyle.tableFive
-    const Six = param === "user"&&helpCtx.GlobalStyle.tableSix
+    const One = param === "user"&&helpCtx.GlobalStyle.tableOne;
+    const Two = param === "user"&&helpCtx.GlobalStyle.tableTwo;
+    const Three = param === "user"&&helpCtx.GlobalStyle.tableThree;
+    const Four = param === "user"&&helpCtx.GlobalStyle.tableFour;
+    const Five = param === "user"&&helpCtx.GlobalStyle.tableFive;
+    const Six = param === "user"&&helpCtx.GlobalStyle.tableSix;
 
     return (
         <>
-            {param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />:<NullParent className="BtnPar"><button onClick={backHanlde} ><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> )
+            {approved!==1? param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />:<NullParent className="BtnPar"><button onClick={backHanlde} ><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> )
             :( <>
                     <>
                     <PreviewBtn >
@@ -86,7 +87,7 @@ function MainRequest(props) {
                             </div>
                     </PreviewBtn>
 
-                    <Modal initialData={initialData&&initialData} showModal={showModal} setShowModal={setShowModal} param={param} />
+                    <Modal initialData={initialData&&initialData} showModal={showModal} setShowModal={setShowModal} param={param} na3={na3} />
                     <ParentComp style={{height:`${helpCtx.GlobalStyle.tableheight}vh`}} className="container">
                         <div style={{left:`${One}`, opacity:`${One === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                             <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
@@ -97,7 +98,7 @@ function MainRequest(props) {
                             <TableTwo initialData={initialData&&initialData.ppsRequest2Details}  initialName={initialData&&initialData.name2}  initialDate={initialData&&initialData.date2} id={userID} token={tokens} />
                         </div>
                         <div style={{left:`${Three}`, opacity:`${Three === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableThree initialData={initialData&&initialData.ppsRequest3Details}  initialName={initialData&&initialData.name3}  initialDate={initialData&&initialData.date3} id={userID} token={tokens} />
+                            <TableThree  initialData={initialData&&initialData.ppsRequest3Details}  initialName={initialData&&initialData.name3}  initialDate={initialData&&initialData.date3} id={userID} token={tokens} na3={na3} />
                         </div>
                         
                         <div style={{left:`${Four}`, opacity:`${Four === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
@@ -118,7 +119,7 @@ function MainRequest(props) {
                     <span>{helpCtx.alert.text}</span>
                 </AlertStyle>
             </>
-            )}
+            ): <NotApprovedComp className="container"><button onClick={backHanlde2} ><RiArrowGoBackFill /> Буцах</button> <h3 style={{textAlign:"center"}}>Та шалгуур хангалтанд тэнцэхгүй бөгөөд цааш явах боломжгүй байна.</h3> </NotApprovedComp>}
 
     </>
             
@@ -130,6 +131,24 @@ export default MainRequest
 let easing = [0, 0, 0.56, 0.95];
 const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
     enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
+
+
+const NotApprovedComp = styled.div`
+    background-color:white;
+    dispaly:flex;
+    flex-direction:row;
+    align-items:center;
+    margin-top:30px;
+    button{
+        padding:5px 10px;
+        border:1px solid rgba(0,0,0,0.2);
+        border-radius:3px;
+        display:flex;
+        svg{
+            margin-right:6px;
+        }
+    }
+`
 
 
 const NullParent = styled.div`
@@ -209,6 +228,7 @@ const PreviewBtn = styled.div`
             }
         }
         button{
+            z-index:1;
             cursor:pointer;
             border-style:none;
             border:solid 1px green;

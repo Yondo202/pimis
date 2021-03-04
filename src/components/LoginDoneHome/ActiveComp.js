@@ -3,15 +3,17 @@ import { Link } from "react-router-dom";
 
 function ActiveComp(props) {
 
+    console.log(props.data," -- data");
+
     return (
         <div style={{ marginTop: 25 }} className="row">
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <Link to={!props.prew ? `/check/user` : `/check/${props.prew}`} className={props.data.criteria === true ? `itemsActive` : `items`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
+                        <Link to={!props.prew ? `/check/user` : `/check/${props.prew}`} className={props.data.criteria === 2 ? `itemsActive` : props.data.criteria === 0 ? `items` : `items itemsNotApproved`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
                         {/* <div className="line line2" ></div> */}
                         <div className="line" ></div>
-                        <Link to={!props.prew ? `/request/user` : `/request/${props.prew}`} className={props.data.esq === true ? `itemsActive` : `items`}>2. Байгаль орчны үнэлгээний асуумж </Link>
+                        <Link to={!props.prew ? `/request/user` : `/request/${props.prew}`} className={props.data.esq === 0 ? `items` :props.data.esq === 1? `items itemsNotApproved` :props.data.esq === 2? `items itemsNotWait`: `itemsActive`}>2. Байгаль орчны үнэлгээний асуумж </Link>
                         <div className="line" ></div>
                         <Link to={props.prew ? `/letter-of-interest/${props.prew}` : '/letter-of-interest'} className={props.data.letterOfInterst === true ? `itemsActive` : `items`} >3. Сонирхол илэрхийлэх албан тоот</Link>
                     </div>

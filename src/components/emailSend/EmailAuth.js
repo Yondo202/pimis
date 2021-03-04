@@ -12,11 +12,23 @@ function EmailAuth() {
   const param = useParams().id;
   const [Load, setLoad] = useState(false);
   const [ success, setSuccess ] = useState(false);
+  const [ ErrMsg, setErrMsg ] = useState();
 
   useEffect(async ()=>{
        await axios.post(`users/confirm`, { idToken: param } ).then((res)=>{
-            if(res.data.success===true){ setLoad(true); setSuccess(true); }
-        }).catch((err)=>{ setSuccess(false); setLoad(true);  })
+            if(res.data.success===true){
+                if(res.data.confirmed===0){
+                    //ямар нэг алдаа гарсан
+                    setSuccess(false); setLoad(true); setErrMsg("ямар нэг алдаа гарсан"); 
+                }else if(res.data.confirmed===1){
+                    //амжилттай...
+                    setLoad(true); setSuccess(true); setErrMsg("Баталгаажуулалт амжилттай");
+                }else if(res.data.confirmed===2){
+                    setLoad(true); setSuccess(true); setErrMsg("Аль хэдийн баталгаажсан байна");
+                    //Аль хэдийн баталгаажсан байна...
+                }
+            }
+        }).catch((err)=>{ setSuccess(false); setLoad(true); setErrMsg("ямар нэг алдаа гарсан");  })
   },[]);
 
     const handleClick = () =>{
@@ -30,7 +42,7 @@ function EmailAuth() {
                     <div className="text">Экспортыг дэмжих төсөл</div>
                 </div>
                 <div style={Load?success?{borderTop:`3px solid green`}: {borderTop:`3px solid orange`}:{borderTop:`3px solid ${Color}`}}  className="formOneParent">
-                    {Load?success?<div className="Success"><ImUserCheck /> <h4>Баталгаажуулалт амжилттай.</h4> </div> :<div className="notSuccess"><ImUserCheck /> <h4>Алдаатай байна...</h4> </div>: <div className="imga"><img  src="/gifff.gif" alt="gif" /></div> }
+                    {Load?success?<div className="Success"><ImUserCheck /> <h4>{ErrMsg}</h4> </div> :<div className="notSuccess"><ImUserCheck /> <h4>{ErrMsg}</h4> </div>: <div className="imga"><img  src="/gifff.gif" alt="gif" /></div> }
                 </div>
                 <div className="SubmitButtonPar">
                 {Load&&success?<NextBtn onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>:null}

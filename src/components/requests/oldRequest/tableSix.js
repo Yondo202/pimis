@@ -61,6 +61,12 @@ function TableSix(props) {
                         Lala["id"] = el.id;
                     }
                     Lala[field] = value;
+                }else{
+                    let field = el.name;
+                    if(props.initialName){
+                        Lala["id"] = el.id;
+                    }
+                    Lala[field] = null;
                 }
             });
               finalOne2.push(Lala);
@@ -85,6 +91,12 @@ function TableSix(props) {
                         Lala["id"] = el.id;
                     }
                     Lala[field] = value;
+                }else{
+                    let field = el.name;
+                    if(props.initialName){
+                        Lala["id"] = el.id;
+                    }
+                    Lala[field] = null;
                 }
             });
             finalOne22.push(Lala);

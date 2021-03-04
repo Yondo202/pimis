@@ -12,6 +12,7 @@ const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0
 function TableThreeDetails(props) {
     const initialList = [{id: 1}];
     const [ initialData, setInitialData ] = useState([]);
+    const [ nullInf, setNullInf ] = useState(true);
 
     const AddHandle = ()=>{
         const list = initialData.concat( {id: 1});
@@ -43,6 +44,7 @@ function TableThreeDetails(props) {
         })
         setInitialData(finalData);
     }
+
     const changeDateHandle3 = (event) =>{
         const finalData = []
         props.initialData.map((el,i)=>{
@@ -60,7 +62,12 @@ function TableThreeDetails(props) {
         setInitialData(finalData);
     }
 
+    const nullHandle = (event) =>{
+        if(event.target.checked === true){setNullInf(false); }else{ setNullInf(true); }
+    }
 
+    console.log(props.initialData, " initial");
+    console.log(props.na3, " na3 s");
 
     return (
         <Component3Detail>
@@ -68,14 +75,18 @@ function TableThreeDetails(props) {
                 <div className="boldTitle">Хавсралт 2В</div>
                 <div className="italicTitle">ХҮСНЭГТ 3. ҮЙЛДВЭРЛЭГЧИЙН БАЙГАЛЬ ОРЧИН, НИЙГМИЙН УДИРДЛАГЫН ГҮЙЦЭТГЭЛИЙН ТАЛААРХ МЭДЭЭЛЛИЙН ТОВЧООН</div>
             </div>
+            {props.na3===1? (<div className={`GetItemAdd33 DetailPar`} > <div className="topTitle"> <div className="Title"> 1 . Торгууль / Шийтгэл / Санал гомдлууд :</div> <div className="null">  Байхгүй:
+                                <input checked={true} id="GetcheckBtnn3" className="GetcheckBtnn3" type="checkbox" name="na" />
+                               </div>  </div>
+                             </div>) : null  }
             {props.initialData? (initialData.map((el,i)=>{
                 return(
-                    <div id={i}  className="GetItemAdd33 DetailPar" key={i}>
+                    <div id={i}  className={nullInf===true?`GetItemAdd33 DetailPar`:`DetailPar`} key={i}>
                         <div className="topTitle">
                             <div className="Title"> {i + 1} . Торгууль / Шийтгэл / Санал гомдлууд :</div>
-                            <div className="null">
-                                {/* Байхгүй:
-                                <input className="checkBtn" type="checkbox" name="null" /> */}
+                            <div style={{display:`none`}} className="null">
+                                Байхгүй:
+                                <input id="GetcheckBtnn3" className="GetcheckBtnn3" type="checkbox" name="na" />
                             </div>
                         </div>
                     <div className="formOneParent">
@@ -127,15 +138,16 @@ function TableThreeDetails(props) {
                 )
             })) : (initialData.map((el,i)=>{
                 return(
-                    <div id={i}  className="GetItemAdd33 DetailPar" key={i}>
+                    <div id={i} className={nullInf===true?`GetItemAdd33 DetailPar`:`DetailPar`} key={i}>
                         <div className="topTitle">
                             <div className="Title"> {i + 1} . Торгууль / Шийтгэл / Санал гомдлууд :</div>
                             <div className="null">
                                 Байхгүй:
-                                <input className="checkBtn" type="checkbox" name="null" />
+                                <input onChange={nullHandle} className="GetcheckBtnn3" id="GetcheckBtnn3" type="checkbox" name="na" />
                             </div>
                         </div>
-                    <div className="formOneParent">
+
+                    {nullInf&&(<div className="formOneParent">
                         <div className="inputPar">
                             <div className="inpChild">
                                 <div className="labels"><span>Огноо :</span> </div>
@@ -179,11 +191,11 @@ function TableThreeDetails(props) {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> )} 
                  </div>
                 )
             })) }
-            {props.initialData ? null : <div className="AddItemBtn"> <IoIosAddCircleOutline onClick={AddHandle} /> </div> }
+            {props.initialData ? null : nullInf&&<div className="AddItemBtn"> <IoIosAddCircleOutline onClick={AddHandle} /> </div> }
             
         </Component3Detail>
     )
@@ -245,7 +257,7 @@ const Component3Detail = styled.div`
                 font-size:14px;  
                 font-weight:500;
                 margin-bottom:10px;
-                .checkBtn{
+                .GetcheckBtnn3{
                     margin-left:10px;
                     cursor:pointer;
                     width:22px;

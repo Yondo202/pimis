@@ -67,7 +67,7 @@ export const NextBtn = styled.div`
         overflow:hidden;
         &:after{
             content: "";
-            background: rgba(255,255,255,.3);
+            background: rgba(255,255,255,.2);
             display: block;
             border-radius:50%;
             position: absolute;
@@ -194,6 +194,7 @@ export const InputStyle = styled.div`
                 border-bottom:1px solid red;
             }
             input[type="checkbox"]{
+                border:1px solid red;
                 &:after{
                     content: "";
                     background: white;
@@ -242,6 +243,9 @@ export const InputStyle = styled.div`
                 height:2px;
                 background-color:black;
                 z-index:2;
+            }
+            .red{
+                border-bottom:1px solid rgba(255,0,0,0.8);
             }
 `
 

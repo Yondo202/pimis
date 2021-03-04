@@ -49,27 +49,43 @@ function TableThree(props) {
             let rs2 = document.querySelectorAll(`.PPPS${i + 1}`);
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
-                if(el.value !== ""){
+                // if(el.value !== ""){
                     let field = el.name;
                     let value = el.value;
                     if(props.initialName){
                         Lala["id"] = el.id;
                     }
                     Lala[field] = value;
-                }
+                // }
             });
             // tableCondition.push(Lala);
             finalOne2.push(Lala);
         });
+        let confirmNull = document.getElementById("GetcheckBtnn3").checked;
 
         let rs4 = document.querySelectorAll(".getUserInp3");
         let arr4 = Array.from(rs4);
         let userInp = {};
 
-        arr4.map(element=>{let field = element.name; let value = element.value;  userInp[field] = value; });
-        let confirm = document.getElementById("GetcheckBtn3").checked;
+        // console.log(confirmNull, " ddd");
 
-        finalOne["request"] = finalOne2; finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS3"] = finalOne;
+        arr4.map(el=>{let field = el.name; let value = el.value; if(value===""){ el.classList += " red"; }else{  el.classList =- " red";  el.classList += " getUserInp3"; };  userInp[field] = value; });
+        let confirm = document.getElementById("GetcheckBtn3").checked;
+        if(confirmNull===false){
+            if(finalOne2[0].pdate !== ""){
+                finalOne["request"] = finalOne2;
+                finalEnd["na3"] = 2;
+            }else{
+                finalOne["na3"] = 1;
+                finalOne["request"] = [];
+            }
+        }else{
+            finalEnd["na3"] = 1;
+            finalOne["request"] = [];
+        }
+        
+        finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS3"] = finalOne;
+
         console.log(finalEnd, "final");
 
         if(userInp.name === "" || userInp.date === ""){
@@ -97,7 +113,7 @@ function TableThree(props) {
 
     return (
         <Component3 className="container">
-            {props.initialName? <TableThreeDetails initialData={props.initialData} />: <TableThreeDetails initialData={null} />} 
+            {props.initialName? <TableThreeDetails na3={props.na3} initialData={props.initialData} />: <TableThreeDetails na3={props.na3} initialData={null} />} 
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
                         <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
