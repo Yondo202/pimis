@@ -155,11 +155,11 @@ export default function AttachmentUploads() {
         })
     }
 
-    const params = useParams()
+    const projectId = useParams().id
 
     useEffect(() => {
-        if (params.id) {
-            axios.get(`evidences/${params.id}`, {
+        if (projectId) {
+            axios.get(`evidences/${projectId}`, {
                 headers: { 'Authorization': getLoggedUserToken() },
             }).then(res => {
                 console.log(res.data)
@@ -224,11 +224,13 @@ export default function AttachmentUploads() {
                 )}
             </ol>
 
-            <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
-                <button className="tw-bg-blue-500 tw-text-white tw-font-medium tw-text-base tw-px-3 tw-py-1 tw-rounded-lg hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-600" onClick={handleSubmit}>
-                    Хадгалах
+            {(projectId === undefined || null) &&
+                <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
+                    <button className="tw-bg-blue-500 tw-text-white tw-font-medium tw-text-base tw-px-3 tw-py-1 tw-rounded-lg hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-600" onClick={handleSubmit}>
+                        Хадгалах
                 </button>
-            </div>
+                </div>
+            }
         </div>
     )
 }

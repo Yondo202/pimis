@@ -107,6 +107,7 @@ const initialState = [
   {
     description: rowsDescriptions.z,
     isChecked: false,
+    comment: '',
     rowcode: "z",
     order: 1,
     category: "@",
@@ -114,6 +115,7 @@ const initialState = [
   {
     description: rowsDescriptions.a,
     isChecked: false,
+    comment: '',
     rowcode: "a",
     order: 5,
     category: "A",
@@ -121,6 +123,7 @@ const initialState = [
   {
     description: rowsDescriptions.a1,
     isChecked: false,
+    comment: '',
     rowcode: "a1",
     order: 10,
     category: "A",
@@ -128,6 +131,7 @@ const initialState = [
   {
     description: rowsDescriptions.a2,
     isChecked: false,
+    comment: '',
     rowcode: "a2",
     order: 15,
     category: "A",
@@ -135,6 +139,7 @@ const initialState = [
   {
     description: rowsDescriptions.a3,
     isChecked: false,
+    comment: '',
     rowcode: "a3",
     order: 20,
     category: "A",
@@ -142,6 +147,7 @@ const initialState = [
   {
     description: rowsDescriptions.a4,
     isChecked: false,
+    comment: '',
     rowcode: "a4",
     order: 25,
     category: "A",
@@ -149,6 +155,7 @@ const initialState = [
   {
     description: rowsDescriptions.a5,
     isChecked: false,
+    comment: '',
     rowcode: "a5",
     order: 30,
     category: "A",
@@ -156,6 +163,7 @@ const initialState = [
   {
     description: rowsDescriptions.a6,
     isChecked: false,
+    comment: '',
     rowcode: "a6",
     order: 35,
     category: "A",
@@ -163,6 +171,7 @@ const initialState = [
   {
     description: rowsDescriptions.a7,
     isChecked: false,
+    comment: '',
     rowcode: "a7",
     order: 40,
     category: "A",
@@ -170,6 +179,7 @@ const initialState = [
   {
     description: rowsDescriptions.a8,
     isChecked: false,
+    comment: '',
     rowcode: "a8",
     order: 45,
     category: "A",
@@ -177,6 +187,7 @@ const initialState = [
   {
     description: rowsDescriptions.b,
     isChecked: false,
+    comment: '',
     rowcode: "b",
     order: 50,
     category: "B",
@@ -184,6 +195,7 @@ const initialState = [
   {
     description: rowsDescriptions.b1,
     isChecked: false,
+    comment: '',
     rowcode: "b1",
     order: 55,
     category: "B",
@@ -191,6 +203,7 @@ const initialState = [
   {
     description: rowsDescriptions.b2,
     isChecked: false,
+    comment: '',
     rowcode: "b2",
     order: 60,
     category: "B",
@@ -198,6 +211,7 @@ const initialState = [
   {
     description: rowsDescriptions.b3,
     isChecked: false,
+    comment: '',
     rowcode: "b3",
     order: 65,
     category: "B",
@@ -205,6 +219,7 @@ const initialState = [
   {
     description: rowsDescriptions.c,
     isChecked: false,
+    comment: '',
     rowcode: "c",
     order: 70,
     category: "C",
@@ -212,6 +227,7 @@ const initialState = [
   {
     description: rowsDescriptions.c1,
     isChecked: false,
+    comment: '',
     rowcode: "c1",
     order: 75,
     category: "C",
@@ -219,6 +235,7 @@ const initialState = [
   {
     description: rowsDescriptions.c2,
     isChecked: false,
+    comment: '',
     rowcode: "c2",
     order: 80,
     category: "C",

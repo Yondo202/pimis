@@ -23,7 +23,6 @@ function Login() {
             let value = element.value;
             finalOneUser[field] = value;
         });
-        console.log(finalOneUser,"lalalal");
         userCtx.loginUser(finalOneUser.name,finalOneUser.password);
 
         const UserRole = localStorage.getItem("role", []);
