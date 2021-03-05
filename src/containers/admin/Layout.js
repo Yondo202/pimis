@@ -15,7 +15,6 @@ import ProjectHandle1 from 'components/admin/contents/projects1/ProjectHandle'
 import Home from 'components/LoginDoneHome/Home'
 import Request from 'containers/requestComp/mainRequestOld'
 import Check from 'components/check/compCheck'
-import LetterOfInterest from 'pages/letter_of_interest/page';
 import AttachmentUploads from 'pages/attachments/page';
 import FirstEvaluation from 'pages/decision_making/page_5a';
 import CompilationChecklist from 'pages/decision_making/page_5b';
@@ -24,6 +23,8 @@ import UrgudulPreview from 'pages/urgudul/preview/Preview';
 import MemberDecision from '../../components/admin/contents/member_decision/Decision_main'
 import MainDecision from '../../components/admin/contents/main_decision/Main_decision'
 import NotifyPage1 from '../../components/notifyPage/MainPage'
+import LetterPreview from 'pages/letter_of_interest/preview';
+
 
 function Layout({ setLocale }) {
     const ctx = useContext(UserContext);
@@ -66,7 +67,7 @@ function Layout({ setLocale }) {
                         <Route path="/memberdecision" component={MemberDecision} />
                         <Route path="/maindecision" component={MainDecision} />
 
-                        <Route path="/letter-of-interest/:id" component={LetterOfInterest} />
+                        <Route path="/letter-of-interest/:id" component={LetterPreview} />
                         <Route path="/urgudul-preview/:id" component={UrgudulPreview} />
                         <Route path="/attachments/:id" component={AttachmentUploads} />
                         <Route path="/5a/:id" component={FirstEvaluation} />

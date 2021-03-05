@@ -34,34 +34,36 @@ export default function LetterPreview(props) {
     const projectId = useParams().id
 
     useEffect(() => {
-        if (projectId !== undefined || null) {
-            axios.get(`letter-of-interests/${projectId}`, {
-                headers: {
-                    'Authorization': getLoggedUserToken(),
-                },
-            }).then(res => {
-                console.log(res.data)
-                setForm({ ...form, ...res.data.data })
-            }).catch(err => {
-                console.log(err.response?.data)
-            })
-        } else {
-            axios.get('letter-of-interests', {
-                headers: {
-                    'Authorization': getLoggedUserToken(),
-                },
-            }).then(res => {
-                console.log(res.data)
-                setForm({ ...form, ...res.data.data })
-            }).catch(err => {
-                console.log(err.response?.data)
-            })
+        if (props.form === undefined || null) {
+            if (projectId !== undefined || null) {
+                axios.get(`letter-of-interests/${projectId}`, {
+                    headers: {
+                        'Authorization': getLoggedUserToken(),
+                    },
+                }).then(res => {
+                    console.log(res.data)
+                    setForm({ ...form, ...res.data.data })
+                }).catch(err => {
+                    console.log(err.response?.data)
+                })
+            } else {
+                axios.get('letter-of-interests', {
+                    headers: {
+                        'Authorization': getLoggedUserToken(),
+                    },
+                }).then(res => {
+                    console.log(res.data)
+                    setForm({ ...form, ...res.data.data })
+                }).catch(err => {
+                    console.log(err.response?.data)
+                })
+            }
         }
     }, [])
 
     return (
         <div className="tw-relative tw-text-gray-700">
-            <button className="tw-z-10 tw-absolute tw-flex tw-items-center tw-bg-blue-500 tw-text-white tw-py-1 tw-px-2 tw-rounded-md hover:tw-shadow-md active:tw-bg-blue-600 focus:tw-outline-none" onClick={handlePrint}>
+            <button className="tw-ml-2 tw-mb-4 tw-flex tw-items-center tw-bg-blue-500 tw-text-white tw-py-1 tw-px-2 tw-rounded-md hover:tw-shadow-md active:tw-bg-blue-600 focus:tw-outline-none" onClick={handlePrint}>
                 <span className="tw-text-sm">Хэвлэх болон PDF-ээр татах</span>
                 <PrintSVG className="tw-w-5 tw-h-5 tw-ml-1" />
             </button>
@@ -129,7 +131,11 @@ export default function LetterPreview(props) {
                     <div className="tw-flex tw-justify-center tw-items-end tw-mt-2">
                         <span className="tw-font-medium tw-ml-16 tw-mb-0.5">Гарын үсэг:</span>
 
-                        <img src={form.director_signature || ''} className="tw-ml-4 tw-border-b tw-border-gray-600 tw-flex-shrink-0" alt="Гарын үсэг" />
+                        {form.director_signature ?
+                            <img src={form.director_signature || ''} className="tw-w-60 tw-h-20 tw-ml-4 tw-border-b tw-border-gray-600 tw-flex-shrink-0" alt="Гарын үсэг" />
+                            :
+                            <div className="tw-w-60 tw-h-20 tw-ml-4 tw-border-b tw-border-gray-600 tw-flex-shrink-0" />
+                        }
 
                         <div className="tw-w-6 tw-h-6 tw-mx-2" />
                     </div>

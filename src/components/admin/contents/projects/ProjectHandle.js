@@ -123,7 +123,7 @@ export default function ProjectHandle() {
                 loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
             >
                 <SearchPanel visible={true} width={240} placeholder="Хайх..." />
-                <Scrolling mode="standart" columnRenderingMode="standart" showScrollbar="onHover" />
+                <Scrolling mode="virtual" columnRenderingMode="virtual" showScrollbar="always" />
                 <Paging defaultPageSize={20} />
                 <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
                 <HeaderFilter visible={true} />
