@@ -8,6 +8,7 @@
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     border: 1px solid #9CA3AF;
+    padding: 4px;
 }
 
 .quill .ql-container {

@@ -23,7 +23,9 @@ const modulesFull = {
 const modulesMin = {
     toolbar: [
         [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'font': [] }],
         ['bold', 'italic', 'underline'],
+        [{ 'color': [] }, { 'background': [] }],
         ['link'],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         ['clean'],

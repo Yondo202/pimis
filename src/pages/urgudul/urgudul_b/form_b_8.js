@@ -11,6 +11,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { Fragment } from 'react'
+import { FunctionTemplate } from 'devextreme/core/templates/function_template'
 
 
 const year = new Date().getFullYear()
@@ -75,8 +76,8 @@ function UrgudulCalculations() {
                 temp[key] = { ...datesObj, ...UrgudulCtx.data.exportDatas?.[key] }
             })
 
-            if (UrgudulCtx.data.exportDatas?.export_details?.length) {
-                temp.export_details = UrgudulCtx.data.exportDatas?.export_details
+            if (UrgudulCtx.data.exportDatas.export_details?.length) {
+                temp.export_details = UrgudulCtx.data.exportDatas.export_details
             } else {
                 temp.export_details = [
                     {
@@ -91,16 +92,28 @@ function UrgudulCalculations() {
                 ]
             }
 
-            if (!UrgudulCtx.data.exportDatas?.endDate || UrgudulCtx.data.exportDatas?.endDate === {}) {
+            if (Object.keys(UrgudulCtx.data.exportDatas.endDate || []).length === 0) {
                 if (UrgudulCtx.data.project_end) {
                     temp.endDate = {
                         year: UrgudulCtx.data.project_end.split('-')[0],
                         month: UrgudulCtx.data.project_end.split('-')[1],
                     }
+                    console.log(UrgudulCtx.data.project_end.split('-')[0])
+                    console.log('Effect run')
                 }
+            } else {
+                temp.endDate = UrgudulCtx.data.exportDatas.endDate
             }
 
             setForm({ ...form, ...temp })
+        } else {
+            if (UrgudulCtx.data.project_end) {
+                const newObj = {
+                    year: UrgudulCtx.data.project_end.split('-')[0],
+                    month: UrgudulCtx.data.project_end.split('-')[1],
+                }
+                setForm({ ...form, endDate: newObj })
+            }
         }
     }, [UrgudulCtx.data.id])
 
@@ -265,7 +278,7 @@ function UrgudulCalculations() {
                             <th className="tw-border tw-text-center">{`${form.submitDate.year}-${form.submitDate.month}`}</th>
                             <th className="tw-border">
                                 <div className="tw-flex tw-justify-evenly tw-items-center">
-                                    {`${form.endDate.year}-${form.endDate.month}`}
+                                    {`${form.endDate.year ? form.endDate.year : ''}-${form.endDate.month ? form.endDate.month : ''}`}
                                     <HelpPopup main="Төслийн дуусах хугацаа, сар жилээр" position="bottom" />
                                 </div>
                             </th>
