@@ -1,21 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components';
-import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
+import { fontFamily, textColor, ColorRgb } from '../../theme';
 
 
 function ModalOne(props) {
     const [ DataOne, setDataOne ] = useState([]);
     useEffect(()=>{
         if(props.DataOne){
-            const finalData = []
-            dataOne.map((el,i)=>{
-                props.DataOne.map(elem=>{ if(i + 1 === elem.rownum){ el["rvalue"] = elem.rvalue; el["rownum"] = elem.rownum } });
-                finalData.push(el);
-            });
+            const finalData = [];
+            dataOne.map((el,i)=>{ props.DataOne.map(elem=>{ if(i + 1 === elem.rownum){ el["rvalue"] = elem.rvalue; el["rownum"] = elem.rownum } }); finalData.push(el); });
             setDataOne(finalData);
-        }else{
-            setDataOne(dataOne);
-        }
+        }else{ setDataOne(dataOne); }
     },[props.DataOne]);
 
     return (
@@ -28,25 +23,23 @@ function ModalOne(props) {
                         <div className="answer">Хариулт</div>
                     </div>
                 </div>
-
-                
                 {DataOne.map((el,i)=>{
                     return(
-                            <div className="items row">
-                                <div style={{borderBottom:`1px solid rgba(0,0,0,0.2)`}} className="col-md-10 col-sm-10 col-10">
-                                    <div className="question22">
-                                        <span className="Num">{el.rownum}</span>
-                                         {el.name}
-                                    </div>
-                                </div>
-                                <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.3)`,backgroundColor:`rgba(63,255,181,0.2)`}}  className="col-md-2 col-sm-2 col-2">
-                                    <div className="answer">
-                                        {el.rvalue === "true" ? <span>Тийм</span> : null}
-                                        {el.rvalue === "unconcern" ? <span>Хамаарахгүй</span> : null}
-                                        {el.rvalue === "false" ? <span>Үгүй</span> : null}
-                                    </div>
+                        <div className="items row">
+                            <div style={{borderBottom:`1px solid rgba(0,0,0,0.2)`}} className="col-md-10 col-sm-10 col-10">
+                                <div className="question22">
+                                    <span className="Num">{el.rownum}</span>
+                                        {el.name}
                                 </div>
                             </div>
+                            <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.3)`,backgroundColor:`rgba(63,255,181,0.2)`}}  className="col-md-2 col-sm-2 col-2">
+                                <div className="answer">
+                                    {el.rvalue === "true" ? <span>Тийм</span> : null}
+                                    {el.rvalue === "unconcern" ? <span>Хамаарахгүй</span> : null}
+                                    {el.rvalue === "false" ? <span>Үгүй</span> : null}
+                                </div>
+                            </div>
+                        </div>
                     )
                 })}
             </div>
@@ -137,67 +130,3 @@ const dataOne = [
         name: "Тамхи (үйлдвэрлэлийн бус ба үйлдвэрлэлийн); Тамхины хатаасан навч боловсруулах машин"
     },
 ]
-
-
-
-
-
-// export class ModalOne extends Component {
-//     constructor(props) {
-//         super(props)
-//         this.state = {
-//             DataOne : []
-//         }
-//     }
-
-//     componentDidMount() {
-//         const finalData = []
-//             DataOne.map((el,i)=>{
-//                 this.props.DataOne.map(elem=>{ if(i + 1 === elem.rownum){ el["rvalue"] = elem.rvalue; el["rownum"] = elem.rownum } });
-//                 finalData.push(el);
-//             });
-//         this.setState({
-//             DataOne : finalData
-//         })
-//         // setDataOne(finalData);
-//         console.log(DataOne, " my data one");
-//     }
-    
-//     render() {
-//         return (
-//             <TableOne >
-//                 <h6>1. Үйлдвэрлэгч нь дараах үйл ажиллагааг эрхэлдэг ба явуулдаг эсэх? *</h6>
-//                 <div className="table container">
-//                     <div  className="Header row">
-//                         <div className="col-md-10 col-sm-10 col-10"><div className="question">Шалгуур</div></div>
-//                         <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`}} className="col-md-2 col-sm-2 col-2">
-//                             <div className="answer">Хариулт</div>
-//                         </div>
-//                     </div>
-                    
-//                     {DataOne.map((el,i)=>{
-//                         return(
-//                                 <div className="items row">
-//                                     <div style={{borderBottom:`1px solid rgba(0,0,0,0.2)`}} className="col-md-10 col-sm-10 col-10">
-//                                         <div className="question22">
-//                                             <span className="Num">{el.rownum}</span>
-//                                             {el.name}
-//                                         </div>
-//                                     </div>
-//                                     <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.3)`,backgroundColor:`rgba(63,255,181,0.2)`}}  className="col-md-2 col-sm-2 col-2">
-//                                         <div className="answer">
-//                                             {el.rvalue === "true" ? <span>Тийм</span> : null}
-//                                             {el.rvalue === "unconcern" ? <span>Хамаарахгүй</span> : null}
-//                                             {el.rvalue === "false" ? <span>Үгүй</span> : null}
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                         )
-//                     })}
-//                 </div>
-//             </TableOne> 
-//         )
-//     }
-// }
-
-// export default ModalOne

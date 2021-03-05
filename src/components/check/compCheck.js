@@ -11,10 +11,10 @@ import AccessToken from '../../context/accessToken'
 import axios from '../../axiosbase'
 import {RiArrowGoBackFill  } from 'react-icons/ri';
 import Modal from 'react-awesome-modal';
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
 
 function CompCheck() {
-    const init = "once" 
+    const init = "once";
     const param = useParams().url;
     const ctx = useContext(UserContext);
     const history = useHistory();

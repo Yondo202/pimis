@@ -34,19 +34,13 @@ function Signup() {
     const closeModal3=()=> { setVisible2(false);  setVisible(false); }
     const closeModal2=()=> {
       let confirm = document.getElementById("GetcheckBtn2").checked;
-      if(confirm === true){
-        setVisible2(false);  setVisible(true);
-      }else{
-        setColor1("red");
-      }
+      if(confirm === true){ setVisible2(false);  setVisible(true); }else{ setColor1("red"); }
     }
 
     const keyPress = useCallback(e=>{
-      if(e.key === 'F2'){
-        openModal();
-      }
+      if(e.key === 'F2'){ openModal(); }
     },[]);
-    
+
     useEffect( async ()=>{
         const sectorData = await axios.get(`business-sector`); setSectorData(sectorData.data.data);
         console.log(sectorData," sector data");
@@ -56,7 +50,6 @@ function Signup() {
 
     const onChangePassword =password =>{
       setPassword(password);
-
       setPasswordValidity({
         minChar: password.length >=8 ? true : false,
         number: isNumberRegx.test(password) ? true : false, 
@@ -81,7 +74,6 @@ function Signup() {
                setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1");
             }
     }
-
     const cond =signUpCtx.errMsgSignup.cond;
  
     return (
@@ -178,7 +170,6 @@ function Signup() {
                               </div>
                           </div>
                 </Modal>
-
 
                 <Modal visible={visible} width="900" height="580" effect="fadeInDown" onClickAway={closeModal}  >
                             <div className="formOneParent">

@@ -76,13 +76,11 @@ function TableOne(props) {
               let keys = Object.keys(finalOne2); const Procent = keys.length * 100 / 13; const FinalProcent = Math.round(Procent);
 
               let confirm = document.getElementById("GetcheckBtn").checked;
-
               console.log(finalEnd, "final end");
 
 
              let arrs = [];  dataOne.map((el,i)=>{ finalOne2.map(elem=>{ if((i+1).toString()===elem.rownum && elem.rvalue === "true"){arrs.push(el.name); };});});
              setSecondChance(arrs);
-
 
               if(keys.length < 12){
                 setOpacity("1"); setProcent(FinalProcent);
@@ -101,11 +99,9 @@ function TableOne(props) {
                    // Дата явна
                   finalOne["approved"] = 1;
                   setVisible2(false);
-                  console.log(JSON.stringify(finalEnd) , "------------------");
 
                   if(props.initialData){
                     await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
-                      console.log(res, "333333333333333333333");
                       setSpnBtn(false); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
                        })
                       .catch((err)=>{setSpnBtn(false); tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
@@ -133,7 +129,6 @@ function TableOne(props) {
                 }
               
             }
-            console.log(secondChance, "-----dd secondChance");
       }
       const closeModalX=()=>{ setVisible2(false); }
       const closeModal=()=>{ setBtnCond("twice");  setVisible2(false); }

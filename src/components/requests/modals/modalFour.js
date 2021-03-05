@@ -4,25 +4,13 @@ import {fontFamily, textColor, ColorRgb, } from '../../theme';
 
 
 function ModalFour(props) {
-
     const [ DataOne, setDataOne ] = useState([]);
     useEffect(()=>{
-      if(props.Data2){
-        setDataOne(props.DataOne);
-        const finalData = []
-            tableData.map((el,i)=>{
-                props.Data2.map((elem,index)=>{ if (i + 1 === elem.rownum){ el["rowvalue"] = elem.rowvalue;} });
-                finalData.push(el);
-            });
+      if(props.Data2){ setDataOne(props.DataOne);const finalData = [];
+          tableData.map((el,i)=>{ props.Data2.map(elem=>{ if (i + 1 === elem.rownum){ el["rowvalue"] = elem.rowvalue;} }); finalData.push(el); });
         setDataOne(finalData);
-      }else{
-        setDataOne(tableData);
-      }
-        
-
+      }else{ setDataOne(tableData); }
     },[props.Data2]);
-
-    console.log(DataOne, " my data foureee oneeeee"); 
 
     return (
         <TableTwo >
@@ -36,7 +24,6 @@ function ModalFour(props) {
                         <div style={{borderLeft:`1px solid rgba(0,0,0,0.3)`}} className="col-md-2 col-sm-2 col-2"><div className="question">(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага</div></div>
                         <div className="col-md-3 col-sm-3 col-3" style={{borderLeft:`1px solid rgba(0,0,0,0.3)`}}><div className="question">Батлагдсан баримт бичгүүд /хавсаргасан</div></div>
                 </div>
-
                 {DataOne.map((el,i)=>{
                     return(
                         <div key={i} className="items row">
@@ -50,10 +37,6 @@ function ModalFour(props) {
                     )
                 })}
             </div>
-          
-
-           
-            
         </TableTwo>
     )
 }
@@ -94,19 +77,6 @@ const TableTwo  = styled.div`
     }
     
 `
-
-// const tableData = [
-//     { items: "Үйлдвэрийн үйл ажиллагаа  (зөвшөөрөл, тусгай зөвшөөрөл гм)", list:[]},
-//     {items: "Байгаль орчны үнэлгээ ", list:[]},
-//     {items: "Усан хангамж",list:[]},
-//     {items: "Хаягдал ус гаргах",list:["Хотын","Үйлдвэрийн","Бусад"]},
-//     {items: "Хаягдал зайлуулалт",list:["Аюултай бус (жишээ нь: цаас, сав боодол, мод, хуванцар гм) ","Аюултай"]},
-//     {items: "Аюултай материалын хадгалалт, ашиглалт  (будаг, уусгагч, түлш, бусад шатамхай бодис материал гм)",list:[]},
-//     {items: "Гал түймрээс сэргийлэх",list:[]},
-//     {items: "Эрүүл мэнд, аюулгүй ажиллагаа",list:[]},
-//     {items: "Хүүхдийн хөдөлмөр эрхлэлт",list:[]},
-//   ];
-
 
   const tableData = [
     { name: "Дэд төслөөс байгаль орчин, нийгэмд эмзэг , олон янзын ба урьд өмнө байгаагүй ноцтой  сөрөг нөлөө үзүүлэхээр байгаа эсэх? Товч тодорхойлолт өгнө үү",

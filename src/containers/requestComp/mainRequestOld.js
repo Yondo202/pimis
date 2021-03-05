@@ -31,6 +31,7 @@ function MainRequest() {
     const [ userID, setUserId ] = useState();
     const [ approved, setApproved ] = useState(0);
     const [ na3, setNa3 ] = useState(0);
+    // const [ updateMount, setUpdate ] = useState(param === "user"?helpCtx.reqMount:0);
 
     useEffect( async()=>{
         if(param==="user"){ 
@@ -51,7 +52,7 @@ function MainRequest() {
             let resData = await axios.get(`pps-request?userId=${param}`, {headers: {Authorization:AccessToken()}});
             if(resData.data.data.id){ setNa3(resData.data.data.na3); setInitialData(resData.data.data); ModalOpen(true); }
         }
-    },[helpCtx.reqMount]);
+    },[param === "user"?helpCtx.reqMount:0]);
 
     const handleScroll = () => {  if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); } }
     const backHanlde = () =>{ history.push(`/progress/${param}`); }
@@ -64,14 +65,7 @@ function MainRequest() {
     const Four = param === "user"&&helpCtx.GlobalStyle.tableFour;
     const Five = param === "user"&&helpCtx.GlobalStyle.tableFive;
     const Six = param === "user"&&helpCtx.GlobalStyle.tableSix;
-
-    console.log(helpCtx.reqMount,"***reqMount");
-    const errMsg = () =>{
-        console.log("+*+*+*+*+*+*** err Msg");
-    }
-
-
-    
+    const errMsg = () =>{ console.log("+*+*+*+*+*+*** err Msg");}
 
     return (
         <>
