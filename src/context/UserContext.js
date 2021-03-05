@@ -4,15 +4,15 @@ import { useHistory } from "react-router-dom"
 
 const UserContext = React.createContext();
 const initialStyle = { tableOne: "0%", tableTwo: "100%", tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%", tableheight: 150 };
-const initialUserInfo = { userId: null, token: null, expireDate: null, name: null, refreshToken: null, role: null, email:null };
+const initialUserInfo = { userId: null, token: null, expireDate: null, name: null, refreshToken: null, role: null, email: null };
 const initialSee = { tableOneData: {}, tableTwoData: {}, tableThree: {}, tableFour: {} };
 
 export const UserStore = (props) => {
   const history = useHistory();
   const [userInfo, setUserInfo] = useState(initialUserInfo);
-  const [ alert, setAlert ] = useState({ color:'white', text: '', cond: false });
+  const [alert, setAlert] = useState({ color: 'white', text: '', cond: false });
   const [errMsg, setErrMsg] = useState("");
-  const [errMsgSignup, setErrMsgSignUp] = useState({msg:"", cond: false });
+  const [errMsgSignup, setErrMsgSignUp] = useState({ msg: "", cond: false });
   const [GlobalStyle, setGlobalStyle] = useState(initialStyle);
   const [tableSee, setTableSee] = useState(initialSee);
   const [reqID, setReqId] = useState(0);
@@ -28,8 +28,8 @@ export const UserStore = (props) => {
     localStorage.setItem("userId", user.id);
     localStorage.setItem("refreshToken", refreshToken);
     localStorage.setItem("expireDate", expireDate);
-    localStorage.setItem("role" ,user.role );
-    localStorage.setItem("username" ,user.name );
+    localStorage.setItem("role", user.role);
+    localStorage.setItem("username", user.name);
   };
 
   const loginUser = (email, password) => {
@@ -40,7 +40,7 @@ export const UserStore = (props) => {
         console.log(err, "User context deeer aldaa garlaa");
         if (err) {
           setErrMsg(err.response.data.error.message);
-        }else{
+        } else {
           setUserInfo(initialUserInfo);
         }
       });
@@ -75,10 +75,10 @@ export const UserStore = (props) => {
     axios.post("users/register", userinfos)
       .then((res) => {
         console.log(res, "^new user");
-        setErrMsgSignUp({msg: `Таны бүртгүүлсэн "${res.data.user.email}" имэйл хаягаар бид имэйл илгээсэн тул та шалгаж БАТАЛГААЖУУЛАЛТ дээр дарна уу.`, cond:true});;
+        setErrMsgSignUp({ msg: `Таны бүртгүүлсэн "${res.data.user.email}" имэйл хаягаар бид имэйл илгээсэн тул та шалгаж БАТАЛГААЖУУЛАЛТ дээр дарна уу.`, cond: true });;
       })
       .catch((e) => {
-        setErrMsgSignUp({msg: e.response.data.error.message, cond:false});
+        setErrMsgSignUp({ msg: e.response.data.error.message, cond: false });
         setUserInfo(initialUserInfo);
       });
   };
@@ -95,14 +95,14 @@ export const UserStore = (props) => {
     localStorage.removeItem("tableId");
     setUserInfo({ userId: undefined });
 
-      setTimeout(()=>{
-        window.location.reload(false);
-      },100);
+    setTimeout(() => {
+      window.location.reload(false);
+    }, 100);
   };
 
-  const alertText = ( color, text, cond ) =>{
-    setAlert({ color:color, text:text, cond:cond });
-    setTimeout(()=>{  setAlert({ cond:false }); },[4000]);
+  const alertText = (color, text, cond) => {
+    setAlert({ color: color, text: text, cond: cond });
+    setTimeout(() => { setAlert({ cond: false }); }, [4000]);
   }
 
 
