@@ -66,13 +66,15 @@ export const Modal = ({ showModal,setShowModal, initialData, param, na3 }) => {
                               {param!=="user"? <button className="esc" onClick={backHanlde} > Буцах </button> :<button className="esc" onClick={()=> setShowModal(prev => !prev)} > X </button> }
                               <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
                           </div>
-                          
-                          <div ref={componentRef}>
-                            <ModalOne  DataOne={initialData&&initialData.ppsRequest1Details} />
-                            <ModalTwo Data2={initialData&&initialData.ppsRequest2Details} />
-                            <ModalThree Data2={initialData&&initialData.ppsRequest3Details} na3={na3} />
-                            <ModalFour Data2={initialData&&initialData.ppsRequest4Details} />
+                          {initialData? (
+                            <div ref={componentRef}>
+                            {initialData.name1&&<ModalOne  DataOne={initialData.ppsRequest1Details} />} 
+                            {initialData.name2&&<ModalTwo Data2={initialData.ppsRequest2Details} />} 
+                            {initialData.name3&&<ModalThree Data2={initialData.ppsRequest3Details} na3={na3} />} 
+                            {initialData.name4&&<ModalFour Data2={initialData.ppsRequest4Details} />} 
                           </div>
+                          ): <h2>Мэдээлэл ороогүй байна</h2>}
+                          
                       </div>
                   </animated.div>
               </Background>)
@@ -102,6 +104,10 @@ const Background = styled.div`
         width:1000px;
         height:100vh;
         padding:20px 20px;
+        h2{
+          text-align:center;
+          margin-top:40px;
+        }
         .PdfParent{
           padding-top:50px;
         }

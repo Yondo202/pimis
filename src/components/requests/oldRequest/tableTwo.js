@@ -145,10 +145,7 @@ function TableTwo(props) {
                     setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0);helperContext.reqMountFunc(2);
                   }).catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true); });
             }
-            
-
         }
-        
         console.log(finalEnd, "my all");
     }
 

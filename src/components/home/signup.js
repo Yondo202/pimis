@@ -15,7 +15,6 @@ const specialCharacterRegx = /[ ~@#$%^&*()_+\-=[\]{;':\\|,.<>\/?]/;
 
 function Signup() {
     const signUpCtx = useContext(UserContext);
-    const [ BtnSpin, setBtnSpin ] = useState(false);
     const [ sectorData, setSectorData ] = useState([]);
     const [PassText, setPassText] = useState("");
     const [scale, setScale] = useState("1");
@@ -47,6 +46,7 @@ function Signup() {
         openModal();
       }
     },[]);
+    
     useEffect( async ()=>{
         const sectorData = await axios.get(`business-sector`); setSectorData(sectorData.data.data);
         console.log(sectorData," sector data");
@@ -78,9 +78,11 @@ function Signup() {
             }else if(finalOne.password !== finalOne.passwordagain) {
               setPassText("Нууц үг адил биш байна...");
             }else{
-              setBtnSpin(true); setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1");
+               setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1");
             }
     }
+
+    const cond =signUpCtx.errMsgSignup.cond;
  
     return (
         <Component className="SignUp">
@@ -279,14 +281,14 @@ function Signup() {
                                         </div>
 
                                           <div className="SubmitButtonPar">
-                                                <NextBtn style={BtnSpin? {width:`20%`,opacity:`0.7`} :{width:`100%`,opacity:`1`}} disabled={true} onClick={handleClick} className="SubmitButton" type="button">{BtnSpin? <img src="/gif1.gif" /> : `Бүртгүүлэх` }  <div style={BtnSpin? {display:`none`} :{display:`flex`}} className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
+                                                <NextBtn style={cond? {width:`20%`,opacity:`0.7`} :{width:`100%`,opacity:`1`}} disabled={true} onClick={handleClick} className="SubmitButton" type="button">{cond? <img src="/gif1.gif" /> : `Бүртгүүлэх` }  <div style={cond? {display:`none`} :{display:`flex`}} className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
                                                 {PassText? (<span className="colorText" style={{transform:`scale(${scale})`}}>{PassText}</span>) :  (<span className="colorText" style={{transform:`scale(${scale})`}}>{signUpCtx.errMsgSignup.msg}</span>)}  
                                           </div>
                                       </div>) 
-                                  :( <div className="success">
-                                        <h3 className="title">Тавтай морил</h3>
-                                        <span className="desc">{signUpCtx.errMsgSignup.msg}</span>
-                                     </div>   )}
+                                        :( <div className="success">
+                                              <h3 className="title">Тавтай морил</h3>
+                                              <span className="desc">{signUpCtx.errMsgSignup.msg}</span>
+                                          </div>   )}
                                 
                           </div>
                 </Modal>
