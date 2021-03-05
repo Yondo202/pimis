@@ -1,6 +1,6 @@
 import React, {useState}from 'react'
 import styled from 'styled-components'
-import {ColorRgb,InputStyle} from "../theme"
+import {ColorRgb,InputStyle,NextBtn} from "../theme"
 import {GoMail} from 'react-icons/go'
 import {AiOutlineSend} from 'react-icons/ai'
 import Modal from 'react-awesome-modal';
@@ -60,7 +60,7 @@ function ForgetPassword() {
                                     <div className="SubmitButtonPar">
                                      <span className="colorText" style={{transform:`scale(${scale})`, color:color}}>{Errmsg}</span>
                                           {/* {signUpCtx.userInfo.userId ? <span className="colorText" style={{transform:`scale(${scale})`}}>Амжилттай нэвтэрлээ...</span> : ()}   */}
-                                          <span onClick={handleClick}  className="SubmitButton">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </span>
+                                          <NextBtn onClick={handleClick}  className="SubmitButton">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
                                     </div>
                                 </div>
                             </div>
