@@ -135,28 +135,28 @@ function Feedback() {
                 </div>
 
                 <div className="infoWhere">
-                        <div className="Title Title2"><span className="circle">⬤</span>Түншлэлийн гэрээ өмнө нь хэдэн удаа байгуулж байсан бэ?
-                            <InputStyle className="nameText"><input className="getInputt" name="edpcount" placeholder="байгуулсан тоо..." type="number" />  <div className="line"></div></InputStyle>
-                         </div>
+                    <div className="Title Title2"><span className="circle">⬤</span>Түншлэлийн гэрээ өмнө нь хэдэн удаа байгуулж байсан бэ?
+                        <InputStyle className="nameText"><input className="getInputt" name="edpcount" placeholder="байгуулсан тоо..." type="number" />  <div className="line"></div></InputStyle>
+                    </div>
                 </div>
 
                 <div className="infoWhere">
-                        <div className="Title"><span className="circle">⬤</span>Түншлэлийн дэмжлэгээр олгогдож буй санхүүжилтээр дараах үйл ажиллагаануудын алийг санхүүжүүлж байна вэ? <br />  / тэмдэглэнэ үү / :</div>
-                        <div className="inpPar">
-                            {infoWhere2.map((el,i)=>{
-                                    return(
-                                        <div className="items">
-                                            <input className={`radio ${otherOne.Cname}`} value={el.title} checked={otherOne.checked} name="financing" type="radio" />
-                                            <div className="title">{el.title}</div>
-                                        </div>
-                                    )
-                            })}
-                            {/* zasna  */}
-                            <div className="items">
-                                <div className="title">Бусад :</div>
-                                <InputStyle className="nameText"><input className={otherOne.self} onChange={onChange1} name="financing" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
-                            </div>
+                    <div className="Title"><span className="circle">⬤</span>Түншлэлийн дэмжлэгээр олгогдож буй санхүүжилтээр дараах үйл ажиллагаануудын алийг санхүүжүүлж байна вэ? <br />  / тэмдэглэнэ үү / :</div>
+                    <div className="inpPar">
+                        {infoWhere2.map((el,i)=>{
+                                return(
+                                    <div className="items">
+                                        <input className={`radio ${otherOne.Cname}`} value={el.title} checked={otherOne.checked} name="financing" type="radio" />
+                                        <div className="title">{el.title}</div>
+                                    </div>
+                                )
+                        })}
+                        {/* zasna  */}
+                        <div className="items">
+                            <div className="title">Бусад :</div>
+                            <InputStyle className="nameText"><input className={otherOne.self} onChange={onChange1} name="financing" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
                         </div>
+                    </div>
                 </div>
 
                 <div className="infoWhere">
