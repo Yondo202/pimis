@@ -31,7 +31,6 @@ function MainRequest() {
     const [ userID, setUserId ] = useState();
     const [ approved, setApproved ] = useState(0);
     const [ na3, setNa3 ] = useState(0);
-    // const [ updateMount, setUpdate ] = useState(param === "user"?helpCtx.reqMount:0);
 
     useEffect( async()=>{
         if(param==="user"){ 
@@ -65,7 +64,7 @@ function MainRequest() {
     const Four = param === "user"&&helpCtx.GlobalStyle.tableFour;
     const Five = param === "user"&&helpCtx.GlobalStyle.tableFive;
     const Six = param === "user"&&helpCtx.GlobalStyle.tableSix;
-    const errMsg = () =>{ console.log("+*+*+*+*+*+*** err Msg");}
+    const errMsg = () =>{ console.log("+*+*+* err Msg");};
 
     return (
         <>
@@ -77,10 +76,10 @@ function MainRequest() {
                                 <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button>
                                 <div className="countPar container">
                                     <div className="itemsPar">
-                                        <div className={`${initialData&&initialData.name1!==null? One==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : One==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name1!==null?(()=>(func("0%", "100%", "200%","300%"),scroll.scrollTo(0) )): (()=>errMsg())} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${initialData&&initialData.name2!==null? Two==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Two==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name2!==null?(()=>(func("-100%", "0%", "100%","200%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${initialData&&initialData.name3!==null? Three==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Three==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name3!==null?(()=>(func("-200%", "-100%", "0%","100%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${initialData&&initialData.name4!==null? Four==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Four==="0%"? `borderPar2`: `borderPar` }`}  onClick={initialData&&initialData.name4!==null?(()=>(func("-300%", "-200%", "-100%","0%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">4</span></div> 
+                                        <div className={`${initialData&&initialData.name1!==null? One==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : One==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name1!==null?(()=>(func("0%", "100%", "200%","300%","400%","500%"),scroll.scrollTo(0) )): (()=>errMsg())} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${initialData&&initialData.name2!==null? Two==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Two==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name2!==null?(()=>(func("-100%", "0%", "100%","200%","300%","400%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${initialData&&initialData.name3!==null? Three==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Three==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name3!==null?(()=>(func("-200%", "-100%", "0%","100%","200%","300%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${initialData&&initialData.name4!==null? Four==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Four==="0%"? `borderPar2`: `borderPar` }`}  onClick={initialData&&initialData.name4!==null?(()=>(func("-300%", "-200%", "-100%","0%","100%","200%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">4</span></div> 
                                         {/* <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
                                         <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
                                         <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
@@ -103,11 +102,9 @@ function MainRequest() {
                         <div style={{left:`${Three}`, opacity:`${Three === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                             <TableThree  initialData={initialData&&initialData.ppsRequest3Details}  initialName={initialData&&initialData.name3}  initialDate={initialData&&initialData.date3} id={userID} token={tokens} na3={na3} />
                         </div>
-                        
                         <div style={{left:`${Four}`, opacity:`${Four === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                             <TableFour initialData={initialData&&initialData.ppsRequest4Details}  initialName={initialData&&initialData.name4}  initialDate={initialData&&initialData.date4} id={userID} token={tokens} />
                         </div>
-
                         <div style={{left:`${Five}`, opacity:`${Five === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
                             <TableFive initialData={initialData&&initialData.ppsRequest5Detail}  initialName={initialData&&initialData.name5}  initialDate={initialData&&initialData.date5} id={userID} token={tokens}  />
                         </div>
@@ -123,9 +120,7 @@ function MainRequest() {
                 </AlertStyle>
             </>
             ): <NotApprovedComp className="container"><button onClick={backHanlde2} ><RiArrowGoBackFill /> Буцах</button> <h3 style={{textAlign:"center"}}>Та шалгуур хангалтанд тэнцэхгүй бөгөөд цааш явах боломжгүй байна.</h3> </NotApprovedComp>}
-
-    </>
-            
+        </>
     )
 }
 

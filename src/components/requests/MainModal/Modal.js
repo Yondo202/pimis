@@ -24,7 +24,7 @@ export const Modal = ({ showModal,setShowModal, initialData, param, na3 }) => {
     const closeModal = e =>{ if(modalRef.current === e.target){ setShowModal(false);}}
     
     const keyPress = useCallback(e=>{
-        if(e.key === 'Escape' && showModal){ setShowModal(false); }
+        if(e.key === 'Escape' && showModal){ setShowModal(false); }else if(e.key=== 'F4'){ setShowModal(true); }
     },[setShowModal, showModal]);
     
     useEffect( async ()=>{

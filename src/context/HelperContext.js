@@ -26,7 +26,7 @@ export const HelpStore = (props) =>{
           setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 400 });
         }else if(valueFive === "0%"){
           setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 800 });
-        }else if(valueFive === "0%"){
+        }else if(valueSix === "0%"){
           setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 800 });
         }else{
           setGlobalStyle({tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 250 });
@@ -40,6 +40,9 @@ export const HelpStore = (props) =>{
     const reqMountFunc = (element) =>{
       setReqMount(element);
     } 
+
+
+    console.log(GlobalStyle, " style components");
 
     return (
        <HelperContext.Provider
