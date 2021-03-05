@@ -8,7 +8,6 @@ import ModalOne from '../modals/modalOne'
 import ModalThree from '../modals/modalThree';
 import ModalTwo from '../modals/modalTwo';
 import {ColorRgb} from '../../theme'
-
 import { useReactToPrint } from "react-to-print";
 
 export const Modal = ({ showModal,setShowModal, initialData, param, na3 }) => {
