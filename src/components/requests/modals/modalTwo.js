@@ -4,22 +4,14 @@ import {fontFamily, textColor, ColorRgb, } from '../../theme';
 
 
 function ModalTwo(props) {
-    console.log(props.Data2, "** 22 data")
-
     const [ DataOne, setDataOne ] = useState([]);
     useEffect(()=>{
-        if(props.Data2){
-            const finalData = []
+        if(props.Data2){ const finalData = [];
             tableData.map((el,i)=>{
                 props.Data2.map((elem,index)=>{ if (i  === index){ el["name"] = elem.name; el["files"] = elem.files; el["getDate"] = elem.getDate ; el["recentDate"] = elem.recentDate} });
                 finalData.push(el);
-            });
-             setDataOne(finalData);
-        }else{
-            setDataOne(tableData);
-        }
-    console.log(DataOne, "-------------- my data oneeeeedd"); 
-        
+            }); setDataOne(finalData);
+        }else{ setDataOne(tableData); }
     },[props.Data2]);
 
 

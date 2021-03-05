@@ -76,13 +76,11 @@ function TableOne(props) {
               let keys = Object.keys(finalOne2); const Procent = keys.length * 100 / 13; const FinalProcent = Math.round(Procent);
 
               let confirm = document.getElementById("GetcheckBtn").checked;
-
               console.log(finalEnd, "final end");
 
 
              let arrs = [];  dataOne.map((el,i)=>{ finalOne2.map(elem=>{ if((i+1).toString()===elem.rownum && elem.rvalue === "true"){arrs.push(el.name); };});});
              setSecondChance(arrs);
-
 
               if(keys.length < 12){
                 setOpacity("1"); setProcent(FinalProcent);
@@ -101,11 +99,9 @@ function TableOne(props) {
                    // Дата явна
                   finalOne["approved"] = 1;
                   setVisible2(false);
-                  console.log(JSON.stringify(finalEnd) , "------------------");
 
                   if(props.initialData){
                     await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
-                      console.log(res, "333333333333333333333");
                       setSpnBtn(false); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
                        })
                       .catch((err)=>{setSpnBtn(false); tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
@@ -123,17 +119,16 @@ function TableOne(props) {
                 setOpacity("0"); setOpacity2("0");setSpnBtn(true);
                 if(props.initialData){
                   await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{ 
-                    setSpnBtn(false); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
+                    setSpnBtn(false); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); tablesContext.reqMountFunc(1);
                      })
                     .catch((err)=>{setSpnBtn(false); tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
                 }else{
                   axios.post("pps-request", finalEnd, {headers: { Authorization:AccessToken()} })
-                  .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); setSpnBtn(false);
+                  .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); setSpnBtn(false);tablesContext.reqMountFunc(1);
                   }).catch((err)=>{ setSpnBtn(false); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
                 }
               
             }
-            console.log(secondChance, "-----dd secondChance");
       }
       const closeModalX=()=>{ setVisible2(false); }
       const closeModal=()=>{ setBtnCond("twice");  setVisible2(false); }
@@ -238,7 +233,7 @@ function TableOne(props) {
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
                                             <div className="name"> <BsArrowRightShort />
                                               <InputStyle className="newInp">
-                                                   <input id="GetcheckBtn" className="checkBtn" type="checkbox" name="check" />
+                                                  <input id="GetcheckBtn" checked={props.initialData?true:null} className="checkBtn" type="checkbox" name="check" />
                                               </InputStyle>
                                             </div>
                                     </div>

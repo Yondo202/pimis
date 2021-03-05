@@ -176,11 +176,11 @@ function TableFour(props) {
                     finalEnd.PPS4["esm"] = "B"
                     console.log("B Angilal");
                     if(Dname){
-                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{  helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0)})
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{  helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0); helperContext.reqMountFunc(4); })
                       .catch((err)=>{  setFinalText("Алдаа гарлаа"); setFinalTextScale("1"); console.log(err, "err");});
                     }else{
                          axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
-                         helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{scroll.scrollTo(0); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%") },3000); })
+                         helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{scroll.scrollTo(0); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%") },3000); helperContext.reqMountFunc(4); })
                         .catch(err=>{ helperContext.alertText('orange', "Алдаа гарлаа", true);});
                     }
             }else{
@@ -190,7 +190,7 @@ function TableFour(props) {
                     console.log("F Angilal");
                     if(Dname){
                       axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setTimeout(()=>{
-                      helperContext.alertText('green', 'Та шалгуур хангаж байна..', true);history.push("/"); },2000) }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+                      helperContext.alertText('green', 'Та шалгуур хангаж байна..', true);history.push("/"); },4000) }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
                     }else{
                       axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{ 
                       helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000); })
@@ -299,7 +299,7 @@ function TableFour(props) {
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
                                             <div className="name"> <BsArrowRightShort />
                                                 <InputStyle className="newInp">
-                                                    <input id="GetcheckBtn4" className="checkBtn" type="checkbox" name="check" />
+                                                    <input id="GetcheckBtn4" checked={props.initialName?true:null} className="checkBtn" type="checkbox" name="check" />
                                                 </InputStyle>
                                             </div>
                                     </div>

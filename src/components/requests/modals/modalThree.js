@@ -4,16 +4,8 @@ import {fontFamily, textColor, ColorRgb, } from '../../theme';
 
 
 function ModalThree(props) {
-    console.log(props.Data2, "** 33 data")
-
     const [ DataOne, setDataOne ] = useState([]);
-    useEffect(()=>{
-        if(props.Data2){
-             setDataOne(props.Data2);
-        }else{
-            setDataOne(tableData);
-        }
-    },[props.Data2]);
+    useEffect(()=>{ if(props.Data2){ setDataOne(props.Data2); }else{ setDataOne(tableData); }},[props.Data2]);
 
     return (
         <TableTwo >

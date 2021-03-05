@@ -72,13 +72,13 @@ function TableThree(props) {
         if(confirmNull===false){
             if(finalOne2[0].pdate !== ""){
                 finalOne["request"] = finalOne2;
-                finalEnd["na3"] = 2;
+                finalOne["na3"] = 2;
             }else{
                 finalOne["na3"] = 1;
                 finalOne["request"] = [];
             }
         }else{
-            finalEnd["na3"] = 1;
+            finalOne["na3"] = 1;
             finalOne["request"] = [];
         }
         
@@ -93,21 +93,21 @@ function TableThree(props) {
             setOpacity2("1");
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
         }else{
+            setOpacity2("0");
             setSpnBtn(true);
             if(props.initialName){
                 axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
                     helperContext.alertText('green', "Амжилттай ", true); setSpnBtn(false);
-                    helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%"); scroll.scrollTo(0);
+                    helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%"); scroll.scrollTo(0); helperContext.reqMountFunc(3);
                   }).catch((err)=>{console.log(err, "err"); setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
             }else{
                 axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}} ).then((res)=>{
-                    setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглалаа", true); helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");scroll.scrollTo(0);
+                    setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглалаа", true); helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");scroll.scrollTo(0);helperContext.reqMountFunc(3);
                   }).catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
             }
             
         }
     }
-
 
     return (
         <Component3 className="container">
@@ -145,7 +145,7 @@ function TableThree(props) {
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
                                             <div className="name"> <BsArrowRightShort />
                                                 <InputStyle className="newInp">
-                                                    <input id="GetcheckBtn3" className="checkBtn" type="checkbox" name="check" />
+                                                    <input id="GetcheckBtn3"  checked={Dname !== null?true:null} className="checkBtn" type="checkbox" name="check" />
                                                 </InputStyle>
                                             </div>
                                     </div>

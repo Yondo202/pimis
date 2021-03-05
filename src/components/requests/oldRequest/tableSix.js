@@ -198,7 +198,7 @@ function TableSix(props) {
                                             <div className="name"> <BiPen />
                                                 <div className="form__group">
                                                     {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
-                                                    <input id="GetcheckBtn55" className="checkBtn" type="checkbox" name="check" />
+                                                    <input id="GetcheckBtn55" checked={props.initialName?true:null} className="checkBtn" type="checkbox" name="check" />
                                                 </div>
                                             </div>
                                     </div>

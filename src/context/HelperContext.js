@@ -10,6 +10,7 @@ export const HelpStore = (props) =>{
     const [ tableId, setTableId ] = useState(null);
     const [ GlobalStyle, setGlobalStyle ] = useState(initialStyle);
     const [ alert, setAlert ] = useState({ color:'yellow', text: 'null',cond: false });
+    const [ reqMount, setReqMount ] = useState(0);
 
     const TableControl = (valueOne)=>{ setTableSee({tableOneData: valueOne}); }
     const TableIdControl = (TableId) => { setTableId(TableId); }
@@ -36,6 +37,10 @@ export const HelpStore = (props) =>{
 
     console.log(tableId, " ********* global table Id");
 
+    const reqMountFunc = (element) =>{
+      setReqMount(element);
+    } 
+
     return (
        <HelperContext.Provider
         value = {{
@@ -46,7 +51,9 @@ export const HelpStore = (props) =>{
              StyleComp,
              GlobalStyle,
              alertText,
-             alert
+             alert,
+             reqMountFunc,
+             reqMount
         }}
         >
        {props.children}    

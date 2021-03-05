@@ -31,10 +31,11 @@ function MainRequest() {
     const [ userID, setUserId ] = useState();
     const [ approved, setApproved ] = useState(0);
     const [ na3, setNa3 ] = useState(0);
+    // const [ updateMount, setUpdate ] = useState(param === "user"?helpCtx.reqMount:0);
 
     useEffect( async()=>{
         if(param==="user"){ 
-            helpCtx.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
+            // helpCtx.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
             let storageToken = AccessToken(); setTokens(storageToken); 
             let LocalId = localStorage.getItem("userId");
             window.addEventListener("scroll", handleScroll);
@@ -51,18 +52,20 @@ function MainRequest() {
             let resData = await axios.get(`pps-request?userId=${param}`, {headers: {Authorization:AccessToken()}});
             if(resData.data.data.id){ setNa3(resData.data.data.na3); setInitialData(resData.data.data); ModalOpen(true); }
         }
-    },[]);
+    },[param === "user"?helpCtx.reqMount:0]);
 
     const handleScroll = () => {  if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); } }
     const backHanlde = () =>{ history.push(`/progress/${param}`); }
     const backHanlde2 = () =>{ history.push(`/`); }
 
+    const func = param === "user"&&helpCtx.StyleComp;
     const One = param === "user"&&helpCtx.GlobalStyle.tableOne;
     const Two = param === "user"&&helpCtx.GlobalStyle.tableTwo;
     const Three = param === "user"&&helpCtx.GlobalStyle.tableThree;
     const Four = param === "user"&&helpCtx.GlobalStyle.tableFour;
     const Five = param === "user"&&helpCtx.GlobalStyle.tableFive;
     const Six = param === "user"&&helpCtx.GlobalStyle.tableSix;
+    const errMsg = () =>{ console.log("+*+*+*+*+*+*** err Msg");}
 
     return (
         <>
@@ -74,14 +77,14 @@ function MainRequest() {
                                 <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button>
                                 <div className="countPar container">
                                     <div className="itemsPar">
-                                        {/* <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("0%", "100%", "200%","300%"),scroll.scrollTo(0))} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} onClick={()=> (func("-100%", "0%", "100%","200%"),scroll.scrollTo(0))}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-200%", "-100%", "0%","100%"),scroll.scrollTo(0))}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} onClick={()=>(func("-300%", "-200%", "-100%","0%"),scroll.scrollTo(0))}><span className="items">4</span></div>  */}
-                                        <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${initialData&&initialData.name1!==null? One==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : One==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name1!==null?(()=>(func("0%", "100%", "200%","300%"),scroll.scrollTo(0) )): (()=>errMsg())} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${initialData&&initialData.name2!==null? Two==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Two==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name2!==null?(()=>(func("-100%", "0%", "100%","200%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${initialData&&initialData.name3!==null? Three==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Three==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name3!==null?(()=>(func("-200%", "-100%", "0%","100%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${initialData&&initialData.name4!==null? Four==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Four==="0%"? `borderPar2`: `borderPar` }`}  onClick={initialData&&initialData.name4!==null?(()=>(func("-300%", "-200%", "-100%","0%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">4</span></div> 
+                                        {/* <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
                                         <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
                                         <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">4</span></div> 
+                                        <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">4</span></div>  */}
                                     </div>
                                 </div>
                             </div>
@@ -177,6 +180,7 @@ const PreviewBtn = styled.div`
         height:50px;
         transition:all 0.4s ease;
         .countPar{
+            z-index:1;
             display:flex;
             align-items:center;
             justify-content:center;
@@ -221,9 +225,10 @@ const PreviewBtn = styled.div`
                     background-color: rgba(${ColorRgb});
                     color:white;
                     font-weight:500;
-                    .items{
-                       
-                    }
+                    
+                }
+                .borderGreen{
+                    border:1px solid rgba(5,180,8,0.9);
                 }
             }
         }
@@ -284,6 +289,9 @@ const PreviewBtn = styled.div`
                     background-color:white;
                     border:1px solid rgba(0,0,0,0.3);
                     color:black;
+                }
+                .borderGreen{
+                    border:1px solid rgba(5,180,8,0.9);
                 }
             }
         }
