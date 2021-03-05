@@ -123,12 +123,12 @@ function TableOne(props) {
                 setOpacity("0"); setOpacity2("0");setSpnBtn(true);
                 if(props.initialData){
                   await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{ 
-                    setSpnBtn(false); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
+                    setSpnBtn(false); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); tablesContext.reqMountFunc(1);
                      })
                     .catch((err)=>{setSpnBtn(false); tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
                 }else{
                   axios.post("pps-request", finalEnd, {headers: { Authorization:AccessToken()} })
-                  .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); setSpnBtn(false);
+                  .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); setSpnBtn(false);tablesContext.reqMountFunc(1);
                   }).catch((err)=>{ setSpnBtn(false); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
                 }
               
@@ -238,7 +238,7 @@ function TableOne(props) {
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
                                             <div className="name"> <BsArrowRightShort />
                                               <InputStyle className="newInp">
-                                                   <input id="GetcheckBtn" className="checkBtn" type="checkbox" name="check" />
+                                                  <input id="GetcheckBtn" checked={props.initialData?true:null} className="checkBtn" type="checkbox" name="check" />
                                               </InputStyle>
                                             </div>
                                     </div>

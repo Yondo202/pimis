@@ -47,7 +47,7 @@ function TableTwo(props) {
        setInitialData(finalData);
     }
 
-    const onChangeGetDate = (event) =>{const finalData = []
+    const onChangeGetDate = (event) =>{ const finalData = []
         tableData.map((el,i)=>{ props.initialData.map(elem=> elem); finalData.push(el); });
         finalData.map((el, i )=>{
             if(el.id.toString() === event.target.id){el["getDate"] = event.target.value }  });
@@ -127,9 +127,6 @@ function TableTwo(props) {
         finalOne["date"] = userInp.date;
         finalEnd["PPS2"] = finalOne;
 
-
-        console.log(originalTest.length, "hevellee");
-
         if(originalTest.length < 10){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү"); setOpacity2("1");
         }else if(userInp.name === "" || userInp.date === ""){
@@ -141,11 +138,11 @@ function TableTwo(props) {
             setOpacity2("0");
             if(Dname){
                 axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}})
-                .then((res)=>{setSpnBtn(false); console.log(res); helperContext.alertText('green', "Амжилттай боллоо", true); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%"); scroll.scrollTo(0); })
+                .then((res)=>{setSpnBtn(false); console.log(res); helperContext.alertText('green', "Амжилттай боллоо", true); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%"); scroll.scrollTo(0); helperContext.reqMountFunc(2); })
                 .catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true); console.log(err) });
             }else{
                 axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers: {Authorization:AccessToken()}} ).then((res)=>{
-                    setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0);
+                    setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0);helperContext.reqMountFunc(2);
                   }).catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true); });
             }
             
@@ -154,12 +151,6 @@ function TableTwo(props) {
         
         console.log(finalEnd, "my all");
     }
-
-
-    console.log(Dname, " my d name");
-
-    console.log(props.initialName, " my inital");
-
 
     return (
         <Component2 className="container">
@@ -317,7 +308,7 @@ function TableTwo(props) {
                                         <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
                                         <div className="name"> <BsArrowRightShort />
                                             <InputStyle className="newInp">
-                                                    <input id="GetcheckBtn2" className="checkBtn" type="checkbox" name="check" />
+                                                <input id="GetcheckBtn2" checked={Dname !== null?true:null} className="checkBtn" type="checkbox" name="check" />
                                             </InputStyle>
                                         </div>
                                     </div>

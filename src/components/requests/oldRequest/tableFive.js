@@ -140,7 +140,7 @@ function TableFive(props) {
                                             <div className="name"> <BiPen />
                                                 <div className="form__group">
                                                     {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
-                                                    <input id="GetcheckBtn5" className="checkBtn" type="checkbox" name="check" />
+                                                    <input id="GetcheckBtn5" checked={Dname?true:null} className="checkBtn" type="checkbox" name="check" />
                                                 </div>
                                             </div>
                                     </div>

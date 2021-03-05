@@ -105,6 +105,7 @@ export const UserStore = (props) => {
     setTimeout(()=>{  setAlert({ cond:false }); },[4000]);
   }
 
+
   return (
     <UserContext.Provider
       value={{
@@ -120,7 +121,7 @@ export const UserStore = (props) => {
         idPass,
         reqID,
         alertText,
-        alert
+        alert,
       }}
     >
       {props.children}
