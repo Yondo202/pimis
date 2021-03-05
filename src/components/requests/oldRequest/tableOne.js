@@ -102,12 +102,12 @@ function TableOne(props) {
 
                   if(props.initialData){
                     await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
-                      setSpnBtn(false); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); 
+                      setSpnBtn(false); scroll.scrollTo(0); setTimeout(()=>{history.push('/');},2000); tablesContext.alertText('orange', "Та шалгуур хангалтанд тэнцэхгүй байна", true ); 
                        })
                       .catch((err)=>{setSpnBtn(false); tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
                   }else{
                     axios.post("pps-request", finalEnd, {headers: { Authorization:AccessToken()} })
-                    .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); setSpnBtn(false);
+                    .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); setTimeout(()=>{history.push('/');},2000); scroll.scrollTo(0); tablesContext.alertText('orange', "Та шалгуур хангалтанд тэнцэхгүй байна", true ); setSpnBtn(false);
                     }).catch((err)=>{ setSpnBtn(false); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
                   }
                 }else if(btn==="once"){

@@ -119,7 +119,7 @@ function MainRequest() {
                     <span>{helpCtx.alert.text}</span>
                 </AlertStyle>
             </>
-            ): <NotApprovedComp className="container"><button onClick={backHanlde2} ><RiArrowGoBackFill /> Буцах</button> <h3 style={{textAlign:"center"}}>Та шалгуур хангалтанд тэнцэхгүй бөгөөд цааш явах боломжгүй байна.</h3> </NotApprovedComp>}
+            ): <NotApprovedComp className="container"><button onClick={backHanlde2} ><RiArrowGoBackFill /> Буцах</button> <h3 style={{textAlign:"center"}}>Та шалгуур хангалтанд тэнцэхгүй бөгөөд цааш үргэлжлүүлэх боломжгүй байна.</h3> </NotApprovedComp>}
         </>
     )
 }
