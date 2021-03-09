@@ -40,7 +40,7 @@ export default function FileCard(props) {
                 </span>
             </div>
 
-            <div className="tw-p-2 tw-pr-0 tw-text-xs tw-font-medium tw-w-28 tw-h-20 tw-break-words tw-overflow-ellipsis tw-overflow-hidden tw-leading-tight">
+            <div className="tw-px-2 tw-py-1 tw-pr-0 tw-text-xs tw-font-medium tw-w-28 tw-h-20 tw-break-words tw-overflow-ellipsis tw-overflow-hidden tw-leading-tight">
                 {props.name}
             </div>
 
