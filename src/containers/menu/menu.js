@@ -454,4 +454,7 @@ const Componentss = styled.div`
     }
     
 }
+  @media print{
+    display:none;
+  }
 `;

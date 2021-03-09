@@ -7,7 +7,7 @@ import ModalFour from '../modals/modalFour';
 import ModalOne from '../modals/modalOne'
 import ModalThree from '../modals/modalThree';
 import ModalTwo from '../modals/modalTwo';
-import {ColorRgb} from '../../theme'
+import {ColorRgb,textColor} from '../../theme'
 import { useReactToPrint } from "react-to-print";
 
 export const Modal = ({ showModal,setShowModal, initialData, param, na3 }) => {
@@ -50,7 +50,7 @@ export const Modal = ({ showModal,setShowModal, initialData, param, na3 }) => {
                           </div>
                           {initialData? (
                             <div ref={componentRef}>
-                            {initialData.name1&&<ModalOne  DataOne={initialData.ppsRequest1Details} />} 
+                            {initialData.name1&&<ModalOne DataOne={initialData.ppsRequest1Details} />} 
                             {initialData.name2&&<ModalTwo Data2={initialData.ppsRequest2Details} />} 
                             {initialData.name3&&<ModalThree Data2={initialData.ppsRequest3Details} na3={na3} />} 
                             {initialData.name4&&<ModalFour Data2={initialData.ppsRequest4Details} />} 
@@ -123,10 +123,29 @@ const Background = styled.div`
               }
               svg{
                 margin-right:18px;
-                font-size:24px;
+                font-size:22px;
               }
             }
         }
     }
 
+    .MarginBtn{
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        svg{
+            padding:2px 2px;
+            cursor:pointer;
+            border-radius:50%;
+            background-color:rgba(60,60,60,0.3);
+            color:rgb(${textColor});
+            font-size:24px;
+            &:hover{
+                background-color:rgba(60,60,60,0.4);
+            }
+                
+        }
+    }
+
+    
 `

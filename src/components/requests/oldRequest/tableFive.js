@@ -1,16 +1,16 @@
-import React, {useState,useEffect, useContext} from 'react'
-import TableFiveDetails from './deitals/tableFiveDetail'
-import TableFiveDetails2 from './deitals/tableFiveDetail2'
+import React, {useState,useEffect, useContext} from 'react';
+import TableFiveDetails from './deitals/tableFiveDetail';
+import TableFiveDetails2 from './deitals/tableFiveDetail2';
 import { Link, animateScroll as scroll } from "react-scroll";
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
-import {FiUserCheck} from 'react-icons/fi'
-import {MdDateRange} from 'react-icons/md'
-import {BiPen} from 'react-icons/bi'
-import {AiOutlineSend} from 'react-icons/ai'
-import HelperContext from '../../../context/HelperContext'
-import axios from '../../../axiosbase'
-import AccessToken from '../../../context/accessToken'
+import {FiUserCheck} from 'react-icons/fi';
+import {MdDateRange} from 'react-icons/md';
+import {BiPen} from 'react-icons/bi';
+import {AiOutlineSend} from 'react-icons/ai';
+import HelperContext from '../../../context/HelperContext';
+import axios from '../../../axiosbase';
+import AccessToken from '../../../context/accessToken';
 
 const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
 const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);

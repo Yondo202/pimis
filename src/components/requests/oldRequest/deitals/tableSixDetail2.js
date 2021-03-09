@@ -122,9 +122,9 @@ function TableSixDetails2(props) {
                         <div className="inputPar">
                             <div className="inpChild">
                                 <div className="labels"><span>Тоног төхөөрөмжийн зардал буюу гүйцэтгэгчийн төлбөр :</span> </div>
-                                <div className="name"> <VscFoldDown />
+                                <div className="name"> <div className="svg">₮</div>
                                     <div className="form__group">
-                                        <input type="number" value={el.cost} onChange={changeHandle5} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
+                                        <input style={{textAlign:`right`,paddingRight:15}} type="number" value={el.cost} onChange={changeHandle5} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
                                         <label for="name" className=" form__label">Мониторингийн зардал </label>
                                     </div>
                                 </div>
@@ -218,9 +218,10 @@ function TableSixDetails2(props) {
                             <div className="inputPar">
                                 <div className="inpChild">
                                     <div className="labels"><span>Тоног төхөөрөмжийн зардал буюу гүйцэтгэгчийн төлбөр :</span> </div>
-                                    <div className="name"> <VscFoldDown />
+                                    <div className="name"><div className="svg">₮</div>
+                                    {/* <VscFoldDown /> */}
                                         <div className="form__group">
-                                            <input type="number" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
+                                            <input style={{textAlign:`right`,paddingRight:15}} type="number" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
                                             <label for="name" className=" form__label">Мониторингийн зардал </label>
                                         </div>
                                     </div>
@@ -355,6 +356,12 @@ const Component3Detail = styled.div`
                      svg{
                        color:rgba(${ColorRgb},0.7);
                        font-size:28px;
+                       margin-right:15px;
+                       margin-bottom:5px;
+                     }
+                     .svg{
+                       color:rgba(${ColorRgb},0.7);
+                       font-size:24px;
                        margin-right:15px;
                        margin-bottom:5px;
                      }

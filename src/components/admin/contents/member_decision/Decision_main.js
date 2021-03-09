@@ -5,7 +5,6 @@ import {AiOutlineSend} from 'react-icons/ai'
 import { animateScroll as scroll } from "react-scroll";
 import Signature from './Signature'
 
-
 function Decision_main() {
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");

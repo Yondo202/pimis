@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import {fontFamily, textColor, ColorRgb, } from '../../theme';
+import {CgPushChevronUp, CgPushChevronDown} from 'react-icons/cg'
 
 
 function ModalTwo(props) {
     const [ DataOne, setDataOne ] = useState([]);
+    const [ margin, setMargin ] = useState(0);
+
     useEffect(()=>{
         if(props.Data2){ const finalData = [];
             tableData.map((el,i)=>{
@@ -14,10 +17,11 @@ function ModalTwo(props) {
         }else{ setDataOne(tableData); }
     },[props.Data2]);
 
+    const clickHandle = (el) =>{  if(el==="add"){ setMargin(prev => prev + 10); }else{  if(margin < 0){  setMargin(prev =>prev);  }else{ setMargin(prev => prev - 10);  }  }}
 
 
     return (
-        <TableTwo >
+        <TableTwo style={{marginBottom:margin}} >
             <h6>2. Баталгаа/зөвшөөрөл/тусгай зөвшөөрлийн үнэлгээ *</h6>
             <div className="table container">
                 <div  className="Header row">
@@ -48,7 +52,7 @@ function ModalTwo(props) {
                     )
                 })}
             </div>
-            
+            <div className="MarginBtn"> {margin>0?<CgPushChevronUp onClick={()=>clickHandle("remove")} />:<div></div>} <CgPushChevronDown onClick={()=>clickHandle("add")} /></div>
         </TableTwo>
     )
 }
@@ -56,6 +60,7 @@ function ModalTwo(props) {
 export default ModalTwo
 
 const TableTwo  = styled.div`
+    transition:all 0.2s ease;
     // margin-top:40px;
     color:rgb(${textColor});
     font-family:${fontFamily};
@@ -85,7 +90,11 @@ const TableTwo  = styled.div`
             }
         }
     }
-    
+    @media print{
+        .MarginBtn{
+            display:none;
+        }
+    } 
 `
 
 const tableData = [

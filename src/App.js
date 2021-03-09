@@ -6,6 +6,7 @@ import Menu from "./containers/menu/menu";
 import UserContext from "./context/UserContext";
 import { HelpStore } from "./context/HelperContext";
 import Feedback from './components/feedback/Feedback'
+import MembersHome from './components/member/HomePage'
 import CheckComp from "./components/check/compCheck";
 import EmialSender2 from "./components/emailSend/EmailSend2";
 import LoginDoneHome2 from "./components/LoginDoneHome/Home";
@@ -28,6 +29,7 @@ import FilePreviewModal from "components/file_preview/filePreview";
 import WorkPerformance from './components/workPerformance/MainWorkPerformance'
 import 'devextreme/dist/css/dx.common.css'
 import 'assets/devExtremeTheme/dx.material.blue-light-compact.css'
+import { Email } from "react-html-email";
 
 
 function App() {
@@ -85,6 +87,7 @@ function App() {
                         <Route path="/feedback" component={Feedback} />
                         <Route path="/workperformance" component={WorkPerformance} />
                         <Route path="/email2" component={EmialSender2} />
+                        <Route path="/members" component={MembersHome} />
 
                         <Route path="/letter-of-interest" component={LetterOfInterest} />
                         <Route path="/urgudul/:page" component={UrgudulNavigator} />
