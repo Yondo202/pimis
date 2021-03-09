@@ -33,17 +33,12 @@ export const HelpStore = (props) =>{
         }
       }
 
-    const alertText = ( color, text, cond ) =>{   setAlert({ color:color, text:text, cond:cond });  setTimeout(()=>{ setAlert({ cond:false }); },[4000]); }
-
-    console.log(tableId, " ********* global table Id");
+    const alertText = ( color, text, cond ) =>{ setAlert({ color:color, text:text, cond:cond });  setTimeout(()=>{ setAlert({ cond:false }); },[4000]); }
 
     const reqMountFunc = (element) =>{
       setReqMount(element);
     } 
-
-
-    console.log(GlobalStyle, " style components");
-
+    
     return (
        <HelperContext.Provider
         value = {{

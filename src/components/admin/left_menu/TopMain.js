@@ -12,7 +12,7 @@ const Main = ({ handleCollapsedChange }) => {
     <div className="row topMenuPar"> 
       <div className="SwitchPar">
           <ToggleMenu onClick={()=>{handleCollapsedChange(prev=>!prev); setProfileMenu(prev=>!prev)}} className="block ">
-             <div className="togglePar"><AiOutlineMenuUnfold style={profileMenu? {transform:`rotate(0deg)`}:{transform:`rotate(180deg)`} }  /> </div>
+             <div className="togglePar"><AiOutlineMenuUnfold style={profileMenu? {transform:`rotateY(0deg)`}:{transform:`rotateY(180deg)`} }  /> </div>
           </ToggleMenu>
       </div>
      

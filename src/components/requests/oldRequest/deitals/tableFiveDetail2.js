@@ -137,9 +137,10 @@ function TableFiveDetails2(props) {
                         <div className="inputPar">
                             <div className="inpChild">
                                 <div className="labels"><span>Нөлөөллийг бууруулах үйл ажиллагааны зардал :</span> </div>
-                                <div className="name"> <VscFoldDown />
+                                <div className="name"> <div className="svg">₮</div>
+                                {/* <VscFoldDown /> */}
                                     <div className="form__group">
-                                        <input type="number" id={el.id} onChange={changeHandle5} value={el.reduce_cost} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce_cost" required />
+                                        <input style={{textAlign:`right`,paddingRight:15}} type="number" id={el.id} onChange={changeHandle5} value={el.reduce_cost} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce_cost" required />
                                         <label for="name" className=" form__label">Үйл ажиллагааны зардал</label>
                                     </div>
                                 </div>
@@ -232,9 +233,10 @@ function TableFiveDetails2(props) {
                             <div className="inputPar">
                                 <div className="inpChild">
                                     <div className="labels"><span>Нөлөөллийг бууруулах үйл ажиллагааны зардал :</span> </div>
-                                    <div className="name"> <VscFoldDown />
+                                    <div className="name"><div className="svg">₮</div>
+                                         {/* <VscFoldDown /> */}
                                         <div className="form__group">
-                                            <input type="number" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce_cost" required />
+                                            <input style={{textAlign:`right`,paddingRight:15}} type="number" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce_cost" required />
                                             <label for="name" className=" form__label">Үйл ажиллагааны зардал</label>
                                         </div>
                                     </div>
@@ -359,7 +361,7 @@ const Component3Detail = styled.div`
                         }
                        
                     }
-                     .name{
+                    .name{
                      display:flex;
                      flex-direction:row;
                      align-items:flex-end;
@@ -368,6 +370,12 @@ const Component3Detail = styled.div`
                      svg{
                        color:rgba(${ColorRgb},0.7);
                        font-size:28px;
+                       margin-right:15px;
+                       margin-bottom:5px;
+                     }
+                     .svg{
+                       color:rgba(${ColorRgb},0.7);
+                       font-size:24px;
                        margin-right:15px;
                        margin-bottom:5px;
                      }

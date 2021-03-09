@@ -71,7 +71,8 @@ function Signup() {
             }else if(finalOne.password !== finalOne.passwordagain) {
               setPassText("Нууц үг адил биш байна...");
             }else{
-               setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1");
+               setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1"); 
+              //  setTimeout(()=>{ setVisible(false); setVisible2(false); },10000);
             }
     }
     const cond =signUpCtx.errMsgSignup.cond;

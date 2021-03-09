@@ -1,14 +1,18 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import {fontFamily, textColor, ColorRgb, } from '../../theme';
+import {CgPushChevronUp, CgPushChevronDown} from 'react-icons/cg'
 
 
 function ModalThree(props) {
     const [ DataOne, setDataOne ] = useState([]);
+    const [ margin, setMargin ] = useState(0);
     useEffect(()=>{ if(props.Data2){ setDataOne(props.Data2); }else{ setDataOne(tableData); }},[props.Data2]);
 
+    const clickHandle = (el) =>{  if(el==="add"){ setMargin(prev => prev + 10); }else{  if(margin < 0){  setMargin(prev =>prev);  }else{ setMargin(prev => prev - 10);  }  }}
+
     return (
-        <TableTwo >
+        <TableTwo style={{marginBottom:margin}} >
             <h6>3. Үйлдвэрлэгчийн байгаль орчин, нийгмийн удирдлагын гүйцэтгэлийн талаарх мэдээллийн товчоон *</h6>
             <div className="table container">
                 <div style={{borderBottom:`1px solid rgba(0,0,0,0.4)`}} className="Header row">
@@ -36,6 +40,8 @@ function ModalThree(props) {
                     )
                 }):<div className="items row"><div style={{backgroundColor:`rgba(63,255,181,0.2)`}} className="col-md-12 col-sm-12 col-12"><div className="question A1">Байхгүй</div></div> </div>  }
             </div>
+
+            <div className="MarginBtn"> {margin>0?<CgPushChevronUp onClick={()=>clickHandle("remove")} />:<div></div>} <CgPushChevronDown onClick={()=>clickHandle("add")} /></div>
         </TableTwo>
     )
 }
@@ -43,6 +49,7 @@ function ModalThree(props) {
 export default ModalThree
 
 const TableTwo  = styled.div`
+    transition:all 0.2s ease;
     padding: 150px 100px 50px 64px;
     color:rgb(${textColor});
     font-family:${fontFamily};
@@ -59,7 +66,6 @@ const TableTwo  = styled.div`
                 align-items:center;
                 height:100%;
             }
-            
         }
         .items{
             .question{
@@ -76,8 +82,11 @@ const TableTwo  = styled.div`
             }
         }
     }
-    
-    
+    @media print{
+        .MarginBtn{
+            display:none;
+        }
+    } 
 `
 
 const tableData = [

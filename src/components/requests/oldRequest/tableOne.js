@@ -99,7 +99,7 @@ function TableOne(props) {
                    // Дата явна
                   finalOne["approved"] = 1;
                   setVisible2(false);
-
+                  setSpnBtn(true);
                   if(props.initialData){
                     await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
                       setSpnBtn(false); scroll.scrollTo(0); setTimeout(()=>{history.push('/');},2000); tablesContext.alertText('orange', "Та шалгуур хангалтанд тэнцэхгүй байна", true ); 
@@ -130,8 +130,10 @@ function TableOne(props) {
               
             }
       }
-      const closeModalX=()=>{ setVisible2(false); }
-      const closeModal=()=>{ setBtnCond("twice");  setVisible2(false); }
+      const closeModalX=()=>{ setVisible2(false); };
+      const closeModal=()=>{ setBtnCond("twice"); setVisible2(false); };
+
+
 
     return (
         <Component1 className="container" >
@@ -221,8 +223,8 @@ function TableOne(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                         <InputStyle className="newInp">
-                                            {props.initialData? <input type="date" value={Ddate} onChange={changeHandleDate} max={Currentdate} placeholder="өдөр-сар-жил" va className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
-                                                              : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" va className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
+                                            {props.initialData? <input type="date" value={Ddate} onChange={changeHandleDate} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
+                                                              : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
                                             }
                                                 <div className="line"></div>
                                         </InputStyle>
@@ -420,7 +422,6 @@ const Component1 = styled.div`
               flex-direction:row;
               align-items:center;
               justify-content:space-between;
-               
                 .errtext{
                   transition:all 0.4s ease;
                   text-align:center;
@@ -432,8 +433,6 @@ const Component1 = styled.div`
                   line-height:34px;
                   padding:0px 20px;
                 }
-
-                
             }
             .headerPar{
               background-color: rgba(0, 51, 102,0.9);
