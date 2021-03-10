@@ -280,6 +280,22 @@ const MainPar = styled.div`
       
     }
     @media (max-width:768px){
+      
+      .signature{
+        .drowPar{
+          flex-direction:column;
+          .SignBtn{
+            margin:15px 0px;
+          }
+        }
+      }
+      .MemeberInfo{
+        align-items:start;
+        flex-direction:column;
+        .titleSm{
+          width:100%;
+        }
+      }
       padding: 15px 10px;
       .contentPar{
         .Content{
@@ -291,6 +307,7 @@ const MainPar = styled.div`
           }
         }
       }
+     
     }
 
     @media print{

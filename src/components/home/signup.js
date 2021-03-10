@@ -378,7 +378,7 @@ const Component = styled.div`
         }
     }
 
-        .formOneParent{
+      .formOneParent{
             border-top:4px solid ${Color};
             background-color:white;
             border-radius:5px;
@@ -531,17 +531,27 @@ const Component = styled.div`
               padding:3px 15px; 
             }
          
-              .SubmitButton{
-                  width:100%;
-                  font-size:14px;
-                }
-          
+            .SubmitButton{
+                width:100%;
+                font-size:14px;
+            }
           }
         }
      
       @media only screen and (max-width:768px){
             .formOneParent{
-                padding:10px 18px;
+              width:100%;
+              height:100%;
+              overflow-y:scroll;
+              padding:10px 18px;
+              .SubmitButtonPar{
+                flex-direction: column-reverse;
+              }
+                .inputPar{
+                  .UserSectionMiddle{
+                    flex-direction: column;
+                  }
+                }
                 .headPar{
                     font-size:1em;
                     .headText{
@@ -552,6 +562,11 @@ const Component = styled.div`
                 .UserSection{
                   flex-direction:column;
                   .inpChild{
+                    width:100%;
+                  }
+                }
+                .UserSectionMiddle{
+                  .sectorChild{
                     width:100%;
                   }
                 }

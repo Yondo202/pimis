@@ -641,7 +641,7 @@ const Component1 = styled.div`
                     width:100%;
                 }
                 .SubmitButton{
-                    width:100%;
+                    width:100% !important;
                 }
             }
             .headerPar{

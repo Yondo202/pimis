@@ -1,4 +1,4 @@
-import React,{useEffect, useState,useRef} from 'react'
+import React,{ useState } from 'react'
 import styled from 'styled-components'
 import {fontSize, textColor,InputStyle,NextBtn,ColorRgb } from '../../../theme'
 import {AiOutlineSend} from 'react-icons/ai'
@@ -9,12 +9,7 @@ function Decision_main() {
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
     const [otherOne, setOtherOne] = useState({Cname: "getInputt", checked:null, self:""  });
-    
-    let inputFullName = useRef(null);
-
-    useEffect(()=>{
-        setTimeout(()=>{  inputFullName.current.focus();},3000);
-    },[]);
+    const [ imgData, setImgData ] = useState(null);
 
     const onChange1 = (e) =>{
         if(e.target.value.length > 1){ setOtherOne({ Cname:"", checked:false, self:"getInputt" })
@@ -22,73 +17,43 @@ function Decision_main() {
     }
 
     const ClickHandle = () =>{
-        let inp = document.querySelectorAll(".getInputt"); let arr = Array.from(inp); let final = {};
+        let inp = document.querySelectorAll(".getInputt"); let arr = Array.from(inp); let final = {}; let dd = {}; let cond = 0
         arr.map(el=>{
             if(el.type === "radio"){
                 if(el.checked === true){
-                    let obj = {}
-                    let next = document.querySelectorAll(`.${el.name}${el.id}_why`); let otherArr = Array.from(next);
-                    console.log(next);
-                    otherArr.map(elem=>{
-                        if(elem.id){
-                            obj[elem.name] = elem.value;
-                        }else{
-                            obj[elem.name] = elem.value;
-                        }
-                    });
-                    obj["checked"] = el.value;
+                    let obj = {};
+                    if(el.value ==="false"){
+                        let next = document.querySelectorAll(`.${el.name}${el.id}_why`); let otherArr = Array.from(next);
+                        otherArr.map(elem=>{
+                            if(elem.value!==""){ if(elem.id){ obj[elem.name] = elem.value; }else{ obj[elem.name] = elem.value; } }else{ obj["reason"] = null; cond = 1; }
+                        });
+                    }else{ obj["reason"] = null }
                     final[el.name] = obj;
+                    obj["checked"] = el.value;
+                    
                 }
             }else{
-                if(el.name==="financing"){
-                    let dd = {};  dd["checked"] = el.value;  final["financing"] = dd
-                }else if(el.name==="finance_req"){
-                    let nn = {}; nn["checked"] = el.value; final["finance_req"] =nn
-                } else if(el.name==="finance_req_no"){
-                    let nn = {}; nn["checked_no"] = el.value; final["finance_req"] =nn
+                if(el.name === "reject_reason"){
+                    dd["checked"] = el.value; final[el.name] = dd;
                 }else{
-                    if(!el.value){
-                        el.classList += " RedPar"
-                    }else{
-                        final[el.name] = el.value;
-                        el.classList =- " RedPar"
-                        el.classList += " getInputt"
-                    }
+                    if(!el.value){  el.classList += " RedPar"; }else{ final[el.name] = el.value; el.classList =- " RedPar"; el.classList += " getInputt" }
                 }
             }
         });
-
-        let getT = document.querySelectorAll(".getTable1"); let tableArr = Array.from(getT); let tableOne = [];
-        tableArr.map((el,i)=>{
-            let obj = {};
-            let tb = document.querySelectorAll(`.tableItem${i+1}`); let itemarr = Array.from(tb);
-            itemarr.map((elem,ind)=>{
-                if(elem.checked===true){
-                    obj["checked"] = elem.value;
-                    obj["title"] = elem.name;
-                }
-            });
-            tableOne.push(obj);
-        });
-        let getT2 = document.querySelectorAll(".getTable2"); let tableArr2 = Array.from(getT2); let tableTwo = [];
-        tableArr2.map((el,i)=>{
-            let obj = {}; obj["title"] = el.id; let tb2 = document.querySelectorAll(`.itemOne${i+1}`); let itemarr2 = Array.from(tb2); 
-            itemarr2.map((elem,index)=>{
-                obj[elem.name] = elem.value
-            });
-            tableTwo.push(obj);
-        })
-
-        final["service_assess"] = tableOne;
-        final["efficiency"] = tableTwo;
+        if(imgData!==null){ final["signature"] = imgData; }
         let keys = Object.keys(final); 
         console.log(keys.length);
 
-        if(keys.length < 11){
+        if(keys.length < 9){
             setFinalErrorText("Та гүйцэд бөгөлнө үү...");
             setOpacity2("1");
             scroll.scrollTo(0);
+        }else if(cond !== 0){
+            setFinalErrorText("Хэрэв татгалзсан бол шалтгааныг бичнэ үү...");
+            scroll.scrollTo(200);
+            setOpacity2("1");
         }else{
+            setOpacity2("0");
             console.log("done");
         }
         console.log(final, "^final");
@@ -105,26 +70,26 @@ function Decision_main() {
 
                 <div className="compName">
                     <div className="title">Байгууллагын нэр:</div>
-                    <InputStyle  className="nameText"><input className="getInputt" name="compname" ref={inputFullName} placeholder="Байгууллагын нэр..."  type="text" />  <div className="line"></div></InputStyle>
+                    <InputStyle  className="nameText"><input className="getInputt" name="compname" placeholder="Байгууллагын нэр..."  type="text" />  <div className="line"></div></InputStyle>
                 </div>
 
                 <div className="compName">
                     <div className="title">Төслийн нэр:</div>
-                    <InputStyle  className="nameText"><input className="getInputt" name="compname" ref={inputFullName} placeholder="Төслийн нэр..."  type="text" />  <div className="line"></div></InputStyle>
+                    <InputStyle  className="nameText"><input className="getInputt" name="project_name" placeholder="Төслийн нэр..."  type="text" />  <div className="line"></div></InputStyle>
                 </div>
 
                 <div className="compName">
                     <div className="title">Өргөдлийн дугаар:</div>
-                    <InputStyle  className="nameText"><input className="getInputt" name="compname" ref={inputFullName} placeholder="Өргөдлийн дугаар..."  type="number" />  <div className="line"></div></InputStyle>
+                    <InputStyle  className="nameText"><input className="getInputt" name="statement_num" placeholder="Өргөдлийн дугаар..."  type="number" />  <div className="line"></div></InputStyle>
                 </div>
                 <div className="compName">
                     <div className="title">Хурлын огноо:</div>
-                    <InputStyle  className="nameText"><input className="getInputt" name="compname" ref={inputFullName} placeholder="Хурлын огноо..."  type="date" />  <div className="line"></div></InputStyle>
+                    <InputStyle  className="nameText"><input className="getInputt" name="date" placeholder="Хурлын огноо..."  type="date" />  <div className="line"></div></InputStyle>
                 </div>
 
                 <div style={{marginBottom:35}} className="compName">
                     <div className="title">Үнэлгээний хорооны гишүүний овог, нэр:</div>
-                    <InputStyle  className="nameText"><input className="getInputt" name="compname" ref={inputFullName} placeholder="овог, нэр..."  type="text" />  <div className="line"></div></InputStyle>
+                    <InputStyle  className="nameText"><input className="getInputt" name="member_name" placeholder="овог, нэр..."  type="text" />  <div className="line"></div></InputStyle>
                 </div>
 
 
@@ -133,13 +98,13 @@ function Decision_main() {
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
                             <div className="checkItem">
-                                <div className="item"><input className="radio getInputt" type="radio" name="nofinancing" value="true" /> <span>Зөвшөөрсөн</span></div>  
-                                <div className="item"><input className="radio getInputt" type="radio" name="nofinancing" value="false" /> <span>Татгалзсан</span></div>
+                                <div className="item"><input className="radio getInputt" type="radio" name="assess_one" value="true" /> <span>Зөвшөөрсөн</span></div>  
+                                <div className="item"><input className="radio getInputt" type="radio" name="assess_one" value="false" /> <span>Татгалзсан</span></div>
                             </div>
                         </div>
                         <div className="Title3">
                             <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div> 
-                            <InputStyle className="nameText"><textarea className="nofinancing_why" name="reason" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                            <InputStyle className="nameText"><textarea className="assess_one_why" name="reason" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
                         </div>
                 </div>
 
@@ -148,17 +113,17 @@ function Decision_main() {
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
                             <div className="checkItem">
-                                <div className="item"><input className="radio getInputt" type="radio" name="nofinancing" value="true" /> <span>Зөвшөөрсөн</span></div>  
-                                <div className="item"><input className="radio getInputt" type="radio" name="nofinancing" value="false" /> <span>Татгалзсан</span></div>
+                                <div className="item"><input className="radio getInputt" type="radio" name="assess_two" value="true" /> <span>Зөвшөөрсөн</span></div>  
+                                <div className="item"><input className="radio getInputt" type="radio" name="assess_two" value="false" /> <span>Татгалзсан</span></div>
                             </div>
                         </div>
                         <div className="Title3">
                             <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div> 
-                            <InputStyle className="nameText"><textarea className="nofinancing_why" name="reason" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                            <InputStyle className="nameText"><textarea className="assess_two_why" name="reason" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
                         </div>
                 </div>
 
-                <Signature />
+                <Signature setImgData={setImgData} />
 
 
                 <div className="infoWhere">
@@ -167,14 +132,14 @@ function Decision_main() {
                             {infoWhere2.map((el,i)=>{
                                     return(
                                         <div className="items">
-                                            <input className={`radio ${otherOne.Cname}`} value={el.title} checked={otherOne.checked} name="financing" type="radio" />
+                                            <input className={`radio ${otherOne.Cname}`} value={el.title} checked={otherOne.checked} name="reject_reason" type="radio" />
                                             <div className="title">{el.title}</div>
                                         </div>
                                     )
                             })}
                              <div className="items">
                                 <div className="title">Бусад :</div>
-                                <InputStyle className="nameText"><input className={otherOne.self} onChange={onChange1} name="financing" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
+                                <InputStyle className="nameText"><input className={otherOne.self} onChange={onChange1} name="reject_reason" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
                             </div>
                         </div>
                 </div>
@@ -195,6 +160,8 @@ export default Decision_main
 const FeedBackCont = styled.div`
     color: rgba(${textColor});
     padding-bottom:80px;
+    margin-top:25px;
+
     .form-control{
        &:hover{
            border:1px solid #1890ff;
@@ -292,13 +259,12 @@ const FeedBackCont = styled.div`
                 }
             }
         }
-
         .TitlePar{
             padding:10px 0px;
             .title{
                 color:${textColor};
                 padding-bottom:10px;
-                font-size:14px;
+                font-size:16px;
                 text-align:center;
                 font-weight:500;
             }
@@ -308,15 +274,18 @@ const FeedBackCont = styled.div`
         }
         .compName{
             width:100%;
-            padding:10px 0px;
+            padding:3px 0px;
             display:flex;
             margin-bottom:5px;
+            align-items:center;
+            justify-content:start;
             .title{
-                width:60%;
-                
+                // width:60%;
+                font-weight:500;
             }
             .nameText{
-                width:100%;
+                margin-left:15px;
+                width:50%;
             }
         }
         
@@ -363,6 +332,7 @@ const FeedBackCont = styled.div`
             .chekcPar{
                 padding-left:40px;
                 display:flex;
+                flex-direction:row;
                 .title{
 
                 }
@@ -440,8 +410,36 @@ const FeedBackCont = styled.div`
       }
 
     @media only screen and (max-width:786px){
+        .buttonPar{
+            flex-direction: column;
+            .SubmitButton{
+                width:100%;
+            }
+        }
         .contentPar{
-            padding: 20px 10px
+            padding: 20px 10px;
+            .addInfoPar{
+                .userInfPar{
+                    .infItemPar{
+                        .drowPar{
+                            flex-direction: column;
+                        }
+                    }
+                }
+            }
+            .infoWhere{
+                // padding-left:20px;
+                .chekcPar{
+                    flex-direction: column;
+                    .checkItem{
+                        margin-top:5px;
+                    }
+                }
+            }
+
+            // .chekcPar{
+            //         flex-direction: column;
+            // }
         }
     }
 `

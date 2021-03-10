@@ -164,6 +164,19 @@ const MainContainter = styled.div`
         }
       }
   }
+
+  @media (max-width:768px){
+    .buttonPar{
+      flex-direction:column;
+      .errtext{
+        width:100%;
+      }
+      .btn{
+        width:100%;
+      }
+    }
+  }
+
   @media print {
     .btn-primary{
       display:none;
