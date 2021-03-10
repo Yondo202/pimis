@@ -240,14 +240,16 @@ export default function AnalystReport() {
         setRows([...newRows])
     }
 
-    const projectId = 4
+    const projectId = 3
 
     useEffect(() => {
         axios.get(`projects/${projectId}/bds-evaluation5c`, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
             console.log(res.data)
-            setRows(res.data.data.rows)
+            if (res.data.data?.rows?.length === initialState.length) {
+                setRows(res.data.data.rows)
+            }
             setInfo(res.data.data.info)
         }).catch(err => {
             console.log(err.response?.data)

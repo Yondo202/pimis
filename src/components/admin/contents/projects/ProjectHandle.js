@@ -83,7 +83,6 @@ export default function ProjectHandle() {
         }).then(res => {
             console.log(res.data)
             UrgudulCtx.setData(res.data.data)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээллийг амжилттай уншлаа.' })
             history.push('/urgudul/1')
         }).catch(err => {
             console.log(err.response?.data)
@@ -104,53 +103,54 @@ export default function ProjectHandle() {
     const [members, setMembers] = useState([])
 
     return (
-        <div className="tw-text-sm tw-text-gray-700" ref={containerRef}>
-            <div className="tw-p-2 tw-text-lg tw-font-medium tw-mb-6">
+        <div className="tw-text-sm tw-text-gray-700">
+            <div className="tw-p-2 tw-mt-2 tw-text-lg tw-font-medium tw-text-center">
                 Дэмжлэг хүссэн өргөдлийн маягтууд
             </div>
 
-            <DataGrid
-                elementAttr={{ id: 'registered-companies-data-grid' }}
-                dataSource={data}
-                showBorders={true}
-                wordWrapEnabled={true}
-                rowAlternationEnabled={true}
-                columnAutoWidth={true}
-                width={width && `${width - 2}px`}
-                showRowLines={true}
-                showColumnLines={true}
-                showScrollbar={true}
-                loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
-            >
-                <SearchPanel visible={true} width={240} placeholder="Хайх..." />
-                <Scrolling mode="virtual" columnRenderingMode="virtual" showScrollbar="always" />
-                <Paging defaultPageSize={20} />
-                <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
-                <HeaderFilter visible={true} />
-                <FilterRow visible={true} />
+            <div className="tw-px-3 tw-pt-2 tw-pb-6 tw-mt-4 tw-shadow-inner tw-bg-white tw-flex tw-w-full tw-rounded-md" ref={containerRef}>
+                <DataGrid
+                    elementAttr={{ id: 'registered-companies-data-grid' }}
+                    dataSource={data}
+                    showBorders={true}
+                    wordWrapEnabled={true}
+                    rowAlternationEnabled={true}
+                    columnAutoWidth={true}
+                    width={width && `${width - 25}px`}
+                    showRowLines={true}
+                    showColumnLines={true}
+                    loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
+                >
+                    <SearchPanel visible={true} width={240} placeholder="Хайх..." />
+                    <Scrolling mode="virtual" columnRenderingMode="virtual" showScrollbar="always" />
+                    <Paging defaultPageSize={20} />
+                    <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
+                    <HeaderFilter visible={true} />
+                    <FilterRow visible={true} />
 
-                <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} setEvaluatorsModal={setEvaluatorsModal} />} headerCellRender={HeaderCell} width={134} />
-                <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} />
-                <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} />
-                <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} />
-                <Column dataField="esq" caption="Байгаль орчны үнэлгээ" headerCellRender={HeaderCell} />
-                <Column dataField="esm" caption="Байгаль орчны үнэлгээ" headerCellRender={HeaderCell} />
-                <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} />
+                    <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} setEvaluatorsModal={setEvaluatorsModal} />} headerCellRender={HeaderCell} width={134} />
+                    <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} />
+                    <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} />
+                    <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} />
+                    <Column dataField="esq" caption="Байгаль орчны үнэлгээ" headerCellRender={HeaderCell} />
+                    <Column dataField="esm" caption="Байгаль орчны үнэлгээ" headerCellRender={HeaderCell} />
+                    <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} />
 
-                <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
-                    <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} />
-                    <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} />
-                    <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} />
-                    <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} />
-                    <Column dataField="project.project_start" caption="Эхлэх хугацаа" headerCellRender={HeaderCell} />
-                    <Column dataField="project.project_end" caption="Дуусах хугацаа" headerCellRender={HeaderCell} />
-                </Column>
+                    <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
+                        <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} />
+                        <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} />
+                        <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} />
+                        <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} />
+                        <Column dataField="project.project_start" caption="Эхлэх хугацаа" headerCellRender={HeaderCell} />
+                        <Column dataField="project.project_end" caption="Дуусах хугацаа" headerCellRender={HeaderCell} />
+                    </Column>
 
-                <Column dataField="evidence" caption="Нотлох бичиг баримтууд" headerCellRender={HeaderCell} />
-                <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} />
-                <Column dataField="firstEvalution.description" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell} />
-                <Column dataField="lastEvalution.description" caption="Бизнес шинжээчийн үнэлгээ" headerCellRender={HeaderCell} />
-            </DataGrid>
+                    <Column dataField="evidence" caption="Нотлох бичиг баримтууд" headerCellRender={HeaderCell} />
+                    <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} />
+                    <Column dataField="firstEvalution.description" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell} />
+                    <Column dataField="lastEvalution.description" caption="Бизнес шинжээчийн үнэлгээ" headerCellRender={HeaderCell} />
+                </DataGrid>
+            </div>
 
             <PreviewModal previewModal={previewModal} setPreviewModal={setPreviewModal} />
 
