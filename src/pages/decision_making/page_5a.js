@@ -1,10 +1,10 @@
-import React, { Fragment, useEffect, useState } from "react";
-import HelpPopup from "components/help_popup/helpPopup";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axiosbase";
 import getLoggedUserToken from "components/utilities/getLoggedUserToken";
-import FormRichText from "components/urgudul_components/formRichText";
 import { config, Transition } from "react-spring/renderprops";
-import PenSVG from "assets/svgComponents/penSVG";
+import ButtonTooltip from "components/button_tooltip/buttonTooltip";
+import AnnotationSVG from "assets/svgComponents/annotationSVG";
+import AlertContext from "components/utilities/alertContext";
 
 
 const FirstEvaluation = () => {
@@ -17,61 +17,82 @@ const FirstEvaluation = () => {
     setRows([...newRows])
   }
 
-  const [evaluations, setEvaluations] = useState(initialState)
+  const projectId = 4
 
   useEffect(() => {
-    axios.get(`projects/${1}/first-evalutions`, {
+    axios.get(`projects/${projectId}/first-evalutions`, {
       headers: { Authorization: getLoggedUserToken() },
     }).then(res => {
       console.log(res.data)
-      setEvaluations(res.data.data)
+      setRows(res.data.data)
     }).catch(err => {
       console.log(err.response?.data)
     })
   }, [])
 
+  const [commentsOpen, setCommentsOpen] = useState(initialCommentsOpen)
+
+  const handleCommentOpen = (key, value) => {
+    setCommentsOpen({ ...commentsOpen, [key]: value })
+  }
+
+  const AlertCtx = useContext(AlertContext)
+
+  const handleSubmit = () => {
+    axios.post(`projects/${projectId}/first-evalutions`, rows, {
+      headers: { Authorization: getLoggedUserToken() },
+    }).then(res => {
+      console.log(res.data)
+      AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Анхан шатны үнэлгээ хадгалагдлаа.' })
+    }).catch(err => {
+      console.log(err.response?.data)
+      AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+    })
+  }
+
   return (
-    <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2">
+    <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
       <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">5a</span>
-        <span className="tw-text-lg">
+        <span className="tw-text-base tw-leading-tight">
           - Анхан шатны үнэлгээний хуудас
         </span>
       </div>
 
-      <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-50 tw-mx-2 tw-mt-2 tw-divide-y tw-divide-dashed">
+      <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-2 tw-divide-y tw-divide-dashed">
         {rows.map(row =>
-          <div key={row.code}>
-            <div key={row.code} className={`tw-flex tw-items-center tw-justify-between tw-text-sm ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "" : ""}`}>
-              <span className={`tw-px-4 tw-py-2.5 ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "tw-font-medium" : "tw-pl-8"}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
+          <div key={row.rowcode}>
+            <div className="tw-flex tw-items-center tw-text-sm">
+              <span className={`tw-px-4 tw-py-2.5 tw-flex-grow tw-font-medium ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "" : "tw-pl-8"}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
                 {row.description}
               </span>
 
               {{
                 'z': <button className="tw-relative tw-flex tw-items-center tw-leading-tight tw-bg-gray-300 focus:tw-outline-none tw-rounded-full tw-font-medium tw-mr-4 tw-shadow-inner" style={{ fontSize: '13px', height: '22px' }} onClick={() => handleInput('isChecked', !row.isChecked, 'z')}>
-                  <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white">
-                    Тэнцсэн
+                  <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
+                    Тийм
                   </span>
-                  <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white">
-                    Тэнцээгүй
+                  <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
+                    Үгүй
                   </span>
-                  <span className={`tw-w-1/2 tw-h-6 tw-rounded-full tw-absolute ${row.isChecked ? 'tw-bg-green-500' : 'tw-transform-gpu tw-translate-x-20 tw-bg-red-500'} tw-transition-transform tw-duration-300 tw-ease-in-out`} style={{ height: '26px' }} />
+                  <span className={`tw-w-1/2 tw-h-6 tw-rounded-full tw-absolute ${row.isChecked ? 'tw-bg-green-500' : 'tw-transform-gpu tw-translate-x-20 tw-bg-red-500'} tw-transition-transform tw-duration-300 tw-ease-out`} style={{ height: '26px' }} />
                 </button>,
               }[row.rowcode]
                 || <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
               }
+
+              <ButtonTooltip tooltip="Тайлбар оруулах" beforeSVG={<AnnotationSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} classAppend={`tw-mr-4 ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === 'z' ? 'tw-mr-7' : ''}`} classButton={`${row.comment ? 'tw-text-blue-600 active:tw-text-blue-500' : 'tw-text-gray-600 active:tw-text-gray-500'} tw-transition-colors tw-p-0.5`} onClick={() => handleCommentOpen(row.rowcode, !commentsOpen[row.rowcode])} />
             </div>
 
             <Transition
-              items={!row.isChecked}
+              items={commentsOpen[row.rowcode]}
               from={{ height: 0, opacity: 0 }}
               enter={{ height: 'auto', opacity: 1 }}
               leave={{ height: 0, opacity: 0 }}
-              config={config.stiff}
-            >
+              config={config.stiff}>
               {item => item && (anims =>
                 <div className="tw-flex tw-justify-end tw-items-start tw-overflow-hidden" style={anims}>
-                  <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-p-2 tw-mt-1 tw-mr-3 tw-mb-3 tw-resize-none" value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />
+                  <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-px-1.5 tw-py-1 tw-mt-1 tw-mx-3 tw-mb-3 tw-resize-none" style={{ fontSize: '13px' }} value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />
                 </div>
               )}
             </Transition>
@@ -80,7 +101,9 @@ const FirstEvaluation = () => {
       </div>
 
       <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
-        <button className="tw-bg-blue-500 tw-text-white tw-font-medium tw-text-base tw-px-3 tw-py-1 tw-rounded-lg hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-600">Хадгалах</button>
+        <button className="tw-bg-blue-500 tw-text-white tw-font-medium tw-text-sm tw-px-3 tw-py-1 tw-rounded-lg hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-600" onClick={handleSubmit}>
+          Хадгалах
+        </button>
       </div>
     </div>
   );
@@ -105,6 +128,8 @@ const rowsDescriptions = {
   c1: "Төлөвлөсөн зардал нь хориотой үйл ажиллагааны ангилалд ороогүй эсэх",
   c2: "Төлөвлөсөн зардал нь хориотой ангиллын зардалд ороогүй эсэх",
 };
+
+const initialCommentsOpen = Object.keys(rowsDescriptions).reduce((a, c) => ({ ...a, [c]: false }), {})
 
 const initialState = [
   {

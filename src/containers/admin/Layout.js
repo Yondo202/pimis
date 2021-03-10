@@ -24,6 +24,7 @@ import MemberDecision from '../../components/admin/contents/member_decision/Deci
 import MainDecision from '../../components/admin/contents/main_decision/Main_decision'
 import NotifyPage1 from '../../components/notifyPage/MainPage'
 import LetterPreview from 'pages/letter_of_interest/preview';
+import EvaluatorsMeeting from 'components/admin/contents/evaluators_meeting/evaluatorsMeeting';
 
 
 function Layout({ setLocale }) {
@@ -59,6 +60,8 @@ function Layout({ setLocale }) {
                         <Route path="/urgudul/:page">
                             <UrgudulNavigator preloaded={true} />
                         </Route>
+                        <Route path="/meeting" component={EvaluatorsMeeting} />
+
                         <Route path="/progress/:userId" component={Home} />
                         <Route path="/request/:url" component={Request} />
                         <Route path="/check/:url" component={Check} />

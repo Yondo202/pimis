@@ -1,5 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FormRichText from 'components/urgudul_components/formRichText'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
+import AnnotationSVG from 'assets/svgComponents/annotationSVG'
+import { config, Transition } from 'react-spring/renderprops'
+import axios from 'axiosbase'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import AlertContext from 'components/utilities/alertContext'
 
 
 const rowDescriptions = {
@@ -28,10 +34,12 @@ const rowDescriptions = {
     c2: 'Уг үйл ажиллагаа нь Экспорт хөгжлийн төлөвлөгөөтэй уялдаж, үр дүнтэй байх чадах эсэх',
 }
 
+const initialCommentsOpen = Object.keys(rowDescriptions).reduce((a, c) => ({ ...a, [c]: false }), {})
+
 const initialState = [
     {
         description: rowDescriptions.z,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'z',
         order: 1,
@@ -39,7 +47,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.a,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'a',
         order: 5,
@@ -47,7 +55,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.a1,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'a1',
         order: 10,
@@ -55,7 +63,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.a2,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'a2',
         order: 15,
@@ -63,7 +71,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.a3,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'a3',
         order: 20,
@@ -71,7 +79,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.a4,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'a4',
         order: 25,
@@ -79,7 +87,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.a5,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'a5',
         order: 30,
@@ -87,7 +95,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.a6,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'a6',
         order: 35,
@@ -95,7 +103,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.a7,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'a7',
         order: 40,
@@ -103,7 +111,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.b,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'b',
         order: 45,
@@ -111,7 +119,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.b1,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'b1',
         order: 50,
@@ -119,7 +127,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.b2,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'b2',
         order: 55,
@@ -127,7 +135,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.b3,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'b3',
         order: 60,
@@ -135,7 +143,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.b4,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'b4',
         order: 65,
@@ -143,7 +151,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.b5,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'b5',
         order: 70,
@@ -151,7 +159,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.b6,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'b6',
         order: 75,
@@ -159,7 +167,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.b7,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'b7',
         order: 80,
@@ -167,7 +175,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.b8,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'b8',
         order: 85,
@@ -175,7 +183,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.b9,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'b9',
         order: 90,
@@ -183,7 +191,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.b10,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'b10',
         order: 95,
@@ -191,7 +199,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.c,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'c',
         order: 100,
@@ -199,7 +207,7 @@ const initialState = [
     },
     {
         description: rowDescriptions.c1,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'c1',
         order: 105,
@@ -207,13 +215,20 @@ const initialState = [
     },
     {
         description: rowDescriptions.c2,
-        summary: '',
+        comment: '',
         isChecked: false,
         rowcode: 'c2',
         order: 110,
         category: 'C',
     },
 ]
+
+const initialEvaluator = {
+    check_start: '',
+    check_end: '',
+    accept_tips: '',
+    decline_reason: '',
+}
 
 export default function AnalystReport() {
     const [rows, setRows] = useState(initialState)
@@ -225,96 +240,184 @@ export default function AnalystReport() {
         setRows([...newRows])
     }
 
+    const projectId = 4
+
+    useEffect(() => {
+        axios.get(`projects/${projectId}/bds-evaluation5c`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res.data)
+            setRows(res.data.data.rows)
+            setInfo(res.data.data.info)
+        }).catch(err => {
+            console.log(err.response?.data)
+        })
+
+        axios.get(`projects/${projectId}`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res.data)
+            setProject(res.data.data)
+        }).catch(err => {
+            console.log(err.response?.data)
+        })
+    }, [])
+
+    const [commentsOpen, setCommentsOpen] = useState(initialCommentsOpen)
+
+    const handleCommentOpen = (key, value) => {
+        setCommentsOpen({ ...commentsOpen, [key]: value })
+    }
+
+    const AlertCtx = useContext(AlertContext)
+
+    const handleSubmit = () => {
+        axios.post(`projects/${projectId}/bds-evaluation5c`, { rows: rows, info: info }, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res.data)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Шинжилгээний тайланг хадгалагдлаа.' })
+        }).catch(err => {
+            console.log(err.response?.data)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+        })
+    }
+
+    const [info, setInfo] = useState(initialEvaluator)
+
+    const handleInputEvaluator = (key, value) => {
+        setInfo({ ...info, [key]: value })
+    }
+
+    const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked
+
+    const [project, setProject] = useState([])
+
     return (
-        <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-mt-8 tw-mb-20 tw-text-sm tw-text-gray-700 tw-bg-white tw-border tw-rounded-lg tw-shadow-md tw-p-2">
-            <div className="tw-text-2xl tw-text-center tw-mt-4 tw-mb-6 tw-uppercase">
-                Бизнес шинжээчийн шинжилгээний тайлан
+        <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
+            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
+                <span className="tw-text-blue-500 tw-text-xl tw-mx-2">5c</span>
+                <span className="tw-text-base tw-leading-tight">
+                    - Бизнес шинжээчийн шинжилгээний тайлан
+                </span>
             </div>
 
-            <div className="">
-                <label htmlFor="" className="">
-                    Шинжилгээ хийсэн Бизнес шинжээч:
-                </label>
-                <input className="" type="text" name="" id="" />
-            </div>
-
-            <div className="">
-                <label htmlFor="" className="">
-                    Шинжилгээ, дүгнэлт хийсэн хугацаа:
-                </label>
-                <input className="" type="date" name="" id="" />
-                <input className="" type="date" name="" id="" />
-            </div>
-
-            <div className="">
-                <label htmlFor="" className="">
-                    Байгууллагын нэр:
-                </label>
-            </div>
-
-            <div className="">
-                <label htmlFor="" className="">
-                    Төслийн нэр:
-                </label>
-            </div>
-
-            <div className="">
-                <label htmlFor="" className="">
-                    Өргөдлийн дугаар:
-                </label>
-            </div>
-
-            <div className="">
-                <label htmlFor="" className="">
-                    Дэмжих, эсэх талаарх санал:
-                </label>
-                <input className="" type="checkbox" name="" id="" />
-            </div>
-
-            <div className="">
-                <div className="">
-                    Төслийг дэмжиж буй бол хэрэгжүүлэх явцад анхаарах зөвлөмж:
+            <div className="tw-mx-3">
+                <div className="tw-flex tw-items-center tw-mt-3">
+                    <label className="tw-mb-0 tw-font-medium">
+                        Шинжилгээ хийсэн Бизнес шинжээч:
+                    </label>
+                    <span className="tw-ml-3 tw-bg-blue-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                        Zultsetseg
+                    </span>
                 </div>
-                <FormRichText />
-            </div>
 
-            <div className="">
-                <div className="">
-                    Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:
+                <div className="tw-flex tw-items-center tw-mt-3">
+                    <label className="tw-mb-0 tw-font-medium">
+                        Шинжилгээ, дүгнэлт хийсэн хугацаа:
+                    </label>
+                    <input className="tw-border tw-rounded-md tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_start} onChange={e => handleInputEvaluator('check_start', e.target.value)} /> -ээс
+                    <input className="tw-border tw-rounded-md tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_end} onChange={e => handleInputEvaluator('check_end', e.target.value)} /> -ны хооронд.
                 </div>
-                <FormRichText />
-            </div>
 
-            <table className="tw-border tw-rounded-sm tw-mt-6">
-                <thead>
-                    <tr>
-                        <th className="tw-px-2 tw-pt-2">Үнэлгээний хороонд танилцуулах шинжээчийн дүгнэлт</th>
-                        <th className="tw-px-2 tw-pt-2 tw-text-center">Товч утга</th>
-                        <th className="tw-px-2 tw-pt-2 tw-text-center">Хариу</th>
-                    </tr>
-                </thead>
+                <div className="tw-mt-3">
+                    <label className="tw-mb-0 tw-font-medium">
+                        Байгууллагын нэр:
+                    </label>
+                    <span className="tw-ml-3 tw-bg-blue-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                        {project.company_name}
+                    </span>
+                </div>
 
-                <tbody>
-                    {rows.map((row, i) =>
-                        <tr className={`${row.rowcode === 'a' || row.rowcode === 'b' || row.rowcode === 'c' ? 'tw-bg-gray-200' : ''}`} key={row.rowcode}>
-                            <td className="tw-px-2">{row.description}</td>
+                <div className="tw-mt-3">
+                    <label className="tw-mb-0 tw-font-medium">
+                        Төслийн нэр:
+                    </label>
+                    <span className="tw-ml-3 tw-bg-blue-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                        {project.project_name}
+                    </span>
+                </div>
 
-                            <td>
-                                <textarea className="tw-bg-transparent tw-border tw-border-gray-400 focus:tw-outline-none tw-w-60" value={row.summary} onChange={e => handleInput('summary', e.target.value, row.rowcode)} />
-                            </td>
+                <div className="tw-mt-3">
+                    <label className="tw-mb-0 tw-font-medium">
+                        Өргөдлийн дугаар:
+                    </label>
+                    <span className="tw-ml-3 tw-bg-blue-50 tw-rounded-lg tw-py-1 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                        {project.id}
+                    </span>
+                </div>
 
-                            <td>
-                                <div className="tw-flex tw-justify-center tw-items-center">
-                                    <input className="tw-w-4 tw-h-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
+                <Transition
+                    items={isCheckedZ}
+                    from={{ opacity: 0 }}
+                    enter={{ opacity: 1 }}
+                    leave={{ opacity: 0, display: 'none' }}>
+                    {item => item
+                        ? anims =>
+                            <div style={anims}>
+                                <div className="tw-mt-4 tw-font-medium">
+                                    Төслийг дэмжиж буй бол хэрэгжүүлэх явцад анхаарах зөвлөмж:
                                 </div>
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+                                <div className="tw-mt-1 tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-shadow-inner tw-rounded-lg" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                                    <FormRichText modules="small" value={info.accept_tips} name="accept_tips" setForm={handleInputEvaluator} />
+                                </div>
+                            </div>
+                        : anims =>
+                            <div style={anims}>
+                                <div className="tw-mt-4 tw-font-medium">
+                                    Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:
+                                </div>
+                                <div className="tw-mt-1 tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-shadow-inner tw-rounded-lg" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                                    <FormRichText modules="small" value={info.decline_reason} name="decline_reason" setForm={handleInputEvaluator} />
+                                </div>
+                            </div>
+                    }
+                </Transition>
+            </div>
+
+            <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-6 tw-divide-y tw-divide-dashed">
+                {rows.map(row =>
+                    <div key={row.rowcode}>
+                        <div className="tw-flex tw-items-center tw-text-sm">
+                            <span className={`tw-px-4 tw-py-2.5 tw-flex-grow tw-font-medium ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "" : "tw-pl-8"}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
+                                {row.description}
+                            </span>
+
+                            {{
+                                'z': <button className="tw-relative tw-flex tw-items-center tw-leading-tight tw-bg-gray-300 focus:tw-outline-none tw-rounded-full tw-font-medium tw-mr-4 tw-shadow-inner" style={{ fontSize: '13px', height: '22px' }} onClick={() => handleInput('isChecked', !row.isChecked, 'z')}>
+                                    <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
+                                        Тийм
+                                    </span>
+                                    <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
+                                        Үгүй
+                                    </span>
+                                    <span className={`tw-w-1/2 tw-h-6 tw-rounded-full tw-absolute ${row.isChecked ? 'tw-bg-green-500' : 'tw-transform-gpu tw-translate-x-20 tw-bg-red-500'} tw-transition-transform tw-duration-300 tw-ease-out`} style={{ height: '26px' }} />
+                                </button>,
+                            }[row.rowcode]
+                                || <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
+                            }
+
+                            <ButtonTooltip tooltip="Тайлбар оруулах" beforeSVG={<AnnotationSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} classAppend={`tw-mr-4 ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === 'z' ? 'tw-mr-7' : ''}`} classButton={`${row.comment ? 'tw-text-blue-600 active:tw-text-blue-500' : 'tw-text-gray-600 active:tw-text-gray-500'} tw-transition-colors tw-p-0.5`} onClick={() => handleCommentOpen(row.rowcode, !commentsOpen[row.rowcode])} />
+                        </div>
+
+                        <Transition
+                            items={commentsOpen[row.rowcode]}
+                            from={{ height: 0, opacity: 0 }}
+                            enter={{ height: 'auto', opacity: 1 }}
+                            leave={{ height: 0, opacity: 0 }}
+                            config={config.stiff}>
+                            {item => item && (anims =>
+                                <div className="tw-flex tw-justify-end tw-items-start tw-overflow-hidden" style={anims}>
+                                    <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-px-1.5 tw-py-1 tw-mt-1 tw-mx-3 tw-mb-3 tw-resize-none" style={{ fontSize: '13px' }} value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />
+                                </div>
+                            )}
+                        </Transition>
+                    </div>
+                )}
+            </div>
 
             <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
-                <button className="tw-bg-blue-500 tw-text-white tw-font-medium tw-text-base tw-px-3 tw-py-1 tw-rounded-lg hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-600">
+                <button className="tw-bg-blue-500 tw-text-white tw-font-medium tw-text-sm tw-px-3 tw-py-1 tw-rounded-lg hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-600" onClick={handleSubmit}>
                     Хадгалах
                 </button>
             </div>

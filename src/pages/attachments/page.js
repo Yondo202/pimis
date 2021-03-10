@@ -14,62 +14,62 @@ const initialState = [
     {
         "code": "export_plan",
         "description": "Экспорт хөгжлийн төлөвлөгөө.",
-        "files": null
+        "files": null,
     },
     {
         "code": "baigal_orchin",
         "description": "Байгаль орчны үнэлгээний асуумжийг нотлох баримт бичгүүд, Байгаль орчны удирдлагын төлөвлөгөө.",
-        "files": null
+        "files": null,
     },
     {
         "code": "gerchilgee",
         "description": "Хуулийн этгээдийн улсын бүртгэлийн гэрчилгээний хуулбар.",
-        "files": null
+        "files": null,
     },
     {
         "code": "prevbalance",
         "description": "Өмнөх 2 жилийн санхүүгийн тайлан.",
-        "files": null
+        "files": null,
     },
     {
         "code": "tatvariin_or",
         "description": "Холбогдох дүүргийн татварын албанаас 12 сараас дээш хугацааны татварын өргүйг нотолсон тодорхойлолт, баримт.",
-        "files": null
+        "files": null,
     },
     {
         "code": "ndsh_ajiltan",
         "description": "Холбогдох нийгмийн даатгалын газраас 12 сараас дээш хугацааны өргүйг нотолсон тодорхойлолт, баримт, нийгмийн даатгал төлдөг ажилчдын тооны мэдээлэл.",
-        "files": null
+        "files": null,
     },
     {
         "code": "zeel_lavlagaa",
         "description": "Монгол банкны зээлийн мэдээллийн сангаас муу ангиллын зээлгүйг нотолсон тодорхойлолт, баримт.",
-        "files": null
+        "files": null,
     },
     {
         "code": "omchlogchiin_todorhoilolt",
         "description": "Хуулийн этгээдийн эцсийн өмчлөгчдийг тодорхойлох баримт.",
-        "files": null
+        "files": null,
     },
     {
         "code": "ajiltanii_namtar",
         "description": "Өргөдөл гаргагч байгууллагын түлхүүр албан тушаалтнуудын ажлын туршлага, ур чадварыг илэрхийлэх намтар. (Дор хаяж 3 албан тушаалтны мэдээлэл)",
-        "files": null
+        "files": null,
     },
     {
         "code": "oyunii_ezemshil",
         "description": "Экспортын болон кластерын гэрээ хэлцэл, оюуны өмчийн эзэмшлийн нотолгоо.",
-        "files": null
+        "files": null,
     },
     {
         "code": "banknii_huulga",
         "description": "Санхүүжилтийг бүрэн хийх боломжтойг нотолсон баримт бичиг, банкны хуулга гм.",
-        "files": null
+        "files": null,
     },
     {
         "code": "busad_barimt",
         "description": "Бусад шаардлагатай баримт бичиг.",
-        "files": null
+        "files": null,
     }
 ]
 

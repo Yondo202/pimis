@@ -234,11 +234,11 @@ export default function UrgudulPreview(props) {
             </button>
 
             <div className="preview-container" ref={componentRef}>
-                <div className="tw-text-lg text-center tw-font-medium tw-p-4">
+                <div className="tw-text-lg text-center tw-font-medium tw-p-4 tw-mt-2">
                     Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт
                 </div>
 
-                <div className="tw-text-base tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-200 tw-border tw-border-gray-400 ">
+                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800">
                     ID: {project.id}
                 </div>
                 <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
@@ -247,7 +247,7 @@ export default function UrgudulPreview(props) {
                     <Row label={labels.front.project_name} value={project.project_name} />
                 </div>
 
-                <div className="tw-text-base tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-200 tw-border tw-border-gray-400 tw-mt-8">
+                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                     A1 - Өргөдөл гаргагч
                 </div>
                 <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
@@ -277,7 +277,7 @@ export default function UrgudulPreview(props) {
                     <RowHtml label={labels.company.project_plan} html={project.company?.project_plan} />
                 </div>
 
-                <div className="tw-text-base tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-200 tw-border tw-border-gray-400 tw-mt-8">
+                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                     A2 - {isCluster ? 'Кластерын гишүүн байгууллагууд' : 'Аж ахуйн нэгжийг төлөөлөгчид'}
                 </div>
                 {isCluster ?
@@ -304,21 +304,21 @@ export default function UrgudulPreview(props) {
                     )
                 }
 
-                <div className="tw-text-base tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-200 tw-border tw-border-gray-400 tw-mt-8">
+                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                     A3 - Товч танилцуулга
                 </div>
                 <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
                     <RowHtml label={labels.a3_4.applicant_overview[type]} html={project.applicant_overview} />
                 </div>
 
-                <div className="tw-text-base tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-200 tw-border tw-border-t-0 tw-border-gray-400">
+                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-t-0 tw-border-gray-800">
                     A4 - Техникийн туршлага
                 </div>
                 <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
                     <RowHtml label={labels.a3_4.applicant_experience[type]} html={project.applicant_experience} />
                 </div>
 
-                <div className="tw-text-base tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-200 tw-border tw-border-gray-400 tw-mt-8">
+                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                     B - Төслийн задаргаа
                 </div>
                 <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
@@ -332,7 +332,7 @@ export default function UrgudulPreview(props) {
                     <RowHtml label={labels.b.expected_result} html={project.expected_result} />
                 </div>
 
-                <div className="tw-text-base tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-200 tw-border tw-border-gray-400 tw-mt-8">
+                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                     B6 - үйл ажиллагаа
                 </div>
                 {project.activities?.map((item, i) =>
@@ -342,7 +342,7 @@ export default function UrgudulPreview(props) {
                     </div>
                 )}
 
-                <div className="tw-text-base tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-200 tw-border tw-border-gray-400 tw-mt-8">
+                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                     B7 - Төслийн үр ашгийн талаар
                 </div>
                 <div className="tw-border tw-border-t-0 tw-border-gray-400">
@@ -353,7 +353,7 @@ export default function UrgudulPreview(props) {
                     <RowHtml label={labels.benefit.assumptions} html={project.benefit?.assumptions} />
                 </div>
 
-                <div className="tw-text-base tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-200 tw-border tw-border-b-0 tw-border-gray-400 tw-mt-8">
+                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-b-0 tw-border-gray-800 tw-mt-8">
                     B8 - Төслийн тооцоолол
                 </div>
                 <table className="tw-border-collapse tw-table-auto tw-w-full">
@@ -419,7 +419,7 @@ export default function UrgudulPreview(props) {
                     </tbody>
                 </table>
 
-                <div className="tw-text-base tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-200 tw-border tw-border-gray-400 tw-mt-8">
+                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                     D - Мэдэгдэл
                 </div>
                 {isCluster ?
@@ -442,7 +442,7 @@ export default function UrgudulPreview(props) {
                     )
                 }
 
-                <div className="tw-text-base tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-200 tw-border tw-border-gray-400 tw-mt-8">
+                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                     E - Шалгах хуудас
                 </div>
                 <div className="tw-border tw-border-t-0 tw-border-gray-400">
