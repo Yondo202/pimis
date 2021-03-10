@@ -3,7 +3,7 @@ import Modal from 'react-awesome-modal';
 import SignatureCanvas from 'react-signature-canvas'
 import {FaPenNib} from 'react-icons/fa'
 
-function Signature() {
+function Signature(props) {
     const [visible, setVisible] = useState(false);
     let [sigCanvas, setSigCanvas] = useState({});
     let [trimmedDataURL, setTrimmedDataURL] = useState(null);
@@ -11,7 +11,7 @@ function Signature() {
     const openModal=()=> { setVisible(true); }
     const closeModal=()=> { setVisible(false);}
     const clear = () => sigCanvas.clear();
-    const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); closeModal();};
+    const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); props.setImgData(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); closeModal();};
     
     return (
         <div className="rowItems">
@@ -28,7 +28,7 @@ function Signature() {
                                                 <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
                                                     <div className="modalPar">
                                                         <div className="Canvass">
-                                                            <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
+                                                            <SignatureCanvas className='sigCanvas' penColor='blue' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
                                                         </div>
                                                         <div className="BtnPar">
                                                             <button onClick={clear}>Цэвэрлэх</button>

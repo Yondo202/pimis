@@ -99,7 +99,7 @@ function CompCheck() {
     return (
       <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
            <Component1 className="container" >
-              {param!=="user"? ( updateMount!==0? <div className="boxShadow">
+              {param!=="user"? ( updateMount===1? <div className="boxShadow">
                     <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
                     {initialData.map((el,i)=>{
                         return(
@@ -117,8 +117,8 @@ function CompCheck() {
                                     <div className="row" >
                                         <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
                                         <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
-                                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==0? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
-                                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==0? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
+                                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
+                                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
                                     </div>
                                   </div>
                                   )
@@ -153,8 +153,8 @@ function CompCheck() {
                                       <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
                                       <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
                                       
-                                      <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==0? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
-                                      <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount!==0? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
+                                      <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
+                                      <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
                                   </div>
                                   </div>
                                   )
@@ -209,7 +209,7 @@ function CompCheck() {
                             <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                         </div>
 
-                      {updateMount!==0?success===1? <div className="Success"> <div className="item not"><IoMdCheckmarkCircle />Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.</div> </div> 
+                      {updateMount===1?success===1? <div className="Success"> <div className="item not"><IoMdCheckmarkCircle />Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.</div> </div> 
                       : <div className="Success">
                           <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div>
                           <NextBtn onClick={()=>NextPageHandle('/request/user')} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
@@ -589,6 +589,12 @@ const Component1 = styled.div`
 
   @media only screen and (max-width:768px){
     .boxShadow{
+      .Success{
+        flex-direction:column;
+        .NextPageBtn{
+          width:100%;
+        }
+      }
         .formTwoParent{
             font-size:13px;
             .buttonPar{

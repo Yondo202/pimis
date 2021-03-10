@@ -467,7 +467,7 @@ const Component3 = styled.div`
             .buttonPar{
                 flex-direction:column;
                 .SubmitButton {
-                    width:100%;
+                    width:100% !important;
                 }
             }
             .inputPar{

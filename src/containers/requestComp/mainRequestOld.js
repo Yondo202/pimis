@@ -73,7 +73,7 @@ function MainRequest() {
                     <>
                     <PreviewBtn >
                             <div className={`modalBtn ${ScrollClass}`}>
-                                <button onClick={ModalOpen} ><VscOpenPreview /> Preview</button>
+                                <button className="preview" onClick={ModalOpen} ><VscOpenPreview />Бүгдийг харах</button>
                                 <div className="countPar container">
                                     <div className="itemsPar">
                                         <div className={`${initialData&&initialData.name1!==null? One==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : One==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name1!==null?(()=>(func("0%", "100%", "200%","300%","400%","500%"),scroll.scrollTo(0) )): (()=>errMsg())} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
@@ -235,7 +235,7 @@ const PreviewBtn = styled.div`
             top:10px;
             left:15px;
             position:absolute;
-            width:120px;
+            width:140px;
             // border-style:none;
             border-radius:6px;
             display:flex;
@@ -252,6 +252,9 @@ const PreviewBtn = styled.div`
                 background-color:rgba(0,0,0,0.1)
             }
         }    
+        .preview{
+            padding:4px 10px;
+        }
     }
     .modalBtn2{
         height:40px;
@@ -291,6 +294,19 @@ const PreviewBtn = styled.div`
             }
         }
     }
+    @media only screen and (max-width:768px){
+        .modalBtn{
+            .preview{
+                display:none;
+            }
+            .countPar{
+                .itemsPar{
+                    width:100%;
+                }
+            }
+        }
+    }
+    
 `
 const AlertStyle = styled.div`
     z-index:1010;  
