@@ -1,7 +1,7 @@
-import React,{useEffect, useRef, useState} from 'react'
-import { BrowserRouter as Router, Switch, Route, useParams } from "react-router-dom";
+import React from 'react'
+import { BrowserRouter as useParams } from "react-router-dom";
 import styled from 'styled-components'
-import PageOne from './pageOne/PageOne'
+// import PageOne from '../member/notify/PageOne'
 import Approved from './Approve/Approved'
 import NotApproved from './notApprove/NotApproved'
 import AssistApprove from './assistApprove/AssistApprove';
@@ -10,10 +10,9 @@ import NotAssist from './notAssist/NotAssist';
 
 function MainPage() {
   let { paramId } = useParams();
-
     return (
         <Components className="container">
-              {paramId==="1"&&<PageOne />} 
+              {/* {paramId==="1"&&<PageOne />}  */}
               {paramId==="2"&&<Approved />} 
               {paramId==="3"&&<NotApproved />} 
               {paramId==="4"&&<AssistApprove /> } 

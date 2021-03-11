@@ -18,8 +18,10 @@ import {Modal} from '../../components/requests/MainModal/Modal'
 import axios from '../../axiosbase'
 import {ColorRgb, textColor} from '../../components/theme'
 import AccessToken from '../../context/accessToken'
+import DocumentTitle from 'containers/document/DocumentTitle'
 
 function MainRequest() {
+    DocumentTitle("Байгаль орчны үнэлгээний асуумж");
     const history = useHistory();
     const param = useParams().url;
     const [ showModal, setShowModal ] = useState(false);
@@ -306,6 +308,7 @@ const PreviewBtn = styled.div`
             }
         }
     }
+   
     
 `
 const AlertStyle = styled.div`

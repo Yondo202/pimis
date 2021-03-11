@@ -67,10 +67,6 @@ function TableFiveDetails(props) {
     }
 
 
-    // console.log(initialData, " 555");
-
-
-
     return (
         <Component3Detail>
             <div className="rowHeader">

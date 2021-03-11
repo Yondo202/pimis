@@ -29,7 +29,7 @@ export const Modal = ({ showModal,setShowModal, initialData, param, na3 }) => {
     useEffect( async ()=>{
         document.addEventListener('keydown', keyPress);
         await setDataOne(initialData);
-        return () => document.removeEventListener('keydown', keyPress)
+        return () => document.removeEventListener('keydown', keyPress);
     },[keyPress]);
 
     const componentRef = useRef();
@@ -78,10 +78,10 @@ const Background = styled.div`
     align-items:center;
     z-index:1000;
     .modalPar{
-        overflow-x:scroll;
+        overflow-y:scroll;
         background-color:white;
-        // width:794px;
-        width:1000px;
+        width:854px;
+        // width:1000px;
         height:100vh;
         padding:20px 20px;
         h2{
@@ -128,7 +128,6 @@ const Background = styled.div`
             }
         }
     }
-
     .MarginBtn{
         width:100%;
         display:flex;
@@ -146,6 +145,10 @@ const Background = styled.div`
                 
         }
     }
-
+    @page {
+        size: A4;
+        margin: 17mm 17mm 17mm 17mm;
+    }
+    
     
 `

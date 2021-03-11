@@ -44,10 +44,11 @@ function ModalFour(props) {
 export default ModalFour
 
 const TableTwo  = styled.div`
-    padding: 50px 100px 50px 64px;
+    padding: 50px 20px 0px 20px;
     color:rgb(${textColor});
     font-family:${fontFamily};
     .table{
+      margin-top:10px;
         border:1px solid rgba(0,0,0,0.2);
         .Header{
             background-color:rgba(${ColorRgb},0.8);
@@ -75,6 +76,9 @@ const TableTwo  = styled.div`
             }
         }
     }
+    @media print{
+      padding: 50px 10px 50px 5px;
+  } 
     
 `
 

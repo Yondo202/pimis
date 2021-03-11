@@ -40,10 +40,11 @@ function TableOne(props) {
           } finalData.push(el);
       });
       setDname(props.initialName);setDdate(props.initialDate);setInitialData(finalData);
+      console.log("---------- 1")
     },[props.initialData]);
 
     const radioChange = (event)=> {
-        console.log(event);
+        // console.log(event);
       // let finalData = []
       //  dataOne.map((el,i)=>{  props.initialData.map(elem=> elem); finalData.push(el); });
       // finalData.map((el,i)=>{

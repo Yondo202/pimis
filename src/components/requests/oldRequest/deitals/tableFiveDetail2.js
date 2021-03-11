@@ -76,11 +76,6 @@ function TableFiveDetails2(props) {
         setInitialData(finalData);
     }
 
-
-    console.log(initialData, " 555");
-
-
-
     return (
         <Component3Detail>
 

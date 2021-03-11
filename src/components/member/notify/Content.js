@@ -119,10 +119,10 @@ function PageOne(props) {
 const MainPar = styled.div`
     margin-bottom:30px;
     background-color:white;
-    max-width:700px;
+    // max-width:700px;
     margin-top:20px;
     font-size:13px;
-    padding:15px 50px;
+    padding:25px 100px;
     border:1px solid rgba(0,0,0,.3);
     color:rgba(${textColor},0.9);
     .datePar{

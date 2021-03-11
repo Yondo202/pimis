@@ -421,6 +421,7 @@ const Component = styled.div`
                 .labels{
                   span{
                     font-size:14px;
+                    color:rgba(0,0,0,0.8);
                   }
                 }
               }
@@ -461,7 +462,7 @@ const Component = styled.div`
                       font-size:13px;
                       span{
                           font-size:14px;
-                          color:rgba(0,0,0,0.7);
+                          color:rgba(0,0,0,0.8);
                           font-weight:500;
                       }
                       .forget{

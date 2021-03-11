@@ -4,7 +4,7 @@ import TableSixDetails from './deitals/tableSixDetail'
 import TableSixDetails2 from './deitals/tableSixDetail2'
 import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
-import { fontFamily, textColor, ColorRgb, Color,fontSize } from '../../theme';
+import { fontFamily, textColor, ColorRgb, Color,fontSize,NextBtn } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BiPen} from 'react-icons/bi'
@@ -18,6 +18,7 @@ const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0
 
 function TableSix(props) {
     const history = useHistory();
+    const [ spnBtn, setSpnBtn ] = useState(false);
     const helperContext = useContext(HelperContext);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
@@ -138,15 +139,16 @@ function TableSix(props) {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
             setOpacity2("1");
         }else{
+            setSpnBtn(true);
             setOpacity2("0");
             if(props.initialName){
-                axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
-                    helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000); console.log(res, " ress");
-                }).catch((err)=>{console.log(err, " ress"); helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+                axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{ 
+                    helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000); setSpnBtn(false); console.log(res, " ress");
+                }).catch((err)=>{console.log(err, " ress"); helperContext.alertText('orange', 'Алдаа гарлаа', true); setSpnBtn(false);});
             }else{
                 axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
-                    helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000);
-                }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+                    helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); setTimeout(()=>{ history.push("/"); },3000);setSpnBtn(false);
+                }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);setSpnBtn(false);});
             }
             
         }
@@ -208,7 +210,7 @@ function TableSix(props) {
                         </div>
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                            <button onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+                            <NextBtn id="myInput" onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }}  className="SubmitButton" type="button">{spnBtn===false?(<>Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>):<img src="/gif1.gif" alt="spin" />} </NextBtn>
                         </div>
             </div>
         </Component3>
@@ -413,54 +415,8 @@ const Component3 = styled.div`
                 color:black !important;
                 line-height:34px;
                 padding:0px 20px;
-              }
-
-              .SubmitButton{
-                  margin:10px 0px;
-                  margin-bottom:10px;
-                  border-style:none;
-                  border-radius:6px;
-                  cursor:pointer;
-                  padding:5px 0px;
-                  color:white;
-                  background-color:${Color};
-                  font-size:18px;
-                  text-align:center;
-                  transition:all 0.3s ease;
-                  display:flex;
-                  align-items:center;
-                  justify-content:space-around;
-                  border:1px solid rgba(63, 81, 181,0.5);
-                  width:40%;
-                  border-radius:6px;
-                  .hide{
-                    transition:all 0.3s ease;
-                    transform:scale(0);
-                    font-size:22px;
-                  }
-                  .hide1{
-                    transition:all 0.7s ease;
-                    transform:scale(0);
-                    font-size:26px;
-                  }
-                  &:hover{
-                    box-shadow:1px 1px 15px -2px black;
-                    .hide{
-                      transition:all 0.3s ease;
-                      transform:scale(1);
-                    }
-                    .hide1{
-                      transition:all 0.7s ease;
-                      transform:scale(1);
-                    }
-                  }
-                  .flexchild{
-                    display:flex;
-                    align-items:center;
-                    justify-content:space-around;
-                  }
-              }
-          }
+            }
+        }
     }
     @media only screen and (max-width:786px){
         .UserRequestPar{

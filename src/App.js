@@ -2,35 +2,17 @@ import React, { useEffect, useContext, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { motion } from "framer-motion";
 import Admin from "./containers/admin/MainMenu";
-import Menu from "./containers/menu/menu";
 import UserContext from "./context/UserContext";
-import { HelpStore } from "./context/HelperContext";
-import Feedback from './components/feedback/Feedback'
-import MembersHome from './components/member/HomePage'
-import CheckComp from "./components/check/compCheck";
-import EmialSender2 from "./components/emailSend/EmailSend2";
-import LoginDoneHome2 from "./components/LoginDoneHome/Home";
-import MainRequestOld from "./containers/requestComp/mainRequestOld";
-import { UrgudulStore } from "components/utilities/urgudulContext"
-import UrgudulNavigator from "pages/urgudul/Page"
-import BusinessSectorEditor from "pages/business_sector_edit/editorPage";
-import ProductsEditor from "pages/products_edit/editorPage";
+import UsersRoute from "containers/users/UsersRoute"
+import UnAuthContent from "UnauthContent";
 import { AlertStore } from "components/utilities/alertContext";
 import AlertDialog from "components/alert_dialog/alertDialog";
-import LetterOfInterest from "pages/letter_of_interest/page";
-import FirstEvaluation from "pages/decision_making/page_5a";
-import CompilationCheck from "pages/decision_making/page_5b";
-import AnalystReport from "pages/decision_making/page_5c";
-import AttachmentUploads from "pages/attachments/page";
-import MainPage from "components/notifyPage/MainPage";
-import UnAuthContent from "UnauthContent";
 import { FilePreviewStore } from "components/utilities/filePreviewContext";
 import FilePreviewModal from "components/file_preview/filePreview";
-import WorkPerformance from './components/workPerformance/MainWorkPerformance'
 import 'devextreme/dist/css/dx.common.css'
 // import 'devextreme/dist/css/dx.light-compact.css'
 import 'assets/devExtremeTheme/dx.material.blue-light-compact.css'
-import MemberDecision from './components/admin/contents/member_decision/Decision_main'
+import MemberRoute from 'containers/member/MemberRoute'
 
 
 function App() {
@@ -61,7 +43,9 @@ function App() {
         <FilePreviewStore>
           <Router>
             {
-              ctxUser.userInfo.userId ? ctxUser.userInfo.role !== "user" ? (
+              ctxUser.userInfo.userId ? ctxUser.userInfo.role !== "user" ? 
+              ctxUser.userInfo.role==="member" ?<MemberRoute />
+              :(
                 <Switch>
                   <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <Route path="/" >
@@ -69,6 +53,7 @@ function App() {
                     </Route>
                   </motion.div>
                 </Switch>
+<<<<<<< HEAD
                 //  <Route path="/admin" component={Admin} />
               ) : (
                 <HelpStore>
@@ -107,6 +92,9 @@ function App() {
                   </UrgudulStore>
                 </HelpStore>
               )
+=======
+              ) : ( <UsersRoute />  )
+>>>>>>> b9916d8d09a61d4b297c42fe99507c481eb733f1
                 : (<UnAuthContent />)
             }
           </Router>

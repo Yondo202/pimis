@@ -1,6 +1,6 @@
 import React,{ useState } from 'react'
 import styled from 'styled-components'
-import {fontSize, textColor,InputStyle,NextBtn,ColorRgb } from '../../../theme'
+import {fontSize, textColor,InputStyle,NextBtn,ColorRgb } from '../../theme'
 import {AiOutlineSend} from 'react-icons/ai'
 import { animateScroll as scroll } from "react-scroll";
 import Signature from './Signature'

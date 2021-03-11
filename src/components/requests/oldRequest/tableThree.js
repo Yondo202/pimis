@@ -27,6 +27,7 @@ function TableThree(props) {
             setDname(props.initialName);
             setDdate(props.initialDate);
         }
+        console.log("---------- 3");
     },[props.initialName])
 
     const changeNameHandle = (event) =>{

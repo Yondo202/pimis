@@ -17,6 +17,7 @@ const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0
 
 function TableFour(props) {
       const history = useHistory();
+      const [ spnBtn, setSpnBtn ] = useState(false);
       const [opacity, setOpacity] = useState("0");
       const [opacity2, setOpacity2] = useState("0");
       const [ initialData, setInitialData ] = useState([]);
@@ -42,11 +43,11 @@ function TableFour(props) {
           });
           setInitialData(finalData);
         }
+
+        console.log("---------- 4");
       },[props.initialData]);
 
       const radioChange = (event)=> {
-        console.log(event.target.id, " target id")
-
         let finalData = []
         tableData.map((el,i)=>{ 
             if(props.initialData){
@@ -109,9 +110,7 @@ function TableFour(props) {
             const Procent = keys.length * 100 / 15;
             const FinalProcent = Math.round(Procent);
 
-            console.log(finalEnd , "pps4 final end");
-
-            console.log(confirm, "what is confirm");
+            // console.log(finalEnd , "pps4 final end");
 
             if(finalOne2.length < 15){
               setOpacity("1");
@@ -141,13 +140,13 @@ function TableFour(props) {
                     setFinalTextScale("1");
                     setOpacity2("0");
                     setFinalMsg("0");
-                    console.log("A Angilal");
+                    setSpnBtn(true);
                     if(Dname){
-                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{ console.log(err, "err");});
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setSpnBtn(false); setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{setSpnBtn(false); console.log(err, "err");});
                     }else{
-                      axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{ 
+                      axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{ setSpnBtn(false);
                         helperContext.alertText('orange', "Та шалгуур хангахгүй байна!", true); setTimeout(()=>{ history.push("/"); },4000);
-                        console.log(res, "$$(A) res 4 $$")}).catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа...", true); console.log(err, "err");});
+                        console.log(res, "$$(A) res 4 $$")}).catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа...", true); console.log(err, "err");});
                     }
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "true" && finalOne2[3].rowvalue === "false"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
@@ -157,14 +156,15 @@ function TableFour(props) {
                     setFinalTextScale("1");
                     setOpacity2("0");
                     setFinalMsg("0");
+                    setSpnBtn(true);
                     finalEnd.PPS4["esm"] = "C"
                     console.log("C Angilal");
                     if(Dname){
-                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{ console.log(err, "err");});
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{setSpnBtn(false); setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{setSpnBtn(false); console.log(err, "err");});
                     }else{
-                      axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
+                      axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{setSpnBtn(false);
                         helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000);
-                        console.log(res, "$$(A) res 4 $$")}).catch((err)=>{helperContext.alertText('green', "Алдаа гарлаа", true);});
+                        console.log(res, "$$(A) res 4 $$")}).catch((err)=>{setSpnBtn(false);helperContext.alertText('green', "Алдаа гарлаа", true);});
                     }
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "false" && finalOne2[3].rowvalue === "true"  && finalOne2[4].rowvalue === "false" && 
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
@@ -173,28 +173,30 @@ function TableFour(props) {
                     setFinalText("(B) Та шалгуур хангаж байна.");
                     setFinalTextScale("1");
                     setOpacity2("0");
+                    setSpnBtn(true);
                     finalEnd.PPS4["esm"] = "B"
-                    console.log("B Angilal");
+                    setOpacity("0");
                     if(Dname){
-                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{  helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0); helperContext.reqMountFunc(4); })
-                      .catch((err)=>{  setFinalText("Алдаа гарлаа"); setFinalTextScale("1"); console.log(err, "err");});
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setSpnBtn(false); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0); helperContext.reqMountFunc(4); })
+                      .catch((err)=>{ setSpnBtn(false); setFinalText("Алдаа гарлаа"); setFinalTextScale("1"); console.log(err, "err");});
                     }else{
-                         axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{
+                         axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{setSpnBtn(false);
                          helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{scroll.scrollTo(0); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%") },3000); helperContext.reqMountFunc(4); })
-                        .catch(err=>{ helperContext.alertText('orange', "Алдаа гарлаа", true);});
+                        .catch(err=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);});
                     }
             }else{
                    // Тэнцээгүй биш гэхдээ асууна
                    setFinalMsg("0"); setFinalTextScale("1"); setFinalText("Та шалгуур хангаж байна..."); setOpacity2("0");
                     finalEnd.PPS4["esm"] = "F";
+                    setSpnBtn(true);
                     console.log("F Angilal");
                     if(Dname){
-                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setTimeout(()=>{
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{setSpnBtn(false); setTimeout(()=>{
                       helperContext.alertText('green', 'Та шалгуур хангаж байна..', true);history.push("/"); },4000) }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
                     }else{
-                      axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{ 
+                      axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{ setSpnBtn(false);
                       helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000); })
-                      .catch((err)=>{ helperContext.alertText('orange', "Алдаа гарлаа", true);});
+                      .catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);});
                     }
                    
             }
@@ -202,12 +204,7 @@ function TableFour(props) {
 
 
         
-        const nextHandleBtn = () => {
-            // scroll.scrollTo(0);
-            // helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");
-        }
-
-        console.log(initialData, " my inital");
+        
     return (
         <Component1 className="container" >
             <div className="boxShadow">
@@ -310,11 +307,10 @@ function TableFour(props) {
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
                             {props.initialName? (<PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>) : null } 
-                            <NextBtn id="myInput" onClick={clickHandles} className="SubmitButton" type="button">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                            <NextBtn id="myInput" onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }}  className="SubmitButton" type="button">{spnBtn===false?(<>Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>):<img src="/gif1.gif" alt="spin" />} </NextBtn>
                        </div>
 
-                  <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">{finalText}</h6> </div>
-                  <div style={{transform:`scale(${finalMsg})`}} className="Medegdel"><span className="text">Байгаль орчин, нийгмийн менежментийн төлөвлөгөө (БОНМТ) гаргахыг шаардаж болно.</span> <button onClick={nextHandleBtn} className="btnn">Шаардах</button> </div>
+                  {/* <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">{finalText}</h6> </div> */}
                 </div>
              </div>
             </div>

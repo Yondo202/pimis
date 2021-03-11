@@ -15,10 +15,10 @@ export const PrevBtn = styled.div`
     border-style:none;
     border-radius:6px;
     cursor:pointer;
-    padding:5px 0px;
+    padding:8px 0px;
     color:white;
     background-color:${Color};
-    font-size:16px;
+    font-size:14px;
     text-align:center;
     transition:all 0.3s ease;
     display:flex;

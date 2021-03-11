@@ -27,9 +27,6 @@ function TableSixDetails(props) {
         }
     }, [props.initialData]);
 
-
-    console.log(initialData, " hello")
-      
     const changeHandle1 = (event) =>{
         const finalData = []
         props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["messure"] = event.target.value };finalData.push(el) })
