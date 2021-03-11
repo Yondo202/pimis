@@ -83,14 +83,14 @@ function App() {
                       <Route path="/check/:url" component={CheckComp} />
                       <Route path="/notify-page/:paramId" component={MainPage} />
 
-                        {/* <Route path="/comp-request" component={MainRequest} /> */}
-                        <Route path="/request/:url" component={MainRequestOld} />
-                        <Route path="/feedback" component={Feedback} />
-                        <Route path="/workperformance" component={WorkPerformance} />
-                        <Route path="/email2" component={EmialSender2} />
+                      {/* <Route path="/comp-request" component={MainRequest} /> */}
+                      <Route path="/request/:url" component={MainRequestOld} />
+                      <Route path="/feedback" component={Feedback} />
+                      <Route path="/workperformance" component={WorkPerformance} />
+                      <Route path="/email2" component={EmialSender2} />
 
-                        <Route path="/members" component={MembersHome} />
-                        <Route path="/memberdecision" component={MemberDecision} />
+                      <Route path="/members" component={MembersHome} />
+                      <Route path="/memberdecision" component={MemberDecision} />
 
                       <Route path="/letter-of-interest" component={LetterOfInterest} />
                       <Route path="/urgudul/:page" component={UrgudulNavigator} />

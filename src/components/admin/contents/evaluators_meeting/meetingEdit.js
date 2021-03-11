@@ -1,44 +1,43 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { DataGrid, DateBox } from 'devextreme-react'
 import './style.css'
 import { Column, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
+import AlertContext from 'components/utilities/alertContext'
+import { useHistory, useLocation } from 'react-router'
 
 
-const now = new Date()
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
-export default function EvaluatorsMeeting() {
-    const [projects, setProjects] = useState([])
-    const [evaluators, setEvaluators] = useState([])
+export default function EvaluatorsMeetingEdit(props) {
+    const projects = props.projects
+    const evaluators = props.evaluators
 
     const [selectedProjects, setSelectedProjects] = useState([])
     const [selectedEvaluators, setSelectedEvaluators] = useState([])
 
+    const meetingId = useQuery().get('id')
+
     useEffect(() => {
-        axios.get('pps-infos/registered-companies', {
-            headers: { Authorization: getLoggedUserToken() },
-            params: { condition: 'approved' },
-        }).then(res => {
-            console.log(res.data)
-            setProjects(res.data.data)
-        }).catch(err => {
-            console.log(err.response?.data)
-        })
-
-        axios.get('users', {
-            headers: { Authorization: getLoggedUserToken() },
-            params: { role: 'member' }
-        }).then(res => {
-            console.log(res.data)
-            setEvaluators(res.data.data)
-        }).catch(err => {
-            console.log(err.response?.data)
-        })
-
+        if (meetingId) {
+            axios.get('evaluation-meetings', {
+                headers: { Authorization: getLoggedUserToken() },
+                params: { id: meetingId }
+            }).then(res => {
+                console.log(res.data)
+                setDateTime(res.data.data?.[0]?.sdate)
+                setSelectedEvaluators(res.data.data?.[0]?.members)
+                setSelectedProjects(res.data.data?.[0]?.projects)
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+        }
     }, [])
 
-    const [dateTime, setDateTime] = useState(now)
+    const [dateTime, setDateTime] = useState(null)
 
     const handleSetDateTime = (e) => setDateTime(e.value)
 
@@ -58,24 +57,48 @@ export default function EvaluatorsMeeting() {
         }
     }
 
+    const AlertCtx = useContext(AlertContext)
+
     const handleSubmit = () => {
-        axios.post('pps-infos/registered-companies', {
-            datetime: dateTime,
-            members: selectedEvaluators,
-            projects: selectedProjects
-        }, {
-            headers: { Authorization: getLoggedUserToken() },
-        }).then(res => {
-            console.log(res.data)
-        }).then(err => {
-            console.log(err.response?.data)
-        })
+        if (meetingId) {
+            axios.put(`evaluation-meetings/${meetingId}`, {
+                sdate: dateTime,
+                members: selectedEvaluators,
+                projects: selectedProjects
+            }, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+            })
+        } else {
+            axios.post('evaluation-meetings', {
+                sdate: dateTime,
+                members: selectedEvaluators,
+                projects: selectedProjects
+            }, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+            })
+        }
     }
 
     const calculateIsChecked = (id, selected) => selected.includes(id) ? 'Сонгосон' : 'Сонгоогүй'
 
+    const history = useHistory()
+
     return (
         <div className="tw-text-sm tw-text-gray-700">
+            <button className="" onClick={() => history.push('/meetings')}>
+                Буцах
+            </button>
+
             <div className="tw-text-lg tw-font-medium tw-text-center tw-p-2 tw-mt-10">
                 Үнэлгээний хорооны уулзалт
             </div>

@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import HomeAdmin from '../../components/admin/Home'
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import UserHandle from 'components/admin/contents/users/UserHandle';
 import ProjectHandle from 'components/admin/contents/projects/ProjectHandle'
 import { UrgudulStore } from 'components/utilities/urgudulContext'
@@ -24,7 +24,7 @@ import MemberDecision from '../../components/admin/contents/member_decision/Deci
 import MainDecision from '../../components/admin/contents/main_decision/Main_decision'
 import NotifyPage1 from '../../components/notifyPage/MainPage'
 import LetterPreview from 'pages/letter_of_interest/preview';
-import EvaluatorsMeeting from 'components/admin/contents/evaluators_meeting/evaluatorsMeeting';
+import EvaluatorsMeetingsNavigator from 'components/admin/contents/evaluators_meeting/MeetingsNavigator';
 
 
 function Layout({ setLocale }) {
@@ -53,29 +53,31 @@ function Layout({ setLocale }) {
                 />
                 <div className="itemsPar2">
                     <UrgudulStore>
-                        <Route path="/" component={HomeAdmin} exact />
-                        <Route path="/users" component={UserHandle} />
-                        <Route path="/projects" component={ProjectHandle} />
-                        <Route path="/projects1" component={ProjectHandle1} />
-                        <Route path="/urgudul/:page">
-                            <UrgudulNavigator preloaded={true} />
-                        </Route>
-                        <Route path="/meeting" component={EvaluatorsMeeting} />
+                        <Switch>
+                            <Route path="/" component={HomeAdmin} exact />
+                            <Route path="/users" component={UserHandle} />
+                            <Route path="/projects" component={ProjectHandle} />
+                            <Route path="/projects1" component={ProjectHandle1} />
+                            <Route path="/urgudul/:page">
+                                <UrgudulNavigator preloaded={true} />
+                            </Route>
+                            <Route path="/meetings" component={EvaluatorsMeetingsNavigator} />
 
-                        <Route path="/progress/:userId" component={Home} />
-                        <Route path="/request/:url" component={Request} />
-                        <Route path="/check/:url" component={Check} />
-                        <Route path="/notify-page/:paramId" component={NotifyPage1} />
+                            <Route path="/progress/:userId" component={Home} />
+                            <Route path="/request/:url" component={Request} />
+                            <Route path="/check/:url" component={Check} />
+                            <Route path="/notify-page/:paramId" component={NotifyPage1} />
 
-                        <Route path="/memberdecision" component={MemberDecision} />
-                        <Route path="/maindecision" component={MainDecision} />
+                            <Route path="/memberdecision" component={MemberDecision} />
+                            <Route path="/maindecision" component={MainDecision} />
 
-                        <Route path="/letter-of-interest/:id" component={LetterPreview} />
-                        <Route path="/urgudul-preview/:id" component={UrgudulPreview} />
-                        <Route path="/attachments/:id" component={AttachmentUploads} />
-                        <Route path="/5a/:id" component={FirstEvaluation} />
-                        <Route path="/5b/:id" component={CompilationChecklist} />
-                        <Route path="/5c/:id" component={AnalystReport} />
+                            <Route path="/letter-of-interest/:id" component={LetterPreview} />
+                            <Route path="/urgudul-preview/:id" component={UrgudulPreview} />
+                            <Route path="/attachments/:id" component={AttachmentUploads} />
+                            <Route path="/5a/:id" component={FirstEvaluation} />
+                            <Route path="/5b/:id" component={CompilationChecklist} />
+                            <Route path="/5c/:id" component={AnalystReport} />
+                        </Switch>
                     </UrgudulStore>
                 </div>
             </div>
