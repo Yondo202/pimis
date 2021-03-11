@@ -164,7 +164,7 @@ export default function EvaluatorsModal(props) {
                         </div>
 
                         <div className="tw-flex tw-justify-center tw-p-2 tw-mt-8">
-                            <button className="tw-py-1 tw-px-4 tw-bg-gray-600 tw-text-white tw-rounded-md focus:tw-outline-none active:tw-bg-gray-500 tw-transition-colors hover:tw-shadow-md " onClick={handleEvaluatorsSubmit}>
+                            <button className="tw-py-1 tw-px-4 tw-bg-gray-600 tw-text-white tw-rounded-md focus:tw-outline-none active:tw-bg-gray-500 tw-transition-colors hover:tw-shadow-md" onClick={handleEvaluatorsSubmit}>
                                 Хадгалах
                             </button>
                         </div>

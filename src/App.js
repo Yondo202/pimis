@@ -10,6 +10,7 @@ import AlertDialog from "components/alert_dialog/alertDialog";
 import { FilePreviewStore } from "components/utilities/filePreviewContext";
 import FilePreviewModal from "components/file_preview/filePreview";
 import 'devextreme/dist/css/dx.common.css'
+// import 'devextreme/dist/css/dx.light-compact.css'
 import 'assets/devExtremeTheme/dx.material.blue-light-compact.css'
 import MemberRoute from 'containers/member/MemberRoute'
 

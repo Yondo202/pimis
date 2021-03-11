@@ -1,6 +1,6 @@
 .preview-container {
     width: 21cm;
-    height: 29.7cm;
+    /* height: 29.7cm; */
     margin: 0 auto;
     padding: 8px;
     position: relative;
@@ -8,7 +8,11 @@
 }
 
 @media print {
-    .preview-container {
+    @page {
         size: portrait A4;
+        margin: 0.5cm 0.2cm;
+    }
+    .preview-container .no-break {
+        break-inside: avoid;
     }
 }

@@ -1,0 +1,13 @@
+#meeting-datebox .dx-texteditor-input-container .dx-texteditor-input {
+    font-size: 14px;
+    padding: 2px;
+    font-weight: 500;
+}
+
+#meeting-datebox .dx-button-content .dx-dropdowneditor-icon {
+    transform: scale(1.5) translateY(-1.5px);
+}
+
+#meeting-datebox {
+    width: 104px;
+}

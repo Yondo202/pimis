@@ -295,14 +295,16 @@ export default function CompilationChecklist() {
         setRows([...newRows])
     }
 
-    const projectId = 4
+    const projectId = 3
 
     useEffect(() => {
         axios.get(`projects/${projectId}/bds-evaluation5b`, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
             console.log(res.data)
-            setRows(res.data.data)
+            if (res.data.data?.length === initialState.length) {
+                setRows(res.data.data)
+            }
         }).catch(err => {
             console.log(err.response?.data)
         })

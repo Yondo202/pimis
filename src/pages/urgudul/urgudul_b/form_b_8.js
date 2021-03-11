@@ -413,21 +413,3 @@ function UrgudulCalculations() {
 }
 
 export default UrgudulCalculations
-
-const ButtonAddHover = () => {
-    const [hovered, setHovered] = useState()
-
-    return (
-        <div className="">
-            <button>
-                Улс нэмэх
-            </button>
-            <button>
-                Бүтээгдэхүүн нэмэх
-            </button>
-            <button className="">
-                Нэмэх
-            </button>
-        </div>
-    )
-}

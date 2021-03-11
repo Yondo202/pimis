@@ -94,7 +94,6 @@ export default function ProjectHandle() {
         }).then(res => {
             console.log(res.data)
             UrgudulCtx.setData(res.data.data)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээллийг амжилттай уншлаа.' })
             history.push('/urgudul/1')
         }).catch(err => {
             console.log(err.response?.data)
