@@ -63,7 +63,7 @@ function Menu() {
     <Componentss>
      
       <div style={{height:headerHeight,display:diplayFlex}} className="MainMenus">
-            <div style={currPath === "/"? {maxWidth:`1160px`,padding:`0px 0px`}:{maxWidth:1000}} className="container">
+            <div style={currPath === "/"? {maxWidth:`1160px`}:{maxWidth:1000}} className="container">
                <input type="checkbox" id="check" name="check" />
                 <span className="menuPar">
                       <div className="backgroundGhost"></div>

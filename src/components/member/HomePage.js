@@ -1,112 +1,75 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef,useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import {ColorRgb,textColor} from '../theme'
-import {useSpring, animated} from 'react-spring';
+import {ColorRgb,textColor,fontFamily} from '../theme'
+import axios from 'axiosbase'
+import Token from 'context/accessToken'
 
 function HomePage() {
+    const [ cardData, setCardData ] = useState(null);
     const [ showModal, setShowModal ] = useState(false);
     const [ parent, setParent ] = useState({});
-
     const ClickHandle = e =>{ setParent(e); setShowModal(true);}
 
+    useEffect(async()=>{
+        console.log(Token(), " my token");
+        const data = await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token() } });
+        console.log(data, " my data");
+        if(data.data.data[0]){ setCardData(data.data.data); }
+    },[]);
+
     return (
-        <Memberhome className="container">
+        <Memberhome style={{maxWidth:1160}} className="container">
             <div className="header">
                 <div className="items">
                    <span className="text">Байгууллагуудын жагсаалт</span>
                    <div className="line"></div>
                 </div>
             </div>
-
             <div className="CardParent">
                   {showModal&&<Modal showModal={showModal} setShowModal={setShowModal} parent={parent} />} 
-                    {CardData.map((el,i)=>{
+                    {cardData? cardData.map((el,i)=>{
                         return(
                             <div onClick={()=>ClickHandle(el)} className="Ghost">
                                 <div className="cardItems">
-                                    <div className="titleBig">{el.comname}</div>
+                                    <div className="titleBig">{el.company_name}</div>
                                     <div className="contents">
                                         <div className="contItem">
                                                 <span className="title">Регистр :</span>
-                                                <span className="desc">989265646</span>
+                                                <span className="desc">{el.company.registration_number}</span>
                                         </div>
                                         <div className="contItem">
-                                                <span className="title">ӨМ - дугаар :</span>
-                                                <span className="desc">83</span>
+                                                <span className="title">Өргөдөлийн маягт :</span>
+                                                <span className="desc">{el.project_name}</span>
                                         </div>
                                         <div className="contItem">
                                                 <span className="title">Санхүүжилтийн хэмжээ :</span>
-                                                <span className="desc">99,000.00</span>
+                                                <span className="desc">{el.budgetCost}</span>
                                         </div>
                                         <div className="mains">
                                                 <div className="buttons Active">
-                                                <Link to="/memberdecision">Mэдэгдэх хуудас</Link> 
+                                                  <Link to="/notify">Mэдэгдэх хуудас</Link> 
                                                 </div>
-                                                <div className="buttons">
-                                                <Link to="/notify-page/1">Саналын хуудас</Link> 
-                                                    
+                                                <div className="buttons"> 
+                                                  <Link to="/memberdecision">Саналын хуудас</Link> 
                                                 </div>
                                         </div>
                                     </div>
                                 </div> 
                             </div>
                         )
-                    })}
+                    }): <h2>Мэдээлэл байхгүй байна...</h2>}
             </div>
-            
-
-
         </Memberhome>
     )
 }
-
+ 
 export default HomePage
 
-const Modal = ({ setShowModal, parent }) =>{
-    const ref = useRef();
-    const closeModal = e =>{ console.log(ref.current); if(ref.current === e.target){ setShowModal(false);}}
-    return(
-        <div onClick={closeModal} ref={ref} className="Ghost Fix">
-                <div className="cardItems">
-                    <div className="titleBig">{parent.comname}</div>
-                    <div className="contents">
-                        <div className="contItem">
-                                <span className="title">Регистр :</span>
-                                <span className="desc">989265646</span>
-                        </div>
-                        <div className="contItem">
-                                <span className="title">ӨМ - дугаар :</span>
-                                <span className="desc">83</span>
-                        </div>
-                        <div className="contItem">
-                                <span className="title">Санхүүжилтийн хэмжээ :</span>
-                                <span className="desc">99,000.00</span>
-                        </div>
-                        <div className="mains">
-                                <div className="buttons Active">
-                                <Link to="/memberdecision">Mэдэгдэх хуудас</Link> 
-                                </div>
-                                <div className="buttons">
-                                <Link to="/notify-page/1">Саналын хуудас</Link> 
-                                </div>
-                        </div>
-                    </div>
-                </div> 
-        </div>
-    )
-}
 
-
-const CardData = [
-    { comname: "Эм Си Эс ХХК", register: "15165687", omdugaar: "85", financeSize: "99,000.00 "},
-    { comname: "Гацуурт ХХК", register: "4545445", omdugaar: "15", financeSize: "45,000.00 "},
-    { comname: "Натурал ХХК", register: "55555444", omdugaar: "55", financeSize: "33,000.00 "},
-    { comname: "Ганга өвс ХХК", register: "544554", omdugaar: "45", financeSize: "1,000.00 "},
-]
 
 const Memberhome = styled.div`
-    font-family:roboto;
+    font-family:${fontFamily};
     color:rgba(${textColor});
     padding-top:15px;
     font-size:13px;
@@ -121,19 +84,24 @@ const Memberhome = styled.div`
             transition:all 0.2s ease;
             width:31.5%;
             .cardItems{
+                background-color:white;
                 margin-top:25px;
                 transition:all 0.2s ease;
                 cursor:pointer;
-                box-shadow:0px 2px 10px -7px;
-                background-color:white;
+                box-shadow:0px 2px 10px -6px rgba(${ColorRgb});
                 border:1px solid #d8dbe0;
                 border-radius: 6px;
-                border-top: 2px solid rgba(${ColorRgb});
-                // border-top: 2px solid #39f;
+                border-top: 4px solid rgba(${ColorRgb});
+                // border-top: 4px solid #232f3e;
                 &:hover{
-                    box-shadow:0px 1px 10px -4px;
+                    box-shadow:0px 1px 10px -4px rgba(${ColorRgb});
+                    .titleBig{
+                        font-weight:500;
+                        color:rgba(0,0,0,0.8);
+                    }
                 }
                 .titleBig{
+                    font-weight:500;
                     padding: .7rem 1.25rem !important;
                     padding:10px 0px;
                     font-size:14px;
@@ -160,13 +128,16 @@ const Memberhome = styled.div`
                         position:relative;
                         
                         .buttons{
-                            color: rgba(0,0,0,0.5);
+                            // color: rgba(0,0,0,0.5);
                             border-radius:3px;
                             padding:2px 10px;
-                            border:1px solid rgba(0,0,0,0.4);
+                            margin-top:14px;
+                            // border:1px solid rgba(0,0,0,0.4);
+                            background-color:#0d77b7;
+                            border:1px solid rgba(255,255,255,0.4);
                             a{
                                 text-decoration:none;
-                                color: rgba(0,0,0,0.5);
+                                color: #fff;
                             }
                         }
                         .Active{
@@ -174,8 +145,7 @@ const Memberhome = styled.div`
                             border-radius:3px;
                             padding:2px 10px;
                             border:1px solid rgba(255,255,255,0.4);
-                            background-color:#00A300;
-                            // background-color:#18A558;
+                            background-color:#0d77b7;
                             a{
                                 text-decoration:none;
                                 color:white;
@@ -198,6 +168,12 @@ const Memberhome = styled.div`
             justify-content:center;
             align-items:start;
             bottom:0;
+            &:hover{
+                box-shadow:0px 1px 10px -4px rgba(${ColorRgb});
+                .titleBig{
+                    color:black !important;
+                }
+            }
             .cardItems{
                 cursor: unset;
                 margin-top:15vh;
@@ -220,7 +196,8 @@ const Memberhome = styled.div`
                             background-color:rgba(${ColorRgb},1);
                             color: white;
                             border-radius:3px;
-                            padding:6px 20px;
+                            font-size:14px;
+                            padding:7px 25px;
                             border:1px solid rgba(0,0,0,0.4);
                             transition:all 0.2s ease;
                             a{
@@ -229,7 +206,7 @@ const Memberhome = styled.div`
                             }
                             &:hover{
                                 background-color:rgba(${ColorRgb},0.9);
-                                padding:6px 19px;
+                                padding:7px 28px;
                             }
                         }
                     }
@@ -288,3 +265,45 @@ const Memberhome = styled.div`
         }
     }
 `
+
+const Modal = ({ setShowModal, parent }) =>{
+    const ref = useRef();
+    const closeModal = e =>{ console.log(ref.current); if(ref.current === e.target){ setShowModal(false);}}
+    return(
+        <div onClick={closeModal} ref={ref} className="Ghost Fix">
+                <div className="cardItems">
+                    <div className="titleBig">{parent.company_name}</div>
+                    <div className="contents">
+                        <div className="contItem">
+                                <span className="title">Регистр :</span>
+                                <span className="desc">{parent.company.registration_number}</span>
+                        </div>
+                        <div className="contItem">
+                                <span className="title">ӨМ - дугаар :</span>
+                                <span className="desc">{parent.project_name}</span>
+                        </div>
+                        <div className="contItem">
+                                <span className="title">Санхүүжилтийн хэмжээ :</span>
+                                <span className="desc">{parent.budgetCost}</span>
+                        </div>
+                        <div className="mains">
+                                <div className="buttons Active">
+                                 <Link to="/notify">Mэдэгдэх хуудас</Link> 
+                                </div>
+                                <div className="buttons">
+                                 <Link to="/memberdecision">Саналын хуудас</Link> 
+                                </div>
+                        </div>
+                    </div>
+                </div> 
+        </div>
+    )
+}
+
+
+const CardData = [
+    { company_name: "Эм Си Эс ХХК", registration_number: "15165687", project_name: "85", budgetCost: "99,000.00 "},
+    { company_name: "Гацуурт ХХК", registration_number: "4545445", project_name: "15", budgetCost: "45,000.00 "},
+    { company_name: "Натурал ХХК", registration_number: "55555444", project_name: "55", budgetCost: "33,000.00 "},
+    { company_name: "Ганга өвс ХХК", registration_number: "544554", project_name: "45", budgetCost: "1,000.00 "},
+]

@@ -2,8 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import Login from './login'
 import {fontFamily} from "../theme"
+import DocumentTitle from 'containers/document/DocumentTitle';
 
 function HomeLogin() {
+    DocumentTitle("EDP - Нэвтрэх болон Бүртгүүлэх");
     return (
         <ComponentHome >
             <div className="ghost" style={{backgroundImage:`url(/background1.jpg)`}}>

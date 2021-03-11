@@ -20,7 +20,7 @@ import FirstEvaluation from 'pages/decision_making/page_5a';
 import CompilationChecklist from 'pages/decision_making/page_5b';
 import AnalystReport from 'pages/decision_making/page_5c';
 import UrgudulPreview from 'pages/urgudul/preview/Preview';
-import MemberDecision from '../../components/admin/contents/member_decision/Decision_main'
+import MemberDecision from '../../components/member/member_decision/Decision_main'
 import MainDecision from '../../components/admin/contents/main_decision/Main_decision'
 import NotifyPage1 from '../../components/notifyPage/MainPage'
 import LetterPreview from 'pages/letter_of_interest/preview';

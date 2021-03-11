@@ -62,7 +62,7 @@ function PageOne() {
 
       return (
           <>
-            <MainContainter>
+            <MainContainter className="container">
                 <div className="parent" ref={componentRef}>
                      <Content setImgData={setImgData}  />
                 </div>
@@ -88,7 +88,7 @@ export default PageOne
 
 const MainContainter = styled.div`
     position:relative;
-
+    padding-bottom:60px;
     .parent{
     //   .footer{
     //     display:none;

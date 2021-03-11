@@ -36,6 +36,7 @@ function TableTwo(props) {
             });
             setDname(props.initialName); setDdate(props.initialDate); setInitialData(finalData);
         }
+        console.log("---------- 2")
     },[props.initialData]);
 
 
@@ -146,7 +147,7 @@ function TableTwo(props) {
                   }).catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true); });
             }
         }
-        console.log(finalEnd, "my all");
+        // console.log(finalEnd, "my all");
     }
 
     return (

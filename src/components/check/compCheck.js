@@ -12,8 +12,10 @@ import axios from '../../axiosbase'
 import {RiArrowGoBackFill  } from 'react-icons/ri';
 import Modal from 'react-awesome-modal';
 import { motion } from 'framer-motion';
+import DocumentTitle from 'containers/document/DocumentTitle';
 
 function CompCheck() {
+    DocumentTitle("Шалгуур хангалтыг тулгах хуудас");
     const init = "once";
     const param = useParams().url;
     const ctx = useContext(UserContext);
@@ -44,7 +46,6 @@ function CompCheck() {
           setInitialData(allData); setUpdateMount(1);
         }else{ console.log("^^data alga") }
     },[updateMount]);
-
     const NextPageHandle = (el) =>{ history.push(el); };
 
     const clickHandles = (btn) =>{

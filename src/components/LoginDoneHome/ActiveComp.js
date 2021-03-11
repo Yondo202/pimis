@@ -1,10 +1,9 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import DocumentTitle from 'containers/document/DocumentTitle';
 
 function ActiveComp(props) {
-
-    console.log(props.data, " -- data");
-
+    DocumentTitle("EDP");
     return (
         <div style={{ marginTop: 25 }} className="row">
             <div className="col-md-2 col-sm-2 itemsCol">

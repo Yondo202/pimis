@@ -8,6 +8,8 @@ import ActiveComp from './ActiveComp'
 import InitialComp from './initialComp'
 
 
+
+
 function Home() {
     const userId = useParams().userId;
     const [infData, setInfData] = useState(null);
