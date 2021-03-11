@@ -43,17 +43,17 @@ function App() {
         <FilePreviewStore>
           <Router>
             {
-              ctxUser.userInfo.userId ? ctxUser.userInfo.role !== "user" ? 
-              ctxUser.userInfo.role==="member" ?<MemberRoute />
-              :(
-                <Switch>
-                  <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                    <Route path="/" >
-                      <Admin />
-                    </Route>
-                  </motion.div>
-                </Switch>
-              ) : ( <UsersRoute />  )
+              ctxUser.userInfo.userId ? ctxUser.userInfo.role !== "user" ?
+                ctxUser.userInfo.role === "member" ? <MemberRoute />
+                  : (
+                    <Switch>
+                      <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        <Route path="/" >
+                          <Admin />
+                        </Route>
+                      </motion.div>
+                    </Switch>
+                  ) : (<UsersRoute />)
                 : (<UnAuthContent />)
             }
           </Router>
