@@ -11,3 +11,7 @@
 #meeting-datebox {
     width: 104px;
 }
+
+.ContentPar .itemsPar2 {
+    overflow-x: hidden;
+}

@@ -147,7 +147,7 @@ function UrgudulActivities() {
 
                         <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                             <div className="tw-w-full tw-max-w-lg tw-flex">
-                                <FormInline label="Дээрх үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} classInput="tw-w-32" invalid={validate && checkInvalid(item.budget_cost)} />
+                                <FormInline label="Дээрх үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" invalid={validate && checkInvalid(item.budget_cost)} />
 
                                 <div className="tw-relative tw-w-2">
                                     <HelpPopup classAppend="tw-right-5 tw-top-1" main="Энэхүү зардлийн тал хувийг өргөдөл гаргагч өөрийн талаас, тал хувийг экспортыг дэмжих төслийн зүгээс гаргах юм." list={['Үйл ажиллагааны төсөвт дүнг тооцохдоо бодит өртөгөөс 20 хувиас дээш хэлбэлзэлтэй байж болохгүй тул бодитоор өртөгөөр тооцоолно уу.', 'Экспортыг дэмжих төслийн санхүүжилтийн дээд хэмжээ нь $50,000 гэдгийг анхаарна уу.']} position="top-left" />
