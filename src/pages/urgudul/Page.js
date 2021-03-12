@@ -138,7 +138,7 @@ function UrgudulNavigator(props) {
                 transitionsPages.map(({ item, props, key }) =>
                     <animated.div key={key} style={props}>
                         <Switch location={item}>
-                            <Route exact path="/urgudul/1">
+                            <Route path="/urgudul/1">
                                 <UrgudulFront />
                             </Route>
 
