@@ -5,7 +5,10 @@ import {AiOutlineSend} from 'react-icons/ai'
 import { animateScroll as scroll } from "react-scroll";
 import Signature from './Signature'
 
-function Decision_main() {
+const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
+
+function Decision_main({NotifyData}) {
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
     const [otherOne, setOtherOne] = useState({Cname: "getInputt", checked:null, self:""  });
@@ -24,25 +27,20 @@ function Decision_main() {
                     let obj = {};
                     if(el.value ==="false"){
                         let next = document.querySelectorAll(`.${el.name}${el.id}_why`); let otherArr = Array.from(next);
-                        otherArr.map(elem=>{
-                            if(elem.value!==""){ if(elem.id){ obj[elem.name] = elem.value; }else{ obj[elem.name] = elem.value; } }else{ obj["reason"] = null; cond = 1; }
-                        });
+                        otherArr.map(elem=>{ if(elem.value!==""){ if(elem.id){ obj[elem.name] = elem.value; }else{ obj[elem.name] = elem.value; } }else{ obj["reason"] = null; cond = 1; };});
                     }else{ obj["reason"] = null }
                     final[el.name] = obj;
                     obj["checked"] = el.value;
-                    
                 }
             }else{
-                if(el.name === "reject_reason"){
-                    dd["checked"] = el.value; final[el.name] = dd;
-                }else{
-                    if(!el.value){  el.classList += " RedPar"; }else{ final[el.name] = el.value; el.classList =- " RedPar"; el.classList += " getInputt" }
+                if(el.name === "reject_reason"){ dd["checked"] = el.value; final[el.name] = dd;
+                }else{ if(!el.value){  el.classList += " RedPar"; }else{ final[el.name] = el.value; el.classList =- " RedPar"; el.classList += " getInputt" }
                 }
             }
         });
-        if(imgData!==null){ final["signature"] = imgData; }
-        let keys = Object.keys(final); 
-        console.log(keys.length);
+        if(imgData!==null){final["signature"] = imgData;}; let keys = Object.keys(final); 
+
+        final["projectId"] = NotifyData.projectId; final["evaluationMeetingId"] = NotifyData.evaluationMeetingId;
 
         if(keys.length < 9){
             setFinalErrorText("Та гүйцэд бөгөлнө үү...");
@@ -67,31 +65,26 @@ function Decision_main() {
                 <div className="TitlePar">
                     <div className="title">Үнэлгээний хорооны гишүүдийн саналын хуудас</div>
                 </div>
-
                 <div className="compName">
                     <div className="title">Байгууллагын нэр:</div>
                     <InputStyle  className="nameText"><input className="getInputt" name="compname" placeholder="Байгууллагын нэр..."  type="text" />  <div className="line"></div></InputStyle>
                 </div>
-
                 <div className="compName">
                     <div className="title">Төслийн нэр:</div>
                     <InputStyle  className="nameText"><input className="getInputt" name="project_name" placeholder="Төслийн нэр..."  type="text" />  <div className="line"></div></InputStyle>
                 </div>
-
                 <div className="compName">
                     <div className="title">Өргөдлийн дугаар:</div>
                     <InputStyle  className="nameText"><input className="getInputt" name="statement_num" placeholder="Өргөдлийн дугаар..."  type="number" />  <div className="line"></div></InputStyle>
                 </div>
                 <div className="compName">
                     <div className="title">Хурлын огноо:</div>
-                    <InputStyle  className="nameText"><input className="getInputt" name="date" placeholder="Хурлын огноо..."  type="date" />  <div className="line"></div></InputStyle>
+                    <InputStyle  className="nameText"><input className="getInputt" name="date" placeholder="Хурлын огноо..." max={Currentdate} type="date" />  <div className="line"></div></InputStyle>
                 </div>
-
                 <div style={{marginBottom:35}} className="compName">
                     <div className="title">Үнэлгээний хорооны гишүүний овог, нэр:</div>
                     <InputStyle  className="nameText"><input className="getInputt" name="member_name" placeholder="овог, нэр..."  type="text" />  <div className="line"></div></InputStyle>
                 </div>
-
 
                 <div className="infoWhere">
                         <div className="Title Title4"><span className="circle">⬤</span>Төсөл хэрэгжүүлэгчийн чадавхийг үнэлсэн үнэлгээ </div>
@@ -122,9 +115,7 @@ function Decision_main() {
                             <InputStyle className="nameText"><textarea className="assess_two_why" name="reason" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
                         </div>
                 </div>
-
                 <Signature setImgData={setImgData} />
-
 
                 <div className="infoWhere">
                         <div className="Title"><span className="circle">⬤</span>Өргөдөл гаргагч нь Экспортыг дэмжих төслөөс цахим хаягаар бичгээр хариуг авах бөгөөд хэрэв татгалзсан шийдвэрийн хариуг өгч буй бол шалтгааныг заавал бичнэ. Жишээ шалтгаанууд: :</div>
@@ -132,27 +123,23 @@ function Decision_main() {
                             {infoWhere2.map((el,i)=>{
                                     return(
                                         <div className="items">
-                                            <input className={`radio ${otherOne.Cname}`} value={el.title} checked={otherOne.checked} name="reject_reason" type="radio" />
-                                            <div className="title">{el.title}</div>
+                                            <input className={`radio ${otherOne.Cname}`} value={el.title} checked={otherOne.checked} name="reject_reason" type="radio" /><div className="title">{el.title}</div>
                                         </div>
                                     )
                             })}
                              <div className="items">
-                                <div className="title">Бусад :</div>
-                                <InputStyle className="nameText"><input className={otherOne.self} onChange={onChange1} name="reject_reason" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
+                                <div className="title">Бусад :</div><InputStyle className="nameText"><input className={otherOne.self} onChange={onChange1} name="reject_reason" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
                             </div>
                         </div>
                 </div>
-
                 <div className="buttonPar">
-                            <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                            <NextBtn onClick={ClickHandle} className="SubmitButton" type="button">Илгээх <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                    <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
+                    <NextBtn onClick={ClickHandle} className="SubmitButton" type="button">Илгээх <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                 </div>
             </div>
         </FeedBackCont>
     )
 }
-
 
 export default Decision_main
 
@@ -161,7 +148,6 @@ const FeedBackCont = styled.div`
     color: rgba(${textColor});
     padding-bottom:80px;
     margin-top:25px;
-
     .form-control{
        &:hover{
            border:1px solid #1890ff;

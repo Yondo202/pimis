@@ -18,7 +18,6 @@ function TableThreeDetails(props) {
         const list = initialData.concat( {id: 1});
         setInitialData(list);
     }
-
     useEffect(() => {
         if(props.initialData){
             setInitialData(props.initialData);
@@ -72,7 +71,7 @@ function TableThreeDetails(props) {
                 <div className="boldTitle">Хавсралт 2В</div>
                 <div className="italicTitle">ХҮСНЭГТ 3. ҮЙЛДВЭРЛЭГЧИЙН БАЙГАЛЬ ОРЧИН, НИЙГМИЙН УДИРДЛАГЫН ГҮЙЦЭТГЭЛИЙН ТАЛААРХ МЭДЭЭЛЛИЙН ТОВЧООН</div>
             </div>
-            {props.na3===1? (<div className={`GetItemAdd33 DetailPar`} > <div className="topTitle"> <div className="Title"> 1 . Торгууль / Шийтгэл / Санал гомдлууд :</div> <div className="null">  Байхгүй:
+            {props.na3===1? (<div className={`GetItemAdd33 DetailPar`} > <div className="topTitle"> <div className="Title"> 1 . ТОРГУУЛЬ ШИЙТГЭЛ БАЙХГҮЙ. :</div> <div className="null">  Байхгүй:
                                 <input checked={true} id="GetcheckBtnn3" className="GetcheckBtnn3" type="checkbox" name="na" />
                                </div>  </div>
                              </div>) : null  }

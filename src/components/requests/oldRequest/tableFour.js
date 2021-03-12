@@ -43,8 +43,6 @@ function TableFour(props) {
           });
           setInitialData(finalData);
         }
-
-        console.log("---------- 4");
       },[props.initialData]);
 
       const radioChange = (event)=> {
@@ -110,8 +108,6 @@ function TableFour(props) {
             const Procent = keys.length * 100 / 15;
             const FinalProcent = Math.round(Procent);
 
-            // console.log(finalEnd , "pps4 final end");
-
             if(finalOne2.length < 15){
               setOpacity("1");
               setProcent(FinalProcent);
@@ -166,7 +162,7 @@ function TableFour(props) {
                         helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000);
                         console.log(res, "$$(A) res 4 $$")}).catch((err)=>{setSpnBtn(false);helperContext.alertText('green', "Алдаа гарлаа", true);});
                     }
-            }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "false" && finalOne2[3].rowvalue === "true"  && finalOne2[4].rowvalue === "false" && 
+            }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "false" && finalOne2[3].rowvalue === "true"  && finalOne2[4].rowvalue === "false" &&
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
                       // Цааш 5,6 руу үргэлжилнэ

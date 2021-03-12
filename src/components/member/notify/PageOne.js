@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState } from 'react'
-import styled, { keyframes } from 'styled-components'
+import { useHistory } from 'react-router-dom'
+import styled from 'styled-components'
 import { useReactToPrint } from "react-to-print";
 import {VscFilePdf} from 'react-icons/vsc';
 import Content from './Content';
@@ -8,10 +9,18 @@ import AccessToken from '../../../context/accessToken';
 import {IoMdCheckmarkCircle  } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
 
-function PageOne() {
+function PageOne({NotifyData}) {
+    const history = useHistory();
     const [ imgData, setImgData ] = useState(null);
     const [ opacity, setOpacity ] = useState("0");
     const [ alert, setAlert ] = useState({ color:'yellow', text: 'null',cond: false });
+    const [ userName, setUserName ] = useState(null);
+
+    const alertHandle = (color, text, cond) =>{setAlert({color:color, text:text, cond:cond}); setTimeout(()=>{ setAlert({color:color, text:text, cond:false});},3000); }
+
+    useEffect(()=>{
+      let localName = localStorage.getItem("username");setUserName(localName);
+    },[]);
 
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -24,47 +33,41 @@ function PageOne() {
             if(el.name ==="is_violation"){
               if(el.checked===true){
                 if(el.value==="true"){
-                  final[el.name] = true;
-                  let reason = document.getElementById('reason');
-                  if(reason.value!==""){
-                    final[reason.name] = reason.value;
-                  }
-                }else{
-                  final["uussen_zorchil"] = null;
-                  final[el.name] = false;
-                }
+                  final[el.name] = true; let reason = document.getElementById('reason');
+                  if(reason.value!==""){ final[reason.name] = reason.value; }
+                }else{ final["uussen_zorchil"] = null; final[el.name] = false; }
               }
             }else{
-              if(!el.value){
-                el.classList += " red";
-              }else{
+              if(!el.value){  el.classList += " red"; }else{
                 final[el.name] = el.value;
                 el.classList =- " red";
                 el.classList += " getInputt";
               }
             }
         });
-        final["fullName"] = "example Name";
+        final["fullName"] = userName;
+        final["projectId"] = NotifyData.projectId;
+        final["evaluationMeetingId"] = NotifyData.evaluationMeetingId;
         if(imgData!==null){ final["signature_data"] = imgData; }
         let keys = Object.keys(final);
 
-        if(keys.length < 6){
+        if(keys.length < 8){
           setOpacity("1");
         }else{
           setOpacity("0");
-          axios.put(`projects/2/evaluation-member`, final, {headers: { Authorization: AccessToken() }}).then((res)=>{
+          axios.post(`evaluation-results`, final, {headers: { Authorization: AccessToken() }}).then((res)=>{
               console.log(res, " res");
-              setAlert({ color:"green", text:"Амжилттай илгээлээ", cond:true });  setTimeout(()=>{ setAlert({ cond:false }); },[4000]);
-          }).catch((err)=>{console.log(err); setAlert({ color:"orange", text:"Алдаа гарлааа", cond:true });});
+              alertHandle("green","Амжилттай илгээлээ", true );  setTimeout(()=>{ history.push('/') },2000);
+          }).catch((err)=>{console.log(err); alertHandle("orange","Алдаа гарлааа",true);});
         }
-        console.log(final);
+        console.log(final, "final");
     }
 
       return (
           <>
             <MainContainter className="container">
                 <div className="parent" ref={componentRef}>
-                     <Content setImgData={setImgData}  />
+                     <Content userName={userName} setImgData={setImgData}  />
                 </div>
                 <div className="buttonPar">
                     <div style={{opacity:opacity}} className="errtext">Та гүйцэд бөгөлнө үү...</div>

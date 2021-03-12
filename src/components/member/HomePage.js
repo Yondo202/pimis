@@ -1,19 +1,21 @@
-import React, { useState, useRef,useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-import {ColorRgb,textColor,fontFamily} from '../theme'
-import axios from 'axiosbase'
-import Token from 'context/accessToken'
+import React, { useState, useRef,useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
+import {ColorRgb,textColor,fontFamily} from '../theme';
+import axios from 'axiosbase';
+import Token from 'context/accessToken';
+import DocumentTitle from 'containers/document/DocumentTitle'
+import {IoMdCheckmarkCircle} from 'react-icons/io'
 
-function HomePage() {
+function HomePage({setNotify}) {
+    DocumentTitle("EDP - Үнэлгээний хорооны гишүүн");
     const [ cardData, setCardData ] = useState(null);
     const [ showModal, setShowModal ] = useState(false);
     const [ parent, setParent ] = useState({});
     const ClickHandle = e =>{ setParent(e); setShowModal(true);}
 
     useEffect(async()=>{
-        console.log(Token(), " my token");
-        const data = await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token() } });
+        const data = await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token()}});
         console.log(data, " my data");
         if(data.data.data[0]){ setCardData(data.data.data); }
     },[]);
@@ -27,7 +29,7 @@ function HomePage() {
                 </div>
             </div>
             <div className="CardParent">
-                  {showModal&&<Modal showModal={showModal} setShowModal={setShowModal} parent={parent} />} 
+                  {showModal&&<Modal showModal={showModal} setNotify={setNotify} setShowModal={setShowModal} parent={parent} />} 
                     {cardData? cardData.map((el,i)=>{
                         return(
                             <div onClick={()=>ClickHandle(el)} className="Ghost">
@@ -48,10 +50,12 @@ function HomePage() {
                                         </div>
                                         <div className="mains">
                                                 <div className="buttons Active">
-                                                  <Link to="/notify">Mэдэгдэх хуудас</Link> 
+                                                  <Link onClick={()=>setNotify(el)} to="/notify">Mэдэгдэх хуудас</Link> 
+                                                     {el.evaluationResult.is_violation?<IoMdCheckmarkCircle />:null}
                                                 </div>
-                                                <div className="buttons"> 
-                                                  <Link to="/memberdecision">Саналын хуудас</Link> 
+                                                <div className="buttons Active">
+                                                  <Link onClick={()=>setNotify(el)} to={el.evaluationResult.is_violation===false?`/memberdecision`:`#`}>Саналын хуудас</Link> 
+                                                     {el.approve?<IoMdCheckmarkCircle />:null} 
                                                 </div>
                                         </div>
                                     </div>
@@ -66,7 +70,19 @@ function HomePage() {
  
 export default HomePage
 
-
+const firstAnitamte = keyframes`
+    0% { transform:scale(100);opacity:0; }
+    10% { transform:scale(1.1);opacity:1; }
+    20% { transform:scale(1.2);opacity:1; }
+    30% { transform:scale(1.3);opacity:1; }
+    40% { transform:scale(1.4);opacity:1; }
+    50% { transform:scale(1);opacity:1;  }
+    60% { transform:scale(1);opacity:1; }
+    50% { transform:scale(1);opacity:1; }
+    50% { transform:scale(1.2);opacity:1; }
+    80% { transform:scale(1.1);opacity:1; }
+    100% { transform:scale(1);opacity:1;  }
+`
 
 const Memberhome = styled.div`
     font-family:${fontFamily};
@@ -74,7 +90,6 @@ const Memberhome = styled.div`
     padding-top:15px;
     font-size:13px;
     position:relative;
-    
     .CardParent{
         margin-top:20px;
         display:flex;
@@ -87,7 +102,7 @@ const Memberhome = styled.div`
                 background-color:white;
                 margin-top:25px;
                 transition:all 0.2s ease;
-                cursor:pointer;
+                // cursor:pointer;
                 box-shadow:0px 2px 10px -6px rgba(${ColorRgb});
                 border:1px solid #d8dbe0;
                 border-radius: 6px;
@@ -126,11 +141,11 @@ const Memberhome = styled.div`
                         justify-content:space-between;
                         padding:8px 0px;
                         position:relative;
-                        
                         .buttons{
+                            cursor:pointer;
                             // color: rgba(0,0,0,0.5);
                             border-radius:3px;
-                            padding:2px 10px;
+                            padding:4px 10px;
                             margin-top:14px;
                             // border:1px solid rgba(0,0,0,0.4);
                             background-color:#0d77b7;
@@ -140,15 +155,30 @@ const Memberhome = styled.div`
                                 color: #fff;
                             }
                         }
+
                         .Active{
+                            cursor:pointer;
+                            position:relative;
                             color: white;
                             border-radius:3px;
-                            padding:2px 10px;
+                            padding:4px 10px;
                             border:1px solid rgba(255,255,255,0.4);
                             background-color:#0d77b7;
                             a{
                                 text-decoration:none;
                                 color:white;
+                            }
+                            svg{
+                                background-color:white;
+                                border-radius:50%;
+                                position:absolute;
+                                font-size:18px;
+                                color:#00b300;
+                                top:-11px;
+                                right:-5px;
+                                animation-name: ${firstAnitamte};
+                                animation-duration: 5s;
+                                // animation-iteration-count: infinite;
                             }
                         }
                     }
@@ -266,9 +296,13 @@ const Memberhome = styled.div`
     }
 `
 
-const Modal = ({ setShowModal, parent }) =>{
+
+
+const Modal = ({ setShowModal, parent, setNotify }) =>{
     const ref = useRef();
-    const closeModal = e =>{ console.log(ref.current); if(ref.current === e.target){ setShowModal(false);}}
+    const closeModal = e =>{ if(ref.current === e.target){ setShowModal(false);}}
+
+    console.log(parent, " my parent");
     return(
         <div onClick={closeModal} ref={ref} className="Ghost Fix">
                 <div className="cardItems">
@@ -288,10 +322,10 @@ const Modal = ({ setShowModal, parent }) =>{
                         </div>
                         <div className="mains">
                                 <div className="buttons Active">
-                                 <Link to="/notify">Mэдэгдэх хуудас</Link> 
+                                 <Link onClick={()=>setNotify(parent)} to="/notify">Mэдэгдэх хуудас</Link>
                                 </div>
                                 <div className="buttons">
-                                 <Link to="/memberdecision">Саналын хуудас</Link> 
+                                 <Link onClick={()=>setNotify(parent)} to={parent.evaluationResult.is_violation===false?`/memberdecision`:`#`} >Саналын хуудас</Link> 
                                 </div>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect,useCallback } from 'react'
 import styled from 'styled-components'
 import {Color,ColorRgb,InputStyle,NextBtn} from "../theme"
+import {FaRegEye,FaRegEyeSlash} from 'react-icons/fa'
 import Modal from 'react-awesome-modal';
 import {CgProfile} from 'react-icons/cg'
 import {GoMail} from 'react-icons/go'
@@ -15,6 +16,8 @@ const specialCharacterRegx = /[ ~@#$%^&*()_+\-=[\]{;':\\|,.<>\/?]/;
 
 function Signup() {
     const signUpCtx = useContext(UserContext);
+    const [Show, setShow] = useState(false);
+    const [Show2, setShow2] = useState(false);
     const [ sectorData, setSectorData ] = useState([]);
     const [PassText, setPassText] = useState("");
     const [scale, setScale] = useState("1");
@@ -251,8 +254,9 @@ function Signup() {
                                                 </div>
                                                   <div className="name">
                                                       <BiLockOpen />
-                                                      <InputStyle className="newInp">
-                                                          <input onFocus={()=> setPasswordFocused(true)} onBlur={()=> setPasswordFocused(false)} onChange={e => onChangePassword(e.target.value)} value={password} type="password" className="userInp  form__field" placeholder="Нууц үг" name="password" required />
+                                                      <InputStyle className="newInp pass">
+                                                          <input onFocus={()=> setPasswordFocused(true)} onBlur={()=> setPasswordFocused(false)} onChange={e => onChangePassword(e.target.value)} value={password} type={Show?'text':'password'} className="userInp  form__field" placeholder="Нууц үг" name="password" />
+                                                          {Show?<FaRegEye onClick={()=>setShow(false)} />:<FaRegEyeSlash onClick={()=>setShow(true)} />}  
                                                           <div className="line"></div>
                                                       </InputStyle>
 
@@ -264,8 +268,9 @@ function Signup() {
                                                 <div className="labels"> <span> Нууц үг давтах </span> </div>
                                                   <div className="name">
                                                       <BiLockOpen />
-                                                      <InputStyle className="newInp">
-                                                          <input  type="password" className="userInp  form__field" placeholder="Нууц үгээ дахин оруулах" name="passwordagain" required />
+                                                      <InputStyle className="newInp pass">
+                                                          <input  type={Show2?'text':'password'} className="userInp  form__field" placeholder="Нууц үгээ дахин оруулах" name="passwordagain" />
+                                                          {Show2?<FaRegEye onClick={()=>setShow2(false)} />:<FaRegEyeSlash onClick={()=>setShow2(true)} />}  
                                                           <div className="line"></div>
                                                       </InputStyle>
                                                   </div>
@@ -486,6 +491,16 @@ const Component = styled.div`
                      margin-right:15px;
                      margin-bottom:5px;
                    }
+                   .pass{
+                        svg{
+                          position:absolute;
+                          right:0;
+                          bottom:2px;
+                          font-size:18px;
+                          color:rgba(0,0,0,0.9);
+                          cursor:pointer;
+                        }
+                    }
                    .form__group{
                     position:relative;
                     padding: 15px 0 0;

@@ -38,7 +38,7 @@ function ModalThree(props) {
 
                         </div>
                     )
-                }):<div className="items row"><div style={{backgroundColor:`rgba(63,255,181,0.2)`}} className="col-md-12 col-sm-12 col-12"><div className="question A1">Байхгүй</div></div> </div>  }
+                }):<div className="items row"><div style={{backgroundColor:`rgba(63,255,181,0.2)`}} className="col-md-12 col-sm-12 col-12"><div className="question A1">Торгууль шийтгэл байхгүй.</div></div> </div>  }
             </div>
 
             <div className="MarginBtn"> {margin>0?<CgPushChevronUp onClick={()=>clickHandle("remove")} />:<div></div>} <CgPushChevronDown onClick={()=>clickHandle("add")} /></div>

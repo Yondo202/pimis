@@ -104,10 +104,7 @@ function TableSix(props) {
             tableCondition2.push(Lala);
         });
 
-        console.log(tableCondition2[0], " bainuu?");
-
         let keys2 = Object.keys(tableCondition2[0]);
-
         let rs4 = document.querySelectorAll(".getUserInp2");
         let arr4 = Array.from(rs4);
         let userInp = {};

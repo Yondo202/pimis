@@ -31,7 +31,6 @@ function MainRequest() {
     const [ ScrollClass, setScrollClass ] = useState("");
     const [ tokens, setTokens ] = useState("");
     const [ userID, setUserId ] = useState();
-    const [ approved, setApproved ] = useState(0);
     const [ na3, setNa3 ] = useState(0);
 
     useEffect( async()=>{
@@ -43,7 +42,6 @@ function MainRequest() {
             let resData = await axios.get(`pps-request?userId=${LocalId}`, {headers: {Authorization:AccessToken()}});
             if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data);
                 console.log(resData,"++++++++++++++++ --- +++++++");
-                setApproved(resData.data.data.approved);
                 helpCtx.TableIdControl(resData.data.data.id);
                 setNa3(resData.data.data.na3);
             }
@@ -70,7 +68,7 @@ function MainRequest() {
 
     return (
         <>
-            {approved!==1? param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />:<NullParent className="BtnPar"><button onClick={backHanlde} ><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> )
+            {param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />:<NullParent className="BtnPar"><button onClick={backHanlde} ><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> )
             :( <>
                     <>
                     <PreviewBtn >
@@ -82,10 +80,6 @@ function MainRequest() {
                                         <div className={`${initialData&&initialData.name2!==null? Two==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Two==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name2!==null?(()=>(func("-100%", "0%", "100%","200%","300%","400%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
                                         <div className={`${initialData&&initialData.name3!==null? Three==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Three==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name3!==null?(()=>(func("-200%", "-100%", "0%","100%","200%","300%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
                                         <div className={`${initialData&&initialData.name4!==null? Four==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Four==="0%"? `borderPar2`: `borderPar` }`}  onClick={initialData&&initialData.name4!==null?(()=>(func("-300%", "-200%", "-100%","0%","100%","200%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">4</span></div> 
-                                        {/* <div className={`${One==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${Two==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${Three==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${Four==="0%"? `borderPar2`: `borderPar`}`} ><span className="items">4</span></div>  */}
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +115,7 @@ function MainRequest() {
                     <span>{helpCtx.alert.text}</span>
                 </AlertStyle>
             </>
-            ): <NotApprovedComp className="container"><button onClick={backHanlde2} ><RiArrowGoBackFill /> Буцах</button> <h3 style={{textAlign:"center"}}>Та шалгуур хангалтанд тэнцэхгүй бөгөөд цааш үргэлжлүүлэх боломжгүй байна.</h3> </NotApprovedComp>}
+            )}
         </>
     )
 }
