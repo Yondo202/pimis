@@ -18,7 +18,7 @@ const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0
 function TableOne(props) {
     const init = "once" 
     const history = useHistory();
-    const [ btnCond, setBtnCond ] = useState(init);
+    const [ btnCond, setBtnCond ] = useState(props.initialData?init:'twice');
     const [ secondChance, setSecondChance ] = useState([]);
     const [visible2, setVisible2] = useState(false);
     const [ spnBtn, setSpnBtn ] = useState(false);
@@ -40,7 +40,6 @@ function TableOne(props) {
           } finalData.push(el);
       });
       setDname(props.initialName);setDdate(props.initialDate);setInitialData(finalData);
-      console.log("---------- 1")
     },[props.initialData]);
 
     const radioChange = (event)=> {
@@ -103,12 +102,12 @@ function TableOne(props) {
                   setSpnBtn(true);
                   if(props.initialData){
                     await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
-                      setSpnBtn(false); scroll.scrollTo(0); setTimeout(()=>{history.push('/');},2000); tablesContext.alertText('orange', "Та шалгуур хангалтанд тэнцэхгүй байна", true ); 
+                      setSpnBtn(false);  tablesContext.alertText('green', "Амжилттай хадаглагдлаа", true ); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); scroll.scrollTo(0); tablesContext.reqMountFunc(1);
                        })
                       .catch((err)=>{setSpnBtn(false); tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
                   }else{
                     axios.post("pps-request", finalEnd, {headers: { Authorization:AccessToken()} })
-                    .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); setTimeout(()=>{history.push('/');},2000); scroll.scrollTo(0); tablesContext.alertText('orange', "Та шалгуур хангалтанд тэнцэхгүй байна", true ); setSpnBtn(false);
+                    .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); tablesContext.alertText('green', "Амжилттай", true ); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); scroll.scrollTo(0); setSpnBtn(false);tablesContext.reqMountFunc(1);
                     }).catch((err)=>{ setSpnBtn(false); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
                   }
                 }else if(btn==="once"){
@@ -128,8 +127,7 @@ function TableOne(props) {
                   .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); setSpnBtn(false);tablesContext.reqMountFunc(1);
                   }).catch((err)=>{ setSpnBtn(false); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
                 }
-              
-            }
+              }
       }
       const closeModalX=()=>{ setVisible2(false); };
       const closeModal=()=>{ setBtnCond("twice"); setVisible2(false); };

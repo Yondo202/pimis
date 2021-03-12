@@ -26,7 +26,7 @@ function Menu() {
     
     useEffect(() => {
       const userId = localStorage.getItem("userId", []);
-      const userName = localStorage.getItem("userName", []);
+      const userName = localStorage.getItem("username");
       setUserName(userName);
     }, []);
 
@@ -247,15 +247,14 @@ const Componentss = styled.div`
               &::before{
                 content:""attr(content)"";
                 color:white;
-                text-align:center;
                 display:flex;
                 justify-content:center;
+                align-items:center;
                 height:30px;
                 width:100px;
                 background-color:rgb(${ColorRgb});
                 position:absolute;
                 top:40px;
-                // clip-path: polygon(48% 29%, 100% 29%, 100% 100%, 0 100%, 0 30%, 22% 30%, 22% 0);
                 left:0;
                 border-radius:4px;
                 transition:all 0.3s ease;

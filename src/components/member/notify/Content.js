@@ -28,7 +28,7 @@ function PageOne(props) {
         <>
             <MainPar className="MainPar">
                     <div className="title"> Ашиг сонирхлын зөрчилгүй тухай мэдэгдэх хуудас</div>
-                    <div className="nameTitle">Үнэлгээний хорооны гишүүн: <span>example............</span></div>
+                    <div className="nameTitle">Үнэлгээний хорооны гишүүн: <span>{props.userName}</span></div>
                     <div className="MemeberInfo"><span className="titleSm">Албан тушаал: </span> 
                         <InputStyle className="inpp"> <input className="getInputt" name="occupation" type="text" placeholder="албан тушаалаа бичнэ үү..." /> <div className="line"></div></InputStyle>
                     </div>

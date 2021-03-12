@@ -1,17 +1,20 @@
-import React,{ useContext } from 'react'
+import React,{ useContext, useState } from 'react'
 import styled from 'styled-components'
 import {CgProfile} from 'react-icons/cg'
 import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
+import {FaRegEye,FaRegEyeSlash} from 'react-icons/fa'
 import UserContext from "../../context/UserContext";
 import {fontFamily, Color,ColorRgb,InputStyle, NextBtn} from "../theme"
 import Signup from './signup'
 import ForgetPassword from './ForgetPassword'
 import { useHistory } from 'react-router-dom'
 
+
 function Login() {
   const history = useHistory();
   const userCtx = useContext(UserContext);
+  const [Show, setShow] = useState(false);
 
     const handleClick = (e) =>{
         e.preventDefault();
@@ -42,7 +45,7 @@ function Login() {
                             <div className="name">
                                 <CgProfile />
                                 <InputStyle className="newInp">
-                                    <input type="input" className="LoginInpName" placeholder="Еmail хаягаараа нэвтэрнэ үү" name="name" required />
+                                    <input type="input" className="LoginInpName" placeholder="Еmail хаягаараа нэвтэрнэ үү" name="name"  />
                                     <div className="line"></div>
                                 </InputStyle>
                             </div>
@@ -54,8 +57,9 @@ function Login() {
                          </div>
                             <div className="name">
                                 <BiLockOpen />
-                                <InputStyle className="newInp">
-                                    <input type="password" className="LoginInpName form__field" placeholder="Нууц үгээ оруулна уу..." name="password" required /><div className="line"></div>
+                                <InputStyle className="newInp pass">
+                                    <input type={Show?'text':'password'} className="LoginInpName form__field" placeholder="Нууц үгээ оруулна уу..." name="password" /> {Show?<FaRegEye onClick={()=>setShow(false)} />:<FaRegEyeSlash onClick={()=>setShow(true)} />}   
+                                    <div className="line"></div>
                                 </InputStyle>
                             </div>
                         </div>
@@ -143,6 +147,16 @@ const Component = styled.div`
             .newInp{
               font-size:15px;
               width:100%;
+            }
+            .pass{
+                svg{
+                  position:absolute;
+                  right:0;
+                  bottom:2px;
+                  font-size:18px;
+                  color:rgba(0,0,0,0.9);
+                  cursor:pointer;
+                }
             }
           }
        }
