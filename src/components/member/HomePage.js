@@ -50,12 +50,12 @@ function HomePage({setNotify}) {
                                         </div>
                                         <div className="mains">
                                                 <div className="buttons Active">
-                                                  <Link onClick={()=>setNotify(el)} to="/notify">Mэдэгдэх хуудас</Link> 
-                                                     {el.evaluationResult.is_violation?<IoMdCheckmarkCircle />:null}
+                                                  <Link onClick={()=>setNotify(el)} to={el.medegdehHuudas?el.medegdehHuudas.is_violation===false?`/notify/${el.projectId}`:`#`:`/notify/${el.projectId}`} >Mэдэгдэх хуудас</Link> 
+                                                     {el.medegdehHuudas? el.medegdehHuudas.is_violation!==null?<IoMdCheckmarkCircle />:null: null}
                                                 </div>
                                                 <div className="buttons Active">
-                                                  <Link onClick={()=>setNotify(el)} to={el.evaluationResult.is_violation===false?`/memberdecision`:`#`}>Саналын хуудас</Link> 
-                                                     {el.approve?<IoMdCheckmarkCircle />:null} 
+                                                  <Link onClick={()=>setNotify(el)} to={el.medegdehHuudas?el.medegdehHuudas.is_violation===false?`/memberdecision/${el.projectId}`:`#`:`/memberdecision/${el.projectId}`}>Саналын хуудас</Link> 
+                                                     {el.sanalinnHuudas?el.approve!==null?<IoMdCheckmarkCircle />:<null />: null} 
                                                 </div>
                                         </div>
                                     </div>
@@ -71,17 +71,8 @@ function HomePage({setNotify}) {
 export default HomePage
 
 const firstAnitamte = keyframes`
-    0% { transform:scale(100);opacity:0; }
-    10% { transform:scale(1.1);opacity:1; }
-    20% { transform:scale(1.2);opacity:1; }
-    30% { transform:scale(1.3);opacity:1; }
-    40% { transform:scale(1.4);opacity:1; }
-    50% { transform:scale(1);opacity:1;  }
-    60% { transform:scale(1);opacity:1; }
-    50% { transform:scale(1);opacity:1; }
-    50% { transform:scale(1.2);opacity:1; }
-    80% { transform:scale(1.1);opacity:1; }
-    100% { transform:scale(1);opacity:1;  }
+    0% { transform:scale(10);opacity:0; }
+    100% { transform:scale(1);opacity:1; }
 `
 
 const Memberhome = styled.div`
@@ -177,7 +168,7 @@ const Memberhome = styled.div`
                                 top:-11px;
                                 right:-5px;
                                 animation-name: ${firstAnitamte};
-                                animation-duration: 5s;
+                                animation-duration: .5s;
                                 // animation-iteration-count: infinite;
                             }
                         }
@@ -322,10 +313,11 @@ const Modal = ({ setShowModal, parent, setNotify }) =>{
                         </div>
                         <div className="mains">
                                 <div className="buttons Active">
-                                 <Link onClick={()=>setNotify(parent)} to="/notify">Mэдэгдэх хуудас</Link>
+                                 <Link onClick={()=>setNotify(parent)} to={parent.medegdehHuudas?parent.medegdehHuudas.is_violation===false?`/notify/${parent.projectId}`:`#`:`/notify/${parent.projectId}`}>Mэдэгдэх хуудас</Link>
+                                 
                                 </div>
                                 <div className="buttons">
-                                 <Link onClick={()=>setNotify(parent)} to={parent.evaluationResult.is_violation===false?`/memberdecision`:`#`} >Саналын хуудас</Link> 
+                                 <Link onClick={()=>setNotify(parent)} to={parent.medegdehHuudas?parent.medegdehHuudas.is_violation===false?`/memberdecision/${parent.projectId}`:`#`:`/memberdecision/${parent.projectId}`}>Саналын хуудас</Link> 
                                 </div>
                         </div>
                     </div>

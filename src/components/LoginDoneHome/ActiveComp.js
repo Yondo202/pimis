@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import DocumentTitle from 'containers/document/DocumentTitle';
+import styled ,{keyframes} from 'styled-components'
+
+
 
 function ActiveComp(props) {
     DocumentTitle("EDP");

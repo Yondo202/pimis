@@ -23,6 +23,8 @@ function PageOne(props) {
       const changeHandle = (event) =>{
         if(event.target.value==="true"){ setWhy(true); ref.current.focus(); }else{ setWhy(false); }
       }
+
+      console.log(`propData----------`, props.propData);
     
       return (
         <>
@@ -30,7 +32,13 @@ function PageOne(props) {
                     <div className="title"> Ашиг сонирхлын зөрчилгүй тухай мэдэгдэх хуудас</div>
                     <div className="nameTitle">Үнэлгээний хорооны гишүүн: <span>{props.userName}</span></div>
                     <div className="MemeberInfo"><span className="titleSm">Албан тушаал: </span> 
-                        <InputStyle className="inpp"> <input className="getInputt" name="occupation" type="text" placeholder="албан тушаалаа бичнэ үү..." /> <div className="line"></div></InputStyle>
+                        <InputStyle className="inpp">
+                        {
+                          props.propData?
+                          <input className="getInputt" name="occupation" value={props.propData.occupation} type="text" placeholder="албан тушаалаа бичнэ үү..." />  : 
+                          <input className="getInputt" name="occupation" type="text" placeholder="албан тушаалаа бичнэ үү..." /> 
+                        } 
+                         <div className="line"></div></InputStyle>
                     </div>
                     <div className="contentPar">
                         <div className="items">Би Түншлэлийн дэмжлэг хүсэгчийн өргөдлийг үнэлэх, Түншлэлийн дэмжлэг хүсэгчийн чадавхыг үнэлэх үнэлгээний хорооны гишүүнээр ажиллахыг зөвшөөрч байна. </div>
@@ -42,19 +50,37 @@ function PageOne(props) {
                                     Үнэлгээний явцад оролцогч талуудтай ямар нэгэн ашиг сонирхлын зөрчил үүсгэхгүй бөгөөд аливаа зөрчил үүсэж болзошгүй тохиолдолд нөхцөл байдлыг ил тодоор зарлаж үнэлгээний багаас огцрох болно. <br /><br />
                                     [Хэрэв танд Түншлэлийн дэмжлэг хүсэгч ААН, Кластер болон үнэлгээний хорооны бусад гишүүдтэй сонирхлын зөрчил байгаа бол үнэлгээний хорооноос өөрийн хүсэлтээр огцорно уу.]<br />
                                     <div className="ZorchilPar"><span className="titleBig">Түншлэлийн дэмжлэг хүсэгчтэй дараах ашиг сонирхлын зөрчил үүсэж байна:</span> 
+                                    { props.propData?
+                                     <div className="childPar">
+                                          <div className="child"> <input className="radio getInputt" checked={props.propData.is_violation?true:false} id="radio" name="is_violation" value="true" type="radio" /><span className="smTitle">Тийм</span></div>
+                                          <div className="child childA"><input className="radio getInputt" checked={props.propData.is_violation?false:true} name="is_violation" value="false" type="radio" /><span className="smTitle">Үгүй</span></div>
+                                      </div>
+                                      :
                                       <div className="childPar">
                                           <div className="child"> <input className="radio getInputt" onChange={changeHandle} id="radio" name="is_violation" value="true" type="radio" /><span className="smTitle">Тийм</span></div>
                                           <div className="child childA"><input className="radio getInputt" onChange={changeHandle} name="is_violation" value="false" type="radio" /><span className="smTitle">Үгүй</span></div>
                                       </div>
+                                    }
+                                      
                                       
                                     </div>  
                                 </li>
+                                {props.propData? props.propData.is_violation? 
+                                <InputStyle >
+                                  <textarea ref={ref} id="reason" name="uussen_zorchil" value={props.propData.uussen_zorchil} placeholder="зөрчил үүсэж байгаа бол энд бичнэ үү..." />
+                                  <div className="line"></div>
+                                </InputStyle>
+                                 : 
+                                  <InputStyle style={why?{transform:`scale(1)`}:{transform:`scale(0)`}}>
+                                  <textarea ref={ref} id="reason" name="uussen_zorchil" placeholder="зөрчил үүсэж байгаа бол энд бичнэ үү..." />
+                                  <div className="line"></div>
+                                </InputStyle> 
+                                 :
                                 <InputStyle style={why?{transform:`scale(1)`}:{transform:`scale(0)`}}>
                                   <textarea ref={ref} id="reason" name="uussen_zorchil" placeholder="зөрчил үүсэж байгаа бол энд бичнэ үү..." />
                                   <div className="line"></div>
-                                </InputStyle>
+                                </InputStyle> }
                                 
-
                                 <li className="items"> 
                                     Түншлэлийн дэмжлэг олгох үйл ажиллагааг үнэлэх явцад оролцож буй талуудтай ямар нэгэн бизнес эсвэл гэр бүлийн харилцаа байхгүй гэдгийг үүгээр баталгаажуулж байна. Хэрэв ийм харилцаа гарч ирвэл төслийн захиралд нэн даруй мэдэгдэх болно. 
                                 </li>
@@ -85,7 +111,8 @@ function PageOne(props) {
                         {/* <div className="title"> Гарын үсэг: <div className="signatureItem">/........................................./ </div>  </div> */}
                         <div className="drowPar">
                               <div className="titleee">Гарын үсэг:</div> <div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>
-                                 {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
+                              { props.propData? <img className="SingatureImg"  src={props.propData.signature_data}/>  : trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null }
+                              {/* signature_data */}
                                     <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
                                         <div className="modalPar">
                                             <div className="Canvass">
@@ -104,11 +131,10 @@ function PageOne(props) {
                     <div className="datePar">
                       <span className="Title">Огноо: </span>
                       <InputStyle>
-                        <input className="getInputt" name="sdate" max={Currentdate} type="date" />
+                           { props.propData? <input className="getInputt" value={props.propData.sdate} name="sdate" max={Currentdate} type="date" /> : <input className="getInputt" name="sdate" max={Currentdate} type="date" /> }
                         <div className="line"></div>
                       </InputStyle>
                     </div>
-
 
              </MainPar>
              </>

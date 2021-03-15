@@ -29,7 +29,7 @@ function ModalFour(props) {
                         <div key={i} className="items row">
                                 <div style={{borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:` rgba(63,81,181,0.1)`}} className="col-md-5 col-sm-5 col-5"><div className="question">{el.name}</div></div>
                                 <div style={{textAlign:"center",borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:`rgba(63,255,181,0.2)`}} className="col-md-2 col-sm-2 col-2">
-                                <div className="question">{el.rowvalue === true? <span className="hariult">Тийм</span>: el.rowvalue === false? <span className="hariult">Үгүй</span>: <span className="hariult">хоосон</span>}</div>
+                                  <div className="question">{el.rowvalue === true? <span className="hariult">Тийм</span>: el.rowvalue === false? <span className="hariult">Үгүй</span>: <span className="hariult">хоосон</span>}</div>
                                 </div>
                                 <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:` rgba(63,81,181,0.1)`}} className="col-md-2 col-sm-2 col-2"><div className="question">{el.nameTwo}</div></div>
                                 <div className="col-md-3 col-sm-3 col-3" style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.2)`,backgroundColor:` rgba(63,81,181,0.1)`}}><div className="question">{el.nameThree}</div></div>
@@ -70,14 +70,19 @@ const TableTwo  = styled.div`
                 justify-content:center;
                 align-items:center;
                 height:100%;
-            .hariult{
-                font-weight:500;
-            }
+              .hariult{
+                  font-weight:500;
+              }
             }
         }
     }
     @media print{
       padding: 50px 10px 50px 5px;
+      .table{
+        .items{
+          break-inside: avoid;
+        }
+      }
   } 
     
 `

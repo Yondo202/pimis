@@ -13,10 +13,10 @@ function MemberRoute() {
                 <Route path="/" exact >
                     <MembersHome setNotify={setNotify} />
                 </Route>
-                <Route path="/memberdecision" >
+                <Route path="/memberdecision/:slug" >
                     <MemberDecision NotifyData={NotifyData} />
                 </Route>
-                <Route path="/notify">
+                <Route path="/notify/:slug">
                     <Notify NotifyData={NotifyData} />
                 </Route>
             </Switch>

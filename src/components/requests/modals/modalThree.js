@@ -84,6 +84,7 @@ const TableTwo  = styled.div`
         }
     }
     @media print{
+        break-inside: avoid;
         padding: 50px 10px 50px 5px;
         .MarginBtn{
             display:none;

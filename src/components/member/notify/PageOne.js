@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useReactToPrint } from "react-to-print";
 import {VscFilePdf} from 'react-icons/vsc';
@@ -11,15 +11,25 @@ import { CgDanger } from 'react-icons/cg';
 
 function PageOne({NotifyData}) {
     const history = useHistory();
+    const { slug } = useParams();
+    const [ Data, setData ] = useState(null);
+    const [ propData, setPropData ] = useState(null);
+    const [ spin, setSpin ] = useState(false);
     const [ imgData, setImgData ] = useState(null);
+    const [ errMsg ,setErrMsg ] =useState("");
     const [ opacity, setOpacity ] = useState("0");
     const [ alert, setAlert ] = useState({ color:'yellow', text: 'null',cond: false });
     const [ userName, setUserName ] = useState(null);
 
     const alertHandle = (color, text, cond) =>{setAlert({color:color, text:text, cond:cond}); setTimeout(()=>{ setAlert({color:color, text:text, cond:false});},3000); }
 
-    useEffect(()=>{
-      let localName = localStorage.getItem("username");setUserName(localName);
+    useEffect(async()=>{
+        await axios.get(`evaluation-meetings/scheduled-projects?projectId=${slug}`, { headers: { Authorization:AccessToken() } }).then(res=>{
+          console.log(res, " notify res");
+          setData(res.data.data[0]);setUserName(res.data.data[0].memberInfo.fullName);
+          if(res.data.data[0].medegdehHuudas!==null){setPropData(res.data.data[0].medegdehHuudas) };
+        })
+
     },[]);
 
     const componentRef = useRef();
@@ -45,33 +55,36 @@ function PageOne({NotifyData}) {
               }
             }
         });
-        final["fullName"] = userName;
-        final["projectId"] = NotifyData.projectId;
-        final["evaluationMeetingId"] = NotifyData.evaluationMeetingId;
-        if(imgData!==null){ final["signature_data"] = imgData; }
+        // final["fullName"] = userName;
+        final["projectId"] = Data.projectId;
+        final["evaluationMeetingId"] = Data.evaluationMeetingId;
+        
         let keys = Object.keys(final);
 
-        if(keys.length < 8){
-          setOpacity("1");
+        if(keys.length < 6){
+          setErrMsg("Та гүйцэд бөгөлнө үү..."); setOpacity("1");
+        }else if(!imgData){
+          setErrMsg("Гарын үсэгээ зурж баталгаажуулна уу..."); setOpacity("1");
         }else{
-          setOpacity("0");
-          axios.post(`evaluation-results`, final, {headers: { Authorization: AccessToken() }}).then((res)=>{
-              console.log(res, " res");
-              alertHandle("green","Амжилттай илгээлээ", true );  setTimeout(()=>{ history.push('/') },2000);
-          }).catch((err)=>{console.log(err); alertHandle("orange","Алдаа гарлааа",true);});
+          setSpin(true);final["signature_data"] = imgData; setOpacity("0");
+          axios.post(`evaluation-results/member-interest`, final, {headers: { Authorization: AccessToken() }}).then((res)=>{ console.log(res, " res");
+              alertHandle("green","Амжилттай илгээлээ", true ); setTimeout(()=>{ history.push('/'); setSpin(false); },2000); 
+          }).catch((err)=>{console.log(err); alertHandle("orange","Алдаа гарлааа",true); setSpin(false);});
         }
         console.log(final, "final");
     }
+
+    console.log(`propData`, propData)
 
       return (
           <>
             <MainContainter className="container">
                 <div className="parent" ref={componentRef}>
-                     <Content userName={userName} setImgData={setImgData}  />
+                     <Content propData={propData} userName={userName} setImgData={setImgData}  />
                 </div>
                 <div className="buttonPar">
-                    <div style={{opacity:opacity}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
-                    <div onClick={clickHandle} className="btn btn-primary">Илгээх</div>
+                    <div style={{opacity:opacity}} className="errtext">{errMsg}</div>
+                    <div onClick={clickHandle} style={!spin?{width:`40%`,opacity:1}: {width:`10%`,opacity:0.6}} className="btn btn-primary">{!spin?`Илгээх`: <img src="/gif1.gif" alt-="edp-img" /> } </div>
                 </div>
                 {/* <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button> */}
                 {/* <button className="print"  onClick={()=>window.print()}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button> */}
@@ -139,10 +152,15 @@ const MainContainter = styled.div`
           padding:0px 20px;
         }
         .btn{
-          transition:all 0.4s ease;
+          display:flex;
+          justify-content:center;
+          transition:all 0.3s ease;
           margin:10px 0px;
           max-width:700px;
           width:40%;
+          img{
+            width:26px;
+          }
       }
     }
     .print{
@@ -175,7 +193,7 @@ const MainContainter = styled.div`
         width:100%;
       }
       .btn{
-        width:100%;
+        width:100% !important;
       }
     }
   }
@@ -209,8 +227,5 @@ const AlertStyle = styled.div`
     .true{
         margin-right:14px;
         font-size:24px;
-        // color:green;
-
     }
-
 `

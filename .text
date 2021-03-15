@@ -1,0 +1,13 @@
+{
+    "compname":"Baiguullagiin ner",
+    "project_name":"Tosliin ner",
+    "statement_num":"6554456",
+    "date":"2021-03-15",
+    "member_name":"Gishvvnii ovog ner",
+    "assess_one":{"reason":null,"checked":"true"},
+    "assess_two":{"reason":"Neg haltgaanaas bolood","checked":"false"},
+    "reject_reason":{"reason":null,"checked":"Экспортын төлөвлөгөө нь чанарын шаардлага хангахуйц тодорхой бус"},
+    "signature":"base64 blblbl",
+    "projectId":1,
+    "evaluationMeetingId":4
+}

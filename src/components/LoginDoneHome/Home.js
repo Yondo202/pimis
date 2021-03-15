@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import styled ,{keyframes} from 'styled-components'
 import { ColorRgb } from '../theme'
 import { useParams } from "react-router-dom";
 import axios from '../../axiosbase';
@@ -50,6 +50,15 @@ function Home() {
 
 
 export default Home
+
+
+
+const animeate1 = keyframes`
+    0% { transform:scale(1);opacity:1; }
+    50% { transform:scale(1.1);opacity:0.5; }
+    100% { transform:scale(1);opacity:1; }
+`
+
 
 const HomeComponent = styled.div`
     max-width:1160px;
@@ -110,6 +119,7 @@ const HomeComponent = styled.div`
                     }
                 }
                 .itemsActive{
+                    // margin-top:-10px;
                     font-weight:500;
                     width:93%;
                     border-radius:4px;
@@ -118,6 +128,8 @@ const HomeComponent = styled.div`
                     color:rgba(0,0,0,1);
                     position:relative;
                     background-color:#89E673;
+                    animation-name:${animeate1};
+                    animation-duration:.7s;
                     &::before{
                         content:"✔";
                         position:absolute;
@@ -243,6 +255,9 @@ const HomeComponent = styled.div`
                 position:relative;
                 background-color:#89E673;
                 font-weight:500;
+                background-color:#89E673;
+                animation-name:${animeate1};
+                animation-duration:.7s;
                 &::before{
                     content:"✔";
                     position:absolute;
@@ -267,9 +282,9 @@ const HomeComponent = styled.div`
                     right:-21px;
                     height:42px;
                     width:90px;
-                    border-right:1px solid #535352; 
-                    border-bottom:1px solid #535352;
-                    border-left:1px solid #535352;
+                    border-right:1px solid #C1C1C1; 
+                    border-bottom:1px solid #C1C1C1;
+                    border-left:1px solid #C1C1C1;
                     border-radius: 0 0 90px 90px;
                 }
             }
