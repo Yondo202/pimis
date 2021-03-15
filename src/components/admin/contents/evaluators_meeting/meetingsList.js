@@ -2,14 +2,26 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useHistory } from 'react-router'
-import { animated } from 'react-spring'
-import { Spring, Transition } from 'react-spring/renderprops'
+import { Transition } from 'react-spring/renderprops'
 import UsersSVG from 'assets/svgComponents/usersSVG'
 import ClipboardListSVG from 'assets/svgComponents/clipboardListSVG'
 import TrashSVG from 'assets/svgComponents/trashSVG'
 import PenSVG from 'assets/svgComponents/penSVG'
 import './style.css'
 
+
+export const statusWord = (int) => {
+    switch (int) {
+        case 0:
+            return 'Хүлээгдэж буй'
+        case 1:
+            return 'Хуралдаж буй'
+        case 2:
+            return 'Хуралдсан'
+        default:
+            break
+    }
+}
 
 export default function EvaluatorsMeetingsList(props) {
     const projects = props.projects
@@ -75,12 +87,12 @@ export default function EvaluatorsMeetingsList(props) {
                                     {i + 1}
                                 </div>
                                 <div className="tw-w-40 tw-flex tw-items-center tw-justify-center tw-font-medium">
-                                    {meeting.status}
+                                    {statusWord(meeting.status)}
                                 </div>
                                 <div className="tw-w-40 tw-flex tw-items-center tw-justify-center tw-font-medium">
                                     {meeting.sdate}
                                 </div>
-                                <div className="tw-w-56 tw-flex tw-flex-nowrap tw-items-center tw-justify-center" style={{ fontSize: '13px' }}>
+                                <div className="tw-w-56 tw-flex tw-flex-nowrap tw-items-center tw-justify-center tw-text-13px">
                                     <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded-md tw-py-0.5 tw-px-2 focus:tw-outline-none" onClick={() => setDetails({ open: (details.id === meeting.id && details.type === 'members' ? !details.open : true), id: meeting.id, type: 'members' })}>
                                         <UsersSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
                                         {meeting.members?.length} гишүүн
@@ -90,7 +102,7 @@ export default function EvaluatorsMeetingsList(props) {
                                         {meeting.projects?.length} төсөл
                                     </button>
                                 </div>
-                                <div className="tw-w-56 tw-flex tw-flex-nowrap tw-items-center tw-justify-center tw-ml-auto" style={{ fontSize: '13px' }}>
+                                <div className="tw-w-56 tw-flex tw-flex-nowrap tw-items-center tw-justify-center tw-ml-auto tw-text-13px">
                                     <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded-md tw-py-0.5 tw-px-2 focus:tw-outline-none" onClick={() => navigateMeeting(meeting.id)}>
                                         <PenSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
                                         Өөрчлөх

@@ -54,6 +54,15 @@ const initialState = {
     },
 }
 
+export const sortDates = (datesObj) => {
+    const keys = Object.keys(datesObj)
+    const filterYears = keys.filter(key => key !== 'submitDate' && key !== 'endDate')
+    const highestYear = Math.max(...filterYears)
+    const insertIndex = keys.findIndex(key => +key === highestYear - 2)
+    filterYears.splice(insertIndex, 0, 'submitDate', 'endDate')
+    return filterYears
+}
+
 function UrgudulCalculations() {
     const [form, setForm] = useState(initialState)
 
@@ -118,7 +127,7 @@ function UrgudulCalculations() {
             })
     }, [])
 
-    const datesForm = Object.keys(form.sales)
+    const datesForm = sortDates(form.sales)
     const datesFormObj = dates.reduce((a, c) => ({ ...a, [c]: null }), {})
 
     const handleAddCountry = () => {
@@ -222,160 +231,162 @@ function UrgudulCalculations() {
     }
 
     return (
-        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center" style={{ fontSize: '15px' }}>
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">B8</span>
-                - Өөрийн төслийн хувьд дараах тооцооллыг хийнэ үү
+        <div className="tw-flex tw-justify-center">
+            <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-mx-4 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                    <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">B8</span>
+                    - Өөрийн төслийн хувьд дараах тооцооллыг хийнэ үү
 
-                <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
-            </div>
+                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
+                </div>
 
-            <div className="tw-text-sm tw-mt-3 tw-overflow-x-scroll">
-                <table>
-                    <thead>
-                        <tr className="tw-h-9">
-                            <th className="tw-border tw-text-center"></th>
-                            {datesForm.map(date => {
-                                switch (date) {
-                                    case 'submitDate':
-                                        return <th className="tw-border tw-text-center" key={date}>
-                                            {`${form.submitDate.year}-${form.submitDate.month}`}
-                                        </th>
-                                    case 'endDate':
-                                        return <th className="tw-border" key={date}>
-                                            <div className="tw-flex tw-justify-evenly tw-items-center">
-                                                {`${form.endDate.year ? form.endDate.year : ''}-${form.endDate.month ? form.endDate.month : ''}`}
-                                                <HelpPopup main="Төслийн дуусах хугацаа, сар жилээр" position="bottom" />
-                                            </div>
-                                        </th>
-                                    default:
-                                        return <th className="tw-border tw-text-center" key={date}>
-                                            {date}
-                                        </th>
-                                }
-                            })}
-                            <th className="tw-border tw-text-center">Нэгж</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr className="tw-h-9">
-                            <td className="tw-border pl-2 pr-1 tw-font-medium">Борлуулалт</td>
-                            {datesForm.map((item, i) =>
-                                <td className="tw-border tw-px-1" key={i}>
-                                    <div className="tw-flex tw-justify-center">
-                                        <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.sales[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.sales[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'sales')} />
-                                    </div>
-                                </td>
-                            )}
-                            <td className="tw-border tw-font-bold tw-text-center">$</td>
-                        </tr>
-                        <tr className="tw-h-9">
-                            <td className="tw-border tw-px-1">
-                                <div className="tw-flex tw-justify-between tw-items-center">
-                                    <span className="pl-1 tw-font-medium">Ажлын байр</span>
-
-                                    <HelpPopup main="НДШ төлдөг бүтэн цагийн ажлын байрны тоо." position="bottom" />
-                                </div>
-                            </td>
-                            {datesForm.map((item, i) =>
-                                <td className="tw-border tw-px-1" key={i}>
-                                    <div className="tw-flex tw-justify-center">
-                                        <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.fullTime_workplace[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.fullTime_workplace[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} />
-                                    </div>
-                                </td>
-                            )}
-                            <td className="tw-border tw-truncate tw-font-medium tw-text-center">Т/х</td>
-                        </tr>
-                        <tr className="tw-h-9">
-                            <td className="tw-border tw-px-1">
-                                <div className="tw-flex tw-justify-between tw-items-center">
-                                    <span className="pl-1 tw-font-medium">Бүтээмж</span>
-
-                                    <HelpPopup main="Нэг жилд үйлдвэрлэх үйлдвэрлэлийн тоо хэмжээ гм." position="bottom" />
-                                </div>
-                            </td>
-                            {datesForm.map((item, i) =>
-                                <td className="tw-border tw-px-1" key={i}>
-                                    <div className="tw-flex tw-justify-center">
-                                        <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.productivity[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.productivity[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'productivity')} />
-                                    </div>
-                                </td>
-                            )}
-                            <td className="tw-border tw-truncate tw-font-medium tw-text-center">Т/х</td>
-                        </tr>
-                        <tr className="tw-h-9">
-                            <td className="tw-border tw-px-1">
-                                <div className="tw-flex tw-justify-between tw-items-center">
-                                    <span className="pl-1 tw-font-medium">Экспорт</span>
-
-                                    <HelpPopup main="Экспортын тооцоог доорх хүснэгтэнд экспорт хийсэн улс болон бүтээгдхүүнээр задлан бичнэ үү." position="bottom" />
-                                </div>
-                            </td>
-                            {datesForm.map((item, i) =>
-                                <td className="tw-border tw-px-1 tw-text-right tw-font-medium" key={i}>
-                                    {exportSums[item] !== 0 && exportSums[item]?.toLocaleString()}
-                                </td>
-                            )}
-                            <td className="tw-border tw-truncate tw-font-bold tw-text-center">$</td>
-                        </tr>
-                        {form.export_details.map((country, i) =>
-                            <Fragment key={i}>
-                                <tr className="tw-h-9">
-                                    <td className="tw-border tw-px-1">
-                                        <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" />
-                                    </td>
-                                    <td className="tw-border tw-px-2" colSpan={datesForm.length}>
-                                        <button className="tw-float-right tw-bg-gray-500 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-600" onClick={() => handleRemoveCountry(i)} style={{ padding: '3px 8px' }}>
-                                            Улс хасах
-                                        </button>
-                                    </td>
-                                    <td className="tw-border tw-truncate tw-font-bold tw-text-center">$</td>
-                                </tr>
-                                {
-                                    country.export_products.map((product, j) =>
-                                        <tr className="tw-h-9" key={j}>
-                                            <td className="tw-border tw-px-1">
-                                                <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={product.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(product.productId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={window.innerWidth > 922 ? '922px' : `${window.innerWidth - 128}px`} />
-                                            </td>
-                                            {
-                                                datesForm.map((key, k) =>
-                                                    <td className="tw-border tw-px-1" key={k}>
-                                                        <div className="tw-flex tw-justify-center">
-                                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(product[key]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={product[key] || ''} thousandSeparator={true} onValueChange={values => handleInputProductExport(key, values.value, j, i)} />
-                                                        </div>
-                                                    </td>
-                                                )
-                                            }
-                                            <td className="tw-border">
-                                                <div className="tw-flex tw-items-center tw-justify-center">
-                                                    <ButtonTooltip tooltip="Бүтээгдэхүүнийг хасах" beforeSVG={<MinusCircleSVG className="tw-w-7 tw-h-7 tw-transition-colors tw-duration-300" />} onClick={() => handleRemoveProduct(j, i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                <div className="tw-text-sm tw-mt-3 tw-overflow-x-auto tw-overflow-y-hidden tw-mx-auto tw-pl-1 tw-pr-10">
+                    <table>
+                        <thead>
+                            <tr className="tw-h-9">
+                                <th className="tw-border tw-text-center"></th>
+                                {datesForm.map(date => {
+                                    switch (date) {
+                                        case 'submitDate':
+                                            return <th className="tw-border tw-text-center" key={date}>
+                                                {`${form.submitDate.year}-${form.submitDate.month}`}
+                                            </th>
+                                        case 'endDate':
+                                            return <th className="tw-border" key={date}>
+                                                <div className="tw-flex tw-justify-evenly tw-items-center">
+                                                    {`${form.endDate.year ? form.endDate.year : ''}-${form.endDate.month ? form.endDate.month : ''}`}
+                                                    <HelpPopup main="Төслийн дуусах хугацаа, сар жилээр" position="bottom" />
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    )
-                                }
-                                <tr className="tw-h-9">
-                                    <td className="tw-border tw-px-2" colSpan={datesForm.length + 2}>
-                                        <button className="tw-float-right tw-bg-gray-500 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-600" onClick={() => handleAddProduct(i)} style={{ padding: '3px 8px' }}>
-                                            Бүтээгдэхүүн нэмэх
-                                        </button>
+                                            </th>
+                                        default:
+                                            return <th className="tw-border tw-text-center" key={date}>
+                                                {date}
+                                            </th>
+                                    }
+                                })}
+                                <th className="tw-border tw-text-center">Нэгж</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="tw-h-9">
+                                <td className="tw-border pl-2 pr-1 tw-font-medium">Борлуулалт</td>
+                                {datesForm.map((item, i) =>
+                                    <td className="tw-border tw-px-1" key={i}>
+                                        <div className="tw-flex tw-justify-center">
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.sales[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.sales[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'sales')} />
+                                        </div>
                                     </td>
-                                </tr>
-                            </Fragment>
-                        )}
-                        <tr className="tw-h-9">
-                            <td className="tw-border tw-px-2" colSpan={datesForm.length + 2}>
-                                <button className="tw-float-right tw-bg-gray-500 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-600" onClick={handleAddCountry} style={{ padding: '3px 8px' }}>
-                                    Улс нэмэх
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                                )}
+                                <td className="tw-border tw-font-bold tw-text-center">$</td>
+                            </tr>
+                            <tr className="tw-h-9">
+                                <td className="tw-border tw-px-1">
+                                    <div className="tw-flex tw-justify-between tw-items-center">
+                                        <span className="pl-1 tw-font-medium">Ажлын байр</span>
 
-            <div className="tw-flex tw-justify-end">
-                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600 tw-text-sm" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                                        <HelpPopup main="НДШ төлдөг бүтэн цагийн ажлын байрны тоо." position="bottom" />
+                                    </div>
+                                </td>
+                                {datesForm.map((item, i) =>
+                                    <td className="tw-border tw-px-1" key={i}>
+                                        <div className="tw-flex tw-justify-center">
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.fullTime_workplace[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.fullTime_workplace[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} />
+                                        </div>
+                                    </td>
+                                )}
+                                <td className="tw-border tw-truncate tw-font-medium tw-text-center">Т/х</td>
+                            </tr>
+                            <tr className="tw-h-9">
+                                <td className="tw-border tw-px-1">
+                                    <div className="tw-flex tw-justify-between tw-items-center">
+                                        <span className="pl-1 tw-font-medium">Бүтээмж</span>
+
+                                        <HelpPopup main="Нэг жилд үйлдвэрлэх үйлдвэрлэлийн тоо хэмжээ гм." position="bottom" />
+                                    </div>
+                                </td>
+                                {datesForm.map((item, i) =>
+                                    <td className="tw-border tw-px-1" key={i}>
+                                        <div className="tw-flex tw-justify-center">
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.productivity[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.productivity[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'productivity')} />
+                                        </div>
+                                    </td>
+                                )}
+                                <td className="tw-border tw-truncate tw-font-medium tw-text-center">Т/х</td>
+                            </tr>
+                            <tr className="tw-h-9">
+                                <td className="tw-border tw-px-1">
+                                    <div className="tw-flex tw-justify-between tw-items-center">
+                                        <span className="pl-1 tw-font-medium">Экспорт</span>
+
+                                        <HelpPopup main="Экспортын тооцоог доорх хүснэгтэнд экспорт хийсэн улс болон бүтээгдхүүнээр задлан бичнэ үү." position="bottom" />
+                                    </div>
+                                </td>
+                                {datesForm.map((item, i) =>
+                                    <td className="tw-border tw-px-1 tw-text-right tw-font-medium" key={i}>
+                                        {exportSums[item] !== 0 && exportSums[item]?.toLocaleString()}
+                                    </td>
+                                )}
+                                <td className="tw-border tw-truncate tw-font-bold tw-text-center">$</td>
+                            </tr>
+                            {form.export_details.map((country, i) =>
+                                <Fragment key={i}>
+                                    <tr className="tw-h-9">
+                                        <td className="tw-border tw-px-1">
+                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" />
+                                        </td>
+                                        <td className="tw-border tw-px-2" colSpan={datesForm.length}>
+                                            <button className="tw-float-right tw-bg-gray-500 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-600" onClick={() => handleRemoveCountry(i)} style={{ padding: '3px 8px' }}>
+                                                Улс хасах
+                                        </button>
+                                        </td>
+                                        <td className="tw-border tw-truncate tw-font-bold tw-text-center">$</td>
+                                    </tr>
+                                    {
+                                        country.export_products.map((product, j) =>
+                                            <tr className="tw-h-9" key={j}>
+                                                <td className="tw-border tw-px-1">
+                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={product.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(product.productId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={window.innerWidth > 922 ? '922px' : `${window.innerWidth - 128}px`} />
+                                                </td>
+                                                {
+                                                    datesForm.map((key, k) =>
+                                                        <td className="tw-border tw-px-1" key={k}>
+                                                            <div className="tw-flex tw-justify-center">
+                                                                <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(product[key]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={product[key] || ''} thousandSeparator={true} onValueChange={values => handleInputProductExport(key, values.value, j, i)} />
+                                                            </div>
+                                                        </td>
+                                                    )
+                                                }
+                                                <td className="tw-border">
+                                                    <div className="tw-flex tw-items-center tw-justify-center">
+                                                        <ButtonTooltip tooltip="Бүтээгдэхүүнийг хасах" beforeSVG={<MinusCircleSVG className="tw-w-7 tw-h-7 tw-transition-colors tw-duration-300" />} onClick={() => handleRemoveProduct(j, i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
+                                    <tr className="tw-h-9">
+                                        <td className="tw-border tw-px-2" colSpan={datesForm.length + 2}>
+                                            <button className="tw-float-right tw-bg-gray-500 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-600" onClick={() => handleAddProduct(i)} style={{ padding: '3px 8px' }}>
+                                                Бүтээгдэхүүн нэмэх
+                                        </button>
+                                        </td>
+                                    </tr>
+                                </Fragment>
+                            )}
+                            <tr className="tw-h-9">
+                                <td className="tw-border tw-px-2" colSpan={datesForm.length + 2}>
+                                    <button className="tw-float-right tw-bg-gray-500 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-600" onClick={handleAddCountry} style={{ padding: '3px 8px' }}>
+                                        Улс нэмэх
+                                </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="tw-flex tw-justify-center">
+                    <ButtonTooltip classAppend="tw-mt-8 tw-mb-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600 tw-text-sm" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                </div>
             </div>
         </div>
     )

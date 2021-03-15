@@ -145,7 +145,7 @@ function UrgudulNoticeCluster() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-text-sm tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center" style={{ fontSize: '15px' }}>
+            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">D</span>
                 - Мэдэгдэл
 
@@ -153,7 +153,7 @@ function UrgudulNoticeCluster() {
             </div>
 
             <div>
-                <div className="tw-p-2 tw-mt-2 tw-mb-1 text-center tw-font-medium" style={{ fontSize: '15px' }}>
+                <div className="tw-p-2 tw-mt-2 tw-mb-1 text-center tw-font-medium tw-text-15px">
                     Өргөдөл гаргагч болон хамтран хүсэлт гаргаж буй хамтрагч талуудад дараах зүйлсийг мэдэгдэж байна:
                 </div>
 
@@ -201,8 +201,8 @@ function UrgudulNoticeCluster() {
                 </div>
 
                 <div className="tw-flex tw-justify-end tw-items-center">
-                    <button className="tw-inline-flex tw-items-center focus:tw-outline-none tw-rounded tw-bg-blue-500 active:tw-bg-blue-600 tw-transition-colors tw-pl-2 tw-pr-3 tw-py-1.5 tw-mr-4 tw-mb-4 tw-mt-2" onClick={() => setAgreed(!agreed)}>
-                        <span className={`tw-rounded-full tw-border ${agreed ? 'tw-border-white' : 'tw-border-blue-300'} tw-transition-colors tw-w-4 tw-h-4 tw-flex tw-items-center tw-justify-center tw-mr-1.5`}>
+                    <button className="tw-inline-flex tw-items-center focus:tw-outline-none tw-rounded tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-pl-3 tw-pr-4 tw-py-1.5 tw-mr-4 tw-mb-4 tw-mt-2" onClick={() => setAgreed(!agreed)}>
+                        <span className={`tw-rounded-full tw-border ${agreed ? 'tw-border-white' : 'tw-border-blue-300'} tw-transition-colors tw-w-4 tw-h-4 tw-flex tw-items-center tw-justify-center tw-mr-2`}>
                             <span className={`tw-rounded-full ${agreed ? 'tw-bg-white' : 'tw-bg-transparent'} tw-transition-colors tw-w-2 tw-h-2`}></span>
                         </span>
                         <span className={`${agreed ? 'tw-text-white' : 'tw-text-blue-200'} tw-transition-colors tw-font-medium tw-leading-tight`}>
@@ -222,7 +222,7 @@ function UrgudulNoticeCluster() {
                         <div className="tw-w-full tw-h-full tw-max-w-lg tw-flex tw-place-items-center tw-p-2 tw-pl-8">
                             <span className="tw-text-sm tw-font-medium">Аж ахуйн нэгжийн нэр:</span>
                             {companyName &&
-                                <span className="tw-ml-3 tw-bg-indigo-50 tw-rounded-lg tw-py-1 tw-px-2 tw-text-sm tw-text-indigo-500 tw-font-medium">{companyName}</span>
+                                <span className="tw-ml-3 tw-bg-indigo-50 tw-rounded tw-py-1 tw-px-2 tw-text-sm tw-text-indigo-500 tw-font-medium">{companyName}</span>
                             }
                         </div>
 
@@ -286,7 +286,7 @@ function UrgudulNoticeCluster() {
                     </div>
 
                     <div className="tw-flex tw-justify-end">
-                        <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600 tw-text-sm" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                        <ButtonTooltip classAppend="tw-mt-6 tw-mb-4 tw-mr-4" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
                     </div>
                 </div>
             }

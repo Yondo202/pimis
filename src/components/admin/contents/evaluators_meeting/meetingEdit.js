@@ -7,11 +7,10 @@ import { Column, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'dev
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory, useLocation } from 'react-router'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
+import { statusWord } from './meetingsList'
 
 
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
+const useQuery = () => new URLSearchParams(useLocation().search)
 
 export default function EvaluatorsMeetingEdit(props) {
     const projects = props.projects
@@ -21,6 +20,7 @@ export default function EvaluatorsMeetingEdit(props) {
     const [selectedEvaluators, setSelectedEvaluators] = useState([])
 
     const [meetingId, setMeetingId] = useState(useQuery().get('id'))
+
 
     useEffect(() => {
         if (meetingId) {
@@ -32,6 +32,7 @@ export default function EvaluatorsMeetingEdit(props) {
                 setDate(res.data.data?.[0]?.sdate)
                 setSelectedEvaluators(res.data.data?.[0]?.members)
                 setSelectedProjects(res.data.data?.[0]?.projects)
+                setStatus(res.data.data?.[0]?.status)
             }).catch(err => {
                 console.log(err.response?.data)
             })
@@ -39,6 +40,7 @@ export default function EvaluatorsMeetingEdit(props) {
     }, [])
 
     const [date, setDate] = useState(null)
+    const [status, setStatus] = useState('')
 
     const handleSetDateTime = (e) => setDate(e.value)
 
@@ -107,7 +109,7 @@ export default function EvaluatorsMeetingEdit(props) {
 
     return (
         <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0">
-            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded-md tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase" style={{ fontSize: '13px' }} onClick={() => history.push('/meetings')}>
+            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded-md tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/meetings')}>
                 <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
                 Буцах
             </button>
@@ -116,11 +118,22 @@ export default function EvaluatorsMeetingEdit(props) {
                 Үнэлгээний хорооны уулзалт
             </div>
 
-            <div className="tw-inline-flex tw-flex-wrap tw-items-center tw-mt-5 tw-p-2">
-                <div className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight">
-                    Уулзалтын цаг товлох:
+            <div className="tw-flex tw-flex-wrap tw-justify-between">
+                <div className="tw-inline-flex tw-flex-wrap tw-items-center tw-mt-5 tw-p-2 tw-mr-4">
+                    <div className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight">
+                        Уулзалтын цаг товлох:
+                    </div>
+                    <DateBox className="tw-ml-8" type="date" elementAttr={{ id: 'meeting-datebox' }} value={date} onValueChanged={handleSetDateTime} />
                 </div>
-                <DateBox className="tw-ml-8" type="date" elementAttr={{ id: 'meeting-datebox' }} value={date} onValueChanged={handleSetDateTime} />
+
+                <div className="tw-inline-flex tw-flex-wrap tw-items-center tw-mt-5 tw-p-2">
+                    <span className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight">
+                        Төлөв:
+                    </span>
+                    <span className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight tw-ml-4" style={{ minWidth: 60 }}>
+                        {statusWord(status)}
+                    </span>
+                </div>
             </div>
 
             <div className="tw-p-3 tw-pb-6 tw-bg-white tw-rounded-md tw-shadow-inner mt-1">

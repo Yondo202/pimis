@@ -186,9 +186,9 @@ function LetterOfInterest() {
 
     return (
         <div className="tw-relative tw-pt-20 tw-pb-32 tw-text-gray-700">
-            <button className="tw-absolute tw-top-4 tw-right-4 tw-flex tw-items-center tw-bg-blue-500 tw-text-white tw-py-1 tw-pl-2 tw-pr-3 tw-rounded-md hover:tw-shadow-md active:tw-bg-blue-600 focus:tw-outline-none" onClick={() => setPreviewModal(true)}>
+            <button className="tw-absolute tw-top-4 tw-left-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-5 tw-pr-6 tw-text-15px tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={() => setPreviewModal(true)}>
                 <SearchSVG className="tw-w-4 tw-h-4" />
-                <span className="tw-text-sm tw-ml-1">Урьдчилж харах</span>
+                <span className="tw-text-sm tw-ml-2">Урьдчилж харах</span>
             </button>
 
             <PreviewModal previewModal={previewModal} setPreviewModal={setPreviewModal} form={form} />
@@ -216,9 +216,10 @@ function LetterOfInterest() {
                             </button>
                         </div>
                         :
-                        <div className="tw-w-44 tw-h-44 tw-shadow-md tw-flex tw-justify-center tw-items-center tw-flex-shrink-0" onClick={() => inputRefLogo.current.click()}>
-                            <UploadSVG className="tw-w-8 tw-h-8 tw-text-blue-400" />
-                        </div>
+                        <button className="tw-w-44 tw-h-44 tw-shadow-md tw-flex tw-flex-col tw-justify-center tw-items-center tw-flex-shrink-0 tw-text-blue-400 tw-text-sm focus:tw-outline-none active:tw-text-blue-300 tw-transition-colors" onClick={() => inputRefLogo.current.click()}>
+                            <UploadSVG className="tw-w-8 tw-h-8" />
+                            <span className="tw-font-medium tw-mt-1">Лого</span>
+                        </button>
                     }
                     <input type="file" className="tw-invisible tw-absolute tw-h-0" onChange={handleUploadLogo} ref={inputRefLogo} />
 
@@ -282,17 +283,17 @@ function LetterOfInterest() {
                             </button>
                         </div>
                         :
-                        <div className="tw-w-32 tw-h-32 tw-shadow-md tw-absolute tw-top-2 tw-right-32 tw-flex tw-justify-center tw-items-center" onClick={() => inputRefStamp.current.click()}>
-                            <UploadSVG className="tw-w-8 tw-h-8 tw-text-blue-400" />
-                        </div>
+                        <button className="tw-w-32 tw-h-32 tw-shadow-md tw-absolute tw-top-2 tw-right-32 tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-blue-400 focus:tw-outline-none active:tw-text-blue-300 tw-transition-colors" onClick={() => inputRefStamp.current.click()}>
+                            <UploadSVG className="tw-w-8 tw-h-8" />
+                            <span className="tw-font-medium tw-mt-1">Тамга</span>
+                        </button>
                     }
                     <input type="file" name="" id="" className="tw-invisible tw-absolute tw-h-0" onChange={handleUploadStamp} ref={inputRefStamp} />
                 </div>
             </div>
 
-            <button className="tw-absolute tw-bottom-12 tw-left-1/2 tw-transform tw--translate-x-1/2 tw-bg-blue-500 tw-text-white tw-text-xl tw-rounded-md tw-py-1 tw-px-3 tw-font-medium hover:tw-shadow-md active:tw-bg-blue-600 focus:tw-outline-none tw-flex tw-items-center" onClick={handleSubmit}>
+            <button className="tw-absolute tw-bottom-12 tw-left-1/2 tw-transform tw--translate-x-1/2 tw-bg-blue-800 tw-text-white tw-text-15px tw-rounded tw-py-2 tw-px-8 tw-font-medium hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSubmit}>
                 Хадгалах
-                <UploadSVG className="tw-w-6 tw-h-6 tw-text-white tw-ml-2" />
             </button>
         </div>
     )

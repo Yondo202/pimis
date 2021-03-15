@@ -10,6 +10,7 @@ import RowImage from './rowImage'
 import RowHtml from './rowHtml'
 import { districts } from 'pages/urgudul/urgudul_a/form_a_1'
 import { useParams } from 'react-router-dom'
+import { sortDates } from 'pages/urgudul/urgudul_b/form_b_8'
 
 
 const labels = {
@@ -151,6 +152,8 @@ export default function UrgudulPreview(props) {
                 console.log(err.response?.data)
                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
             })
+        } else if (props.project) {
+            setProject(props.project)
         }
     }, [])
 
@@ -205,7 +208,7 @@ export default function UrgudulPreview(props) {
 
     const getCountryName = (id) => countries.filter(obj => obj.id === id)[0]?.description_mon
 
-    const dates = Object.keys(project.exportDatas?.sales || {})
+    const dates = project.exportDatas?.sales ? sortDates(project.exportDatas?.sales) : []
 
     const exportSums = dates.reduce((acc, cur) => ({ ...acc, [cur]: null }), {})
 
@@ -226,14 +229,14 @@ export default function UrgudulPreview(props) {
     const getProductName = (id) => products.filter(obj => obj.id === id)[0]?.description_mon
 
     return (
-        <div className="tw-text-sm tw-text-gray-700">
-            <button className="tw-ml-2 tw-mb-4 tw-flex tw-items-center tw-bg-blue-500 tw-text-white tw-py-1 tw-px-2 tw-rounded-md hover:tw-shadow-md active:tw-bg-blue-600 focus:tw-outline-none" onClick={handlePrint}>
+        <div className="tw-text-sm tw-text-gray-700" id="urgudul-preview-page">
+            <button className="tw-mb-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-text-15px tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handlePrint}>
                 <span className="tw-text-sm">Хэвлэх болон PDF-ээр татах</span>
-                <PrintSVG className="tw-w-5 tw-h-5 tw-ml-1" />
+                <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
             </button>
 
             <div className="preview-container" ref={componentRef}>
-                <div className="tw-text-lg text-center tw-font-medium tw-p-4 tw-mt-2">
+                <div className="tw-text-lg text-center tw-font-medium tw-p-4 tw-mt-2 tw-mb-4">
                     Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт
                 </div>
 
@@ -385,7 +388,7 @@ export default function UrgudulPreview(props) {
                                                 </th>
                                             case 'endDate':
                                                 return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-0.5" key={date}>
-                                                    {`${project.exportDatas?.submitDate?.year ? project.exportDatas?.submitDate?.year : ''}-${project.exportDatas?.submitDate?.month ? project.exportDatas?.submitDate?.month : ''}`}
+                                                    {`${project.exportDatas?.endDate?.year ? project.exportDatas?.endDate?.year : ''}-${project.exportDatas?.endDate?.month ? project.exportDatas?.endDate?.month : ''}`}
                                                 </th>
                                             default:
                                                 return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1" key={date}>

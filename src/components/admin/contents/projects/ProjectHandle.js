@@ -160,13 +160,13 @@ export default function ProjectHandle() {
 }
 
 const HeaderCell = (data) => (
-    <div className="tw-text-center tw-font-medium tw-text-gray-700" style={{ fontSize: '13px' }}>
+    <div className="tw-text-center tw-font-medium tw-text-gray-700 tw-text-13px">
         {data.column.caption}
     </div>
 )
 
 const HeaderCellMultiHeader = (data) => (
-    <div className="tw-font-medium tw-text-gray-70 tw-pl-4" style={{ fontSize: '13px' }}>
+    <div className="tw-font-medium tw-text-gray-70 tw-pl-4 tw-text-13px">
         {data.column.caption}
     </div>
 )

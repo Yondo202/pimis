@@ -10,6 +10,10 @@ module.exports = {
       inset: {
         '13': '52px',
       },
+      fontSize: {
+        '15px': '15px',
+        '13px': '13px',
+      }
     },
   },
   variants: {
