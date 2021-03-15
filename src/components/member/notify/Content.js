@@ -124,7 +124,7 @@ const MainPar = styled.div`
     font-size:13px;
     padding:25px 100px;
     border:1px solid rgba(0,0,0,.3);
-    color:rgba(${textColor},0.9);
+    color:rgba(${textColor},1);
     .datePar{
       padding-bottom:30px;
       display:flex;
