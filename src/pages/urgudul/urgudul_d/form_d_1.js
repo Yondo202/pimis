@@ -39,6 +39,10 @@ function UrgudulNoticeCluster() {
                 return newForm
             })
             setAgreed(true)
+        } else {
+            const newForm = form
+            newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
+            setForm([...newForm])
         }
     }, [UrgudulCtx.data.id])
 

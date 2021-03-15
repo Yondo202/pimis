@@ -240,7 +240,7 @@ export default function AnalystReport() {
         setRows([...newRows])
     }
 
-    const projectId = 3
+    const projectId = 1
 
     useEffect(() => {
         axios.get(`projects/${projectId}/bds-evaluation5c`, {
@@ -309,7 +309,7 @@ export default function AnalystReport() {
                     <label className="tw-mb-0 tw-font-medium">
                         Шинжилгээ хийсэн Бизнес шинжээч:
                     </label>
-                    <span className="tw-ml-3 tw-bg-blue-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
                         Zultsetseg
                     </span>
                 </div>
@@ -326,7 +326,7 @@ export default function AnalystReport() {
                     <label className="tw-mb-0 tw-font-medium">
                         Байгууллагын нэр:
                     </label>
-                    <span className="tw-ml-3 tw-bg-blue-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
                         {project.company_name}
                     </span>
                 </div>
@@ -335,7 +335,7 @@ export default function AnalystReport() {
                     <label className="tw-mb-0 tw-font-medium">
                         Төслийн нэр:
                     </label>
-                    <span className="tw-ml-3 tw-bg-blue-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
                         {project.project_name}
                     </span>
                 </div>
@@ -344,7 +344,7 @@ export default function AnalystReport() {
                     <label className="tw-mb-0 tw-font-medium">
                         Өргөдлийн дугаар:
                     </label>
-                    <span className="tw-ml-3 tw-bg-blue-50 tw-rounded-lg tw-py-1 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded-lg tw-py-1 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
                         {project.id}
                     </span>
                 </div>

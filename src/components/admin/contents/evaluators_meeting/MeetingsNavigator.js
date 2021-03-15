@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Switch, useLocation } from 'react-router-dom'
-import { animated, useTransition } from 'react-spring'
+import { animated, useTransition, config } from 'react-spring'
 import EvaluatorsMeetingEdit from './meetingEdit'
 import EvaluatorsMeetingsList from './meetingsList'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import './style.css'
 
 
 export default function EvaluatorsMeetingsNavigator() {
     const location = useLocation()
+    console.log(location)
 
     const transitionsPages = useTransition(location, location => location.pathname, {
-        from: { opacity: 0, transform: 'translateX(100px)' },
+        from: { opacity: 0, transform: location.pathname === '/meetings' ? 'translateX(-200px)' : 'translateX(200px)' },
         enter: { opacity: 1, transform: 'translateX(0)' },
-        leave: { opacity: 1, transform: 'translateX(-100px)' },
+        leave: { opacity: 0, transform: location.pathname === '/meetings' ? 'translateX(200px)' : 'translateX(-200px)' },
         initial: { opacity: 1 },
+        config: config.stiff,
     })
 
     const [projects, setProjects] = useState([])

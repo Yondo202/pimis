@@ -17,7 +17,7 @@ const FirstEvaluation = () => {
     setRows([...newRows])
   }
 
-  const projectId = 3
+  const projectId = 1
 
   useEffect(() => {
     axios.get(`projects/${projectId}/first-evalutions`, {

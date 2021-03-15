@@ -6,6 +6,7 @@ import './style.css'
 import { Column, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory, useLocation } from 'react-router'
+import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 
 
 function useQuery() {
@@ -19,7 +20,7 @@ export default function EvaluatorsMeetingEdit(props) {
     const [selectedProjects, setSelectedProjects] = useState([])
     const [selectedEvaluators, setSelectedEvaluators] = useState([])
 
-    const meetingId = useQuery().get('id')
+    const [meetingId, setMeetingId] = useState(useQuery().get('id'))
 
     useEffect(() => {
         if (meetingId) {
@@ -28,7 +29,7 @@ export default function EvaluatorsMeetingEdit(props) {
                 params: { id: meetingId }
             }).then(res => {
                 console.log(res.data)
-                setDateTime(res.data.data?.[0]?.sdate)
+                setDate(res.data.data?.[0]?.sdate)
                 setSelectedEvaluators(res.data.data?.[0]?.members)
                 setSelectedProjects(res.data.data?.[0]?.projects)
             }).catch(err => {
@@ -37,9 +38,9 @@ export default function EvaluatorsMeetingEdit(props) {
         }
     }, [])
 
-    const [dateTime, setDateTime] = useState(null)
+    const [date, setDate] = useState(null)
 
-    const handleSetDateTime = (e) => setDateTime(e.value)
+    const handleSetDateTime = (e) => setDate(e.value)
 
     const handleEvaluatorChange = (id) => {
         if (selectedEvaluators.includes(id)) {
@@ -60,32 +61,43 @@ export default function EvaluatorsMeetingEdit(props) {
     const AlertCtx = useContext(AlertContext)
 
     const handleSubmit = () => {
-        if (meetingId) {
-            axios.put(`evaluation-meetings/${meetingId}`, {
-                sdate: dateTime,
-                members: selectedEvaluators,
-                projects: selectedProjects
-            }, {
-                headers: { Authorization: getLoggedUserToken() },
-            }).then(res => {
-                console.log(res.data)
-            }).catch(err => {
-                console.log(err.response?.data)
-                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-            })
+        const validation = date && selectedEvaluators.length > 0 && selectedProjects.length > 0
+
+        if (validation) {
+            if (meetingId) {
+                axios.put(`evaluation-meetings/${meetingId}`, {
+                    sdate: date,
+                    members: selectedEvaluators,
+                    projects: selectedProjects,
+                    status: 0,
+                }, {
+                    headers: { Authorization: getLoggedUserToken() },
+                }).then(res => {
+                    console.log(res.data)
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өөрчлөлтийг хадгаллаа.' })
+                }).catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                })
+            } else {
+                axios.post('evaluation-meetings', {
+                    sdate: date,
+                    members: selectedEvaluators,
+                    projects: selectedProjects,
+                    status: 0,
+                }, {
+                    headers: { Authorization: getLoggedUserToken() },
+                }).then(res => {
+                    console.log(res.data)
+                    setMeetingId(res.data.data?.id)
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Уулзалтыг нэмлээ.' })
+                }).catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+                })
+            }
         } else {
-            axios.post('evaluation-meetings', {
-                sdate: dateTime,
-                members: selectedEvaluators,
-                projects: selectedProjects
-            }, {
-                headers: { Authorization: getLoggedUserToken() },
-            }).then(res => {
-                console.log(res.data)
-            }).catch(err => {
-                console.log(err.response?.data)
-                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-            })
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбарын мэдээлэл дутуу байна.' })
         }
     }
 
@@ -94,23 +106,24 @@ export default function EvaluatorsMeetingEdit(props) {
     const history = useHistory()
 
     return (
-        <div className="tw-text-sm tw-text-gray-700">
-            <button className="" onClick={() => history.push('/meetings')}>
+        <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0">
+            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded-md tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase" style={{ fontSize: '13px' }} onClick={() => history.push('/meetings')}>
+                <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
                 Буцах
             </button>
 
-            <div className="tw-text-lg tw-font-medium tw-text-center tw-p-2 tw-mt-10">
+            <div className="tw-text-lg tw-font-medium tw-p-2 tw-ml-4 tw-mt-10">
                 Үнэлгээний хорооны уулзалт
             </div>
 
-            <div className="tw-flex tw-flex-wrap tw-items-center tw-mt-8 tw-p-2">
+            <div className="tw-inline-flex tw-flex-wrap tw-items-center tw-mt-5 tw-p-2">
                 <div className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight">
                     Уулзалтын цаг товлох:
                 </div>
-                <DateBox className="tw-ml-8" type="date" elementAttr={{ id: 'meeting-datebox' }} value={dateTime} onValueChanged={handleSetDateTime} />
+                <DateBox className="tw-ml-8" type="date" elementAttr={{ id: 'meeting-datebox' }} value={date} onValueChanged={handleSetDateTime} />
             </div>
 
-            <div className="tw-p-3 tw-pb-6 tw-bg-white tw-rounded-md tw-shadow-inner">
+            <div className="tw-p-3 tw-pb-6 tw-bg-white tw-rounded-md tw-shadow-inner mt-1">
                 <div className="tw-font-medium">
                     Үнэлгээний хорооны гишүүд сонгох
                 </div>

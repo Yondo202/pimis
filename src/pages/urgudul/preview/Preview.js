@@ -9,7 +9,6 @@ import Row from './row'
 import RowImage from './rowImage'
 import RowHtml from './rowHtml'
 import { districts } from 'pages/urgudul/urgudul_a/form_a_1'
-import { dates } from 'pages/urgudul/urgudul_b/form_b_8'
 import { useParams } from 'react-router-dom'
 
 
@@ -206,6 +205,8 @@ export default function UrgudulPreview(props) {
 
     const getCountryName = (id) => countries.filter(obj => obj.id === id)[0]?.description_mon
 
+    const dates = Object.keys(project.exportDatas?.sales || {})
+
     const exportSums = dates.reduce((acc, cur) => ({ ...acc, [cur]: null }), {})
 
     if (project.exportDatas?.export_details && project.exportDatas?.export_details?.length) {
@@ -371,68 +372,82 @@ export default function UrgudulPreview(props) {
                     <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-b-0 tw-border-gray-800 tw-mt-8">
                         B8 - Төслийн тооцоолол
                     </div>
-                    <table className="tw-border-collapse tw-table-auto tw-w-full">
-                        <thead>
-                            <tr>
-                                <th className="tw-border tw-border-gray-400"></th>
-                                <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1.5">{project.exportDatas?.baseYear}</th>
-                                <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1.5">{project.exportDatas?.submitDate?.year - 2}</th>
-                                <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1.5">{project.exportDatas?.submitDate?.year - 1}</th>
-                                <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1.5">{`${project.exportDatas?.submitDate?.year}-${project.exportDatas?.submitDate?.month}`}</th>
-                                <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1.5">{`${project.exportDatas?.endDate?.year}-${project.exportDatas?.endDate?.month}`}</th>
-                                <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1.5">{project.exportDatas?.submitDate?.year + 1}</th>
-                                <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1.5">{project.exportDatas?.submitDate?.year + 2}</th>
-                                <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1.5">{project.exportDatas?.submitDate?.year + 3}</th>
-                                <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1.5">Нэгж</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1.5">Борлуулалт</td>
-                                {dates.map((item, i) =>
-                                    <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1.5" key={i}>{project.exportDatas?.sales?.[item]?.toLocaleString()}</td>
-                                )}
-                                <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1.5">$</td>
-                            </tr>
-                            <tr>
-                                <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1.5">Ажлын байр</td>
-                                {dates.map((item, i) =>
-                                    <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1.5" key={i}>{project.exportDatas?.fullTime_workplace?.[item]?.toLocaleString()}</td>
-                                )}
-                                <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1.5">Т/х</td>
-                            </tr>
-                            <tr>
-                                <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1.5">Бүтээмж</td>
-                                {dates.map((item, i) =>
-                                    <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1.5" key={i}>{project.exportDatas?.productivity?.[item]?.toLocaleString()}</td>
-                                )}
-                                <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1.5">Т/х</td>
-                            </tr>
-                            <tr>
-                                <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1.5">Экспорт</td>
-                                {dates.map((item, i) =>
-                                    <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1.5" key={i}>{exportSums[item] !== 0 && exportSums[item]?.toLocaleString()}</td>
-                                )}
-                                <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1.5">$</td>
-                            </tr>
-                            {project.exportDatas?.export_details?.map((country, i) =>
-                                <Fragment key={i}>
-                                    <tr>
-                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-3" colSpan={dates.length + 2}>{getCountryName(country?.countryId)} - экспорт хийсэн улс болон бүтээгдэхүүнүүд</td>
-                                    </tr>
-                                    {country?.export_products?.map((product, j) =>
-                                        <tr key={j}>
-                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1.5">{getProductName(product?.productId)}</td>
-                                            {dates.map((item, k) =>
-                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1.5" key={k}>{product?.[item]?.toLocaleString()}</td>
-                                            )}
-                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1.5">$</td>
-                                        </tr>
+                    {Object.keys(project.exportDatas || {}).length > 0 ?
+                        <table className="tw-border-collapse tw-table-auto tw-w-full">
+                            <thead>
+                                <tr>
+                                    <th className="tw-border tw-border-gray-400"></th>
+                                    {dates.map(date => {
+                                        switch (date) {
+                                            case 'submitDate':
+                                                return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-0.5" key={date}>
+                                                    {`${project.exportDatas?.submitDate?.year}-${project.exportDatas?.submitDate?.month}`}
+                                                </th>
+                                            case 'endDate':
+                                                return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-0.5" key={date}>
+                                                    {`${project.exportDatas?.submitDate?.year ? project.exportDatas?.submitDate?.year : ''}-${project.exportDatas?.submitDate?.month ? project.exportDatas?.submitDate?.month : ''}`}
+                                                </th>
+                                            default:
+                                                return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1" key={date}>
+                                                    {date}
+                                                </th>
+                                        }
+                                    })}
+                                    <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1">Нэгж</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Борлуулалт</td>
+                                    {dates.map((item, i) =>
+                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.sales?.[item]?.toLocaleString()}</td>
                                     )}
-                                </Fragment>
-                            )}
-                        </tbody>
-                    </table>
+                                    <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                </tr>
+                                <tr>
+                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Ажлын байр</td>
+                                    {dates.map((item, i) =>
+                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.fullTime_workplace?.[item]?.toLocaleString()}</td>
+                                    )}
+                                    <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
+                                </tr>
+                                <tr>
+                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Бүтээмж</td>
+                                    {dates.map((item, i) =>
+                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.productivity?.[item]?.toLocaleString()}</td>
+                                    )}
+                                    <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
+                                </tr>
+                                <tr>
+                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Экспорт</td>
+                                    {dates.map((item, i) =>
+                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{exportSums[item] !== 0 && exportSums[item]?.toLocaleString()}</td>
+                                    )}
+                                    <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                </tr>
+                                {project.exportDatas?.export_details?.map((country, i) =>
+                                    <Fragment key={i}>
+                                        <tr>
+                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1" colSpan={dates.length + 2}>{getCountryName(country?.countryId)} - улсад экспорт хийсэн бүтээгдэхүүнүүд</td>
+                                        </tr>
+                                        {country?.export_products?.map((product, j) =>
+                                            <tr key={j}>
+                                                <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">{getProductName(product?.productId)}</td>
+                                                {dates.map((item, k) =>
+                                                    <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={k}>{product?.[item]?.toLocaleString()}</td>
+                                                )}
+                                                <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                            </tr>
+                                        )}
+                                    </Fragment>
+                                )}
+                            </tbody>
+                        </table>
+                        :
+                        <div className="tw-border tw-border-gray-400 tw-px-2 tw-py-4">
+                            Төслийн тооцоолол хүснэгтийн мэдээлэл оруулаагүй байна.
+                        </div>
+                    }
                 </div>
 
                 <div className="no-break">
