@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Switch, Route, useHistory, useParams, useLocation } from 'react-router-dom'
 import UrgudulFront from './formFront'
 import UrgudulApplicant from './urgudul_a/form_a_1'
@@ -20,6 +20,9 @@ import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import DocAddSVG from 'assets/svgComponents/docAddSVG'
+import SearchSVG from 'assets/svgComponents/searchSVG'
+import { Transition } from 'react-spring/renderprops-universal'
+import UrgudulPreview from './preview/Preview'
 
 
 function UrgudulNavigator(props) {
@@ -114,12 +117,34 @@ function UrgudulNavigator(props) {
         leave: { transform: 'translate3d(0, 20px, 0)' },
     })
 
+    const [previewModalOpen, setPreviewModalOpen] = useState(false)
+
+    const previewContainerRef = useRef()
+
+    const handleClickOutside = (e) => {
+        if (previewContainerRef && !previewContainerRef.current?.contains(e.target)) {
+            setPreviewModalOpen(false)
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    })
+
     return (
-        <div className="tw-w-full tw-max-w-5xl tw-mx-auto tw-text-gray-700">
-            <div className="tw-mt-8 tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
-                <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 1 && 'tw-invisible'}`} onClick={handlePrev}>
+        <div className="tw-relative tw-w-full tw-text-gray-700">
+            <div className="tw-mt-4 tw-ml-4 tw-mb-10">
+                <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-5 tw-pr-6 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-text-15px tw-transition-colors" onClick={() => setPreviewModalOpen(true)}>
+                    <SearchSVG className="tw-w-4 tw-h-4" />
+                    <span className="tw-text-sm tw-ml-2">Урьдчилж харах</span>
+                </button>
+            </div>
+
+            <div className="tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
+                <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 1 && 'tw-invisible'} tw-transition-shadow`} onClick={handlePrev}>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90" />
-                    <span className="tw-mr-1" style={{ fontSize: '13px' }}>Өмнөх</span>
+                    <span className="tw-mr-1 tw-text-13px">Өмнөх</span>
                 </button>
                 {
                     [...Array(5)].map((item, i) =>
@@ -128,116 +153,138 @@ function UrgudulNavigator(props) {
                         </button>
                     )
                 }
-                <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 10 && 'tw-invisible'}`} onClick={handleNext}>
-                    <span className="tw-ml-1" style={{ fontSize: '13px' }}>Дараах</span>
+                <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 10 && 'tw-invisible'} tw-transition-shadow`} onClick={handleNext}>
+                    <span className="tw-ml-1 tw-text-13px">Дараах</span>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw--rotate-90" />
                 </button>
             </div>
 
-            {
-                transitionsPages.map(({ item, props, key }) =>
-                    <animated.div key={key} style={props}>
-                        <Switch location={item}>
-                            <Route path="/urgudul/1">
-                                <UrgudulFront />
-                            </Route>
+            {transitionsPages.map(({ item, props, key }) =>
+                <animated.div key={key} style={props}>
+                    <Switch location={item}>
+                        <Route path="/urgudul/1">
+                            <UrgudulFront />
+                        </Route>
 
-                            <Route path="/urgudul/2">
-                                <UrgudulApplicant />
-                            </Route>
+                        <Route path="/urgudul/2">
+                            <UrgudulApplicant />
+                        </Route>
 
-                            <Route path="/urgudul/3">
-                                {
-                                    isCluster ? <UrugudulClusters /> : <UrugudulDirectors />
-                                }
-                            </Route>
+                        <Route path="/urgudul/3">
+                            {
+                                isCluster ? <UrugudulClusters /> : <UrugudulDirectors />
+                            }
+                        </Route>
 
-                            <Route path="/urgudul/4">
-                                <UrgudulOverview />
-                            </Route>
+                        <Route path="/urgudul/4">
+                            <UrgudulOverview />
+                        </Route>
 
-                            <Route path="/urgudul/5">
-                                <UrgudulBreakdown />
-                            </Route>
+                        <Route path="/urgudul/5">
+                            <UrgudulBreakdown />
+                        </Route>
 
-                            <Route path="/urgudul/6">
-                                <UrgudulActivities />
-                            </Route>
+                        <Route path="/urgudul/6">
+                            <UrgudulActivities />
+                        </Route>
 
-                            <Route path="/urgudul/7">
-                                <UrgudulBenefits />
-                            </Route>
+                        <Route path="/urgudul/7">
+                            <UrgudulBenefits />
+                        </Route>
 
-                            <Route path="/urgudul/8">
-                                <UrgudulCalculations />
-                            </Route>
+                        <Route path="/urgudul/8">
+                            <UrgudulCalculations />
+                        </Route>
 
-                            <Route path="/urgudul/9">
-                                {
-                                    isCluster ? <UrgudulNoticeCluster /> : <UrgudulNoticeCompany />
-                                }
-                            </Route>
+                        <Route path="/urgudul/9">
+                            {
+                                isCluster ? <UrgudulNoticeCluster /> : <UrgudulNoticeCompany />
+                            }
+                        </Route>
 
-                            <Route path="/urgudul/10">
-                                <UrgudulChecklist />
-                            </Route>
-                        </Switch>
-                    </animated.div>
-                )
-            }
+                        <Route path="/urgudul/10">
+                            <UrgudulChecklist />
+                        </Route>
+                    </Switch>
+                </animated.div>
+            )}
 
-            {
-                transitionsModal.map(({ item, key, props }) =>
-                    item &&
-                    <animated.div key={key} style={props} className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10">
-                        {
-                            transitionsModalContent.map(({ item, key, props }) =>
-                                item &&
-                                <animated.div key={key} style={props} className="tw-bg-white tw-relative tw-rounded-md tw-shadow-lg tw-p-4 tw-m-8 tw-w-full tw-max-w-3xl tw-flex tw-flex-col tw-items-center">
-                                    <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-2 tw-right-2" onClick={() => setModalOpen(false)}>
-                                        <CloseSVG className="tw-w-6 tw-h-6" />
+            {transitionsModal.map(({ item, key, props }) =>
+                item &&
+                <animated.div key={key} style={props} className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10">
+                    {
+                        transitionsModalContent.map(({ item, key, props }) =>
+                            item &&
+                            <animated.div key={key} style={props} className="tw-bg-white tw-relative tw-rounded-md tw-shadow-lg tw-p-4 tw-m-8 tw-w-full tw-max-w-3xl tw-flex tw-flex-col tw-items-center">
+                                <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-2 tw-right-2" onClick={() => setModalOpen(false)}>
+                                    <CloseSVG className="tw-w-6 tw-h-6" />
+                                </button>
+
+                                <div className="tw-flex tw-flex-wrap tw-justify-start">
+                                    {
+                                        projects.map((item, i) =>
+                                            <button className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300 focus:tw-outline-none tw-inline-flex tw-flex-col" key={item.id} onClick={() => loadProject(item.id)}>
+                                                <div className={`tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-justify-center tw-items-center tw-text-white tw-text-lg tw-font-bold ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
+                                                    ID: {item.id}
+                                                </div>
+                                                <div className="tw-pl-2 tw-mt-1 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
+                                                    {
+                                                        {
+                                                            1: 'Кластер',
+                                                            0: 'ААН',
+                                                        }[item.project_type] || '--/--'
+                                                    }
+                                                </div>
+                                                <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
+                                                    {item.company_name}
+                                                </div>
+                                                <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
+                                                    {item.project_name}
+                                                </div>
+                                            </button>
+                                        )
+                                    }
+
+                                    <button className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300 focus:tw-outline-none tw-inline-flex tw-flex-col" onClick={createProject}>
+                                        <div className="tw-w-32 tw-h-24 tw-bg-gray-400 tw-rounded-t-md tw-flex tw-justify-center tw-items-center">
+                                            <DocAddSVG className="tw-w-10 tw-h-10 tw-text-white" />
+                                        </div>
+                                        <div className="tw-px-2 tw-w-full tw-text-center tw-mt-2 tw-text-xs tw-font-medium">
+                                            Шинээр маягт бөглөх
+                                            </div>
+                                    </button>
+                                </div>
+                            </animated.div>
+                        )
+                    }
+                </animated.div>
+            )}
+
+            <Transition
+                items={previewModalOpen}
+                from={{ opacity: 0 }}
+                enter={{ opacity: 1 }}
+                leave={{ opacity: 0 }}>
+                {item => item && (anims1 =>
+                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-bg-gray-700 tw-bg-opacity-80 tw-z-10" style={anims1}>
+                        <Transition
+                            items={previewModalOpen}
+                            from={{ width: 0 }}
+                            enter={{ width: 'auto' }}
+                            leave={{ width: 0 }}>
+                            {item => item && (anims =>
+                                <div className="tw-fixed tw-top-0 tw-left-0 tw-h-screen tw-overflow-y-auto tw-overflow-x-hidden tw-mr-8 tw-bg-white tw-px-4 tw-pb-2 tw-pt-4" style={anims} ref={previewContainerRef}>
+                                    <button className="tw-text-red-500 active:tw-text-red-600 tw-rounded tw-border tw-border-red-500 active:tw-border-red-600 tw-absolute tw-top-1.5 tw-right-1.5 focus:tw-outline-none" onClick={() => setPreviewModalOpen(false)}>
+                                        <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" />
                                     </button>
 
-                                    <div className="tw-flex tw-flex-wrap tw-justify-start">
-                                        {
-                                            projects.map((item, i) =>
-                                                <button className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300 focus:tw-outline-none tw-inline-flex tw-flex-col" key={item.id} onClick={() => loadProject(item.id)}>
-                                                    <div className={`tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-justify-center tw-items-center tw-text-white tw-text-lg tw-font-bold ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
-                                                        ID: {item.id}
-                                                    </div>
-                                                    <div className="tw-pl-2 tw-mt-1 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
-                                                        {
-                                                            {
-                                                                1: 'Кластер',
-                                                                0: 'ААН',
-                                                            }[item.project_type] || '--/--'
-                                                        }
-                                                    </div>
-                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
-                                                        {item.company_name}
-                                                    </div>
-                                                    <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
-                                                        {item.project_name}
-                                                    </div>
-                                                </button>
-                                            )
-                                        }
-
-                                        <button className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300 focus:tw-outline-none tw-inline-flex tw-flex-col" onClick={createProject}>
-                                            <div className="tw-w-32 tw-h-24 tw-bg-gray-400 tw-rounded-t-md tw-flex tw-justify-center tw-items-center">
-                                                <DocAddSVG className="tw-w-10 tw-h-10 tw-text-white" />
-                                            </div>
-                                            <div className="tw-px-2 tw-w-full tw-text-center tw-mt-2 tw-text-xs tw-font-medium">
-                                                Шинээр маягт бөглөх
-                                            </div>
-                                        </button>
-                                    </div>
-                                </animated.div>
-                            )
-                        }
-                    </animated.div>
-                )
-            }
+                                    <UrgudulPreview project={UrgudulCtx.data} />
+                                </div>
+                            )}
+                        </Transition>
+                    </div>
+                )}
+            </Transition>
         </div>
     )
 }

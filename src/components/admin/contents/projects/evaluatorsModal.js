@@ -89,7 +89,7 @@ export default function EvaluatorsModal(props) {
                             Үнэлгээний хорооны гишүүд
                         </div>
 
-                        <div className="tw-text-right tw-font-medium tw-pr-2" style={{ fontSize: '15px' }}>
+                        <div className="tw-text-right tw-font-medium tw-pr-2 tw-text-15px">
                             {project.project_name}
                         </div>
                         <div className="tw-text-right tw-font-medium tw-pr-2">
@@ -128,7 +128,7 @@ export default function EvaluatorsModal(props) {
                         <div className="tw-flex tw-items-end tw-justify-between tw-mt-8 tw-mb-3">
                             <span className="tw-mr-4 tw-font-medium">Үнэлгээний хорооны гишүүдээс томилох:</span>
                             <div className="tw-inline-flex tw-items-center tw-border tw-border-gray-400 tw-rounded tw-pl-1.5 tw-pr-1 focus-within:tw-border-blue-500 tw-text-gray-600 focus-within:tw-text-blue-600 tw-transition-colors">
-                                <input className="tw-py-1 focus:tw-outline-none tw-text-gray-700" style={{ fontSize: '13px' }} type="text" value={search} onChange={e => setSearch(e.target.value)} />
+                                <input className="tw-py-1 focus:tw-outline-none tw-text-gray-700 tw-text-13px" type="text" value={search} onChange={e => setSearch(e.target.value)} />
                                 <SearchSVG className="tw-w-4 tw-h-4 tw-transition-colors" />
                             </div>
                         </div>

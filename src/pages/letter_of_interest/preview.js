@@ -63,9 +63,9 @@ export default function LetterPreview(props) {
 
     return (
         <div className="tw-relative tw-text-gray-700">
-            <button className="tw-ml-2 tw-mb-4 tw-flex tw-items-center tw-bg-blue-500 tw-text-white tw-py-1 tw-px-2 tw-rounded-md hover:tw-shadow-md active:tw-bg-blue-600 focus:tw-outline-none" onClick={handlePrint}>
+            <button className="tw-ml-2 tw-mb-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-text-15px" onClick={handlePrint}>
                 <span className="tw-text-sm">Хэвлэх болон PDF-ээр татах</span>
-                <PrintSVG className="tw-w-5 tw-h-5 tw-ml-1" />
+                <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
             </button>
 
             <div className="letter-container" ref={componentRef}>

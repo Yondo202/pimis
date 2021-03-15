@@ -1,16 +1,19 @@
-.preview-container {
+#urgudul-preview-page {
     width: 21cm;
-    /* height: 29.7cm; */
     margin: 0 auto;
-    padding: 8px;
+}
+
+#urgudul-preview-page .preview-container {
+    /* max-width: 21cm; */
+    /* height: 29.7cm; */
     position: relative;
-    background-color: white;
 }
 
 @media print {
     @page {
         size: portrait A4;
-        margin: 0.5cm 0.2cm;
+        width: 27cm;
+        margin: 1cm 0.7cm;
     }
     .preview-container .no-break {
         break-inside: avoid;

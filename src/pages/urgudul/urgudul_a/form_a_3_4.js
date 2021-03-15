@@ -85,7 +85,7 @@ function UrgudulOverview() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
-            <div className={`tw-font-medium tw-p-3 tw-flex tw-items-center ${validate && checkInvalid(form.applicant_overview) && 'tw-text-red-500'} tw-transition-colors`} style={{ fontSize: '15px' }}>
+            <div className={`tw-font-medium tw-p-3 tw-flex tw-items-center ${validate && checkInvalid(form.applicant_overview) && 'tw-text-red-500'} tw-transition-colors tw-text-15px`}>
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">A3</span>
                 {isCluster ? '- Өргөдөл гаргагч кластерын хувьд кластерын хамтрагч талуудын товч танилцуулга'
                     : '- Өргөдөл гаргагч аж ахуй нэгжийн товч танилцуулга'
@@ -102,7 +102,7 @@ function UrgudulOverview() {
                 <FormRichText modules="full" value={form.applicant_overview || ''} name="applicant_overview" setForm={handleSetForm} />
             </div>
 
-            <div className={`tw-font-medium tw-p-3 tw-flex tw-items-center ${validate && checkInvalid(form.applicant_experience) && 'tw-text-red-500'} tw-transition-colors`} style={{ fontSize: '15px' }}>
+            <div className={`tw-font-medium tw-p-3 tw-flex tw-items-center ${validate && checkInvalid(form.applicant_experience) && 'tw-text-red-500'} tw-transition-colors tw-text-15px`}>
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A4</span>
                 {`- Өргөдөл гаргагч ${isCluster ? 'кластерын' : 'ААН-ийн'} төслийг хэрэгжүүлэх техникийн туршлага`}
 
@@ -114,7 +114,7 @@ function UrgudulOverview() {
             </div>
 
             <div className="tw-flex tw-justify-end">
-                <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600 tw-text-sm" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                <ButtonTooltip classAppend="tw-mt-6 tw-mb-4 tw-mr-4" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )

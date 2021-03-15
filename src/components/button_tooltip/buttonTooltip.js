@@ -18,7 +18,7 @@ function ButtonTooltip(props) {
 
     return (
         <div className={`tw-relative tw-inline-flex ${props.classAppend}`}>
-            <button className={`tw-rounded-lg hover:tw-shadow-md focus:tw-outline-none tw-flex tw-items-center ${props.classButton}`} onClick={props.onClick} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} ref={buttonRef}>
+            <button className={`tw-rounded hover:tw-shadow-md focus:tw-outline-none tw-flex tw-items-center ${props.classButton} tw-transition-colors`} onClick={props.onClick} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} ref={buttonRef}>
                 {props.beforeSVG}
 
                 {

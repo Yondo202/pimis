@@ -45,9 +45,9 @@ export default function FileCard(props) {
             </div>
 
             <div className={`tw-h-20 tw-flex tw-flex-col tw-justify-between tw-items-center ${props.uploading && 'tw-invisible'}`}>
-                <ButtonTooltip tooltip="Устгах" beforeSVG={<CloseSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} onClick={props.removeFile} classAppend="tw-p-0.5" classButton="tw-text-red-400 active:tw-text-red-500" />
+                <ButtonTooltip tooltip="Устгах" beforeSVG={<CloseSVG className="tw-w-5 tw-h-5" />} onClick={props.removeFile} classAppend="tw-m-0.5" classButton="tw-text-red-400 active:tw-text-red-500" />
 
-                <ButtonTooltip tooltip="Нээх" beforeSVG={<DownloadSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} onClick={props.downloadFile} classAppend="tw-mb-1 tw-p-0.5" classButton="tw-text-blue-400 active:tw-text-blue-500" />
+                <ButtonTooltip tooltip="Нээх" beforeSVG={<DownloadSVG className="tw-w-5 tw-h-5" />} onClick={props.downloadFile} classAppend="tw-m-0.5 tw-mb-1" classButton="tw-text-blue-400 active:tw-text-blue-500" />
             </div>
         </div>
     )

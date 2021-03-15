@@ -309,7 +309,7 @@ export default function AnalystReport() {
                     <label className="tw-mb-0 tw-font-medium">
                         Шинжилгээ хийсэн Бизнес шинжээч:
                     </label>
-                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
                         Zultsetseg
                     </span>
                 </div>
@@ -318,15 +318,15 @@ export default function AnalystReport() {
                     <label className="tw-mb-0 tw-font-medium">
                         Шинжилгээ, дүгнэлт хийсэн хугацаа:
                     </label>
-                    <input className="tw-border tw-rounded-md tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_start} onChange={e => handleInputEvaluator('check_start', e.target.value)} /> -ээс
-                    <input className="tw-border tw-rounded-md tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_end} onChange={e => handleInputEvaluator('check_end', e.target.value)} /> -ны хооронд.
+                    <input className="tw-border tw-rounded tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_start} onChange={e => handleInputEvaluator('check_start', e.target.value)} /> -ээс
+                    <input className="tw-border tw-rounded tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_end} onChange={e => handleInputEvaluator('check_end', e.target.value)} /> -ны хооронд.
                 </div>
 
                 <div className="tw-mt-3">
                     <label className="tw-mb-0 tw-font-medium">
                         Байгууллагын нэр:
                     </label>
-                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
                         {project.company_name}
                     </span>
                 </div>
@@ -335,7 +335,7 @@ export default function AnalystReport() {
                     <label className="tw-mb-0 tw-font-medium">
                         Төслийн нэр:
                     </label>
-                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded-lg tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
                         {project.project_name}
                     </span>
                 </div>
@@ -344,7 +344,7 @@ export default function AnalystReport() {
                     <label className="tw-mb-0 tw-font-medium">
                         Өргөдлийн дугаар:
                     </label>
-                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded-lg tw-py-1 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-1 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
                         {project.id}
                     </span>
                 </div>
@@ -410,7 +410,7 @@ export default function AnalystReport() {
                             config={config.stiff}>
                             {item => item && (anims =>
                                 <div className="tw-flex tw-justify-end tw-items-start tw-overflow-hidden" style={anims}>
-                                    <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-px-1.5 tw-py-1 tw-mt-1 tw-mx-3 tw-mb-3 tw-resize-none" style={{ fontSize: '13px' }} value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />
+                                    <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-px-1.5 tw-py-1 tw-mt-1 tw-mx-3 tw-mb-3 tw-resize-none tw-text-13px" value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />
                                 </div>
                             )}
                         </Transition>
@@ -419,7 +419,7 @@ export default function AnalystReport() {
             </div>
 
             <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
-                <button className="tw-bg-blue-500 tw-text-white tw-font-medium tw-text-sm tw-px-3 tw-py-1 tw-rounded-lg hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-600" onClick={handleSubmit}>
+                <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
                     Хадгалах
                 </button>
             </div>

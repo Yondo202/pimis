@@ -174,7 +174,7 @@ function UrgudulChecklist() {
                 </ol>
 
                 <div className="tw-flex tw-justify-end">
-                    <ButtonTooltip classAppend="tw-mt-4 tw-mb-2 tw-mr-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600 tw-text-sm" classLabel="tw-text-white" label="Илгээх" onClick={handleSubmit} />
+                    <ButtonTooltip classAppend="tw-mt-6 tw-mb-4 tw-mr-4" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px" classLabel="tw-text-white" label="Илгээх" onClick={handleSubmit} />
                 </div>
             </div>
         </div>
