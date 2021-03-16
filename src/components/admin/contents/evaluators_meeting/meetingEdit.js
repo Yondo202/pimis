@@ -109,7 +109,7 @@ export default function EvaluatorsMeetingEdit(props) {
 
     return (
         <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0">
-            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded-md tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/meetings')}>
+            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/meetings')}>
                 <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
                 Буцах
             </button>
@@ -130,7 +130,7 @@ export default function EvaluatorsMeetingEdit(props) {
                     <span className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight">
                         Төлөв:
                     </span>
-                    <span className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight tw-ml-4" style={{ minWidth: 60 }}>
+                    <span className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight tw-ml-4" style={{ minWidth: 80 }}>
                         {statusWord(status)}
                     </span>
                 </div>
@@ -195,7 +195,7 @@ export default function EvaluatorsMeetingEdit(props) {
             </div>
 
             <div className="tw-flex tw-justify-end lg:tw-justify-center">
-                <button className="tw-py-1 tw-px-4 tw-bg-gray-600 tw-text-white tw-rounded-md focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-4 lg:tw-mt-8 tw-mb-4 tw-mx-4" onClick={handleSubmit}>
+                <button className="tw-py-1 tw-px-4 tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-4 lg:tw-mt-8 tw-mb-4 tw-mx-4" onClick={handleSubmit}>
                     Хадгалах
                 </button>
             </div>

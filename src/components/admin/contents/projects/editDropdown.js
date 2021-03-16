@@ -45,6 +45,8 @@ export default function EditDropdown(props) {
         history.push(`progress/${props.data.data.userId}`)
     }
 
+    console.log('component rerendered ********')
+
     return (
         <DropDownButton
             splitButton={true}

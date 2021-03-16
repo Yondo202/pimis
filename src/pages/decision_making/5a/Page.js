@@ -5,6 +5,10 @@ import { config, Transition } from "react-spring/renderprops";
 import ButtonTooltip from "components/button_tooltip/buttonTooltip";
 import AnnotationSVG from "assets/svgComponents/annotationSVG";
 import AlertContext from "components/utilities/alertContext";
+import SearchSVG from "assets/svgComponents/searchSVG";
+import DecisionMakingPreviewModal from "./previewModal";
+import FirstEvaluationPreview from './preview'
+import { useParams } from "react-router";
 
 
 const FirstEvaluation = () => {
@@ -17,19 +21,20 @@ const FirstEvaluation = () => {
     setRows([...newRows])
   }
 
-  const projectId = 1
+  const projectId = useParams().id
 
   useEffect(() => {
-    axios.get(`projects/${projectId}/first-evalutions`, {
-      headers: { Authorization: getLoggedUserToken() },
-    }).then(res => {
-      console.log(res.data)
-      if (res.data.data?.length === initialState.length) {
-        setRows(res.data.data)
-      }
-    }).catch(err => {
-      console.log(err.response?.data)
-    })
+    projectId &&
+      axios.get(`projects/${projectId}/first-evalutions`, {
+        headers: { Authorization: getLoggedUserToken() },
+      }).then(res => {
+        console.log(res.data)
+        if (res.data.data?.length === initialState.length) {
+          setRows(res.data.data)
+        }
+      }).catch(err => {
+        console.log(err.response?.data)
+      })
   }, [])
 
   const [commentsOpen, setCommentsOpen] = useState(initialCommentsOpen)
@@ -52,8 +57,17 @@ const FirstEvaluation = () => {
     })
   }
 
+  const [previewModalOpen, setPreviewModalOpen] = useState(false)
+
   return (
     <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
+      <button className="tw-float-right tw-m-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center" onClick={() => setPreviewModalOpen(true)}>
+        <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
+        Харах
+      </button>
+
+      <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<FirstEvaluationPreview rows={rows} />} />
+
       <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">5a</span>
         <span className="tw-text-base tw-leading-tight">
@@ -102,11 +116,13 @@ const FirstEvaluation = () => {
         )}
       </div>
 
-      <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
-        <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
-          Хадгалах
+      {projectId &&
+        <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
+          <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
+            Хадгалах
         </button>
-      </div>
+        </div>
+      }
     </div>
   );
 };

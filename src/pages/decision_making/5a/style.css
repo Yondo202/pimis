@@ -1,0 +1,10 @@
+@media print {
+    @page {
+        /* size: portrait A4;
+        width: 27cm;
+        margin: 1cm 0.7cm; */
+    }
+    #no-break {
+        break-inside: avoid;
+    }
+}

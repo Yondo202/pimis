@@ -16,9 +16,9 @@ import Home from 'components/LoginDoneHome/Home'
 import Request from 'containers/requestComp/mainRequestOld'
 import Check from 'components/check/compCheck'
 import AttachmentUploads from 'pages/attachments/page';
-import FirstEvaluation from 'pages/decision_making/page_5a';
-import CompilationChecklist from 'pages/decision_making/page_5b';
-import AnalystReport from 'pages/decision_making/page_5c';
+import FirstEvaluation from 'pages/decision_making/5a/Page';
+import CompilationChecklist from 'pages/decision_making/5b/Page';
+import AnalystReport from 'pages/decision_making/5c/Page';
 import UrgudulPreview from 'pages/urgudul/preview/Preview';
 import MemberDecision from '../../components/member/member_decision/Decision_main'
 import MainDecision from '../../components/admin/contents/main_decision/Main_decision'
