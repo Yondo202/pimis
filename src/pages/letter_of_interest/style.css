@@ -33,7 +33,7 @@
 } */
 
 .letter-container .quill .ql-editor {
-    padding: 4px;
+    padding: 4px 8px;
     height: 49px;
 }
 

@@ -6,6 +6,10 @@ import { config, Transition } from 'react-spring/renderprops'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
+import SearchSVG from 'assets/svgComponents/searchSVG'
+import DecisionMakingPreviewModal from 'pages/decision_making/5a/previewModal'
+import AnalystReportPreview from './preview'
+import { useParams } from 'react-router'
 
 
 const rowDescriptions = {
@@ -240,29 +244,31 @@ export default function AnalystReport() {
         setRows([...newRows])
     }
 
-    const projectId = 1
+    const projectId = useParams().id
 
     useEffect(() => {
-        axios.get(`projects/${projectId}/bds-evaluation5c`, {
-            headers: { Authorization: getLoggedUserToken() },
-        }).then(res => {
-            console.log(res.data)
-            if (res.data.data?.rows?.length === initialState.length) {
-                setRows(res.data.data.rows)
-            }
-            setInfo(res.data.data.info)
-        }).catch(err => {
-            console.log(err.response?.data)
-        })
+        if (projectId) {
+            axios.get(`projects/${projectId}/bds-evaluation5c`, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                if (res.data.data?.rows?.length === initialState.length) {
+                    setRows(res.data.data.rows)
+                }
+                setInfo(res.data.data.info)
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
 
-        axios.get(`projects/${projectId}`, {
-            headers: { Authorization: getLoggedUserToken() },
-        }).then(res => {
-            console.log(res.data)
-            setProject(res.data.data)
-        }).catch(err => {
-            console.log(err.response?.data)
-        })
+            axios.get(`projects/${projectId}`, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                setProject(res.data.data)
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+        }
     }, [])
 
     const [commentsOpen, setCommentsOpen] = useState(initialCommentsOpen)
@@ -295,8 +301,17 @@ export default function AnalystReport() {
 
     const [project, setProject] = useState([])
 
+    const [previewModalOpen, setPreviewModalOpen] = useState(false)
+
     return (
         <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
+            <button className="tw-float-right tw-m-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center" onClick={() => setPreviewModalOpen(true)}>
+                <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
+                Харах
+            </button>
+
+            <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} project={project} />} />
+
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">5c</span>
                 <span className="tw-text-base tw-leading-tight">
@@ -318,7 +333,7 @@ export default function AnalystReport() {
                     <label className="tw-mb-0 tw-font-medium">
                         Шинжилгээ, дүгнэлт хийсэн хугацаа:
                     </label>
-                    <input className="tw-border tw-rounded tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_start} onChange={e => handleInputEvaluator('check_start', e.target.value)} /> -ээс
+                    <input className="tw-border tw-rounded tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_start} onChange={e => handleInputEvaluator('check_start', e.target.value)} /> -аас
                     <input className="tw-border tw-rounded tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_end} onChange={e => handleInputEvaluator('check_end', e.target.value)} /> -ны хооронд.
                 </div>
 
@@ -326,27 +341,33 @@ export default function AnalystReport() {
                     <label className="tw-mb-0 tw-font-medium">
                         Байгууллагын нэр:
                     </label>
-                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
-                        {project.company_name}
-                    </span>
+                    {project.company_name &&
+                        <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                            {project.company_name}
+                        </span>
+                    }
                 </div>
 
                 <div className="tw-mt-3">
                     <label className="tw-mb-0 tw-font-medium">
                         Төслийн нэр:
                     </label>
-                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
-                        {project.project_name}
-                    </span>
+                    {project.project_name &&
+                        <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                            {project.project_name}
+                        </span>
+                    }
                 </div>
 
                 <div className="tw-mt-3">
                     <label className="tw-mb-0 tw-font-medium">
                         Өргөдлийн дугаар:
                     </label>
-                    <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-1 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
-                        {project.id}
-                    </span>
+                    {project.id &&
+                        <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-1 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
+                            {project.id}
+                        </span>
+                    }
                 </div>
 
                 <Transition
@@ -418,11 +439,13 @@ export default function AnalystReport() {
                 )}
             </div>
 
-            <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
-                <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
-                    Хадгалах
-                </button>
-            </div>
+            {projectId &&
+                <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
+                    <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
+                        Хадгалах
+                    </button>
+                </div>
+            }
         </div>
     )
 }

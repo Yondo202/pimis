@@ -93,21 +93,21 @@ export default function EvaluatorsMeetingsList(props) {
                                     {meeting.sdate}
                                 </div>
                                 <div className="tw-w-56 tw-flex tw-flex-nowrap tw-items-center tw-justify-center tw-text-13px">
-                                    <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded-md tw-py-0.5 tw-px-2 focus:tw-outline-none" onClick={() => setDetails({ open: (details.id === meeting.id && details.type === 'members' ? !details.open : true), id: meeting.id, type: 'members' })}>
+                                    <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none" onClick={() => setDetails({ open: (details.id === meeting.id && details.type === 'members' ? !details.open : true), id: meeting.id, type: 'members' })}>
                                         <UsersSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
                                         {meeting.members?.length} гишүүн
                                     </button>
-                                    <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded-md tw-py-0.5 tw-px-2 focus:tw-outline-none tw-ml-4" onClick={() => setDetails({ open: (details.id === meeting.id && details.type === 'projects' ? !details.open : true), id: meeting.id, type: 'projects' })}>
+                                    <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none tw-ml-4" onClick={() => setDetails({ open: (details.id === meeting.id && details.type === 'projects' ? !details.open : true), id: meeting.id, type: 'projects' })}>
                                         <ClipboardListSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
                                         {meeting.projects?.length} төсөл
                                     </button>
                                 </div>
                                 <div className="tw-w-56 tw-flex tw-flex-nowrap tw-items-center tw-justify-center tw-ml-auto tw-text-13px">
-                                    <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded-md tw-py-0.5 tw-px-2 focus:tw-outline-none" onClick={() => navigateMeeting(meeting.id)}>
+                                    <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none" onClick={() => navigateMeeting(meeting.id)}>
                                         <PenSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
                                         Өөрчлөх
                                     </button>
-                                    <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded-md tw-py-0.5 tw-px-2 focus:tw-outline-none tw-ml-4" onClick={() => { }}>
+                                    <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none tw-ml-4" onClick={() => { }}>
                                         <TrashSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
                                         Устгах
                                     </button>
@@ -216,7 +216,7 @@ export default function EvaluatorsMeetingsList(props) {
             </div>
 
             <div className="tw-flex tw-justify-end lg:tw-justify-center">
-                <button className="tw-py-1 tw-px-4 tw-bg-gray-600 tw-text-white tw-rounded-md focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-4 lg:tw-mt-8 tw-mb-4 tw-mx-4" onClick={() => history.push('/meetings/id')}>
+                <button className="tw-py-1 tw-px-4 tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-4 lg:tw-mt-8 tw-mb-4 tw-mx-4" onClick={() => history.push('/meetings/id')}>
                     Уулзалт нэмэх
                 </button>
             </div>

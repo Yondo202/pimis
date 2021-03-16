@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { MenuColor, MainFontSize, fontFamily } from "../ThemeAdmin";
 import { useIntl } from "react-intl";
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from "react-pro-sidebar";
-import { FaChalkboardTeacher} from "react-icons/fa";
+import { FaChalkboardTeacher } from "react-icons/fa";
 import { MdSettings } from "react-icons/md";
 import { GiProgression } from "react-icons/gi";
 import sidebarBg from "./bg_image/bg1.jpg";
@@ -14,14 +14,14 @@ import UserContext from '../../../context/UserContext'
 const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
   const ctxUser = useContext(UserContext);
 
-  useEffect(()=>{
+  useEffect(() => {
     let role = localStorage.getItem("role");
     console.log(role);
-  },[ctxUser.userInfo.id]);
+  }, [ctxUser.userInfo.id]);
 
 
   console.log(ctxUser.userInfo.role, "----user context");
-  
+
 
 
   const intl = useIntl();
@@ -44,9 +44,10 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
           <SubMenu title="Түншлэлийн хөтөлбөр" icon={<GiProgression />}>
             <MenuItem>  <Link to="/projects"> Бүртгүүлсэн байгууллагууд</Link> </MenuItem>
             <MenuItem>Санхүүжилт</MenuItem>
+            <MenuItem><Link to="/meetings">Үнэлгээний хорооны уулзалт</Link></MenuItem>
           </SubMenu>
           {/* prefix={<span className="badge gray">3</span>} */}
-          <SubMenu  title="Сургалт" icon={<FaChalkboardTeacher />}>
+          <SubMenu title="Сургалт" icon={<FaChalkboardTeacher />}>
             <MenuItem>Зохион байгуулах хүсэлт</MenuItem>
             <MenuItem>Сургалтууд</MenuItem>
             <SubMenu title="Тайлангууд">
@@ -57,23 +58,23 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
           </SubMenu>
 
           <SubMenu title="Тохиргоо" icon={<MdSettings />}>
-              <MenuItem>
-                <Link to="/users">Хэрэглэгчид</Link>{" "}
-              </MenuItem>
-              <MenuItem> Төслийн нэгжийн мэдээлэл </MenuItem>
-              <SubMenu title="Түншлэлийн хөтөлбөр">
-                <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.1 </MenuItem>
-                <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.2 </MenuItem>
-              </SubMenu>
-              <SubMenu title="Сургалт">
-                <MenuItem>Сургалтын байгууллагууд</MenuItem>
-                <MenuItem>Сургалтын төрлүүд</MenuItem>
-              </SubMenu>
-              <SubMenu title="Даатгал">
-                <MenuItem>Тохиргоо -1</MenuItem>
-              </SubMenu>
+            <MenuItem>
+              <Link to="/users">Хэрэглэгчид</Link>{" "}
+            </MenuItem>
+            <MenuItem> Төслийн нэгжийн мэдээлэл </MenuItem>
+            <SubMenu title="Түншлэлийн хөтөлбөр">
+              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.1 </MenuItem>
+              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.2 </MenuItem>
             </SubMenu>
-          
+            <SubMenu title="Сургалт">
+              <MenuItem>Сургалтын байгууллагууд</MenuItem>
+              <MenuItem>Сургалтын төрлүүд</MenuItem>
+            </SubMenu>
+            <SubMenu title="Даатгал">
+              <MenuItem>Тохиргоо -1</MenuItem>
+            </SubMenu>
+          </SubMenu>
+
           {/* {ctxUser.userInfo.role==="edpadmin"?<SubMenu title="Тохиргоо" icon={<MdSettings />}> </SubMenu>
           :<SubMenu ></SubMenu>} */}
         </Menu>
