@@ -12,7 +12,7 @@ function Signature(props) {
     const closeModal=()=> { setVisible(false);}
     const clear = () => sigCanvas.clear();
     const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); props.setImgData(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); closeModal();};
-    
+
     return (
         <div className="rowItems">
             <div className="row">
@@ -23,8 +23,9 @@ function Signature(props) {
                             <div className="userInfPar">
                                 <div className="infItemPar">
                                         <div className="drowPar">
-                                            <div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>
-                                            {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}
+                                            {!props.url&&<div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>} 
+                                            {props.url? <img className="SingatureImg" src={props.url}/>  :  trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}  
+                                            {/* {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null} */}
                                                 <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
                                                     <div className="modalPar">
                                                         <div className="Canvass">

@@ -1,5 +1,5 @@
 import React,{ useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled,{keyframes} from 'styled-components';
 import { useHistory, useParams } from 'react-router-dom';
 import {fontSize, textColor,InputStyle,NextBtn,ColorRgb } from '../../theme';
 import { animateScroll as scroll } from "react-scroll";
@@ -17,7 +17,9 @@ function Decision_main({NotifyData}) {
     const history = useHistory();
     const [ Data, setData ] = useState(null);
     const [ spin, setSpin ] = useState(false);
-    const [ type, setType ] = useState("text");
+    const [ ReasonData, setReasonData ] = useState(infoWhere2);
+    const [ sanalData, setSanalData ] = useState(false);
+    const [ type, setType ] = useState(false);
     const [ alert, setAlert ] = useState({ color:'yellow', text: 'null',cond: false });
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
@@ -28,9 +30,22 @@ function Decision_main({NotifyData}) {
         await axios.get(`evaluation-meetings/scheduled-projects?parentId=${slug}`, { headers : { Authorization: Token()}}).then(res=>{
             console.log(res, "resss+-+--+-+-+-+-");
             setData(res.data.data[0]);
+           if(res.data.data[0].sanalinnHuudas.approve){ setSanalData(true); setReasonData(infoWhere2.filter(el=> el.code===res.data.data[0].sanalinnHuudas.reject_reason.code)); }
+        //    if(res.data.data[0].sanalinnHuudas.reject_reason.code){
+        //     setReasonData(infoWhere2.filter(el=> el.code===res.data.data[0].sanalinnHuudas.reject_reason.code));
+        //    }
         })
     },[]);
-    
+
+    const checkedHandle = (event) =>{
+       let arr = document.querySelectorAll('.checkCond'); let arr2 = Array.from(arr); let arr3 = [];
+
+       arr2.map((el,i)=>{
+        if(el.checked==true){ if(el.value === "false"){ arr3.push(el);} }
+       });
+       if(arr3.length > 0){ setType(true);}else{ setType(false); }
+    }
+ 
 
     const alertHandle = (color, text, cond) =>{setAlert({color:color, text:text, cond:cond}); setTimeout(()=>{ setAlert({color:color, text:text, cond:false});},3000); }
 
@@ -57,28 +72,32 @@ function Decision_main({NotifyData}) {
                     }
                 }
             }else{
-                if(el.name === "reject_reason"){ dd["code"] = el.id; dd["reason"] = el.value; final[el.name] = dd; 
+                if(el.name === "reject_reason"){
+                     dd["code"] = el.id; dd["reason"] = el.value; final[el.name] = dd; 
                 }else{ if(!el.value){  el.classList += " RedPar"; }else{ final[el.name] = el.value; el.classList =- " RedPar"; el.classList += " getInputt" }
                 }
             }
         });
-        if(imgData!==null){final["signature"] = "/url base 64";}; let keys = Object.keys(final); 
-
         final["projectId"] = Data.projectId; final["evaluationMeetingId"] = Data.evaluationMeetingId;
+        if(imgData!==null){final["signature"] = imgData;}; let keys = Object.keys(final); 
 
-        if(keys.length < 9){
+
+        console.log(`keys.length`, keys.length)
+
+        if(type?keys.length < 6:keys.length < 5){
             setFinalErrorText("Та гүйцэд бөгөлнө үү..."); setOpacity2("1"); scroll.scrollTo(0);
         }else if(cond !== 0){
             setFinalErrorText("Хэрэв татгалзсан бол шалтгааныг бичнэ үү..."); scroll.scrollTo(200); setOpacity2("1");
         }else{
             setSpin(true);
             setOpacity2("0");
-            console.log("done");
             axios.post(`evaluation-results/member-vote`,final, { headers: { Authorization: Token()}} ).then((res)=>{ alertHandle("green","Амжилттай илгээлээ", true ); setTimeout(()=>{ history.push("/"); setSpin(false); },2000); console.log(`res`, res) })
             .catch((err)=> {setSpin(false); alertHandle("orange","Алдаа гарлааа",true);  console.log(`err`, err)});
         }
-        console.log(JSON.stringify(final), "^final");
+        console.log(final, "^final");
     }
+
+    console.log(Data, "dta ---+-+-");
 
     return (
         <>
@@ -106,60 +125,105 @@ function Decision_main({NotifyData}) {
                 </div>
                 <div style={{marginBottom:35}} className="compName">
                     <div className="title">Үнэлгээний хорооны гишүүний овог, нэр:</div>
-                    {Data?<span className="val">{Data.fullName}</span>:<span className="val"></span>}   
+                    {Data?<span className="val">{Data.memberInfo.fullName}</span>:<span className="val"></span>}   
                 </div>
 
                 <div className="infoWhere">
                         <div className="Title Title4"><span className="circle">⬤</span>Төсөл хэрэгжүүлэгчийн чадавхийг үнэлсэн үнэлгээ </div>
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
+                            {sanalData && Data.sanalinnHuudas.assess_one.checked !==null? 
                             <div className="checkItem">
-                                <div className="item"><input className="radio getInputt" type="radio" name="assess_one" value="true" /> <span>Зөвшөөрсөн</span></div>  
-                                <div className="item"><input className="radio getInputt" type="radio" name="assess_one" value="false" /> <span>Татгалзсан</span></div>
+                                <div className="item"><input className="radio getInputt" type="radio" name="assess_one" checked={Data.sanalinnHuudas.assess_one.checked?true:false} value="true" /> <span>Зөвшөөрсөн</span></div>  
+                                <div className="item"><input className="radio getInputt" type="radio" name="assess_one" checked={Data.sanalinnHuudas.assess_one.checked?false:true} value="false" /> <span>Татгалзсан</span></div>
                             </div>
+                            :
+                            <div className="checkItem">
+                                <div className="item"><input className="radio getInputt checkCond" type="radio" onChange={checkedHandle} name="assess_one" value="true" /> <span>Зөвшөөрсөн</span></div>  
+                                <div className="item"><input className="radio getInputt checkCond" type="radio" onChange={checkedHandle} name="assess_one" value="false" /> <span>Татгалзсан</span></div>
+                            </div>}
                         </div>
+                        {sanalData && Data.sanalinnHuudas.assess_one.checked !==null? 
+                        Data.sanalinnHuudas.assess_one.checked === false?
+                        <div className="Title3">
+                            <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div> 
+                            <InputStyle className="nameText"><textarea className="assess_one_why" name="reason" value={Data.sanalinnHuudas.assess_one.reason} placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                        </div> : null
+                            :
                         <div className="Title3">
                             <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div> 
                             <InputStyle className="nameText"><textarea className="assess_one_why" name="reason" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
-                        </div>
+                        </div>}
+                        
                 </div>
 
                 <div className="infoWhere">
                         <div className="Title Title4"><span className="circle">⬤</span>Экспортын төсөлд өгсөн үнэлгээ</div>
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
-                            <div className="checkItem">
-                                <div className="item"><input className="radio getInputt" type="radio" name="assess_two" value="true" /> <span>Зөвшөөрсөн</span></div>  
-                                <div className="item"><input className="radio getInputt" type="radio" name="assess_two" value="false" /> <span>Татгалзсан</span></div>
-                            </div>
+
+                            {sanalData && Data.sanalinnHuudas.assess_two.checked!==null? 
+                                <div className="checkItem">
+                                    <div className="item"><input className="radio getInputt" type="radio" name="assess_two" checked={Data.sanalinnHuudas.assess_two.checked?true:false} value="true" /> <span>Зөвшөөрсөн</span></div>  
+                                    <div className="item"><input className="radio getInputt" type="radio" name="assess_two" checked={Data.sanalinnHuudas.assess_two.checked?false:true} value="false" /> <span>Татгалзсан</span></div>
+                                </div>
+                            : 
+                                <div className="checkItem">
+                                    <div className="item"><input className="radio getInputt checkCond" type="radio" onChange={checkedHandle} name="assess_two" value="true" /> <span>Зөвшөөрсөн</span></div>  
+                                    <div className="item"><input className="radio getInputt checkCond" type="radio" onChange={checkedHandle} name="assess_two" value="false" /> <span>Татгалзсан</span></div>
+                                </div>
+                            }
+
+                            
                         </div>
+
+                        {sanalData && Data.sanalinnHuudas.assess_two.checked !==null? 
+                        Data.sanalinnHuudas.assess_two.checked === false?
+                        <div className="Title3">
+                            <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div> 
+                            <InputStyle className="nameText"><textarea className="assess_two_why" name="reason" value={Data.sanalinnHuudas.assess_two.reason} placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
+                        </div> : null
+                            :
                         <div className="Title3">
                             <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div> 
                             <InputStyle className="nameText"><textarea className="assess_two_why" name="reason" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
-                        </div>
+                        </div>}
                 </div>
-                <Signature setImgData={setImgData} />
+               <Signature url={sanalData?Data.sanalinnHuudas.signature:null} setImgData={setImgData} /> 
 
+                {sanalData? Data.sanalinnHuudas.approve===false?
                 <div className="infoWhere">
-                        <div className="Title"><span className="circle">⬤</span>Өргөдөл гаргагч нь Экспортыг дэмжих төслөөс цахим хаягаар бичгээр хариуг авах бөгөөд хэрэв татгалзсан шийдвэрийн хариуг өгч буй бол шалтгааныг заавал бичнэ. Жишээ шалтгаанууд: :</div>
-                        <div className="inpPar">
-                            {infoWhere2.map((el,i)=>{
+                    <div className="Title"><span className="circle">⬤</span>Татгалзсан шийдвэрийн хариу :</div>
+                    <div className="inpPar">
+                        <div className="items">
+                              <div className="title">Шалтгаан :</div><span>{Data.sanalinnHuudas.reject_reason.reason}</span>
+                        </div>
+                    </div>
+                 </div>
+                :  null  : !type? null:
+                <div className="infoWhere Anime">
+                    <div className="Title"><span className="circle">⬤</span>Өргөдөл гаргагч нь Экспортыг дэмжих төслөөс цахим хаягаар бичгээр хариуг авах бөгөөд хэрэв татгалзсан шийдвэрийн хариуг өгч буй бол шалтгааныг заавал бичнэ. Жишээ шалтгаанууд: :</div>
+                    <div className="inpPar">
+                            {ReasonData.map((el,i)=>{
                                     return(
                                         <div className="items">
                                             <input className={`radio ${otherOne.Cname}`} value={el.title} checked={otherOne.checked} id={el.code} name="reject_reason" type="radio" /><div className="title">{el.title}</div>
                                         </div>
                                     )
                             })}
-                             <div className="items">
-                                <div className="title">Бусад :</div><InputStyle className="nameText"><input className={otherOne.self} id="other" onChange={onChange1} name="reject_reason" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
-                            </div>
+                            <div className="items">
+                            <div className="title">Бусад :</div><InputStyle className="nameText"><input className={otherOne.self} id="other" onChange={onChange1} name="reject_reason" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
                         </div>
+                    </div>
                 </div>
-
-                <div className="buttonPar">
-                    <div style={{opacity:opacity2}} className="errtext">{FinalErrorText}</div>
-                    <div onClick={ClickHandle} style={!spin?{width:`40%`,opacity:1}: {width:`10%`,opacity:0.6}} className="btn btn-primary">{!spin?`Илгээх`: <img src="/gif1.gif" alt-="edp-img" /> } </div>
-                </div>
+                }
+                {sanalData? null : 
+                    <div className="buttonPar">
+                        <div style={{opacity:opacity2}} className="errtext">{FinalErrorText}</div>
+                        <div onClick={ClickHandle} style={!spin?{width:`40%`,opacity:1}: {width:`10%`,opacity:0.6}} className="btn btn-primary">{!spin?`Илгээх`: <img src="/gif1.gif" alt-="edp-img" /> } </div>
+                    </div>
+                }
+                
             </div>
 
             
@@ -173,6 +237,12 @@ function Decision_main({NotifyData}) {
 }
 
 export default Decision_main
+
+const animate = keyframes`
+    0% { transform:scale(0.8); opacity:0;}
+    50% { transform:scale(1.1); opacity:0.5;}
+    100% { transform:scale(1); opacity:1;}
+`
 
 const AlertStyle = styled.div`
     z-index:1010;  
@@ -336,6 +406,8 @@ const FeedBackCont = styled.div`
         }
         
         .infoWhere{
+            animation-name: ${animate};
+            animation-duration:0.5s;
             width:100%;
             margin-bottom:40px;
             
@@ -435,6 +507,7 @@ const FeedBackCont = styled.div`
                 }
             }
         }
+        
     }
     
 
