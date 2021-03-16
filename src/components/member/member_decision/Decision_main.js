@@ -25,15 +25,19 @@ function Decision_main({NotifyData}) {
     const [opacity2, setOpacity2] = useState("0");
     const [otherOne, setOtherOne] = useState({Cname: "getInputt", checked:null, self:""  });
     const [ imgData, setImgData ] = useState(null);
+    const [ other, setOther ] = useState(null);
 
     useEffect(async()=>{
         await axios.get(`evaluation-meetings/scheduled-projects?parentId=${slug}`, { headers : { Authorization: Token()}}).then(res=>{
             console.log(res, "resss+-+--+-+-+-+-");
             setData(res.data.data[0]);
-           if(res.data.data[0].sanalinnHuudas.approve){ setSanalData(true); setReasonData(infoWhere2.filter(el=> el.code===res.data.data[0].sanalinnHuudas.reject_reason.code)); }
-        //    if(res.data.data[0].sanalinnHuudas.reject_reason.code){
-        //     setReasonData(infoWhere2.filter(el=> el.code===res.data.data[0].sanalinnHuudas.reject_reason.code));
-        //    }
+           if(res.data.data[0].sanalinnHuudas.approve!==null){ setSanalData(true);
+                if(res.data.data[0].sanalinnHuudas.reject_reason.code === "other"){
+                    setOther(res.data.data[0].sanalinnHuudas.reject_reason.reason);
+                }else{
+                    setReasonData(infoWhere2.filter(el=> el.code===res.data.data[0].sanalinnHuudas.reject_reason.code));
+                }
+            }
         })
     },[]);
 
@@ -196,11 +200,11 @@ function Decision_main({NotifyData}) {
                     <div className="Title"><span className="circle">⬤</span>Татгалзсан шийдвэрийн хариу :</div>
                     <div className="inpPar">
                         <div className="items">
-                              <div className="title">Шалтгаан :</div><span>{Data.sanalinnHuudas.reject_reason.reason}</span>
+                              <div className="title">Шалтгаан :</div><span>{other?other: Data.sanalinnHuudas.reject_reason.reason}</span>
                         </div>
                     </div>
                  </div>
-                :  null  : !type? null:
+                :   null  : !type? null:
                 <div className="infoWhere Anime">
                     <div className="Title"><span className="circle">⬤</span>Өргөдөл гаргагч нь Экспортыг дэмжих төслөөс цахим хаягаар бичгээр хариуг авах бөгөөд хэрэв татгалзсан шийдвэрийн хариуг өгч буй бол шалтгааныг заавал бичнэ. Жишээ шалтгаанууд: :</div>
                     <div className="inpPar">

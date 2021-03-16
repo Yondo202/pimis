@@ -2,10 +2,11 @@ import React,{useEffect, useState,useContext} from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import { fontFamily,ColorRgb, } from '../../components/theme';
+import { fontFamily,ColorRgb,textColor } from '../../components/theme';
 import {IoIosLogOut} from 'react-icons/io';
 import {CgProfile} from 'react-icons/cg';
-import {IoNotificationsOutline} from 'react-icons/io5';
+import {IoNotificationsOutline,IoLockClosed} from 'react-icons/io5';
+import {IoIosArrowForward} from 'react-icons/io';
 import { useLocation } from 'react-router-dom';
 import HamburgerMenu from 'react-hamburger-menu';
 import RequestOld from '../../containers/requestComp/mainRequestOld'
@@ -86,18 +87,7 @@ function Menu() {
                                   <Link to="/">Нүүр хуудас</Link>
                                   {/* <div style={{transform:`${activeMenu.Home}`}} className={`line ${activeMenu.Home}`}></div> */}
                               </div>
-                              {/* <div className="items">
-                                <Link to="/comp-request">Хүсэлт</Link>
-                                <div style={{transform:`${activeMenu.Check}`}} className={`line ${activeMenu.Req}`}></div>
-                              </div>
-                              <div className="items">
-                                <Link to="/urgudul/1">Өргөдөлийн маягт</Link>
-                                <div  className={`line ${activeMenu.Maygt}`}></div>
-                              </div>
-                              <div className="items">
-                                <Link to="/comp-test">Шалгуур</Link>
-                                <div  className={`line ${activeMenu.Check}`}></div>
-                              </div> */}
+                            
                               {/* <div className="items">
                                 <Link to="/comp-check">Шалгах</Link>
                                 <div  className={`line ${activeMenu.Check}`}></div>
@@ -105,8 +95,16 @@ function Menu() {
                         </div>
                         <div className="userMenuPar">
                           {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
-                          <div className="Notification"><Link to="#" content="2" ><IoNotificationsOutline /></Link> </div>
-                          <span className="UserNameMenu" content={userName} ><Link to="#"><CgProfile /></Link> </span>
+                          <div className="Notification"><div className="notf" to="#" content="2" ><IoNotificationsOutline /></div> </div>
+                          <div className="UserNameMenu" content={userName} ><div className="par"><CgProfile /></div> 
+                              <div className="HoverContent">  
+                                  <div className="UserInfo"> <img src="/user1.svg" alt="src" /> <span className="name">{userName}</span> </div>
+                                  <div className="resPass">
+                                        <div className="initList"><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
+                                        <div className="svgOther"><IoIosArrowForward /> </div>                               
+                                  </div>
+                              </div>
+                          </div>
                           <span className="Logout"><Link  to="/" onClick={()=>userCtx.logout()}><span>Гарах</span><IoIosLogOut /></Link></span>
                         </div>
                 </span>
@@ -205,9 +203,9 @@ const Componentss = styled.div`
             justify-content:space-between;
             align-items:center;
             width:20%;
-           
+            
             .Notification{
-              a{
+              .notf{
                 position:relative;
                 display:flex;
                 flex-direction:row;
@@ -238,41 +236,93 @@ const Componentss = styled.div`
             }
             .UserNameMenu{
               position:relative;
-              &:hover{
-                &::before{
-                  transform:scale(1);
-                  opacity:1;
-                }
-              }
-              &::before{
-                content:""attr(content)"";
-                color:white;
+              .HoverContent{
+                color:rgba(${textColor},1);
+                padding:0px 15px;
                 display:flex;
+                flex-direction:column;
                 justify-content:center;
                 align-items:center;
-                height:30px;
-                width:100px;
-                background-color:rgb(${ColorRgb});
+                // height:30px;
+                // width:100px;
+                background-color:#fff;
                 position:absolute;
-                top:40px;
-                left:0;
+                top:30px;
+                right:0;
                 border-radius:4px;
                 transition:all 0.3s ease;
-                transform:scale(0.6);
-                opacity:0;
-              }
-                a {
+                box-shadow:1px 1px 20px -9px;
+                max-height: calc(100vh - 60px);
+                width:230px;
+                .UserInfo{
                   display:flex;
-                  flex-direction:row;
                   align-items:center;
-                  color:black;
-                  text-decoration: none !important;
-                  svg{
-                    margin-left:8px;
-                    font-size:21px;
-                    color:rgba(255,255,255,0.9);
+                  width:100%;
+                  padding:20px 5px;
+                  border-bottom:1px solid rgba(0,0,0,0.2);
+                  img{
+                    width:25px;
+                    margin-right:15px;
+                  }
+                  .name{
+                    font-size:16px;
+                    font-weight:500;
                   }
                 }
+                .resPass{
+                  cursor:pointer;
+                  border-radius:4px;
+                  width:100%;
+                  padding: 9px 5px;
+                  margin: 9px 0px;
+                  display:flex;
+                  align-items:center;
+                  justify-content:space-between;
+                  .initList{
+                    display:flex;
+                    align-items:center;
+                    span{
+                      font-size:15px;
+                      font-weight:500;
+                      color:rgba(${textColor},1);
+                    }
+                    .svg{
+                      margin-right:14px;
+                      background-color:#e4e6eb;
+                      padding:8px 8px;
+                      border-radius:50%;
+                      svg{
+                        font-size:17px;
+                      }
+                    }
+                  }
+                  .svgOther{
+                    svg{
+                      color:rgba(${textColor},.7);
+                      font-size:22px;
+                    }
+                  }
+                  &:hover{
+                    background-color:#e4e6eb;
+                  }
+                }
+
+          // <div className="resPass">
+          //       <div className="initList><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
+          //       <div className="svgOther"><IoIosArrowForward /> </div>                               
+          // </div>
+              }
+              .par{
+                cursor:pointer;
+                height:100%;
+                // border-radius:50%;
+                // background-color:#e4e6eb;
+                margin-left:8px;
+                svg{
+                  font-size:21px;
+                  color:rgba(255,255,255,0.9);
+                }
+              }
             }
             .Logout{
                 margin-left:8px;

@@ -14,18 +14,12 @@ function PageOne(props) {
       const [visible, setVisible] = useState(false);
       let [sigCanvas, setSigCanvas] = useState({});
       let [trimmedDataURL, setTrimmedDataURL] = useState(null);
-
       const openModal=()=> { setVisible(true); }
       const closeModal=()=> { setVisible(false);}
       const clear = () => sigCanvas.clear();
       const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); props.setImgData(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); closeModal();};
+      const changeHandle = (event) =>{ if(event.target.value==="true"){ setWhy(true); ref.current.focus(); }else{ setWhy(false); } }
 
-      const changeHandle = (event) =>{
-        if(event.target.value==="true"){ setWhy(true); ref.current.focus(); }else{ setWhy(false); }
-      }
-
-      console.log(`propData----------`, props.propData);
-    
       return (
         <>
             <MainPar className="MainPar">
@@ -110,8 +104,9 @@ function PageOne(props) {
                     <div className="signature">
                         {/* <div className="title"> Гарын үсэг: <div className="signatureItem">/........................................./ </div>  </div> */}
                         <div className="drowPar">
-                              <div className="titleee">Гарын үсэг:</div> <div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>
-                              { props.propData? <img className="SingatureImg"  src={props.propData.signature_data}/>  : trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null }
+                              <div className="titleee">Гарын үсэг:</div>
+                              {!props.propData&&<div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>} 
+                              {props.propData? <img className="SingatureImg"  src={props.propData.signature_data}/>  : trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null }
                               {/* signature_data */}
                                     <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
                                         <div className="modalPar">
@@ -125,15 +120,15 @@ function PageOne(props) {
                                             </div>
                                         </div>
                                     </Modal>
-                          </div>
+                        </div>
                     </div>
 
                     <div className="datePar">
-                      <span className="Title">Огноо: </span>
-                      <InputStyle>
-                           { props.propData? <input className="getInputt" value={props.propData.sdate} name="sdate" max={Currentdate} type="date" /> : <input className="getInputt" name="sdate" max={Currentdate} type="date" /> }
-                        <div className="line"></div>
-                      </InputStyle>
+                        <span className="Title">Огноо: </span>
+                        <InputStyle>
+                            { props.propData? <input className="getInputt" value={props.propData.sdate} name="sdate" max={Currentdate} type="date" /> : <input className="getInputt" name="sdate" max={Currentdate} type="date" /> }
+                          <div className="line"></div>
+                        </InputStyle>
                     </div>
 
              </MainPar>
@@ -169,9 +164,11 @@ const MainPar = styled.div`
             margin-top:10px;
             .titleee{
               font-weight:500;
+              margin-right:30px;
+              margin-bottom:15px;
             }
             .SignBtn{
-                margin-left:30px;
+                // margin-left:30px;
                 margin-right:30px;
                 padding:3px 15px;
                 cursor:pointer;
@@ -226,8 +223,10 @@ const MainPar = styled.div`
     .title{
       color:rgb(${textColor});
       font-weight:500;
-      margin:20px 0px;
+      margin:10px 0px;
+      margin-bottom:30px;
       text-align:center;
+      font-size:16px;
     }
     .MemeberInfo{
       margin-top:8px;

@@ -16,9 +16,8 @@ function HomePage({setNotify}) {
 
     useEffect(async()=>{
         const data = await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token()}});
-        console.log(data, " my data");
-        if(data.data.data[0]){ setCardData(data.data.data); }
-        
+        console.log(data, " my data+++++++++");
+        if(data.data.data[0]){ setCardData(data.data.data); };
     },[]);
 
     return (
@@ -75,6 +74,11 @@ const firstAnitamte = keyframes`
     0% { transform:scale(1);opacity:1; }
     50% { transform:scale(1.8);opacity:0.8; }
     100% { transform:scale(1);opacity:1; }
+`
+const cardAnimate = keyframes`
+    0% { transform:scale(1);opacity:0;  }
+    30% { transform:scale(1.037);opacity:0.7;  }
+    100% { transform:scale(1);opacity:1;  }
 `
 
 const Memberhome = styled.div`
@@ -179,7 +183,6 @@ const Memberhome = styled.div`
             }
         }
         .Fix{
-            transition:all 0.3s ease;
             z-index:1000;
             width: 100%;
             height: 100vh;
@@ -198,6 +201,8 @@ const Memberhome = styled.div`
                 }
             }
             .cardItems{
+                animation-name: ${cardAnimate};
+                animation-duration: 0.5s;
                 cursor: unset;
                 margin-top:15vh;
                 width:35vw !important;

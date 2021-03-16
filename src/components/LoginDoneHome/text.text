@@ -1,61 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import styled ,{keyframes} from 'styled-components'
-import { ColorRgb } from '../theme'
-import { useParams } from "react-router-dom";
-import axios from '../../axiosbase';
-import AccessToken from '../../context/accessToken'
-import ActiveComp from './ActiveComp'
-import InitialComp from './initialComp'
-
-function Home() {
-    const userId = useParams().userId;
-    const [infData, setInfData] = useState(null);
-
-    useEffect(async () => {
-        if (userId) {
-            await axios.get(`pps-infos/registered-companies?userId=${userId}`, { headers: { Authorization: AccessToken() } }).then((res) => {
-                console.log(res, " ress"); if (res.data.data[0]) { setInfData(res.data.data[0]) }
-            })
-        }else {
-            let userID = localStorage.getItem("userId");
-            await axios.get(`pps-infos/registered-companies?userId=${userID}`, { headers: { Authorization: AccessToken() } }).then((res) => {
-                console.log(res, " ress"); if (res.data.data[0]) { setInfData(res.data.data[0]) }
-            })
-        }
-    }, []);
-
-   console.log(`infData`, infData)
-
-
-    return (
-        <HomeComponent style={userId?{maxWidth:"2000px"}:{maxWidth:"1160px"}} className={`container`}>
-            <div className="headerPar">
-                <div className="header row">
-                    <div className="col-md-4"><div className="headItems"><span className="text">1.Түншлэлийн хөтөлбөрт бүрдүүлэх баримт</span> </div></div>
-                    <div className="col-md-4"><div className="headItems"><span className="text">2. Үнэлгээ, шийдвэр гарах явц</span> </div></div>
-                    <div className="col-md-4"><div className="headItems"><span className="text"> 3. Гэрээ байгуулах, гүйцэтгэл санхүүжилтийн..</span></div></div>
-                </div>
-
-                <div className="otherHead row">
-                    <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
-                    <div className="col-md-4"><div className="headItems"><span className="text">Бизнес хяналтын зөвлөх</span><span className="text">Үнэлгээ, шийдвэр</span> </div></div>
-                </div>
-            </div>
-            {infData === null ? <InitialComp /> :
-             <ActiveComp prew={userId} data={infData} />
-             }
-        </HomeComponent>
-    )
-}
-
-
-export default Home
-
-
 
 const animeate1 = keyframes`
     0% { transform:scale(1);opacity:1; }
-    40% { transform:scale(1.076);opacity:0.5; }
+    50% { transform:scale(1.1);opacity:0.5; }
     100% { transform:scale(1);opacity:1; }
 `
 
@@ -69,17 +15,17 @@ const HomeComponent = styled.div`
     }
     
     .itemsCol{
-        border-right:1px solid rgba(0,0,0,0.3);
-        border-right-style:dashed;
-        // &:before{
-        //     content:"";
-        //     right:0;
-        //     top:4%;
-        //     width:1px;
-        //     height:100%;
-        //     background-color:#C1C1C1;
-        //     position:absolute;
-        // }
+        // border-right:1px solid rgba(0,0,0,0.3);
+        // border-right-style:dashed;
+        &:before{
+            content:"";
+            right:0;
+            top:4%;
+            width:1px;
+            height:96%;
+            background-color:#C1C1C1;
+            position:absolute;
+        }
         .itemsPar{
             height:70vh;
             width:100%;
@@ -129,7 +75,7 @@ const HomeComponent = styled.div`
                     position:relative;
                     background-color:#89E673;
                     animation-name:${animeate1};
-                    animation-duration:.6s;
+                    animation-duration:.7s;
                     &::before{
                         content:"✔";
                         position:absolute;
@@ -230,7 +176,19 @@ const HomeComponent = styled.div`
                     height:18px;
                     border-radius:50%;
                 }
-             
+                &::after{
+                    content:"";
+                    position:absolute;
+                    z-index:1;
+                    bottom:-43px;
+                    right:-21px;
+                    height:42px;
+                    width:90px;
+                    border-right:1px solid #C1C1C1; 
+                    border-bottom:1px solid #C1C1C1;
+                    border-left:1px solid #C1C1C1;
+                    border-radius: 0 0 90px 90px;
+                }
             }
             .resultActive{
                 height:92px;
@@ -262,6 +220,19 @@ const HomeComponent = styled.div`
                     height:18px;
                     border-radius:50%;
                 }
+                &::after{
+                    content:"";
+                    position:absolute;
+                    z-index:1;
+                    bottom:-43px;
+                    right:-21px;
+                    height:42px;
+                    width:90px;
+                    border-right:1px solid #C1C1C1; 
+                    border-bottom:1px solid #C1C1C1;
+                    border-left:1px solid #C1C1C1;
+                    border-radius: 0 0 90px 90px;
+                }
             }
             .resultWaiting{
                 height:92px;
@@ -289,10 +260,46 @@ const HomeComponent = styled.div`
                     height:18px;
                     border-radius:50%;
                 }
+                &::after{
+                    content:"";
+                    position:absolute;
+                    z-index:1;
+                    bottom:-43px;
+                    right:-21px;
+                    height:42px;
+                    width:90px;
+                    border-right:1px solid #C1C1C1; 
+                    border-bottom:1px solid #C1C1C1;
+                    border-left:1px solid #C1C1C1;
+                    border-radius: 0 0 90px 90px;
+                }
             }
             
             .arrHelp{
                 position:relative;
+                &::after{
+                    content:"";
+                    position:absolute;
+                    z-index:1;
+                    top:-46px;
+                    left:-22px;
+                    height:45px;
+                    width:95px;
+                    border-right:1px solid #C1C1C1; 
+                    border-top:1px solid #C1C1C1;
+                    border-left:1px solid #C1C1C1;
+                    border-radius: 90px 90px 0 0;
+                }
+                .helpArr{
+                    z-index:333;
+                    top:-12px;
+                    left:66px;
+                    position:absolute;
+                    height:12px;
+                    width:12px;
+                    background-color:#C1C1C1;
+                    clip-path: polygon(53% 31%, 100% 0, 50% 100%, 0 0)
+                }
             }
 
             .arrHelpActive{
@@ -399,9 +406,7 @@ const HomeComponent = styled.div`
                     height:100%;
                     padding-right:15px;
                     border-right:1px solid rgba(0,0,0,0.1);
-                    width:48%;
-                    font-weight:500;
-                    font-size:14px;
+                    width:45%;
                 }
             }
         }

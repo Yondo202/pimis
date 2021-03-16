@@ -74,7 +74,6 @@ function PageOne({NotifyData}) {
         console.log(final, "final");
     }
 
-    console.log(`propData`, propData)
 
       return (
           <>
@@ -82,10 +81,11 @@ function PageOne({NotifyData}) {
                 <div className="parent" ref={componentRef}>
                      <Content propData={propData} userName={userName} setImgData={setImgData}  />
                 </div>
-                <div className="buttonPar">
+
+               {!propData&&<div className="buttonPar">
                     <div style={{opacity:opacity}} className="errtext">{errMsg}</div>
                     <div onClick={clickHandle} style={!spin?{width:`40%`,opacity:1}: {width:`10%`,opacity:0.6}} className="btn btn-primary">{!spin?`Илгээх`: <img src="/gif1.gif" alt-="edp-img" /> } </div>
-                </div>
+                </div>} 
                 {/* <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button> */}
                 {/* <button className="print"  onClick={()=>window.print()}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button> */}
             </MainContainter>
