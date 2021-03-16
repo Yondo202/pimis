@@ -18,6 +18,7 @@ function HomePage({setNotify}) {
         const data = await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token()}});
         console.log(data, " my data");
         if(data.data.data[0]){ setCardData(data.data.data); }
+        
     },[]);
 
     return (
@@ -55,7 +56,7 @@ function HomePage({setNotify}) {
                                                 </div>
                                                 <div className="buttons Active">
                                                   <Link onClick={()=>setNotify(el)} to={el.medegdehHuudas?el.medegdehHuudas.is_violation===false?`/memberdecision/${el.projectId}`:`#`:`/memberdecision/${el.projectId}`}>Саналын хуудас</Link> 
-                                                     {el.sanalinnHuudas?el.approve!==null?<IoMdCheckmarkCircle />:<null />: null} 
+                                                     {el.sanalinnHuudas?el.sanalinnHuudas.approve===null?null:<IoMdCheckmarkCircle />: null} 
                                                 </div>
                                         </div>
                                     </div>
@@ -71,7 +72,8 @@ function HomePage({setNotify}) {
 export default HomePage
 
 const firstAnitamte = keyframes`
-    0% { transform:scale(10);opacity:0; }
+    0% { transform:scale(1);opacity:1; }
+    50% { transform:scale(1.8);opacity:0.8; }
     100% { transform:scale(1);opacity:1; }
 `
 

@@ -29,7 +29,7 @@ function PageOne(props) {
       return (
         <>
             <MainPar className="MainPar">
-                    <div className="title"> Ашиг сонирхлын зөрчилгүй тухай мэдэгдэх хуудас</div>
+                    <div className="title">Ашиг сонирхлын зөрчилгүй тухай мэдэгдэх хуудас</div>
                     <div className="nameTitle">Үнэлгээний хорооны гишүүн: <span>{props.userName}</span></div>
                     <div className="MemeberInfo"><span className="titleSm">Албан тушаал: </span> 
                         <InputStyle className="inpp">
