@@ -19,6 +19,11 @@ import AnalystReport from "pages/decision_making/5c/Page";
 import AttachmentUploads from "pages/attachments/page";
 import MainPage from "components/notifyPage/MainPage";
 import WorkPerformance from 'components/workPerformance/MainWorkPerformance'
+import TrainingRegistration from 'pages/training/registration/Page';
+import TrainingRequest from 'pages/training/request/Page';
+import TrainingPartnerRegistration from 'pages/training/partner_registration/Page';
+import TrainingFeedback from 'pages/training/feedback/Page';
+
 
 function UsersRoute() {
     return (
@@ -54,6 +59,11 @@ function UsersRoute() {
 
                     <Route path="/sector-edit" component={BusinessSectorEditor} />
                     <Route path="/product-edit" component={ProductsEditor} />
+
+                    <Route path="/training/1" component={TrainingRegistration} />
+                    <Route path="/training/2" component={TrainingRequest} />
+                    <Route path="/training/3" component={TrainingPartnerRegistration} />
+                    <Route path="/training/4" component={TrainingFeedback} />
                 </Switch>
             </UrgudulStore>
         </HelpStore>

@@ -27,6 +27,7 @@ export default function AnalystReportPreview(props) {
                 <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
             </button>
 
+            {/* react-to-pdf */}
             <Pdf targetRef={componentRef} filename="code-example.pdf">
                 {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
             </Pdf>
