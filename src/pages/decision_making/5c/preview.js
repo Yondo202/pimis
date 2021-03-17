@@ -2,7 +2,7 @@ import PrintSVG from 'assets/svgComponents/printSVG'
 import React from 'react'
 import { Fragment } from 'react'
 import { useRef } from 'react'
-import { useReactToPrint } from 'react-to-print'
+import { useReactToPrint } from "react-to-print"
 import '../5a/style.css'
 import Pdf from "react-to-pdf"
 

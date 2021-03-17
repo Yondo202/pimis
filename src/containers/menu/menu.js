@@ -10,10 +10,13 @@ import {IoIosArrowForward} from 'react-icons/io';
 import { useLocation } from 'react-router-dom';
 import HamburgerMenu from 'react-hamburger-menu';
 import RequestOld from '../../containers/requestComp/mainRequestOld'
+import { Background } from "devextreme-react/range-selector";
 
 function Menu() {
     const location = useLocation();
     const userCtx = useContext(UserContext);
+    const [ showProfile, setShowProfile ] = useState(false);
+    const [ proHover, setProHover ] = useState(false);
     const [userName, setUserName] = useState();
     const [ currPath, setCurrPath ] = useState();
     const [ diplayFlex, setDisplayNone ] = useState("flex");
@@ -96,14 +99,17 @@ function Menu() {
                         <div className="userMenuPar">
                           {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
                           <div className="Notification"><div className="notf" to="#" content="2" ><IoNotificationsOutline /></div> </div>
-                          <div className="UserNameMenu" content={userName} ><div className="par"><CgProfile /></div> 
-                              <div className="HoverContent">  
+                          <div className="UserNameMenu" content={userName} >
+                            <div style={proHover?{backgroundColor:`rgba(255,255,255,0.4)`}:{backgroundColor:`inherit`}} onMouseEnter={()=>{setShowProfile(prev=>!prev);setProHover(prev=>!prev)}} onMouseLeave={()=>{setShowProfile(prev=>!prev);setProHover(prev=>!prev)}} className="par"><CgProfile /></div> 
+
+                             {showProfile&&<div onMouseEnter={()=>{setShowProfile(prev=>!prev);setProHover(prev=>!prev)}} onMouseLeave={()=>{setShowProfile(prev=>!prev);setProHover(prev=>!prev)}} className="ghost"> <div className="HoverContent">  
                                   <div className="UserInfo"> <img src="/user1.svg" alt="src" /> <span className="name">{userName}</span> </div>
                                   <div className="resPass">
                                         <div className="initList"><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
                                         <div className="svgOther"><IoIosArrowForward /> </div>                               
                                   </div>
-                              </div>
+                              </div></div>} 
+
                           </div>
                           <span className="Logout"><Link  to="/" onClick={()=>userCtx.logout()}><span>Гарах</span><IoIosLogOut /></Link></span>
                         </div>
@@ -236,76 +242,78 @@ const Componentss = styled.div`
             }
             .UserNameMenu{
               position:relative;
-              .HoverContent{
+              .ghost{
                 color:rgba(${textColor},1);
-                padding:0px 15px;
-                display:flex;
-                flex-direction:column;
-                justify-content:center;
-                align-items:center;
-                // height:30px;
-                // width:100px;
-                background-color:#fff;
                 position:absolute;
-                top:30px;
+                top:5px;
                 right:0;
-                border-radius:4px;
                 transition:all 0.3s ease;
-                box-shadow:1px 1px 20px -9px;
-                max-height: calc(100vh - 60px);
-                width:230px;
-                .UserInfo{
+                .HoverContent{
                   display:flex;
                   align-items:center;
-                  width:100%;
-                  padding:20px 5px;
-                  border-bottom:1px solid rgba(0,0,0,0.2);
-                  img{
-                    width:25px;
-                    margin-right:15px;
-                  }
-                  .name{
-                    font-size:16px;
-                    font-weight:500;
-                  }
-                }
-                .resPass{
-                  cursor:pointer;
+                  flex-direction:column;
+                  justify-content:center;
+                  margin-top:30px;
+                  padding:0px 15px;
+                  background-color:#fff;
+                  max-height: calc(100vh - 60px);
+                  box-shadow:1px 1px 20px -9px;
+                  width:230px;
                   border-radius:4px;
-                  width:100%;
-                  padding: 9px 5px;
-                  margin: 9px 0px;
-                  display:flex;
-                  align-items:center;
-                  justify-content:space-between;
-                  .initList{
+                  .UserInfo{
                     display:flex;
                     align-items:center;
-                    span{
-                      font-size:15px;
-                      font-weight:500;
-                      color:rgba(${textColor},1);
+                    width:100%;
+                    padding:20px 5px;
+                    border-bottom:1px solid rgba(0,0,0,0.2);
+                    img{
+                      width:25px;
+                      margin-right:15px;
                     }
-                    .svg{
-                      margin-right:14px;
-                      background-color:#e4e6eb;
-                      padding:8px 8px;
-                      border-radius:50%;
-                      svg{
-                        font-size:17px;
+                    .name{
+                      font-size:16px;
+                      font-weight:500;
+                    }
+                  }
+                  .resPass{
+                    cursor:pointer;
+                    border-radius:4px;
+                    width:100%;
+                    padding: 9px 5px;
+                    margin: 9px 0px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    .initList{
+                      display:flex;
+                      align-items:center;
+                      span{
+                        font-size:15px;
+                        font-weight:500;
+                        color:rgba(${textColor},1);
+                      }
+                      .svg{
+                        margin-right:14px;
+                        background-color:#e4e6eb;
+                        padding:8px 8px;
+                        border-radius:50%;
+                        svg{
+                          font-size:17px;
+                        }
                       }
                     }
-                  }
-                  .svgOther{
-                    svg{
-                      color:rgba(${textColor},.7);
-                      font-size:22px;
+                    .svgOther{
+                      svg{
+                        color:rgba(${textColor},.7);
+                        font-size:22px;
+                      }
                     }
-                  }
-                  &:hover{
-                    background-color:#e4e6eb;
-                  }
+                    &:hover{
+                      background-color:#e4e6eb;
+                    }
                 }
+              }
+              
 
           // <div className="resPass">
           //       <div className="initList><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
@@ -313,14 +321,22 @@ const Componentss = styled.div`
           // </div>
               }
               .par{
+                padding:4px 4px;
                 cursor:pointer;
                 height:100%;
-                // border-radius:50%;
+                border-radius:50%;
                 // background-color:#e4e6eb;
                 margin-left:8px;
                 svg{
                   font-size:21px;
                   color:rgba(255,255,255,0.9);
+                }
+                &:hover{
+                  color:black;
+                  background-color:rgba(255,255,255,0.3);
+                  svg{
+                    color:white;
+                  }
                 }
               }
             }
