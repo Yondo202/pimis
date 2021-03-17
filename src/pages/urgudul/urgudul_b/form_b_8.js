@@ -240,7 +240,7 @@ function UrgudulCalculations() {
                     <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
                 </div>
 
-                <div className="tw-text-sm tw-mt-3 tw-overflow-x-auto tw-overflow-y-hidden tw-mx-auto tw-pl-1 tw-pr-10">
+                <div className="tw-text-sm tw-mt-3 tw-overflow-x-auto tw-overflow-y-hidden tw-mx-auto tw-pl-1 tw-pr-10 tw-pb-44">
                     <table>
                         <thead>
                             <tr className="tw-h-9">
@@ -255,7 +255,7 @@ function UrgudulCalculations() {
                                             return <th className="tw-border" key={date}>
                                                 <div className="tw-flex tw-justify-evenly tw-items-center">
                                                     {`${form.endDate.year ? form.endDate.year : ''}-${form.endDate.month ? form.endDate.month : ''}`}
-                                                    <HelpPopup main="Төслийн дуусах хугацаа, сар жилээр" position="bottom" />
+                                                    <HelpPopup main="Төслийн дуусах хугацаа, жил сараар." position="bottom" />
                                                 </div>
                                             </th>
                                         default:
@@ -273,7 +273,7 @@ function UrgudulCalculations() {
                                 {datesForm.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.sales[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.sales[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'sales')} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.sales[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.sales[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.value, 'sales')} />
                                         </div>
                                     </td>
                                 )}
@@ -290,7 +290,7 @@ function UrgudulCalculations() {
                                 {datesForm.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.fullTime_workplace[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.fullTime_workplace[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.fullTime_workplace[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.fullTime_workplace[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} />
                                         </div>
                                     </td>
                                 )}
@@ -307,7 +307,7 @@ function UrgudulCalculations() {
                                 {datesForm.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.productivity[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.productivity[item] || ''} thousandSeparator={true} onValueChange={values => handleInput(item, values.value, 'productivity')} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.productivity[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.productivity[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.value, 'productivity')} />
                                         </div>
                                     </td>
                                 )}
@@ -322,8 +322,8 @@ function UrgudulCalculations() {
                                     </div>
                                 </td>
                                 {datesForm.map((item, i) =>
-                                    <td className="tw-border tw-px-1 tw-text-right tw-font-medium" key={i}>
-                                        {exportSums[item] !== 0 && exportSums[item]?.toLocaleString()}
+                                    <td className="tw-border tw-px-1 tw-text-right tw-font-medium tw-truncate" style={{ maxWidth: 81 }} key={i}>
+                                        {exportSums[item] !== 0 && exportSums[item].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </td>
                                 )}
                                 <td className="tw-border tw-truncate tw-font-bold tw-text-center">$</td>
@@ -332,12 +332,12 @@ function UrgudulCalculations() {
                                 <Fragment key={i}>
                                     <tr className="tw-h-9">
                                         <td className="tw-border tw-px-1">
-                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" />
+                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={window.innerWidth > 324 ? '324px' : `${window.innerWidth - 128}px`} />
                                         </td>
                                         <td className="tw-border tw-px-2" colSpan={datesForm.length}>
-                                            <button className="tw-float-right tw-bg-gray-500 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-600" onClick={() => handleRemoveCountry(i)} style={{ padding: '3px 8px' }}>
+                                            <button className="tw-float-right tw-bg-gray-600 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors tw-py-1 tw-px-4" onClick={() => handleRemoveCountry(i)}>
                                                 Улс хасах
-                                        </button>
+                                            </button>
                                         </td>
                                         <td className="tw-border tw-truncate tw-font-bold tw-text-center">$</td>
                                     </tr>
@@ -345,13 +345,13 @@ function UrgudulCalculations() {
                                         country.export_products.map((product, j) =>
                                             <tr className="tw-h-9" key={j}>
                                                 <td className="tw-border tw-px-1">
-                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={product.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(product.productId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={window.innerWidth > 922 ? '922px' : `${window.innerWidth - 128}px`} />
+                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={product.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(product.productId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={window.innerWidth > 648 ? '648px' : `${window.innerWidth - 128}px`} />
                                                 </td>
                                                 {
                                                     datesForm.map((key, k) =>
                                                         <td className="tw-border tw-px-1" key={k}>
                                                             <div className="tw-flex tw-justify-center">
-                                                                <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(product[key]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={product[key] || ''} thousandSeparator={true} onValueChange={values => handleInputProductExport(key, values.value, j, i)} />
+                                                                <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(product[key]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={product[key] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInputProductExport(key, values.value, j, i)} />
                                                             </div>
                                                         </td>
                                                     )
@@ -366,7 +366,7 @@ function UrgudulCalculations() {
                                     }
                                     <tr className="tw-h-9">
                                         <td className="tw-border tw-px-2" colSpan={datesForm.length + 2}>
-                                            <button className="tw-float-right tw-bg-gray-500 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-600" onClick={() => handleAddProduct(i)} style={{ padding: '3px 8px' }}>
+                                            <button className="tw-float-right tw-bg-gray-600 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors tw-py-1 tw-px-2" onClick={() => handleAddProduct(i)}>
                                                 Бүтээгдэхүүн нэмэх
                                         </button>
                                         </td>
@@ -375,7 +375,7 @@ function UrgudulCalculations() {
                             )}
                             <tr className="tw-h-9">
                                 <td className="tw-border tw-px-2" colSpan={datesForm.length + 2}>
-                                    <button className="tw-float-right tw-bg-gray-500 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-600" onClick={handleAddCountry} style={{ padding: '3px 8px' }}>
+                                    <button className="tw-float-right tw-bg-gray-600 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors tw-py-1 tw-px-4" onClick={handleAddCountry}>
                                         Улс нэмэх
                                 </button>
                                 </td>
@@ -385,7 +385,7 @@ function UrgudulCalculations() {
                 </div>
 
                 <div className="tw-flex tw-justify-center">
-                    <ButtonTooltip classAppend="tw-mt-8 tw-mb-4" classButton="tw-px-2 tw-py-1 tw-bg-blue-500 active:tw-bg-blue-600 tw-text-sm" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                    <ButtonTooltip classAppend="tw-mt-2 tw-mb-4" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
                 </div>
             </div>
         </div>

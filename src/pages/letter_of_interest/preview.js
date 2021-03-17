@@ -77,15 +77,15 @@ export default function LetterPreview(props) {
                     }
 
                     <div className="tw-relative tw-flex-grow tw-p-2 tw-pl-8">
-                        <div className="tw-px-1 tw-text-gray-600 tw-text-2xl tw-font-semibold tw-w-full">
+                        <div className="tw-px-1 tw-py-0.5 tw-text-gray-600 tw-text-2xl tw-font-semibold tw-w-full">
                             {form.company_name || ''}
                         </div>
 
-                        <div className="tw-mt-4 tw-px-1 tw-w-full tw-text-sm tw-font-medium">
+                        <div className="tw-mt-4 tw-px-1 tw-py-0.5 tw-w-full tw-text-sm tw-font-medium">
                             {form.company_address || ''}
                         </div>
 
-                        <div className="tw-mt-4 tw-px-1 tw-text-sm tw-font-medium">
+                        <div className="tw-mt-4 tw-px-1 tw-py-0.5 tw-text-sm tw-font-medium">
                             {form.submit_date || ''}
                         </div>
                     </div>
@@ -123,7 +123,7 @@ export default function LetterPreview(props) {
                 <div className="tw-relative tw-mt-8 tw-py-4 tw-text-sm tw-pr-60">
                     <div className="tw-flex tw-justify-center">
                         <span className="tw-font-medium">Гүйцэтгэх захирал:</span>
-                        <div className="tw-px-1 tw-ml-2 tw-w-60">
+                        <div className="tw-px-1 tw-py-0.5 tw-ml-2 tw-w-60">
                             {form.director_name || ''}
                         </div>
                     </div>

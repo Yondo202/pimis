@@ -10,7 +10,6 @@ import './style.css'
 
 export default function EvaluatorsMeetingsNavigator() {
     const location = useLocation()
-    console.log(location)
 
     const transitionsPages = useTransition(location, location => location.pathname, {
         from: { opacity: 0, transform: location.pathname === '/meetings' ? 'translateX(-200px)' : 'translateX(200px)' },
@@ -26,7 +25,6 @@ export default function EvaluatorsMeetingsNavigator() {
     useEffect(() => {
         axios.get('pps-infos/registered-companies', {
             headers: { Authorization: getLoggedUserToken() },
-            params: { condition: 'approved' },
         }).then(res => {
             console.log(res.data)
             setProjects(res.data.data)
@@ -52,7 +50,7 @@ export default function EvaluatorsMeetingsNavigator() {
                     <EvaluatorsMeetingsList evaluators={evaluators} projects={projects} />
                 </Route>
                 <Route path="/meetings/id">
-                    <EvaluatorsMeetingEdit evaluators={evaluators} projects={projects} />
+                    <EvaluatorsMeetingEdit evaluators={evaluators} />
                 </Route>
             </Switch>
         </animated.div>

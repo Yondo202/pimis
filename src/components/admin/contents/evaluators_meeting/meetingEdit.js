@@ -13,7 +13,7 @@ import { statusWord } from './meetingsList'
 const useQuery = () => new URLSearchParams(useLocation().search)
 
 export default function EvaluatorsMeetingEdit(props) {
-    const projects = props.projects
+    const [approvedProjects, setApprovedProjects] = useState([])
     const evaluators = props.evaluators
 
     const [selectedProjects, setSelectedProjects] = useState([])
@@ -23,6 +23,16 @@ export default function EvaluatorsMeetingEdit(props) {
 
 
     useEffect(() => {
+        axios.get('pps-infos/registered-companies', {
+            headers: { Authorization: getLoggedUserToken() },
+            params: { condition: 'approved' },
+        }).then(res => {
+            console.log(res.data)
+            setApprovedProjects(res.data.data)
+        }).catch(err => {
+            console.log(err.response?.data)
+        })
+
         if (meetingId) {
             axios.get('evaluation-meetings', {
                 headers: { Authorization: getLoggedUserToken() },
@@ -170,7 +180,7 @@ export default function EvaluatorsMeetingEdit(props) {
                 </div>
                 <div className="tw-max-w-5xl">
                     <DataGrid
-                        dataSource={projects}
+                        dataSource={approvedProjects}
                         showBorders={true}
                         wordWrapEnabled={true}
                         rowAlternationEnabled={true}

@@ -22,7 +22,7 @@ function UrgudulFront() {
     useEffect(() => {
         let temp = {}
         Object.keys(initialState).forEach(key => {
-            if (UrgudulCtx.data[key]) temp[key] = UrgudulCtx.data[key]
+            if (UrgudulCtx.data[key] !== null || UrgudulCtx.data[key] !== undefined) temp[key] = UrgudulCtx.data[key]
         })
         setForm({ ...form, ...temp })
     }, [UrgudulCtx.data.id])

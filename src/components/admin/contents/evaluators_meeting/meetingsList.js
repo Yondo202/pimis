@@ -8,6 +8,7 @@ import ClipboardListSVG from 'assets/svgComponents/clipboardListSVG'
 import TrashSVG from 'assets/svgComponents/trashSVG'
 import PenSVG from 'assets/svgComponents/penSVG'
 import './style.css'
+import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 
 
 export const statusWord = (int) => {
@@ -44,7 +45,7 @@ export default function EvaluatorsMeetingsList(props) {
 
     const navigateMeeting = (id) => history.push(`/meetings/id?id=${id}`)
 
-    const getProjects = (idArr) => projects.filter(project => idArr.includes(project.project.id))
+    const getProjects = (idArr) => projects.filter(project => idArr.includes(project.project?.id))
 
     const getEvalautors = (idArr) => evaluators.filter(evaluator => idArr.includes(evaluator.id))
 
@@ -61,7 +62,7 @@ export default function EvaluatorsMeetingsList(props) {
             </div>
 
             <div className="tw-overflow-y-auto tw-mt-6" style={{ width: 1024, maxHeight: 512 }}>
-                <div className="tw-sticky tw-top-0 tw-flex tw-flex-nowrap tw-h-10 tw-font-medium tw-rounded-t-md tw-bg-gray-600 tw-text-white tw-pt-1">
+                <div className="tw-sticky tw-top-0 tw-flex tw-flex-nowrap tw-h-10 tw-font-medium tw-rounded-t-md tw-bg-gray-600 tw-text-white tw-pt-1 tw-z-20">
                     <div className="tw-w-12 tw-flex tw-items-center tw-justify-center">
                         Д/д
                     </div>
@@ -103,14 +104,16 @@ export default function EvaluatorsMeetingsList(props) {
                                     </button>
                                 </div>
                                 <div className="tw-w-56 tw-flex tw-flex-nowrap tw-items-center tw-justify-center tw-ml-auto tw-text-13px">
-                                    <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none" onClick={() => navigateMeeting(meeting.id)}>
+                                    {/* <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none" onClick={() => navigateMeeting(meeting.id)}>
                                         <PenSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
                                         Өөрчлөх
-                                    </button>
-                                    <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none tw-ml-4" onClick={() => { }}>
+                                    </button> */}
+                                    <ButtonTooltip tooltip="Өөрчлөлт оруулах" beforeSVG={<PenSVG className="tw-w-4 tw-h-4" />} classButton="tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-p-1" onClick={() => navigateMeeting(meeting.id)} />
+                                    {/* <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none tw-ml-4" onClick={() => { }}>
                                         <TrashSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
                                         Устгах
-                                    </button>
+                                    </button> */}
+                                    <ButtonTooltip tooltip="Устгах" beforeSVG={<TrashSVG className="tw-w-4 tw-h-4" />} classAppend="tw-ml-2" classButton="tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-p-1" />
                                 </div>
                             </div>
 

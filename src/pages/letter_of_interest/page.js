@@ -64,6 +64,14 @@ const helperTexts = {
     },
 }
 
+const quillTypes = [
+    'basic_info',
+    'project_info',
+    'criteria',
+    'purchases',
+    'anti_corruption',
+]
+
 function LetterOfInterest() {
     const [form, setForm] = useState(initialState)
 
@@ -110,30 +118,38 @@ function LetterOfInterest() {
     const AlertCtx = useContext(AlertContext)
 
     const handleSubmit = () => {
-        if (form.id) {
-            axios.put(`letter-of-interests/${form.id}`, { ...form }, {
-                headers: {
-                    'Authorization': getLoggedUserToken(),
-                },
-            }).then(res => {
-                console.log(res.data)
-                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
-            }).catch(err => {
-                console.log(err.response?.data)
-                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хадгалж чадсангүй.' })
-            })
+        setValidate(true)
+        let allValid = true
+        allValid = allValid && Object.keys(initialState).every(key => !checkInvalid(form[key], quillTypes.includes(key) && 'quill'))
+
+        if (allValid) {
+            if (form.id) {
+                axios.put(`letter-of-interests/${form.id}`, { ...form }, {
+                    headers: {
+                        'Authorization': getLoggedUserToken(),
+                    },
+                }).then(res => {
+                    console.log(res.data)
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
+                }).catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хадгалж чадсангүй.' })
+                })
+            } else {
+                axios.post('letter-of-interests', form, {
+                    headers: {
+                        'Authorization': getLoggedUserToken(),
+                    },
+                }).then(res => {
+                    console.log(res.data)
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
+                }).catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хадгалж чадсангүй.' })
+                })
+            }
         } else {
-            axios.post('letter-of-interests', form, {
-                headers: {
-                    'Authorization': getLoggedUserToken(),
-                },
-            }).then(res => {
-                console.log(res.data)
-                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
-            }).catch(err => {
-                console.log(err.response?.data)
-                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хадгалж чадсангүй.' })
-            })
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
         }
     }
 
@@ -184,6 +200,22 @@ function LetterOfInterest() {
 
     const [previewModal, setPreviewModal] = useState(false)
 
+    const [validate, setValidate] = useState(false)
+
+    const checkInvalid = (value, type) => {
+        switch (value) {
+            case null:
+                return true
+            case '':
+                return true
+            case '<p><br></p>':
+                if (type === 'quill') return true
+                break
+            default:
+                return false
+        }
+    }
+
     return (
         <div className="tw-relative tw-pt-20 tw-pb-32 tw-text-gray-700">
             <button className="tw-absolute tw-top-4 tw-left-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-5 tw-pr-6 tw-text-15px tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={() => setPreviewModal(true)}>
@@ -216,7 +248,7 @@ function LetterOfInterest() {
                             </button>
                         </div>
                         :
-                        <button className="tw-w-44 tw-h-44 tw-shadow-md tw-flex tw-flex-col tw-justify-center tw-items-center tw-flex-shrink-0 tw-text-blue-400 tw-text-sm focus:tw-outline-none active:tw-text-blue-300 tw-transition-colors" onClick={() => inputRefLogo.current.click()}>
+                        <button className={`tw-w-44 tw-h-44 tw-shadow-md tw-flex tw-flex-col tw-justify-center tw-items-center tw-flex-shrink-0 tw-text-blue-400 tw-text-sm focus:tw-outline-none active:tw-text-blue-300 tw-transition-colors ${validate && checkInvalid(form.company_logo) && 'tw-border tw-border-red-500 tw-border-dashed'}`} onClick={() => inputRefLogo.current.click()}>
                             <UploadSVG className="tw-w-8 tw-h-8" />
                             <span className="tw-font-medium tw-mt-1">Лого</span>
                         </button>
@@ -224,11 +256,11 @@ function LetterOfInterest() {
                     <input type="file" className="tw-invisible tw-absolute tw-h-0" onChange={handleUploadLogo} ref={inputRefLogo} />
 
                     <div className="tw-relative tw-flex-grow tw-p-2 tw-pl-8">
-                        <input className="tw-bg-transparent focus:tw-outline-none tw-shadow-md tw-px-1 tw-text-gray-600 tw-text-2xl tw-font-semibold tw-w-full" type="text" value={form.company_name || ''} onChange={e => handleInput('company_name', e.target.value)} placeholder="ААН албан ёсны нэр" />
+                        <input className={`tw-bg-transparent focus:tw-outline-none tw-shadow-md tw-px-1 tw-text-gray-600 tw-text-2xl tw-font-semibold tw-w-full ${validate && checkInvalid(form.company_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_name || ''} onChange={e => handleInput('company_name', e.target.value)} placeholder="ААН албан ёсны нэр" />
 
-                        <input className="tw-bg-transparent focus:tw-outline-none tw-mt-4 tw-shadow-md tw-px-1 tw-w-full tw-text-sm tw-font-medium" type="text" value={form.company_address || ''} onChange={e => handleInput('company_address', e.target.value)} placeholder="ААН хаяг бүтнээр" />
+                        <input className={`tw-bg-transparent focus:tw-outline-none tw-mt-4 tw-shadow-md tw-py-0.5 tw-px-1 tw-w-full tw-text-sm tw-font-medium ${validate && checkInvalid(form.company_address) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_address || ''} onChange={e => handleInput('company_address', e.target.value)} placeholder="ААН хаяг бүтнээр" />
 
-                        <input className="tw-bg-transparent focus:tw-outline-none tw-mt-4 tw-shadow-md tw-px-1 tw-text-sm tw-font-medium" type="date" value={form.submit_date || ''} onChange={e => handleInput('submit_date', e.target.value)} />
+                        <input className={`tw-bg-transparent focus:tw-outline-none tw-mt-4 tw-shadow-md tw-px-1 tw-text-sm tw-font-medium ${validate && checkInvalid(form.submit_date) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="date" value={form.submit_date || ''} onChange={e => handleInput('submit_date', e.target.value)} />
                     </div>
                 </div>
 
@@ -240,23 +272,23 @@ function LetterOfInterest() {
                 </div>
 
                 <div className="tw-mt-6">
-                    <div className="tw-py-2 tw-px-6 tw-flex" style={{ height: '100px' }}>
+                    <div className={`tw-my-1 tw-mx-5 tw-p-1 tw-flex tw-rounded ${validate && checkInvalid(form.basic_info, 'quill') && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ height: '100px' }}>
                         <ReactQuill theme="snow" modules={modules} tabIndex={0} value={form.basic_info} onChange={content => handleInput('basic_info', content)} placeholder={helperTexts.basicInfo.text} onFocus={() => setHelper({ open: true, display: 'basicInfo' })} onBlur={() => setHelper({ ...helper, open: false })} />
                     </div>
 
-                    <div className="tw-py-2 tw-px-6 tw-flex" style={{ height: '100px' }}>
+                    <div className={`tw-my-1 tw-mx-5 tw-p-1 tw-flex tw-rounded ${validate && checkInvalid(form.project_info, 'quill') && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ height: '100px' }}>
                         <ReactQuill theme="snow" modules={modules} tabIndex={0} value={form.project_info} onChange={content => handleInput('project_info', content)} placeholder={helperTexts.projectInfo.text} onFocus={() => setHelper({ open: true, display: 'projectInfo' })} onBlur={() => setHelper({ ...helper, open: false })} />
                     </div>
 
-                    <div className="tw-py-2 tw-px-6 tw-flex" style={{ height: '100px' }}>
+                    <div className={`tw-my-1 tw-mx-5 tw-p-1 tw-flex tw-rounded ${validate && checkInvalid(form.criteria, 'quill') && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ height: '100px' }}>
                         <ReactQuill theme="snow" modules={modules} tabIndex={0} value={form.criteria} onChange={content => handleInput('criteria', content)} placeholder={helperTexts.criteria.text} onFocus={() => setHelper({ open: true, display: 'criteria' })} onBlur={() => setHelper({ ...helper, open: false })} />
                     </div>
 
-                    <div className="tw-py-2 tw-px-6 tw-flex" style={{ height: '124px' }}>
+                    <div className={`tw-my-1 tw-mx-5 tw-p-1 tw-flex tw-rounded ${validate && checkInvalid(form.purchases, 'quill') && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ height: '124px' }}>
                         <ReactQuill theme="snow" modules={modules} tabIndex={0} value={form.purchases} onChange={content => handleInput('purchases', content)} placeholder={helperTexts.purchases.text} onFocus={() => setHelper({ open: true, display: 'purchases' })} onBlur={() => setHelper({ ...helper, open: false })} />
                     </div>
 
-                    <div className="tw-py-2 tw-px-6 tw-flex" style={{ height: '108px' }}>
+                    <div className={`tw-my-1 tw-mx-5 tw-p-1 tw-flex tw-rounded ${validate && checkInvalid(form.anti_corruption, 'quill') && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ height: '108px' }}>
                         <ReactQuill theme="snow" modules={modules} tabIndex={0} value={form.anti_corruption} onChange={content => handleInput('anti_corruption', content)} placeholder={helperTexts.antiCorruption.text} onFocus={() => setHelper({ open: true, display: 'antiCorruption' })} onBlur={() => setHelper({ ...helper, open: false })} />
                     </div>
                 </div>
@@ -264,13 +296,13 @@ function LetterOfInterest() {
                 <div className="tw-relative tw-mt-8 tw-py-4 tw-text-sm tw-pr-60">
                     <div className="tw-flex tw-justify-center">
                         <span className="tw-font-medium">Гүйцэтгэх захирал:</span>
-                        <input className="tw-bg-transparent focus:tw-outline-none tw-shadow-md tw-px-1 tw-ml-2 tw-w-60" type="text" value={form.director_name || ''} onChange={e => handleInput('director_name', e.target.value)} placeholder="Овог нэр" />
+                        <input className={`tw-bg-transparent focus:tw-outline-none tw-shadow-md tw-px-1 tw-py-0.5 tw-ml-2 tw-w-60 ${validate && checkInvalid(form.director_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.director_name || ''} onChange={e => handleInput('director_name', e.target.value)} placeholder="Овог нэр" />
                     </div>
 
                     <div className="tw-flex tw-justify-center tw-items-end tw-mt-2">
                         <span className="tw-font-medium tw-ml-16 tw-mb-0.5">Гарын үсэг:</span>
 
-                        <SignaturePad canvasProps={{ className: 'tw-shadow-md tw-ml-4 tw-border-b tw-border-gray-600', width: 240, height: 80 }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
+                        <SignaturePad canvasProps={{ className: `tw-shadow-md tw-ml-4 ${validate && checkInvalid(form.director_signature) ? 'tw-border tw-border-red-500 tw-border-dashed' : 'tw-border-b tw-border-gray-600'} tw-transition-colors`, width: 260, height: 80 }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
 
                         <ButtonTooltip tooltip="Арилгах" beforeSVG={<CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" />} onClick={handleClearSignature} classAppend="tw-self-center tw-mx-2" classButton="tw-text-red-500 active:tw-text-red-600" />
                     </div>
@@ -283,7 +315,7 @@ function LetterOfInterest() {
                             </button>
                         </div>
                         :
-                        <button className="tw-w-32 tw-h-32 tw-shadow-md tw-absolute tw-top-2 tw-right-32 tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-blue-400 focus:tw-outline-none active:tw-text-blue-300 tw-transition-colors" onClick={() => inputRefStamp.current.click()}>
+                        <button className={`tw-w-32 tw-h-32 tw-shadow-md tw-absolute tw-top-2 tw-right-32 tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-blue-400 focus:tw-outline-none active:tw-text-blue-300 tw-transition-colors ${validate && checkInvalid(form.company_stamp) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} onClick={() => inputRefStamp.current.click()}>
                             <UploadSVG className="tw-w-8 tw-h-8" />
                             <span className="tw-font-medium tw-mt-1">Тамга</span>
                         </button>

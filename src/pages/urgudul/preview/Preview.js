@@ -364,7 +364,7 @@ export default function UrgudulPreview(props) {
                     </div>
                     <div className="tw-border tw-border-t-0 tw-border-gray-400">
                         {Object.entries(labels.benefit).filter(([key, value]) => key !== 'growths_explanation' && key !== 'assumptions').map(([key, value]) =>
-                            <Row label={value} value={project.benefit?.[key]?.toLocaleString() + '%'} key={key} />
+                            <Row label={value} value={project.benefit?.[key] && project.benefit[key].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%'} key={key} />
                         )}
                         <RowHtml label={labels.benefit.growths_explanation} html={project.benefit?.growths_explanation} />
                         <RowHtml label={labels.benefit.assumptions} html={project.benefit?.assumptions} />
@@ -403,28 +403,28 @@ export default function UrgudulPreview(props) {
                                 <tr>
                                     <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Борлуулалт</td>
                                     {dates.map((item, i) =>
-                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.sales?.[item]?.toLocaleString()}</td>
+                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.sales?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     )}
                                     <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
                                 </tr>
                                 <tr>
                                     <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Ажлын байр</td>
                                     {dates.map((item, i) =>
-                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.fullTime_workplace?.[item]?.toLocaleString()}</td>
+                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.fullTime_workplace?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     )}
                                     <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
                                 </tr>
                                 <tr>
                                     <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Бүтээмж</td>
                                     {dates.map((item, i) =>
-                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.productivity?.[item]?.toLocaleString()}</td>
+                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.productivity?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     )}
                                     <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
                                 </tr>
                                 <tr>
                                     <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Экспорт</td>
                                     {dates.map((item, i) =>
-                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{exportSums[item] !== 0 && exportSums[item]?.toLocaleString()}</td>
+                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{exportSums[item] !== 0 && exportSums[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     )}
                                     <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
                                 </tr>
@@ -437,7 +437,7 @@ export default function UrgudulPreview(props) {
                                             <tr key={j}>
                                                 <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">{getProductName(product?.productId)}</td>
                                                 {dates.map((item, k) =>
-                                                    <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={k}>{product?.[item]?.toLocaleString()}</td>
+                                                    <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={k}>{product?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                                 )}
                                                 <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
                                             </tr>
