@@ -1,5 +1,5 @@
 import React,{useEffect, useState,useContext} from "react";
-import styled from "styled-components";
+import styled,{keyframes} from "styled-components";
 import { Link } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { fontFamily,ColorRgb,textColor } from '../../components/theme';
@@ -142,6 +142,12 @@ function Menu() {
 
 export default Menu;
 
+const cardAnimate = keyframes`
+    0% { transform:scale(1);opacity:0;  }
+    30% { transform:scale(1.037);opacity:0.7;  }
+    100% { transform:scale(1);opacity:1;  }
+`
+
 const Componentss = styled.div`
     font-family:${fontFamily};
     letter-spacing: -0.1px;
@@ -243,6 +249,8 @@ const Componentss = styled.div`
             .UserNameMenu{
               position:relative;
               .ghost{
+                animation-name: ${cardAnimate};
+                animation-duration:0.5s;
                 color:rgba(${textColor},1);
                 position:absolute;
                 top:5px;
@@ -258,7 +266,7 @@ const Componentss = styled.div`
                   background-color:#fff;
                   max-height: calc(100vh - 60px);
                   box-shadow:1px 1px 20px -9px;
-                  width:230px;
+                  width:250px;
                   border-radius:4px;
                   .UserInfo{
                     display:flex;
