@@ -1,11 +1,28 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import styled from 'styled-components'
 import {fontSize, textColor,InputStyle,ColorRgb,NextBtn } from '../../../theme'
 import {AiOutlineSend} from 'react-icons/ai'
+import {IoIosShareAlt} from 'react-icons/io'
+import axios from 'axiosbase'
+import Token from 'context/accessToken'
 
 function Main_decision() {
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
+    const [ mainData, setMainData ] = useState(null);
+    const [ members, setMembers ] = useState([]);
+
+    useEffect(async()=>{
+        try{
+            const data = await axios.get(`evaluation-results/hurliin-negtgel?projectId=1&evaluationMeetingId=4`, { headers: { Authorization:Token() } })
+            console.log(data.data.data, " my data"); setMainData(data.data.data); setMembers(data.data.data.memberEvaluations);
+        }catch{
+            console.log("aldaa garsaaaa");
+        }
+      
+    },[]);
+
+    console.log(mainData, " my dataaaaaaaaaaaaaa");
 
     return (
         <FeedBackCont className="container">
@@ -15,39 +32,73 @@ function Main_decision() {
                     <div className="desc">Төсөл бүрт өгсөн нэгтгэсэн санал </div>
                 </div>
                 <div className="infoWhere">
-                    {/* <div className="Title Title4"><span className="circle">⬤</span>Төсөл бүрт өгсөн нэгтгэсэн санал </div> */}
                     <table id="customers">
                         <tr>
-                            <th>Талбар</th><th>Утга</th>
+                            <th style={{borderRight:`1px solid rgba(255,255,255,0.5)`}}>Талбар</th>
+                            <th>Утга</th>
                         </tr>
-                            {tableData.map((el,i)=>{
-                                return(
-                                    <tr className="getTable1">
-                                        <td>{el.title}</td>
-                                        <td> <InputStyle>  <input className={`input tableItem${i+1}`} placeholder="..." type="input" /> <div className="line" />  </InputStyle> </td>
-                                    </tr>
-                                )
-                            })}
+                            <tr className="getTable1">
+                                <td>Байгууллагын нэр:</td>
+                                <td> <div className="input">{mainData&&mainData.company_name}</div></td>
+                            </tr>
+                            <tr className="getTable1">
+                                <td>Төслийн нэр:</td>
+                                <td><div className="input">{mainData&&mainData.project_name}</div> </td>
+                            </tr>
+                            <tr className="getTable1">
+                                <td>Өргөдлийн дугаар:</td>
+                                <td><div className="input">{mainData&&mainData.project_number}</div></td>
+                            </tr>
+                            <tr className="getTable1">
+                                <td>Хурлын огноо:</td>
+                                <td><div className="input">{mainData&&mainData.meetingDate}</div></td>
+                            </tr>
                     </table>
                 </div>
 
                 <div className="infoWhere">
                     <table id="customers">
-                        <tr><th>Үнэлгээний хорооны гишүүдийн овог нэр</th><th>Санал</th></tr>
-                            {tableData2.map((el,i)=>{
+                        <tr><th style={{borderRight:`1px solid rgba(255,255,255,0.5)`}}>Үнэлгээний хорооны гишүүдийн овог нэр</th><th>Санал</th></tr>
+                            {members.map((el,i)=>{
                                 return(
                                     <tr className="getTable1">
-                                        <td>{el.title}</td>
-                                        <td><InputStyle><input className={`input tableItem${i+1}`} placeholder="..." type="input" /> <div className="line" /></InputStyle></td>
+                                        <td>{el.user.firstname} {el.user.lastname}</td>
+                                        {/* <td><InputStyle><input className={`input tableItem${i+1}`} placeholder="..." type="input" /> <div className="line" /></InputStyle></td> */}
+                                        <td><div className="input">{el.approve===true? `Зөвшөөрсөн`:`Татгалзсан`}</div></td>
                                     </tr>
                                 )
                             })}
+                            <tr className="getTable1 B2">
+                                        <td>Дэмжсэн саналын тоо</td>
+                                        {/* <td><InputStyle><input className={`input tableItem${i+1}`} placeholder="..." type="input" /> <div className="line" /></InputStyle></td> */}
+                                        <td><div className="input">{mainData&&mainData.aprrovedCount}</div></td>
+                            </tr>
+                            <tr className="getTable1 B2">
+                                        <td>Татгалзсан саналын тоо</td>
+                                        {/* <td><InputStyle><input className={`input tableItem${i+1}`} placeholder="..." type="input" /> <div className="line" /></InputStyle></td> */}
+                                        <td><div className="input">{mainData&&mainData.rejectedCount}</div></td>
+                            </tr>
+                            <tr className="getTable1 B2">
+                                        <td>ЭЦСИЙН ДҮН</td>
+                                        {/* <td><InputStyle><input className={`input tableItem${i+1}`} placeholder="..." type="input" /> <div className="line" /></InputStyle></td> */}
+                                        <td><div className="input">{mainData&&mainData.approve===true? `Зөвшөөрсөн`:`Татгалзсан`}</div></td>
+                            </tr>
                     </table>
                 </div>
 
+                <div className="reasonPar">
+                            <div className="title">Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:</div>
+                            <div className="inpPar">
+                                 <div className="svg"><IoIosShareAlt /></div>
+                                <InputStyle className="inpp"><textarea className={`inputtt`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
+                            </div>
+                </div>
+
+
+
                 <div className="buttonPar">
                     <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                    <NextBtn className="SubmitButton" type="button">Илгээх <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                    <NextBtn className="SubmitButton" type="button">Хадгалах <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                 </div>
             </div>
         </FeedBackCont>
@@ -58,10 +109,39 @@ export default Main_decision
 
 const FeedBackCont = styled.div`
         color: rgba(${textColor});
-        padding-bottom:80px;
+        padding-bottom:50px;
         .contentPar{
+            .reasonPar{
+                .title{
+                    font-size:14px;
+                    font-weight:500;
+                    margin-bottom:18px;
+                }
+                .inpPar{
+                    display:flex;
+                    align-items:center;
+                    .svg{
+                        margin-right:15px;
+                        border-radius:50%;
+                        padding:4px 4px;
+                        color:rgba(${textColor},0.7);
+                        background-color:rgba(0,0,0,0.1);
+                        svg{
+                            font-size:20px;
+                        }
+                    }
+                    .inpp{
+                        width:100%;
+                        flex-grow:10px;
+                        textarea{
+                            height:60px;
+                        }
+                    }
+                }
+            }
+
             background-color:white;
-            padding:20px 100px;
+            padding:30px 100px;
             font-size:${fontSize};
             margin-top:30px;
             border:1px solid rgba(0,0,0,.2);
@@ -71,11 +151,12 @@ const FeedBackCont = styled.div`
                 .title{
                     color:${textColor};
                     padding-bottom:10px;
-                    font-size:14px;
+                    font-size:16px;
                     text-align:center;
                     font-weight:500;
                 }
                 .desc{
+                    font-size:14px;
                     text-align:center;
                     font-style: italic;
                 }
@@ -88,12 +169,16 @@ const FeedBackCont = styled.div`
                     width: 100%;
                     td, th{
                         border: 1px solid rgba(0,0,0,0.2);
-                        padding: 8px;
+                        padding: 10px;
+                    }
+                    .B2{
+                        td{
+                            font-weight:500;
+                        }
                     }
                     th{
                         color:white;
-                        background-color:rgba(${ColorRgb});
-
+                        background-color:rgba(${ColorRgb},.9);
                         .question{
                             opacity:0;
                             transform:scale(0);
@@ -101,6 +186,7 @@ const FeedBackCont = styled.div`
                     }
                     td{
                         .input{
+                            font-weight:500;
                             width:100%;
                         }
                         .nameText{

@@ -19,6 +19,8 @@ import AnalystReport from "pages/decision_making/5c/Page";
 import AttachmentUploads from "pages/attachments/page";
 import MainPage from "components/notifyPage/MainPage";
 import WorkPerformance from 'components/workPerformance/MainWorkPerformance'
+import PdfTest from 'components/check/PdfTest'
+import {ChangePassword} from 'components/LoginDoneHome/ChangePassword'
 
 function UsersRoute() {
     return (
@@ -32,7 +34,9 @@ function UsersRoute() {
                         </motion.div>
                     </Route>
                     <Route path="/check/:url" component={CheckComp} />
+                    <Route path="/checks/test" component={PdfTest} />
                     <Route path="/notify-page/:paramId" component={MainPage} />
+                    <Route path="/changepass" component={ChangePassword} />
 
                     {/* <Route path="/comp-request" component={MainRequest} /> */}
                     <Route path="/request/:url" component={MainRequestOld} />

@@ -49,7 +49,7 @@ function ActiveComp(props) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <Link to="#" className="items  arrHelp"><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
+                        <Link to="#" className="items arrHelp"><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
                     </div>
                     <div className="lineFull" ></div>
                     <Link to="/maindecision" className={props.data.lastEvalution.value === 0 ? `resultDesable` : props.data.lastEvalution.value === 1 ? `resultWaiting` : `resultActive`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
@@ -62,12 +62,9 @@ function ActiveComp(props) {
                         <div className="items arrHelp"><div className="helpArr"></div>1. Түншлэлийн гэрээ байгуулах </div>
                         <div className="line" ></div>
                         <Link to="#" className="items "><div className="helpArr"></div> 2. Гүйцэтгэлийг нотлох баримт(бусад байгууллагатай байгуулах гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан) </Link>
-
-
                     </div>
                     <div className="lineFull" ></div>
                     <div className="resultDesable">3. Түншлэлийн гэрээний гүйцэтгэлийн тайлан</div>
-
                 </div>
             </div>
 

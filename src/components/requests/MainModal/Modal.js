@@ -145,10 +145,9 @@ const Background = styled.div`
                 
         }
     }
-    @page {
-        size: A4;
-        margin: 17mm 17mm 17mm 17mm;
-    }
-    
+    // @page {
+    //     size: A4;
+    //     margin: 17mm 17mm 17mm 17mm;
+    // }
     
 `

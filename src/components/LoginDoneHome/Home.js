@@ -24,9 +24,6 @@ function Home() {
         }
     }, []);
 
-   console.log(`infData`, infData)
-
-
     return (
         <HomeComponent style={userId?{maxWidth:"2000px"}:{maxWidth:"1160px"}} className={`container`}>
             <div className="headerPar">
@@ -41,9 +38,7 @@ function Home() {
                     <div className="col-md-4"><div className="headItems"><span className="text">Бизнес хяналтын зөвлөх</span><span className="text">Үнэлгээ, шийдвэр</span> </div></div>
                 </div>
             </div>
-            {infData === null ? <InitialComp /> :
-             <ActiveComp prew={userId} data={infData} />
-             }
+            {infData === null ? <InitialComp /> : <ActiveComp prew={userId} data={infData} /> }
         </HomeComponent>
     )
 }

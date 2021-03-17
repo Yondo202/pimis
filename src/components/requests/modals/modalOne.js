@@ -31,13 +31,13 @@ function ModalOne(props) {
                 {DataOne.map((el,i)=>{
                     return(
                         <div className="items row">
-                            <div style={{borderBottom:`1px solid rgba(0,0,0,0.2)`}} className="col-md-10 col-sm-10 col-10">
+                            <div id="borderBot"  className="col-md-10 col-sm-10 col-10">
                                 <div className="question22">
                                     <span className="Num">{el.rownum}</span>
                                         {el.name}
                                 </div>
                             </div>
-                            <div style={{borderLeft:`1px solid rgba(0,0,0,0.2)`,borderBottom:`1px solid rgba(0,0,0,0.3)`,backgroundColor:`rgba(63,255,181,0.2)`}}  className="col-md-2 col-sm-2 col-2">
+                            <div  id="colBorder"  className="col-md-2 col-sm-2 col-2">
                                 <div className="answer">
                                     {el.rvalue === "true" ? <span>Тийм</span> : null}
                                     {el.rvalue === "unconcern" ? <span>Хамаарахгүй</span> : null}
@@ -74,6 +74,15 @@ const TableOne = styled.div`
         }
         .items{
             background-color: rgba(63,81,181,0.1);
+            #colBorder{
+                border-left:1px solid rgba(0,0,0,0.2);
+                border-bottom:1px solid rgba(0,0,0,0.3);
+                background-color:rgba(63,255,181,0.2);
+            }
+            #borderBot{
+                border-bottom:1px solid rgba(0,0,0,0.2);
+            }
+
             .question22{
                 height:100%;
                 display:flex;
