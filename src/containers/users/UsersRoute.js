@@ -24,6 +24,8 @@ import TrainingRequest from 'pages/training/request/Page';
 import TrainingPartnerRegistration from 'pages/training/partner_registration/Page';
 import TrainingFeedback from 'pages/training/feedback/Page';
 
+import PdfTest from 'components/check/PdfTest'
+import { ChangePassword } from 'components/LoginDoneHome/ChangePassword'
 
 function UsersRoute() {
     return (
@@ -37,7 +39,9 @@ function UsersRoute() {
                         </motion.div>
                     </Route>
                     <Route path="/check/:url" component={CheckComp} />
+                    <Route path="/checks/test" component={PdfTest} />
                     <Route path="/notify-page/:paramId" component={MainPage} />
+                    <Route path="/changepass" component={ChangePassword} />
 
                     {/* <Route path="/comp-request" component={MainRequest} /> */}
                     <Route path="/request/:url" component={MainRequestOld} />

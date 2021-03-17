@@ -24,8 +24,9 @@ function Signup() {
     const [visible, setVisible] = useState(false);
     const [visible2, setVisible2] = useState(false);
     const [passwordFocused, setPasswordFocused] = useState(false);
-    const [password, setPassword] = useState("");
     const [ color1, setColor1 ] = useState("rgba(0,0,0,0.7)");
+
+    const [password, setPassword] = useState("");
     const [passwordValidity, setPasswordValidity  ] = useState({
       minCar: null,
       number: null,

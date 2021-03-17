@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from 'styled-components'
 // import PageOne from '../member/notify/PageOne'
 import Approved from './Approve/Approved'

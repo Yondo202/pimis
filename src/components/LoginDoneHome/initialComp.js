@@ -7,9 +7,9 @@ function InitialComp() {
                 <div className="col-md-2 col-sm-2 itemsCol">
                     <div className="itemsPar">
                         <div className="mains">
-                            <Link to={`/comp-test`} className={`items`}>1. Шалгуур хангалтыг тулгах хуудас </Link>
+                            <Link to={`/check/user`} className={`items`}>1. Шалгуур хангалтыг тулгах хуудас </Link>
                             <div className="line line2" ></div>
-                            <Link to={`/comp-request`} className="items">2. Байгаль орчны үнэлгээний асуумж </Link>
+                            <Link to={`/request/user`} className="items">2. Байгаль орчны үнэлгээний асуумж </Link>
                             <div className="line line2" ></div>
                             <Link to="/letter-of-interest" className="items">3. Сонирхол илэрхийлэх албан тоот</Link>                        
                         </div>

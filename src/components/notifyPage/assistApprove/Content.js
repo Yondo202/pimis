@@ -7,8 +7,8 @@ import { CgDanger } from 'react-icons/cg';
 import {AlertStyle} from '../../theme'
 
 export default class Content extends React.Component {
-    constructor(props) {
-        super(props)
+    constructor() {
+        super()
         this.state = { color: "orange", text: "dadadadadadadad", cond: false, Btn: "1" }
     }
 

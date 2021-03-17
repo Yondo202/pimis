@@ -12,6 +12,7 @@ import HamburgerMenu from 'react-hamburger-menu';
 import RequestOld from '../../containers/requestComp/mainRequestOld'
 import { Background } from "devextreme-react/range-selector";
 
+
 function Menu() {
     const location = useLocation();
     const userCtx = useContext(UserContext);
@@ -27,6 +28,8 @@ function Menu() {
       Req: '',
       Check: ''
     })
+
+    const closeHandle = () =>{ setShowProfile(false); setProHover(false); } 
     
     useEffect(() => {
       const userId = localStorage.getItem("userId", []);
@@ -100,14 +103,14 @@ function Menu() {
                           {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
                           <div className="Notification"><div className="notf" to="#" content="2" ><IoNotificationsOutline /></div> </div>
                           <div className="UserNameMenu" content={userName} >
-                            <div style={proHover?{backgroundColor:`rgba(255,255,255,0.4)`}:{backgroundColor:`inherit`}} onMouseEnter={()=>{setShowProfile(prev=>!prev);setProHover(prev=>!prev)}} onMouseLeave={()=>{setShowProfile(prev=>!prev);setProHover(prev=>!prev)}} className="par"><CgProfile /></div> 
+                            <div style={proHover?{backgroundColor:`rgba(255,255,255,0.4)`}:{backgroundColor:`inherit`}} onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="par"><CgProfile /></div> 
 
-                             {showProfile&&<div onMouseEnter={()=>{setShowProfile(prev=>!prev);setProHover(prev=>!prev)}} onMouseLeave={()=>{setShowProfile(prev=>!prev);setProHover(prev=>!prev)}} className="ghost"> <div className="HoverContent">  
+                             {showProfile&&<div onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="ghost"> <div className="HoverContent">  
                                   <div className="UserInfo"> <img src="/user1.svg" alt="src" /> <span className="name">{userName}</span> </div>
-                                  <div className="resPass">
+                                  <Link onClick={closeHandle} to="/changepass" className="resPass">
                                         <div className="initList"><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
                                         <div className="svgOther"><IoIosArrowForward /> </div>                               
-                                  </div>
+                                  </Link>
                               </div></div>} 
 
                           </div>
@@ -284,6 +287,8 @@ const Componentss = styled.div`
                     }
                   }
                   .resPass{
+                    text-decoration:none;
+                    color:rgba(${textColor},1);
                     cursor:pointer;
                     border-radius:4px;
                     width:100%;

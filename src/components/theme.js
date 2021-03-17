@@ -75,8 +75,8 @@ export const NextBtn = styled.div`
             opacity: 0;
             left:0%;
             top:0%;
-            -webkit-transform: scale(2);
-            transform: scale(2);
+            -webkit-transform: scale(1.5);
+            transform: scale(1.5);
             height:100%;
             width:100%;
           }
@@ -91,14 +91,14 @@ export const NextBtn = styled.div`
             height:30px;
         }
         .hide{
-        transition:all 0.3s ease;
-        transform:scale(0);
-        font-size:22px;
+            transition:all 0.3s ease;
+            transform:scale(0);
+            font-size:22px;
         }
         .hide1{
-        transition:all 0.7s ease;
-        transform:scale(0);
-        font-size:26px;
+            transition:all 0.7s ease;
+            transform:scale(0);
+            font-size:23px;
         }
         &:hover{
         box-shadow:1px 1px 15px -2px black;

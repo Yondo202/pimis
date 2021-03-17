@@ -14,18 +14,15 @@ function Home() {
     useEffect(async () => {
         if (userId) {
             await axios.get(`pps-infos/registered-companies?userId=${userId}`, { headers: { Authorization: AccessToken() } }).then((res) => {
-                console.log(res, " ress"); if (res.data.data[0]) { setInfData(res.data.data[0]) }
+                console.log(res, " ressssssssssssssssss"); if (res.data.data[0]) { setInfData(res.data.data[0]) }
             })
         }else {
             let userID = localStorage.getItem("userId");
             await axios.get(`pps-infos/registered-companies?userId=${userID}`, { headers: { Authorization: AccessToken() } }).then((res) => {
-                console.log(res, " ress"); if (res.data.data[0]) { setInfData(res.data.data[0]) }
+                console.log(res, " ressaaaaaaaaaaaaa"); if (res.data.data[0]) { setInfData(res.data.data[0]) }
             })
         }
     }, []);
-
-   console.log(`infData`, infData)
-
 
     return (
         <HomeComponent style={userId?{maxWidth:"2000px"}:{maxWidth:"1160px"}} className={`container`}>
@@ -35,15 +32,12 @@ function Home() {
                     <div className="col-md-4"><div className="headItems"><span className="text">2. Үнэлгээ, шийдвэр гарах явц</span> </div></div>
                     <div className="col-md-4"><div className="headItems"><span className="text"> 3. Гэрээ байгуулах, гүйцэтгэл санхүүжилтийн..</span></div></div>
                 </div>
-
                 <div className="otherHead row">
                     <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
                     <div className="col-md-4"><div className="headItems"><span className="text">Бизнес хяналтын зөвлөх</span><span className="text">Үнэлгээ, шийдвэр</span> </div></div>
                 </div>
             </div>
-            {infData === null ? <InitialComp /> :
-             <ActiveComp prew={userId} data={infData} />
-             }
+            {infData === null ? <InitialComp /> : <ActiveComp prew={userId} data={infData} /> }
         </HomeComponent>
     )
 }
@@ -51,15 +45,11 @@ function Home() {
 
 export default Home
 
-
-
 const animeate1 = keyframes`
     0% { transform:scale(1);opacity:1; }
     40% { transform:scale(1.076);opacity:0.5; }
     100% { transform:scale(1);opacity:1; }
 `
-
-
 const HomeComponent = styled.div`
     max-width:1160px;
     text-align:center;
@@ -67,7 +57,6 @@ const HomeComponent = styled.div`
     a{
         text-decoration:none;
     }
-    
     .itemsCol{
         border-right:1px solid rgba(0,0,0,0.3);
         border-right-style:dashed;
