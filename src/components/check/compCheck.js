@@ -20,6 +20,7 @@ function CompCheck() {
     const param = useParams().url;
     const ctx = useContext(UserContext);
     const history = useHistory();
+    const [ count, setCount ] = useState(0);
     const [ success, setSuccess ] = useState(0);
     const [ btnCond, setBtnCond ] = useState(init);
     const [ secondChance, setSecondChance ] = useState({});
@@ -94,8 +95,17 @@ function CompCheck() {
               }
     }
 
-    const closeModalX=()=>{ setVisible2(false); }
-    const closeModal=()=>{ setBtnCond("twice");  setVisible2(false); }
+    const closeMModalX=()=>{ setVisible2(false); }
+    const closeModal=(el)=>{
+        if(el==="shuud"){
+          setBtnCond("twice");  setVisible2(false);
+        }else{
+          setCount(prev=> prev + el);
+          if(count > 2){
+            setBtnCond("twice");  setVisible2(false);
+          }
+        }
+    }
 
     return (
       <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
@@ -164,7 +174,7 @@ function CompCheck() {
 
                       <Modal visible={visible2} width="800" effect="fadeInDown" >
                               <div className="Modaltest">
-                                <div onClick={closeModalX} className="headPar"><span >x</span></div>
+                                <div onClick={closeMModalX} className="headPar"><span >x</span></div>
                                   <div className="ModalTextPar">
                                     <div className="redPAr">
                                         <div className="redDesc">Таныг бөгөлсөн мэдээллээ дахин нэг шалгахыг хүсэж байна:</div>
@@ -198,8 +208,8 @@ function CompCheck() {
                                         </ul>
                                     </div>
                                     <div className="btnPar">
-                                        <button onClick={()=>{clickHandles("twice"); closeModal()}} class="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
-                                        <button onClick={closeModal} class="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
+                                        <button onClick={()=>{clickHandles("twice"); closeModal("shuud")}} class="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
+                                        <button onClick={()=>closeModal(1)} class="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
                                     </div>
                                   </div>
                               </div>

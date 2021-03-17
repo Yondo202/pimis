@@ -20,6 +20,7 @@ import {ColorRgb, textColor} from '../../components/theme'
 import AccessToken from '../../context/accessToken'
 import DocumentTitle from 'containers/document/DocumentTitle'
 
+
 function MainRequest() {
     DocumentTitle("Байгаль орчны үнэлгээний асуумж");
     const history = useHistory();
@@ -51,6 +52,7 @@ function MainRequest() {
             let resData = await axios.get(`pps-request?userId=${param}`, {headers: {Authorization:AccessToken()}});
             if(resData.data.data.id){ setNa3(resData.data.data.na3); setInitialData(resData.data.data); ModalOpen(true); }
         }
+        console.log("-----------------------------------");
     },[param === "user"?helpCtx.reqMount:0]);
 
     const handleScroll = () => {  if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); } }
@@ -66,6 +68,8 @@ function MainRequest() {
     const Six = param === "user"&&helpCtx.GlobalStyle.tableSix;
     const errMsg = () =>{ console.log("+*+*+* err Msg");};
 
+    console.log(helpCtx.reqMount)
+
     return (
         <>
             {param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />:<NullParent className="BtnPar"><button onClick={backHanlde} ><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> )
@@ -77,8 +81,8 @@ function MainRequest() {
                                 <div className="countPar container">
                                     <div className="itemsPar">
                                         <div className={`${initialData&&initialData.name1!==null? One==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : One==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name1!==null?(()=>(func("0%", "100%", "200%","300%","400%","500%"),scroll.scrollTo(0) )): (()=>errMsg())} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${initialData&&initialData.name2!==null? Two==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Two==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name2!==null?(()=>(func("-100%", "0%", "100%","200%","300%","400%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${initialData&&initialData.name3!==null? Three==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Three==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name3!==null?(()=>(func("-200%", "-100%", "0%","100%","200%","300%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${initialData&&initialData.name2!==null? Two==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Two==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name2!==null?(()=>(func("-100%", "0%", "100%","200%","300%","400%"),scroll.scrollTo(0),helpCtx.reqMountFunc(1) )): (()=>errMsg())}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
+                                        <div className={`${initialData&&initialData.name3!==null? Three==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Three==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name3!==null?(()=>(func("-200%", "-100%", "0%","100%","200%","300%"),scroll.scrollTo(0),helpCtx.reqMountFunc(1) )): (()=>errMsg())}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
                                         <div className={`${initialData&&initialData.name4!==null? Four==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Four==="0%"? `borderPar2`: `borderPar` }`}  onClick={initialData&&initialData.name4!==null?(()=>(func("-300%", "-200%", "-100%","0%","100%","200%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">4</span></div> 
                                     </div>
                                 </div>

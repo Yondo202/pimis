@@ -173,11 +173,11 @@ function TableFour(props) {
                     finalEnd.PPS4["esm"] = "B"
                     setOpacity("0");
                     if(Dname){
-                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setSpnBtn(false); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0); helperContext.reqMountFunc(4); })
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setSpnBtn(false); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0); helperContext.reqMountFunc(1); })
                       .catch((err)=>{ setSpnBtn(false); setFinalText("Алдаа гарлаа"); setFinalTextScale("1"); console.log(err, "err");});
                     }else{
                          axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{setSpnBtn(false);
-                         helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{scroll.scrollTo(0); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%") },3000); helperContext.reqMountFunc(4); })
+                         helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{scroll.scrollTo(0); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%") },3000); helperContext.reqMountFunc(1); })
                         .catch(err=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);});
                     }
             }else{
@@ -302,7 +302,7 @@ function TableFour(props) {
 
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
-                            {props.initialName? (<PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>) : null } 
+                            {props.initialName? (<PrevBtn id="myInput" onClick={()=> {helperContext.reqMountFunc(1); scroll.scrollTo(0); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>) : null } 
                             <NextBtn id="myInput" onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }}  className="SubmitButton" type="button">{spnBtn===false?(<>Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>):<img src="/gif1.gif" alt="spin" />} </NextBtn>
                        </div>
 

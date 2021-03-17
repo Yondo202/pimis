@@ -138,11 +138,11 @@ function TableTwo(props) {
             setOpacity2("0");
             if(Dname){
                 axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}})
-                .then((res)=>{setSpnBtn(false); console.log(res); helperContext.alertText('green', "Амжилттай боллоо", true); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%"); scroll.scrollTo(0); helperContext.reqMountFunc(2); })
+                .then((res)=>{setSpnBtn(false); console.log(res); helperContext.alertText('green', "Амжилттай боллоо", true); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%"); scroll.scrollTo(0); helperContext.reqMountFunc(1); })
                 .catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true); console.log(err) });
             }else{
                 axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers: {Authorization:AccessToken()}} ).then((res)=>{
-                    setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0);helperContext.reqMountFunc(2);
+                    setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглагдлаа", true);  helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");  scroll.scrollTo(0); helperContext.reqMountFunc(1);
                   }).catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true); });
             }
         }

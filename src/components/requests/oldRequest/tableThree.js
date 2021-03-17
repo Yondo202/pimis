@@ -69,6 +69,7 @@ function TableThree(props) {
 
         arr4.map(el=>{let field = el.name; let value = el.value; if(value===""){ el.classList += " red"; }else{  el.classList =- " red";  el.classList += " getUserInp3"; };  userInp[field] = value; });
         let confirm = document.getElementById("GetcheckBtn3").checked;
+
         if(confirmNull===false){
             if(finalOne2[0].pdate !== ""){
                 finalOne["request"] = finalOne2;
@@ -102,7 +103,7 @@ function TableThree(props) {
                   }).catch((err)=>{console.log(err, "err"); setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
             }else{
                 axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}} ).then((res)=>{
-                    setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглалаа", true); helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");scroll.scrollTo(0);helperContext.reqMountFunc(3);
+                    setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглалаа", true); helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");scroll.scrollTo(0);helperContext.reqMountFunc(1);
                   }).catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
             }
             
@@ -155,7 +156,7 @@ function TableThree(props) {
 
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
-                           {props.initialName? (<PrevBtn id="myInput" onClick={()=> { scroll.scrollTo(0); helperContext.StyleComp("-100%", "0%", "100%", "200%", "300%","400%")}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>) : null } 
+                           {props.initialName? (<PrevBtn id="myInput" onClick={()=> {helperContext.reqMountFunc(1); scroll.scrollTo(0); helperContext.StyleComp("-100%", "0%", "100%", "200%", "300%","400%"); }} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>) : null } 
                             <NextBtn onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                         </div>
             </div>
