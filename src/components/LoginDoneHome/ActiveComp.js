@@ -9,7 +9,7 @@ function ActiveComp(props) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <Link to={!props.prew ? `/check/user` : `/check/${props.prew}`} className={props.data.criteria === 2 ? `itemsActive` : props.data.criteria === 0 ? `items` : `items itemsNotApproved`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
+                        <Link to={!props.prew ? `/check/user` : `/check/${props.prew}`} className={props.data.criteria !== 0 ? props.data.criteria === 1 ? `items itemsNotApproved` : `itemsActive` :  `items`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
                         {/* <div className="line line2" ></div> */}
                         <div className="line" ></div>
                         <Link to={!props.prew ? `/request/user` : `/request/${props.prew}`} className={!props.data.esm? `items` : props.data.esm === "A" ? `items itemsNotApproved` : props.data.esm === "B" ?  `itemsActive` : props.data.esm === "C" ? `itemsActive`: `items itemsNotWait`}>2. Байгаль орчны үнэлгээний асуумж </Link>

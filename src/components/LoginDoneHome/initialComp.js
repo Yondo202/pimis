@@ -50,20 +50,15 @@ function InitialComp() {
                     </div>
                 </div>
 
-
-
                 <div className="col-md-2 col-sm-2 itemsCol">
                     <div className="itemsPar">
                         <div className="mains">
                             <div className="items arrHelp"><div className="helpArr"></div>1. Түншлэлийн гэрээ байгуулах </div>
                             <div className="line" ></div>
                             <Link to="#" className="items "><div className="helpArr"></div> 2. Гүйцэтгэлийг нотлох баримт(бусад байгууллагатай байгуулах гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан) </Link>
-                
-
                         </div>
                         <div className="lineFull" ></div>
                         <div className="resultDesable">3. Түншлэлийн гэрээний гүйцэтгэлийн тайлан</div>
-                        
                     </div>
                 </div>
 

@@ -14,10 +14,11 @@ function TableThreeDetails(props) {
     const [ initialData, setInitialData ] = useState([]);
     const [ nullInf, setNullInf ] = useState(true);
 
-    const AddHandle = ()=>{
-        const list = initialData.concat( {id: 1});
-        setInitialData(list);
-    }
+        const AddHandle = ()=>{
+            const list = initialData.concat(initialList);
+            setInitialData(list);
+        }
+   
     useEffect(() => {
         if(props.initialData){
             setInitialData(props.initialData);
@@ -64,7 +65,6 @@ function TableThreeDetails(props) {
     const nullHandle = (event) =>{
         if(event.target.checked === true){setNullInf(false); }else{ setNullInf(true); }
     }
-
     return (
         <Component3Detail>
             <div className="rowHeader">
@@ -75,6 +75,7 @@ function TableThreeDetails(props) {
                                 <input checked={true} id="GetcheckBtnn3" className="GetcheckBtnn3" type="checkbox" name="na" />
                                </div>  </div>
                              </div>) : null  }
+
             {props.initialData? (initialData.map((el,i)=>{
                 return(
                     <div id={i}  className={nullInf===true?`GetItemAdd33 DetailPar`:`DetailPar`} key={i}>
@@ -138,8 +139,8 @@ function TableThreeDetails(props) {
                         <div className="topTitle">
                             <div className="Title"> {i + 1} . Торгууль / Шийтгэл / Санал гомдлууд :</div>
                             <div className="null">
-                                Байхгүй:
-                                <input onChange={nullHandle} className="GetcheckBtnn3" id="GetcheckBtnn3" type="checkbox" name="na" />
+                                {i===0?`Байхгүй:`:null}  
+                                  {i===0?<input onChange={nullHandle} className="GetcheckBtnn3" id="GetcheckBtnn3" type="checkbox" name="na" /> :null}  
                             </div>
                         </div>
 
@@ -191,7 +192,7 @@ function TableThreeDetails(props) {
                  </div>
                 )
             })) }
-            {props.initialData ? null : nullInf&&<div className="AddItemBtn"> <IoIosAddCircleOutline onClick={AddHandle} /> </div> }
+            {props.initialData ? null : 3&&<div className="AddItemBtn"> <IoIosAddCircleOutline onClick={()=>AddHandle()} /> </div> }
             
         </Component3Detail>
     )
@@ -317,92 +318,6 @@ const Component3Detail = styled.div`
                           width: 100%;
                         }
                     }
-                    //  .name{
-                    //  display:flex;
-                    //  flex-direction:row;
-                    //  align-items:flex-end;
-                    //  justify-content:flex-end;
-                    //  width:100%;
-                    //  svg{
-                    //    color:rgba(${ColorRgb},0.7);
-                    //    font-size:28px;
-                    //    margin-right:15px;
-                    //    margin-bottom:5px;
-                    //  }
-                    //  .form__group{
-                    //   position:relative;
-                    //   padding: 15px 0 0;
-                    //   margin-top: 0px;
-                    //   width: 100%;
-                    //      .form__field{
-                    //          font-family: inherit;
-                    //          width: 100%;
-                    //          border: 0;
-                    //          border-radius:6px;
-                    //          border-bottom: 1px solid rgba(${ColorRgb},0.2);
-                    //          border-right: 1px solid rgba(${ColorRgb},0.2);
-                    //          border-left: 1px solid rgba(${ColorRgb},0.2);
-                    //          border-top: 1px solid rgba(${ColorRgb},0.2);
-                    //          outline: 0;
-                    //          font-size: 1rem;
-                    //          color: black;
-                    //          padding: 7px 0;
-                    //          padding-left:10px;
-                    //          font-size: 0.9rem;
-                    //          background: transparent;
-                    //          transition: border-color 0.2s;
-                    //          transition:all 0.3s ease;
-                    //          position: relative;
-                    //          z-index: 1;
-                    //          &::placeholder {
-                    //            color: transparent;
-                    //          }
-                    //          &:placeholder-shown ~ .form__label {
-                    //            font-size: 0.9rem;
-                    //            cursor: text;
-                    //            top: 24px;
-                    //          }
-                    //      }
-                        
-                    //      .form__label {
-                    //          position: absolute;
-                    //          top: 0;
-                    //          display: block;
-                    //          transition: 0.2s;
-                    //          font-size: 0rem;
-                    //          color: gray;
-                    //          z-index: 0;
-                    //          padding:0px 10px;
-                    //          // background-color:black;
-                    //        }
-                           
-                    //        .form__field{
-                    //            &:focus {
-                    //              ~ .form__label {
-                    //                position: absolute;
-                    //                top: 0;
-                    //                display: block;
-                    //                transition: 0.3s;
-                    //                font-size: 0.8rem;
-                    //                color: #11998e;
-                    //                font-weight:400;    
-                    //              }
-                    //              border-right:none;
-                    //              border-left:none;
-                    //              border-top:none;
-                    //              padding-bottom: 7px;
-                    //              font-weight: 400;
-                    //              border-width: 1px;
-                    //              border-image: linear-gradient(to right, #11998e, #38ef7d);
-                    //              border-image-slice: 1;
-                    //            }
-                    //        }
-                    //        /* reset input */
-                    //        .form__field{
-                    //          &:required,&:invalid { box-shadow:none; }
-                    //        }
-                    //  }
-                     
                    }
                 }
              }
