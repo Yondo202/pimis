@@ -298,9 +298,9 @@ function UrugudulClusters() {
                             {item.attachedFiles ?
                                 <FileCard name={item.attachedFiles[0]?.name} type={item.attachedFiles[0]?.mimetype} size={item.attachedFiles[0]?.size} classAppend="tw-ml-6 tw-mb-4" uploading={item.attachedFiles === 'loading' && true} removeFile={() => handleRemoveFile(i)} downloadFile={() => handleDownloadFile(i)} />
                                 :
-                                <button className="tw-ml-6 tw-mb-4 tw-py-0.5 tw-px-1.5 tw-text-sm tw-border tw-border-gray-600 tw-font-medium tw-rounded-lg focus:tw-outline-none hover:tw-shadow-md active:tw-text-blue-500 active:tw-border-blue-500 tw-inline-flex tw-items-center" onClick={() => handleFileInputClick(i)}>
-                                    <span className="tw-text-gray-700">Файл оруулах</span>
-                                    <PaperClipSVG className="tw-w-4 tw-h-4 tw-ml-1" />
+                                <button className="tw-ml-6 tw-mb-4 tw-py-1.5 tw-px-6 tw-text-sm tw-border tw-border-gray-500 tw-font-medium tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-inline-flex tw-items-center tw-transition-colors active:tw-bg-gray-200" onClick={() => handleFileInputClick(i)}>
+                                    <span className="">Файл оруулах</span>
+                                    <PaperClipSVG className="tw-w-4 tw-h-4 tw-ml-0.5" />
                                 </button>
                             }
                         </div>

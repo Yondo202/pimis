@@ -71,8 +71,7 @@ function UrgudulCalculations() {
     useEffect(() => {
         if (!UrgudulCtx.data.project_end) {
             if ('project_end' in UrgudulCtx.data) {
-                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Төслийн дуусах хугацааг оруулаагүй байна. Хуудас 5-ыг эхлээд бөглөнө үү.' })
-                setTimeout(() => history.push('/urgudul/5'), 3000)
+                suggestPage5()
             }
         } else {
             if (Object.keys(UrgudulCtx.data.exportDatas).length > 0) {
@@ -89,7 +88,11 @@ function UrgudulCalculations() {
     }, [UrgudulCtx.data.id])
 
     const handleInput = (key, value, objName) => {
-        setForm({ ...form, [objName]: { ...form[objName], [key]: value } })
+        if (endDateGiven) {
+            setForm({ ...form, [objName]: { ...form[objName], [key]: value } })
+        } else {
+            suggestPage5()
+        }
     }
 
     const handleSetFormCountry = (key, value, index) => {
@@ -105,9 +108,13 @@ function UrgudulCalculations() {
     }
 
     const handleInputProductExport = (key, value, productIndex, countryIndex) => {
-        const newArr = form.export_details
-        newArr[countryIndex].export_products[productIndex][key] = value
-        setForm({ ...form, export_details: newArr })
+        if (endDateGiven) {
+            const newArr = form.export_details
+            newArr[countryIndex].export_products[productIndex][key] = value
+            setForm({ ...form, export_details: newArr })
+        } else {
+            suggestPage5()
+        }
     }
 
     const [countries, setCounties] = useState([])
@@ -230,9 +237,13 @@ function UrgudulCalculations() {
         }
     }
 
+    const endDateGiven = form.endDate.year && form.endDate.month
+
+    const suggestPage5 = () => AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Төслийн дуусах хугацааг оруулаагүй байна. Хуудас 5-ыг эхлээд бөглөнө үү.' })
+
     return (
-        <div className="tw-flex tw-justify-center">
-            <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-mx-4 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white">
+        <div className="tw-flex tw-justify-center tw-w-full tw-px-4">
+            <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-max-w-full">
                 <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
                     <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">B8</span>
                     - Өөрийн төслийн хувьд дараах тооцооллыг хийнэ үү
@@ -253,7 +264,7 @@ function UrgudulCalculations() {
                                             </th>
                                         case 'endDate':
                                             return <th className="tw-border" key={date}>
-                                                <div className="tw-flex tw-justify-evenly tw-items-center">
+                                                <div className={`tw-flex tw-justify-evenly tw-items-center ${!endDateGiven && 'tw-bg-red-100 tw-rounded'}`}>
                                                     {`${form.endDate.year ? form.endDate.year : ''}-${form.endDate.month ? form.endDate.month : ''}`}
                                                     <HelpPopup main="Төслийн дуусах хугацаа, жил сараар." position="bottom" />
                                                 </div>
@@ -368,7 +379,7 @@ function UrgudulCalculations() {
                                         <td className="tw-border tw-px-2" colSpan={datesForm.length + 2}>
                                             <button className="tw-float-right tw-bg-gray-600 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors tw-py-1 tw-px-2" onClick={() => handleAddProduct(i)}>
                                                 Бүтээгдэхүүн нэмэх
-                                        </button>
+                                            </button>
                                         </td>
                                     </tr>
                                 </Fragment>
@@ -377,7 +388,7 @@ function UrgudulCalculations() {
                                 <td className="tw-border tw-px-2" colSpan={datesForm.length + 2}>
                                     <button className="tw-float-right tw-bg-gray-600 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors tw-py-1 tw-px-4" onClick={handleAddCountry}>
                                         Улс нэмэх
-                                </button>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
