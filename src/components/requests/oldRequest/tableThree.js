@@ -100,11 +100,11 @@ function TableThree(props) {
                 axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{
                     helperContext.alertText('green', "Амжилттай ", true); setSpnBtn(false);
                     helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%"); scroll.scrollTo(0); helperContext.reqMountFunc(3);
-                  }).catch((err)=>{console.log(err, "err"); setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
+                  }).catch((err)=>{console.log(err.response.data.error.message); console.log(err, "err"); setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
             }else{
                 axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}} ).then((res)=>{
                     setSpnBtn(false); helperContext.alertText('green', "Амжилттай хадаглалаа", true); helperContext.StyleComp("-300%", "-200%", "-100%", "0%", "100%","200%");scroll.scrollTo(0);helperContext.reqMountFunc(1);
-                  }).catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
+                  }).catch((err)=>{ console.log(err.response.data.error.message); setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);  });
             }
             
         }

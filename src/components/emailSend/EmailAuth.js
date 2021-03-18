@@ -19,7 +19,7 @@ function EmailAuth() {
             if(res.data.success===true){
                 if(res.data.confirmed===0){
                     //ямар нэг алдаа гарсан
-                    setSuccess(false); setLoad(true); setErrMsg("ямар нэг алдаа гарсан"); 
+                    setSuccess(false); setLoad(true); setErrMsg("Алдаа гарсан"); 
                 }else if(res.data.confirmed===1){
                     //амжилттай...
                     setLoad(true); setSuccess(true); setErrMsg("Баталгаажуулалт амжилттай");
@@ -28,7 +28,7 @@ function EmailAuth() {
                     //Аль хэдийн баталгаажсан байна...
                 }
             }
-        }).catch((err)=>{ setSuccess(false); setLoad(true); setErrMsg("ямар нэг алдаа гарсан");  })
+        }).catch((err)=>{ setSuccess(false); setLoad(true); setErrMsg("Алдаа гарсан");  })
   },[]);
 
     const handleClick = () =>{

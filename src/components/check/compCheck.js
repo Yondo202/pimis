@@ -50,6 +50,8 @@ function CompCheck() {
     const NextPageHandle = (el) =>{ history.push(el); };
 
     const clickHandles = (btn) =>{
+            console.log(btn, " --------  btn ----------")
+
               let rs2 = document.querySelectorAll(".inpTest333"); let arr2 = Array.from(rs2); let soloObject2 = {};  const cond = {};
               arr2.map((element,i)=>{
                   if(element.checked === true){
@@ -71,7 +73,7 @@ function CompCheck() {
                 setOpacity("0");
                 setSecondChance(cond);
                 if(btn==="twice"){
-                  soloObject2["approved"] = 1
+                  soloObject2["approved"] = 1;
                   setBtnSpin(true);
                   setOpacity("0");
                   setOpacity2("0");
@@ -84,7 +86,7 @@ function CompCheck() {
                   setVisible2(true);
                 }
               }else{
-                soloObject2["approved"] = 2
+                soloObject2["approved"] = 2;
                 setBtnSpin(true);
                 setOpacity("0");
                 setOpacity2("0");
@@ -101,7 +103,9 @@ function CompCheck() {
           setBtnCond("twice");  setVisible2(false);
         }else{
           setCount(prev=> prev + el);
-          if(count > 2){
+          if(count < 2){
+            setBtnCond("once");  setVisible2(false);
+          }else{
             setBtnCond("twice");  setVisible2(false);
           }
         }

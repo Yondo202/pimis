@@ -22,6 +22,8 @@ function TableThreeDetails(props) {
     useEffect(() => {
         if(props.initialData){
             setInitialData(props.initialData);
+        }else{
+            setInitialData(initialList);
         }
     }, [props.initialData]);
 
@@ -63,9 +65,6 @@ function TableThreeDetails(props) {
     const nullHandle = (event) =>{
         if(event.target.checked === true){setNullInf(false); }else{ setNullInf(true); }
     }
-
-    console.log(initialData, " my inital ----------------------")
-
     return (
         <Component3Detail>
             <div className="rowHeader">
@@ -76,6 +75,7 @@ function TableThreeDetails(props) {
                                 <input checked={true} id="GetcheckBtnn3" className="GetcheckBtnn3" type="checkbox" name="na" />
                                </div>  </div>
                              </div>) : null  }
+
             {props.initialData? (initialData.map((el,i)=>{
                 return(
                     <div id={i}  className={nullInf===true?`GetItemAdd33 DetailPar`:`DetailPar`} key={i}>
@@ -139,8 +139,8 @@ function TableThreeDetails(props) {
                         <div className="topTitle">
                             <div className="Title"> {i + 1} . Торгууль / Шийтгэл / Санал гомдлууд :</div>
                             <div className="null">
-                                Байхгүй:
-                                <input onChange={nullHandle} className="GetcheckBtnn3" id="GetcheckBtnn3" type="checkbox" name="na" />
+                                {i===0?`Байхгүй:`:null}  
+                                  {i===0?<input onChange={nullHandle} className="GetcheckBtnn3" id="GetcheckBtnn3" type="checkbox" name="na" /> :null}  
                             </div>
                         </div>
 
