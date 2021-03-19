@@ -30,11 +30,11 @@ function Home() {
                 <div className="header row">
                     <div className="col-md-4"><div className="headItems"><span className="text">1.Түншлэлийн хөтөлбөрт бүрдүүлэх баримт</span> </div></div>
                     <div className="col-md-4"><div className="headItems"><span className="text">2. Үнэлгээ, шийдвэр гарах явц</span> </div></div>
-                    <div className="col-md-4"><div className="headItems"><span className="text"> 3. Гэрээ байгуулах, гүйцэтгэл санхүүжилтийн..</span></div></div>
+                    <div className="col-md-4"><div className="headItems"><span className="text"> 3. Түншлэлийн гэрээ, гүйцэтгэл, санхүүжилт</span></div></div>
                 </div>
                 <div className="otherHead row">
                     <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
-                    <div className="col-md-4"><div className="headItems"><span className="text">Бизнес хяналтын зөвлөх</span><span className="text">Үнэлгээ, шийдвэр</span> </div></div>
+                    <div className="col-md-4"><div className="headItems"><span className="text">Бизнес шинжээчийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span> </div></div>
                 </div>
             </div>
             {infData === null ? <InitialComp /> : <ActiveComp prew={userId} data={infData} /> }
@@ -86,7 +86,7 @@ const HomeComponent = styled.div`
                 .items{
                     width:93%;
                     border-radius:4px;
-                    padding:7px 10px;
+                    padding:7px 7px;
                     border:1px solid rgba(0,0,0,0.2);
                     color:rgba(0,0,0,0.5);
                     position:relative;
@@ -112,7 +112,7 @@ const HomeComponent = styled.div`
                     font-weight:500;
                     width:93%;
                     border-radius:4px;
-                    padding:7px 10px;
+                    padding:7px 7px;
                     // border:1px solid rgba(0,0,0,0.6);
                     color:rgba(0,0,0,1);
                     position:relative;
@@ -199,7 +199,7 @@ const HomeComponent = styled.div`
                 display:flex;
                 width:93%;
                 border-radius:4px;
-                padding:7px 10px;
+                padding:7px 7px;
                 border:1px solid rgba(0,0,0,0.2);
                 color:rgba(0,0,0,0.5);
                 position:relative;
@@ -219,14 +219,13 @@ const HomeComponent = styled.div`
                     height:18px;
                     border-radius:50%;
                 }
-             
             }
             .resultActive{
                 height:92px;
                 display:flex;
                 width:93%;
                 border-radius:4px;
-                padding:7px 10px;
+                padding:7px 7px;
                 border:1px solid rgba(0,0,0,0.2);
                 color:black;
                 position:relative;
@@ -257,7 +256,7 @@ const HomeComponent = styled.div`
                 display:flex;
                 width:93%;
                 border-radius:4px;
-                padding:7px 10px;
+                padding:7px 7px;
                 border:1px solid rgba(255,0,0,1);
                 color:black;
                 position:relative;
@@ -279,11 +278,9 @@ const HomeComponent = styled.div`
                     border-radius:50%;
                 }
             }
-            
             .arrHelp{
                 position:relative;
             }
-
             .arrHelpActive{
                 &::after{
                     content:"";
@@ -298,7 +295,6 @@ const HomeComponent = styled.div`
                     border-left:1px solid #535352;
                     border-radius: 90px 90px 0 0;
                 }
-                
                 .helpArr{
                     z-index:333;
                     top:-12px;
@@ -310,7 +306,6 @@ const HomeComponent = styled.div`
                     clip-path: polygon(53% 31%, 100% 0, 50% 100%, 0 0)
                 }
             }
-            
         }
     }
     .ActiveCol{

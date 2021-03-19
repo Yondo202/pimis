@@ -655,7 +655,6 @@ const Component1 = styled.div`
 `
 
 const allData = [
-
     { 
        group: "a",
        title: "ҮНДСЭН ШАЛГУУР ХАНГАЛТ",

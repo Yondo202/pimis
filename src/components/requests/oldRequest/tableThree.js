@@ -27,7 +27,7 @@ function TableThree(props) {
             setDname(props.initialName);
             setDdate(props.initialDate);
         }
-    },[props.initialName])
+    },[props.initialName]);
 
     const changeNameHandle = (event) =>{
         setDname(event.target.value);
@@ -49,16 +49,13 @@ function TableThree(props) {
             let rs2 = document.querySelectorAll(`.PPPS${i + 1}`);
             let arr23 = Array.from(rs2);
             arr23.map((el,i)=>{
-                // if(el.value !== ""){
                     let field = el.name;
                     let value = el.value;
                     if(props.initialName){
                         Lala["id"] = el.id;
                     }
                     Lala[field] = value;
-                // }
             });
-            // tableCondition.push(Lala);
             finalOne2.push(Lala);
         });
         let confirmNull = document.getElementById("GetcheckBtnn3").checked;
