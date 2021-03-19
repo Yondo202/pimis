@@ -1,57 +1,60 @@
-import React from 'react';
-import { PDFViewer,Document, Page, Text, View, StyleSheet,PDFDownloadLink  } from '@react-pdf/renderer';
+import React, { useMemo , useEffect, useState} from 'react';
+import MyDocument from './PdfContent';
+import styled from 'styled-components';
+import { PDFViewer, PDFDownloadLink  } from '@react-pdf/renderer';
+import AccessToken from '../../context/accessToken'
+import axios from 'axiosbase'
 
-const PdfTest = () => (
-    <>
-            <PDFViewer>
-                <MyDocument />
-            </PDFViewer>
-            <PDFDownloadLink document={<MyDocument />} fileName="somename.pdf">
-                    {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
-            </PDFDownloadLink>
-    </>
-);
-export default PdfTest
+const PdfTest = () => {
+  const [ fontwait, setFontWait ] = useState(false);
+  const [ wait, setWait ] = useState(false);
+  useEffect(async()=>{
+    const localId = localStorage.getItem(false);
+    console.log('localId', localId)
+    const data =  await axios.get(`criterias?userId=${localId}}`,{ headers: { Authorization:AccessToken() } });
+    console.log(data, " my data");
 
-// Create styles
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'row',
-    backgroundColor: '#E4E4E4'
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1
+    setTimeout(()=>{
+      setWait(true);
+    },1000)
+    setTimeout(()=>{
+      setFontWait(true);
+    },3000)
+  },[]);
+
+  return(
+      <div className="container">
+      <PDFstyle className="Nanana">
+            <PDFViewer style={{ height: '90vh', width:`100%` }} >
+                    <MyDocument data={wait}  />
+              </PDFViewer>
+      </PDFstyle>
+
+     {/* {wait && <PDFDownloadLink document={<MyDocument data={fontwait} />}>
+        {({ blob, url, loading, error }) => {
+            if (loading) return <Loader />;
+              return 'Download Invoice';
+          }}
+      </PDFDownloadLink>}  */}
+
+
+      <PDFDownloadLink document={<MyDocument data={fontwait} />} fileName="somename.pdf">
+                {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
+     </PDFDownloadLink>
+
+    </div>
+   
+  )
+}
+export default PdfTest;
+
+const PDFstyle = styled.div`
+  iframe{
+    width: 100%;
+    height: 80vh;
   }
-});
+`
 
-// Create Document Component
-const MyDocument = () => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text>Section #1</Text>
-      </View>
-      <View style={styles.section}>
-        <Text>Section #2</Text>
-      </View>
-    </Page>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text>Section #1</Text>
-      </View>
-      <View style={styles.section}>
-        <Text>Section #2</Text>
-      </View>
-    </Page>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text>Section #1</Text>
-      </View>
-      <View style={styles.section}>
-        <Text>Section #2</Text>
-      </View>
-    </Page>
-  </Document>
-);
+const Loader = () =>{
+ return <h1>lalalalalla</h1>
+}

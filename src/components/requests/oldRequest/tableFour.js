@@ -198,9 +198,6 @@ function TableFour(props) {
             }
         }
 
-
-        
-        
     return (
         <Component1 className="container" >
             <div className="boxShadow">
