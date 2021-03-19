@@ -29,7 +29,7 @@ const initialState = {
     website: null,
     company_size: null,
     project_plan: null,
-    business_sectorId: null,
+    // business_sectorId: null,
     foreign_invested: null,
     invested_countryid: null,
     investment_percent: null,
@@ -269,7 +269,7 @@ function UrgudulApplicant() {
                     </table>
                 </div>
 
-                <SearchSelect label="Салбар" api="business-sector" keys={['data']} value={form.business_sectorId} name="business_sectorId" displayName="bdescription_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" invalid={validate && checkInvalid(form.business_sectorId)} />
+                {/* <SearchSelect label="Салбар" api="business-sector" keys={['data']} value={form.business_sectorId} name="business_sectorId" displayName="bdescription_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" invalid={validate && checkInvalid(form.business_sectorId)} /> */}
 
                 <FormOptions label="Гадаад хөрөнгө оруулалттай эсэх" options={['Тийм', 'Үгүй']} values={[1, 0]} value={form.foreign_invested} name="foreign_invested" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" invalid={validate && checkInvalid(form.foreign_invested)} />
 
