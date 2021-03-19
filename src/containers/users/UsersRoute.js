@@ -26,6 +26,7 @@ import TrainingFeedback from 'pages/training/feedback/Page';
 
 import PdfTest from 'components/check/PdfTest'
 import { ChangePassword } from 'components/LoginDoneHome/ChangePassword'
+import LetterOfInterest1 from 'pages/letter_of_interest/page1';
 
 function UsersRoute() {
     return (
@@ -53,6 +54,7 @@ function UsersRoute() {
                     <Route path="/memberdecision" component={MemberDecision} /> */}
 
                     <Route path="/letter-of-interest" component={LetterOfInterest} />
+                    <Route path="/letter-of-interest1" component={LetterOfInterest1} />
                     <Route path="/urgudul/:page" component={UrgudulNavigator} />
 
                     <Route path="/attachments" component={AttachmentUploads} />

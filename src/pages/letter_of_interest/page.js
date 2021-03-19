@@ -156,7 +156,7 @@ function LetterOfInterest() {
     const projectId = useParams().id
 
     useEffect(() => {
-        if (projectId !== undefined || null) {
+        if (projectId !== undefined && projectId !== null) {
             axios.get(`letter-of-interests/${projectId}`, {
                 headers: {
                     'Authorization': getLoggedUserToken(),
@@ -288,7 +288,7 @@ function LetterOfInterest() {
                         <ReactQuill theme="snow" modules={modules} tabIndex={0} value={form.purchases} onChange={content => handleInput('purchases', content)} placeholder={helperTexts.purchases.text} onFocus={() => setHelper({ open: true, display: 'purchases' })} onBlur={() => setHelper({ ...helper, open: false })} />
                     </div>
 
-                    <div className={`tw-my-1 tw-mx-5 tw-p-1 tw-flex tw-rounded ${validate && checkInvalid(form.anti_corruption, 'quill') && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ height: '108px' }}>
+                    <div className={`tw-my-1 tw-mx-5 tw-p-1 tw-rounded ${validate && checkInvalid(form.anti_corruption, 'quill') && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ height: 108 }}>
                         <ReactQuill theme="snow" modules={modules} tabIndex={0} value={form.anti_corruption} onChange={content => handleInput('anti_corruption', content)} placeholder={helperTexts.antiCorruption.text} onFocus={() => setHelper({ open: true, display: 'antiCorruption' })} onBlur={() => setHelper({ ...helper, open: false })} />
                     </div>
                 </div>
@@ -308,7 +308,7 @@ function LetterOfInterest() {
                     </div>
 
                     {form.company_stamp ?
-                        <div className="tw-w-32 tw-h-32 tw-absolute tw-top-2 tw-right-28">
+                        <div className="tw-w-32 tw-h-32 tw-absolute tw-top-2 tw-right-32">
                             <img src={form.company_stamp} alt="Байгууллагын тамга тэмдэг" className="tw-w-full tw-h-full tw-object-scale-down tw-shadow-md tw-cursor-pointer" onClick={() => inputRefStamp.current.click()} />
                             <button className="tw-absolute tw-top-0 tw-right-0 tw-text-red-500 active:tw-text-red-600 focus:tw-outline-none">
                                 <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" onClick={() => handleInput('company_stamp', null)} />
