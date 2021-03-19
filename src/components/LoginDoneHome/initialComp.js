@@ -49,30 +49,30 @@ function InitialComp() {
                         <div className="resultDesable">2.Үнэлгээний хорооны шийдвэрийн хуудас</div>
                     </div>
                 </div>
-
                 <div className="col-md-2 col-sm-2 itemsCol">
-                    <div className="itemsPar">
-                        <div className="mains">
-                            <div className="items arrHelp"><div className="helpArr"></div>1. Түншлэлийн гэрээ байгуулах </div>
-                            <div className="line" ></div>
-                            <Link to="#" className="items "><div className="helpArr"></div> 2. Гүйцэтгэлийг нотлох баримт(бусад байгууллагатай байгуулах гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан) </Link>
+                        <div className="itemsPar">
+                            <div className="mains">
+                                <div className="items arrHelp"><div className="helpArr"></div>1. Түншлэлийн гэрээ байгуулах </div>
+                                <div className="line" ></div>
+                                <Link to="#" className="items "><div className="helpArr"></div> 2. Түншлэлийн гэрээний гүйцэтгэлийн тайлан  </Link>
+                            </div>
+                            <div className="lineFull" ></div>
+                            <div className="resultDesable">3. Гүйцэтгэлийг нотлох баримтууд (гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан)</div>
                         </div>
-                        <div className="lineFull" ></div>
-                        <div className="resultDesable">3. Түншлэлийн гэрээний гүйцэтгэлийн тайлан</div>
                     </div>
-                </div>
-
-                <div style={{borderRight:`none`}} className="col-md-2 col-sm-2 itemsCol itemsColA">
-                    <div className="itemsPar">
-                        <div className="mains">
-                            <div className="items arrHelp"><div className="helpArr"></div>4. Санхүүгийн баримтууд</div>
-                            <div className="line" ></div>
-                        <div className="resultDesable">5. Анхны гүйцэтгэлийг хүлээн авах /асууна/</div>
+                    <div style={{ borderRight: `none` }} className="col-md-2 col-sm-2 itemsCol itemsColA">
+                        <div className="itemsPar">
+                            <div className="mains">
+                                <div className="items arrHelp"><div className="helpArr"></div>4. Хийгдсэн ажлуудын санхүүгийн баримтууд</div>
+                                <div className="line" ></div>
+                                <div className="resultDesable">5. Санхүүгийн дэмжлэг буюу буцаан олголтын хүсэлт</div>
+                                <div className="line" ></div>
+                                <div className="resultDesable">6. Ажлын гүйцэтгэл хүлээн авах маягт</div>
+                            </div>
+                            <div className="lineFull" ></div>
+                            <div className="resultDesable">6. Гүйцэтгэлийн үнэгээ (ажлын чанар, гэрээний биелэлт, оролцоо)</div>
                         </div>
-                        <div className="lineFull" ></div>
-                        <div className="resultDesable">6. Гүйцэтгэлийн үнэлгээ бүрэн бөгөөд буцаан (санхүүжилтийн) олголтын хүсэлт</div>
                     </div>
-                </div>
         </div>
     )
 }

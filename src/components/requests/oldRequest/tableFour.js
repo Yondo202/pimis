@@ -156,11 +156,11 @@ function TableFour(props) {
                     finalEnd.PPS4["esm"] = "C"
                     console.log("C Angilal");
                     if(Dname){
-                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{setSpnBtn(false); setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{setSpnBtn(false); console.log(err, "err");});
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{setSpnBtn(false); helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{setSpnBtn(false); console.log(err, "err");});
                     }else{
                       axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{setSpnBtn(false);
                         helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000);
-                        console.log(res, "$$(A) res 4 $$")}).catch((err)=>{setSpnBtn(false);helperContext.alertText('green', "Алдаа гарлаа", true);});
+                        console.log(res, "$$(A) res 4 $$")}).catch((err)=>{setSpnBtn(false);helperContext.alertText('orange', "Алдаа гарлаа", true);});
                     }
             }else if(finalOne2[0].rowvalue === "false" && finalOne2[1].rowvalue === "false" && finalOne2[2].rowvalue === "false" && finalOne2[3].rowvalue === "true"  && finalOne2[4].rowvalue === "false" &&
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
@@ -173,7 +173,7 @@ function TableFour(props) {
                     finalEnd.PPS4["esm"] = "B"
                     setOpacity("0");
                     if(Dname){
-                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setSpnBtn(false); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0); helperContext.reqMountFunc(1); })
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setSpnBtn(false);helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0); helperContext.reqMountFunc(1); })
                       .catch((err)=>{ setSpnBtn(false); setFinalText("Алдаа гарлаа"); setFinalTextScale("1"); console.log(err, "err");});
                     }else{
                          axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{setSpnBtn(false);

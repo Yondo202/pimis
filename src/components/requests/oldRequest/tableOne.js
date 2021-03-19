@@ -107,7 +107,7 @@ function TableOne(props) {
                       .catch((err)=>{setSpnBtn(false); tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
                   }else{
                     axios.post("pps-request", finalEnd, {headers: { Authorization:AccessToken()} })
-                    .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); tablesContext.alertText('green', "Амжилттай", true ); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); scroll.scrollTo(0); setSpnBtn(false);tablesContext.reqMountFunc(1);
+                    .then((res)=>{ localStorage.setItem("tableId", res.data.data.id); tablesContext.TableIdControl(res.data.data.id); tablesContext.alertText('green', "Амжилттай хадаглагдлаа", true ); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); scroll.scrollTo(0); setSpnBtn(false);tablesContext.reqMountFunc(1);
                     }).catch((err)=>{ setSpnBtn(false); setFinalErrorText("Алдаа гарлаа");  setOpacity2("1"); });
                   }
                 }else if(btn==="once"){
@@ -119,7 +119,7 @@ function TableOne(props) {
                 setOpacity("0"); setOpacity2("0");setSpnBtn(true);
                 if(props.initialData){
                   await axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{ 
-                    setSpnBtn(false); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай", true ); tablesContext.reqMountFunc(1);
+                    setSpnBtn(false); scroll.scrollTo(0); tablesContext.StyleComp("-100%", "0%", "100%","200%","300%","400%"); tablesContext.alertText('green', "Амжилттай хадаглагдлаа", true ); tablesContext.reqMountFunc(1);
                      })
                     .catch((err)=>{setSpnBtn(false); tablesContext.alertText('orange', "Алдаа гарлаа", true );console.log(err, "err");});
                 }else{
