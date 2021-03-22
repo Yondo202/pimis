@@ -136,7 +136,7 @@ export default function AttachmentUploads() {
             const URL = window.URL.createObjectURL(res.data)
             FilePreviewCtx.setFile({ open: true, src: URL })
         }).catch(err => {
-            console.log(err.response?.data)
+            console.log(err.response)
         })
     }
 
