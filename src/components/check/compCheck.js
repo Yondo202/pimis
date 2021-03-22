@@ -50,8 +50,6 @@ function CompCheck() {
     const NextPageHandle = (el) =>{ history.push(el); };
 
     const clickHandles = (btn) =>{
-            console.log(btn, " --------  btn ----------")
-
               let rs2 = document.querySelectorAll(".inpTest333"); let arr2 = Array.from(rs2); let soloObject2 = {};  const cond = {};
               arr2.map((element,i)=>{
                   if(element.checked === true){

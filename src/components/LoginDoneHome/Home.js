@@ -16,7 +16,7 @@ function Home() {
             await axios.get(`pps-infos/registered-companies?userId=${userId}`, { headers: { Authorization: AccessToken() } }).then((res) => {
                 console.log(res, " ressssssssssssssssss"); if (res.data.data[0]) { setInfData(res.data.data[0]) }
             })
-        }else {
+        }else{
             let userID = localStorage.getItem("userId");
             await axios.get(`pps-infos/registered-companies?userId=${userID}`, { headers: { Authorization: AccessToken() } }).then((res) => {
                 console.log(res, " ressaaaaaaaaaaaaa"); if (res.data.data[0]) { setInfData(res.data.data[0]) }
