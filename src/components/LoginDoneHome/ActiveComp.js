@@ -52,7 +52,7 @@ function ActiveComp(props) {
                         <Link to="#" className="items arrHelp"><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
                     </div>
                     <div className="lineFull" ></div>
-                    <Link to="/maindecision" className={props.data.lastEvalution.value === 0 ? `resultDesable` : props.data.lastEvalution.value === 1 ? `resultWaiting` : `resultActive`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
+                    <Link to={props.prew?`/maindecision/${props.data.project?.id}`:`#`} className={props.data.lastEvalution.value === 0 ? `resultDesable` : props.data.lastEvalution.value === 1 ? `resultWaiting` : `resultActive`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
                 </div>
             </div>
 

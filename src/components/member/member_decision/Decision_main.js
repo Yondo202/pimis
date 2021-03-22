@@ -12,7 +12,7 @@ import { CgDanger } from 'react-icons/cg';
 const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
 const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
 
-function Decision_main({NotifyData}) {
+function Decision_main() {
     const { slug } = useParams();
     const history = useHistory();
     const [ Data, setData ] = useState(null);
@@ -38,7 +38,7 @@ function Decision_main({NotifyData}) {
                     setReasonData(infoWhere2.filter(el=> el.code===res.data.data[0].sanalinnHuudas.reject_reason.code));
                 }
             }
-        })
+        }).catch((err)=> console.log(err.response.data, "+++++++++"))
     },[]);
 
     const checkedHandle = (event) =>{
@@ -49,7 +49,6 @@ function Decision_main({NotifyData}) {
        });
        if(arr3.length > 0){ setType(true);}else{ setType(false); }
     }
- 
 
     const alertHandle = (color, text, cond) =>{setAlert({color:color, text:text, cond:cond}); setTimeout(()=>{ setAlert({color:color, text:text, cond:false});},3000); }
 
@@ -85,9 +84,6 @@ function Decision_main({NotifyData}) {
         final["projectId"] = Data.projectId; final["evaluationMeetingId"] = Data.evaluationMeetingId;
         if(imgData!==null){final["signature"] = imgData;}; let keys = Object.keys(final); 
 
-
-        console.log(`keys.length`, keys.length)
-
         if(type?keys.length < 6:keys.length < 5){
             setFinalErrorText("Та гүйцэд бөгөлнө үү..."); setOpacity2("1"); scroll.scrollTo(0);
         }else if(cond !== 0){
@@ -100,8 +96,6 @@ function Decision_main({NotifyData}) {
         }
         console.log(final, "^final");
     }
-
-    console.log(Data, "dta ---+-+-");
 
     return (
         <>
@@ -592,7 +586,6 @@ const infoWhere2 = [
     {  title: "Экспортын төлөвлөгөө нь чанарын шаардлага хангахуйц тодорхой бус", code: "todorhoi_bus"},
     {  title: "Өргөдөл гаргагч нь төслийг санхүүжүүлэх чадвартайг нотлоогүй эсвэл чадваргүй", code: "chadvargui" },
     {  title: "Өгөгдсөн хугацаанаас өмнө шаардлагатай материал илгээгээгүй", code: "hugatsaanda_amjaagui"},
-    // {  title: "Бусад:", place: "..." },
 ]
 
 

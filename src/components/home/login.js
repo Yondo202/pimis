@@ -1,4 +1,4 @@
-import React,{ useContext, useState } from 'react'
+import React,{ useContext, useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import {CgProfile} from 'react-icons/cg'
 import {BiLockOpen} from 'react-icons/bi'
@@ -12,25 +12,28 @@ import { useHistory } from 'react-router-dom'
 
 
 function Login() {
+  const refFocus = useRef(null);
   const history = useHistory();
   const userCtx = useContext(UserContext);
   const [Show, setShow] = useState(false);
 
-    const handleClick = (e) =>{
-        e.preventDefault();
-        let Username = document.querySelectorAll(".LoginInpName");
-        let User = Array.from(Username);
-        const finalOneUser = {}
-        User.map(element=>{
-            let field = element.name;
-            let value = element.value;
-            finalOneUser[field] = value;
-        });
-        userCtx.loginUser(finalOneUser.name,finalOneUser.password);
+  // useEffect(()=>{
+  //   setTimeout(()=>{refFocus.current.focus();},1500);
+  // },[])
+  const handleClick = (e) =>{
+      let Username = document.querySelectorAll(".LoginInpName");
+      let User = Array.from(Username);
+      const finalOneUser = {}
+      User.map(element=>{
+          let field = element.name;
+          let value = element.value;
+          finalOneUser[field] = value;
+      });
+      userCtx.loginUser(finalOneUser.name,finalOneUser.password);
 
-        const UserRole = localStorage.getItem("role", []);
-        if(UserRole==="admin"){ history.push('/')}else{ history.push('/') }
-    }
+      const UserRole = localStorage.getItem("role", []);
+      if(UserRole==="admin"){ history.push('/')}else{ history.push('/') }
+  }
     
     return (
         <Component>
@@ -45,7 +48,7 @@ function Login() {
                             <div className="name">
                                 <CgProfile />
                                 <InputStyle className="newInp">
-                                    <input type="input" className="LoginInpName" placeholder="Еmail хаягаараа нэвтэрнэ үү" name="name"  />
+                                    <input ref={refFocus} type="input" className="LoginInpName" placeholder="Еmail хаягаараа нэвтэрнэ үү" name="name"  />
                                     <div className="line"></div>
                                 </InputStyle>
                             </div>
@@ -67,7 +70,7 @@ function Login() {
                 </div>
                 <div className="SubmitButtonPar">
                     {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
-                     <NextBtn onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                     <NextBtn onClick={handleClick}  className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                 </div>
                 <Signup />
         </Component>

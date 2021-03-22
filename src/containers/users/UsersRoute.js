@@ -40,7 +40,7 @@ function UsersRoute() {
                     </Route>
                     <Route path="/check/:url" component={CheckComp} />
                     <Route path="/checks/test" component={PdfTest} />
-                    <Route path="/notify-page/:paramId" component={MainPage} />
+                    {/* <Route path="/notify-page/:paramId" component={MainPage} /> */}
                     <Route path="/changepass" component={ChangePassword} />
 
                     {/* <Route path="/comp-request" component={MainRequest} /> */}

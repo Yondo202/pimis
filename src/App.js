@@ -43,7 +43,7 @@ function App() {
         <FilePreviewStore>
           <Router>
             {
-              ctxUser.userInfo.userId ? ctxUser.userInfo.role !== "user" ? 
+              ctxUser.userInfo.userId ? ctxUser.userInfo.role !== "user" ?
               ctxUser.userInfo.role==="member" ?
                 (<MemberRoute />)
               : ( <Admin /> ) 

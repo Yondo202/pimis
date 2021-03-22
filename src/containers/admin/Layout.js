@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import {AlertStyle} from 'components/theme'
 import Aside from '../../components/admin/left_menu/Aside';
 import Main from '../../components/admin/left_menu/TopMain';
 import UserContext from '../../context/UserContext'
@@ -20,7 +21,7 @@ import FirstEvaluation from 'pages/decision_making/5a/Page';
 import CompilationChecklist from 'pages/decision_making/5b/Page';
 import AnalystReport from 'pages/decision_making/5c/Page';
 import UrgudulPreview from 'pages/urgudul/preview/Preview';
-import MemberDecision from '../../components/member/member_decision/Decision_main'
+// import MemberDecision from '../../components/member/member_decision/Decision_main'
 import MainDecision from '../../components/admin/contents/main_decision/Main_decision'
 import NotifyPage1 from '../../components/notifyPage/MainPage'
 import LetterPreview from 'pages/letter_of_interest/preview';
@@ -68,8 +69,8 @@ function Layout({ setLocale }) {
                             <Route path="/check/:url" component={Check} />
                             <Route path="/notify-page/:paramId" component={NotifyPage1} />
 
-                            <Route path="/memberdecision" component={MemberDecision} />
-                            <Route path="/maindecision" component={MainDecision} />
+                            {/* <Route path="/memberdecision" component={MemberDecision} /> */}
+                            <Route path="/maindecision/:id" component={MainDecision} />
 
                             <Route path="/letter-of-interest/:id" component={LetterPreview} />
                             <Route path="/urgudul-preview/:id" component={UrgudulPreview} />
@@ -189,28 +190,3 @@ const AdminApp = styled.div`
     }
 `
 
-const AlertStyle = styled.div`
-    z-index:1010;  
-    transition:all 0.5s ease;
-    position:fixed;
-    // height:80px;
-    bottom:100px;
-    left:2%;
-    display:flex;
-    align-items:center;
-    border:1px solid rgba(0,0,0,0.2);
-    // border-left:4px solid green;
-    background-color:white;
-    padding:10px 40px; 
-    font-weight:400;
-    color:black;
-    border-radius:6px;
-    font-size:17px;
-    opacity:1;
-    font-weight:600;
-    .true{
-        margin-right:14px;
-        font-size:24px;
-        // color:green;
-    }
-`
