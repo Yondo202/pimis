@@ -23,9 +23,9 @@ import TrainingRegistration from 'pages/training/registration/Page';
 import TrainingRequest from 'pages/training/request/Page';
 import TrainingPartnerRegistration from 'pages/training/partner_registration/Page';
 import TrainingFeedback from 'pages/training/feedback/Page';
-
 import PdfTest from 'components/check/PdfTest'
 import { ChangePassword } from 'components/LoginDoneHome/ChangePassword'
+
 
 function UsersRoute() {
     return (

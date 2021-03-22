@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import HelpPopup from 'components/help_popup/helpPopup'
 import axios from 'axiosbase'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
@@ -10,6 +10,8 @@ import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { Fragment } from 'react'
+import { config, Transition } from 'react-spring/renderprops'
+import CloseSVG from 'assets/svgComponents/closeSVG'
 
 
 const year = new Date().getFullYear()
@@ -69,12 +71,8 @@ function UrgudulCalculations() {
     const UrgudulCtx = useContext(UrgudulContext)
 
     useEffect(() => {
-        if (!UrgudulCtx.data.project_end) {
-            if ('project_end' in UrgudulCtx.data) {
-                suggestPage5()
-            }
-        } else {
-            if (Object.keys(UrgudulCtx.data.exportDatas).length > 0) {
+        if (UrgudulCtx.data.project_end) {
+            if (Object.keys(UrgudulCtx.data.exportDatas || []).length > 0) {
                 setForm({ ...UrgudulCtx.data.exportDatas })
             } else {
                 setForm({
@@ -84,15 +82,15 @@ function UrgudulCalculations() {
                     }
                 })
             }
+        } else {
+            if (Object.keys(UrgudulCtx.data.exportDatas || []).length > 0) {
+                setForm({ ...UrgudulCtx.data.exportDatas })
+            }
         }
     }, [UrgudulCtx.data.id])
 
     const handleInput = (key, value, objName) => {
-        if (endDateGiven) {
-            setForm({ ...form, [objName]: { ...form[objName], [key]: value } })
-        } else {
-            suggestPage5()
-        }
+        setForm({ ...form, [objName]: { ...form[objName], [key]: value } })
     }
 
     const handleSetFormCountry = (key, value, index) => {
@@ -108,13 +106,10 @@ function UrgudulCalculations() {
     }
 
     const handleInputProductExport = (key, value, productIndex, countryIndex) => {
-        if (endDateGiven) {
-            const newArr = form.export_details
-            newArr[countryIndex].export_products[productIndex][key] = value
-            setForm({ ...form, export_details: newArr })
-        } else {
-            suggestPage5()
-        }
+        const newArr = form.export_details
+        newArr[countryIndex].export_products[productIndex][key] = value
+        setForm({ ...form, export_details: newArr })
+
     }
 
     const [countries, setCounties] = useState([])
@@ -239,7 +234,26 @@ function UrgudulCalculations() {
 
     const endDateGiven = form.endDate.year && form.endDate.month
 
-    const suggestPage5 = () => AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Төслийн дуусах хугацааг оруулаагүй байна. Хуудас 5-ыг эхлээд бөглөнө үү.' })
+    const [suggestPage5Open, setSuggestPage5Open] = useState(false)
+
+    const suggestPage5Ref = useRef(null)
+
+    const handleClickOutside = (e) => {
+        if (!suggestPage5Ref.current?.contains(e.target)) {
+            setSuggestPage5Open(false)
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    })
+
+    const navToPage5 = () => history.push('/urgudul/5')
+
+    const handleFocusCheck = () => !endDateGiven && setSuggestPage5Open(true)
+
+    const containerRef = useRef()
 
     return (
         <div className="tw-flex tw-justify-center tw-w-full tw-px-4">
@@ -251,7 +265,7 @@ function UrgudulCalculations() {
                     <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
                 </div>
 
-                <div className="tw-text-sm tw-mt-3 tw-overflow-x-auto tw-overflow-y-hidden tw-mx-auto tw-pl-1 tw-pr-10 tw-pb-44">
+                <div className="tw-text-sm tw-mt-3 tw-overflow-x-auto tw-overflow-y-hidden tw-mx-auto tw-pl-1 tw-pr-10" ref={containerRef}>
                     <table>
                         <thead>
                             <tr className="tw-h-9">
@@ -264,7 +278,7 @@ function UrgudulCalculations() {
                                             </th>
                                         case 'endDate':
                                             return <th className="tw-border" key={date}>
-                                                <div className={`tw-flex tw-justify-evenly tw-items-center ${!endDateGiven && 'tw-bg-red-100 tw-rounded'}`}>
+                                                <div className={`tw-flex tw-justify-around tw-items-center ${!endDateGiven && 'tw-bg-red-100 tw-rounded'} tw-mx-1`}>
                                                     {`${form.endDate.year ? form.endDate.year : ''}-${form.endDate.month ? form.endDate.month : ''}`}
                                                     <HelpPopup main="Төслийн дуусах хугацаа, жил сараар." position="bottom" />
                                                 </div>
@@ -284,7 +298,7 @@ function UrgudulCalculations() {
                                 {datesForm.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.sales[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.sales[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.value, 'sales')} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.sales[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.sales[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.value, 'sales')} onFocus={handleFocusCheck} />
                                         </div>
                                     </td>
                                 )}
@@ -301,7 +315,7 @@ function UrgudulCalculations() {
                                 {datesForm.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.fullTime_workplace[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.fullTime_workplace[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.fullTime_workplace[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.fullTime_workplace[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.value, 'fullTime_workplace')} onFocus={handleFocusCheck} />
                                         </div>
                                     </td>
                                 )}
@@ -318,7 +332,7 @@ function UrgudulCalculations() {
                                 {datesForm.map((item, i) =>
                                     <td className="tw-border tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.productivity[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.productivity[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.value, 'productivity')} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.productivity[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.productivity[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.value, 'productivity')} onFocus={handleFocusCheck} />
                                         </div>
                                     </td>
                                 )}
@@ -334,7 +348,7 @@ function UrgudulCalculations() {
                                 </td>
                                 {datesForm.map((item, i) =>
                                     <td className="tw-border tw-px-1 tw-text-right tw-font-medium tw-truncate" style={{ maxWidth: 81 }} key={i}>
-                                        {exportSums[item] !== 0 && exportSums[item].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        {exportSums[item] !== 0 && exportSums[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </td>
                                 )}
                                 <td className="tw-border tw-truncate tw-font-bold tw-text-center">$</td>
@@ -343,7 +357,7 @@ function UrgudulCalculations() {
                                 <Fragment key={i}>
                                     <tr className="tw-h-9">
                                         <td className="tw-border tw-px-1">
-                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={window.innerWidth > 324 ? '324px' : `${window.innerWidth - 128}px`} />
+                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={containerRef.current?.getBoundingClientRect().width > 240 ? 240 : containerRef.current?.getBoundingClientRect().width - 54} />
                                         </td>
                                         <td className="tw-border tw-px-2" colSpan={datesForm.length}>
                                             <button className="tw-float-right tw-bg-gray-600 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors tw-py-1 tw-px-4" onClick={() => handleRemoveCountry(i)}>
@@ -356,13 +370,13 @@ function UrgudulCalculations() {
                                         country.export_products.map((product, j) =>
                                             <tr className="tw-h-9" key={j}>
                                                 <td className="tw-border tw-px-1">
-                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={product.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(product.productId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={window.innerWidth > 648 ? '648px' : `${window.innerWidth - 128}px`} />
+                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={product.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(product.productId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={containerRef.current?.getBoundingClientRect().width - 54} />
                                                 </td>
                                                 {
                                                     datesForm.map((key, k) =>
                                                         <td className="tw-border tw-px-1" key={k}>
                                                             <div className="tw-flex tw-justify-center">
-                                                                <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(product[key]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={product[key] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInputProductExport(key, values.value, j, i)} />
+                                                                <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(product[key]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={product[key] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInputProductExport(key, values.value, j, i)} onFocus={handleFocusCheck} />
                                                             </div>
                                                         </td>
                                                     )
@@ -396,9 +410,33 @@ function UrgudulCalculations() {
                 </div>
 
                 <div className="tw-flex tw-justify-center">
-                    <ButtonTooltip classAppend="tw-mt-2 tw-mb-4" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                    <ButtonTooltip classAppend="tw-mt-12 tw-mb-8" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
                 </div>
             </div>
+
+            <Transition
+                items={suggestPage5Open}
+                from={{ opacity: 0 }}
+                enter={{ opacity: 1 }}
+                leave={{ opacity: 0 }}
+                initial={{ opacity: 0 }}
+                config={config.stiff}>
+                {item => item && (anims =>
+                    <div className="tw-fixed tw-top-1/2 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--translate-y-1/2 tw-w-80 tw-z-10 tw-p-1 tw-bg-white tw-rounded-md tw-grid tw-grid-cols-1 tw-shadow-md tw-ring tw-ring-indigo-500" style={anims} ref={suggestPage5Ref}>
+                        <button className="tw-float-right tw-text-red-500 tw-justify-self-end focus:tw-outline-none active:tw-text-red-600 tw-transition-colors tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={() => setSuggestPage5Open(false)}>
+                            <CloseSVG className="tw-w-5 tw-h-5" />
+                        </button>
+
+                        <div className="tw-text-15px tw-text-center tw-mx-6 md:tw-mx-10 tw-mt-2">
+                            Төслийн дуусах хугацаа тодорхойгүй байна. Та эхлээд хуудас 5-ыг бөглөнө үү.
+                        </div>
+
+                        <button className="tw-py-2 tw-px-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-text-white tw-rounded hover:tw-shadow-md focus:tw-outline-none tw-justify-self-center tw-mt-6 tw-mb-4 tw-text-sm" onClick={navToPage5}>
+                            5 хуудас руу шилжих
+                        </button>
+                    </div>
+                )}
+            </Transition>
         </div>
     )
 }
