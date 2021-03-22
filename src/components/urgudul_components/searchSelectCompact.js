@@ -102,7 +102,7 @@ function SearchSelectCompact(props) {
                 leave={{ opacity: 0 }}
                 config={config.stiff}>
                 {item => item && (anims =>
-                    <div className={`tw-fixed ${!props.selectWidth && 'tw-w-full'} tw-h-60 tw-bg-white tw-z-10 tw-text-13px tw-rounded-md tw-shadow-sm tw-border tw-border-gray-400 tw-divide-y tw-divide-dashed tw-overflow-y-auto`} style={{ width: props.selectWidth, top: searchBarRef.current?.getBoundingClientRect().top - 152, left: searchBarRef.current?.getBoundingClientRect().left, ...anims }}>
+                    <div className={`tw-fixed ${!props.selectWidth && 'tw-w-full'} tw-bg-white tw-z-10 tw-text-13px tw-rounded-md tw-shadow-sm tw-border tw-border-gray-400 tw-divide-y tw-divide-dashed tw-overflow-y-auto`} style={{ height: props.selectHeight || 426, width: props.selectWidth, top: searchBarRef.current?.getBoundingClientRect().top - 152, left: searchBarRef.current?.getBoundingClientRect().left, ...anims }}>
                         {
                             fetch.filter(obj => filter(obj, search)).length ?
                                 fetch.filter(obj => filter(obj, search)).sort(compare).map((item, i) =>

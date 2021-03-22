@@ -422,7 +422,7 @@ function UrgudulCalculations() {
                 initial={{ opacity: 0 }}
                 config={config.stiff}>
                 {item => item && (anims =>
-                    <div className="tw-fixed tw-top-1/2 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--translate-y-1/2 tw-w-80 tw-z-10 tw-p-1 tw-bg-white tw-rounded-md tw-grid tw-grid-cols-1 tw-shadow-md tw-ring tw-ring-indigo-300" style={anims} ref={suggestPage5Ref}>
+                    <div className="tw-fixed tw-top-1/2 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--translate-y-1/2 tw-w-80 tw-z-10 tw-p-1 tw-bg-white tw-rounded-md tw-grid tw-grid-cols-1 tw-shadow-md tw-ring tw-ring-indigo-500" style={anims} ref={suggestPage5Ref}>
                         <button className="tw-float-right tw-text-red-500 tw-justify-self-end focus:tw-outline-none active:tw-text-red-600 tw-transition-colors tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={() => setSuggestPage5Open(false)}>
                             <CloseSVG className="tw-w-5 tw-h-5" />
                         </button>
