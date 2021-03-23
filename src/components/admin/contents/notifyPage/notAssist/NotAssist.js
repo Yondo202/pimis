@@ -4,7 +4,7 @@ import { useReactToPrint } from "react-to-print";
 import {VscFilePdf} from 'react-icons/vsc';
 import Content from './Content'
 
-function NotAssist() {
+function NotAssist({approve}) {
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
@@ -13,7 +13,7 @@ function NotAssist() {
       return (
             <MainContainter>
                 <div className="parent" ref={componentRef}>
-                     <Content  />
+                     <Content approve={approve} />
                 </div>
                 <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
             </MainContainter>

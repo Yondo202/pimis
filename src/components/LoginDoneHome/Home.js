@@ -26,22 +26,26 @@ function Home() {
 
     return (
         <HomeComponent style={userId?{maxWidth:"2000px"}:{maxWidth:"1160px"}} className={`container`}>
-            <div className="headerPar">
-                <div className="header row">
+            {infData?.criteria===1? <h2 style={{marginTop:50}}>Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэх боломжгүй байна.</h2> :<> <div className="headerPar">
+                {userId?<div className="header row">
+                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын нэр:</span>{infData?.companyname}</span> </div></div>
+                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Төслийн нэр:</span>{infData?.project?.project_name}</span>  </div></div>
+                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын регистр:</span>{infData?.companyregister}</span> </div></div>
+                        </div> 
+                : (<div className="header row">
                     <div className="col-md-4"><div className="headItems"><span className="text">1.Түншлэлийн хөтөлбөрт бүрдүүлэх баримт</span> </div></div>
                     <div className="col-md-4"><div className="headItems"><span className="text">2. Үнэлгээ, шийдвэр гарах явц</span> </div></div>
                     <div className="col-md-4"><div className="headItems"><span className="text"> 3. Түншлэлийн гэрээ, гүйцэтгэл, санхүүжилт</span></div></div>
-                </div>
-                <div className="otherHead row">
-                    <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
-                    <div className="col-md-4"><div className="headItems"><span className="text">Бизнес шинжээчийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span> </div></div>
-                </div>
+                </div>) }
+              {!userId&&<div className="otherHead row">
+                        <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
+                        <div className="col-md-4"><div className="headItems"><span className="text">Бизнес шинжээчийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span> </div></div>
+                </div>}
             </div>
-            {infData === null ? <InitialComp /> : <ActiveComp prew={userId} data={infData} /> }
+            {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} /> }</>  }
         </HomeComponent>
     )
 }
-
 
 export default Home
 
@@ -350,6 +354,10 @@ const HomeComponent = styled.div`
                     width:100%;
                     background-color:rgba(255,255,102,0.9);
                     padding:4px 8px;
+                    .titlee{
+                        font-weight:400;
+                        margin-right:15px;
+                    }
                 }
             }
             .headItems2{

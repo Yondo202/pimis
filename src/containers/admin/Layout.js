@@ -4,7 +4,7 @@ import Aside from '../../components/admin/left_menu/Aside';
 import Main from '../../components/admin/left_menu/TopMain';
 import UserContext from '../../context/UserContext'
 import styled from 'styled-components'
-import HomeAdmin from '../../components/admin/Home'
+import HomeAdmin from '../../components/admin/HomeAdmin'
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
 import { Route, Switch } from "react-router-dom";
@@ -23,7 +23,7 @@ import AnalystReport from 'pages/decision_making/5c/Page';
 import UrgudulPreview from 'pages/urgudul/preview/Preview';
 // import MemberDecision from '../../components/member/member_decision/Decision_main'
 import MainDecision from '../../components/admin/contents/main_decision/Main_decision'
-import NotifyPage1 from '../../components/notifyPage/MainPage'
+import NotifyPage1 from '../../components/admin/contents/notifyPage/MainPage'
 import LetterPreview from 'pages/letter_of_interest/preview';
 import EvaluatorsMeetingsNavigator from 'components/admin/contents/evaluators_meeting/MeetingsNavigator';
 

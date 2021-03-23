@@ -10,11 +10,14 @@ import Token from 'context/accessToken';
 import UserContext from 'context/UserContext';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
+import AssistApprove from '../notifyPage/assistApprove/AssistApprove'
+import NotAssist from '../notifyPage/notAssist/NotAssist';
 
 function Main_decision() {
     const ctx = useContext(UserContext);
     const history = useHistory();
     const param  = useParams().id;
+    const [ notifyShow, setNotifyShow ] = useState(0);
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
     const [ mainData, setMainData ] = useState(null);
@@ -29,7 +32,7 @@ function Main_decision() {
 
     const backHandle = (el) =>{ if(el==="projects"){  history.push(`/${el}`); }else{ history.push(`/progress/${el}`); } }
 
-    const clickHandle = () =>{
+    const clickHandle = (el) =>{
         let inp = document.querySelector(".getInpp");
         if(inp.value===""){
             setOpacity2('1');
@@ -42,15 +45,15 @@ function Main_decision() {
             mainData[inp.name] = inp.value;
             axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization:Token() } }).then((res)=>{
                 console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true);
+            if(el===true){ setNotifyShow(1); }else if(el===false){ setNotifyShow(2); }else{setNotifyShow(0); }
+
             }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
         }
     }
 
-
-
     return (
         <>
-        <FeedBackCont className="container">
+            {notifyShow===0?<FeedBackCont className="container">
             {mainData?mainData.rejectedCount===0&&mainData.aprrovedCount===0?
              <div className="NullPar">
                 <div className="nullTitle">
@@ -103,11 +106,11 @@ function Main_decision() {
                             })}
                             <tr className="getTable1 B2">
                                         <td>Дэмжсэн саналын тоо</td>
-                                        <td><div className="input">{mainData&&mainData.aprrovedCount}</div></td>
+                                        <td><div className="input">{mainData?.aprrovedCount}</div></td>
                             </tr>
                             <tr className="getTable1 B2">
                                         <td>Татгалзсан саналын тоо</td>
-                                        <td><div className="input">{mainData&&mainData.rejectedCount}</div></td>
+                                        <td><div className="input">{mainData?.rejectedCount}</div></td>
                             </tr>
                             <tr className="getTable1 B2">
                                         <td>ЭЦСИЙН ДҮН</td>
@@ -115,7 +118,6 @@ function Main_decision() {
                             </tr>
                     </table>
                 </div>
-
                 <div className="reasonPar">
                             <div className="title">Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:</div>
                             <div className="inpPar">
@@ -126,7 +128,7 @@ function Main_decision() {
 
                 <div className="buttonPar">
                     <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                    <NextBtn className="SubmitButton" onClick={clickHandle} type="button">Мэдэгдэл илгээх<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                    <NextBtn className="SubmitButton" onClick={()=>clickHandle(mainData?mainData.approved:"code")} type="button">Мэдэгдэл илгээх<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                 </div>
             </div>
             :<div className="NullPar">
@@ -136,8 +138,15 @@ function Main_decision() {
                     <div className="desc"></div>
                 </div>
             </div> }
+        </FeedBackCont> : notifyShow===1
+                        ? <NotifyComp className="container"> <AssistApprove approve={mainData} /> </NotifyComp>
+                        : <NotifyComp className="container"> <NotAssist approve={mainData} /></NotifyComp> }
             
-        </FeedBackCont>
+
+        
+        
+
+
         <AlertStyle style={ctx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${ctx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
             {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}
             <span>{ctx.alert.text}</span>
@@ -147,6 +156,18 @@ function Main_decision() {
 }
 
 export default Main_decision
+
+const NotifyAnime = keyframes`
+    0% { margin-bottom:-30px; opacity: 0.4 }
+    100% { margin-bottom:0px; opacity: 1 }
+`
+
+const NotifyComp = styled.div`
+    animation: ${NotifyAnime} ease 0.5s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+`
 
 const homeAnime = keyframes`
     0% { margin-top:-20px; opacity: 0.4 }
