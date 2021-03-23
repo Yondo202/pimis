@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import axios from '../../../axiosbase';
+import axios from 'axiosbase';
 import { Email, Item, Span, A, renderEmail, Box,Image} from 'react-html-email'
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
-import {AlertStyle} from '../../theme'
+import {AlertStyle} from 'components/theme'
 
 export default class Content extends React.Component {
     constructor() {

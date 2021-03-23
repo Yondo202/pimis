@@ -10,11 +10,14 @@ import Token from 'context/accessToken';
 import UserContext from 'context/UserContext';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
+import AssistApprove from '../notifyPage/assistApprove/AssistApprove'
+import NotAssist from '../notifyPage/notAssist/NotAssist';
 
 function Main_decision() {
     const ctx = useContext(UserContext);
     const history = useHistory();
     const param  = useParams().id;
+    const [ notifyShow, setNotifyShow ] = useState(0);
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
     const [ mainData, setMainData ] = useState(null);
@@ -45,8 +48,6 @@ function Main_decision() {
             }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
         }
     }
-
-
 
     return (
         <>
@@ -136,8 +137,22 @@ function Main_decision() {
                     <div className="desc"></div>
                 </div>
             </div> }
-            
         </FeedBackCont>
+
+    
+        <div>
+            <NotifyComp className="container">
+                <AssistApprove />
+            </NotifyComp>
+            <NotifyComp className="container">
+                <NotAssist />
+            </NotifyComp>
+        </div>
+
+        
+        
+
+
         <AlertStyle style={ctx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${ctx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
             {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}
             <span>{ctx.alert.text}</span>
@@ -147,6 +162,18 @@ function Main_decision() {
 }
 
 export default Main_decision
+
+const NotifyAnime = keyframes`
+    0% { margin-bottom:-30px; opacity: 0.4 }
+    100% { margin-bottom:0px; opacity: 1 }
+`
+
+const NotifyComp = styled.div`
+    animation: ${NotifyAnime} ease 0.5s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+`
 
 const homeAnime = keyframes`
     0% { margin-top:-20px; opacity: 0.4 }

@@ -5,7 +5,7 @@ import {ColorRgb,textColor,fontFamily} from '../theme';
 import axios from 'axiosbase';
 import Token from 'context/accessToken';
 import DocumentTitle from 'containers/document/DocumentTitle'
-import {IoMdCheckmarkCircle} from 'react-icons/io'
+import { IoMdCheckmarkCircle } from 'react-icons/io'
 
 function HomePage({setNotify}) {
     DocumentTitle("EDP - Үнэлгээний хорооны гишүүн");

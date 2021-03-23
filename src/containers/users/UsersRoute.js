@@ -17,7 +17,7 @@ import FirstEvaluation from "pages/decision_making/5a/Page";
 import CompilationCheck from "pages/decision_making/5b/Page";
 import AnalystReport from "pages/decision_making/5c/Page";
 import AttachmentUploads from "pages/attachments/page";
-import MainPage from "components/notifyPage/MainPage";
+// import MainPage from "components/notifyPage/MainPage";
 import WorkPerformance from 'components/workPerformance/MainWorkPerformance'
 import TrainingRegistration from 'pages/training/registration/Page';
 import TrainingRequest from 'pages/training/request/Page';

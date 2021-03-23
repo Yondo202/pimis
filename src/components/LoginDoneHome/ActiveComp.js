@@ -81,6 +81,7 @@ function ActiveComp(props) {
                     <div className="resultDesable">6. Гүйцэтгэлийн үнэгээ (ажлын чанар, гэрээний биелэлт, оролцоо)</div>
                 </div>
             </div>
+            
         </div>
     )
 }

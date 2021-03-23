@@ -1,7 +1,6 @@
 import React from 'react'
 import { useParams } from "react-router-dom";
 import styled from 'styled-components'
-// import PageOne from '../member/notify/PageOne'
 import Approved from './Approve/Approved'
 import NotApproved from './notApprove/NotApproved'
 import AssistApprove from './assistApprove/AssistApprove';
@@ -12,7 +11,6 @@ function MainPage() {
   let { paramId } = useParams();
     return (
         <Components className="container">
-              {/* {paramId==="1"&&<PageOne />}  */}
               {paramId==="2"&&<Approved />} 
               {paramId==="3"&&<NotApproved />} 
               {paramId==="4"&&<AssistApprove /> } 
