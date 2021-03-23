@@ -11,7 +11,7 @@ import PreviewModal from './previewModal'
 import ReactQuill from 'react-quill'
 import './style.css'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
-import { config, Transition } from 'react-spring/renderprops'
+import { Transition } from 'react-spring/renderprops'
 import QuestionMarkSVG from 'assets/svgComponents/questionMarkSVG'
 
 
