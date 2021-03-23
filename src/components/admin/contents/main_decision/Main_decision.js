@@ -32,7 +32,7 @@ function Main_decision() {
 
     const backHandle = (el) =>{ if(el==="projects"){  history.push(`/${el}`); }else{ history.push(`/progress/${el}`); } }
 
-    const clickHandle = () =>{
+    const clickHandle = (el) =>{
         let inp = document.querySelector(".getInpp");
         if(inp.value===""){
             setOpacity2('1');
@@ -45,13 +45,15 @@ function Main_decision() {
             mainData[inp.name] = inp.value;
             axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization:Token() } }).then((res)=>{
                 console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true);
+            if(el===true){ setNotifyShow(1); }else if(el===false){ setNotifyShow(2); }else{setNotifyShow(0); }
+
             }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
         }
     }
 
     return (
         <>
-        <FeedBackCont className="container">
+            {notifyShow===0?<FeedBackCont className="container">
             {mainData?mainData.rejectedCount===0&&mainData.aprrovedCount===0?
              <div className="NullPar">
                 <div className="nullTitle">
@@ -104,11 +106,11 @@ function Main_decision() {
                             })}
                             <tr className="getTable1 B2">
                                         <td>Дэмжсэн саналын тоо</td>
-                                        <td><div className="input">{mainData&&mainData.aprrovedCount}</div></td>
+                                        <td><div className="input">{mainData?.aprrovedCount}</div></td>
                             </tr>
                             <tr className="getTable1 B2">
                                         <td>Татгалзсан саналын тоо</td>
-                                        <td><div className="input">{mainData&&mainData.rejectedCount}</div></td>
+                                        <td><div className="input">{mainData?.rejectedCount}</div></td>
                             </tr>
                             <tr className="getTable1 B2">
                                         <td>ЭЦСИЙН ДҮН</td>
@@ -116,7 +118,6 @@ function Main_decision() {
                             </tr>
                     </table>
                 </div>
-
                 <div className="reasonPar">
                             <div className="title">Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:</div>
                             <div className="inpPar">
@@ -127,7 +128,7 @@ function Main_decision() {
 
                 <div className="buttonPar">
                     <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                    <NextBtn className="SubmitButton" onClick={clickHandle} type="button">Мэдэгдэл илгээх<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                    <NextBtn className="SubmitButton" onClick={()=>clickHandle(mainData?mainData.approved:"code")} type="button">Мэдэгдэл илгээх<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                 </div>
             </div>
             :<div className="NullPar">
@@ -137,17 +138,10 @@ function Main_decision() {
                     <div className="desc"></div>
                 </div>
             </div> }
-        </FeedBackCont>
-
-    
-        <div>
-            <NotifyComp className="container">
-                <AssistApprove />
-            </NotifyComp>
-            <NotifyComp className="container">
-                <NotAssist />
-            </NotifyComp>
-        </div>
+        </FeedBackCont> : notifyShow===1
+                        ? <NotifyComp className="container"> <AssistApprove approve={mainData} /> </NotifyComp>
+                        : <NotifyComp className="container"> <NotAssist approve={mainData} /></NotifyComp> }
+            
 
         
         

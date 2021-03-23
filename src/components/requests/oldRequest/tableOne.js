@@ -30,12 +30,12 @@ function TableOne(props) {
     const [ Dname, setDname] = useState(null);
     const [Ddate, setDdate] = useState(null);
     const tablesContext = useContext(HelperContext);
-    
+
     useEffect(()=>{
         const finalData = [];
         dataOne.map((el,i)=>{
           if(props.initialData){
-              props.initialData.map((elem,index)=>{ 
+              props.initialData.map((elem,index)=>{
               if(i === index){el["id"] = elem.id; el["rvalue"] = elem.rvalue;  el["rownum"] = elem.rownum; }});
           } finalData.push(el);
       });
@@ -77,7 +77,6 @@ function TableOne(props) {
 
               let confirm = document.getElementById("GetcheckBtn").checked;
               console.log(finalEnd, "final end");
-
 
              let arrs = [];  dataOne.map((el,i)=>{ finalOne2.map(elem=>{ if((i+1).toString()===elem.rownum && elem.rvalue === "true"){arrs.push(el.name); };});});
              setSecondChance(arrs);
@@ -129,10 +128,8 @@ function TableOne(props) {
                 }
               }
       }
-      const closeModalX=()=>{ setVisible2(false); };
-      const closeModal=()=>{ setBtnCond("twice"); setVisible2(false); };
-
-
+    const closeModalX=()=>{ setVisible2(false); };
+    const closeModal=()=>{ setBtnCond("twice"); setVisible2(false); };
 
     return (
         <Component1 className="container" >
@@ -256,40 +253,18 @@ function TableOne(props) {
 export default TableOne
 
 const dataOne = [
-  {  name: "Цэрэг армийн ямар нэг зэвсэг" },
-  {
-      name: "Зэрлэг амьтан, ургамлын ховордсон төрөл зүйлийг олон улсын хэмжээнд худалдаалах тухай конвенц (CITES)-ийн хүрээнд хориглодог ан амьтан, ургамлын худалдаа"
-  },
-  {
-      name: "Байгаль, хүрээлэн буй орчинд генийн өөрчлөлтөд орсон организмуудыг гаргах"
-  },
-  {
-      name: "Хориглосон пестицид, хербицидийн үйлдвэрлэл, нийлүүлэлт, худалдаа"
-  },
-  {
-      name: "Далай тэнгист тороор загас барих"
-  },
-  {
-      name: "Цацраг идэвхт бүтээгдэхүүнүүд"
-  },
-  {
-      name: "Аюултай хог хаягдлын хадгалалт, боловсруулалт, зайлуулалт"
-  },
-  {
-      name: "Хлорфторт нүүрстөрөгчид, галлон болон Монреалийн протоколын хүрээнд зохицуулагддаг бусад бодисууд агуулсан тоног төхөөрөмж, хэрэгслийн үйлдвэрлэл"
-  },
-  {
-      name: "Олон хлорт бефенилиудын үзүүлэх нөлөө 0.005 %-аас хэтэрсэн агууламж бүхий цахилгаан хэрэгсэл, тоног төхөөрөмжийн үйлдвэрлэл"
-  },
-  {
-      name: "Шөрмөсөн чулуу агуулсан бүтээгдэхүүний үйлдвэрлэл"
-  },
-  {
-      name: "Цөмийн реакторууд, тэдгээрийн хэсгүүд"
-  },
-  {
-      name: "Тамхи (үйлдвэрлэлийн бус ба үйлдвэрлэлийн); Тамхины хатаасан навч боловсруулах машин"
-  },
+  { name: "Цэрэг армийн ямар нэг зэвсэг" },
+  { name: "Зэрлэг амьтан, ургамлын ховордсон төрөл зүйлийг олон улсын хэмжээнд худалдаалах тухай конвенц (CITES)-ийн хүрээнд хориглодог ан амьтан, ургамлын худалдаа" },
+  { name: "Байгаль, хүрээлэн буй орчинд генийн өөрчлөлтөд орсон организмуудыг гаргах" },
+  { name: "Хориглосон пестицид, хербицидийн үйлдвэрлэл, нийлүүлэлт, худалдаа" },
+  { name: "Далай тэнгист тороор загас барих" },
+  { name: "Цацраг идэвхт бүтээгдэхүүнүүд" },
+  { name: "Аюултай хог хаягдлын хадгалалт, боловсруулалт, зайлуулалт" },
+  { name: "Хлорфторт нүүрстөрөгчид, галлон болон Монреалийн протоколын хүрээнд зохицуулагддаг бусад бодисууд агуулсан тоног төхөөрөмж, хэрэгслийн үйлдвэрлэл" },
+  { name: "Олон хлорт бефенилиудын үзүүлэх нөлөө 0.005 %-аас хэтэрсэн агууламж бүхий цахилгаан хэрэгсэл, тоног төхөөрөмжийн үйлдвэрлэл" },
+  { name: "Шөрмөсөн чулуу агуулсан бүтээгдэхүүний үйлдвэрлэл" },
+  { name: "Цөмийн реакторууд, тэдгээрийн хэсгүүд" },
+  { name: "Тамхи (үйлдвэрлэлийн бус ба үйлдвэрлэлийн); Тамхины хатаасан навч боловсруулах машин" },
 ]
 
 
@@ -648,7 +623,7 @@ const Component1 = styled.div`
                         .next{ width:100%;}
                     }
                     .SingatureImg{
-                        width:100%;
+                        width:100%; 
                     }
                 }
             }
