@@ -11,7 +11,7 @@ import PreviewModal from './previewModal'
 import ReactQuill from 'react-quill'
 import './style.css'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
-import { config, Transition } from 'react-spring/renderprops'
+import { Transition } from 'react-spring/renderprops'
 import QuestionMarkSVG from 'assets/svgComponents/questionMarkSVG'
 
 
@@ -137,6 +137,7 @@ export default function LetterOfInterest() {
                     },
                 }).then(res => {
                     console.log(res.data)
+                    setForm({ ...form, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
                 }).catch(err => {
                     console.log(err.response?.data)

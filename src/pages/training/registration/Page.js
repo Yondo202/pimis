@@ -1,5 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
-import FormInline from 'components/urgudul_components/formInline'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import FormRichText from 'components/urgudul_components/formRichText'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import { Transition } from 'react-spring/renderprops-universal'
@@ -8,6 +7,7 @@ import AlertContext from 'components/utilities/alertContext'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
+import RegistrationsModal from './registrationsModal'
 
 
 const initialState = {
@@ -24,13 +24,24 @@ const initialState = {
 }
 
 const descriptions = {
-    introduction_file: '',
-    request_file: '',
-    identity_file: '',
+    introduction_file: 'Сургалтанд бүртгүүлэгчийн байгууллагын танилцуулга.',
+    request_file: 'Ажилтнаа сургалтад хамруулах тухай хүсэлт, албан тоот.',
+    identity_file: 'Сургалтанд бүртгүүлэгчийн иргэний үнэмлэхний хуулбар.',
 }
 
 export default function TrainingRegistration() {
     const [form, setForm] = useState(initialState)
+
+    useEffect(() => {
+        axios.get('training-requests', {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res.data)
+            setRegistrations(res.data.data)
+        }).catch(err => {
+            console.log(err.response?.data)
+        })
+    }, [])
 
     const handleInput = (key, value) => setForm({ ...form, [key]: value })
 
@@ -59,11 +70,11 @@ export default function TrainingRegistration() {
         }).then(res => {
             console.log(res.data)
             setForm({ ...form, [editKey]: res.data.data })
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээний файл амжилттай хадгалагдлаа.' })
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файл амжилттай хадгалагдлаа.' })
         }).catch(err => {
             console.log(err.response?.data)
             setForm({ ...form, [editKey]: null })
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Гэрээний файлыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг хадгалж чадсангүй.' })
         })
     }
 
@@ -92,16 +103,59 @@ export default function TrainingRegistration() {
     const requestFileGiven = form.request_file ? true : false
     const identityFileGiven = form.identity_file ? true : false
 
+    const handleSubmit = () => {
+        if (form.id) {
+            axios.put(`training-requests/${form.id}`, form, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын бүртгэлийг шинэчиллээ.' })
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын бүртгэлийг хадгалж чадсангүй.' })
+            })
+        } else {
+            axios.post('training-requests', form, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                setForm({ ...form, ...res.data.data })
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын бүртгэлийг хадгаллаа.' })
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын бүртгэлийг хадгалж чадсангүй.' })
+            })
+        }
+    }
+
+    const [registrationsModalOpen, setRegistrationsModalOpen] = useState(true)
+
+    const [registrations, setRegistrations] = useState([])
+
+    const handleSelectRegistration = (id) => {
+        axios.get(`training-requests/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res.data)
+            setForm({ ...form, ...res.data.data })
+            setRegistrationsModalOpen(false)
+        }).catch(err => {
+            console.log(err.response?.data)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын бүртгэлийг уншиж чадсангүй.' })
+        })
+    }
+
     return (
         <div className="tw-text-gray-700 tw-text-sm tw-flex tw-justify-center tw-w-full tw-px-4">
-            <div className="tw-max-w-5xl tw-w-full tw-shadow-md tw-rounded tw-p-2 tw-mt-10 tw-bg-white">
-                <div className="tw-text-center tw-text-2xl tw-font-medium tw-mt-6">
+
+            <RegistrationsModal registrationsModalOpen={registrationsModalOpen} setRegistrationsModalOpen={setRegistrationsModalOpen} registrations={registrations} handleSelectRegistration={handleSelectRegistration} />
+
+            <div className="tw-max-w-5xl tw-w-full tw-shadow-md tw-rounded tw-p-2 tw-mt-10 tw-mb-20 tw-bg-white">
+                <div className="tw-text-center tw-text-xl tw-font-medium tw-mt-6">
                     1. Сургалтанд бүртгүүлэх
                 </div>
 
-                <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-mt-8 tw-p-2 tw-max-w-7xl">
-                    {/* <FormInline label="Овог нэр" type="text" value={''} name="company_name" onChange={() => { }} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" /> */}
-
+                <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-mt-8 tw-p-2">
                     <div className="tw-py-2 tw-px-4 tw-grid tw-grid-cols-1 tw-gap-y-0.5 tw-w-full">
                         <div className="tw-font-medium">
                             Овог нэр
@@ -234,7 +288,7 @@ export default function TrainingRegistration() {
                 <input className="tw-invisible tw-h-0 tw-absolute" type="file" onChange={handleFileInput} ref={fileInputRef} />
 
                 <div className="tw-flex tw-justify-center">
-                    <button className="tw-mt-6 tw-mb-10 tw-py-2 tw-px-8 tw-bg-blue-900 active:tw-bg-blue-800 tw-transition-all tw-text-white tw-text-15px focus:tw-outline-none tw-rounded hover:tw-shadow-md">
+                    <button className="tw-mt-6 tw-mb-10 tw-py-2 tw-px-8 tw-bg-blue-900 active:tw-bg-blue-800 tw-transition-all tw-text-white tw-text-15px focus:tw-outline-none tw-rounded hover:tw-shadow-md" onClick={handleSubmit}>
                         Хадгалах
                     </button>
                 </div>
@@ -243,7 +297,7 @@ export default function TrainingRegistration() {
     )
 }
 
-const FileAttachButton = (props) => (
+export const FileAttachButton = (props) => (
     <button className="tw-py-1.5 tw-px-6 tw-text-sm tw-border tw-border-gray-500 tw-font-medium tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-inline-flex tw-items-center tw-transition-colors active:tw-bg-gray-200" onClick={props.onClick}>
         <span className="tw-whitespace-nowrap">Файл оруулах</span>
         <PaperClipSVG className="tw-w-4 tw-h-4 tw-ml-1" />
