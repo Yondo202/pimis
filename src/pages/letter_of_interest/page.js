@@ -137,6 +137,7 @@ export default function LetterOfInterest() {
                     },
                 }).then(res => {
                     console.log(res.data)
+                    setForm({ ...form, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
                 }).catch(err => {
                     console.log(err.response?.data)

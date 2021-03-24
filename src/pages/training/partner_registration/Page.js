@@ -1,12 +1,13 @@
 import AlertContext from 'components/utilities/alertContext'
 import FileCard from 'pages/attachments/fileCard'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useRef } from 'react'
 import { Transition } from 'react-spring/renderprops'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 import { FileAttachButton } from '../registration/Page'
+import PartnersModal from './partnersModal'
 
 
 const initialState = {
@@ -25,6 +26,17 @@ const descriptions = {
 
 export default function TrainingPartnerRegistration() {
     const [form, setForm] = useState(initialState)
+
+    useEffect(() => {
+        axios.get('training-partners', {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res.data)
+            setPartners(res.data.data)
+        }).catch(err => {
+            console.log(err.response?.data)
+        })
+    }, [])
 
     const fileInputRef = useRef(null)
 
@@ -80,8 +92,53 @@ export default function TrainingPartnerRegistration() {
         })
     }
 
+    const handleSubmit = () => {
+        if (form.id) {
+            axios.put(`training-partners/${form.id}`, form, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын байгууллагын бүртгэлийг шинэчиллээ.' })
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын байгууллагын бүртгэлийг хадгалж чадсангүй.' })
+            })
+        } else {
+            axios.post('training-partners', form, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                setForm({ ...form, ...res.data.data })
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын байгууллагын бүртгэлийг хадгаллаа.' })
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын байгууллагын бүртгэлийг хадгалж чадсангүй.' })
+            })
+        }
+    }
+
+    const [partnersModalOpen, setPartnersModalOpen] = useState(true)
+
+    const [partners, setPartners] = useState([])
+
+    const handleSelectPartner = (id) => {
+        axios.get(`training-partners/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res.data)
+            setForm({ ...form, ...res.data.data })
+            setPartnersModalOpen(false)
+        }).catch(err => {
+            console.log(err.response?.data)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын байгууллагын мэдээллийг уншиж чадсангүй.' })
+        })
+    }
+
     return (
         <div className="tw-text-gray-700 tw-text-sm tw-flex tw-justify-center tw-w-full tw-px-4">
+
+            <PartnersModal partnersModalOpen={partnersModalOpen} setPartnersModalOpen={setPartnersModalOpen} partners={partners} handleSelectPartner={handleSelectPartner} setPartners={setPartners} />
+
             <div className="tw-max-w-5xl tw-w-full tw-shadow-md tw-rounded tw-p-2 tw-mt-10 tw-mb-20 tw-bg-white">
                 <div className="tw-text-center tw-text-xl tw-font-medium tw-mt-6">
                     3. Сургалт хамтран зохион байгуулах сургалтын байгууллага бүртгэх
@@ -192,7 +249,7 @@ export default function TrainingPartnerRegistration() {
                 <input className="tw-invisible tw-h-0 tw-absolute" type="file" onChange={handleFileInput} ref={fileInputRef} />
 
                 <div className="tw-flex tw-justify-center">
-                    <button className="tw-mt-6 tw-mb-10 tw-py-2 tw-px-8 tw-bg-blue-900 active:tw-bg-blue-800 tw-transition-all tw-text-white tw-text-15px focus:tw-outline-none tw-rounded hover:tw-shadow-md">
+                    <button className="tw-mt-6 tw-mb-10 tw-py-2 tw-px-8 tw-bg-blue-900 active:tw-bg-blue-800 tw-transition-all tw-text-white tw-text-15px focus:tw-outline-none tw-rounded hover:tw-shadow-md" onClick={handleSubmit}>
                         Хадгалах
                     </button>
                 </div>

@@ -1,6 +1,10 @@
 import HelpPopup from 'components/help_popup/helpPopup'
 import FormRichText from 'components/urgudul_components/formRichText'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import axios from 'axiosbase'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import AlertContext from 'components/utilities/alertContext'
+import RequestsModal from './requestsModal'
 
 
 const initialState = {
@@ -10,7 +14,7 @@ const initialState = {
     position: null,
     phone: null,
     introduction: null,
-    sector: null,
+    sectorId: null,
     registration: null,
     email: null,
     trainee_count: null,
@@ -19,10 +23,68 @@ const initialState = {
 export default function TrainingRequest() {
     const [form, setForm] = useState(initialState)
 
+    useEffect(() => {
+        axios.get('training-order-requests', {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res.data)
+            setRequests(res.data.data)
+        }).catch(err => {
+            console.log(err.response?.data)
+        })
+    }, [])
+
     const handleInput = (key, value) => setForm({ ...form, [key]: value })
+
+    const AlertCtx = useContext(AlertContext)
+
+    const handleSubmit = () => {
+        if (form.id) {
+            axios.put(`training-order-requests/${form.id}`, form, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Захиалгат сургалтын хүсэлтийг шинэчиллээ.' })
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын хүсэлтийг хадгалж чадсангүй.' })
+            })
+        } else {
+            axios.post('training-order-requests', form, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                setForm({ ...form, ...res.data.data })
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Захиалгат сургалтын хүсэлтийг хадгаллаа.' })
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын хүсэлтийг хадгалж чадсангүй.' })
+            })
+        }
+    }
+
+    const [requests, setRequests] = useState([])
+
+    const [requestsModalOpen, setRequestsModalOpen] = useState(true)
+
+    const handleSelectRequest = (id) => {
+        axios.get(`training-order-requests/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res.data)
+            setForm({ ...form, ...res.data.data })
+            setRequestsModalOpen(false)
+        }).catch(err => {
+            console.log(err.response?.data)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын хүсэлтийг уншиж чадсангүй.' })
+        })
+    }
 
     return (
         <div className="tw-text-gray-700 tw-text-sm tw-flex tw-justify-center tw-w-full tw-px-4">
+
+            <RequestsModal requestsModalOpen={requestsModalOpen} setRequestsModalOpen={setRequestsModalOpen} requests={requests} handleSelectRequest={handleSelectRequest} />
+
             <div className="tw-max-w-5xl tw-w-full tw-shadow-md tw-rounded tw-p-2 tw-mt-10 tw-mb-20 tw-bg-white">
                 <div className="tw-text-center tw-text-xl tw-font-medium tw-mt-6">
                     2. Захиалгат сургалтын хүсэлт авах
@@ -92,7 +154,7 @@ export default function TrainingRequest() {
                             Харьялагдах салбар (Хуулийн этгээд, aж ахуй нэгж)
                         </span>
 
-                        <input className="tw-bg-white tw-py-1 tw-px-2 focus:tw-outline-none tw-w-full tw-max-w-sm tw-rounded tw-border tw-border-gray-500" type="text" value={form.sector || ''} onChange={e => handleInput('sector', e.target.value)} />
+                        <input className="tw-bg-white tw-py-1 tw-px-2 focus:tw-outline-none tw-w-full tw-max-w-sm tw-rounded tw-border tw-border-gray-500" type="text" value={form.sectorId || ''} onChange={e => handleInput('sectorId', e.target.value)} />
                     </div>
 
                     <div className="tw-py-2 tw-px-4 tw-grid tw-grid-cols-1 tw-gap-y-0.5 tw-w-full">
@@ -121,7 +183,7 @@ export default function TrainingRequest() {
                 </div>
 
                 <div className="tw-flex tw-justify-center">
-                    <button className="tw-mt-6 tw-mb-10 tw-py-2 tw-px-8 tw-bg-blue-900 active:tw-bg-blue-800 tw-transition-all tw-text-white tw-text-15px focus:tw-outline-none tw-rounded hover:tw-shadow-md">
+                    <button className="tw-mt-6 tw-mb-10 tw-py-2 tw-px-8 tw-bg-blue-900 active:tw-bg-blue-800 tw-transition-all tw-text-white tw-text-15px focus:tw-outline-none tw-rounded hover:tw-shadow-md" onClick={handleSubmit}>
                         Хадгалах
                     </button>
                 </div>
