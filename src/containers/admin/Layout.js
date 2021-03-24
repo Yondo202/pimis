@@ -26,6 +26,7 @@ import MainDecision from '../../components/admin/contents/main_decision/Main_dec
 import NotifyPage1 from '../../components/admin/contents/notifyPage/MainPage'
 import LetterPreview from 'pages/letter_of_interest/preview';
 import EvaluatorsMeetingsNavigator from 'components/admin/contents/evaluators_meeting/MeetingsNavigator';
+import EdpInformationHome from 'components/admin/contents/edpInformation/EdpInformation'
 
 
 function Layout({ setLocale }) {
@@ -63,6 +64,7 @@ function Layout({ setLocale }) {
                                 <UrgudulNavigator preloaded={true} />
                             </Route>
                             <Route path="/meetings" component={EvaluatorsMeetingsNavigator} />
+                            <Route path="/epd-information" component={EdpInformationHome} />
 
                             <Route path="/progress/:userId" component={Home} />
                             <Route path="/request/:url" component={Request} />

@@ -62,7 +62,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             <MenuItem>
               <Link to="/users">Хэрэглэгчид</Link>{" "}
             </MenuItem>
-            <MenuItem> Төслийн нэгжийн мэдээлэл </MenuItem>
+            <MenuItem>
+                <Link to="/epd-information" >Төслийн нэгжийн мэдээлэл</Link>
+             </MenuItem>
             <SubMenu title="Түншлэлийн хөтөлбөр">
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.1 </MenuItem>
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.2 </MenuItem>
