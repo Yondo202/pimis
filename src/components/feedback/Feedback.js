@@ -1,19 +1,26 @@
-import React,{useEffect, useState,useRef} from 'react'
+import React,{useEffect, useState,useRef, useContext} from 'react'
 import styled from 'styled-components'
 import {fontSize, textColor,InputStyle,ColorRgb,NextBtn } from '../theme'
 import {AiOutlineSend} from 'react-icons/ai'
-import { animateScroll as scroll } from "react-scroll";
+import UserContext from 'context/UserContext'
+import axios from 'axiosbase'
+import AccessToken from 'context/accessToken'
 
 function Feedback() {
+    const ctx = useContext(UserContext);
+    const [ btn, Spin ] = useState(false);
+    const [ data, setData ] = useState(null);
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
     const [otherOne, setOtherOne] = useState({Cname: "getInputt", checked:null, self:""  });
     const [otherTwo, setOtherTwo] = useState({Cname: "getInputt", checked:null, self:"" });
-    
     let inputFullName = useRef(null);
     useEffect(()=>{
-        setTimeout(()=>{  inputFullName.current.focus();},3000);
-    },[]);
+        axios.get(`feedbacks`, { headers: { Authorization: AccessToken() } }).then(res=>{
+            console.log(res, " my res");
+            if(res.data.data.id){ setData(res.data.data) }else{ setTimeout(()=>{  inputFullName.current.focus();},3000); }
+        }).catch(err=> setTimeout(()=>{  inputFullName.current.focus();},3000) )
+    },[btn]);
 
     const onChange1 = (e) =>{
         if(e.target.value.length > 1){ setOtherOne({ Cname:"", checked:false, self:"getInputt" })
@@ -30,7 +37,6 @@ function Feedback() {
         }else{ el.target.className ="zz"; setOtherTwo({ Cname:"getInputt", checked:null, self:"" })  }
     }
 
-
     const ClickHandle = () =>{
         let inp = document.querySelectorAll(".getInputt"); let arr = Array.from(inp); let final = {};
         arr.map(el=>{
@@ -39,12 +45,11 @@ function Feedback() {
                     let next = document.querySelectorAll(`.${el.name}${el.id}_why`); let otherArr = Array.from(next);
                     otherArr.map(elem=>{
                         if(elem.id){
-                            final[elem.name] = elem.value;
+                             final[elem.name] = elem.value;
                         }else{
                             final[elem.name] = elem.value;
                         }
                     });
-                  
                     final[el.name] = el.value;
                 }
             }else{
@@ -56,10 +61,10 @@ function Feedback() {
                      final["finance_req"] = el.value;
                 }else{
                     if(!el.value){
-                        el.classList += " RedPar"
+                        el.classList += " red"
                     }else{
                         final[el.name] = el.value;
-                        el.classList =- " RedPar"
+                        el.classList =- " red"
                         el.classList += " getInputt"
                     }
                 }
@@ -72,7 +77,7 @@ function Feedback() {
             let tb = document.querySelectorAll(`.tableItem${i+1}`); let itemarr = Array.from(tb);
             itemarr.map((elem,ind)=>{
                 if(elem.checked===true){
-                    obj["checked"] = elem.value;
+                    obj["point"] = parseInt(elem.value);
                     obj["title"] = elem.name;
                 }
             });
@@ -87,25 +92,30 @@ function Feedback() {
             tableTwo.push(obj);
         })
 
-        final["service_assess"] = tableOne;
+        final["feedbackdetails"] = tableOne;
         final["efficiency"] = tableTwo;
         let keys = Object.keys(final); 
         console.log(keys.length);
 
-        if(keys.length < 11){
-            setFinalErrorText("Та гүйцэд бөгөлнө үү...");
-            setOpacity2("1");
-            scroll.scrollTo(0);
+        if(keys.length < 14){
+            setFinalErrorText("Та гүйцэд бөгөлнө үү..."); setOpacity2("1");
         }else{
             setOpacity2("0");
-            console.log("done");
+            axios.post('feedbacks', final, { headers: { Authorization: AccessToken() } }).then(res=>{
+                console.log(res); ctx.alertText('green', "Амжилттай хадаглагдлаа", true); Spin(true);
+            }).then(err=>{ ctx.alertText('orange', "Алдаа гарлаа", true); Spin(true); })
         }
         console.log(final, "^final");
     }
 
     return (
         <FeedBackCont className="container">
-            <div className="contentPar">
+            {data?<div className="contentPar">
+                        <div className="TitlePar">
+                                <div className="title">САНАЛ ХҮСЭЛТИЙН МАЯГТ ( <span style={{color:`green`}}>илгээгдсэн</span> ) </div>
+                        </div>
+                    </div> : 
+                 (<div className="contentPar">
                 <div className="TitlePar">
                     <div className="title">САНАЛ ХҮСЭЛТИЙН МАЯГТ</div>
                     <div className="desc">Түншлэлийн шинжээчдийн баг өөрсдийн үйл ажиллагаанд хяналт тавьж, үзүүлж буй үйлчилгээнд үнэлгээ авснаар бидний цаашдын үйл ажиллагаа улам сайжрах тул та энэхүү асуулгын хуудсыг идэвхтэй бөглөнө үү.Таны өгсөн мэдээллийн нууцыг чанд хадгалах болно.  </div>
@@ -293,6 +303,8 @@ function Feedback() {
                     <NextBtn onClick={ClickHandle} className="SubmitButton" type="button">Илгээх <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                 </div>
             </div>
+            )}
+            
         </FeedBackCont>
     )
 }

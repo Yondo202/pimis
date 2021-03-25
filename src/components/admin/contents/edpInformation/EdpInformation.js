@@ -22,8 +22,8 @@ function EdpInformation() {
     useEffect(async()=>{
         await axios.get(`edp-info`,{ headers: { Authorization: AccessToken()}}).then(res=>{
             console.log(res, 'my res');
-            if(res.data.data[0])
-            setData(res.data.data[0]);
+            if(res.data.data.id)
+            setData(res.data.data);
             //  setData(res.data.data[0].manager_signature);
         })
     },[spnBtn])
@@ -52,6 +52,7 @@ function EdpInformation() {
             }).catch(err=>{ setSpnBtn(false); ctx.alertText('orange', "Алдаа гарлаа", true); console.log(err.response) });
         }
         console.log(final, "final");
+
     }
 
     const onChangeHandle = (el) =>{

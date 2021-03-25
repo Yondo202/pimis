@@ -25,6 +25,7 @@ import TrainingPartnerRegistration from 'pages/training/partner_registration/Pag
 import TrainingFeedback from 'pages/training/feedback/Page';
 import PdfTest from 'components/check/PdfTest'
 import { ChangePassword } from 'components/LoginDoneHome/ChangePassword'
+import SEctor from './Sector'
 
 
 function UsersRoute() {
@@ -48,6 +49,7 @@ function UsersRoute() {
                     <Route path="/feedback" component={Feedback} />
                     <Route path="/workperformance" component={WorkPerformance} />
                     <Route path="/email2" component={EmialSender2} />
+                    <Route path="/sector" component={SEctor} exact />
 
                     {/* <Route path="/members" component={MembersHome} />
                     <Route path="/memberdecision" component={MemberDecision} /> */}
@@ -68,6 +70,7 @@ function UsersRoute() {
                     <Route path="/training/2" component={TrainingRequest} />
                     <Route path="/training/3" component={TrainingPartnerRegistration} />
                     <Route path="/training/4" component={TrainingFeedback} />
+
                 </Switch>
             </UrgudulStore>
         </HelpStore>
