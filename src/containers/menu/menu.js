@@ -105,7 +105,8 @@ function Menu() {
                           <div className="UserNameMenu" content={userName} >
                             <div style={proHover?{backgroundColor:`rgba(255,255,255,0.4)`}:{backgroundColor:`inherit`}} onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="par"><CgProfile /></div> 
 
-                             {showProfile&&<div onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="ghost"> <div className="HoverContent">  
+                             {showProfile&&<div onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="ghost"> 
+                             <div className="HoverContent">  
                                   <div className="UserInfo"> <img src="/user1.svg" alt="src" /> <span className="name">{userName}</span> </div>
                                   <Link onClick={closeHandle} to="/changepass" className="resPass">
                                         <div className="initList"><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
@@ -117,7 +118,6 @@ function Menu() {
                           <span className="Logout"><Link  to="/" onClick={()=>userCtx.logout()}><span>Гарах</span><IoIosLogOut /></Link></span>
                         </div>
                 </span>
-
 
                 <div className="MobileMenu">
                     <label for="check" className="checkBtnHome">
@@ -147,7 +147,7 @@ export default Menu;
 
 const cardAnimate = keyframes`
     0% { transform:scale(1);opacity:0;  }
-    30% { transform:scale(1.037);opacity:0.7;  }
+    30% { transform:scale(1.017);opacity:0.7;  }
     100% { transform:scale(1);opacity:1;  }
 `
 
