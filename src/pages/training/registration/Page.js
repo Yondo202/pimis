@@ -167,7 +167,7 @@ export default function TrainingRegistration() {
                         <div className="tw-font-medium">
                             Рэгистрийн дугаар
                         </div>
-                        <input className="tw-bg-white tw-py-1 tw-px-2 focus:tw-outline-none tw-w-full tw-max-w-sm tw-rounded tw-border tw-border-gray-500" type="number" value={form.regisration || ''} onChange={e => handleInput('regisration', e.target.value)} />
+                        <input className="tw-bg-white tw-py-1 tw-px-2 focus:tw-outline-none tw-w-full tw-max-w-sm tw-rounded tw-border tw-border-gray-500" type="text" value={form.regisration || ''} onChange={e => handleInput('regisration', e.target.value)} />
                     </div>
 
                     <div className="tw-py-2 tw-px-4 tw-grid tw-grid-cols-1 tw-gap-y-0.5 tw-w-full">

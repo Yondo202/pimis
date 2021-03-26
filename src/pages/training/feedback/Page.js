@@ -11,7 +11,7 @@ export default function TrainingFeedback() {
         }).then(res => {
             console.log(res)
         }).catch(err => {
-            console.log(err)
+            console.log(err.response)
         })
     }, [])
 
@@ -22,7 +22,7 @@ export default function TrainingFeedback() {
                     4. Сургалтын үнэлгээ, санал хүсэлтийн хэсэг
                 </div>
 
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfTYHEwbXfkiFQct1VStM7MdCa4czRJs767ENnOm6tSVPjGhw/viewform?embedded=true" className="tw-w-full tw-mt-10" height={1024} frameborder="0" marginheight="0" marginwidth="0" title="Google Form">Loading…</iframe>
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfTYHEwbXfkiFQct1VStM7MdCa4czRJs767ENnOm6tSVPjGhw/viewform?embedded=true" className="tw-w-full tw-mt-10" height={1024} title="Google Form">Loading…</iframe>
             </div>
         </div>
     )
