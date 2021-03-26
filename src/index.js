@@ -4,12 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { UserStore } from "./context/UserContext";
+import { ThemeProvider } from 'styled-components';
+import * as theme from "components/theme"
 
 ReactDOM.render(
   <React.StrictMode>
-    <UserStore>
-      <App />
-    </UserStore>
+    <ThemeProvider theme={theme}>
+      <UserStore>
+        <App />
+      </UserStore>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -218,6 +218,7 @@ const Component = styled.div`
         border:1px solid rgba(63, 81, 181,0.5);
         width:100%;
         border-radius:4px;
+        // box-shadow: 10px 16px 40px 0 rgb(84 210 117 / 46%);
     }
   
   }

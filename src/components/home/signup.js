@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect,useCallback } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import {Color,ColorRgb,InputStyle,NextBtn} from "../theme"
 import {FaRegEye,FaRegEyeSlash} from 'react-icons/fa'
 import Modal from 'react-awesome-modal';
@@ -7,15 +7,21 @@ import {CgProfile} from 'react-icons/cg'
 import {GoMail} from 'react-icons/go'
 import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
+import {MdKeyboardArrowDown} from 'react-icons/md'
 import UserContext from '../../context/UserContext'
 import PasswordInducator from './PasswordIndicator'
 import axios from '../../axiosbase';
+import SEctor from 'containers/users/Sector'
+
 
 const isNumberRegx = /\d/;
 const specialCharacterRegx = /[ ~@#$%^&*()_+\-=[\]{;':\\|,.<>\/?]/;
 
+
 function Signup() {
     const signUpCtx = useContext(UserContext);
+    const [ showSectors, setShowSectors ] = useState(false);
+    const [ selectSectors, setSelectSectors ] = useState("- Сонго -");
     const [Show, setShow] = useState(false);
     const [Show2, setShow2] = useState(false);
     const [ sectorData, setSectorData ] = useState([]);
@@ -47,7 +53,6 @@ function Signup() {
 
     useEffect( async ()=>{
         const sectorData = await axios.get(`business-sector`); setSectorData(sectorData.data.data);
-        console.log(sectorData," sector data");
         document.addEventListener('keydown', keyPress);
         return () => document.removeEventListener('keydown', keyPress)
     },[keyPress]);
@@ -68,22 +73,24 @@ function Signup() {
                 let field = element.name;  let value = element.value;  finalOne[field] = value;  }
             });
             let keys = Object.keys(finalOne);
-            if(keys.length < 7){
+            if(keys.length < 6){
               setPassText("Гүйцэд бөгөлнө үү");
+            }else if(selectSectors==="- Сонго -"){
+              setPassText("Салбараа сонгоно уу");
             }else if(passwordValidity.minChar === false || passwordValidity.number === false || passwordValidity.specialChar === false){
               setPassText("Нууц үг хийх хэсэгээ шалгана уу..");
             }else if(finalOne.password !== finalOne.passwordagain) {
               setPassText("Нууц үг адил биш байна...");
             }else{
-               setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1"); 
-              //  setTimeout(()=>{ setVisible(false); setVisible2(false); },10000);
+               finalOne["business_sectorId"] = selectSectors; setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1"); 
             }
     }
     const cond =signUpCtx.errMsgSignup.cond;
  
     return (
         <Component className="SignUp">
-            <span >Та бүртгэл үүсгээгүй бол 
+          {showSectors&&<GhostPar><div onClick={()=>setShowSectors(false)} className="Ghost"></div> <div className="Sectorpar"><SEctor data={sectorData} setSelectSectors={setSelectSectors} setShowSectors={setShowSectors} /></div></GhostPar>}
+          <span >Та бүртгэл үүсгээгүй бол 
             {/* <Switch>
                 <Link to="/signup"><a><span className="SignBtn"> Бүртгүүлэх </span></a></Link>
             </Switch> */}
@@ -177,6 +184,7 @@ function Signup() {
                 </Modal>
 
                 <Modal visible={visible} width="900" height="580" effect="fadeInDown" onClickAway={closeModal}  >
+                          
                             <div className="formOneParent">
                               <div className="headPar"><span className="headText">Бүртгүүлэх</span>
                                 <a href="javascript:void(0);" onClick={closeModal}>X</a>
@@ -206,19 +214,14 @@ function Signup() {
                                                 </div>
                                             </div>
                                             <div className="inpChild sectorChild">
-                                                <div className="labels"><span>Салбарууд :</span> </div>
-                                                <div className="name">
-                                                    <div className="form__group">
-                                                      <select name="business_sectorId" className="userInp sectors" >
-                                                          <option disabled selected >- Сонго -</option>
-                                                          {sectorData.map((el,i)=>{
-                                                            return( <option key={i} value={el.id}>{el.bdescription_mon}</option> )
-                                                          })}
-                                                      </select>
-                                                        {/* <input type="input" className="userInp  form__field" name="sectors" required />
-                                                        <label for="name" className="form__label"> </label> */}
+                                                <div className="labels"><span>Салбарууд : </span> </div>
+                                                    <div className="name">
+                                                        <div onClick={()=>setShowSectors(prev=>!prev)} className="sectors" ><span>{selectSectors} </span>  <MdKeyboardArrowDown /> </div>
+                                                      
                                                     </div>
-                                                </div>
+                                                    
+                                                    
+
                                             </div>
                                       </div>
 
@@ -297,6 +300,43 @@ function Signup() {
 
 export default Signup
 
+const sectorAnimate = keyframes`
+  0%{ transform:scale(0.7); opacity:0; }
+  45%{ transform:scale(1.091); opacity:1; }
+  100%{ transform:scale(1); opacity:1; }
+`
+
+const GhostPar = styled.div`
+  position:fixed;
+  top:0;
+  left:0;
+  height:100vh;
+  width:100vw;
+  z-index:10010;
+  .Ghost{
+    background-color:rgba(250,250,250,0.3);
+    backdrop-filter: blur(4px);
+    position:fixed;
+    height:100%;
+    width:100%;
+  }
+  .Sectorpar{
+    box-shadow:1px 1px 17px -6px rgba(0,51,102,1);
+    animation: ${sectorAnimate} 0.4s ease;
+    transition:all 0.3s ease;
+    transform:scale(1);
+    top:10%;
+    left:25%;
+    position:absolute;
+    z-index:10;
+  }
+  @media only screen and (max-width:768px){
+    .Sectorpar{
+      top:10%;
+      left:5%;
+    }
+  }
+`
 
 const Component = styled.div`
     margin-top:15px;
@@ -431,21 +471,41 @@ const Component = styled.div`
                   }
                 }
               }
-              .sectorChild{
-                width:25%;
-                .sectors{
-                  font-size:13px !important;
-                  border-radius: 2px;
-                  border:1px solid rgba(0,51,102,0.2);
-                  width:100%;
-                  padding:7px 0px;
-                  padding-left:10px;
-                  font-size: 1rem;
-                  option{
+                .sectorChild{
+                  position:relative;
+                  width:25%;
+                  .sectors{
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    font-weight:500;
+                    cursor:pointer;
+                    border:1px solid rgba(0,51,102,0.3);
+                    width:100%;
+                    border-radius: 2px;
+                    transtion:all 0.3s ease;
+                    overflow:hidden;
+                    padding:8px 0px;
+                    padding-left:0px;
 
+                    span{ 
+                      margin-top:-4px;
+                      height:22px;
+                      width:100%;
+                      font-size:13px !important;
+                      // padding:8px 0px;
+                      padding-left:3px;
+                    }
+                    &:hover{
+                      box-shadow:1px 1px 8px -4px rgba(0,51,102,1);
+                    }
+                    svg{
+                      font-size:22px;
+                      margin-right:0px;
+                      margin-bottom:0px;
+                    }
                   }
                 }
-              }
             }
             .UserSection{
               display:flex;

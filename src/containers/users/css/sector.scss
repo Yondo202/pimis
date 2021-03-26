@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700,800,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+@import '~react-pro-sidebar/dist/scss/styles.scss';
 
 $sidebar-bg-color2: #1d1d1d;
 $sidebar-bg-color: #001529;
@@ -10,68 +11,86 @@ $highlight-color: #d8d8d8;
 $icon-bg-color: rgba(255, 255, 255, 0.05);
 $icon-size: 35px;
 
-@import '~react-pro-sidebar/dist/scss/styles.scss';
 body {
   margin: 0;
-  // height: 100svh;
+  // height: 100vh;
   color: #353535;
   font-family: 'Roboto', sans-serif;
 }
 
-.pro-sidebar{
-  .pro-sidebar-inner{
-    // background: #32373d;
-    // background: #3c4245;
-    // background: #212121;
-    // background: #37474F;
-    background: #001529;
-    // background: #222222;
-    // background: #333333;
-    // background-color: rgba(51, 153, 255, 0.1);
-  }
-  .pro-menu{
-    .pro-menu-item{
-        font-size: 13px;
+
+.MainSectorParent{
+  .pro-sidebar{
+    width: 50vw;
+    .pro-sidebar-inner{
+      background: #ffffff;
+    }
+    .pro-menu{
+      .pro-menu-item.pro-sub-menu{
         font-weight: 500;
-        .pro-inner-item{
-          .pro-icon-wrapper{
-            margin-right: 10px;
-            font-size: 13px;
-            width: 30px;
-            min-width: 30px;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-            display: inline-block;
-            svg{
-              font-size:19px;
+        .pro-inner-list-item{
+          padding-left: 40px;
+          background: #ffffff;
+        }
+      }
+      .pro-menu-item{
+          font-size: 12.5px;
+          font-weight: 400;
+         
+          .pro-inner-item{
+            &:hover{
+              background-color: rgb(122, 215, 252);
+            }
+            .pro-icon-wrapper{
+              background-color: rgba(0,0,0,0.03);
+
+              margin-right: 10px;
+              font-size: 12.5px;
+              width: 30px;
+              min-width: 30px;
+              height: 30px;
+              line-height: 30px;
+              text-align: center;
+              display: inline-block;
+              .pro-icon{
+                svg{
+                  font-size:16px;
+                }
+              }
+              
             }
           }
-        }
-    }
-  }
-}
-.pro-sidebar-layout{
-  .pro-sidebar-header{
-    .headPar{
-      font-family: 'Roboto', sans-serif;
-      background-color: #32373d;
-      padding:11.1px 3px;
-      text-transform: uppercase;
-      font-size: 14px;
-      letter-spacing: 1px;
-      font-weight: 800;
-      white-space: nowrap;
-      color: white;
-      text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.2);
-      a{
-        text-decoration: none;
-        color:white;
       }
     }
   }
 }
+
+
+.MainSectorParent{
+  .pro-sidebar-layout{
+    .pro-sidebar-header{
+      .headPar{
+        font-family: 'Roboto', sans-serif;
+        background-color: #32373d;
+        padding:11.1px 3px;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 1px;
+        font-weight: 800;
+        white-space: nowrap;
+        color: white;
+        text-align: center;
+        border-right: 1px solid rgba(255,255,255,0.2);
+        a{
+          text-decoration: none;
+          color:white;
+        }
+      }
+    }
+  }
+}
+
+
 
 #root {
   height: 100%;

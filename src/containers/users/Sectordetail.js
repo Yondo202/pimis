@@ -1,73 +1,44 @@
-import React, { useEffect, useContext } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from "react-pro-sidebar";
-import { FaChalkboardTeacher } from "react-icons/fa";
-import { MdSettings } from "react-icons/md";
-import { GiProgression } from "react-icons/gi";
+import { BsArrowsAngleExpand } from "react-icons/bs"
 
-const Aside = ({ handleToggleSidebar }) => {
+const Aside = ({ handleToggleSidebar, data, setSelectSectors, setShowSectors }) => {
+  const [ datas, setDatas ] = useState(null);
 
+  useEffect(()=>{
+   let parent = data?.filter(el=> el.id > 999);
+    parent.map(elem=>{
+      let final = [];
+        data?.map(el=>{ if(elem.id === el.parentId){ final.push(el); } });
+      elem["child"] = final;
+    })
+    if(data){setDatas(parent); }
+  },[])
   const intl = useIntl();
+
+  const clickHandle = (el) =>{ setSelectSectors(el); setShowSectors(false); }
+  
   return (
     <ProSidebar onToggle={handleToggleSidebar}>
-      <SidebarHeader>
-        <div className="headPar" >
-          <Link to="/">Салбарууд</Link>
-        </div>
-      </SidebarHeader>
-
       <SidebarContent >
-        {/* <Menu iconShape="circle">
-          <MenuItem icon={<FaTachometerAlt />} suffix={<span className="badge red">{intl.formatMessage({ id: "new" })}</span>}>
-            {intl.formatMessage({ id: "dashboard" })}
-          </MenuItem>
-          <MenuItem icon={<FaGem />}> {intl.formatMessage({ id: "components" })}</MenuItem>
-        </Menu> */}
         <Menu iconShape="circle">
-          <SubMenu title="Түншлэлийн хөтөлбөр" icon={<GiProgression />}>
-            <MenuItem>  <Link to="/projects"> Бүртгүүлсэн байгууллагууд</Link> </MenuItem>
-            <MenuItem>Санхүүжилт</MenuItem>
-            <MenuItem><Link to="/meetings">Үнэлгээний хорооны уулзалт</Link></MenuItem>
-            <MenuItem><Link to="/maindecision">Үнэлгээний хорооны шийдвэр</Link></MenuItem>
-          </SubMenu>
-          {/* prefix={<span className="badge gray">3</span>} */}
-          <SubMenu title="Сургалт" icon={<FaChalkboardTeacher />}>
-            <MenuItem>Зохион байгуулах хүсэлт</MenuItem>
-            <MenuItem>Сургалтууд</MenuItem>
-            <SubMenu title="Тайлангууд">
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.1 </MenuItem>
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.2 </MenuItem>
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.3 </MenuItem>
-            </SubMenu>
-          </SubMenu>
-
-          <SubMenu title="Тохиргоо" icon={<MdSettings />}>
-            <MenuItem>
-              <Link to="/users">Хэрэглэгчид</Link>{" "}
-            </MenuItem>
-            <MenuItem>
-                <Link to="/epd-information" >Төслийн нэгжийн мэдээлэл</Link>
-             </MenuItem>
-            <SubMenu title="Түншлэлийн хөтөлбөр">
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.1 </MenuItem>
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.2 </MenuItem>
-            </SubMenu>
-            <SubMenu title="Сургалт">
-              <MenuItem>Сургалтын байгууллагууд</MenuItem>
-              <MenuItem>Сургалтын төрлүүд</MenuItem>
-            </SubMenu>
-            <SubMenu title="Даатгал">
-              <MenuItem>Тохиргоо -1</MenuItem>
-            </SubMenu>
-          </SubMenu>
+          {/* { data?.filter().map((el,i)=>{
+            
+          })} */}
+          {datas?.map((el,i)=>{
+            return(
+              <SubMenu title={el.bdescription_mon} icon={<BsArrowsAngleExpand />}>
+               { el.child.map((elem,ind)=>{
+                 return(
+                  <MenuItem onClick={()=>clickHandle(elem.bdescription_mon)} styled={{paddingLeft:30}}>{elem.bdescription_mon}</MenuItem>
+                 )
+               })}
+              </SubMenu>
+            )
+          }) }
         </Menu>
       </SidebarContent>
-
-      <SidebarFooter style={{ textAlign: "center" }}>
-        <div className="sidebar-btn-wrapper" style={{ padding: "10px 24px" }}>   {" "} sectors{" "} </div>
-      </SidebarFooter>
     </ProSidebar>
   );
 };

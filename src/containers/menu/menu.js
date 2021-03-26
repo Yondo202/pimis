@@ -2,15 +2,12 @@ import React,{useEffect, useState,useContext} from "react";
 import styled,{keyframes} from "styled-components";
 import { Link } from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import { fontFamily,ColorRgb,textColor } from '../../components/theme';
 import {IoIosLogOut} from 'react-icons/io';
 import {CgProfile} from 'react-icons/cg';
 import {IoNotificationsOutline,IoLockClosed} from 'react-icons/io5';
 import {IoIosArrowForward} from 'react-icons/io';
 import { useLocation } from 'react-router-dom';
 import HamburgerMenu from 'react-hamburger-menu';
-import RequestOld from '../../containers/requestComp/mainRequestOld'
-import { Background } from "devextreme-react/range-selector";
 
 
 function Menu() {
@@ -32,26 +29,14 @@ function Menu() {
     const closeHandle = () =>{ setShowProfile(false); setProHover(false); } 
     
     useEffect(() => {
-      const userId = localStorage.getItem("userId", []);
       const userName = localStorage.getItem("username");
-      setUserName(userName);
-    }, []);
+      setUserName(userName); 
+      return console.log("sey good bay");
+    },[]);
 
     const handleClick = () => {
       close(!open);
     }
-
-    const clickhandle = ()=>{
-      userCtx.logout();
-      // setTimeout(()=>{
-      //   window.location.reload(false);
-      // },600);
-    };
-
-    const clickhandle2 = ()=>{
-      console.log("done");
-     
-    };
 
     useEffect(() => {
       const currentPath = location.pathname;
@@ -59,7 +44,6 @@ function Menu() {
       if(currentPath !== "/" && currentPath !== "/comp-request"){  setheaderHeight("45px");
       }else{ setheaderHeight("45px");}
       if(currentPath === "/"){setActiveMenu({Home:'line2',Req:'',Check:'',Maygt:''})}
-      // if(currentPath === "/admin"){ setDisplayNone("none");}
       if(currentPath === "/request/user"){setActiveMenu({Home: '',Req:'line2',Check: '',Maygt:''})}
       if(currentPath === "/check/user"){setActiveMenu({Home: '',Req:'',Check:'line2',Maygt: ''})}
       if(currentPath === "/urgudul/1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }
@@ -134,7 +118,7 @@ function Menu() {
                                 animationDuration={0.5}
                             />
                     </label>
-                    <div className="headLogoPar"><img src="/edp_logo.png" /></div>
+                    <div className="headLogoPar"><img src="/edp_logo.png" alt="edp-logo" /></div>
                     <div></div>
                 </div>
             </div>
@@ -152,7 +136,7 @@ const cardAnimate = keyframes`
 `
 
 const Componentss = styled.div`
-    font-family:${fontFamily};
+    font-family: ${(props) => props.theme.fontFamily};
     letter-spacing: -0.1px;
     position: relative;
     z-index: 2;
@@ -183,13 +167,12 @@ const Componentss = styled.div`
   
     .MainMenus{
       position:relative;
-      // border-top: 0.1px solid rgba(${ColorRgb}, 0.5);
-      background-color:rgba(${ColorRgb});
+      background-color: rgba(${(props) => props.theme.ColorRgb});
       display:flex;
       flex-direction:row;
       align-items:center;
       width: 100%;
-      box-shadow: 0px 2px 8px -2px rgba(${ColorRgb}, 0.5);
+      box-shadow: 0px 2px 8px -2px rgba(${(props) => props.theme.ColorRgb}, 0.5);
     
         .MobileMenu{
           display:none;
@@ -254,7 +237,7 @@ const Componentss = styled.div`
               .ghost{
                 animation-name: ${cardAnimate};
                 animation-duration:0.5s;
-                color:rgba(${textColor},1);
+                color:rgba(${(props) => props.theme.textColor},1);
                 position:absolute;
                 top:5px;
                 right:0;
@@ -288,7 +271,7 @@ const Componentss = styled.div`
                   }
                   .resPass{
                     text-decoration:none;
-                    color:rgba(${textColor},1);
+                    color:rgba(${(props) => props.theme.textColor},1);
                     cursor:pointer;
                     border-radius:4px;
                     width:100%;
@@ -303,7 +286,7 @@ const Componentss = styled.div`
                       span{
                         font-size:15px;
                         font-weight:500;
-                        color:rgba(${textColor},1);
+                        color:rgba(${(props) => props.theme.textColor},1);
                       }
                       .svg{
                         margin-right:14px;
@@ -317,7 +300,7 @@ const Componentss = styled.div`
                     }
                     .svgOther{
                       svg{
-                        color:rgba(${textColor},.7);
+                        color:rgba(${(props) => props.theme.textColor},.7);
                         font-size:22px;
                       }
                     }

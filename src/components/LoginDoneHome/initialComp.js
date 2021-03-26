@@ -65,9 +65,9 @@ function InitialComp() {
                             <div className="mains">
                                 <div className="items arrHelp"><div className="helpArr"></div>4. Хийгдсэн ажлуудын санхүүгийн баримтууд</div>
                                 <div className="line" ></div>
-                                <div className="resultDesable">5. Санхүүгийн дэмжлэг буюу буцаан олголтын хүсэлт</div>
+                                <div className="items">5. Санхүүгийн дэмжлэг буюу буцаан олголтын хүсэлт</div>
                                 <div className="line" ></div>
-                                <div className="resultDesable">6. Ажлын гүйцэтгэл хүлээн авах маягт</div>
+                                <div className="items">6. Ажлын гүйцэтгэл хүлээн авах маягт</div>
                             </div>
                             <div className="lineFull" ></div>
                             <div className="resultDesable">6. Гүйцэтгэлийн үнэгээ (ажлын чанар, гэрээний биелэлт, оролцоо)</div>

@@ -21,10 +21,7 @@ function EdpInformation() {
 
     useEffect(async()=>{
         await axios.get(`edp-info`,{ headers: { Authorization: AccessToken()}}).then(res=>{
-            console.log(res, 'my res');
-            if(res.data.data.id)
-            setData(res.data.data);
-            //  setData(res.data.data[0].manager_signature);
+            if(res.data.data.id){ setData(res.data.data); }
         })
     },[spnBtn])
 
@@ -54,7 +51,6 @@ function EdpInformation() {
         console.log(final, "final");
 
     }
-
     const onChangeHandle = (el) =>{
         let change= Data[el.target.name]= el.target.value; let final = { change, ...Data }; setData(final);
     }
@@ -159,8 +155,8 @@ function EdpInformation() {
 export default EdpInformation;
 
 const animate = keyframes`
-    0% { transform:scale(0.8);opacity:0;  }
-    50% { transform:scale(1.05);opacity:0.8;  }
+    0% { transform:scale(0.9);opacity:0.1;  }
+    65% { transform:scale(1.065);opacity:1;  }
     100% { transform:scale(1);opacity:1;  }
 `
 const EdpInfComp = styled.div`
@@ -171,7 +167,7 @@ const EdpInfComp = styled.div`
     justify-content:center;
     padding-top:30px;
     .contentPar{
-        animation: ${animate} 0.5s ease;
+        animation: ${animate} 0.4s ease;
         border-radius:0px 50px 0px 50px;
         box-shadow:1px 1px 23px -10px rgba(${textColor},0.8); 
         padding:30px 5px;
@@ -205,7 +201,6 @@ const EdpInfComp = styled.div`
             margin-left:30px;
         }
         .content{
-            animation: ${animate} 0.5s ease;
             .rowItems{
                 margin-top:30px;
                 margin-left:30px;

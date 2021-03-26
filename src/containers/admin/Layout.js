@@ -21,7 +21,6 @@ import FirstEvaluation from 'pages/decision_making/5a/Page';
 import CompilationChecklist from 'pages/decision_making/5b/Page';
 import AnalystReport from 'pages/decision_making/5c/Page';
 import UrgudulPreview from 'pages/urgudul/preview/Preview';
-// import MemberDecision from '../../components/member/member_decision/Decision_main'
 import MainDecision from '../../components/admin/contents/main_decision/Main_decision'
 import NotifyPage1 from '../../components/admin/contents/notifyPage/MainPage'
 import LetterPreview from 'pages/letter_of_interest/preview';

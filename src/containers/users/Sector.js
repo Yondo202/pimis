@@ -1,30 +1,23 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import SectorDetail from './Sectordetail';
-import UserContext from 'context/UserContext'
 import styled from 'styled-components'
 import { IntlProvider } from 'react-intl';
 import "./css/sector.scss"
+import messages from './message';
 
 
 
-function Layout() {
-    const ctx = useContext(UserContext);
+function Layout({data, setSelectSectors,setShowSectors}) {
     const [locale, setLocale] = useState('en');
     const [rtl, setRtl] = useState(false);
-    const [collapsed, setCollapsed] = useState(false);
-    const [image, setImage] = useState(false);
     const [toggled, setToggled] = useState(false);
-
-    const handleCollapsedChange = (checked) => { setCollapsed(checked); };
-    const handleRtlChange = (checked) => { setRtl(checked); setLocale(checked ? 'ar' : 'en'); };
-    const handleImageChange = (checked) => { setImage(checked); };
     const handleToggleSidebar = (value) => { setToggled(value); };
 
     return (
-        <IntlProvider >
+        <IntlProvider locale={locale} messages={messages[locale]} >
             <AdminApp className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
-                <div className="MainParent">
-                    <SectorDetail handleToggleSidebar={handleToggleSidebar} />
+                <div className="MainSectorParent">
+                    <SectorDetail setShowSectors={setShowSectors} setSelectSectors={setSelectSectors} data={data} handleToggleSidebar={handleToggleSidebar} />
                 </div>
             </AdminApp>
         </IntlProvider>
@@ -35,9 +28,8 @@ function Layout() {
 export default Layout;
 
 const AdminApp = styled.div`
-    .MainParent{
-        // height:100vh;
-        // display:flex;
+    .MainSectorParent{
+        height:60vh;
         .leftMenuPar{
             box-shadow: 5px 0 8px -4px rgba(0,80,180,0.2);
         }

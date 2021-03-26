@@ -25,7 +25,7 @@ import TrainingPartnerRegistration from 'pages/training/partner_registration/Pag
 import TrainingFeedback from 'pages/training/feedback/Page';
 import PdfTest from 'components/check/PdfTest'
 import { ChangePassword } from 'components/LoginDoneHome/ChangePassword'
-import SEctor from './Sector'
+
 
 
 function UsersRoute() {
@@ -49,7 +49,6 @@ function UsersRoute() {
                     <Route path="/feedback" component={Feedback} />
                     <Route path="/workperformance" component={WorkPerformance} />
                     <Route path="/email2" component={EmialSender2} />
-                    <Route path="/sector" component={SEctor} exact />
 
                     {/* <Route path="/members" component={MembersHome} />
                     <Route path="/memberdecision" component={MemberDecision} /> */}
