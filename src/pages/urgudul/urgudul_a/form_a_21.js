@@ -17,6 +17,7 @@ import UploadSVG from 'assets/svgComponents/uploadSVG'
 import FileCard from 'pages/attachments/fileCard'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
+import TreeSelect from 'components/urgudul_components/treeSelect'
 
 
 const initialState = [
@@ -228,7 +229,7 @@ function UrugudulClusters() {
 
                             <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.representative_email || ''} name="representative_email" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.representative_email)} />
 
-                            <SearchSelect label="Салбар" data={sectors} value={item.business_sectorId} name="business_sectorId" id={i} displayName="bdescription_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.business_sectorId)} />
+                            <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={item.business_sectorId} name="business_sectorId" index={i} handleChange={handleSetForm} />
 
                             <div className="tw-w-full tw-max-w-lg tw-flex">
                                 <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.company_size)} />

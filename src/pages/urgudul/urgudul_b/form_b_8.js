@@ -12,6 +12,7 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { Fragment } from 'react'
 import { config, Transition } from 'react-spring/renderprops'
 import CloseSVG from 'assets/svgComponents/closeSVG'
+import TreeSelectCompact from 'components/urgudul_components/treeSelectCompact'
 
 
 const year = new Date().getFullYear()
@@ -357,7 +358,7 @@ function UrgudulCalculations() {
                                 <Fragment key={i}>
                                     <tr className="tw-h-9">
                                         <td className="tw-border tw-px-1">
-                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={containerRef.current?.getBoundingClientRect().width > 240 ? 240 : containerRef.current?.getBoundingClientRect().width - 54} />
+                                            <SearchSelectCompact placeholder={`Экспорт хийсэн улс ${i + 1}`} data={countries} value={country.countryId} name="countryId" id={i} displayName="description_mon" setForm={handleSetFormCountry} classDiv={validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={containerRef.current?.getBoundingClientRect().width > 240 ? 240 : containerRef.current?.getBoundingClientRect().width - 54} />
                                         </td>
                                         <td className="tw-border tw-px-2" colSpan={datesForm.length}>
                                             <button className="tw-float-right tw-bg-gray-600 tw-text-white tw-text-xs tw-font-medium tw-rounded-sm focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors tw-py-1 tw-px-4" onClick={() => handleRemoveCountry(i)}>
@@ -370,7 +371,9 @@ function UrgudulCalculations() {
                                         country.export_products.map((product, j) =>
                                             <tr className="tw-h-9" key={j}>
                                                 <td className="tw-border tw-px-1">
-                                                    <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={product.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv={`tw-py-0.5 tw-rounded ${validate && checkInvalid(product.productId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={containerRef.current?.getBoundingClientRect().width - 54} />
+                                                    {/* <SearchSelectCompact placeholder={`Бүтээгдэхүүн ${j + 1}`} data={products} value={product.productId} name="productId" id={j} id2={i} displayName="description_mon" setForm={handleSetFormProduct} classDiv={validate && checkInvalid(product.productId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} classInput="tw-w-36 tw-bg-transparent tw-font-medium" selectWidth={containerRef.current?.getBoundingClientRect().width - 54} /> */}
+
+                                                    <TreeSelectCompact data={products} placeholder={`Бүтээгдэхүүн ${j + 1}`} displayName="description_mon" value={product.productId} name="productId" index={j} index1={i} handleChange={handleSetFormProduct} selectWidth={containerRef.current?.getBoundingClientRect().width - 54} />
                                                 </td>
                                                 {
                                                     datesForm.map((key, k) =>

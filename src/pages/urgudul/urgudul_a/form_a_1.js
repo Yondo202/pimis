@@ -12,7 +12,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import FormSelect from 'components/urgudul_components/formSelect'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
-import TreeView from 'devextreme-react/tree-view'
+import TreeSelect from 'components/urgudul_components/treeSelect'
 
 
 const initialState = {
@@ -189,15 +189,6 @@ function UrgudulApplicant() {
             })
     }, [])
 
-    const TreeItemRender = (item) => (
-        <div className={`tw-flex tw-items-center ${item.parentId === 0 && sectors.filter(sector => sector.id === form.business_sectorId)[0]?.parentId === item.id && 'tw-bg-blue-300'}`}>
-            {item.parentId !== 0 &&
-                <input className="tw-mr-2" type="checkbox" checked={form.business_sectorId === item.id} onChange={e => handleSetForm('business_sectorId', e.target.checked ? item.id : null)} />
-            }
-            {item.bdescription_mon}
-        </div>
-    )
-
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
@@ -289,24 +280,7 @@ function UrgudulApplicant() {
                     </table>
                 </div>
 
-                {/* <SearchSelect label="Салбар" api="business-sector" keys={['data']} value={form.business_sectorId} name="business_sectorId" displayName="bdescription_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" invalid={validate && checkInvalid(form.business_sectorId)} /> */}
-
-                <div className="tw-h-96 tw-p-2">
-                    <div className="tw-text-base tw-font-medium">
-                        Салбар
-                    </div>
-
-                    <TreeView
-                        dataStructure="plain"
-                        dataSource={sectors}
-                        keyExpr="id"
-                        parentIdExpr="parentId"
-                        searchEnabled={true}
-                        searchMode="contains"
-                        searchExpr="bdescription_mon"
-                        itemRender={TreeItemRender}
-                    />
-                </div>
+                <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={form.business_sectorId} name="business_sectorId" handleChange={handleSetForm} />
 
                 <FormOptions label="Гадаад хөрөнгө оруулалттай эсэх" options={['Тийм', 'Үгүй']} values={[1, 0]} value={form.foreign_invested} name="foreign_invested" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" invalid={validate && checkInvalid(form.foreign_invested)} />
 
