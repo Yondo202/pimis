@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import Layout from './Layout';
 import messages from '../../components/admin/left_menu/messages';
-import '../../components/admin/left_menu/styles/App.scss';
+import '../../components/admin/left_menu/styles/AppAdmin.scss';
 import DocumentTitle from 'containers/document/DocumentTitle';
 import { Switch, Route } from "react-router-dom";
 import { motion } from "framer-motion";

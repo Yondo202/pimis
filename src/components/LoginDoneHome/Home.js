@@ -10,7 +10,6 @@ import InitialComp from './initialComp'
 function Home() {
     const userId = useParams().userId;
     const [infData, setInfData] = useState(null);
-
     useEffect(async () => {
         if (userId) {
             await axios.get(`pps-infos/registered-companies?userId=${userId}`, { headers: { Authorization: AccessToken() } }).then((res) => {
@@ -49,10 +48,22 @@ function Home() {
 
 export default Home
 
-const animeate1 = keyframes`
-    0% { transform:scale(1);opacity:1; }
-    40% { transform:scale(1.076);opacity:0.5; }
-    100% { transform:scale(1);opacity:1; }
+const animate2 = keyframes`
+    0% { margin-top:-15px; opacity:0; }
+    100% { margin-top:0px; opacity:1;  }
+`
+const animate3 = keyframes`
+    0% { transform:scale(0); opacity:0; }
+    60% { transform:scale(0.56); opacity:0; }
+    100% { transform:scale(1); opacity:1;  }
+`
+const animate4 = keyframes`
+    0% { height:0%; }
+    100% { height:100%; }
+`
+const animate5 = keyframes`
+    0% { height:0vh; }
+    100% { height:6vh; }
 `
 const HomeComponent = styled.div`
     max-width:1160px;
@@ -64,15 +75,6 @@ const HomeComponent = styled.div`
     .itemsCol{
         border-right:1px solid rgba(0,0,0,0.3);
         border-right-style:dashed;
-        // &:before{
-        //     content:"";
-        //     right:0;
-        //     top:4%;
-        //     width:1px;
-        //     height:100%;
-        //     background-color:#C1C1C1;
-        //     position:absolute;
-        // }
         .itemsPar{
             height:70vh;
             width:100%;
@@ -88,6 +90,7 @@ const HomeComponent = styled.div`
                 flex-direction:column;
                 align-items:center;
                 .items{
+                    animation: ${animate2} 1.2s ease;
                     width:93%;
                     border-radius:4px;
                     padding:7px 7px;
@@ -121,8 +124,8 @@ const HomeComponent = styled.div`
                     color:rgba(0,0,0,1);
                     position:relative;
                     background-color:#89E673;
-                    animation-name:${animeate1};
-                    animation-duration:.6s;
+                    animation: ${animate2} 1.2s ease;
+                  
                     &::before{
                         content:"✔";
                         position:absolute;
@@ -155,6 +158,7 @@ const HomeComponent = styled.div`
                 }
                 .line{
                     position:relative;
+                    animation: ${animate5} 1s ease;
                     height:6vh;
                     width:1.2px;
                     background-color:#C1C1C1;
@@ -178,6 +182,7 @@ const HomeComponent = styled.div`
             }
             .lineFull{
                 position:relative;
+                animation: ${animate4} 1s ease;
                 height:100%;
                 width:1.2px;
                 background-color:#C1C1C1;
@@ -207,6 +212,7 @@ const HomeComponent = styled.div`
                 border:1px solid rgba(0,0,0,0.2);
                 color:rgba(0,0,0,0.5);
                 position:relative;
+                animation: ${animate3} 1.2s ease;
                 &::before{
                     content:"-";
                     position:absolute;
@@ -236,8 +242,7 @@ const HomeComponent = styled.div`
                 background-color:#89E673;
                 font-weight:500;
                 background-color:#89E673;
-                animation-name:${animeate1};
-                animation-duration:.7s;
+                animation: ${animate3} 1.2s ease;
                 &::before{
                     content:"✔";
                     position:absolute;

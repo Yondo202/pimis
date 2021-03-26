@@ -25,7 +25,7 @@ function TableTwo(props) {
     const [ Dname, setDname ] = useState(null);
     const [Ddate, setDdate] = useState(null);
 
-    useEffect(()=>{
+    useEffect(_=>{
         if(props.initialData){
             const finalData = []
             tableData.map((el,i)=>{
@@ -36,6 +36,7 @@ function TableTwo(props) {
             });
             setDname(props.initialName); setDdate(props.initialDate); setInitialData(finalData);
         }
+        console.log("useEffect ajillav ------------------");
     },[props.initialData]);
 
 
