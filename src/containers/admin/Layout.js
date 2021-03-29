@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {AlertStyle} from 'components/theme'
+import { AlertStyle } from 'components/theme'
 import Aside from '../../components/admin/left_menu/Aside';
 import Main from '../../components/admin/left_menu/TopMain';
 import UserContext from '../../context/UserContext'
@@ -65,7 +65,7 @@ function Layout({ setLocale }) {
                             <Route path="/meetings" component={EvaluatorsMeetingsNavigator} />
                             <Route path="/epd-information" component={EdpInformationHome} />
 
-                            <Route path="/progress/:userId" component={Home} />
+                            <Route path="/progress" component={Home} />
                             <Route path="/request/:url" component={Request} />
                             <Route path="/check/:url" component={Check} />
                             <Route path="/notify-page/:paramId" component={NotifyPage1} />

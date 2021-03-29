@@ -384,11 +384,11 @@ export default function UrgudulPreview(props) {
                                         switch (date) {
                                             case 'submitDate':
                                                 return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-0.5" key={date}>
-                                                    {`${project.exportDatas?.submitDate?.year}-${project.exportDatas?.submitDate?.month}`}
+                                                    {`${project.exportDatas?.submitDate?.year || '__'}-${project.exportDatas?.submitDate?.month || '__'}`}
                                                 </th>
                                             case 'endDate':
                                                 return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-0.5" key={date}>
-                                                    {`${project.exportDatas?.endDate?.year ? project.exportDatas?.endDate?.year : ''}-${project.exportDatas?.endDate?.month ? project.exportDatas?.endDate?.month : ''}`}
+                                                    {`${project.exportDatas?.endDate?.year ? project.exportDatas?.endDate?.year : '__'}-${project.exportDatas?.endDate?.month ? project.exportDatas?.endDate?.month : '__'}`}
                                                 </th>
                                             default:
                                                 return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1" key={date}>
@@ -431,16 +431,19 @@ export default function UrgudulPreview(props) {
                                 {project.exportDatas?.export_details?.map((country, i) =>
                                     <Fragment key={i}>
                                         <tr>
-                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1" colSpan={dates.length + 2}>{getCountryName(country?.countryId)} - улсад экспорт хийсэн бүтээгдэхүүнүүд</td>
+                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1" colSpan={dates.length + 2}>{getCountryName(country?.countryId)} - экспорт хийсэн улс</td>
                                         </tr>
                                         {country?.export_products?.map((product, j) =>
-                                            <tr key={j}>
-                                                <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">{getProductName(product?.productId)}</td>
-                                                {dates.map((item, k) =>
-                                                    <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={k}>{product?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                                )}
-                                                <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
-                                            </tr>
+                                            <Fragment key={j}>
+                                                <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-3" colSpan={dates.length + 2}>{getProductName(product?.productId)} - экспортын бүтээгдэхүүний ангилал</td>
+                                                <tr>
+                                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-5">{product?.product_name}</td>
+                                                    {dates.map((item, k) =>
+                                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={k}>{product?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                    )}
+                                                    <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                                </tr>
+                                            </Fragment>
                                         )}
                                     </Fragment>
                                 )}

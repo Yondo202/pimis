@@ -57,8 +57,10 @@ function UrgudulNavigator(props) {
     const location = useLocation()
 
     const transitionsPages = useTransition(location, location => location.pathname, {
-        from: { opacity: 0, transform: slideLeft ? 'translateX(-100px)' : 'translateX(100px)' },
-        enter: { opacity: 1, transform: 'translateX(0)' },
+        // from: { opacity: 0, transform: slideLeft ? 'translateX(-100px)' : 'translateX(100px)' },
+        // enter: { opacity: 1, transform: 'translateX(0)' },
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
         leave: { display: 'none' },
         initial: { opacity: 1 },
     })

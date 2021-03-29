@@ -76,8 +76,8 @@ function SearchSelectCompact(props) {
 
     return (
         <div className={`tw-relative ${props.classAppend}`}>
-            <div className={`tw-flex tw-items-center tw-text-sm ${props.classDiv || `tw-border tw-border-gray-400`} tw-rounded tw-py-0.5 tw-px-1.5 focus-within:tw-border-blue-500 tw-transition-colors tw-duration-300`} ref={searchBarRef}>
-                <input className={`tw-mr-1 tw-bg-transparent tw-outline-none tw-placeholder-gray-500 ${props.classInput || 'tw-flex-grow'}`} type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} placeholder={props.placeholder} ref={inputRef} />
+            <div className={`tw-flex tw-items-center tw-text-sm ${props.classDiv || `tw-border tw-border-gray-400`} tw-rounded tw-py-0.5 tw-px-1.5 tw-transition-colors`} ref={searchBarRef}>
+                <input className={`tw-flex-grow tw-mr-1 tw-bg-transparent tw-outline-none tw-placeholder-gray-500 ${props.classInput || 'tw-flex-grow'}`} type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} placeholder={props.placeholder} ref={inputRef} />
 
                 <SearchSVG className="tw-w-4 tw-h-4 tw-flex-shrink-0 tw-text-gray-600 tw-cursor-pointer" onClick={() => inputRef.current?.focus()} />
             </div>
@@ -89,7 +89,7 @@ function SearchSelectCompact(props) {
                 leave={{ opacity: 0 }}
                 config={config.stiff}>
                 {item => item && (anims =>
-                    <div className={`tw-fixed ${!props.selectWidth && 'tw-w-full'} tw-bg-white tw-z-10 tw-text-13px tw-rounded-md tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto`} style={{ height: props.selectHeight || 426, width: props.selectWidth, top: searchBarRef.current?.getBoundingClientRect().top - 152, left: searchBarRef.current?.getBoundingClientRect().left, ...anims }}>
+                    <div className={`tw-fixed ${!props.selectWidth && 'tw-w-full'} tw-bg-white tw-z-10 tw-text-13px tw-rounded tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto`} style={{ height: props.selectHeight || 426, width: props.selectWidth, top: searchBarRef.current?.getBoundingClientRect().top + 26, left: searchBarRef.current?.getBoundingClientRect().left, ...anims }}>
                         {
                             fetch.filter(obj => filter(obj, search)).length ?
                                 fetch.filter(obj => filter(obj, search)).sort(compare).map((item, i) =>

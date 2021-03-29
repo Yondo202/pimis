@@ -3,8 +3,7 @@ import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import MinusSVG from 'assets/svgComponents/minusSVG'
 import PlusSVG from 'assets/svgComponents/plusSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
-import SelectorSVG from 'assets/svgComponents/selectorSVG'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Transition, config } from 'react-spring/renderprops'
 
 
@@ -31,8 +30,8 @@ export default function TreeSelectCompact(props) {
 
     return (
         <div className={`tw-relative ${props.classAppend}`}>
-            <button className={`tw-flex tw-items-center focus:tw-outline-none tw-text-sm tw-rounded tw-bg-indigo-50 tw-px-1.5 tw-py-0.5`} onClick={() => setOpen(!open)} ref={buttonRef}>
-                <div className="tw-mr-1 tw-w-36 tw-relative tw-text-left tw-font-medium tw-truncate">
+            <button className={`tw-flex tw-items-center focus:tw-outline-none tw-text-sm tw-rounded ${props.validate ? 'tw-bg-red-100 active:tw-bg-red-200' : 'tw-bg-indigo-50 active:tw-bg-indigo-100'} tw-px-1.5 tw-py-0.5 tw-ml-3 tw-transition-colors`} style={{ width: 193 }} onClick={() => setOpen(!open)} ref={buttonRef}>
+                <div className="tw-mr-1 tw-relative tw-text-left tw-font-medium tw-truncate">
                     {selectedName || <span className="tw-text-gray-500">{props.placeholder}</span>}
                 </div>
                 <ChevronDownSVG className="tw-w-4 tw-h-4 tw-text-gray-600 tw-ml-auto tw-flex-shrink-0" />
@@ -41,11 +40,11 @@ export default function TreeSelectCompact(props) {
             <Transition
                 items={open}
                 from={{ height: 0, opacity: 0 }}
-                enter={{ height: 300, opacity: 1 }}
+                enter={{ height: props.selectHeight || 426, opacity: 1 }}
                 leave={{ height: 0, opacity: 0 }}
                 config={config.stiff}>
                 {item => item && (anims =>
-                    <div className="tw-overflow-y-auto tw-overflow-x-hidden tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-fixed tw-z-10 tw-text-13px" style={{ height: props.selectHeight || 426, width: props.selectWidth, top: buttonRef.current?.getBoundingClientRect().top - 152, left: buttonRef.current?.getBoundingClientRect().left, ...anims }}>
+                    <div className="tw-overflow-y-auto tw-overflow-x-hidden tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-fixed tw-z-10 tw-text-13px" style={{ width: props.selectWidth, top: buttonRef.current?.getBoundingClientRect().top + 26, left: buttonRef.current?.getBoundingClientRect().left, ...anims }}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">
                             <div className={`tw-flex tw-items-center tw-border-b ${search ? 'tw-border-blue-500 tw-text-blue-500' : 'tw-border-gray-600 tw-text-gray-600'} tw-pb-0.5 tw-my-1.5 tw-mr-2 tw-transition-colors`}>
                                 <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
@@ -56,6 +55,12 @@ export default function TreeSelectCompact(props) {
                         {parents.map(parent =>
                             <Tree parent={parent} childs={props.data.filter(item => item.parentId === parent.id && item[display].toLowerCase().includes(search.toLowerCase()))} display={display} handleSelectId={handleSelectId} value={props.value} />
                         )}
+
+                        <div className="tw-flex tw-justify-end tw-sticky tw-bottom-0">
+                            <button className="tw-rounded-sm tw-bg-gray-600 active:tw-bg-gray-700 focus:tw-outline-none tw-text-white tw-py-0.5 tw-px-4 tw-mr-2 tw-mb-1 tw-transition-colors" onClick={() => setOpen(false)}>
+                                Буцах
+                            </button>
+                        </div>
                     </div>
                 )}
             </Transition>

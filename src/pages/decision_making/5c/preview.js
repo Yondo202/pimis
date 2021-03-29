@@ -5,6 +5,8 @@ import { useRef } from 'react'
 import { useReactToPrint } from "react-to-print"
 import '../5a/style.css'
 import Pdf from "react-to-pdf"
+import { PDFDownloadLink } from "@react-pdf/renderer"
+import AnalystReportPreview1 from './preview1'
 
 
 export default function AnalystReportPreview(props) {
@@ -31,6 +33,19 @@ export default function AnalystReportPreview(props) {
             <Pdf targetRef={componentRef} filename="code-example.pdf">
                 {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
             </Pdf>
+
+            {/* <PDFDownloadLink
+                document={<AnalystReportPreview1 rows={rows} info={info} project={project} />}
+                fileName="5c.pdf"
+                style={{
+                    textDecoration: "none",
+                    padding: "10px",
+                    color: "#4a4a4a",
+                    backgroundColor: "#f2f2f2",
+                    border: "1px solid #4a4a4a"
+                }}>
+                Download PDF
+            </PDFDownloadLink> */}
 
             <div className="tw-mx-auto" ref={componentRef}>
                 <div className="tw-text-center tw-text-base tw-font-medium tw-mt-4 tw-mb-8">

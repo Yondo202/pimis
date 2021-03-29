@@ -280,7 +280,7 @@ function UrgudulApplicant() {
                     </table>
                 </div>
 
-                <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={form.business_sectorId} name="business_sectorId" handleChange={handleSetForm} />
+                <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={form.business_sectorId} name="business_sectorId" handleChange={handleSetForm} invalid={validate && checkInvalid(form.business_sectorId)} />
 
                 <FormOptions label="Гадаад хөрөнгө оруулалттай эсэх" options={['Тийм', 'Үгүй']} values={[1, 0]} value={form.foreign_invested} name="foreign_invested" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" invalid={validate && checkInvalid(form.foreign_invested)} />
 
