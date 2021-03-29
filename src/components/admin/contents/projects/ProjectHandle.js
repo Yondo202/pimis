@@ -175,7 +175,13 @@ const HeaderCellMultiHeader = (data) => (
 const ButtonNavProgress = (data) => {
     const history = useHistory()
     const buttonClick = () => {
-        data.data.data.userId && history.push(`progress/${data.data.data.userId}`)
+        const userId = data.data.data.userId
+        const projectId = data.data.data.project?.id
+
+        userId && history.push({
+            pathname: '/progress',
+            search: projectId ? `?userId=${userId}&projectId=${projectId}` : `?userId=${userId}`
+        })
     }
     return <button className="tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-2 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md" onClick={buttonClick}>
         Явцыг харах
