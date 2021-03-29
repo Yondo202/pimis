@@ -22,6 +22,7 @@ function Signup() {
     const signUpCtx = useContext(UserContext);
     const [ showSectors, setShowSectors ] = useState(false);
     const [ selectSectors, setSelectSectors ] = useState("- Сонго -");
+    const [ sectorId, setSectorId ] = useState(null);
     const [Show, setShow] = useState(false);
     const [Show2, setShow2] = useState(false);
     const [ sectorData, setSectorData ] = useState([]);
@@ -67,29 +68,40 @@ function Signup() {
     }
     
     const handleClick = () =>{
-             let rs = document.querySelectorAll(".userInp"); let arr = Array.from(rs);  let finalOne = {};
+            let rs = document.querySelectorAll(".userInp"); let arr = Array.from(rs);  let finalOne = {};
             arr.map(element=>{
-              if(element.value !== "- Сонго -" && element.value !== "" ){
-                let field = element.name;  let value = element.value;  finalOne[field] = value;  }
+              if(element.value !== "" ){
+                element.classList =- " red"
+                element.classList += " userInp"
+                let field = element.name;  let value = element.value;  finalOne[field] = value;
+              }else{ element.classList += " red"  }
             });
             let keys = Object.keys(finalOne);
+
+            console.log(finalOne, " final one");
             if(keys.length < 6){
-              setPassText("Гүйцэд бөгөлнө үү");
+              setPassText("Гүйцэд бөгөлнө үү"); setScale("1"); 
             }else if(selectSectors==="- Сонго -"){
-              setPassText("Салбараа сонгоно уу");
+              setPassText("Салбараа сонгоно уу"); setScale("1");  setShowSectors(true);
+              // if(selectSectors!=="- Сонго -"){
+              //   setPassText("");setScale("0");
+              // }
             }else if(passwordValidity.minChar === false || passwordValidity.number === false || passwordValidity.specialChar === false){
               setPassText("Нууц үг хийх хэсэгээ шалгана уу..");
             }else if(finalOne.password !== finalOne.passwordagain) {
               setPassText("Нууц үг адил биш байна...");
             }else{
-               finalOne["business_sectorId"] = selectSectors; setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1"); 
+               finalOne["business_sectorId"] = sectorId; setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1"); 
             }
     }
     const cond =signUpCtx.errMsgSignup.cond;
+
+    // console.log(selectSectors, " my sector");
+    // console.log(`sectorData`, sectorData)
  
     return (
         <Component className="SignUp">
-          {showSectors&&<GhostPar><div onClick={()=>setShowSectors(false)} className="Ghost"></div> <div className="Sectorpar"><SEctor data={sectorData} setSelectSectors={setSelectSectors} setShowSectors={setShowSectors} /></div></GhostPar>}
+          {showSectors&&<GhostPar><div onClick={()=>setShowSectors(false)} className="Ghost"></div> <div className="Sectorpar"><SEctor data={sectorData} setSectorId={setSectorId} setSelectSectors={setSelectSectors} setShowSectors={setShowSectors} /></div></GhostPar>}
           <span >Та бүртгэл үүсгээгүй бол 
             {/* <Switch>
                 <Link to="/signup"><a><span className="SignBtn"> Бүртгүүлэх </span></a></Link>
@@ -196,7 +208,7 @@ function Signup() {
                                                 <div className="labels"><span>Компаны нэр :</span> </div>
                                                 <div className="name">
                                                 <InputStyle className="newInp">
-                                                    <input type="input" className="userInp  form__field" placeholder="нэр..." name="companyname" required />
+                                                    <input type="input" className="userInp form__field" placeholder="нэр..." name="companyname" required />
                                                     <div className="line"></div>
                                                 </InputStyle>
                                                     {/* <div className="form__group">
@@ -217,11 +229,7 @@ function Signup() {
                                                 <div className="labels"><span>Салбарууд : </span> </div>
                                                     <div className="name">
                                                         <div onClick={()=>setShowSectors(prev=>!prev)} className="sectors" ><span>{selectSectors} </span>  <MdKeyboardArrowDown /> </div>
-                                                      
                                                     </div>
-                                                    
-                                                    
-
                                             </div>
                                       </div>
 
@@ -283,7 +291,7 @@ function Signup() {
 
                                           <div className="SubmitButtonPar">
                                                 <NextBtn style={cond? {width:`20%`,opacity:`0.7`} :{width:`100%`,opacity:`1`}} disabled={true} onClick={handleClick} className="SubmitButton" type="button">{cond? <img src="/gif1.gif" /> : `Бүртгүүлэх` }  <div style={cond? {display:`none`} :{display:`flex`}} className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
-                                                {PassText? (<span className="colorText" style={{transform:`scale(${scale})`}}>{PassText}</span>) :  (<span className="colorText" style={{transform:`scale(${scale})`}}>{signUpCtx.errMsgSignup.msg}</span>)}  
+                                                {PassText? (<span className="colorText" style={{transform:`scale(${selectSectors==="- Сонго -"?scale:"0"})`}}>{PassText}</span>) :  (<span className="colorText" style={{transform:`scale(${scale})`}}>{signUpCtx.errMsgSignup.msg}</span>)}  
                                           </div>
                                       </div>) 
                                         :( <div className="success">

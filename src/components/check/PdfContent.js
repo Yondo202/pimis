@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Document, Page, Text, View, StyleSheet,Font ,Image } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Font ,Image } from '@react-pdf/renderer';
 import Gif from '../../image/edp_logo.png'
 
 Font.register({ family: "Roboto",fonts:

@@ -7,8 +7,8 @@ import { CgDanger } from 'react-icons/cg';
 import {AlertStyle} from 'components/theme'
 
 export default class Content extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = { color: "orange", text: "", cond: false, Btn: "1" }
     }
     alertText = ( color, text, cond ) => {
@@ -16,7 +16,12 @@ export default class Content extends React.Component {
          setTimeout(()=>{ this.setState({ color:color, text:text, cond:false })},[4000]);
      }
     clickHandle = () =>{
-        axios.post('send-pps-notice', { email: "yondooo61@gmail.com", emailBody:EmailHTML,})
+        axios.post('send-pps-notice', { 
+            // email: "yondooo61@gmail.com", 
+            notice_type: "first-evalution",
+            projectId: this.props?.projectId,
+            emailBody:EmailHTML,
+        })
         .then((res)=>{ console.log(res, "^ress");  this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true);
               }).catch((e)=>{console.log(e, "^err");   this.alertText("orange", "Алдаа гарлаа", true);  });
     };
@@ -60,7 +65,7 @@ export default class Content extends React.Component {
 
 const EmailHTML = renderEmail(
     <Email style={{border:"1px solid rgba(0,0,0,0.2)",padding:'30px 60px'}} title="EDP">
-                            {/* <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" /> */}
+        <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
             <Item style={{color:"#222222", padding:'20px 20px', backgroundColor:"white", height:"100%"}} align="end">
                 <Box style={{textAlign:"center",width:"100%", marginBottom:'30px',fontWeight:'500', fontSize:'13px'}} >Урьдчилсан мэдүүлэгт тэнцээгүй тухай мэдэгдэл</Box>
 

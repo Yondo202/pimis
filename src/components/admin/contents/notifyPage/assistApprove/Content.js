@@ -34,6 +34,8 @@ export default class Content extends React.Component {
     };
 
     render() {
+        console.log(`props.approve`, this.props.approve);
+
         const app = this.props.approve
         return (
             <>

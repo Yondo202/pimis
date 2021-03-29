@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+
 export const Color = "#036";
 export const ColorRgb = "0, 51, 102";
 export const textColor = "0, 18, 41";
@@ -27,7 +28,6 @@ export const PrevBtn = styled.div`
     border:1px solid rgba(63, 81, 181,0.5);
     width:30%;
     border-radius:5px;
-    
     &:hover{
       box-shadow:1px 1px 15px -2px black;
      .flexchild{
@@ -247,6 +247,32 @@ export const InputStyle = styled.div`
             .red{
                 border-bottom:1px solid rgba(255,0,0,0.8);
             }
+            .fileStyle[type="file"]{
+                height: 0;
+                overflow: hidden;
+                width: 0;
+            }
+            .fileStyleLabel{
+                font-size:13px;
+                background: #f15d22;
+                border: none;
+                border-radius: 4px;
+                color: #fff;
+                cursor: pointer;
+                display: inline-block;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 500;
+                // margin-bottom: 1rem;
+                outline: none;
+                padding: 0.4rem 45px;
+                position: relative;
+                transition: all 0.3s;
+                vertical-align: middle;
+                &:hover{
+                    background:#f48457;
+                }
+            }
+          
 `
 
 

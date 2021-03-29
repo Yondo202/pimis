@@ -9,9 +9,6 @@ function AssistApprove({approve}) {
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
     });
-
-    console.log(`approve`, approve)
-
       return (
             <MainContainter>
                 <div className="parent" ref={componentRef}>

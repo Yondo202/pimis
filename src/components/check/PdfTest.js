@@ -37,8 +37,8 @@ const PdfTest = () => {
       <div className="container">
       <PDFstyle className="Nanana">
             <PDFViewer style={{ height: '90vh', width:`100%` }} >
-                    <MyDocument wait={wait} data={initialData}  />
-              </PDFViewer>
+                <MyDocument wait={wait} data={initialData}  />
+            </PDFViewer>
       </PDFstyle>
 
      {/* {wait && <PDFDownloadLink document={<MyDocument data={fontwait} />}>

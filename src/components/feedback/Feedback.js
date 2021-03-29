@@ -110,12 +110,12 @@ function Feedback() {
 
     return (
         <FeedBackCont className="container">
-            {data?<div className="contentPar">
+            {!data?<div className="contentPar">
                         <div className="TitlePar">
                                 <div className="title">САНАЛ ХҮСЭЛТИЙН МАЯГТ ( <span style={{color:`green`}}>илгээгдсэн</span> ) </div>
                         </div>
                     </div> : 
-                 (<div className="contentPar">
+            (<div className="contentPar">
                 <div className="TitlePar">
                     <div className="title">САНАЛ ХҮСЭЛТИЙН МАЯГТ</div>
                     <div className="desc">Түншлэлийн шинжээчдийн баг өөрсдийн үйл ажиллагаанд хяналт тавьж, үзүүлж буй үйлчилгээнд үнэлгээ авснаар бидний цаашдын үйл ажиллагаа улам сайжрах тул та энэхүү асуулгын хуудсыг идэвхтэй бөглөнө үү.Таны өгсөн мэдээллийн нууцыг чанд хадгалах болно.  </div>
@@ -212,7 +212,6 @@ function Feedback() {
                 <div className="infoWhere">
                         <div className="Title Title4"><span className="circle">⬤</span>Энэ үйл ажиллагааг хэрэгжүүлснээр танай байгууллагад ямар үр ашиг бий болсон бэ? Хүснэгтээс өөрт тохирох нэг болон түүнээс дээш мөрийг бөглөнө үү.</div>
                         <div className="ContentPar">
-
                             <table id="customers">
                                 <tr>
                                   <th>№</th>
@@ -297,6 +296,8 @@ function Feedback() {
                             </div>
                         </div>
                 </div>
+
+
 
                 <div className="buttonPar">
                     <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>

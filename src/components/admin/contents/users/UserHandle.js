@@ -1,6 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import styled from 'styled-components'
-import { VscSearch } from 'react-icons/vsc'
+import styled,{ keyframes } from 'styled-components'
 import { IoMdAdd } from 'react-icons/io'
 import { AddModal } from './AddModal'
 import { DeleteModal } from './DeleteModal'
@@ -50,7 +49,7 @@ function UserHandle() {
                         </select>
                     </div>
                     <div onClick={ModalOpen} className="AddBtn">
-                        <IoMdAdd className="addSvg" /> Нэмэх
+                        <IoMdAdd className="addSvg" />Нэмэх
                     </div>
                 </div>
 
@@ -112,8 +111,15 @@ function UserHandle() {
 
 export default UserHandle
 
+const Animate = keyframes`
+    0% { opacity:0; }
+    100% { opacity:1; }
+`
+
+
+
 const Users = styled.div`
-    font-family: ${props=>props.theme.fontFamily2} !important;
+    font-family: ${props=>props.theme.fontFamily1} !important;
     font-size:14px;
     color:#2c2945;
     .Title{
@@ -126,6 +132,7 @@ const Users = styled.div`
         border:1px solid rgba(0,0,0,0.2);
         background-color:white;
         .bodyCont{
+            animation: ${Animate} ease 0.5s;
             padding:12px 0px;
             border-bottom:1px solid rgba(0,0,0,0.1);
             .items{

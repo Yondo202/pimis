@@ -34,7 +34,7 @@ function ActiveComp(props) {
                 <div className="col-md-2 col-sm-2 itemsCol">
                     <div className="itemsPar">
                         <div className="mains">
-                            <Link to={props.prew ? `/5a/${props.data.project?.id}` : '/5a'} className={props.data.firstEvalution.value === 0 ? `items arrHelp`  : props.data.firstEvalution.value === 1? `items itemsNotApproved arrHelp` : `itemsActive arrHelp` }>
+                            <Link to={props.prew ? `/5a/${props.data.project?.id}` : '#'} className={props.data.firstEvalution.value === 0 ? `items arrHelp`  : props.data.firstEvalution.value === 1? `items itemsNotApproved arrHelp` : `itemsActive arrHelp` }>
                                 <div className="helpArr" />
                                 1. Анхан шатны үнэлгээ
                             </Link>

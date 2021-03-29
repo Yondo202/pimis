@@ -7,7 +7,7 @@ import messages from './message';
 
 
 
-function Layout({data, setSelectSectors,setShowSectors}) {
+function Layout({data, setSelectSectors,setShowSectors, setSectorId}) {
     const [locale, setLocale] = useState('en');
     const [rtl, setRtl] = useState(false);
     const [toggled, setToggled] = useState(false);
@@ -17,7 +17,7 @@ function Layout({data, setSelectSectors,setShowSectors}) {
         <IntlProvider locale={locale} messages={messages[locale]} >
             <AdminApp className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
                 <div className="MainSectorParent">
-                    <SectorDetail setShowSectors={setShowSectors} setSelectSectors={setSelectSectors} data={data} handleToggleSidebar={handleToggleSidebar} />
+                    <SectorDetail setSectorId={setSectorId} setShowSectors={setShowSectors} setSelectSectors={setSelectSectors} data={data} handleToggleSidebar={handleToggleSidebar} />
                 </div>
             </AdminApp>
         </IntlProvider>

@@ -64,7 +64,7 @@ function TableTwo(props) {
     const onChangeFile = (event) =>{
         const formData = new FormData()
         formData.append('file', event.target.files[0]);
-        formData.append('description', event.target.id);
+        formData.append('description', event.target.tabIndex);
         axios.post('attach-files',formData, {headers: { 'Authorization': props.token, 'Content-Type': 'multipart/form-data', }})
         .then((res)=>{ 
             setFileSave(prev=> prev.concat(res.data.data));
@@ -188,7 +188,7 @@ function TableTwo(props) {
                                             <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
                                                 <div className="name">
                                                 <InputStyle className="newInp">
-                                                        <input max={Currentdate} onChange={onChangeGetDate} value={el.getDate} id={el.id} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" required />
+                                                        <input max={Currentdate} onChange={onChangeGetDate} value={el.getDate} id={el.id} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" />
                                                         <div className="line"></div>
                                                 </InputStyle>
                                                         </div> </div></div>
@@ -196,7 +196,7 @@ function TableTwo(props) {
                                             <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
                                                 <div className="name">
                                                 <InputStyle className="newInp">
-                                                        <input max={Currentdate} onChange={onChangeRecentDate} type="date" id={el.id} value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="recentDate" required />
+                                                        <input max={Currentdate} onChange={onChangeRecentDate} type="date" id={el.id} value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="recentDate" />
                                                         <div className="line"></div>
                                                 </InputStyle>
                                                          </div> </div>  </div>
@@ -206,7 +206,8 @@ function TableTwo(props) {
                                 <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.files?el.files.name:""}</div> </div>
                                         <div className="name"> <RiUpload2Line />  
                                         <InputStyle className="newInp">
-                                                <input type="file"  id={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
+                                                <label className="fileStyleLabel" for={`file${i+1}`}>Хавсаргах</label>
+                                                <input type="file"  id={`file${i+1}`} tabIndex={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field fileStyle `}  name="file"  />
                                                 <div className="line"></div>
                                         </InputStyle>
                                         </div> </div>
@@ -261,10 +262,11 @@ function TableTwo(props) {
                                 </div>
                                 <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.files?el.files.name:""}</div> </div>
                                      <div className="name"> <RiUpload2Line /> 
-                                     <InputStyle className="newInp">
-                                            <input type="file" id={i + 1}  onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
-                                            <div className="line"></div>
-                                    </InputStyle>
+                                        <InputStyle className="newInp">
+                                                <label className="fileStyleLabel" for={`file${i+1}`}>Хавсаргах</label>
+                                                <input type="file"  id={`file${i+1}`} tabIndex={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field fileStyle `}  name="file"  />
+                                                <div className="line"></div>
+                                        </InputStyle>
                                         </div> </div>
                                 </div>
                             </div>

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { InputStyle,textColor,NextBtn } from 'components/theme';
 import { FiArrowRight } from 'react-icons/fi';
+import { TiDeleteOutline } from 'react-icons/ti';
 import { ImLocation2 } from 'react-icons/im';
 import { GrMail } from 'react-icons/gr';
 import { FaRegistered,FaRegWindowRestore,FaFax,FaPhoneAlt, } from 'react-icons/fa';
@@ -11,9 +12,11 @@ import axios from 'axiosbase';
 import AccessToken from 'context/accessToken';
 import UserContext from 'context/UserContext'
 
+
 function EdpInformation() {
     const ctx = useContext(UserContext);
     const [ Data, setData ] = useState(null);
+    const [ deleteInf, setDeleteInf ] = useState(false);
     const [ imgData, setImgData ] = useState(null);
     const [ spnBtn, setSpnBtn ] = useState(false);
     const [ opacity2, setOpacity2] = useState("0");
@@ -21,7 +24,7 @@ function EdpInformation() {
 
     useEffect(async()=>{
         await axios.get(`edp-info`,{ headers: { Authorization: AccessToken()}}).then(res=>{
-            if(res.data.data.id){ setData(res.data.data); }
+            if(res.data.data){ setData(res.data.data); }
         })
     },[spnBtn])
 
@@ -46,7 +49,7 @@ function EdpInformation() {
             setOpacity2("0"); setFinalErrorText("");
             axios.post(`edp-info`, final, { headers: { Authorization: AccessToken()} }).then(res=>{
                 console.log(res, " res"); ctx.alertText('green', "Амжилттай хадаглагдлаа", true);  setSpnBtn(false);
-            }).catch(err=>{ setSpnBtn(false); ctx.alertText('orange', "Алдаа гарлаа", true); console.log(err.response) });
+            }).catch(err=>{ setSpnBtn(false); ctx.alertText('orange', "Алдаа гарлаа", true); console.log(err.response.data) });
         }
         console.log(final, "final");
 
@@ -54,11 +57,20 @@ function EdpInformation() {
     const onChangeHandle = (el) =>{
         let change= Data[el.target.name]= el.target.value; let final = { change, ...Data }; setData(final);
     }
+    const deletHandle = () =>{ setDeleteInf(true); setTimeout(()=>{ setDeleteInf(false)},5000) }
+    const deleteHandleData =(el) =>{ 
+        axios.delete(`edp-info/delete/${el}`, { headers: { Authorization:AccessToken() } }).then((res)=>{ ctx.alertText('green', "Устгагдсан", true);  setSpnBtn(true); setSpnBtn(false); 
+        }).catch((err)=>{ ctx.alertText('orange', "Алдаа гарлаа", true); })
+     }
 
     return (
         <EdpInfComp>
             <div className="contentPar">
-                <div className="title">Төслийн мэдээлэл</div>
+                <div className="TitlePar">
+                     <div className="title">Төслийн мэдээлэл</div>
+                    {Data&&<div onClick={deletHandle} className="DeleteBtn"><TiDeleteOutline /> Устгах</div>} 
+                    {deleteInf&&<div className="verification"><div onClick={()=>deleteHandleData(Data?.id)} className="yeas">Устгах</div><div onClick={()=>setDeleteInf(false)} className="no">Үгүй</div> </div>}
+                </div>
 
                 {Data? (<div className="content">
                     <div className="inpPar">
@@ -161,7 +173,6 @@ const animate = keyframes`
 `
 const EdpInfComp = styled.div`
     color: rgb(${textColor });
-    background-color:${props=>props.theme.Color};
     display:flex;
     aling-items:center;
     justify-content:center;
@@ -193,12 +204,68 @@ const EdpInfComp = styled.div`
             padding:0px 20px;
             }
         }
-        .title{
-            font-weight:500;
-            color: rgba(${textColor},1);
-            font-size:20px;
-            margin-bottom:10px;
-            margin-left:30px;
+        .TitlePar{
+            position:relative;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:0px 30px;
+            .title{
+                font-weight:500;
+                color: rgba(${textColor},1);
+                font-size:20px;
+                margin-bottom:10px;
+            }
+            .DeleteBtn{
+                cursor:pointer;
+                border:1px solid rgba(0,0,0,0.2);
+                padding:2px 15px;
+                border-radius:3px;
+                display:flex;
+                align-items:center;
+                font-size:14px;
+                transition:background-color 0.4s ease;
+                svg{
+                    font-size:20px;
+                    margin-right:5px;
+                }
+                &:hover{
+                    color:white;
+                    background-color:#85929E;
+                }
+            }
+            .verification{
+                position:absolute;
+                right:30px;
+                display:flex;
+                top:0px;
+                background-color:#85929E;
+                // padding:8px 30px;
+                border-radius:4px;
+                font-weight:500;
+                transition:all 0.3s ease;
+                .yeas{
+                    padding:8px 30px;
+                    cursor:pointer;
+                    margin-right:20px;
+                    transition:all 0.3s ease;
+                    &:hover{
+                        border-radius:4px;
+                        background-color:#CAE9F5;
+                        box-shadow:1px 1px 10px -4px;
+                    }
+                }
+                .no{
+                    padding:8px 30px;
+                    cursor:pointer;
+                    transition:all 0.3s ease;
+                    &:hover{
+                        border-radius:4px;
+                        background-color:#CAE9F5;
+                        box-shadow:1px 1px 10px -4px;
+                    }
+                }
+            }
         }
         .content{
             .rowItems{

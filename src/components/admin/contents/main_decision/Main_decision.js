@@ -18,37 +18,52 @@ function Main_decision() {
     const history = useHistory();
     const param  = useParams().id;
     const [ notifyShow, setNotifyShow ] = useState(0);
+    const [ notifyShow2, setNotifyShow2 ] = useState(0);
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
     const [ mainData, setMainData ] = useState(null);
     const [ members, setMembers ] = useState([]);
-
     useEffect(async()=>{
         await axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization:Token() } }).then((res)=>{
-            console.log(res.data.data, " my data"); setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
+            console.log(res.data.data, " my data");
+            if(res.data.data){
+                setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
+                if(res.data.data.approved===true){ setNotifyShow2(1); }else if(res.data.data.approved===false){ setNotifyShow2(2); }else{ setNotifyShow2(0); }
+            }
         }).catch((err)=>console.log(err.response.data.error, "aldaa garsaaaa"));
 
     },[]);
-
     const backHandle = (el) =>{ if(el==="projects"){  history.push(`/${el}`); }else{ history.push(`/progress/${el}`); } }
 
     const clickHandle = (el) =>{
-        let inp = document.querySelector(".getInpp");
-        if(inp.value===""){
-            setOpacity2('1');
-            setFinalErrorText('Та шалтгааныг оруулна уу?')
-            inp.classList += " red";
+        if(notifyShow2!==1){
+            let inp = document.querySelector(".getInpp");
+            if(inp.value===""){
+                setOpacity2('1');
+                setFinalErrorText('Та шалтгааныг оруулна уу?')
+                inp.classList += " red";
+            }else{
+                setOpacity2('0');
+                inp.classList =- " red";
+                inp.classList += " getInpp";
+                mainData[inp.name] = inp.value;
+                axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization:Token() } }).then((res)=>{
+                    console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true);
+                if(el===true){ setNotifyShow(1); }else if(el===false){ setNotifyShow(2); }else{setNotifyShow(0); }
+                }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
+            }
         }else{
-            setOpacity2('0');
-            inp.classList =- " red";
-            inp.classList += " getInpp";
-            mainData[inp.name] = inp.value;
             axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization:Token() } }).then((res)=>{
                 console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true);
             if(el===true){ setNotifyShow(1); }else if(el===false){ setNotifyShow(2); }else{setNotifyShow(0); }
-
             }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
         }
+        
+    }
+
+    const changeHandleReason = (el) =>{
+        mainData["reason"] = el.target.value;
+        setMainData({ ...mainData });
     }
 
     return (
@@ -118,13 +133,14 @@ function Main_decision() {
                             </tr>
                     </table>
                 </div>
-                <div className="reasonPar">
-                            <div className="title">Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:</div>
-                            <div className="inpPar">
-                                 <div className="svg"><IoIosShareAlt /></div>
-                                <InputStyle className="inpp"><textarea name="reason" className={`getInpp`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
-                            </div>
-                </div>
+                {notifyShow2!==1?<div className="reasonPar">
+                    <div className="title">Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:</div>
+                    <div className="inpPar">
+                            <div className="svg"><IoIosShareAlt /></div>
+                        <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
+                    </div>
+                </div>:null}
+                
 
                 <div className="buttonPar">
                     <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
@@ -142,11 +158,6 @@ function Main_decision() {
                         ? <NotifyComp className="container"> <AssistApprove approve={mainData} /> </NotifyComp>
                         : <NotifyComp className="container"> <NotAssist approve={mainData} /></NotifyComp> }
             
-
-        
-        
-
-
         <AlertStyle style={ctx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${ctx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
             {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}
             <span>{ctx.alert.text}</span>

@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from "react-pro-sidebar";
 import { BsArrowsAngleExpand } from "react-icons/bs"
 
-const Aside = ({ handleToggleSidebar, data, setSelectSectors, setShowSectors }) => {
+const Aside = ({ handleToggleSidebar, data, setSelectSectors, setShowSectors,setSectorId }) => {
   const [ datas, setDatas ] = useState(null);
 
   useEffect(()=>{
@@ -17,7 +17,7 @@ const Aside = ({ handleToggleSidebar, data, setSelectSectors, setShowSectors }) 
   },[])
   const intl = useIntl();
 
-  const clickHandle = (el) =>{ setSelectSectors(el); setShowSectors(false); }
+  const clickHandle = (el, id) =>{ setSelectSectors(el); setSectorId(id); setShowSectors(false); }
   
   return (
     <ProSidebar onToggle={handleToggleSidebar}>
@@ -31,7 +31,7 @@ const Aside = ({ handleToggleSidebar, data, setSelectSectors, setShowSectors }) 
               <SubMenu title={el.bdescription_mon} icon={<BsArrowsAngleExpand />}>
                { el.child.map((elem,ind)=>{
                  return(
-                  <MenuItem onClick={()=>clickHandle(elem.bdescription_mon)} styled={{paddingLeft:30}}>{elem.bdescription_mon}</MenuItem>
+                  <MenuItem onClick={()=>clickHandle(elem.bdescription_mon, elem.id )} styled={{paddingLeft:30}}>{elem.bdescription_mon}</MenuItem>
                  )
                })}
               </SubMenu>
