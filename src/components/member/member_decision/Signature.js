@@ -18,17 +18,17 @@ function Signature(props) {
     return (
         <SignaturePar className="rowItems">
             <div className="row">
-                <div className="col-md-2 col-2"><div className="LeftHead">Гарын үсэг: </div> </div>
-                <div className="col-md-10 col-10">
+                <div className="col-md-3 col-sm-3 col-12"><div style={{marginBottom:15}} className="LeftHead">Баталгаат гарын үсэг: </div> </div>
+                <div className="col-md-9 col-sm-9 col-12">
                     <div className="RightHead">
                         <div className="addInfoPar">
                             <div className="userInfPar">
                                 <div className="infItemPar">
                                         <div className="drowPar">
-                                            {!props.url&&<div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>} 
+                                            {!props.url&&<div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>}
                                             {props.url? <img className="SingatureImg" src={props.url}/>  :  trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}  
                                             {/* {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null} */}
-                                                <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
+                                                <Modal visible={visible} width="620" height="380" effect="fadeInDown" onClickAway={closeModal}>
                                                     <div className="modalPar">
                                                         <div className="Canvass">
                                                             <SignatureCanvas className='sigCanvas' penColor='blue' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
@@ -44,7 +44,6 @@ function Signature(props) {
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
         </div>
@@ -55,6 +54,7 @@ function Signature(props) {
 export default Signature
 
 const SignaturePar = styled.div`
+    margin-top:20px;
     .addInfoPar{
         position:relative;
         .addBtn{
@@ -82,10 +82,9 @@ const SignaturePar = styled.div`
                 .drowPar{
                     display:flex;
                     align-items:start;
-                    // margin-top:10px;
                     .SignBtn{
                         margin-right:30px;
-                        padding:3px 15px;
+                        padding:5px 25px;
                         cursor:pointer;
                         display:flex;
                         align-items:center;
@@ -102,8 +101,8 @@ const SignaturePar = styled.div`
                     }
                     .SingatureImg{
                         border:1px solid rgba(${ColorRgb},0.3);
-                        width:200px;
-                }
+                        width:70%;
+                    }
                     .modalPar{
                         text-align:center;
                         .Canvass{
@@ -140,5 +139,26 @@ const SignaturePar = styled.div`
                 }
             }
         }
+    }
+    @media only screen and (max-width:786px){
+        .addInfoPar{
+            .userInfPar{
+
+                .infItemPar{
+                    
+                    .drowPar{
+                        flex-direction:column;
+                        .SignBtn{
+                            margin-bottom:15px;
+                        }
+                        .SingatureImg{
+                            max-width:500px;
+                            width:100%;
+                        }
+                    }
+                }
+            }
+        }
+       
     }
 `

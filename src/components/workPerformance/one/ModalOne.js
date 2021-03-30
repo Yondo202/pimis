@@ -71,7 +71,7 @@ function ModalOne(props) {
                                                             <Modal visible={el.visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
                                                                 <div className="modalPar">
                                                                     <div className="Canvass">
-                                                                        <SignatureCanvas className='sigCanvas' penColor='green' ref={(ref) => { el.sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
+                                                                        <SignatureCanvas className='sigCanvas' penColor='blue' ref={(ref) => { el.sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
                                                                     </div>
                                                                     <div className="BtnPar">
                                                                         <button onClick={()=>clear(i + 1)}>Цэвэрлэх</button>

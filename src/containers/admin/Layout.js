@@ -3,7 +3,8 @@ import { AlertStyle } from 'components/theme'
 import Aside from '../../components/admin/left_menu/Aside';
 import Main from '../../components/admin/left_menu/TopMain';
 import UserContext from '../../context/UserContext'
-import styled from 'styled-components'
+import MiddleRoute from "containers/middle/middleRoute"
+import styled, { keyframes } from 'styled-components'
 import HomeAdmin from '../../components/admin/HomeAdmin'
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
@@ -63,6 +64,7 @@ function Layout({ setLocale }) {
                             <Route path="/urgudul/:page">
                                 <UrgudulNavigator preloaded={true} />
                             </Route>
+
                             <Route path="/meetings" component={EvaluatorsMeetingsNavigator} />
                             <Route path="/epd-information" component={EdpInformationHome} />
 
@@ -84,6 +86,8 @@ function Layout({ setLocale }) {
                             <Route path="/5b/:id" component={CompilationChecklist} />
 
                             <Route path="/5c/:id" component={AnalystReport} />
+                            <MiddleRoute />
+
                         </Switch>
                     </UrgudulStore>
                 </div>
@@ -98,6 +102,12 @@ function Layout({ setLocale }) {
 }
 
 export default Layout;
+
+const cardAnimate = keyframes`
+    0% { transform:scale(1);opacity:0;  }
+    30% { transform:scale(1.017);opacity:0.7;  }
+    100% { transform:scale(1);opacity:1;  }
+`
 
 const AdminApp = styled.div`
     .MainParent{
@@ -136,34 +146,131 @@ const AdminApp = styled.div`
             }
             .profilePar{
                 display:flex;
-                position:relative;
-                .otherPar{
-                    cursor:pointer;
-                    width:140px;
-                    background-color:white;
-                    position:absolute;
-                    bottom:-45px;
-                    right:-10px;
-                    border-radius:4px;
-                    text-align:left;
-                    .logout{
-                        padding:5px 16px;
-                        cursor:pointer;
-                        color:#2c2945;
-                        text-align:left;
-                        display:flex;
-                        font-size:14px;
-                        align-items:center;
-                        &:hover{
+                // position:relative;
+                .userMenuPar{
+                    display:flex;
+                    flex-direction:row;
+                    justify-content:space-between;
+                    align-items:center;
+                    width:10%;
+                    .UserNameMenu{
+                      position:relative;
+                      .ghost{
+                        animation-name: ${cardAnimate};
+                        animation-duration:0.5s;
+                        color:rgba(${(props) => props.theme.textColor},1);
+                        position:absolute;
+                        z-index:10;
+                        top:5px;
+                        right:0;
+                        transition:all 0.3s ease;
+                        .HoverContent{
+                          display:flex;
+                          align-items:center;
+                          flex-direction:column;
+                          justify-content:center;
+                          margin-top:30px;
+                          padding:0px 15px;
+                          background-color:#fff;
+                          max-height: calc(100vh - 60px);
+                          box-shadow:1px 1px 20px -9px;
+                          width:300px;
+                          border-radius:4px;
+                          .UserInfo{
+                            display:flex;
+                            align-items:center;
+                            width:100%;
+                            padding:20px 5px;
+                            border-bottom:1px solid rgba(0,0,0,0.2);
+                            img{
+                              width:25px;
+                              margin-right:15px;
+                            }
+                            .name{
+                              font-size:16px;
+                              font-weight:500;
+                            }
+                          }
+                          .resPass{
+                            text-decoration:none;
+                            color:rgba(${(props) => props.theme.textColor},1);
+                            cursor:pointer;
                             border-radius:4px;
-                            background-color:rgba(0,0,0,0.1);
+                            width:100%;
+                            padding: 9px 5px;
+                            margin: 9px 0px;
+                            display:flex;
+                            align-items:center;
+                            justify-content:space-between;
+                            .initList{
+                              display:flex;
+                              align-items:center;
+                              span{
+                                font-size:15px;
+                                font-weight:500;
+                                color:rgba(${(props) => props.theme.textColor},1);
+                              }
+                              .svg{
+                                margin-right:14px;
+                                background-color:#e4e6eb;
+                                padding:8px 8px;
+                                border-radius:50%;
+                                svg{
+                                  font-size:17px;
+                                }
+                              }
+                            }
+                            .svgOther{
+                              svg{
+                                color:rgba(${(props) => props.theme.textColor},.7);
+                                font-size:22px;
+                              }
+                            }
+                            &:hover{
+                              background-color:#e4e6eb;
+                            }
                         }
+                      }
+                      }
+                      .par{
+                        padding:4px 4px;
+                        cursor:pointer;
+                        height:100%;
+                        border-radius:50%;
+                        // background-color:#e4e6eb;
+                        margin-left:8px;
                         svg{
-                            font-size:20px;
-                            margin-right:10px;
+                          font-size:21px;
+                          color:rgba(255,255,255,0.9);
                         }
+                        &:hover{
+                          color:black;
+                          background-color:rgba(255,255,255,0.3);
+                          svg{
+                            color:white;
+                          }
+                        }
+                      }
                     }
-                }
+                    .Logout{
+                        margin-left:8px;
+                      a {
+                        font-weight:500;
+                        display:flex;
+                        align-items:center;
+                        color:black;
+                        text-decoration: none !important;
+                        color:rgba(255,255,255,0.9);
+                        font-size:15px;
+                        svg{
+                          margin-left:4px;
+                          font-size:18px;
+                          color:rgba(255,255,255,0.9);        
+                        }
+                      }
+                    }
+                  }
+              
                 
                 .Profile{
                     cursor:pointer;

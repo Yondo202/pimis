@@ -104,14 +104,11 @@ export const ChangePassword = () =>{
                             </div>
                         </div>
                     </div>
-
                     <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{errText}</div>
                             <NextBtn onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Солих <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                     </div>
-
                 </div>
-
 
                 </div>
                 <div className="col-md-2"></div>
@@ -135,9 +132,10 @@ const anime = keyframes`
 const ChangePass = styled.div`
     font-size:14px;
     .parent{
+        margin-top:50px;
         height:65vh;
         display:flex;
-        align-items:center;
+        align-items:start;
         justify-content:center;
         .ContentPar{
             animation-name:${anime};
