@@ -1,10 +1,22 @@
-import React, {useRef } from 'react'
+import React, {useRef,useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { useReactToPrint } from "react-to-print";
 import {VscFilePdf} from 'react-icons/vsc';
 import Content from './Content'
+import axios from 'axiosbase';
+import AuthToken from 'context/accessToken'
 
-function Approved({ projectId }) {
+function Approved({ projectId,setShowNotify }) {
+  const [ data, setData ] = useState({});
+  const [ edpInfo ,setEdpInfo ] = useState({});
+  useEffect(()=>{
+    axios.get(`pps-infos/registered-companies?projectId=${projectId}`, { headers: { Authorization: AuthToken() } }).then(res=>{
+      if(res.data.data.length){ setData(res.data.data[0]) }
+    }).catch(err=> console.log(`err`, err))
+    axios.get(`edp-info`,{ headers: { Authorization: AuthToken() } }).then(res=>{
+      if(res.data.data?.id){ setEdpInfo(res.data.data); }
+    }).catch(err=>console.log(`err`, err));
+  },[])
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
@@ -13,7 +25,7 @@ function Approved({ projectId }) {
           <MainContainter className="container">
               <div className="containt">
                   <div className="parent" ref={componentRef}>
-                      <Content projectId={projectId}  />
+                      <Content setShowNotify={setShowNotify} edpInfo={edpInfo} data={data} projectId={projectId}  />
                   </div>
                   <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
               </div >
@@ -30,6 +42,7 @@ const animate = keyframes`
 
 
 const MainContainter = styled.div`
+    padding-bottom:20px;
     animation: ${animate} 0.8s ease;
     .containt{
       display:flex;
@@ -44,11 +57,11 @@ const MainContainter = styled.div`
       .btn{
           transition:all 0.4s ease;
           margin:10px 0px;
-          max-width:700px;
+          max-width:850px;
           width:100%;
       }
       .print{
-            max-width:700px;
+            max-width:850px;
             width:100%;
             font-weight:500;
             color:black;
