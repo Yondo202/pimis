@@ -13,6 +13,7 @@ import Approve from 'components/admin/contents/notifyPage/Approve/Approved'
 import NotApprove from 'components/admin/contents/notifyPage/notApprove/NotApproved'
 
 const FirstEvaluation = () => {
+  const [ cond, setCond ] = useState(false);
   const [rows, setRows] = useState(initialState);
   const [rowZ, setRowZ] = useState(null);
   const [ showNotify, setShowNotify ] = useState(false);
@@ -33,9 +34,9 @@ const FirstEvaluation = () => {
       axios.get(`projects/${projectId}/first-evalutions`, {
         headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
-        console.log(res.data, " ^^")
+        console.log(res.data, " ^^^^^^^")
         if (res.data.data?.length === initialState.length) {
-          setRows(res.data.data);
+          setRows(res.data.data); setCond(true);
           let dd = res.data.data.filter(el=> el.rowcode === "z");setRowZ(dd[0]?.isChecked);
         }
       }).catch(err => {
@@ -55,12 +56,16 @@ const FirstEvaluation = () => {
     axios.post(`projects/${projectId}/first-evalutions`, rows, {
       headers: { Authorization: getLoggedUserToken() },
     }).then(res => {
-      console.log(res.data)
-      AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Анхан шатны үнэлгээ хадгалагдлаа.' })
+      console.log(res.data);
+      AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Анхан шатны үнэлгээ хадгалагдлаа.' });
     }).catch(err => {
       console.log(err.response?.data)
       AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
     })
+  }
+  const handleSubmitSendMail = () =>{
+    if(cond){ setShowNotify(true);  return }
+    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Үнэлгээний хуудасыг хадагласны дараа илгээх боломжтой.' });
   }
 
   const [previewModalOpen, setPreviewModalOpen] = useState(false);
@@ -68,7 +73,7 @@ const FirstEvaluation = () => {
   return (
     <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
 
-      {showNotify?rowZ?<Approve projectId={projectId} />:rowZ===false?<NotApprove projectId={projectId} />:null
+      {showNotify?rowZ?<Approve projectId={projectId} setShowNotify={setShowNotify} />:rowZ===false?<NotApprove setShowNotify={setShowNotify} projectId={projectId} />:null
       :(<><button className="tw-float-right tw-m-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center" onClick={() => setPreviewModalOpen(true)}>
                 <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
                 Харах
@@ -123,10 +128,14 @@ const FirstEvaluation = () => {
               </div>
 
               {projectId &&
-                <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
-                <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={()=>{handleSubmit(); setShowNotify(true)} }>
-                    Хадгалах
-                </button>
+                <div style={{display:`flex`, justifyContent:"space-between"}} className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
+                  <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmitSendMail}>
+                      Мэдэгдэл илгээх
+                  </button>
+
+                  <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
+                      Хадгалах
+                  </button>
                 </div>
               }
       </>)}

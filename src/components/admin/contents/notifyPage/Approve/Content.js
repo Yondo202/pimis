@@ -6,18 +6,27 @@ import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
 import { RiAddCircleFill } from 'react-icons/ri';
 import {AlertStyle, InputStyle} from 'components/theme'
+import AuthToken from 'context/accessToken'
+
+
+const today = new Date();
+const month = (today.getMonth()+1);
+const year = today.getFullYear();
+const day = today.getDate();
+const addDays=(dateObj, numDays)=>{ dateObj.setDate(dateObj.getDate() + numDays);  return dateObj;}
+const nextWeek = addDays(today , 10); const day2 = nextWeek.getDate();const month2 = (nextWeek.getMonth()+1); const year2 = nextWeek.getFullYear();
 
 export default class Content extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-        color: "orange",
-         text: "dd",
-         cond: false,
-         Btn: "1", 
+        color: "orange",  text: "dd", cond: false,   Btn: "1", 
+         rejectReason: "",
          myData : DataList,
-         addInp : []
+         addInp : [],
+         username : localStorage.getItem("username"),
         }
+        console.log(`props.projectId`, props.projectId)
     }
 
     alertText = ( color, text, cond ) => {
@@ -26,70 +35,50 @@ export default class Content extends React.Component {
     }
 
     clickHandle = () =>{
-        let inp = document.querySelectorAll(".getInp"); let arr = Array.from(inp); let final = [];
-
-        arr.map((el,i)=>{
-            let obj = {}
-            obj[el.name] = el.value
-            final.push(obj)
-        })
-        console.log(`final`, final)
-
-        // axios.post('send-pps-notice', {
-        //     // html: Html,
-        //     email: "yondooo61@gmail.com",
-        //     notice_type: "first-evalution",
-        //     projectId: this.props?.projectId,
-        //     emailBody:EmailHTML(this.state.myData ),
-        //    }).then((res)=>{
-        //         console.log(res.data.success, "my Response");
-        //         this.setState({ Btn: "0"});
-        //         this.alertText("green", "Амжилттай илгээлээ", true);
-        //       }).catch((e)=>{
-        //         this.alertText("orange", "Алдаа гарлаа", true);
-        //         console.log(e, "err Response");
-        // });
+        axios.post('send-pps-notice', {
+            notice_type: "first-evalution",
+            projectId: this.props?.projectId,
+            additionMaterial: this.state.rejectReason,
+            emailBody:EmailHTML(this.state.myData, this.props?.data, this.props?.edpInfo, this.state.username, this.state.rejectReason ),
+            approved : true
+           }, { headers: { Authorization: AuthToken() } }).then((res)=>{
+                console.log(res.data.success, "my Response");
+                this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true); setTimeout(()=>{this.props.setShowNotify(prev=>!prev)},3000);
+              }).catch((e)=>{
+                this.alertText("orange", "Алдаа гарлаа", true);
+                console.log(e, "err Response");
+        });
     };
+    changeHandle = (event) =>{ this.setState({  rejectReason: event.target.value }) }
+
     addBtn = (el) =>{
-        let initial = { ids: 0 + el  }
-        let arr = this.state.addInp.concat([initial])
-        this.setState({
-            addInp: arr
-        })
-    }
-    onChangeHandle = (event) =>{
-        // let addition = {};
-        // let name = event.target.name
-            
-        //     this.state.myData.map(el=> {
-        //         if(el.code !== event.target.name){
-        //         let arr = this.state.myData.concat({ title: event.target.value, code: event.target.name })
-
-        //         }
-        //     })
-        //     this.setState({
-        //         myData: arr
-        //     });
+        if(this.state.addInp.length===0){
+            let initial = { ids: 0 + el  }
+            let arr = this.state.addInp.concat([initial])
+            this.setState({
+                addInp: arr
+            })
+        }
     }
 
+    
 
     render() {
-        // console.log(`addInp`, this.state.addInp);
-
-        console.log(`addInp`, this.state.myData);
-
+        const data = this.props?.data
+        const edpInfo = this.props?.edpInfo
+        console.log(`this.state.addInp`, this.state.addInp.length)
         return (
             <>
                 <MainPar className="MainPar" >
                     <div className="title"> Дараагийн шатанд тэнцсэн талаарх мэдэгдэл буюу үндсэн мэдүүлгийн бүрдүүлбэрийн урилга</div>
-                    <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч аж ахуйн нэгжийн нэр:</span> <span className="MemeberInfo">/......................../</span></div>
-                    <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч албан тушаалтны нэр: </span> <span className="MemeberInfo">/......................../</span></div>
-                    <div className="nameTitle"><span className="smtitle">Албан тушаал: </span><span className="MemeberInfo">/......................../</span></div>
-                    <div className="nameTitle"><span className="smtitle">Он сар өдөр: </span><span className="MemeberInfo">/........................./</span></div>
-                    <div className="toname">Эрхэм <span className="name">………….....</span> Танд,</div><br />
+                    <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч аж ахуйн нэгжийн нэр:</span> <span className="MemeberInfo">{data?.companyname}</span></div>
+                    <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч албан тушаалтны нэр: </span> <span className="MemeberInfo">{data?.project?.company?.representative_name}</span></div>
+                    <div className="nameTitle"><span className="smtitle">Албан тушаал: </span><span className="MemeberInfo">{data?.project?.company?.representative_position}</span></div>
+                    <div className="nameTitle"><span className="smtitle">Он сар өдөр: </span><span className="MemeberInfo">{`${day} / ${month} / ${year}`}</span></div>
+                    <div className="toname">Эрхэм <span className="name"> {data?.project?.company?.representative_name} </span> Танд,</div><br />
                     <div className="contentPar">
-                        <div className="items">Экспортыг дэмжих төслийн анхан шатны шалгаруулалтанд зориулж таны илгээсэн ………….. Дугаартай өргөдөл нь анхан шатны шалгаруулалтанд тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна</div> <br />
-                        <div className="items">Шаардлатай материалын жагсаалтыг хавсаргасан бөгөөд таныг энэхүү захидал илгээсэн өдрөөс эхлэн ажлын 10 хоногийн дотор буюу …. Оны ….. Сарын ….. Өдрийн 18 цагаас өмнө мэдээллээ ………...хаягаар илгээхийг хүсч байна. </div> <br />
+                        <div className="items">Экспортыг дэмжих төслийн анхан шатны шалгаруулалтанд зориулж таны илгээсэн {data?.project_number} Дугаартай өргөдөл нь анхан шатны шалгаруулалтанд тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна</div> <br />
+                        <div className="items">Шаардлатай материалын жагсаалтыг хавсаргасан бөгөөд таныг энэхүү захидал илгээсэн өдрөөс эхлэн ажлын 10 хоногийн дотор буюу {year2}оны  {month2}сарын {day2}өдрийн 18 цагаас өмнө мэдээллээ " {edpInfo.email} "  хаягаар илгээхийг хүсч байна. </div> <br />
                         <div className="items">Хэрэв дээр дурдсан хугацаанд материал ирээгүй тохиолдолд танай байгууллагыг энэхүү түншлэлийн хөтөлбөрт оролцох сонирхолгүй болсоноор тооцон таны өргөдлийн материал хаагдах болно.  Өргөдлийн материал хаагдсаны дараа та дахин оролцох хүсэлтэй бол шинээр процессыг эхэлж, дахин шалгаруулалтанд орох болно.</div> <br />
                     </div>
                     <div className="nameTitle"><span className="smtitle A22">Шаардлагатай материалын жагсаалт: </span>
@@ -99,17 +88,13 @@ export default class Content extends React.Component {
                                 return( <div className="items">• {el.title}</div> )
                             })}
                         </div>
-
-                         {this.state.addInp.map((el,i)=> <InputStyle  className="btnStyle"><input onChange={this.onChangeHandle} name={`addition${i+1}`} className="getInp" placeholder="Нэмэлтээр оруулах..." /> <div className="line"></div> </InputStyle> )}   
+                        {this.state.addInp.map(el=> <InputStyle  className="btnStyle"><input onChange={this.changeHandle} name={`title`} className="getInp" name="addition" placeholder="Нэмэлтээр оруулах..." /><div className="line"></div> </InputStyle> )}   
                         
-                         
-                        <div onClick={()=>this.addBtn(1)} className="addBtn"><RiAddCircleFill /> <span>Бусад нэмэлт шаардлагатай баримт бичиг</span></div>
-                        
-                        <br /><br />
+                        {this.state.addInp.length===0?<div onClick={()=>this.addBtn(1)} className="addBtn"><RiAddCircleFill /> <span>Бусад нэмэлт шаардлагатай баримт бичиг</span></div>:null} <br /><br />
 
-                    <div className="nameTitle A2"><span className="smtitle">Хүндэтгэсэн: </span><span className="MemeberInfo">/........................./</span></div>
-                    <div className="nameTitle A2" ><span className="smtitle">Нэр, албан тушаал: </span><span className="MemeberInfo">/........................./</span></div>
-                    <div className="nameTitle A2"><span className="smtitle">Хаяг: </span><span className="MemeberInfo">/........................./</span></div>
+                    <div className="nameTitle A2"><span className="smtitle">Хүндэтгэсэн, </span></div>
+                    <div className="nameTitle A2" ><span className="smtitle">Ахлах БХШ : </span><span className="MemeberInfo">{this.state.username}</span></div>
+                    <div className="nameTitle A2"><span className="smtitle">Хаяг: </span><span className="MemeberInfo">{edpInfo?.address}</span></div>
                 </MainPar> 
 
                 <SendBtn onClick={this.clickHandle} style={{transform:`scale(${this.state.Btn})`,opacity:`${this.state.Btn}`}} className="btn btn-primary">Илгээх</SendBtn>
@@ -124,53 +109,54 @@ export default class Content extends React.Component {
 
 
 
-const EmailHTML = (stateData) => renderEmail(
-    <Email style={{border:"1px solid rgba(0,0,0,0.2)",padding:'30px 60px'}} title="EDP">
+const EmailHTML = (stateData, data, edpInfo, userName, rejectReason) => renderEmail(
+    <Email style={{border:"1px solid rgba(0,0,0,0.2)",padding:'30px 70px', paddingTop:"15px",  width:"850px"}} title="EDP">
             <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
                 <Item style={{color:"#222222", padding:'20px 20px', backgroundColor:"white", height:"100%"}} align="end">
-                    <Box style={{textAlign:"center",width:"100%", marginBottom:'30px',fontWeight:'500', fontSize:'13px'}} >Дараагийн шатанд тэнцсэн талаарх мэдэгдэл буюу үндсэн мэдүүлгийн бүрдүүлбэрийн урилга</Box>
+                    <Box style={{textAlign:"center",width:"100%", marginBottom:'30px',fontWeight:'500', fontSize:'14px'}} >Дараагийн шатанд тэнцсэн талаарх мэдэгдэл буюу үндсэн мэдүүлгийн бүрдүүлбэрийн урилга</Box>
 
                     <Item style={{display:"flex", textAlign:"start", width:"100%",padding:"3px 0px", fontSize:'13px'}}>
                         <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Өргөдөл гаргагч аж ахуйн нэгжийн нэр: </Span>
-                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > /......................../ </Span>
+                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > {data?.companyname} </Span>
                     </Item>
 
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
                         <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Өргөдөл гаргагч албан тушаалтны нэр: </Span>
-                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > /......................../ </Span>
+                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > {data?.project?.company?.representative_name}</Span>
                     </Item>
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
                         <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Албан тушаал: </Span>
-                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > /......................../ </Span>
+                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} >{data?.project?.company?.representative_position}</Span>
                     </Item>
 
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
                         <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Он сар өдөр: </Span>
-                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > /......................../ </Span>
+                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} >{`${day} / ${month} / ${year}`}</Span>
                     </Item>
-                    <Box style={{textAlign:"start",width:"100%", margin:'16px 0px', fontSize:'13px'}}>Эрхэм хүндэт /.............../ Танд,</Box>
+                    <Box style={{textAlign:"start",width:"100%", margin:'16px 0px', fontSize:'13px'}}>Эрхэм хүндэт {data?.project?.company?.representative_name} Танд,</Box>
 
-                    <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Экспортыг дэмжих төслийн анхан шатны шалгаруулалтанд зориулж таны илгээсэн ………….. Дугаартай өргөдөл нь анхан шатны шалгаруулалтанд тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна. </Box>
-                    <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Шаардлатай материалын жагсаалтыг хавсаргасан бөгөөд таныг энэхүү захидал илгээсэн өдрөөс эхлэн ажлын 10 хоногийн дотор буюу …. Оны ….. Сарын ….. Өдрийн 18 цагаас өмнө мэдээллээ ………...хаягаар илгээхийг хүсч байна. </Box>
+                    <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Экспортыг дэмжих төслийн анхан шатны шалгаруулалтанд зориулж таны илгээсэн {data?.project_number} Дугаартай өргөдөл нь анхан шатны шалгаруулалтанд тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна. </Box>
+                    <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Шаардлатай материалын жагсаалтыг хавсаргасан бөгөөд таныг энэхүү захидал илгээсэн өдрөөс эхлэн <Span style={{fontWeight:"600", fontSize:'13px'}}>ажлын 10 хоногийн дотор буюу {year2}оны  {month2}сарын {day2}өдрийн 18 цагаас өмнө</Span>   мэдээллээ " {edpInfo?.email} " хаягаар илгээхийг хүсч байна. </Box>
                     <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Хэрэв дээр дурдсан хугацаанд материал ирээгүй тохиолдолд танай байгууллагыг энэхүү түншлэлийн хөтөлбөрт оролцох сонирхолгүй болсоноор тооцон таны өргөдлийн материал хаагдах болно.  Өргөдлийн материал хаагдсаны дараа та дахин оролцох хүсэлтэй бол шинээр процессыг эхэлж, дахин шалгаруулалтанд орох болно.</Box>
                 
                     <Box style={{textAlign:"start",width:"100%",marginTop:'5px',marginBottom:'10px', fontSize:'13px', fontWeight:"500"}}>Шаардлагатай материалын жагсаалт:</Box>
 
                     <Box style={{width:"100%",marginBottom:'32px', marginLeft:"30px", fontSize:'13px'}}>
                              {stateData.map((el)=> <Item style={{color:"#222222", width:"100%", fontSize:'13px', padding:"3px 0px"}}>• {el.title}</Item>)}
+                             {rejectReason!==""?<Item style={{color:"#222222", width:"100%", fontSize:'13px', padding:"3px 0px"}}>• {rejectReason}</Item>: null}  
                     </Box>
 
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
-                        <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Хүндэтгэсэн: </Span>
-                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > /......................../ </Span>
+                        <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Хүндэтгэсэн , </Span>
+                        {/* <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > {userName}</Span> */}
                     </Item>
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
-                        <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Нэр, албан тушаал : </Span>
-                        <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} > /......................../ </Span>
+                        <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Ахлах БХШ : </Span>
+                        <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} > {userName} </Span>
                     </Item>
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
                         <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Хаяг : </Span>
-                        <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} > /......................../ </Span>
+                        <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} >{edpInfo?.address}</Span>
                     </Item>
                 </Item>
     </Email>
@@ -188,7 +174,7 @@ const SendBtn = styled.div`
 const MainPar = styled.div`
       margin-bottom:20px;
       background-color:white;
-      max-width:700px;
+      max-width:850px;
       margin-top:20px;
       font-size:13px;
       padding:30px 60px;

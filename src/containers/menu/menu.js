@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import {IoIosLogOut} from 'react-icons/io';
 import {CgProfile} from 'react-icons/cg';
-import {IoNotificationsOutline,IoLockClosed} from 'react-icons/io5';
+import {IoNotificationsOutline,IoLockClosed, IoLogOutSharp} from 'react-icons/io5';
 import {IoIosArrowForward} from 'react-icons/io';
+import {FaPenNib} from 'react-icons/fa';
+import {AiOutlineForward} from 'react-icons/ai';
 import { useLocation } from 'react-router-dom';
 import HamburgerMenu from 'react-hamburger-menu';
 
@@ -52,7 +54,6 @@ function Menu() {
 
   return (
     <Componentss>
-     
       <div style={{height:headerHeight,display:diplayFlex}} className="MainMenus">
             <div style={currPath === "/"? {maxWidth:`1160px`}:{maxWidth:1000}} className="container">
                <input type="checkbox" id="check" name="check" />
@@ -92,14 +93,22 @@ function Menu() {
                              {showProfile&&<div onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="ghost"> 
                              <div className="HoverContent">  
                                   <div className="UserInfo"> <img src="/user1.svg" alt="src" /> <span className="name">{userName}</span> </div>
+                                  <Link onClick={closeHandle} to="/signature" className="resPass">
+                                        <div className="initList"><div className="svg"><FaPenNib /></div><span>Гарын үсэг зурах</span></div>
+                                        <div className="svgOther"><IoIosArrowForward /> </div>                               
+                                  </Link>
                                   <Link onClick={closeHandle} to="/changepass" className="resPass">
                                         <div className="initList"><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
+                                        <div className="svgOther"><IoIosArrowForward /> </div>                               
+                                  </Link>
+                                  <Link to="/" onClick={()=>{closeHandle();userCtx.logout()}}  className="resPass">
+                                        <div className="initList"><div className="svg"><IoLogOutSharp /></div>  <span>Гарах</span></div>
                                         <div className="svgOther"><IoIosArrowForward /> </div>                               
                                   </Link>
                               </div></div>} 
 
                           </div>
-                          <span className="Logout"><Link  to="/" onClick={()=>userCtx.logout()}><span>Гарах</span><IoIosLogOut /></Link></span>
+                          {/* <span className="Logout"><Link  to="/" onClick={()=>userCtx.logout()}><span>Гарах</span><IoIosLogOut /></Link></span> */}
                         </div>
                 </span>
 

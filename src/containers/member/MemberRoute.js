@@ -5,6 +5,7 @@ import MemberDecision from 'components/member/member_decision/Decision_main';
 import MembersHome from 'components/member/HomePage';
 import Notify from 'components/member/notify/PageOne';
 import {ChangePassword} from 'components/LoginDoneHome/ChangePassword'
+import SignatureDraw from 'components/LoginDoneHome/SignatureDraw'
 
 
 function MemberRoute() {
@@ -22,6 +23,7 @@ function MemberRoute() {
                     <Notify NotifyData={NotifyData} />
                 </Route>
                 <Route path="/changepass" component={ChangePassword} />
+                <Route path="/signature" component={SignatureDraw} />
             </Switch>
         </>
     )

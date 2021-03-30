@@ -47,7 +47,7 @@ function App() {
                 (<MemberRoute />)
               : ( <Admin /> ) 
               : ( <UsersRoute />  )
-              : (<UnAuthContent />)
+              : ( <UnAuthContent />)
             }
           </Router>
           <FilePreviewModal />
