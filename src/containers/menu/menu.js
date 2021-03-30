@@ -2,12 +2,10 @@ import React,{useEffect, useState,useContext} from "react";
 import styled,{keyframes} from "styled-components";
 import { Link } from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import {IoIosLogOut} from 'react-icons/io';
-import {CgProfile} from 'react-icons/cg';
-import {IoNotificationsOutline,IoLockClosed, IoLogOutSharp} from 'react-icons/io5';
+import {IoNotificationsOutline,IoLockClosed,IoCaretDownOutline} from 'react-icons/io5';
 import {IoIosArrowForward} from 'react-icons/io';
 import {FaPenNib} from 'react-icons/fa';
-import {AiOutlineForward} from 'react-icons/ai';
+import {GiEntryDoor} from 'react-icons/gi';
 import { useLocation } from 'react-router-dom';
 import HamburgerMenu from 'react-hamburger-menu';
 
@@ -87,14 +85,14 @@ function Menu() {
                         <div className="userMenuPar">
                           {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
                           <div className="Notification"><div className="notf" to="#" content="2" ><IoNotificationsOutline /></div> </div>
-                          <div className="UserNameMenu" content={userName} >
-                            <div style={proHover?{backgroundColor:`rgba(255,255,255,0.4)`}:{backgroundColor:`inherit`}} onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="par"><CgProfile /></div> 
+                          <div className="UserNameMenu" >
+                            <div style={proHover?{backgroundColor:`rgba(255,255,255,0.4)`}:{backgroundColor:`rgba(255,255,255,0.2)`}} onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="par"><IoCaretDownOutline /></div> 
 
                              {showProfile&&<div onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="ghost"> 
                              <div className="HoverContent">  
-                                  <div className="UserInfo"> <img src="/user1.svg" alt="src" /> <span className="name">{userName}</span> </div>
+                                  <div className="UserInfo"> <img src="/user1.svg" alt="src" /> <span className="name">{userCtx.userInfo.name}</span> </div>
                                   <Link onClick={closeHandle} to="/signature" className="resPass">
-                                        <div className="initList"><div className="svg"><FaPenNib /></div><span>Гарын үсэг зурах</span></div>
+                                        <div className="initList"><div className="svg"><FaPenNib /></div><span>Хэрэглэгчийн мэдээлэл</span></div>
                                         <div className="svgOther"><IoIosArrowForward /> </div>                               
                                   </Link>
                                   <Link onClick={closeHandle} to="/changepass" className="resPass">
@@ -102,7 +100,7 @@ function Menu() {
                                         <div className="svgOther"><IoIosArrowForward /> </div>                               
                                   </Link>
                                   <Link to="/" onClick={()=>{closeHandle();userCtx.logout()}}  className="resPass">
-                                        <div className="initList"><div className="svg"><IoLogOutSharp /></div>  <span>Гарах</span></div>
+                                        <div className="initList"><div className="svg"><GiEntryDoor /></div>  <span>Гарах</span></div>
                                         <div className="svgOther"><IoIosArrowForward /> </div>                               
                                   </Link>
                               </div></div>} 
@@ -209,8 +207,7 @@ const Componentss = styled.div`
             flex-direction:row;
             justify-content:space-between;
             align-items:center;
-            width:20%;
-            
+            width:10%;
             .Notification{
               .notf{
                 position:relative;
@@ -218,7 +215,7 @@ const Componentss = styled.div`
                 flex-direction:row;
                 align-items:center;
                 &::before{
-                  font-size:12px;
+                  font-size:11px;
                   font-weight:600;
                   display:flex;
                   align-items:center;
@@ -235,7 +232,7 @@ const Componentss = styled.div`
                 }
                 svg{
                   margin-left:8px;
-                  font-size:21px;
+                  font-size:24px;
                   color:rgba(255,255,255,0.9);
                   
                 }
@@ -261,7 +258,7 @@ const Componentss = styled.div`
                   background-color:#fff;
                   max-height: calc(100vh - 60px);
                   box-shadow:1px 1px 20px -9px;
-                  width:250px;
+                  width:300px;
                   border-radius:4px;
                   .UserInfo{
                     display:flex;
@@ -318,12 +315,6 @@ const Componentss = styled.div`
                     }
                 }
               }
-              
-
-          // <div className="resPass">
-          //       <div className="initList><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
-          //       <div className="svgOther"><IoIosArrowForward /> </div>                               
-          // </div>
               }
               .par{
                 padding:4px 4px;
