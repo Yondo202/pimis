@@ -79,15 +79,12 @@ function Layout({ setLocale }) {
                             <Route path="/letter-of-interest/:id" component={LetterPreview} />
                             <Route path="/urgudul-preview/:id" component={UrgudulPreview} />
                             <Route path="/attachments/:id" component={AttachmentUploads} />
-
                             <Route exact path="/5a/:id" component={FirstEvaluation} />
                             <Route path="/5a/:id/send-notice" component={FirstEvaluationSendNotice} />
-
                             <Route path="/5b/:id" component={CompilationChecklist} />
-
                             <Route path="/5c/:id" component={AnalystReport} />
-                            <MiddleRoute />
 
+                            <MiddleRoute />
                         </Switch>
                     </UrgudulStore>
                 </div>
