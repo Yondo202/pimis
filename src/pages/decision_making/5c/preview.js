@@ -34,18 +34,13 @@ export default function AnalystReportPreview(props) {
                 {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
             </Pdf>
 
-            {/* <PDFDownloadLink
+            {/* @react-pdf/renderer */}
+            <PDFDownloadLink
                 document={<AnalystReportPreview1 rows={rows} info={info} project={project} />}
                 fileName="5c.pdf"
-                style={{
-                    textDecoration: "none",
-                    padding: "10px",
-                    color: "#4a4a4a",
-                    backgroundColor: "#f2f2f2",
-                    border: "1px solid #4a4a4a"
-                }}>
-                Download PDF
-            </PDFDownloadLink> */}
+            >
+                {({ blob, url, loading, error }) => (loading ? 'Loading' : 'Download')}
+            </PDFDownloadLink>
 
             <div className="tw-mx-auto" ref={componentRef}>
                 <div className="tw-text-center tw-text-base tw-font-medium tw-mt-4 tw-mb-8">
