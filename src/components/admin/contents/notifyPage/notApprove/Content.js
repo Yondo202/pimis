@@ -17,7 +17,10 @@ export default class Content extends React.Component {
         super(props)
         this.state = {
         color: "orange", text: "", cond: false, Btn: "1",
-        rejectReason: "", username : localStorage.getItem("username"), }
+        rejectReason: "",
+        username : null || localStorage.getItem("username"),
+        signature : null || localStorage.getItem("signature"),
+     }
     }
     alertText = ( color, text, cond ) => {
         this.setState({ color:color, text:text, cond:cond  });
@@ -32,11 +35,12 @@ export default class Content extends React.Component {
         }
         inp.classList -= " red"
         axios.post('send-pps-notice', { 
-            // email: "yondooo61@gmail.com", 
+            // email: "yondooo61@gmail.com",
             notice_type: "first-evalution",
             projectId: this.props?.projectId,
             approved : false,
             additionMaterial: this.state.rejectReason,
+            signatureData:this.state.signature,
             emailBody:EmailHTML( this.props?.data, this.props?.edpInfo, this.state.username, this.state.rejectReason ),
         }, { headers: { Authorization: AuthToken() } })
         .then((res)=>{ this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true);
@@ -73,6 +77,12 @@ export default class Content extends React.Component {
                 <div className="nameTitle A2"><span className="smtitle">Хүндэтгэсэн, </span><span className="MemeberInfo"></span></div>
                 <div className="nameTitle A2" ><span className="smtitle">Ахлах БХШ : </span><span className="MemeberInfo">{this.state.username}</span></div>
                 <div className="nameTitle A2"><span className="smtitle">Хаяг: </span><span className="MemeberInfo">{edpInfo?.address}</span></div>
+
+                <div style={{marginTop:"10px"}} className="nameTitle A2">
+                    <span className="smtitle">Гарын үсэг : </span> 
+                    <span className="SignaturePar"><img src={this.state.signature} alt="edpSignature" /></span>
+                    {/* <span className="smtitle">{`${this.props?.Signature?.lastname.slice(0,1).toUpperCase()}. ${this.props?.Signature?.firstname}`}</span>  */}
+                </div>
             </MainPar>
 
             <SendBtn onClick={this.clickHandle} style={{transform:`scale(${this.state.Btn})`,opacity:`${this.state.Btn}`}} className="btn btn-primary">Илгээх</SendBtn>
@@ -85,30 +95,28 @@ export default class Content extends React.Component {
     }
 }
 
-
-
 const EmailHTML = ( data, edpInfo, username, rejectReason ) => renderEmail(
-    <Email style={{border:"1px solid rgba(0,0,0,0.2)",padding:'30px 70px', paddingTop:"15px",  width:"800px"}} title="EDP">
+    <Email style={{border:"1px solid rgba(0,0,0,0.2)",padding:'30px 70px', paddingTop:"15px",  width:"830px", backgroundColor:"rgba(220,220,220,0.2)"}} title="EDP">
         <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
             <Item style={{color:"#222222", padding:'20px 20px', backgroundColor:"white", height:"100%"}} align="end">
-                <Box style={{textAlign:"center",width:"100%", marginBottom:'30px',fontWeight:'500', fontSize:'14px'}} >Урьдчилсан мэдүүлэгт тэнцээгүй тухай мэдэгдэл</Box>
+                <Box style={{textAlign:"center",width:"100%", marginBottom:'30px',fontWeight:'500', fontSize:'15px', backgroundColor:"rgba(220,220,220,0.2)"}} >Урьдчилсан мэдүүлэгт тэнцээгүй тухай мэдэгдэл</Box>
 
-                <Item style={{display:"flex", textAlign:"start", width:"100%",padding:"3px 0px", fontSize:'13px'}}>
-                    <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Өргөдөл гаргагч аж ахуйн нэгжийн нэр: </Span>
+                <Item style={{display:"flex", textAlign:"start", width:"100%",padding:"6px 0px", fontSize:'13px'}}>
+                    <Span style={{color:"#222222",width:"50%",fontWeight:"600", fontSize:'13px'}}>Өргөдөл гаргагч аж ахуйн нэгжийн нэр: </Span>
                     <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > {data?.companyname} </Span>
                 </Item>
 
-                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
-                    <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Өргөдөл гаргагч албан тушаалтны нэр: </Span>
+                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
+                    <Span style={{color:"#222222", width:"50%",fontWeight:"600", fontSize:'13px'}}>Өргөдөл гаргагч албан тушаалтны нэр: </Span>
                     <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > {data?.project?.company?.representative_name} </Span>
                 </Item>
-                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
-                    <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Албан тушаал: </Span>
+                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
+                    <Span style={{color:"#222222", width:"50%",fontWeight:"600", fontSize:'13px'}}>Албан тушаал: </Span>
                     <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > {data?.project?.company?.representative_position} </Span>
                 </Item>
 
-                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
-                    <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Он сар өдөр: </Span>
+                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
+                    <Span style={{color:"#222222", width:"50%",fontWeight:"600", fontSize:'13px'}}>Он сар өдөр: </Span>
                     <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > {`${day} / ${month} / ${year}`}</Span>
                 </Item>
                 <Box style={{textAlign:"start",width:"100%", margin:'16px 0px', fontSize:'13px'}}>Эрхэм хүндэт {data?.project?.company?.representative_name} Танд,</Box>
@@ -121,17 +129,22 @@ const EmailHTML = ( data, edpInfo, username, rejectReason ) => renderEmail(
             
 
 
-                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
+                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
                     <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Хүндэтгэсэн, </Span>
                     <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > </Span>
                 </Item>
-                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
-                    <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Ахлах БХШ : </Span>
+                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
+                    <Span style={{color:"#222222",width:"50%",fontWeight:"600", fontSize:'13px'}}>Ахлах БХШ : </Span>
                     <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} > {username}</Span>
                 </Item>
-                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"3px 0px",  fontSize:'13px'}}>
-                    <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Хаяг : </Span>
+                <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
+                    <Span style={{color:"#222222",width:"50%",fontWeight:"600", fontSize:'13px'}}>Хаяг : </Span>
                     <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} > {edpInfo?.address}</Span>
+                </Item>
+
+                <Item style={{display:"flex",alignItems:"center", textAlign:"start",width:"100%",padding:"10px 0px",  fontSize:'13px'}}>
+                    <Span style={{color:"#222222",width:"20%",fontWeight:"600", fontSize:'13px'}}>Гарын үсэг : </Span>
+                    <Image style={{width:"150px", height:"75px", objectFit:"contain", marginRight:"20px"}} src="cid:signature" />
                 </Item>
 
             </Item>
@@ -156,9 +169,18 @@ const MainPar = styled.div`
       .nameTitle{
           display:flex;
           align-items:center;
-          padding:3px 0px;
+          padding:5px 0px;
+          .SignaturePar{
+            img{
+               width:150px;
+               height:75px;
+               object-fit:contain;
+               margin-right:15px;
+            }
+          }
           .smtitle{
-              width:50%;
+              font-weight:500;
+              width:45%;
           }
           .MemeberInfo{
               margin-left:30px;

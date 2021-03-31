@@ -79,7 +79,7 @@ const EmailHTML = (props, edpInfo, username, signature) => renderEmail(
     <Email style={{border:"1px solid rgba(0,0,0,0.2)",padding:'30px 60px', paddingTop:"30px", width:"750px", backgroundColor:"rgba(220,220,220,0.2)"}} title="EDP">
             <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
                 <Item style={{color:"#222222", padding:'20px 20px', backgroundColor:"white", height:"100%"}} align="end">
-                    <Box style={{textAlign:"center",width:"100%", marginBottom:'30px',fontWeight:'500', fontSize:'15px'}} >Түншлэлийн дэмжлэг олгох тухай мэдэгдэл</Box>
+                    <Box style={{textAlign:"center",width:"100%", marginBottom:'30px',fontWeight:'500', fontSize:'15px', backgroundColor:"rgba(220,220,220,0.2)"}} >Түншлэлийн дэмжлэг олгох тухай мэдэгдэл</Box>
 
                     <Item style={{display:"flex", textAlign:"start", width:"100%", padding:"5px 0px", fontSize:'13px'}}>
                         <Span style={{color:"#222222",width:"50%",fontWeight:'600', fontSize:'13px'}}>Өргөдөл гаргагч аж ахуйн нэгжийн нэр: </Span>

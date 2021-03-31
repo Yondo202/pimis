@@ -30,6 +30,7 @@ export const UserStore = (props) => {
     localStorage.setItem("expireDate", expireDate);
     localStorage.setItem("role", user.role);
     localStorage.setItem("username", user.name);
+    localStorage.setItem("signature", user.signature);
   };
 
   const loginUser = (email, password) => {
