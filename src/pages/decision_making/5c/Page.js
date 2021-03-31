@@ -236,6 +236,7 @@ const initialEvaluator = {
 
 export default function AnalystReport() {
     const [rows, setRows] = useState(initialState)
+    const [company, setCompany] = useState({})
 
     const handleInput = (key, value, rowcode) => {
         const index = rows.findIndex(row => row.rowcode === rowcode)
@@ -245,6 +246,7 @@ export default function AnalystReport() {
     }
 
     const projectId = useParams().id
+    const loggedUserId = localStorage.getItem('userId')
 
     useEffect(() => {
         if (projectId) {
@@ -260,11 +262,33 @@ export default function AnalystReport() {
                 console.log(err.response?.data)
             })
 
-            axios.get(`projects/${projectId}`, {
+            axios.get('pps-infos/registered-companies', {
                 headers: { Authorization: getLoggedUserToken() },
+                params: { projectId: projectId },
             }).then(res => {
                 console.log(res.data)
-                setProject(res.data.data)
+                setCompany(res.data.data[0] ?? {})
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+        } else {
+            axios.get('pps-infos/registered-companies', {
+                headers: { Authorization: getLoggedUserToken() },
+                params: { userId: loggedUserId },
+            }).then(res => {
+                console.log(res.data)
+                setCompany(res.data.data[0] ?? {})
+
+                res.data.data[0]?.project?.id &&
+                    axios.get(`projects/${res.data.data[0].project.id}/bds-evaluation5c`, {
+                        headers: { Authorization: getLoggedUserToken() },
+                    }).then(res => {
+                        console.log(res.data)
+                        if (res.data.data?.rows?.length === initialState.length) {
+                            setRows(res.data.data.rows)
+                        }
+                        setInfo(res.data.data.info)
+                    })
             }).catch(err => {
                 console.log(err.response?.data)
             })
@@ -299,33 +323,50 @@ export default function AnalystReport() {
 
     const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked
 
-    const [project, setProject] = useState([])
-
     const [previewModalOpen, setPreviewModalOpen] = useState(false)
 
     return (
         <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <button className="tw-float-right tw-m-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center" onClick={() => setPreviewModalOpen(true)}>
+            <button className="tw-float-right tw-mt-2 tw-mr-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center" onClick={() => setPreviewModalOpen(true)}>
                 <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
                 Харах
             </button>
 
-            <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} project={project} />} />
+            <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} company={company} />} />
 
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
+            <div className="tw-font-medium tw-p-3 tw-pb-2 tw-flex tw-items-center">
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">5c</span>
                 <span className="tw-text-base tw-leading-tight">
                     - Бизнес шинжээчийн шинжилгээний тайлан
                 </span>
             </div>
 
-            <div className="tw-mx-3">
-                <div className="tw-flex tw-items-center tw-mt-3">
+            <div className="tw-border-b tw-border-dashed tw-text-13px tw-pl-5 tw-pr-3 tw-pb-1 tw-font-medium tw-leading-snug">
+                <div className="tw-relative">
+                    Дугаар:
+                    <span className="tw-absolute tw-left-32">{company.project?.project_number}</span>
+                </div>
+                <div className="tw-relative">
+                    Төрөл:
+                    <span className="tw-absolute tw-left-32">{company.project?.project_type_name}</span>
+                </div>
+                <div className="tw-relative">
+                    Байгууллагын нэр:
+                    <span className="tw-absolute tw-left-32">{company.companyname}</span>
+                </div>
+                <div className="tw-relative">
+                    Төслийн нэр:
+                    <span className="tw-absolute tw-left-32">{company.project?.project_name}</span>
+                </div>
+            </div>
+
+            <div className="tw-mx-3 tw-mt-2">
+                <div className="tw-flex tw-items-center">
                     <label className="tw-mb-0 tw-font-medium">
                         Шинжилгээ хийсэн Бизнес шинжээч:
                     </label>
                     <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
-                        Zultsetseg
+                        Шинжээчийн нэр***
                     </span>
                 </div>
 
@@ -337,39 +378,6 @@ export default function AnalystReport() {
                     <input className="tw-border tw-rounded tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_end} onChange={e => handleInputEvaluator('check_end', e.target.value)} /> -ны хооронд.
                 </div>
 
-                <div className="tw-mt-3">
-                    <label className="tw-mb-0 tw-font-medium">
-                        Байгууллагын нэр:
-                    </label>
-                    {project.company_name &&
-                        <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
-                            {project.company_name}
-                        </span>
-                    }
-                </div>
-
-                <div className="tw-mt-3">
-                    <label className="tw-mb-0 tw-font-medium">
-                        Төслийн нэр:
-                    </label>
-                    {project.project_name &&
-                        <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
-                            {project.project_name}
-                        </span>
-                    }
-                </div>
-
-                <div className="tw-mt-3">
-                    <label className="tw-mb-0 tw-font-medium">
-                        Өргөдлийн дугаар:
-                    </label>
-                    {project.id &&
-                        <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-1 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
-                            {project.id}
-                        </span>
-                    }
-                </div>
-
                 <Transition
                     items={isCheckedZ}
                     from={{ opacity: 0 }}
@@ -377,8 +385,8 @@ export default function AnalystReport() {
                     leave={{ opacity: 0, display: 'none' }}>
                     {item => item
                         ? anims =>
-                            <div style={anims}>
-                                <div className="tw-mt-4 tw-font-medium">
+                            <div className="tw-mt-3" style={anims}>
+                                <div className="tw-font-medium">
                                     Төслийг дэмжиж буй бол хэрэгжүүлэх явцад анхаарах зөвлөмж:
                                 </div>
                                 <div className="tw-mt-1 tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-shadow-inner tw-rounded-lg" style={{ minHeight: '128px', maxHeight: '768px' }}>
@@ -386,8 +394,8 @@ export default function AnalystReport() {
                                 </div>
                             </div>
                         : anims =>
-                            <div style={anims}>
-                                <div className="tw-mt-4 tw-font-medium">
+                            <div className="tw-mt-3" style={anims}>
+                                <div className="tw-font-medium">
                                     Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:
                                 </div>
                                 <div className="tw-mt-1 tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-shadow-inner tw-rounded-lg" style={{ minHeight: '128px', maxHeight: '768px' }}>

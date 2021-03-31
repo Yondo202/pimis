@@ -6,13 +6,13 @@ import { useReactToPrint } from "react-to-print"
 import '../5a/style.css'
 import Pdf from "react-to-pdf"
 import { PDFDownloadLink } from "@react-pdf/renderer"
-import AnalystReportPreview1 from './preview1'
+import AnalystReportPreviewPdf from './previewPdf'
 
 
 export default function AnalystReportPreview(props) {
     const rows = props.rows || []
     const info = props.info || {}
-    const project = props.project || {}
+    const company = props.company || {}
 
     const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked
 
@@ -36,20 +36,39 @@ export default function AnalystReportPreview(props) {
 
             {/* @react-pdf/renderer */}
             <PDFDownloadLink
-                document={<AnalystReportPreview1 rows={rows} info={info} project={project} />}
+                document={<AnalystReportPreviewPdf rows={rows} info={info} company={company} />}
                 fileName="5c.pdf"
             >
                 {({ blob, url, loading, error }) => (loading ? 'Loading' : 'Download')}
             </PDFDownloadLink>
 
             <div className="tw-mx-auto" ref={componentRef}>
-                <div className="tw-text-center tw-text-base tw-font-medium tw-mt-4 tw-mb-8">
+                <div className="tw-text-center tw-text-base tw-font-medium tw-mt-4 tw-mb-0.5">
                     Бизнес шинжээчийн шинжилгээний тайлан
+                </div>
+
+                <div className="tw-text-13px tw-font-medium tw-leading-snug tw-text-right tw-pb-1 tw-px-2">
+                    <div className="">
+                        Дугаар:
+                        <span className="tw-ml-2">{company.project?.project_number}</span>
+                    </div>
+                    <div className="">
+                        Төрөл:
+                        <span className="tw-ml-2">{company.project?.project_type_name}</span>
+                    </div>
+                    <div className="">
+                        Байгууллагын нэр:
+                        <span className="tw-ml-2">{company.companyname}</span>
+                    </div>
+                    <div className="">
+                        Төслийн нэр:
+                        <span className="tw-ml-2">{company.project?.project_name}</span>
+                    </div>
                 </div>
 
                 <div className="tw-p-1">
                     Шинжилгээ хийсэн Бизнес шинжээч:
-                    <span className="tw-font-bold tw-ml-2">Zultsetseg</span>
+                    <span className="tw-font-bold tw-ml-2">Шинжээчийн нэр***</span>
                 </div>
                 <div className="tw-p-1">
                     Шинжилгээ, дүгнэлт хийсэн хугацаа:
@@ -59,31 +78,19 @@ export default function AnalystReportPreview(props) {
                     -ны хооронд.
                 </div>
                 <div className="tw-p-1">
-                    Байгууллагын нэр:
-                    <span className="tw-font-bold tw-ml-2">{project.company_name}</span>
-                </div>
-                <div className="tw-p-1">
-                    Төслийн нэр:
-                    <span className="tw-font-bold tw-ml-2">{project.project_name}</span>
-                </div>
-                <div className="tw-p-1">
-                    Өргөдлийн дугаар:
-                    <span className="tw-font-bold tw-ml-2">{project.id}</span>
-                </div>
-                <div className="tw-p-1">
                     {isCheckedZ ? 'Төслийг хэрэгжүүлэх явцад анхаарах зөвлөмж:' : 'Төслийг дэмжихээс татгалзсан шалтгаан:'}
                 </div>
-                <div className="tw-py-1 tw-px-2 tw-mb-4 tw-bg-blue-50 tw-rounded tw-mx-3">
+                <div className="tw-py-1 tw-px-2 tw-mb-4 tw-bg-blue-50 tw-rounded tw-mx-2">
                     <div dangerouslySetInnerHTML={isCheckedZ ? { __html: info.accept_tips } : { __html: info.decline_reason }} style={{ minHeight: 20 }} />
                 </div>
 
                 {rows.map(row => ({
                     'z': <Fragment key={row.rowcode}>
-                        <div className="tw-bg-blue-900 tw-text-white tw-flex tw-border tw-border-gray-400" id="no-break">
+                        <div className="tw-bg-blue-900 tw-text-white tw-flex tw-border tw-border-gray-400 tw-font-medium" id="no-break">
                             <div className="tw-flex-grow tw-p-2 tw-pl-3 tw-border-r tw-border-gray-400">
                                 {row.description}
                             </div>
-                            <div className="tw-w-24 tw-py-2 tw-flex tw-justify-center tw-items-center tw-flex-shrink-0 tw-font-medium">
+                            <div className="tw-w-24 tw-py-2 tw-flex tw-justify-center tw-items-center tw-flex-shrink-0">
                                 {row.isChecked ? 'Тэнцсэн' : 'Тэнцээгүй'}
                             </div>
                         </div>
@@ -98,7 +105,7 @@ export default function AnalystReportPreview(props) {
                             <div className={`tw-flex-grow tw-p-2 ${['a', 'b', 'c'].includes(row.rowcode) ? 'tw-pl-3' : 'tw-pl-5'} tw-border-r tw-border-gray-400`}>
                                 {row.description}
                             </div>
-                            <div className="tw-w-24 tw-py-2 tw-flex tw-justify-center tw-items-center tw-flex-shrink-0 tw-font-medium">
+                            <div className="tw-w-24 tw-py-2 tw-flex tw-justify-center tw-items-center tw-flex-shrink-0">
                                 {row.isChecked ? 'Тийм' : 'Үгүй'}
                             </div>
                         </div>
