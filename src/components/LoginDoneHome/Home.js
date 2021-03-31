@@ -45,7 +45,7 @@ function Home() {
                     : (<div className="header row">
                         <div className="col-md-4"><div className="headItems"><span className="text">1.Түншлэлийн хөтөлбөрт бүрдүүлэх баримт</span> </div></div>
                         <div className="col-md-4"><div className="headItems"><span className="text">2. Үнэлгээ, шийдвэр гарах явц</span> </div></div>
-                        <div className="col-md-4"><div className="headItems"><span className="text"> 3. Түншлэлийн гэрээ, гүйцэтгэл, санхүүжилт</span></div></div>
+                        <div className="col-md-4"><div className="headItems"><span className="text">3. Түншлэлийн гэрээ, гүйцэтгэл, санхүүжилт</span></div></div>
                     </div>)}
                 {!userId && <div className="otherHead row">
                     <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>

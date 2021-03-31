@@ -1,6 +1,5 @@
 import React from 'react'
 import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer'
-import { Fragment } from 'react'
 
 
 Font.register({
@@ -21,15 +20,18 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginTop: 10,
     },
-    infoView: {
+    info: {
+        textAlign: 'right',
+        fontSize: 10,
+        marginTop: 4,
+        marginHorizontal: 4,
+    },
+    analystView: {
         fontSize: 11,
-        marginTop: 20,
+        marginTop: 4,
     },
-    infoText: {
+    analystText: {
         margin: '4 0',
-    },
-    rowsView: {
-        marginTop: 6,
     },
     row: {
         display: 'flex',
@@ -42,12 +44,12 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
     },
     column1: {
-        width: 450,
+        width: 474,
         padding: '4 4 4 16',
         borderRightWidth: 1,
     },
     column2: {
-        width: 100,
+        width: 80,
         display: 'inline-flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -69,59 +71,58 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function AnalystReportPreview1(props) {
+export default function AnalystReportPreviewPdf(props) {
     const rows = props.rows || []
     const info = props.info || {}
-    const project = props.project || {}
+    const company = props.company || {}
 
     const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked
 
     return (
         <Document>
-            <Page style={styles.page}>
+            <Page style={styles.page} wrap>
                 <Text style={styles.title}>
                     Бизнес шинжээчийн тайлан
                 </Text>
 
-                <View style={styles.infoView}>
-                    <Text style={styles.infoText}>
-                        Шинжилгээ хийсэн Бизнес шинжээч: {'Zultsetseg'}
+                <View style={styles.info}>
+                    <Text>
+                        Дугаар: {company.project?.project_number}
+                    </Text>
+                    <Text>
+                        Төрөл: {company.project?.project_type_name}
+                    </Text>
+                    <Text>
+                        Байгууллагын нэр: {company.companyname}
+                    </Text>
+                    <Text>
+                        Төслийн нэр: {company.project?.project_name}
+                    </Text>
+                </View>
+
+                <View style={styles.analystView}>
+                    <Text style={styles.analystText}>
+                        Шинжилгээ хийсэн Бизнес шинжээч: {'Шинжээчийн нэр***'}
                     </Text>
 
-                    <Text style={styles.infoText}>
-                        Шинжилгээ, дүгнэлт хийсэн хугацаа:
-                        {info.check_start?.replaceAll('-', '.') || '__'}
-                        -аас
-                        {info.check_end?.replaceAll('-', '.') || '__'}
-                        -ны хооронд.
+                    <Text style={styles.analystText}>
+                        Шинжилгээ, дүгнэлт хийсэн хугацаа: {info.check_start?.replaceAll('-', '.') || '__'} -аас {info.check_end?.replaceAll('-', '.') || '__'} -ны хооронд.
                     </Text>
 
-                    <Text style={styles.infoText}>
-                        Байгууллагын нэр: {project.company_name}
-                    </Text>
-
-                    <Text style={styles.infoText}>
-                        Төслийн нэр: {project.project_name}
-                    </Text>
-
-                    <Text style={styles.infoText}>
-                        Өргөдлийн дугаар: {project.id}
-                    </Text>
-
-                    <Text style={styles.infoText}>
+                    <Text style={styles.analystText}>
                         {isCheckedZ ? 'Төслийг хэрэгжүүлэх явцад анхаарах зөвлөмж:' : 'Төслийг дэмжихээс татгалзсан шалтгаан:'}
                     </Text>
 
-                    <Text style={styles.infoText}>
+                    <Text style={styles.analystText}>
                         {info.decline_reason}
                     </Text>
                 </View>
 
-                <View style={styles.rowsView}>
-                    {rows.map(row => ({
-                        'z': <View key={row.rowcode}>
+                {rows.map(row => ({
+                    'z':
+                        <View key={row.rowcode} style={{ marginTop: 6 }} wrap={false}>
                             <View style={[styles.row, styles.headRow, { fontWeight: 500 }]}>
-                                <View style={[styles.column1, { paddingLeft: 6 }]}>
+                                <View style={[styles.column1, { paddingLeft: 6, paddingVertical: 6 }]}>
                                     <Text>
                                         {row.description}
                                     </Text>
@@ -144,33 +145,33 @@ export default function AnalystReportPreview1(props) {
                                 null
                             }
                         </View>,
-                    }[row.rowcode] || <View key={row.rowcode}>
-                            <View style={styles.row}>
-                                <View style={[styles.column1, ['a', 'b', 'c'].includes(row.rowcode) && { paddingLeft: 6 }]}>
-                                    <Text>
-                                        {row.description}
-                                    </Text>
-                                </View>
-
-                                <View style={styles.column2}>
-                                    <Text style={styles.column2Text}>
-                                        {row.isChecked ? 'Тэнцсэн' : 'Тэнцээгүй'}
-                                    </Text>
-                                </View>
+                }[row.rowcode] ||
+                    <View key={row.rowcode} wrap={false}>
+                        <View style={styles.row}>
+                            <View style={[styles.column1, ['a', 'b', 'c'].includes(row.rowcode) && { paddingLeft: 6 }]}>
+                                <Text>
+                                    {row.description}
+                                </Text>
                             </View>
 
-                            {row.comment ?
-                                <View style={styles.row}>
-                                    <Text style={styles.commentText}>
-                                        ({row.comment})
-                                    </Text>
-                                </View>
-                                :
-                                null
-                            }
+                            <View style={styles.column2}>
+                                <Text style={styles.column2Text}>
+                                    {row.isChecked ? 'Тийм' : 'Үгүй'}
+                                </Text>
+                            </View>
                         </View>
-                    ))}
-                </View>
+
+                        {row.comment ?
+                            <View style={styles.row}>
+                                <Text style={styles.commentText}>
+                                    ({row.comment})
+                                    </Text>
+                            </View>
+                            :
+                            null
+                        }
+                    </View>
+                ))}
             </Page>
         </Document>
     )
