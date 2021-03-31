@@ -7,7 +7,7 @@ import axios from 'axiosbase';
 import AuthToken from 'context/accessToken'
 
 
-function NotApproved({projectId,setShowNotify }) {
+function NotApproved({projectId }) {
   const [ data, setData ] = useState();
   const [ edpInfo ,setEdpInfo ] = useState({});
 
@@ -30,7 +30,7 @@ function NotApproved({projectId,setShowNotify }) {
           <MainContainter className="container">
               <div className="containt">
                   <div className="parent" ref={componentRef}>
-                      <Content setShowNotify={setShowNotify} edpInfo={edpInfo} data={data} projectId={projectId} />
+                      <Content edpInfo={edpInfo} data={data} projectId={projectId} />
                   </div>
                   <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
               </div >

@@ -22,7 +22,7 @@ export default class Content extends React.Component {
     alertText = ( color, text, cond ) => {
         this.setState({ color:color, text:text, cond:cond  });
          setTimeout(()=>{ this.setState({ color:color, text:text, cond:false })},[4000]);
-     }
+    }
     clickHandle = () =>{
         let inp = document.getElementById("getInp");
         if(this.state.rejectReason===""){
@@ -40,7 +40,7 @@ export default class Content extends React.Component {
             emailBody:EmailHTML( this.props?.data, this.props?.edpInfo, this.state.username, this.state.rejectReason ),
         }, { headers: { Authorization: AuthToken() } })
         .then((res)=>{ this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true);
-            setTimeout(()=>{ this.props.setShowNotify(prev=>!prev)}, 3000);
+            setTimeout(()=>{ this.props.history.push(`5a/${this.props?.projectId}`)}, 3000);
         }).catch((e)=>{console.log(e, "^err"); this.alertText("orange", "Алдаа гарлаа", true);  });
     };
 

@@ -6,7 +6,7 @@ import Content from './Content'
 import axios from 'axiosbase';
 import AuthToken from 'context/accessToken'
 
-function Approved({ projectId,setShowNotify }) {
+function Approved({ projectId }) {
   const [ data, setData ] = useState({});
   const [ edpInfo ,setEdpInfo ] = useState({});
   useEffect(()=>{
@@ -25,13 +25,13 @@ function Approved({ projectId,setShowNotify }) {
           <MainContainter className="container">
               <div className="containt">
                   <div className="parent" ref={componentRef}>
-                      <Content setShowNotify={setShowNotify} edpInfo={edpInfo} data={data} projectId={projectId}  />
+                      <Content edpInfo={edpInfo} data={data} projectId={projectId} />
                   </div>
                   <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
               </div >
           </MainContainter>
         )
-  }
+}
   export default Approved
 
 const animate = keyframes`

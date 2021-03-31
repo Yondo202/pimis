@@ -5,12 +5,11 @@ import { DataGrid, DateBox } from 'devextreme-react'
 import './style.css'
 import { Column, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
 import AlertContext from 'components/utilities/alertContext'
-import { useHistory, useLocation } from 'react-router'
+import { useHistory } from 'react-router'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import { statusWord } from './meetingsList'
+import { useQuery } from 'components/utilities/useQueryLocation'
 
-
-const useQuery = () => new URLSearchParams(useLocation().search)
 
 export default function EvaluatorsMeetingEdit(props) {
     const [approvedProjects, setApprovedProjects] = useState([])
@@ -20,7 +19,6 @@ export default function EvaluatorsMeetingEdit(props) {
     const [selectedEvaluators, setSelectedEvaluators] = useState([])
 
     const [meetingId, setMeetingId] = useState(useQuery().get('id'))
-
 
     useEffect(() => {
         axios.get('pps-infos/registered-companies', {

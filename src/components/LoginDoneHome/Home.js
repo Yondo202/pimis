@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { ColorRgb } from '../theme'
-import { useLocation } from "react-router-dom";
 import axios from '../../axiosbase';
 import AccessToken from '../../context/accessToken'
 import ActiveComp from './ActiveComp'
 import InitialComp from './initialComp'
+import { useQuery } from 'components/utilities/useQueryLocation'
 
-
-const useQuery = () => new URLSearchParams(useLocation().search)
 
 function Home() {
     const userId = useQuery().get('userId')

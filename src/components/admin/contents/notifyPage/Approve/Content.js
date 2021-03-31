@@ -43,7 +43,7 @@ export default class Content extends React.Component {
             approved : true
            }, { headers: { Authorization: AuthToken() } }).then((res)=>{
                 console.log(res.data.success, "my Response");
-                this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true); setTimeout(()=>{this.props.setShowNotify(prev=>!prev)},3000);
+                this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true); setTimeout(()=>{this.props.history.push(`5a/${this.props?.projectId}`)},3000);
               }).catch((e)=>{
                 this.alertText("orange", "Алдаа гарлаа", true);
                 console.log(e, "err Response");
