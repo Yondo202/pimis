@@ -6,7 +6,6 @@ import { TiDeleteOutline } from 'react-icons/ti';
 import { ImLocation2 } from 'react-icons/im';
 import { GrMail } from 'react-icons/gr';
 import { FaRegistered,FaRegWindowRestore,FaFax,FaPhoneAlt, } from 'react-icons/fa';
-import Signature from 'components/member/member_decision/Signature';
 import {AiOutlineSend} from 'react-icons/ai';
 import axios from 'axiosbase';
 import AccessToken from 'context/accessToken';
@@ -17,7 +16,6 @@ function EdpInformation() {
     const ctx = useContext(UserContext);
     const [ Data, setData ] = useState(null);
     const [ deleteInf, setDeleteInf ] = useState(false);
-    const [ imgData, setImgData ] = useState(null);
     const [ spnBtn, setSpnBtn ] = useState(false);
     const [ opacity2, setOpacity2] = useState("0");
     const [ FinalErrorText, setFinalErrorText] = useState("");
@@ -41,11 +39,9 @@ function EdpInformation() {
         });
         if(Object.keys(final).length < 7){
             setOpacity2("1"); setFinalErrorText("Мэдээллийг гүйцэд оруулна уу...");
-        }else if(!Data&&!imgData){
-            setOpacity2("1"); setFinalErrorText("Гарын үсэгээ зурна уу...");
         }else{
             setSpnBtn(true);
-            if(!Data){ final["manager_signature"] = imgData }else{ final["manager_signature"] = Data.manager_signature }
+            // if(!Data){ final["manager_signature"] = imgData }else{ final["manager_signature"] = Data.manager_signature }
             setOpacity2("0"); setFinalErrorText("");
             axios.post(`edp-info`, final, { headers: { Authorization: AccessToken()} }).then(res=>{
                 console.log(res, " res"); ctx.alertText('green', "Амжилттай хадаглагдлаа", true);  setSpnBtn(false);
@@ -109,7 +105,7 @@ function EdpInformation() {
                            {/* <div className="inpp"><div className="svgPar"><GrMail /></div><InputStyle className="inpChild"><input type="text" placeholder="Email - ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div>  */}
                         </div>
                     </div>
-                    <Signature url={Data.manager_signature} setImgData={setImgData} /> 
+                    {/* <Signature url={Data.manager_signature} setImgData={setImgData} />  */}
                 </div>)
                  :(<div className="content">
                     <div className="inpPar">
@@ -148,14 +144,14 @@ function EdpInformation() {
                            {/* <div className="inpp"><div className="svgPar"><GrMail /></div><InputStyle className="inpChild"><input type="text" placeholder="Email - ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div>  */}
                         </div>
                     </div>
-                    <Signature url={null} setImgData={setImgData} /> 
+                    {/* <Signature url={null} setImgData={setImgData} />  */}
                 </div>)}
                 
 
 
                 <div className="buttonPar">
-                    <NextBtn onClick={()=>clickHandles()} style={spnBtn===false? { width:"30%" }:{ width:"10%" }}  className="SubmitButton" type="button">{spnBtn===false?(<>Хадгалах <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                     <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
+                    <NextBtn onClick={()=>clickHandles()} style={spnBtn===false? { width:"30%" }:{ width:"10%" }}  className="SubmitButton" type="button">{spnBtn===false?(<>Хадгалах <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
                 </div>
             </div>
 
