@@ -45,7 +45,7 @@ export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
             setErrText("0");
             axios.post(`users`,final).then(res=>{
                 console.log(res, "^ ress"); setUpdate(prev=>!prev); ctx.alertText("green", "Амжилттай", true ); seBtnSpin(false); setShowModal(prev=>!prev); 
-            }).catch(error=>ctx.alertText("orange", "Алдаа гарлаа", true ));
+            }).catch(error=>{ctx.alertText("orange", "Алдаа гарлаа", true ); seBtnSpin(false);});
         }
     }
     const roleHandle = (event)=>{setPer(event.target.value) }
@@ -54,7 +54,7 @@ export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
    
     return(
         <>
-                     {/* ref={modalRef} onClick={closeModal} */}
+            {/* ref={modalRef} onClick={closeModal} */}
             {showModal ? <Background  >
                 <animated.div  style={animation} >
                     <div className="modalPar container">

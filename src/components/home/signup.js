@@ -309,9 +309,9 @@ function Signup() {
 export default Signup
 
 const sectorAnimate = keyframes`
-  0%{ transform:scale(0.7); opacity:0; }
-  45%{ transform:scale(1.091); opacity:1; }
-  100%{ transform:scale(1); opacity:1; }
+  0%{ transform:translateY(120px); opacity:0; }
+  80%{ transform:translateY(-20px); opacity:0.8; }
+  100%{ transform:translateY(0); opacity:1; }
 `
 
 const GhostPar = styled.div`
@@ -330,7 +330,7 @@ const GhostPar = styled.div`
   }
   .Sectorpar{
     box-shadow:1px 1px 17px -6px rgba(0,51,102,1);
-    animation: ${sectorAnimate} 0.4s ease;
+    animation: ${sectorAnimate} 0.6s ease;
     transition:all 0.3s ease;
     transform:scale(1);
     top:10%;

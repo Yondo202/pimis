@@ -18,14 +18,14 @@ function Signature(props) {
     return (
         <SignaturePar className="rowItems">
             <div className="row">
-                <div className="col-md-3 col-sm-3 col-12"><div style={{marginBottom:15}} className="LeftHead">Баталгаат гарын үсэг: </div> </div>
+                <div className="col-md-3 col-sm-3 col-12"><div style={{marginBottom:15, fontWeight:500}} className="LeftHead">Баталгаат гарын үсэг: </div> </div>
                 <div className="col-md-9 col-sm-9 col-12">
                     <div className="RightHead">
                         <div className="addInfoPar">
                             <div className="userInfPar">
                                 <div className="infItemPar">
                                         <div className="drowPar">
-                                            {!props.url&&<div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>}
+                                            <div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>{!props.url? `Зурах`: `Засах` }</span></div>
                                             {props.url? <img className="SingatureImg" src={props.url}/>  :  trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}  
                                             {/* {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null} */}
                                                 <Modal visible={visible} width="620" height="380" effect="fadeInDown" onClickAway={closeModal}>
@@ -101,7 +101,9 @@ const SignaturePar = styled.div`
                     }
                     .SingatureImg{
                         border:1px solid rgba(${ColorRgb},0.3);
-                        width:70%;
+                        width:260px;
+                        height:130px;
+                        object-fit:contain;
                     }
                     .modalPar{
                         text-align:center;

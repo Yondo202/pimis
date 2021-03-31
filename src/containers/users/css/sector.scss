@@ -38,12 +38,13 @@ body {
           font-weight: 400;
          
           .pro-inner-item{
+            color: black;
             &:hover{
-              background-color: rgb(122, 215, 252);
+              color: black;
+              background-color: rgba(0, 0, 0,0.1);
             }
             .pro-icon-wrapper{
               background-color: rgba(0,0,0,0.03);
-
               margin-right: 10px;
               font-size: 12.5px;
               width: 30px;
@@ -57,9 +58,11 @@ body {
                   font-size:16px;
                 }
               }
-              
             }
           }
+      }
+      .open{
+        color: green !important;
       }
     }
   }

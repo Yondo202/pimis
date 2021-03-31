@@ -17,22 +17,23 @@ function Main_decision() {
     const ctx = useContext(UserContext);
     const history = useHistory();
     const param  = useParams().id;
+    const [ cond, setCond ] = useState(false);
     const [ notifyShow, setNotifyShow ] = useState(0);
     const [ notifyShow2, setNotifyShow2 ] = useState(0);
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
     const [ mainData, setMainData ] = useState(null);
     const [ members, setMembers ] = useState([]);
+
     useEffect(async()=>{
         await axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization:Token() } }).then((res)=>{
-            console.log(res.data.data, " my data");
             if(res.data.data){
                 setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
                 if(res.data.data.approved===true){ setNotifyShow2(1); }else if(res.data.data.approved===false){ setNotifyShow2(2); }else{ setNotifyShow2(0); }
             }
         }).catch((err)=>console.log(err.response.data.error, "aldaa garsaaaa"));
-
     },[]);
+
     const backHandle = (el) =>{ if(el==="projects"){  history.push(`/${el}`); }else{ history.push(`/progress/${el}`); } }
 
     const clickHandle = (el) =>{
@@ -48,17 +49,39 @@ function Main_decision() {
                 inp.classList += " getInpp";
                 mainData[inp.name] = inp.value;
                 axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization:Token() } }).then((res)=>{
-                    console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true);
-                if(el===true){ setNotifyShow(1); }else if(el===false){ setNotifyShow(2); }else{setNotifyShow(0); }
+                    console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
                 }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
             }
         }else{
             axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization:Token() } }).then((res)=>{
-                console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true);
-            if(el===true){ setNotifyShow(1); }else if(el===false){ setNotifyShow(2); }else{setNotifyShow(0); }
+                console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
             }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
         }
         
+    }
+    const clickHandle2 = (el) =>{
+        if(cond){
+            if(notifyShow2===1){
+                setNotifyShow(1);
+            }else if(notifyShow2===2){
+                let inp = document.querySelector(".getInpp");
+                if(inp.value===""){
+                    setOpacity2('1');
+                    setFinalErrorText('Та шалтгааныг оруулна уу?')
+                    inp.classList += " red";
+                }else{
+                    setOpacity2('0');
+                    inp.classList =- " red";
+                    inp.classList += " getInpp";
+                    setNotifyShow(2);
+                }
+            }else{
+                setNotifyShow(0);
+            }
+        }else{
+            setOpacity2('1');
+            setFinalErrorText('Та шийдвэрийн хуудсыг хадаглана уу?')
+        }
     }
 
     const changeHandleReason = (el) =>{
@@ -140,11 +163,13 @@ function Main_decision() {
                         <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
                     </div>
                 </div>:null}
-                
-
                 <div className="buttonPar">
                     <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                    <NextBtn className="SubmitButton" onClick={()=>clickHandle(mainData?mainData.approved:"code")} type="button">Мэдэгдэл илгээх<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                </div>
+                <div className="buttonPar">
+                    {/* <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div> */}
+                    <NextBtn className="SubmitButton" onClick={()=>clickHandle2(mainData?mainData.approved:"code")} type="button">Мэдэгдэл илгээх<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                    <NextBtn className="SubmitButton" onClick={()=>clickHandle(mainData?mainData.approved:"code")} type="button">Хадгалах<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                 </div>
             </div>
             :<div className="NullPar">
@@ -155,8 +180,8 @@ function Main_decision() {
                 </div>
             </div> }
         </FeedBackCont> : notifyShow===1
-                        ? <NotifyComp className="container"> <AssistApprove approve={mainData} /> </NotifyComp>
-                        : <NotifyComp className="container"> <NotAssist approve={mainData} /></NotifyComp> }
+                        ? <NotifyComp className="container"> <AssistApprove projectId={param} approve={mainData} /> </NotifyComp>
+                        : <NotifyComp className="container"> <NotAssist projectId={param} approve={mainData} /></NotifyComp> }
             
         <AlertStyle style={ctx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${ctx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
             {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}
@@ -354,6 +379,10 @@ const FeedBackCont = styled.div`
                 line-height:34px;
                 padding:0px 20px;
               }
+            .SubmitButton{
+                font-size:13px;
+                width:30%;
+            }
         }
         @media only screen and (max-width:786px){
             .contentPar{

@@ -44,7 +44,7 @@ function UserHandle() {
                             <VscSearch className="searchIcon" />
                         </div> */}
                         <select onChange={filterHanlde} className="roleFilter">
-                            <option value="all"  selected>- Бүгд -</option>
+                            <option value="all" selected>- Бүгд -</option>
                             {Role.map((el,i)=>{  return( <option value={el.value} >{el.title}</option>  )  })}
                         </select>
                     </div>
