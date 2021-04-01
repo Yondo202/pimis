@@ -335,8 +335,8 @@ export default function AnalystReport() {
             <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} company={company} />} />
 
             <div className="tw-font-medium tw-p-3 tw-pb-2 tw-flex tw-items-center">
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2">5c</span>
-                <span className="tw-text-base tw-leading-tight">
+                <span className="tw-text-xl tw-mx-2 tw-leading-tight tw-text-blue-500">5c</span>
+                <span className="tw-text-base">
                     - Бизнес шинжээчийн шинжилгээний тайлан
                 </span>
             </div>
@@ -344,19 +344,19 @@ export default function AnalystReport() {
             <div className="tw-border-b tw-border-dashed tw-text-13px tw-pl-5 tw-pr-3 tw-pb-1 tw-font-medium tw-leading-snug">
                 <div className="tw-relative">
                     Дугаар:
-                    <span className="tw-absolute tw-left-32">{company.project?.project_number}</span>
+                    <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.project?.project_number}</span>
                 </div>
                 <div className="tw-relative">
                     Төрөл:
-                    <span className="tw-absolute tw-left-32">{company.project?.project_type_name}</span>
+                    <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.project?.project_type_name}</span>
                 </div>
                 <div className="tw-relative">
                     Байгууллагын нэр:
-                    <span className="tw-absolute tw-left-32">{company.companyname}</span>
+                    <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.companyname}</span>
                 </div>
                 <div className="tw-relative">
                     Төслийн нэр:
-                    <span className="tw-absolute tw-left-32">{company.project?.project_name}</span>
+                    <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.project?.project_name}</span>
                 </div>
             </div>
 

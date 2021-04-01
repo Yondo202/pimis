@@ -31,71 +31,71 @@ import FirstEvaluationSendNotice from 'pages/decision_making/5a/sendNotice';
 
 
 function Layout({ setLocale }) {
-    const ctx = useContext(UserContext);
-    const [rtl, setRtl] = useState(false);
-    const [collapsed, setCollapsed] = useState(false);
-    const [image, setImage] = useState(false);
-    const [toggled, setToggled] = useState(false);
+  const ctx = useContext(UserContext);
+  const [rtl, setRtl] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [image, setImage] = useState(false);
+  const [toggled, setToggled] = useState(false);
 
-    const handleCollapsedChange = (checked) => { setCollapsed(checked); };
-    const handleRtlChange = (checked) => { setRtl(checked); setLocale(checked ? 'ar' : 'en'); };
-    const handleImageChange = (checked) => { setImage(checked); };
-    const handleToggleSidebar = (value) => { setToggled(value); };
+  const handleCollapsedChange = (checked) => { setCollapsed(checked); };
+  const handleRtlChange = (checked) => { setRtl(checked); setLocale(checked ? 'ar' : 'en'); };
+  const handleImageChange = (checked) => { setImage(checked); };
+  const handleToggleSidebar = (value) => { setToggled(value); };
 
-    return (
-        <AdminApp className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
-            <div className="MainParent">
-                <Aside image={image} collapsed={collapsed} rtl={rtl} toggled={toggled} handleToggleSidebar={handleToggleSidebar} />
-            </div>
-            <div className="container-fluid ContentPar">
-                <Main image={image} toggled={toggled} collapsed={collapsed} rtl={rtl}
-                    handleToggleSidebar={handleToggleSidebar}
-                    handleCollapsedChange={handleCollapsedChange}
-                    handleRtlChange={handleRtlChange}
-                    handleImageChange={handleImageChange}
-                />
-                <div className="itemsPar2">
-                    <UrgudulStore>
-                        <Switch>
-                            <Route path="/" component={HomeAdmin} exact />
-                            <Route path="/users" component={UserHandle} />
-                            <Route path="/projects" component={ProjectHandle} />
-                            <Route path="/projects1" component={ProjectHandle1} />
-                            <Route path="/urgudul/:page">
-                                <UrgudulNavigator preloaded={true} />
-                            </Route>
+  return (
+    <AdminApp className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
+      <div className="MainParent">
+        <Aside image={image} collapsed={collapsed} rtl={rtl} toggled={toggled} handleToggleSidebar={handleToggleSidebar} />
+      </div>
+      <div className="container-fluid ContentPar">
+        <Main image={image} toggled={toggled} collapsed={collapsed} rtl={rtl}
+          handleToggleSidebar={handleToggleSidebar}
+          handleCollapsedChange={handleCollapsedChange}
+          handleRtlChange={handleRtlChange}
+          handleImageChange={handleImageChange}
+        />
+        <div className="itemsPar2">
+          <UrgudulStore>
+            <Switch>
+              <Route path="/" component={HomeAdmin} exact />
+              <Route path="/users" component={UserHandle} />
+              <Route path="/projects" component={ProjectHandle} />
+              <Route path="/projects1" component={ProjectHandle1} />
+              <Route path="/urgudul/:page">
+                <UrgudulNavigator preloaded={true} />
+              </Route>
 
-                            <Route path="/meetings" component={EvaluatorsMeetingsNavigator} />
-                            <Route path="/epd-information" component={EdpInformationHome} />
+              <Route path="/meetings" component={EvaluatorsMeetingsNavigator} />
+              <Route path="/epd-information" component={EdpInformationHome} />
 
-                            <Route path="/progress" component={Home} />
-                            <Route path="/request/:url" component={Request} />
-                            <Route path="/check/:url" component={Check} />
-                            <Route path="/notify-page/:paramId" component={NotifyPage1} />
+              <Route path="/progress" component={Home} />
+              <Route path="/request/:url" component={Request} />
+              <Route path="/check/:url" component={Check} />
+              <Route path="/notify-page/:paramId" component={NotifyPage1} />
 
-                            {/* <Route path="/memberdecision" component={MemberDecision} /> */}
-                            <Route path="/maindecision/:id" component={MainDecision} />
+              {/* <Route path="/memberdecision" component={MemberDecision} /> */}
+              <Route path="/maindecision/:id" component={MainDecision} />
 
-                            <Route path="/letter-of-interest/:id" component={LetterPreview} />
-                            <Route path="/urgudul-preview/:id" component={UrgudulPreview} />
-                            <Route path="/attachments/:id" component={AttachmentUploads} />
-                            <Route exact path="/5a/:id" component={FirstEvaluation} />
-                            <Route path="/5a/:id/send-notice" component={FirstEvaluationSendNotice} />
-                            <Route path="/5b/:id" component={CompilationChecklist} />
-                            <Route path="/5c/:id" component={AnalystReport} />
+              <Route path="/letter-of-interest/:id" component={LetterPreview} />
+              <Route path="/urgudul-preview/:id" component={UrgudulPreview} />
+              <Route path="/attachments/:id" component={AttachmentUploads} />
+              <Route exact path="/5a/:id" component={FirstEvaluation} />
+              <Route path="/5a/:id/send-notice" component={FirstEvaluationSendNotice} />
+              <Route path="/5b/:id" component={CompilationChecklist} />
+              <Route path="/5c/:id" component={AnalystReport} />
 
-                            <MiddleRoute />
-                        </Switch>
-                    </UrgudulStore>
-                </div>
-            </div>
+              <MiddleRoute />
+            </Switch>
+          </UrgudulStore>
+        </div>
+      </div>
 
-            <AlertStyle style={ctx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${ctx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
-                {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}
-                <span>{ctx.alert.text}</span>
-            </AlertStyle>
-        </AdminApp>
-    );
+      <AlertStyle style={ctx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${ctx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
+        {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}
+        <span>{ctx.alert.text}</span>
+      </AlertStyle>
+    </AdminApp>
+  );
 }
 
 export default Layout;

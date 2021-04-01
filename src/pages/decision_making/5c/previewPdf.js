@@ -1,5 +1,5 @@
 import React from 'react'
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer'
+import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer'
 
 
 Font.register({
@@ -12,13 +12,15 @@ Font.register({
 
 const styles = StyleSheet.create({
     page: {
-        padding: '30px 20px',
+        paddingVertical: 30,
+        paddingHorizontal: 20,
         fontFamily: "Roboto",
     },
     title: {
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: 14,
         marginTop: 10,
+        fontWeight: 500,
     },
     info: {
         textAlign: 'right',
@@ -26,12 +28,18 @@ const styles = StyleSheet.create({
         marginTop: 4,
         marginHorizontal: 4,
     },
+    infoBold: {
+        fontWeight: 500,
+    },
     analystView: {
         fontSize: 11,
         marginTop: 4,
     },
     analystText: {
         margin: '4 0',
+    },
+    analystImage: {
+        width: 554,
     },
     row: {
         display: 'flex',
@@ -75,6 +83,7 @@ export default function AnalystReportPreviewPdf(props) {
     const rows = props.rows || []
     const info = props.info || {}
     const company = props.company || {}
+    const htmlImg = props.htmlImg
 
     const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked
 
@@ -87,16 +96,20 @@ export default function AnalystReportPreviewPdf(props) {
 
                 <View style={styles.info}>
                     <Text>
-                        Дугаар: {company.project?.project_number}
+                        {'Дугаар: '}
+                        <Text style={styles.infoBold}>{company.project?.project_number}</Text>
                     </Text>
                     <Text>
-                        Төрөл: {company.project?.project_type_name}
+                        {'Төрөл: '}
+                        <Text style={styles.infoBold}>{company.project?.project_type_name}</Text>
                     </Text>
                     <Text>
-                        Байгууллагын нэр: {company.companyname}
+                        {'Байгууллагын нэр: '}
+                        <Text style={styles.infoBold}>{company.companyname}</Text>
                     </Text>
                     <Text>
-                        Төслийн нэр: {company.project?.project_name}
+                        {'Төслийн нэр: '}
+                        <Text style={styles.infoBold}>{company.project?.project_name}</Text>
                     </Text>
                 </View>
 
@@ -113,14 +126,12 @@ export default function AnalystReportPreviewPdf(props) {
                         {isCheckedZ ? 'Төслийг хэрэгжүүлэх явцад анхаарах зөвлөмж:' : 'Төслийг дэмжихээс татгалзсан шалтгаан:'}
                     </Text>
 
-                    <Text style={styles.analystText}>
-                        {info.decline_reason}
-                    </Text>
+                    <Image style={styles.analystImage} src={htmlImg} />
                 </View>
 
                 {rows.map(row => ({
                     'z':
-                        <View key={row.rowcode} style={{ marginTop: 6 }} wrap={false}>
+                        <View key={row.rowcode} style={{ marginTop: 12 }} wrap={false}>
                             <View style={[styles.row, styles.headRow, { fontWeight: 500 }]}>
                                 <View style={[styles.column1, { paddingLeft: 6, paddingVertical: 6 }]}>
                                     <Text>

@@ -1,7 +1,6 @@
-import { PDFDownloadLink, BlobProvider, pdf } from '@react-pdf/renderer'
+import React, { useRef, Fragment } from 'react'
+import { PDFDownloadLink, pdf } from '@react-pdf/renderer'
 import PrintSVG from 'assets/svgComponents/printSVG'
-import React, { useRef } from 'react'
-import { Fragment } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import './style.css'
 import FirstEvaluationPreviewPdf from './previewPdf'
@@ -17,6 +16,12 @@ export default function FirstEvaluationPreview(props) {
         content: () => componentRef.current,
     })
 
+    const handleOpenPdf = async () => {
+        const blob = await pdf(<FirstEvaluationPreviewPdf rows={rows} company={company} />).toBlob()
+        const url = URL.createObjectURL(blob)
+        window.open(url, '_blank ')
+    }
+
     return (
         <div className="tw-text-gray-700 text-sm">
             <button className="tw-mb-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-text-15px" onClick={handlePrint}>
@@ -24,7 +29,6 @@ export default function FirstEvaluationPreview(props) {
                 <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
             </button>
 
-            {/* @react-pdf/renderer */}
             {/* <PDFDownloadLink
                 document={<FirstEvaluationPreviewPdf rows={rows} company={company} />}
                 fileName="5a.pdf"
@@ -32,34 +36,29 @@ export default function FirstEvaluationPreview(props) {
                 {({ blob, url, loading, error }) => (loading ? 'Loading' : 'Download')}
             </PDFDownloadLink> */}
 
-            <BlobProvider document={<FirstEvaluationPreviewPdf rows={rows} company={company} />}>
-                {({ blob, url, loading, error }) => (loading
-                    ? 'loading'
-                    : <button onClick={() => url && window.open(url, '_blank')}>Open</button>
-                )}
-            </BlobProvider>
+            <button onClick={handleOpenPdf}>Open</button>
 
             <div className="tw-mx-auto" ref={componentRef}>
                 <div className="tw-text-center tw-text-base tw-font-medium tw-mt-4 tw-mb-0.5">
                     Анхан шатны үнэлгээний хуудас
                 </div>
 
-                <div className="tw-text-13px tw-font-medium tw-leading-snug tw-text-right tw-mb-2 tw-px-2" id="web-to-img">
+                <div className="tw-text-13px tw-leading-snug tw-text-right tw-mb-2 tw-px-2" id="web-to-img">
                     <div className="">
                         Дугаар:
-                        <span className="tw-ml-2">{company.project?.project_number}</span>
+                        <span className="tw-ml-2 tw-font-medium">{company.project?.project_number}</span>
                     </div>
                     <div className="">
                         Төрөл:
-                        <span className="tw-ml-2">{company.project?.project_type_name}</span>
+                        <span className="tw-ml-2 tw-font-medium">{company.project?.project_type_name}</span>
                     </div>
                     <div className="">
                         Байгууллагын нэр:
-                        <span className="tw-ml-2">{company.companyname}</span>
+                        <span className="tw-ml-2 tw-font-medium">{company.companyname}</span>
                     </div>
                     <div className="">
                         Төслийн нэр:
-                        <span className="tw-ml-2">{company.project?.project_name}</span>
+                        <span className="tw-ml-2 tw-font-medium">{company.project?.project_name}</span>
                     </div>
                 </div>
 
