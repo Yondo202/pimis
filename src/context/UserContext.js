@@ -39,9 +39,10 @@ export const UserStore = (props) => {
         loginUserSuccess(res.data.token, res.data.refreshToken, res.data.expireDate, res.data.user);
       }).catch((err) => {
         console.log(err, "User context deeer aldaa garlaa");
-        if (err) {
+        if (err?.response?.data) {
           setErrMsg(err.response.data.error.message);
         } else {
+          setErrMsg("Холболт алдаатай байна")
           setUserInfo(initialUserInfo);
         }
       });
@@ -79,8 +80,8 @@ export const UserStore = (props) => {
         setErrMsgSignUp({ msg: `Таны бүртгүүлсэн "${res.data.user.email}" имэйл хаягаар бид имэйл илгээсэн тул та шалгаж БАТАЛГААЖУУЛАЛТ дээр дарна уу.`, cond: true });;
       })
       .catch((e) => {
-        setErrMsgSignUp({ msg: e.response.data.error.message, cond: false });
-        setUserInfo(initialUserInfo);
+          setErrMsgSignUp({ msg: e.response?.data.error.message, cond: false });
+          setUserInfo(initialUserInfo);
       });
   };
 
