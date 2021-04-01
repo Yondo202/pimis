@@ -42,12 +42,13 @@ function App() {
         <FilePreviewStore>
           <Router>
             {
-              ctxUser.userInfo.userId ? ctxUser.userInfo.role !== "user" ?
-              ctxUser.userInfo.role==="member" ?
-                (<MemberRoute />)
-              : ( <Admin /> ) 
-              : ( <UsersRoute />  )
-              : ( <UnAuthContent />)
+              ctxUser.userInfo.userId
+                ? ctxUser.userInfo.role !== "user"
+                  ? ctxUser.userInfo.role === "member"
+                    ? (<MemberRoute />)
+                    : (<Admin />)
+                  : (<UsersRoute />)
+                : (<UnAuthContent />)
             }
           </Router>
           <FilePreviewModal />

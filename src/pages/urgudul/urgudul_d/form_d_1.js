@@ -75,6 +75,7 @@ function UrgudulNoticeCluster() {
     }
 
     const handleRemove = (index) => {
+
         setForm(form.filter((_, i) => i !== index))
     }
 
@@ -248,7 +249,8 @@ function UrgudulNoticeCluster() {
                         Кластерийн гишүүн ААН-үүдийг төлөөлж:
                     </div>
 
-                    {form.filter((_, i) => i !== applicantIndex).map((item, i) =>
+                    {form.map((item, i) =>
+                        applicantIndex !== i &&
                         <div className="tw-flex even:tw-bg-gray-50" key={i}>
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                                 <FormSelect label="Аж ахуйн нэгжийн нэр" data={clusters} value={item.companyId} name="companyId" id={i} setForm={handleSetForm} displayName="company_name" classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-96" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.companyId)} />
@@ -262,7 +264,7 @@ function UrgudulNoticeCluster() {
                                         <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(item.representative_signature) ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
                                         <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(item.representative_signature) && 'tw-text-red-500'}`}>
                                             Гарын үсэг
-                                        </span>
+                                            </span>
                                     </div>
 
                                     <FormSignature value={item.representative_signature} name="representative_signature" id={i} setForm={handleSetForm} classAppend="tw-px-2 tw-py-2 tw-justify-center" canvasProps={{ width: 300, height: 100 }} />
