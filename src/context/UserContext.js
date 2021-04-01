@@ -73,7 +73,7 @@ export const UserStore = (props) => {
       });
   };
 
-  const signUpUser = (userinfos) => {
+  const signUpUser = (userinfos) => {   
     axios.post("users/register", userinfos)
       .then((res) => {
         console.log(res, "^new user");
@@ -84,8 +84,6 @@ export const UserStore = (props) => {
           setUserInfo(initialUserInfo);
       });
   };
-
-
 
   const logout = () => {
     localStorage.removeItem("userId");

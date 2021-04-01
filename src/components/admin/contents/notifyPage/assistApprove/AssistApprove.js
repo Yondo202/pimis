@@ -21,7 +21,6 @@ function AssistApprove({projectId, approve, setNotifyShow}) {
         if(res.data.data.length){ setSignature(res.data.data[0]) }
       }).catch(err=>console.log(`err`, err));
     },[])
-
       return (
             <MainContainter>
                 <div className="parent" ref={componentRef}>
