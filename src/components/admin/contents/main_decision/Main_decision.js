@@ -37,8 +37,8 @@ function Main_decision() {
     const backHandle = (el) =>{ if(el==="projects"){  history.push(`/${el}`); }else{ history.push(`/progress/${el}`); } }
 
     const clickHandle = (el) =>{
+        let inp = document.querySelector(".getInpp");
         if(notifyShow2!==1){
-            let inp = document.querySelector(".getInpp");
             if(inp.value===""){
                 setOpacity2('1');
                 setFinalErrorText('Та шалтгааныг оруулна уу?')
@@ -48,16 +48,20 @@ function Main_decision() {
                 inp.classList =- " red";
                 inp.classList += " getInpp";
                 mainData[inp.name] = inp.value;
+                console.log(`mainData`, mainData);
                 axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization:Token() } }).then((res)=>{
-                    console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
-                }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
+                console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
+            }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
             }
         }else{
+            mainData[inp.name] = inp.value;
             axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization:Token() } }).then((res)=>{
                 console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
             }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
         }
     }
+
+    console.log(`notifyShow222`, notifyShow2);
     
     const clickHandle2 = (el) =>{
         if(cond){
@@ -162,7 +166,13 @@ function Main_decision() {
                             <div className="svg"><IoIosShareAlt /></div>
                         <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
                     </div>
-                </div>:null}
+                </div>:<div className="reasonPar">
+                    <div className="title">Нэмэлт тайлбар бичих :</div>
+                    <div className="inpPar">
+                            <div className="svg"><IoIosShareAlt /></div>
+                        <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Нэмэлт тайлбарыг энд бичнэ үү..." /> <div className="line" /></InputStyle>
+                    </div>
+                </div>}
                 <div className="buttonPar">
                     <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                 </div>

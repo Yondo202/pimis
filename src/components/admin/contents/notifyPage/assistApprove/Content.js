@@ -26,7 +26,7 @@ class Content extends React.Component {
     }
 
     clickHandle = () =>{
-        if(!this.props?.Signature.signature){
+        if(!this.props.Signature||!this.props.Signature?.signature){
             this.setState({ visible: true });
         }else{
             axios.post('send-pps-notice', {
@@ -49,17 +49,18 @@ class Content extends React.Component {
     };
 
     closeModal = () =>{  this.setState({  visible : false }) }
-    signatureVerify = () =>{  this.props.history.push(`/signature`) }
+    signatureVerify = () =>{  this.props.history.push(`/users`) }
 
     render() {
         const app = this.props.approve;
         const edpInfo = this.props?.edpInfo
         return (
             <>
-                <Modal visible={this.state.visible} width="620" height="280" effect="fadeInDown" onClickAway={this.closeModal}   >
+                <Modal visible={this.state.visible} width="620" height="280" effect="fadeInDown" onClickAway={this.closeModal} >
                     <ModalStyle className="modalPar">
-                        <div className="TitlePar"> <div className="title"> <CgDanger /> Гарын үсэг баталгаажаагүй байна</div>   <div className="svgPar"><AiFillCloseCircle onClick={this.closeModal} /></div>  </div>
-                        <div className="btnPar"> <NextBtn onClick={this.signatureVerify}>Баталгаажуулах</NextBtn> <NextBtn onClick={this.closeModal} >Болих</NextBtn>
+                        <div className="TitlePar"> <div className="title"> <CgDanger />Төслийн зохицуулагчийн гарын үсэг байх шаардлагатай</div>   <div className="svgPar"><AiFillCloseCircle onClick={this.closeModal} /></div>  </div>
+                        <div className="btnPar"> <NextBtn style={{padding:"5px 10px", width:"50%"}} onClick={this.signatureVerify}>Төслийн зохицуулагч эрх нэмэх</NextBtn> 
+                        {/* <NextBtn onClick={this.closeModal} >Болих</NextBtn> */}
                         </div>
                     </ModalStyle>
                 </Modal>
