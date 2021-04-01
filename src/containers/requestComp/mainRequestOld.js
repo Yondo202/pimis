@@ -56,8 +56,7 @@ function MainRequest() {
     },[param === "user"?helpCtx.reqMount:0]);
 
     const handleScroll = () => {  if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); } }
-    const backHanlde = () =>{ history.push(`/progress/${param}`); }
-    const backHanlde2 = () =>{ history.push(`/`); }
+    const backHanlde = () =>{ history.push(`/projects`); }
 
     const func = param === "user"&&helpCtx.StyleComp;
     const One = param === "user"&&helpCtx.GlobalStyle.tableOne;
@@ -68,6 +67,7 @@ function MainRequest() {
     const Six = param === "user"&&helpCtx.GlobalStyle.tableSix;
     const errMsg = () =>{ console.log("+*+*+* err Msg");};
 
+    
     return (
         <>
             {param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />:<NullParent className="BtnPar"><button onClick={backHanlde} ><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> )

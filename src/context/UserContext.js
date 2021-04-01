@@ -94,6 +94,7 @@ export const UserStore = (props) => {
     localStorage.removeItem("role");
     localStorage.removeItem("username");
     localStorage.removeItem("tableId");
+    localStorage.removeItem("signature");
     setUserInfo({ userId: undefined });
 
     setTimeout(() => {
@@ -103,7 +104,7 @@ export const UserStore = (props) => {
 
   const alertText = (color, text, cond) => {
     setAlert({ color: color, text: text, cond: cond });
-    setTimeout(() => { setAlert({ cond: false }); }, [4000]);
+    setTimeout(() => { setAlert({ cond: false }); }, 4000);
   }
 
 

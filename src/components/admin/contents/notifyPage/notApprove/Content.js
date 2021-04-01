@@ -1,63 +1,78 @@
 import React from 'react'
 import styled from 'styled-components'
 import axios from 'axiosbase';
+import { withRouter } from "react-router-dom";
 import { Email, Item, Span, A, renderEmail, Box,Image} from 'react-html-email'
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
-import {AlertStyle, InputStyle} from 'components/theme'
+import {AlertStyle, InputStyle,NextBtn} from 'components/theme'
 import AuthToken from 'context/accessToken'
+import Modal from 'react-awesome-modal';
+import { AiFillCloseCircle } from "react-icons/ai"
 
 const today = new Date();
 const month = (today.getMonth()+1);
 const year = today.getFullYear();
 const day = today.getDate();
 
-export default class Content extends React.Component {
+class Content extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
         color: "orange", text: "", cond: false, Btn: "1",
         rejectReason: "",
+        visible: false,
         username : null || localStorage.getItem("username"),
         signature : null || localStorage.getItem("signature"),
      }
     }
+
     alertText = ( color, text, cond ) => {
         this.setState({ color:color, text:text, cond:cond  });
-         setTimeout(()=>{ this.setState({ color:color, text:text, cond:false })},[4000]);
+         setTimeout(()=>{ this.setState({ color:color, text:text, cond:false })},4000);
     }
+
     clickHandle = () =>{
         let inp = document.getElementById("getInp");
         if(this.state.rejectReason===""){
             inp.classList += " red"
             this.setState({ Btn: "1"}); this.alertText("orange", "Татгалзсан шалтгааныг бичнэ үү...", true);
-            return
+        }else if(!this.state.signature){
+            this.setState({ visible: true });
+        }else{
+            inp.classList -= " red"
+            axios.post('send-pps-notice', {
+                notice_type: "first-evalution",
+                projectId: this.props?.projectId,
+                approved : false,
+                additionMaterial: this.state.rejectReason,
+                signatureData:this.state.signature,
+                emailBody:EmailHTML( this.props?.data, this.props?.edpInfo, this.state.username, this.state.rejectReason ),
+            }, { headers: { Authorization: AuthToken() } })
+            .then((res)=>{ this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true);
+                setTimeout(()=>{ this.props.history.push(`5a/${this.props?.projectId}`)}, 3000);
+            }).catch((e)=>{console.log(e, "^err"); this.alertText("orange", "Алдаа гарлаа", true);  });
         }
-        inp.classList -= " red"
-        axios.post('send-pps-notice', { 
-            // email: "yondooo61@gmail.com",
-            notice_type: "first-evalution",
-            projectId: this.props?.projectId,
-            approved : false,
-            additionMaterial: this.state.rejectReason,
-            signatureData:this.state.signature,
-            emailBody:EmailHTML( this.props?.data, this.props?.edpInfo, this.state.username, this.state.rejectReason ),
-        }, { headers: { Authorization: AuthToken() } })
-        .then((res)=>{ this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true);
-            setTimeout(()=>{ this.props.history.push(`5a/${this.props?.projectId}`)}, 3000);
-        }).catch((e)=>{console.log(e, "^err"); this.alertText("orange", "Алдаа гарлаа", true);  });
     };
 
     changHanlder = (event) =>{
-        this.setState({
-            rejectReason: event.target.value
-        })
+        this.setState({ rejectReason: event.target.value })
     }
+    closeModal = () =>{  this.setState({  visible : false }) }
+    signatureVerify = () =>{  this.props.history.push(`/signature`) }
+
     render() {
         const data = this.props?.data
         const edpInfo = this.props?.edpInfo
         return (
             <>
+            <Modal visible={this.state.visible} width="620" height="280" effect="fadeInDown" onClickAway={this.closeModal}   >
+                <ModalStyle className="modalPar">
+                    <div className="TitlePar"> <div className="title"> <CgDanger /> Гарын үсэг баталгаажаагүй байна</div>   <div className="svgPar"><AiFillCloseCircle onClick={this.closeModal} /></div>  </div>
+                    <div className="btnPar"> <NextBtn onClick={this.signatureVerify}>Баталгаажуулах</NextBtn> <NextBtn onClick={this.closeModal} >Болих</NextBtn>
+                    </div>
+                </ModalStyle>
+            </Modal>
             <MainPar className="MainPar" >
                 <div className="title">Урьдчилсан мэдүүлэгт тэнцээгүй тухай мэдэгдэл</div>
                 <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч аж ахуйн нэгжийн нэр:</span> <span className="MemeberInfo">{data?.companyname}</span></div>
@@ -95,10 +110,12 @@ export default class Content extends React.Component {
     }
 }
 
+export default withRouter(Content);
+
 const EmailHTML = ( data, edpInfo, username, rejectReason ) => renderEmail(
     <Email style={{border:"1px solid rgba(0,0,0,0.2)",padding:'30px 70px', paddingTop:"15px",  width:"830px", backgroundColor:"rgba(220,220,220,0.2)"}} title="EDP">
         <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
-            <Item style={{color:"#222222", padding:'20px 20px', backgroundColor:"white", height:"100%"}} align="end">
+            <Item style={{color:"#222222", padding:'20px 20px', height:"100%"}} align="end">
                 <Box style={{textAlign:"center",width:"100%", marginBottom:'30px',fontWeight:'500', fontSize:'15px', backgroundColor:"rgba(220,220,220,0.2)"}} >Урьдчилсан мэдүүлэгт тэнцээгүй тухай мэдэгдэл</Box>
 
                 <Item style={{display:"flex", textAlign:"start", width:"100%",padding:"6px 0px", fontSize:'13px'}}>
@@ -151,6 +168,41 @@ const EmailHTML = ( data, edpInfo, username, rejectReason ) => renderEmail(
         </Email>
 )
 
+
+const ModalStyle = styled.div`
+    padding:20px 40px;
+   .btnPar{
+       display:flex;
+       justify-content:space-between;
+   }
+
+    .TitlePar{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        
+        padding-top:10px;
+        padding-bottom:40px;
+        .title{
+            display:flex;
+            font-weight:500;
+            align-items:center;
+            font-size:20px;
+            svg{
+                margin-right:15px;
+                font-size:24px;
+                color:orange;
+            }
+        }
+        .svgPar{
+            svg{
+                cursor:pointer;
+                font-size:22px;
+                color:rgb(150,150,150);
+            }
+        }
+    }
+`
 
 const MainPar = styled.div`
       margin-bottom:20px;

@@ -57,8 +57,8 @@ function Main_decision() {
                 console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
             }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
         }
-        
     }
+    
     const clickHandle2 = (el) =>{
         if(cond){
             if(notifyShow2===1){
@@ -169,7 +169,7 @@ function Main_decision() {
                 <div className="buttonPar">
                     {/* <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div> */}
                     <NextBtn className="SubmitButton" onClick={()=>clickHandle2(mainData?mainData.approved:"code")} type="button">Мэдэгдэл илгээх<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
-                    <NextBtn className="SubmitButton" onClick={()=>clickHandle(mainData?mainData.approved:"code")} type="button">Хадгалах<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                   {!cond&&<NextBtn className="SubmitButton" onClick={()=>clickHandle(mainData?mainData.approved:"code")} type="button">Хадгалах<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>} 
                 </div>
             </div>
             :<div className="NullPar">
@@ -180,8 +180,8 @@ function Main_decision() {
                 </div>
             </div> }
         </FeedBackCont> : notifyShow===1
-                        ? <NotifyComp className="container"> <AssistApprove projectId={param} approve={mainData} /> </NotifyComp>
-                        : <NotifyComp className="container"> <NotAssist projectId={param} approve={mainData} /></NotifyComp> }
+                        ? <NotifyComp className="container"> <AssistApprove setNotifyShow={setNotifyShow} projectId={param} approve={mainData} /> </NotifyComp>
+                        : <NotifyComp className="container"> <NotAssist setNotifyShow={setNotifyShow} projectId={param} approve={mainData} /></NotifyComp> }
             
         <AlertStyle style={ctx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${ctx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
             {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}

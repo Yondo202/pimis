@@ -6,7 +6,7 @@ import Content from './Content'
 import axios from 'axiosbase';
 import AuthToken from 'context/accessToken'
 
-function NotAssist({approve, projectId}) {
+function NotAssist({approve, projectId, setNotifyShow}) {
   const [ edpInfo ,setEdpInfo ] = useState({});
   const [ Signature, setSignature ] = useState(null);
 
@@ -16,7 +16,7 @@ function NotAssist({approve, projectId}) {
     });
     useEffect(()=>{
       axios.get(`edp-info`,{ headers: { Authorization: AuthToken() } }).then(res=>{
-        if(res.data.data?.id){ setEdpInfo(res.data.data);   }
+        if(res.data.data?.id){ setEdpInfo(res.data.data); }
       }).catch(err=>console.log(`err`, err));
 
       axios.get(`users?role=tosliin_zohitsuulagch`,{ headers: { Authorization: AuthToken() } }).then(res=>{
@@ -27,7 +27,7 @@ function NotAssist({approve, projectId}) {
       return (
             <MainContainter>
                 <div className="parent" ref={componentRef}>
-                     <Content Signature={Signature} projectId={projectId} edpInfo={edpInfo} approve={approve} />
+                     <Content setNotifyShow={setNotifyShow} Signature={Signature} projectId={projectId} edpInfo={edpInfo} approve={approve} />
                 </div>
                 <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
             </MainContainter>

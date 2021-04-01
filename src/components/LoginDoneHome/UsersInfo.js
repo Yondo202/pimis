@@ -18,13 +18,11 @@ function UsersInfo() {
     const [ spnBtn, setSpnBtn ] = useState(false);
     const [ opacity2, setOpacity2] = useState("0");
     const [ emailShow, setEmailShow ] = useState( { email: false, companyname: false} );
-
     const [ sectorData, setSectorData ] = useState([]);
     const [ showSectors, setShowSectors ] = useState(false);
     const [ selectSectors, setSelectSectors ] = useState("- Сонго -");
     const [ sectorId, setSectorId ] = useState(null);
     
-
     useEffect(async()=>{
        await axios.get(`users/${ctx.userInfo.userId}`).then(res=>{
            console.log(`res`, res);
@@ -48,10 +46,11 @@ function UsersInfo() {
         }else{
             setSpnBtn(true)
             axios.put(`users/${ctx.userInfo.userId}`, { ...userData, signature:imgData, business_sectorId: sectorId }, { headers: { Authorization: AccessToken() } } ).then(res=>{
-                console.log(`res`, res); setSpnBtn(false); ctx.alertText("green", "Амжилттай хадаглагдлаа", true);
+                console.log(`res`, res); setSpnBtn(false); ctx.alertText("green", "Амжилттай хадаглагдлаа", true); localStorage.setItem("signature", imgData);
             }).catch(err=> {setSpnBtn(false); ctx.alertText("orange", "Алдаа гарлаа", true); console.log(`err.response.data`, err)});
         }
     }
+
     const changeHandle = (e) => {
         let obj = {};
         obj[e.target.name] = e.target.value;

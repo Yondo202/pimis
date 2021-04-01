@@ -1,51 +1,68 @@
 import React from 'react'
 import styled from 'styled-components'
 import axios from 'axiosbase';
+import { withRouter } from "react-router-dom"
 import { Email, Item, Span, renderEmail, Box,Image} from 'react-html-email'
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
-import {AlertStyle} from 'components/theme';
+import {AlertStyle,NextBtn} from 'components/theme';
 import AuthToken from 'context/accessToken'
+import Modal from 'react-awesome-modal';
+import { AiFillCloseCircle } from "react-icons/ai"
 
 const today = new Date();
 const month = (today.getMonth()+1);const year = today.getFullYear();const day = today.getDate();
 const addDays=(dateObj, numDays)=>{ dateObj.setDate(dateObj.getDate() + numDays);  return dateObj;}
 const nextWeek = addDays(today , 5); const day2 = nextWeek.getDate();const month2 = (nextWeek.getMonth()+1); const year2 = nextWeek.getFullYear();
 
-export default class Content extends React.Component {
+class Content extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { color: "orange", text: "dadadadadadadad", cond: false, Btn: "1", username : localStorage.getItem("username"), }
+        this.state = { color: "orange", text: "dadadadadadadad", cond: false, Btn: "1", username : localStorage.getItem("username"),  visible: false, }
     }
     alertText = ( color, text, cond ) => {
         this.setState({ color:color, text:text, cond:cond  });
-         setTimeout(()=>{ this.setState({ color:color, text:text, cond:false })},[4000]);
+         setTimeout(()=>{ this.setState({ color:color, text:text, cond:false })}, 3000);
     }
 
     clickHandle = () =>{
-        axios.post('send-pps-notice', {
-            notice_type: "evaluation-results",
-            projectId: this.props?.projectId,
-            approved : true,
-            // additionMaterial: this.state.rejectReason, 
-            // email: "yondooo61@gmail.com",
-            signatureData:this.props?.Signature.signature,
-            emailBody:EmailHTML(this.props.approve, this.props?.edpInfo, this.state.username, this.props?.Signature),
-           }, { headers: { Authorization:AuthToken() } }).then((res)=>{
-                console.log(res.data.success, "my Response");
-                // this.setState({ Btn: "0"});
-                this.alertText("green", "Амжилттай илгээлээ", true);
-              }).catch((e)=>{
-                this.alertText("orange", "Алдаа гарлаа", true);
-                console.log(e, "err Response");
-          });
+        if(!this.props?.Signature.signature){
+            this.setState({ visible: true });
+        }else{
+            axios.post('send-pps-notice', {
+                notice_type: "evaluation-results",
+                projectId: this.props?.projectId,
+                approved : true,
+                // additionMaterial: this.state.rejectReason, 
+                signatureData:this.props?.Signature.signature,
+                emailBody:EmailHTML(this.props.approve, this.props?.edpInfo, this.state.username, this.props?.Signature),
+               }, { headers: { Authorization:AuthToken() } }).then((res)=>{
+                    console.log(res.data.success, "my Response");
+                    setTimeout(()=> { this.props?.setNotifyShow(0); }, 3000);
+                    this.setState({ Btn: "0"});
+                    this.alertText("green", "Амжилттай илгээлээ", true);
+                  }).catch((e)=>{
+                    this.alertText("orange", "Алдаа гарлаа", true);
+                    console.log(e, "err Response");
+              });
+        }
     };
+
+    closeModal = () =>{  this.setState({  visible : false }) }
+    signatureVerify = () =>{  this.props.history.push(`/signature`) }
 
     render() {
         const app = this.props.approve;
         const edpInfo = this.props?.edpInfo
         return (
             <>
+                <Modal visible={this.state.visible} width="620" height="280" effect="fadeInDown" onClickAway={this.closeModal}   >
+                    <ModalStyle className="modalPar">
+                        <div className="TitlePar"> <div className="title"> <CgDanger /> Гарын үсэг баталгаажаагүй байна</div>   <div className="svgPar"><AiFillCloseCircle onClick={this.closeModal} /></div>  </div>
+                        <div className="btnPar"> <NextBtn onClick={this.signatureVerify}>Баталгаажуулах</NextBtn> <NextBtn onClick={this.closeModal} >Болих</NextBtn>
+                        </div>
+                    </ModalStyle>
+                </Modal>
                 <MainPar className="MainPar" >
                     <div className="title"> Түншлэлийн дэмжлэг олгох тухай мэдэгдэл </div>
                     <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч аж ахуйн нэгжийн нэр:</span> <span className="MemeberInfo">{app?.company_name}</span></div>
@@ -58,7 +75,7 @@ export default class Content extends React.Component {
                         <div className="items">Энэхүү захидлаар танд Түншлэлийн гэрээг илгээж буй бөгөөд гарын үсэг, тамга тэмдгээр баталгаажуулсан гэрээг та энэхүү захидал илгээсэн өдрөөс ажлын 5 хоногийн дотор буюу {year2}оны  {month2}сарын {day2}өдрийн 18 цагаас өмнө хэвлэмэл байдлаар болон электрон хувилбараар давхар илгээхийг хүсч байна. </div> <br />
                         <div className="items">Хэрэв дээр дурдсан хугацаанд гэрээ ирээгүй тохиолдолд танай байгууллагыг энэхүү түншлэлийн дэмжлэг авахаас татгалзсанд тооцох тул хүндэтгэх шалтгаантай тохиолдолд албан бичиг эсвэл албан имэйлээр хүсэлтээ тайлбарлан илгээнэ үү. </div> <br />
                     </div>
-                    <div className="toname">Хэрэв танд гэрээтэй холбоотой асуулт байвал  <span className="name">" {edpInfo?.email} "</span>  хаягаар холбогдоно уу.</div><br />
+                    <div className="toname">Хэрэв танд гэрээтэй холбоотой асуулт байвал  <span className="name">" {edpInfo?.email} "</span>хаягаар холбогдоно уу.</div><br />
                     <div className="nameTitle A2"><span className="smtitle">Хүндэтгэсэн, </span><span className="MemeberInfo"></span></div>
                     <div className="nameTitle A2" ><span className="smtitle">Ахлах БХШ : </span><span className="MemeberInfo">{this.state.username}</span></div>
                     <div className="nameTitle A2"><span className="smtitle">Хаяг: </span><span className="MemeberInfo">{edpInfo?.address}</span></div>
@@ -75,10 +92,12 @@ export default class Content extends React.Component {
     }
 }
 
+export default withRouter(Content);
+
 const EmailHTML = (props, edpInfo, username, signature) => renderEmail(
     <Email style={{border:"1px solid rgba(0,0,0,0.2)",padding:'30px 60px', paddingTop:"30px", width:"750px", backgroundColor:"rgba(220,220,220,0.2)"}} title="EDP">
             <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
-                <Item style={{color:"#222222", padding:'20px 20px', backgroundColor:"white", height:"100%"}} align="end">
+                <Item style={{color:"#222222", padding:'20px 20px', height:"100%"}} align="end">
                     <Box style={{textAlign:"center",width:"100%", marginBottom:'30px',fontWeight:'500', fontSize:'15px', backgroundColor:"rgba(220,220,220,0.2)"}} >Түншлэлийн дэмжлэг олгох тухай мэдэгдэл</Box>
 
                     <Item style={{display:"flex", textAlign:"start", width:"100%", padding:"5px 0px", fontSize:'13px'}}>
@@ -132,7 +151,40 @@ const EmailHTML = (props, edpInfo, username, signature) => renderEmail(
 )
 
 
+const ModalStyle = styled.div`
+    padding:20px 40px;
+   .btnPar{
+       display:flex;
+       justify-content:space-between;
+   }
 
+    .TitlePar{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        
+        padding-top:10px;
+        padding-bottom:40px;
+        .title{
+            display:flex;
+            font-weight:500;
+            align-items:center;
+            font-size:20px;
+            svg{
+                margin-right:15px;
+                font-size:24px;
+                color:orange;
+            }
+        }
+        .svgPar{
+            svg{
+                cursor:pointer;
+                font-size:22px;
+                color:rgb(150,150,150);
+            }
+        }
+    }
+`
 
 const SendBtn = styled.div`
     @media print{
