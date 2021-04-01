@@ -12,19 +12,24 @@ Font.register({
 
 const styles = StyleSheet.create({
     page: {
-        padding: '30px 20px',
+        paddingVertical: 30,
+        paddingHorizontal: 20,
         fontFamily: "Roboto",
     },
     title: {
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: 14,
         marginTop: 10,
+        fontWeight: 500,
     },
     info: {
         textAlign: 'right',
         fontSize: 10,
         marginTop: 4,
         marginHorizontal: 4,
+    },
+    infoBold: {
+        fontWeight: 500,
     },
     row: {
         display: 'flex',
@@ -77,16 +82,20 @@ export default function FirstEvaluationPreviewPdf(props) {
 
                 <View style={styles.info}>
                     <Text>
-                        Дугаар: {company.project?.project_number}
+                        {'Дугаар: '}
+                        <Text style={styles.infoBold}>{company.project?.project_number}</Text>
                     </Text>
                     <Text>
-                        Төрөл: {company.project?.project_type_name}
+                        {'Төрөл: '}
+                        <Text style={styles.infoBold}>{company.project?.project_type_name}</Text>
                     </Text>
                     <Text>
-                        Байгууллагын нэр: {company.companyname}
+                        {'Байгууллагын нэр: '}
+                        <Text style={styles.infoBold}>{company.companyname}</Text>
                     </Text>
                     <Text>
-                        Төслийн нэр: {company.project?.project_name}
+                        {'Төслийн нэр: '}
+                        <Text style={styles.infoBold}>{company.project?.project_name}</Text>
                     </Text>
                 </View>
 
