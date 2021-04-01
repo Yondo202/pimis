@@ -47,9 +47,8 @@ function EdpInformation() {
                 console.log(res, " res"); ctx.alertText('green', "Амжилттай хадаглагдлаа", true);  setSpnBtn(false);
             }).catch(err=>{ setSpnBtn(false); ctx.alertText('orange', "Алдаа гарлаа", true); console.log(err.response.data) });
         }
-        console.log(final, "final");
-
     }
+    
     const onChangeHandle = (el) =>{
         let change= Data[el.target.name]= el.target.value; let final = { change, ...Data }; setData(final);
     }
@@ -146,8 +145,6 @@ function EdpInformation() {
                     </div>
                     {/* <Signature url={null} setImgData={setImgData} />  */}
                 </div>)}
-                
-
 
                 <div className="buttonPar">
                     <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>

@@ -140,7 +140,7 @@ export const ButtonStyle = styled.button`
 `
 
 export const AlertStyle = styled.div`
-        z-index:2020;  
+        z-index:10002;
         transition:all 0.5s ease;
         position:fixed;
         // height:80px;

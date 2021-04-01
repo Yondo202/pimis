@@ -143,10 +143,10 @@ function CompCheck() {
                             <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                         </div>
                         <div className="Success">
-                            <NextBtn onClick={()=>NextPageHandle(`/progress/${param}`)} className="NextPageBtn" type="button"><div className="flexchild"><IoIosArrowBack/><IoIosArrowBack className="hide" /> <IoIosArrowBack className="hide1" /></div>Буцах</NextBtn>
+                            <NextBtn onClick={()=>NextPageHandle(`/progress`)} className="NextPageBtn" type="button"><div className="flexchild"><IoIosArrowBack/><IoIosArrowBack className="hide" /> <IoIosArrowBack className="hide1" /></div>Буцах</NextBtn>
                             {success === 1? <div className="item not"><IoMdCheckmarkCircle />Үндсэн шалгуурыг хангаагүй байна...</div> : success=== 2? <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div> :null }
                         </div> 
-                </div> : ( <NullParent className="BtnPar"><button onClick={()=>NextPageHandle(`/progress/${param}`)}><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> ) )
+                </div> : ( <NullParent className="BtnPar"><button onClick={()=>NextPageHandle(`/projects`)}><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> ) )
                 :  (  <div className="boxShadow">
                     <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
                     {initialData.map((el,i)=>{

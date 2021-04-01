@@ -6,7 +6,7 @@ import Content from './Content'
 import axios from 'axiosbase';
 import AuthToken from 'context/accessToken'
 
-function AssistApprove({projectId, approve}) {
+function AssistApprove({projectId, approve, setNotifyShow}) {
   const [ edpInfo ,setEdpInfo ] = useState({});
   const [ Signature, setSignature ] = useState(null);
     const componentRef = useRef();
@@ -25,7 +25,7 @@ function AssistApprove({projectId, approve}) {
       return (
             <MainContainter>
                 <div className="parent" ref={componentRef}>
-                     <Content Signature={Signature} projectId={projectId} edpInfo={edpInfo} approve={approve} />
+                     <Content setNotifyShow={setNotifyShow} Signature={Signature} projectId={projectId} edpInfo={edpInfo} approve={approve} />
                 </div>
                 <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
             </MainContainter>

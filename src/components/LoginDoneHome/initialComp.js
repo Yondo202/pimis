@@ -1,7 +1,8 @@
 import React from 'react'
 import {Link} from "react-router-dom";
 
-function InitialComp() {
+function InitialComp(props) {
+    console.log(`props.prewdd`, props.prew);
     return (
         <div style={{marginTop:25}} className="row">
                 <div className="col-md-2 col-sm-2 itemsCol">
@@ -9,7 +10,7 @@ function InitialComp() {
                         <div className="mains">
                             <Link to={`/check/user`} className={`items`}>1. Шалгуур хангалтыг тулгах хуудас </Link>
                             <div className="line line2" ></div>
-                            <Link to={`/request/user`} className="items">2. Байгаль орчны үнэлгээний асуумж </Link>
+                            <Link to={!props.prew ? `/request/user` : `/request/${props.prew}`} className="items">2. Байгаль орчны үнэлгээний асуумж </Link>
                             <div className="line line2" ></div>
                             <Link to="/letter-of-interest" className="items">3. Сонирхол илэрхийлэх албан тоот</Link>                        
                         </div>

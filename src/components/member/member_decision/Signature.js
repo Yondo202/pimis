@@ -18,7 +18,7 @@ function Signature(props) {
     return (
         <SignaturePar className="rowItems">
             <div className="row">
-                <div className="col-md-3 col-sm-3 col-12"><div style={{marginBottom:15, fontWeight:500}} className="LeftHead">Баталгаат гарын үсэг: </div> </div>
+                <div className="col-md-3 col-sm-3 col-12"><div style={{marginBottom:15, marginLeft:15, fontWeight:500, fontSize:"16px",}} className="LeftHead">Баталгаат гарын үсэг: </div> </div>
                 <div className="col-md-9 col-sm-9 col-12">
                     <div className="RightHead">
                         <div className="addInfoPar">
@@ -26,7 +26,7 @@ function Signature(props) {
                                 <div className="infItemPar">
                                         <div className="drowPar">
                                             <div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>{!props.url? `Зурах`: `Засах` }</span></div>
-                                            {props.url? <img className="SingatureImg" src={props.url}/>  :  trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null}  
+                                            {props.url? <img className="SingatureImg" src={props.url}/>  :  trimmedDataURL ? <img className="SingatureImg" src={trimmedDataURL}/> : null}  
                                             {/* {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null} */}
                                                 <Modal visible={visible} width="620" height="380" effect="fadeInDown" onClickAway={closeModal}>
                                                     <div className="modalPar">

@@ -189,7 +189,8 @@ const MainPar = styled.div`
             .SingatureImg{
                 border:1px solid rgba(${ColorRgb},0.3);
                 width:200px;
-                // height:100px;
+                height:100px;
+                object-fit:contain;
           }
 
             .modalPar{

@@ -33,7 +33,7 @@ export const HelpStore = (props) =>{
         }
       }
 
-    const alertText = ( color, text, cond ) =>{ setAlert({ color:color, text:text, cond:cond });  setTimeout(()=>{ setAlert({ cond:false }); },[4000]); }
+    const alertText = ( color, text, cond ) =>{ setAlert({ color:color, text:text, cond:cond });  setTimeout(()=>{ setAlert({ cond:false }); },4000); }
 
     const reqMountFunc = (element) =>{
       setReqMount(prev=> prev + element);
