@@ -31,7 +31,7 @@ export default function TreeSelectCompact(props) {
     return (
         <div className={`tw-relative ${props.classAppend}`}>
             <button className={`tw-flex tw-items-center focus:tw-outline-none tw-text-sm tw-rounded ${props.validate ? 'tw-bg-red-100 active:tw-bg-red-200' : 'tw-bg-indigo-50 active:tw-bg-indigo-100'} tw-px-1.5 tw-py-0.5 tw-ml-3 tw-transition-colors`} style={{ width: 193 }} onClick={() => setOpen(!open)} ref={buttonRef}>
-                <div className="tw-mr-1 tw-relative tw-text-left tw-font-medium tw-truncate">
+                <div className="tw-mr-1 tw-relative tw-text-left tw-font-medium tw-truncate" title={selectedName}>
                     {selectedName || <span className="tw-text-gray-500">{props.placeholder}</span>}
                 </div>
                 <ChevronDownSVG className="tw-w-4 tw-h-4 tw-text-gray-600 tw-ml-auto tw-flex-shrink-0" />

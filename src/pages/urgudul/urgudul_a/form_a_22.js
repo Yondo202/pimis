@@ -66,9 +66,11 @@ function UrugudulDirectors() {
     }
 
     const handleSetForm = (key, value, index) => {
-        const newForm = form
-        newForm[index][key] = value
-        setForm([...newForm])
+        setForm(prev => {
+            const newForm = [...prev]
+            newForm[index][key] = value
+            return newForm
+        })
     }
 
     const [occupations, setOccupations] = useState([])
@@ -136,11 +138,20 @@ function UrugudulDirectors() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">A2</span>
-                - Аж ахуйн нэгжийг төлөөлөгчид
+            <div className="">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                    <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
+                    <span className="tw-leading-tight">- Аж ахуйн нэгжийг төлөөлөгчид</span>
 
-                <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Түлхүүр албан тушаалтны жагсаалт, тэдгээрийн овог нэр, албан тушаалын хамт." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Түлхүүр албан тушаалтны жагсаалт, тэдгээрийн овог нэр, албан тушаалын хамт." position="bottom" />
+                </div>
+
+                {UrgudulCtx.data.project_number &&
+                    <div className="tw-ml-5 tw-mb-2 tw-font-medium tw-text-13px">
+                        Өргөдлийн дугаар:
+                        <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                    </div>
+                }
             </div>
 
             {form.map((item, i) =>

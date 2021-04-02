@@ -43,7 +43,7 @@ export default function TrainingRegistration() {
         })
     }, [])
 
-    const handleInput = (key, value) => setForm({ ...form, [key]: value })
+    const handleInput = (key, value) => setForm(prev => ({ ...prev, [key]: value }))
 
     const fileInputRef = useRef(null)
 

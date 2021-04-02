@@ -318,7 +318,7 @@ export default function AnalystReport() {
     const [info, setInfo] = useState(initialEvaluator)
 
     const handleInputEvaluator = (key, value) => {
-        setInfo({ ...info, [key]: value })
+        setInfo(prev => ({ ...prev, [key]: value }))
     }
 
     const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked

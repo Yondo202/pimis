@@ -34,7 +34,7 @@ export default function TrainingRequest() {
         })
     }, [])
 
-    const handleInput = (key, value) => setForm({ ...form, [key]: value })
+    const handleInput = (key, value) => setForm(prev => ({ ...prev, [key]: value }))
 
     const AlertCtx = useContext(AlertContext)
 

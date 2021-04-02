@@ -20,7 +20,7 @@ const modulesFull = {
     ]
 }
 
-const modulesMin = {
+const modulesSmall = {
     toolbar: [
         [{ 'size': ['small', false, 'large', 'huge'] }],
         [{ 'font': [] }],
@@ -35,7 +35,6 @@ const modulesMin = {
 function FormRichText(props) {
     const handleOnChange = (content) => {
         props.setForm(props.name, content, props.id)
-        console.log('onchange fired')
     }
 
     let modules
@@ -44,7 +43,7 @@ function FormRichText(props) {
             modules = modulesFull
             break
         case 'small':
-            modules = modulesMin
+            modules = modulesSmall
             break
         default:
             if (typeof props.modules === 'object') modules = props.modules
@@ -52,7 +51,7 @@ function FormRichText(props) {
     }
 
     return (
-        <ReactQuill theme="snow" modules={modules} tabIndex={0} value={props.value} onChange={content => handleOnChange(content)} />
+        <ReactQuill theme="snow" id={`react-quill-${props.name}-${props.id}`} modules={modules} tabIndex={0} value={props.value} onChange={content => handleOnChange(content)} />
     )
 }
 

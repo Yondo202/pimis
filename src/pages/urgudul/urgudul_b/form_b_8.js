@@ -72,28 +72,30 @@ function UrgudulCalculations() {
     const UrgudulCtx = useContext(UrgudulContext)
 
     useEffect(() => {
-        const exportDatas = UrgudulCtx.data.exportDatas
+        if (UrgudulCtx.data.id !== undefined) {
+            const exportDatas = UrgudulCtx.data.exportDatas
 
-        if (Object.keys(exportDatas || []).length > 0) {
-            setForm({
-                ...exportDatas,
-                submitDate: {
-                    year: exportDatas?.submitDate?.year ?? year,
-                    month: exportDatas?.submitDate?.month ?? month,
-                },
-                endDate: {
-                    year: +exportDatas?.endDate?.year ?? UrgudulCtx.data.project_end?.split('-')[0],
-                    month: +exportDatas?.endDate?.month ?? UrgudulCtx.data.project_end?.split('-')[1],
-                }
-            })
-        } else {
-            setForm({
-                ...form,
-                endDate: {
-                    year: +UrgudulCtx.data.project_end?.split('-')[0] || null,
-                    month: +UrgudulCtx.data.project_end?.split('-')[1] || null,
-                }
-            })
+            if (Object.keys(exportDatas || []).length > 0) {
+                setForm({
+                    ...exportDatas,
+                    submitDate: {
+                        year: exportDatas?.submitDate?.year ?? year,
+                        month: exportDatas?.submitDate?.month ?? month,
+                    },
+                    endDate: {
+                        year: +exportDatas?.endDate?.year ?? UrgudulCtx.data.project_end?.split('-')[0],
+                        month: +exportDatas?.endDate?.month ?? UrgudulCtx.data.project_end?.split('-')[1],
+                    }
+                })
+            } else {
+                setForm({
+                    ...form,
+                    endDate: {
+                        year: +UrgudulCtx.data.project_end?.split('-')[0] || null,
+                        month: +UrgudulCtx.data.project_end?.split('-')[1] || null,
+                    }
+                })
+            }
         }
     }, [UrgudulCtx.data.id])
 
@@ -261,11 +263,20 @@ function UrgudulCalculations() {
     return (
         <div className="tw-flex tw-justify-center tw-w-full tw-px-4">
             <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-max-w-full">
-                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px tw-border-b tw-border-dashed">
-                    <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">B8</span>
-                    - Өөрийн төслийн хувьд дараах тооцооллыг хийнэ үү
+                <div className="tw-border-b tw-border-dashed">
+                    <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                        <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B8</span>
+                        <span className="tw-leading-tight">- Өөрийн төслийн хувьд дараах тооцооллыг хийнэ үү</span>
 
-                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
+                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
+                    </div>
+
+                    {UrgudulCtx.data.project_number &&
+                        <div className="tw-ml-5 tw-mb-2 tw-font-medium tw-text-13px">
+                            Өргөдлийн дугаар:
+                            <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                        </div>
+                    }
                 </div>
 
                 <div className="tw-text-sm tw-mt-6 tw-overflow-x-auto tw-overflow-y-hidden tw-mx-auto" ref={containerRef}>
@@ -386,7 +397,7 @@ function UrgudulCalculations() {
                                                 <tr className="tw-h-9">
                                                     <td className="tw-border tw-border-gray-300 tw-px-1">
                                                         <div className="tw-flex">
-                                                            <input className={`tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-0.5 tw-ml-3 tw-rounded ${validate && checkInvalid(product.product_name) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-font-medium tw-placeholder-gray-500`} type="text" value={product.product_name || ''} onChange={e => handleSetFormProduct('product_name', e.target.value, j, i)} placeholder="Экспортын бүтгээгдэхүүн" />
+                                                            <input className={`tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-0.5 tw-ml-3 tw-rounded ${validate && checkInvalid(product.product_name) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-font-medium tw-placeholder-gray-500`} type="text" value={product.product_name || ''} onChange={e => handleSetFormProduct('product_name', e.target.value, j, i)} placeholder="Экспортын бүтгээгдэхүүн" title={product.product_name} />
                                                         </div>
                                                     </td>
                                                     {

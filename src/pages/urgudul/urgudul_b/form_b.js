@@ -36,11 +36,13 @@ function UrgudulBreakdown() {
     const UrgudulCtx = useContext(UrgudulContext)
 
     useEffect(() => {
-        let temp = {}
-        Object.keys(initialState).forEach(key => {
-            if (UrgudulCtx.data[key] && UrgudulCtx.data[key] !== null) temp[key] = UrgudulCtx.data[key]
-        })
-        setForm({ ...form, ...temp })
+        if (UrgudulCtx.data.id !== undefined) {
+            let temp = {}
+            Object.keys(initialState).forEach(key => {
+                if (UrgudulCtx.data[key] && UrgudulCtx.data[key] !== null) temp[key] = UrgudulCtx.data[key]
+            })
+            setForm(prev => ({ ...prev, ...temp }))
+        }
     }, [UrgudulCtx.data.id])
 
     const handleInput = (e) => {
@@ -52,7 +54,7 @@ function UrgudulBreakdown() {
     }
 
     const handleSetForm = (key, value) => {
-        setForm({ ...form, [key]: value })
+        setForm(prev => ({ ...prev, [key]: value }))
     }
 
     const AlertCtx = useContext(AlertContext)
@@ -105,11 +107,20 @@ function UrgudulBreakdown() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">B</span>
-                - Төслийн задаргаа
+            <div className="">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                    <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B</span>
+                    <span className="tw-leading-tight">- Төслийн задаргаа</span>
 
-                <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Түлхүүр албан тушаалтны жагсаалт, тэдгээрийн овог нэр, албан тушаалын хамт." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Түлхүүр албан тушаалтны жагсаалт, тэдгээрийн овог нэр, албан тушаалын хамт." position="bottom" />
+                </div>
+
+                {UrgudulCtx.data.project_number &&
+                    <div className="tw-ml-5 tw-mb-2 tw-font-medium tw-text-13px">
+                        Өргөдлийн дугаар:
+                        <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                    </div>
+                }
             </div>
 
             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-center">
