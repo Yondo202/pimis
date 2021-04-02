@@ -255,6 +255,7 @@ export const InputStyle = styled.div`
             .fileStyleLabel{
                 font-size:13px;
                 background: #f15d22;
+                background: #008CBA;
                 border: none;
                 border-radius: 4px;
                 color: #fff;
@@ -264,12 +265,12 @@ export const InputStyle = styled.div`
                 font-weight: 500;
                 // margin-bottom: 1rem;
                 outline: none;
-                padding: 0.4rem 45px;
+                padding: 0.3rem 40px;
                 position: relative;
                 transition: all 0.3s;
                 vertical-align: middle;
                 &:hover{
-                    background:#f48457;
+                    background:#00ace6;
                 }
             }
           
