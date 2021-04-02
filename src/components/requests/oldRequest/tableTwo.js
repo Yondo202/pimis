@@ -36,7 +36,6 @@ function TableTwo(props) {
             });
             setDname(props.initialName); setDdate(props.initialDate); setInitialData(finalData);
         }
-        console.log("useEffect ajillav ------------------");
     },[props.initialData]);
 
 

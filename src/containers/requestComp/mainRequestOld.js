@@ -42,7 +42,6 @@ function MainRequest() {
             window.addEventListener("scroll", handleScroll);
             let resData = await axios.get(`pps-request?userId=${LocalId}`, {headers: {Authorization:AccessToken()}});
             if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data);
-                console.log(resData,"++++++++++++++++ --- +++++++");
                 helpCtx.TableIdControl(resData.data.data.id);
                 setNa3(resData.data.data.na3);
             }
@@ -52,7 +51,6 @@ function MainRequest() {
             let resData = await axios.get(`pps-request?userId=${param}`, {headers: {Authorization:AccessToken()}});
             if(resData.data.data.id){ setNa3(resData.data.data.na3); setInitialData(resData.data.data); ModalOpen(true); }
         }
-        console.log("-----------------------------------");
     },[param === "user"?helpCtx.reqMount:0]);
 
     const handleScroll = () => {  if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); } }
