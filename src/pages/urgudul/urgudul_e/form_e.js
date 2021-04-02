@@ -64,65 +64,74 @@ function UrgudulChecklist() {
 
     return (
         <div className="tw-mt-8 tw-py-2 tw-mb-20 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">E</span>
-                - Шалгах хуудас
+            <div className="">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
+                    <span className="tw-text-blue-500 tw-text-xl tw-mx-2">E</span>
+                    <span className="tw-leading-tight">- Шалгах хуудас</span>
 
-                <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
+                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
+                </div>
+
+                {UrgudulCtx.data.project_number &&
+                    <div className="tw-ml-5 tw-mb-2 tw-font-medium tw-text-13px">
+                        Өргөдлийн дугаар:
+                        <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                    </div>
+                }
             </div>
 
             <div>
-                <div className="tw-pl-4 tw-pr-2 tw-pt-3 tw-text-sm tw-font-medium">
+                <div className="tw-px-5 tw-pt-5 tw-text-15px tw-font-medium">
                     Өргөдлийг илгээхийн өмнө дараах шалгууруудыг бүрэн эсэхийг шалгана уу. Зөвлөсөн тэмдгээр арын нүдэнд тэмдэглэнэ үү:
-            </div>
+                </div>
 
-                <div className="tw-m-4 tw-mb-6 tw-shadow-md">
+                <div className="tw-m-4 tw-mb-6 tw-shadow-md ">
                     <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
-                        <span className="tw-px-4 tw-py-2">
-                            <span className="tw-font-medium tw-mr-2">1.</span>
-                    Санал болгосон өргөдлийн маягтын форматын дагуу мэдээллийг бөглөсөн.
+                        <span className="tw-px-4 tw-py-2 tw-font-medium">
+                            <span className="tw-mr-2">1.</span>
+                            Санал болгосон өргөдлийн маягтын форматын дагуу мэдээллийг бөглөсөн.
                         </span>
                         <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.format} name="format" onChange={handleInputCheckbox} />
                     </div>
 
                     <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
-                        <span className="tw-px-4 tw-py-2">
-                            <span className="tw-font-medium tw-mr-2">2.</span>
-                    Төсвийг ам.доллараар бэлтгэсэн.
+                        <span className="tw-px-4 tw-py-2 tw-font-medium">
+                            <span className="tw-mr-2">2.</span>
+                            Төсвийг ам.доллараар бэлтгэсэн.
                         </span>
                         <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.dollar} name="dollar" onChange={handleInputCheckbox} />
                     </div>
 
                     <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
-                        <span className="tw-px-4 tw-py-2">
-                            <span className="tw-font-medium tw-mr-2">3.</span>
-                    Төслийг хэрэгжүүлэх хугацаа нь 9 сараас хэтрэхгүй байна.
-                    <HelpPopup classAppend="tw-ml-2 tw-inline-flex tw-top-1.5" main="Хамгийн дээд хугацаа нь 9 сар болно." position="bottom" />
+                        <span className="tw-px-4 tw-py-2 tw-font-medium">
+                            <span className="tw-mr-2">3.</span>
+                            Төслийг хэрэгжүүлэх хугацаа нь 9 сараас хэтрэхгүй байна.
+                            <HelpPopup classAppend="tw-ml-2 tw-inline-flex tw-top-1.5" main="Хамгийн дээд хугацаа нь 9 сар болно." position="bottom" />
                         </span>
                         <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.nine_months} name="nine_months" onChange={handleInputCheckbox} />
                     </div>
 
                     <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
-                        <span className="tw-px-4 tw-py-2">
-                            <span className="tw-font-medium tw-mr-2">4.</span>
-                    Экспортыг дэмжих төслөөс хүссэн нийт санхүүжилт нь кластерын хувьд 100,000 ам.доллараас, аж ахуйн нэгжийн хувьд 50,000 ам.доллараас хэтрэхгүй байна.
-                    <HelpPopup classAppend="tw-ml-2 tw-inline-flex tw-top-1.5" main="Өмнө нь авсан болон энэ удаа хүсч буй нийт дүн нь дээрх дүнгээс хэтрэхгүй байх ёстой." position="bottom" />
+                        <span className="tw-px-4 tw-py-2 tw-font-medium">
+                            <span className="tw-mr-2">4.</span>
+                            Экспортыг дэмжих төслөөс хүссэн нийт санхүүжилт нь кластерын хувьд 100,000 ам.доллараас, аж ахуйн нэгжийн хувьд 50,000 ам.доллараас хэтрэхгүй байна.
+                            <HelpPopup classAppend="tw-ml-2 tw-inline-flex tw-top-1.5" main="Өмнө нь авсан болон энэ удаа хүсч буй нийт дүн нь дээрх дүнгээс хэтрэхгүй байх ёстой." position="bottom" />
                         </span>
                         <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.max_amount} name="max_amount" onChange={handleInputCheckbox} />
                     </div>
 
                     <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
-                        <span className="tw-px-4 tw-py-2">
-                            <span className="tw-font-medium tw-mr-2">5.</span>
-                    Экспортыг дэмжих төслөөс хүссэн санхүүжилтийн дүнтэй тэнцүү хэмжээний санхүүжилтийг өргөдөл гаргагч нь өөрийн компанийн зүгээс гаргах бөгөөд энэ дүн нь өргөдөл гаргахаас өмнөх зардал ороогүй дүн байна.
+                        <span className="tw-px-4 tw-py-2 tw-font-medium">
+                            <span className="tw-mr-2">5.</span>
+                            Экспортыг дэмжих төслөөс хүссэн санхүүжилтийн дүнтэй тэнцүү хэмжээний санхүүжилтийг өргөдөл гаргагч нь өөрийн компанийн зүгээс гаргах бөгөөд энэ дүн нь өргөдөл гаргахаас өмнөх зардал ороогүй дүн байна.
                         </span>
                         <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.self_fund} name="self_fund" onChange={handleInputCheckbox} />
                     </div>
 
                     <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
-                        <span className="tw-px-4 tw-py-2">
-                            <span className="tw-font-medium tw-mr-2">6.</span>
-                    Мэдэгдэл нь өргөдөл гаргагч болон кластерын гишүүд бүрээр гарын үсэг зурагдсан байна.
+                        <span className="tw-px-4 tw-py-2 tw-font-medium">
+                            <span className="tw-mr-2">6.</span>
+                            Мэдэгдэл нь өргөдөл гаргагч болон кластерын гишүүд бүрээр гарын үсэг зурагдсан байна.
                         </span>
                         <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.signed} name="signed" onChange={handleInputCheckbox} />
                     </div>
@@ -130,11 +139,11 @@ function UrgudulChecklist() {
             </div>
 
             <div>
-                <div className="tw-pl-4 tw-pr-2 tw-pt-3 tw-text-sm tw-font-medium">
+                <div className="tw-px-5 tw-pt-5 tw-text-15px tw-font-medium">
                     Урьдчилсан мэдүүлгээр буюу эхний шатанд тэнцсэн өргөдөл гаргагч нь ажлын 10 хоногийн дотор дараах материалыг бүрдүүлэн өгнө:
                 </div>
 
-                <ol className="tw-list-decimal tw-list-inside tw-text-sm tw-m-4 tw-mb-6 tw-shadow-md">
+                <ol className="tw-list-decimal tw-list-inside tw-text-sm tw-m-4 tw-mb-6 tw-shadow-md tw-font-medium">
                     <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
                         Экспорт хөгжлийн төлөвлөгөө.
                     </li>

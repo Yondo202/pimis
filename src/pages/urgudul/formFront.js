@@ -100,8 +100,17 @@ function UrgudulFront() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed tw-text-gray-700">
-            <div className="tw-text-2xl tw-font-semibold tw-pt-8 tw-pb-10 tw-px-4 tw-text-center tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-blue-500 tw-to-green-500">
-                Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт
+            <div className="">
+                <div className="tw-text-2xl tw-font-semibold tw-pt-8 tw-pb-6 tw-px-4 tw-text-center tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-blue-500 tw-to-green-500">
+                    Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт
+                </div>
+
+                {UrgudulCtx.data.project_number &&
+                    <div className="tw-mb-2 tw-font-medium tw-text-13px tw-px-2 tw-text-center">
+                        Өргөдлийн дугаар:
+                        <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                    </div>
+                }
             </div>
 
             <div className="tw-p-2 tw-pb-5 tw-flex tw-flex-col tw-items-center">

@@ -135,7 +135,7 @@ function UrgudulNavigator(props) {
     })
 
     return (
-        <div className="tw-relative tw-w-full tw-text-gray-700">
+        <div className="tw-relative tw-w-full tw-text-gray-700 tw-text-13px">
             <div className="tw-mt-4 tw-ml-4 tw-mb-10">
                 <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-5 tw-pr-6 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-text-15px tw-transition-colors" onClick={() => setPreviewModalOpen(true)}>
                     <SearchSVG className="tw-w-4 tw-h-4" />

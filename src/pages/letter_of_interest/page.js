@@ -71,7 +71,7 @@ export default function LetterOfInterest() {
     const [form, setForm] = useState(initialState)
 
     const handleInput = (key, value) => {
-        setForm({ ...form, [key]: value })
+        setForm(prev => ({ ...prev, [key]: value }))
     }
 
     const inputRefLogo = useRef(null)

@@ -229,20 +229,21 @@ export default function UrgudulPreview(props) {
     const getProductName = (id) => products.filter(obj => obj.id === id)[0]?.description_mon
 
     return (
-        <div className="tw-text-sm tw-text-gray-700" id="urgudul-preview-page">
+        <div className="tw-text-sm tw-text-gray-700 tw-text-13px" id="urgudul-preview-page">
             <button className="tw-mb-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-text-15px tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handlePrint}>
                 <span className="tw-text-sm">Хэвлэх болон PDF-ээр татах</span>
                 <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
             </button>
 
             <div className="preview-container" ref={componentRef}>
-                <div className="tw-text-lg text-center tw-font-medium tw-p-4 tw-mt-2 tw-mb-4">
+                <div className="tw-text-xl text-center tw-font-medium tw-p-4 tw-mt-2 tw-mb-2">
                     Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт
                 </div>
 
                 <div className="no-break">
-                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800">
-                        ID: {project.id}
+                    <div className="tw-px-2 tw-pt-2 tw-pb-1.5 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800">
+                        Өргөдлийн дугаар:
+                        <span className="tw-ml-2 tw-text-sm tw-tracking-wide">{project.project_number}</span>
                     </div>
                     <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
                         <Row label={labels.front.project_type} value={project.project_type === 1 ? 'Кластер' : (project.project_type === 0 && 'Аж ахуйн нэгж')} />
