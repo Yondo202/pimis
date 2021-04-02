@@ -203,10 +203,10 @@ function TableTwo(props) {
                                               </div>
                                 </div>
 
-                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.files?el.files.name:""}</div> </div>
+                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span style={el.files? {color:`${textColor},0.6`}: {color:`${textColor},0.9`}} >Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.files?el.files.name:""}</div> </div>
                                         <div className="name"> <RiUpload2Line />  
                                         <InputStyle className="newInp">
-                                                <label className="fileStyleLabel" for={`file${i+1}`}>Хавсаргах</label>
+                                                <label className="fileStyleLabel" for={`file${i+1}`}> {el.files?"Өөрчлөх":"Хавсаргах"}</label>
                                                 <input type="file"  id={`file${i+1}`} tabIndex={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field fileStyle `}  name="file"  />
                                                 <div className="line"></div>
                                         </InputStyle>
@@ -402,11 +402,12 @@ const Component2 = styled.div`
                         justify-content:space-between;
                         font-size:13px;
                         span{
-                         
                          color:rgba(${textColor},.9);
                          font-weight:500;
                         }
                         .filess{
+                            margin-top:5px;
+                            font-weight:500;
                             color:green;
                         }
                      }
