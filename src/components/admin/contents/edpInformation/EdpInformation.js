@@ -160,9 +160,8 @@ function EdpInformation() {
 export default EdpInformation;
 
 const animate = keyframes`
-    0% { transform:scale(0.9);opacity:0.1;  }
-    65% { transform:scale(1.065);opacity:1;  }
-    100% { transform:scale(1);opacity:1;  }
+    0% { transform:translateY(50px);opacity:0; }
+    100% { transform:translateY(0px);opacity:1; }
 `
 const EdpInfComp = styled.div`
     color: rgb(${textColor });
@@ -171,7 +170,7 @@ const EdpInfComp = styled.div`
     justify-content:center;
     padding-top:30px;
     .contentPar{
-        animation: ${animate} 0.4s ease;
+        animation: ${animate} 0.6s ease;
         border-radius:0px 50px 0px 50px;
         box-shadow:1px 1px 23px -10px rgba(${textColor},0.8); 
         padding:30px 5px;

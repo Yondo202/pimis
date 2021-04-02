@@ -101,9 +101,8 @@ function Layout({ setLocale }) {
 export default Layout;
 
 const cardAnimate = keyframes`
-    0% { transform:scale(1);opacity:0;  }
-    30% { transform:scale(1.017);opacity:0.7;  }
-    100% { transform:scale(1);opacity:1;  }
+  0% { transform:translateY(30px);opacity:0; }
+  100% { transform:translateY(0px);opacity:1; }
 `
 
 const AdminApp = styled.div`

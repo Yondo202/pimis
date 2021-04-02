@@ -8,6 +8,7 @@ export const fontSize2 = '15px'
 export const fontSizeMobile = '13px'
 export const fontSizeMobile2 = '15px'
 export const fontFamily2 = "'Montserrat', sans-serif";
+// export const fontFamily = "'Rubik', sans-serif";
 export const fontFamily = "'Roboto', sans-serif";
 
 export const PrevBtn = styled.div`

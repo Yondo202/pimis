@@ -134,9 +134,8 @@ function UsersInfo() {
 export default UsersInfo
 
 const anime = keyframes`
-    0% { transform:scale(0.8);opacity:0;  }
-    30% { transform:scale(1.05);opacity:0.8;  }
-    100% { transform:scale(1);opacity:1;  }
+    0% { transform:translateY(30px);opacity:0;  }
+    100% { transform:translateY(0px);opacity:1;  }
 `
 const InpAnime = keyframes`
     0% { opacity:0; margin:0px 0px;  }

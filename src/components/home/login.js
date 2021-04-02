@@ -1,11 +1,11 @@
-import React,{ useContext, useState, useRef, useEffect } from 'react'
-import styled from 'styled-components'
+import React,{ useContext, useState, useRef } from 'react'
+import styled, {keyframes} from 'styled-components'
 import {CgProfile} from 'react-icons/cg'
 import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import {FaRegEye,FaRegEyeSlash} from 'react-icons/fa'
 import UserContext from "../../context/UserContext";
-import {fontFamily, Color,ColorRgb,InputStyle, NextBtn} from "../theme"
+import {fontFamily, Color,ColorRgb,InputStyle, NextBtn, fontFamily2} from "../theme"
 import Signup from './signup'
 import ForgetPassword from './ForgetPassword'
 import { useHistory } from 'react-router-dom'
@@ -17,9 +17,6 @@ function Login() {
   const userCtx = useContext(UserContext);
   const [Show, setShow] = useState(false);
 
-  // useEffect(()=>{
-  //   setTimeout(()=>{refFocus.current.focus();},1500);
-  // },[])
   const handleClick = (e) =>{
       let Username = document.querySelectorAll(".LoginInpName");
       let User = Array.from(Username);
@@ -79,6 +76,22 @@ function Login() {
 
 export default Login
 
+const imageAnimate = keyframes`
+    0% { transform:translateY(-40px);opacity:0;  }
+    100% { transform:translateY(0px);opacity:1;  }
+`
+
+const inputAnimate = keyframes`
+    0% { transform:translateX(40px);opacity:0;  }
+    100% { transform:translateX(0px);opacity:1;  }
+`
+const inputAnimate2 = keyframes`
+    0% { transform:translateX(-40px);opacity:0;  }
+    100% { transform:translateX(0px);opacity:1;  }
+`
+
+
+
 const Component = styled.div`
     font-family:${fontFamily};
     // height:70vh;
@@ -89,10 +102,9 @@ const Component = styled.div`
         text-align:center;
         padding:15px 0px;
         img{
-          // width:100%;
-            // width:128px;
-            // height:50px;
-            margin-bottom:10px;
+          animation: ${imageAnimate} 1s ease;
+          width:100%;
+          margin-bottom:10px;
         }
 
         .text{
@@ -124,6 +136,7 @@ const Component = styled.div`
            display:flex;
            flex-direction:column;
            .labels{
+               animation: ${inputAnimate2} 1s ease;
                display:flex;
                flex-direction:row;
                justify-content:space-between;
@@ -142,12 +155,14 @@ const Component = styled.div`
             justify-content:start;
             width:100%;
             svg{
+              animation: ${inputAnimate2} 1s ease;
               color:rgba(${ColorRgb},0.7);
               font-size:28px;
               margin-right:15px;
               margin-bottom:5px;
             }
             .newInp{
+              animation: ${inputAnimate} 1s ease;
               font-size:15px;
               width:100%;
             }
@@ -241,7 +256,6 @@ const Component = styled.div`
 
   @media only screen and (max-width:1308px){
     padding-top:0px;
-    // height:80vh;
     .SubmitButtonPar{
         .SubmitButton{
             width:100%;

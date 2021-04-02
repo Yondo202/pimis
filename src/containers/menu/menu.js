@@ -49,7 +49,6 @@ function Menu() {
       if(currentPath === "/urgudul/1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }
     }, [location]);
    
-
   return (
     <Componentss>
       <div style={{height:headerHeight,display:diplayFlex}} className="MainMenus">
@@ -137,9 +136,8 @@ function Menu() {
 export default Menu;
 
 const cardAnimate = keyframes`
-    0% { transform:scale(1);opacity:0;  }
-    30% { transform:scale(1.017);opacity:0.7;  }
-    100% { transform:scale(1);opacity:1;  }
+    0% { transform:translateY(30px);opacity:0;  }
+    100% { transform:translateY(0px);opacity:1;  }
 `
 
 const Componentss = styled.div`
