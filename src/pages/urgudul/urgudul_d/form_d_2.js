@@ -225,7 +225,8 @@ function UrgudulNoticeCompany() {
                         Болон бусад ажилчид:
                     </div>
 
-                    {form.filter((_, i) => i !== directorIndex).map((item, i) =>
+                    {form.map((item, i) =>
+                        directorIndex !== i &&
                         <div className="tw-flex even:tw-bg-gray-50" key={i}>
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                                 <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-96" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.representative_positionId)} />

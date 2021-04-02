@@ -52,7 +52,7 @@ function UrgudulNavigator(props) {
 
     const UrgudulCtx = useContext(UrgudulContext)
 
-    const isCluster = UrgudulCtx.data.project_type === 1 || false
+    const isCluster = UrgudulCtx.data.project_type === 1 ? true : false
 
     const location = useLocation()
 

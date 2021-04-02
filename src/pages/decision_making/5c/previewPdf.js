@@ -115,11 +115,16 @@ export default function AnalystReportPreviewPdf(props) {
 
                 <View style={styles.analystView}>
                     <Text style={styles.analystText}>
-                        Шинжилгээ хийсэн Бизнес шинжээч: {'Шинжээчийн нэр***'}
+                        {'Шинжилгээ хийсэн Бизнес шинжээч: '}
+                        <Text style={styles.infoBold}>{'Шинжээчийн нэр***'}</Text>
                     </Text>
 
                     <Text style={styles.analystText}>
-                        Шинжилгээ, дүгнэлт хийсэн хугацаа: {info.check_start?.replaceAll('-', '.') || '__'} -аас {info.check_end?.replaceAll('-', '.') || '__'} -ны хооронд.
+                        {'Шинжилгээ, дүгнэлт хийсэн хугацаа: '}
+                        <Text style={styles.infoBold}>{info.check_start?.replaceAll('-', '.') || '__'}</Text>
+                        {' -аас '}
+                        <Text style={styles.infoBold}>{info.check_end?.replaceAll('-', '.') || '__'}</Text>
+                        {' -ны хооронд.'}
                     </Text>
 
                     <Text style={styles.analystText}>

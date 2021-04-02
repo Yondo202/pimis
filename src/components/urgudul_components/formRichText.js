@@ -33,8 +33,9 @@ const modulesMin = {
 }
 
 function FormRichText(props) {
-    const handleOnChange = (content, delta, source, editor) => {
+    const handleOnChange = (content) => {
         props.setForm(props.name, content, props.id)
+        console.log('onchange fired')
     }
 
     let modules
@@ -51,7 +52,7 @@ function FormRichText(props) {
     }
 
     return (
-        <ReactQuill theme="snow" modules={modules} tabIndex={0} value={props.value} onChange={handleOnChange} />
+        <ReactQuill theme="snow" modules={modules} tabIndex={0} value={props.value} onChange={content => handleOnChange(content)} />
     )
 }
 
