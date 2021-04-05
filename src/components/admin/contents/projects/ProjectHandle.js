@@ -133,8 +133,8 @@ export default function ProjectHandle() {
                     <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} />
                     <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} />
                     <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} />
-                    <Column dataField="esq" caption="Байгаль орчны үнэлгээ" headerCellRender={HeaderCell} />
-                    <Column dataField="esm" caption="Байгаль орчны үнэлгээ" headerCellRender={HeaderCell} />
+                    <Column dataField="esq" caption="БОҮ - асуумж" headerCellRender={HeaderCell} />
+                    <Column dataField="esm" caption="Ангилал" headerCellRender={HeaderCell} />
                     <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} />
 
                     <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
