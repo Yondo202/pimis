@@ -248,7 +248,8 @@ export const InputStyle = styled.div`
             .red{
                 border-bottom:1px solid rgba(255,0,0,0.8);
             }
-            .fileStyle[type="file"]{
+
+            /* .fileStyle[type="file"]{
                 height: 0;
                 overflow: hidden;
                 width: 0;
@@ -273,7 +274,7 @@ export const InputStyle = styled.div`
                 &:hover{
                     background:#00ace6;
                 }
-            }
+            } */
           
 `
 
