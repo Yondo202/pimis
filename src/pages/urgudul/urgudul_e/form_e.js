@@ -139,7 +139,7 @@ function UrgudulChecklist() {
             </div>
 
             <div>
-                <div className="tw-px-5 tw-pt-5 tw-text-15px tw-font-medium">
+                <div className="tw-px-5 sm:tw-px-20 tw-pt-5 tw-text-base tw-font-medium tw-text-blue-500 tw-text-center">
                     Урьдчилсан мэдүүлгээр буюу эхний шатанд тэнцсэн өргөдөл гаргагч нь ажлын 10 хоногийн дотор дараах материалыг бүрдүүлэн өгнө:
                 </div>
 
