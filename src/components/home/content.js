@@ -1,12 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-// let easing = [0, 0, 0.56, 0.95];
-// const textVariants = {exit: { y: -80, opacity: 0, transition: { duration: 0.9, ease: easing } },
-//     enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 1, ease: easing }}};
-// const textVariants2 = {exit: { y: 80, opacity: 0, transition: { duration: 0.9, ease: easing } },
-//     enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 1, ease: easing }}};
-
 function Content() {
     return (
         <Component>

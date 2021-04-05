@@ -116,7 +116,6 @@ function TableTwo(props) {
         let rs4 = document.querySelectorAll(".getUser2");
         let arr4 = Array.from(rs4);
         let userInp = {};
-
         arr4.map(el=>{
             let field = el.name; let value = el.value; if(value===""){ el.classList += " red"; }else{  el.classList =- " red";  el.classList += " getUser2"; };  userInp[field] = value;
         });

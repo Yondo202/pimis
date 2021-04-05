@@ -42,16 +42,6 @@ function TableOne(props) {
       setDname(props.initialName);setDdate(props.initialDate);setInitialData(finalData);
     },[props.initialData]);
 
-    const radioChange = (event)=> {
-        // console.log(event);
-      // let finalData = []
-      //  dataOne.map((el,i)=>{  props.initialData.map(elem=> elem); finalData.push(el); });
-      // finalData.map((el,i)=>{
-      //   if(el.id.toString() === event.target.id){ el["rvalue"] = event.target.value}
-      // })
-      //  setInitialData(finalData);
-    }
-
     const changeHandle = (e) =>{ setDname(e.target.value); }
     const changeHandleDate = (e)=>{ setDdate(e.target.value);}
 
@@ -175,9 +165,9 @@ function TableOne(props) {
                           <div className="row" >
                           <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
                           <div className="texts col-md-8 col-sm-4 col-4">{el.name}</div>
-                          <div className="radios col-md-1 col-sm-3 col-3"><input onChange={radioChange} className={`getinput22 inpTest3`} id={el.id}  type="radio" name={i + 1} checked={el.rvalue === "unconcern" ? true: false} value="unconcern"/></div>
-                          <div className="radios col-md-1 col-sm-2 col-2"><input onChange={radioChange} className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={el.rvalue === "true" ? true: false}  value="true"/> </div>
-                          <div className="radios col-md-1 col-sm-2 col-2"><input onChange={radioChange} className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={el.rvalue === "false" ? true: false}  value="false"/></div>
+                          <div className="radios col-md-1 col-sm-3 col-3"><input className={`getinput22 inpTest3`} id={el.id}  type="radio" name={i + 1} checked={el.rvalue === "unconcern" ? true: false} value="unconcern"/></div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={el.rvalue === "true" ? true: false}  value="true"/> </div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={el.rvalue === "false" ? true: false}  value="false"/></div>
                       </div>
                     </div>
                     )
@@ -193,7 +183,7 @@ function TableOne(props) {
                     </div>
                   </div>
                   )
-              }) }
+              })}
                 <div className="FinalBtn">
                     <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
                     <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
