@@ -96,7 +96,7 @@ function Main_decision() {
     return (
         <>
             {notifyShow===0?<FeedBackCont className="container">
-            {mainData?mainData.rejectedCount===0&&mainData.aprrovedCount===0?
+            {mainData?mainData.rejectedCount===0&&mainData.approvedCount===0?
              <div className="NullPar">
                 <div className="nullTitle">
                     <div onClick={()=>backHandle(mainData.userId)} className="BackPar"><div className="SvgPar"><MdKeyboardArrowLeft /></div>  <span>Буцах</span> </div>
@@ -148,7 +148,7 @@ function Main_decision() {
                             })}
                             <tr className="getTable1 B2">
                                         <td>Дэмжсэн саналын тоо</td>
-                                        <td><div className="input">{mainData?.aprrovedCount}</div></td>
+                                        <td><div className="input">{mainData?.approvedCount}</div></td>
                             </tr>
                             <tr className="getTable1 B2">
                                         <td>Татгалзсан саналын тоо</td>

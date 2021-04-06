@@ -28,6 +28,7 @@ import LetterPreview from 'pages/letter_of_interest/preview';
 import EvaluatorsMeetingsNavigator from 'components/admin/contents/evaluators_meeting/MeetingsNavigator';
 import EdpInformationHome from 'components/admin/contents/edpInformation/EdpInformation'
 import FirstEvaluationSendNotice from 'pages/decision_making/5a/sendNotice';
+import ReportLayout from 'components/admin/contents/Report/ReportLayout'
 
 
 function Layout({ setLocale }) {
@@ -61,6 +62,7 @@ function Layout({ setLocale }) {
               <Route path="/users" component={UserHandle} />
               <Route path="/projects" component={ProjectHandle} />
               <Route path="/projects1" component={ProjectHandle1} />
+              <Route path="/report" component={ReportLayout} />
               <Route path="/urgudul/:page">
                 <UrgudulNavigator preloaded={true} />
               </Route>
@@ -124,7 +126,7 @@ const AdminApp = styled.div`
             padding-top:25px;
             padding-left:10px;
             overflow-y:scroll;
-            height:90vh;
+            height:94vh;
         }
         .topMenuPar{
             display:flex;

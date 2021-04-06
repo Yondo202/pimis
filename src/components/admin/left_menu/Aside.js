@@ -19,11 +19,6 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
     console.log(role);
   }, [ctxUser.userInfo.id]);
 
-
-  console.log(ctxUser.userInfo.role, "----user context");
-
-
-
   const intl = useIntl();
   return (
     <ProSidebar image={image ? sidebarBg : false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
@@ -46,6 +41,7 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             <MenuItem>Санхүүжилт</MenuItem>
             <MenuItem><Link to="/meetings">Үнэлгээний хорооны уулзалт</Link></MenuItem>
             <MenuItem><Link to="/maindecision">Үнэлгээний хорооны шийдвэр</Link></MenuItem>
+            <MenuItem><Link to="/report">Тайлан</Link></MenuItem>
           </SubMenu>
           {/* prefix={<span className="badge gray">3</span>} */}
           <SubMenu title="Сургалт" icon={<FaChalkboardTeacher />}>
@@ -77,7 +73,6 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               <MenuItem>Тохиргоо -1</MenuItem>
             </SubMenu>
           </SubMenu>
-
           {/* {ctxUser.userInfo.role==="edpadmin"?<SubMenu title="Тохиргоо" icon={<MdSettings />}> </SubMenu>
           :<SubMenu ></SubMenu>} */}
         </Menu>
