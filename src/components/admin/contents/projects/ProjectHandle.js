@@ -56,6 +56,16 @@ export default function ProjectHandle() {
         }).catch(err => {
             console.log(err.response?.data)
         })
+
+        axios.get('users', {
+            headers: { Authorization: getLoggedUserToken() },
+            params: { role: 'bh_zovloh' }
+        }).then(res => {
+            console.log(res.data)
+            setConsultants(res.data.data)
+        }).catch(err => {
+            console.log(err.response?.data)
+        })
     }, [])
 
     const containerRef = useRef()
@@ -72,24 +82,6 @@ export default function ProjectHandle() {
         return () => window.removeEventListener('resize', handleResize)
     }, [containerRef])
 
-    const UrgudulCtx = useContext(UrgudulContext)
-    const AlertCtx = useContext(AlertContext)
-
-    const history = useHistory()
-
-    const handleEditProject = (id) => {
-        axios.get(`projects/${id}`, {
-            headers: { 'Authorization': getLoggedUserToken() }
-        }).then(res => {
-            console.log(res.data)
-            UrgudulCtx.setData(res.data.data)
-            history.push('/urgudul/1')
-        }).catch(err => {
-            console.log(err.response?.data)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
-        })
-    }
-
     const [previewModal, setPreviewModal] = useState({
         open: false,
         id: '',
@@ -101,6 +93,17 @@ export default function ProjectHandle() {
     })
 
     const [members, setMembers] = useState([])
+
+    const [consultants, setConsultants] = useState([])
+
+    const getConsultantName = (id) => {
+        const consultant = consultants.filter(consultant => consultant.id === id)[0]
+        return consultant.first_name || 'not found'
+    }
+
+    const customizeTextBdsUser = (cellinfo) => {
+        return getConsultantName(cellinfo.value)
+    }
 
     return (
         <div className="tw-text-sm tw-text-gray-700">
@@ -122,33 +125,36 @@ export default function ProjectHandle() {
                     loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
                 >
                     <SearchPanel visible={true} width={240} placeholder="Хайх..." />
-                    <Scrolling mode="virtual" columnRenderingMode="virtual" showScrollbar="always" />
+                    <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
                     <Paging defaultPageSize={20} />
                     <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
                     <HeaderFilter visible={true} />
                     <FilterRow visible={true} />
 
                     {/* <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} setEvaluatorsModal={setEvaluatorsModal} />} headerCellRender={HeaderCell} width={134} /> */}
-                    <Column caption="Үйлдэл" cellRender={data => <ButtonNavProgress data={data} />} headerCellRender={HeaderCell} width={115} />
+                    <Column caption="Явцыг харах" cellRender={data => <ButtonNavProgress data={data} />} headerCellRender={HeaderCell} width={115} />
                     <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} />
                     <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} />
-                    <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} />
-                    <Column dataField="esq" caption="БОҮ - асуумж" headerCellRender={HeaderCell} />
+                    <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} customizeText={customizeTextCriteria} />
+                    <Column dataField="esq" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} />
                     <Column dataField="esm" caption="Ангилал" headerCellRender={HeaderCell} />
-                    <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} />
+                    <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueLetterOI} />
 
                     <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
+                        <Column caption="Төслийг засах" cellRender={data => <ButtonEditProject data={data} />} headerCellRender={HeaderCell} width={90} />
                         <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} />
                         <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} />
                         <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} />
-                        <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} />
+                        <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} customizeText={customizeTextConfirmed} />
                         <Column dataField="project.project_start" caption="Эхлэх хугацаа" headerCellRender={HeaderCell} />
                         <Column dataField="project.project_end" caption="Дуусах хугацаа" headerCellRender={HeaderCell} />
+                        {/* <Column dataField="project.bds_userId" caption="БЗ Зөвлөх" headerCellRender={HeaderCell} customizeText={customizeTextBdsUser} /> */}
                     </Column>
 
-                    <Column dataField="evidence" caption="Нотлох бичиг баримтууд" headerCellRender={HeaderCell} />
-                    <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} />
+                    <Column dataField="evidence" caption="Нотлох бичиг баримтууд" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEvidence} />
+                    <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEdpPlan} />
                     <Column dataField="firstEvalution.description" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell} />
+                    <Column dataField="evaluation5b" caption="Бүрдүүлбэрийн нотлох баримтууд" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEvaluation5b} />
                     <Column dataField="lastEvalution.description" caption="Бизнес шинжээчийн үнэлгээ" headerCellRender={HeaderCell} />
                 </DataGrid>
             </div>
@@ -186,4 +192,86 @@ const ButtonNavProgress = (data) => {
     return <button className="tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-2 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md" onClick={buttonClick}>
         Явцыг харах
     </button>
+}
+
+const ButtonEditProject = (data) => {
+    const history = useHistory()
+    const projectId = data.data.data.project?.id
+    const UrgudulCtx = useContext(UrgudulContext)
+    const AlertCtx = useContext(AlertContext)
+    const buttonClick = () => {
+        if (projectId) {
+            axios.get(`projects/${projectId}`, {
+                headers: { Authorization: getLoggedUserToken() }
+            }).then(res => {
+                console.log(res.data)
+                UrgudulCtx.setData(res.data.data)
+                history.push('/urgudul/1')
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Өргөдлийн маягтын мэдээллийг уншиж чадсангүй.' })
+            })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсгээгүй байна.' })
+        }
+    }
+
+    return <button className={`tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-4 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md ${!projectId && 'tw-opacity-70'}`} onClick={buttonClick}>
+        Засах
+    </button>
+}
+
+const customizeTextCriteria = (cellInfo) => {
+    switch (+cellInfo.value) {
+        case 0:
+            return 'Бөглөөгүй'
+        case 1:
+            return 'Тэнцээгүй'
+        case 2:
+            return 'Тэнцсэн'
+        default:
+            break
+    }
+}
+
+const customizeTextEsq = (cellInfo) => {
+    switch (+cellInfo.value) {
+        case 0:
+            return 'Бөглөөгүй'
+        case 1:
+            return 'Тэнцээгүй'
+        case 2:
+            return 'Тэнцсэн'
+        case 3:
+            return 'Тэнцсэн'
+        default:
+            break
+    }
+}
+
+const calculateCellValueLetterOI = (rowdata) => {
+    return rowdata.letterOfInterst ? 'Илгээсэн' : 'Илгээгээгүй'
+}
+
+const customizeTextConfirmed = (cellinfo) => {
+    switch (cellinfo.value) {
+        case 0:
+            return 'Баталгаажаагүй'
+        case 1:
+            return 'Баталгаажсан'
+        default:
+            break
+    }
+}
+
+const calculateCellValueEvidence = (rowdata) => {
+    return rowdata.evidence ? 'Бүрдүүлсэн' : 'Бүрдүүлээгүй'
+}
+
+const calculateCellValueEdpPlan = (rowdata) => {
+    return rowdata.edpPlan ? 'Төлөвлсөн' : 'Төлөвлөөгүй'
+}
+
+const calculateCellValueEvaluation5b = (rowdata) => {
+    return rowdata.evaluation5b ? 'Баримттай' : 'Баримтгүй'
 }

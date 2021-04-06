@@ -161,7 +161,7 @@ export default function EvaluatorsMeetingEdit(props) {
                     >
                         <SearchPanel visible={true} width={240} placeholder="Хайх..." />
                         <HeaderFilter visible={true} />
-                        <Scrolling mode="virtual" columnRenderingMode="virtual" showScrollbar="always" />
+                        <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
 
                         <Column caption="Сонгох" cellRender={data => <CheckboxCell id={data.data?.id} selected={selectedEvaluators} handleChange={handleEvaluatorChange} />} headerCellRender={HeaderCell} calculateCellValue={data => calculateIsChecked(data.id, selectedEvaluators)} dataField="_" />
                         <Column dataField="lastname" caption="Овог" headerCellRender={HeaderCell} />
@@ -189,7 +189,7 @@ export default function EvaluatorsMeetingEdit(props) {
                     >
                         <SearchPanel visible={true} width={240} placeholder="Хайх..." />
                         <HeaderFilter visible={true} />
-                        <Scrolling mode="virtual" columnRenderingMode="virtual" showScrollbar="always" />
+                        <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
                         <Paging defaultPageSize={20} />
                         <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
 
