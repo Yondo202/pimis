@@ -16,7 +16,7 @@ const today = new Date(); const month = (today.getMonth()+1); const day = today.
 const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
 
 function TableOne(props) {
-    const init = "once" 
+    const init = "once"
     const history = useHistory();
     const [ btnCond, setBtnCond ] = useState(props.initialData?init:'twice');
     const [ secondChance, setSecondChance ] = useState([]);

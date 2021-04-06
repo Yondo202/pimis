@@ -188,13 +188,12 @@ function TableFour(props) {
                     console.log("F Angilal");
                     if(Dname){
                       axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{setSpnBtn(false); setTimeout(()=>{
-                      helperContext.alertText('green', 'Та шалгуур хангаж байна..', true);history.push("/"); },4000) }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+                      helperContext.alertText('green', 'Та шалгуур хангаж байна..', true); history.push("/"); },4000) }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});
                     }else{
                       axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{ setSpnBtn(false);
                       helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{ history.push("/"); },4000); })
                       .catch((err)=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);});
                     }
-                   
             }
         }
 
