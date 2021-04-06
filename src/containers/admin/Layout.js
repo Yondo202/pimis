@@ -28,6 +28,7 @@ import LetterPreview from 'pages/letter_of_interest/preview';
 import EvaluatorsMeetingsNavigator from 'components/admin/contents/evaluators_meeting/MeetingsNavigator';
 import EdpInformationHome from 'components/admin/contents/edpInformation/EdpInformation'
 import FirstEvaluationSendNotice from 'pages/decision_making/5a/sendNotice';
+import AcceptPeriodHandle from 'components/admin/contents/accept_period/acceptPeriodHandle';
 
 
 function Layout({ setLocale }) {
@@ -66,6 +67,7 @@ function Layout({ setLocale }) {
               </Route>
 
               <Route path="/meetings" component={EvaluatorsMeetingsNavigator} />
+              <Route path="/accept-periods" component={AcceptPeriodHandle} />
               <Route path="/epd-information" component={EdpInformationHome} />
 
               <Route path="/progress" component={Home} />

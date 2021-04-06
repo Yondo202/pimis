@@ -234,15 +234,26 @@ const initialEvaluator = {
     decline_reason: '',
 }
 
+const editors = ['edpadmin', 'member', 'ahlah_bhsh']
+
 export default function AnalystReport() {
     const [rows, setRows] = useState(initialState)
     const [company, setCompany] = useState({})
+    const [evalautor, setEvaluator] = useState({})
+
+    const canEdit = editors.includes(evalautor.role)
+
+    const AlertCtx = useContext(AlertContext)
 
     const handleInput = (key, value, rowcode) => {
-        const index = rows.findIndex(row => row.rowcode === rowcode)
-        const newRows = rows
-        newRows[index][key] = value
-        setRows([...newRows])
+        if (canEdit) {
+            const index = rows.findIndex(row => row.rowcode === rowcode)
+            const newRows = rows
+            newRows[index][key] = value
+            setRows([...newRows])
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Засвар оруулах эрх байхгүй байна.' })
+        }
     }
 
     const projectId = useParams().id
@@ -268,6 +279,15 @@ export default function AnalystReport() {
             }).then(res => {
                 console.log(res.data)
                 setCompany(res.data.data[0] ?? {})
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+
+            axios.get(`users/${loggedUserId}`, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                setEvaluator(res.data.data)
             }).catch(err => {
                 console.log(err.response?.data)
             })
@@ -301,18 +321,21 @@ export default function AnalystReport() {
         setCommentsOpen({ ...commentsOpen, [key]: value })
     }
 
-    const AlertCtx = useContext(AlertContext)
-
     const handleSubmit = () => {
-        axios.post(`projects/${projectId}/bds-evaluation5c`, { rows: rows, info: info }, {
-            headers: { Authorization: getLoggedUserToken() },
-        }).then(res => {
-            console.log(res.data)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Шинжилгээний тайланг хадгалагдлаа.' })
-        }).catch(err => {
-            console.log(err.response?.data)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-        })
+        if (info.check_start && info.check_end) {
+            axios.post(`projects/${projectId}/bds-evaluation5c`, { rows: rows, info: info }, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Шинжилгээний тайланг хадгалагдлаа.' })
+            }).catch(err => {
+                console.log(err.response?.data)
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
+            })
+        } else {
+            setValidate(true)
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Дээрх талбаруудыг гүйцэд бөглөнө үү.' })
+        }
     }
 
     const [info, setInfo] = useState(initialEvaluator)
@@ -325,6 +348,8 @@ export default function AnalystReport() {
 
     const [previewModalOpen, setPreviewModalOpen] = useState(false)
 
+    const [validate, setValidate] = useState(false)
+
     return (
         <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
             <button className="tw-float-right tw-mt-2 tw-mr-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center" onClick={() => setPreviewModalOpen(true)}>
@@ -332,7 +357,7 @@ export default function AnalystReport() {
                 Харах
             </button>
 
-            <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} company={company} />} />
+            <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} company={company} evalautor={evalautor} />} />
 
             <div className="tw-font-medium tw-p-3 tw-pb-2 tw-flex tw-items-center">
                 <span className="tw-text-xl tw-mx-2 tw-leading-tight tw-text-blue-500">5c</span>
@@ -366,7 +391,7 @@ export default function AnalystReport() {
                         Шинжилгээ хийсэн Бизнес шинжээч:
                     </label>
                     <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600 tw-font-medium">
-                        Шинжээчийн нэр***
+                        {evalautor.id && `${evalautor.lastname.substr(0, 1).toUpperCase()}. ${evalautor.firstname}`}
                     </span>
                 </div>
 
@@ -374,8 +399,10 @@ export default function AnalystReport() {
                     <label className="tw-mb-0 tw-font-medium">
                         Шинжилгээ, дүгнэлт хийсэн хугацаа:
                     </label>
-                    <input className="tw-border tw-rounded tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_start} onChange={e => handleInputEvaluator('check_start', e.target.value)} /> -аас
-                    <input className="tw-border tw-rounded tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none" type="date" value={info.check_end} onChange={e => handleInputEvaluator('check_end', e.target.value)} /> -ны хооронд.
+                    <span>
+                        <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_start) && 'tw-border-dashed tw-border-red-500'}`} type="date" value={info.check_start} onChange={e => handleInputEvaluator('check_start', e.target.value)} /> -аас
+                        <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_end) && 'tw-border-dashed tw-border-red-500'}`} type="date" value={info.check_end} onChange={e => handleInputEvaluator('check_end', e.target.value)} /> -ны хооронд.
+                    </span>
                 </div>
 
                 <Transition
@@ -447,8 +474,8 @@ export default function AnalystReport() {
                 )}
             </div>
 
-            {projectId &&
-                <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
+            {projectId && canEdit &&
+                <div className="tw-flex tw-items-center tw-justify-end tw-h-20 tw-mt-2">
                     <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
                         Хадгалах
                     </button>

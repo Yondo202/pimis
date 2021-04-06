@@ -11,6 +11,7 @@ export default function AnalystReportPreview(props) {
     const rows = props.rows || []
     const info = props.info || {}
     const company = props.company || {}
+    const evalautor = props.evalautor || {}
 
     const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked
 
@@ -21,7 +22,7 @@ export default function AnalystReportPreview(props) {
     })
 
     const handleOpenPdf = async () => {
-        const blob = await pdf(<AnalystReportPreviewPdf rows={rows} info={info} company={company} htmlImg={htmlImg} />).toBlob()
+        const blob = await pdf(<AnalystReportPreviewPdf rows={rows} info={info} company={company} evalautor={evalautor} htmlImg={htmlImg} />).toBlob()
         const url = URL.createObjectURL(blob)
         window.open(url, '_blank ')
     }
@@ -85,7 +86,9 @@ export default function AnalystReportPreview(props) {
 
                 <div className="tw-p-1">
                     Шинжилгээ хийсэн Бизнес шинжээч:
-                    <span className="tw-font-bold tw-ml-2">Шинжээчийн нэр***</span>
+                    <span className="tw-font-bold tw-ml-2">
+                        {evalautor.id && `${evalautor.lastname.substr(0, 1).toUpperCase()}. ${evalautor.firstname}`}
+                    </span>
                 </div>
                 <div className="tw-p-1">
                     Шинжилгээ, дүгнэлт хийсэн хугацаа:
