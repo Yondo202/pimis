@@ -97,8 +97,10 @@ export default function ProjectHandle() {
     const [consultants, setConsultants] = useState([])
 
     const getConsultantName = (id) => {
-        const consultant = consultants.filter(consultant => consultant.id === id)[0]
-        return consultant.first_name || 'not found'
+        if (id) {
+            const consultant = consultants.filter(consultant => consultant.id === id)[0]
+            return `${consultant.lastname.substr(0, 1).toUpperCase()}. ${consultant.firstname}`
+        }
     }
 
     const customizeTextBdsUser = (cellinfo) => {
@@ -119,6 +121,7 @@ export default function ProjectHandle() {
                     wordWrapEnabled={true}
                     rowAlternationEnabled={true}
                     columnAutoWidth={true}
+                    columnWidth="auto"
                     width={width && `${width - 25}px`}
                     showRowLines={true}
                     showColumnLines={true}
@@ -133,29 +136,29 @@ export default function ProjectHandle() {
 
                     {/* <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} setEvaluatorsModal={setEvaluatorsModal} />} headerCellRender={HeaderCell} width={134} /> */}
                     <Column caption="Явцыг харах" cellRender={data => <ButtonNavProgress data={data} />} headerCellRender={HeaderCell} width={115} />
-                    <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} />
-                    <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} />
-                    <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} customizeText={customizeTextCriteria} />
-                    <Column dataField="esq" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} />
-                    <Column dataField="esm" caption="Ангилал" headerCellRender={HeaderCell} />
-                    <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueLetterOI} />
+                    <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="center" />
+                    <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} alignment="left" />
+                    <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} customizeText={customizeTextCriteria} alignment="left" />
+                    <Column dataField="esq" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} alignment="left" />
+                    <Column dataField="esm" caption="Ангилал" headerCellRender={HeaderCell} alignment="center" />
+                    <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueLetterOI} alignment="left" />
 
                     <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
                         <Column caption="Төслийг засах" cellRender={data => <ButtonEditProject data={data} />} headerCellRender={HeaderCell} width={90} />
-                        <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} />
-                        <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} />
-                        <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} />
-                        <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} customizeText={customizeTextConfirmed} />
-                        <Column dataField="project.project_start" caption="Эхлэх хугацаа" headerCellRender={HeaderCell} />
-                        <Column dataField="project.project_end" caption="Дуусах хугацаа" headerCellRender={HeaderCell} />
-                        {/* <Column dataField="project.bds_userId" caption="БЗ Зөвлөх" headerCellRender={HeaderCell} customizeText={customizeTextBdsUser} /> */}
+                        <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} alignment="left" />
+                        <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} alignment="center" />
+                        <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} alignment="left" />
+                        <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} customizeText={customizeTextConfirmed} alignment="left" />
+                        <Column dataField="project.project_start" caption="Эхлэх хугацаа" headerCellRender={HeaderCell} alignment="left" />
+                        <Column dataField="project.project_end" caption="Дуусах хугацаа" headerCellRender={HeaderCell} alignment="left" />
+                        <Column dataField="project.bds_userId" caption="БЗ Зөвлөх" headerCellRender={HeaderCell} customizeText={customizeTextBdsUser} minWidth={120} alignment="left" />
                     </Column>
 
-                    <Column dataField="evidence" caption="Нотлох бичиг баримтууд" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEvidence} />
-                    <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEdpPlan} />
-                    <Column dataField="firstEvalution.description" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell} />
-                    <Column dataField="evaluation5b" caption="Бүрдүүлбэрийн нотлох баримтууд" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEvaluation5b} />
-                    <Column dataField="lastEvalution.description" caption="Бизнес шинжээчийн үнэлгээ" headerCellRender={HeaderCell} />
+                    <Column dataField="evidence" caption="Нотлох бичиг баримтууд" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEvidence} alignment="left" />
+                    <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEdpPlan} alignment="left" />
+                    <Column dataField="firstEvalution.description" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell} alignment="left" />
+                    <Column dataField="evaluation5b" caption="Бүрдүүлбэрийн нотлох баримтууд" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEvaluation5b} alignment="left" />
+                    <Column dataField="lastEvalution.description" caption="Бизнес шинжээчийн үнэлгээ" headerCellRender={HeaderCell} alignment="left" />
                 </DataGrid>
             </div>
 

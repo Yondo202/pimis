@@ -15,12 +15,21 @@ const FirstEvaluation = () => {
   const [rows, setRows] = useState(initialState)
   const [saved, setSaved] = useState(false)
   const [company, setCompany] = useState({})
+  const [evalautor, setEvaluator] = useState({})
+
+  const canEdit = editors.includes(evalautor.role)
+
+  const AlertCtx = useContext(AlertContext)
 
   const handleInput = (key, value, rowcode) => {
-    const index = rows.findIndex(row => row.rowcode === rowcode)
-    const newRows = rows
-    newRows[index][key] = value
-    setRows([...newRows])
+    if (canEdit) {
+      const index = rows.findIndex(row => row.rowcode === rowcode)
+      const newRows = rows
+      newRows[index][key] = value
+      setRows([...newRows])
+    } else {
+      AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Засвар оруулах эрх байхгүй байна.' })
+    }
   }
 
   const projectId = useParams().id
@@ -46,6 +55,15 @@ const FirstEvaluation = () => {
       }).then(res => {
         console.log(res.data)
         setCompany(res.data.data[0] ?? {})
+      }).catch(err => {
+        console.log(err.response?.data)
+      })
+
+      axios.get(`users/${loggedUserId}`, {
+        headers: { Authorization: getLoggedUserToken() },
+      }).then(res => {
+        console.log(res.data)
+        setEvaluator(res.data.data)
       }).catch(err => {
         console.log(err.response?.data)
       })
@@ -78,8 +96,6 @@ const FirstEvaluation = () => {
   const handleCommentOpen = (key, value) => {
     setCommentsOpen({ ...commentsOpen, [key]: value })
   }
-
-  const AlertCtx = useContext(AlertContext)
 
   const handleSubmit = () => {
     axios.post(`projects/${projectId}/first-evalutions`, rows, {
@@ -188,10 +204,12 @@ const FirstEvaluation = () => {
       </div>
 
       {projectId &&
-        <div className="tw-relative tw-flex tw-items-center tw-justify-center tw-pt-6 tw-pb-4 tw-px-2">
-          <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-6 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
-            Хадгалах
-          </button>
+        <div className="tw-relative tw-flex tw-items-center tw-justify-center tw-h-20 tw-mt-2">
+          {canEdit &&
+            <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-6 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
+              Хадгалах
+            </button>
+          }
 
           <button className={`tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors tw-absolute tw-right-2 ${!saved && 'tw-opacity-70'}`} onClick={handleSendNotice}>
             Мэдэгдэл илгээх
@@ -201,6 +219,8 @@ const FirstEvaluation = () => {
     </div>
   );
 };
+
+const editors = ['edpadmin', 'member', 'ahlah_bhsh']
 
 const rowsDescriptions = {
   z: "Өргөдөл гаргагч нь дараагийн шатанд тэнцсэн эсэх?",

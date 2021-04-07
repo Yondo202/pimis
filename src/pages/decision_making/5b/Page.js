@@ -289,15 +289,26 @@ const initialState = [
     },
 ]
 
+const editors = ['edpadmin', 'member', 'ahlah_bhsh']
+
 export default function CompilationChecklist() {
     const [rows, setRows] = useState(initialState)
     const [company, setCompany] = useState({})
+    const [evalautor, setEvaluator] = useState({})
+
+    const canEdit = editors.includes(evalautor.role)
+
+    const AlertCtx = useContext(AlertContext)
 
     const handleInput = (key, value, rowcode) => {
-        const index = rows.findIndex(row => row.rowcode === rowcode)
-        const newRows = rows
-        newRows[index][key] = value
-        setRows([...newRows])
+        if (canEdit) {
+            const index = rows.findIndex(row => row.rowcode === rowcode)
+            const newRows = rows
+            newRows[index][key] = value
+            setRows([...newRows])
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Засвар оруулах эрх байхгүй байна.' })
+        }
     }
 
     const projectId = useParams().id
@@ -322,6 +333,15 @@ export default function CompilationChecklist() {
             }).then(res => {
                 console.log(res.data)
                 setCompany(res.data.data[0] ?? {})
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+
+            axios.get(`users/${loggedUserId}`, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                setEvaluator(res.data.data)
             }).catch(err => {
                 console.log(err.response?.data)
             })
@@ -353,8 +373,6 @@ export default function CompilationChecklist() {
     const handleCommentOpen = (key, value) => {
         setCommentsOpen({ ...commentsOpen, [key]: value })
     }
-
-    const AlertCtx = useContext(AlertContext)
 
     const handleSubmit = () => {
         axios.post(`projects/${projectId}/bds-evaluation5b`, rows, {
@@ -446,8 +464,8 @@ export default function CompilationChecklist() {
                 )}
             </div>
 
-            {projectId &&
-                <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
+            {projectId && canEdit &&
+                <div className="tw-flex tw-items-center tw-justify-end tw-h-20 tw-mt-2">
                     <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
                         Хадгалах
                     </button>

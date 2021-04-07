@@ -83,6 +83,7 @@ export default function AnalystReportPreviewPdf(props) {
     const rows = props.rows || []
     const info = props.info || {}
     const company = props.company || {}
+    const evalautor = props.evalautor || {}
     const htmlImg = props.htmlImg
 
     const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked
@@ -116,7 +117,9 @@ export default function AnalystReportPreviewPdf(props) {
                 <View style={styles.analystView}>
                     <Text style={styles.analystText}>
                         {'Шинжилгээ хийсэн Бизнес шинжээч: '}
-                        <Text style={styles.infoBold}>{'Шинжээчийн нэр***'}</Text>
+                        <Text style={styles.infoBold}>
+                            {evalautor.id && `${evalautor.lastname.substr(0, 1).toUpperCase()}. ${evalautor.firstname}`}
+                        </Text>
                     </Text>
 
                     <Text style={styles.analystText}>
