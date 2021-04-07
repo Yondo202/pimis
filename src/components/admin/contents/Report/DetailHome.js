@@ -1,12 +1,15 @@
-import React,{ useRef } from 'react'
+import React,{ useEffect, useRef, useState } from 'react'
 import styled, { keyframes } from "styled-components"
 import { RiArrowLeftSFill } from "react-icons/ri"
 import { BiMenuAltLeft } from "react-icons/bi"
+import { Link, useParams, Switch, Route } from "react-router-dom"
+import SectorsOne from "./DetailCompOne/SectorsOne"
 
 export const DetailHome = () => {
+ 
     return (
         <Container>
-                <h1>Үндсэн нүүр</h1>
+            <h1>Eto Home</h1>
         </Container>
     )
 }
@@ -17,12 +20,8 @@ const animateHome = keyframes`
 `
 const Container = styled.div`
     animation:${animateHome} 0.5s ease;
-    width:100%;
-    height:100%;
-    display:grid;
-    place-items:center;
+    
 `
-
 export const HideMenu = ({childData, setRightMenu}) => {
     const modalRef = useRef(null);
     const clickHandle = () =>{ setRightMenu(false);}
@@ -34,7 +33,7 @@ export const HideMenu = ({childData, setRightMenu}) => {
                 <div className="LeftMenu ">
                     {childData?.items.map(el=>{
                         return(
-                            <div className="menuBtn"><RiArrowLeftSFill /> {el.titles}</div>
+                            <Link to={`/report/${el?.comp}`} onClick={()=>setRightMenu(false)} className="menuBtn"><RiArrowLeftSFill /> {el.titles}</Link>
                         )
                     })}
                 </div>

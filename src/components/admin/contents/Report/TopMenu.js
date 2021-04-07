@@ -1,39 +1,59 @@
 import React, { useState,useEffect } from 'react'
+import { Link,Switch, Route, useHistory } from 'react-router-dom'
 import styled, { keyframes } from "styled-components"
 import { RiArrowRightSFill } from "react-icons/ri"
 import { BiMenuAltRight } from "react-icons/bi"
+import { MdKeyboardArrowRight } from "react-icons/md"
 import { DetailHome, HideMenu } from "./DetailHome"
+import SectorsOne from "./DetailCompOne/SectorsOne"
+import TotalApproach from "./DetailCompOne/TotalApproach"
 
-export const TopMenu = ({childData}) => {
+export const TopMenu = ({childData,cond}) => {
+    const history = useHistory();
     const [ rightMenu, setRightMenu ] = useState(false);
     const [ homeShow, setHomeShow ] = useState(false);
     const [ classShow, setClassShow ] = useState(false);
+    const [ titleHead, setTitleHead ] = useState("");
+
 
     useEffect(()=>{
-        setRightMenu(false); setClassShow(false); setHomeShow(false);
-    },[childData])
+        setRightMenu(false); setClassShow(false); setHomeShow(false); setTitleHead("");
+    },[cond])
 
-    const clickHandle = () =>{
-         setClassShow(true); 
-         setTimeout(()=>{ setHomeShow(true); },300)
+    const clickHandle = (el, title) =>{
+         setClassShow(true); setTitleHead(title);
+         setTimeout(()=>{ setHomeShow(true); history.push(`report/${el}`) },300)
     }
     const menuHandle = () =>{ setRightMenu(true); }
      
     return (
         <Container>
             <div className="TitlePar">
-               <div className="title">{childData?.title}</div>  
+            <div className="title">{childData?.title} <MdKeyboardArrowRight /> {titleHead}</div>  
                {homeShow&&<div onClick={menuHandle} className="SmMenu"><BiMenuAltRight /></div>}   
             </div>
 
             {!homeShow&&<div className={classShow?`buttonsPar Animate`:`buttonsPar`}>
                 {childData?.items.map(el=>{
-                    return( <div onClick={clickHandle} className="menuBtn">{el.titles}<RiArrowRightSFill /></div>  )
+                    return(  <Link onClick={()=>clickHandle(el.comp,el.titles)} className="menuBtn">{el.titles}<RiArrowRightSFill /></Link>  )
                 })}
             </div>}
 
-           {homeShow&&<DetailHome />} 
-           {rightMenu&&<HideMenu setRightMenu={setRightMenu} childData={childData} />} 
+           
+
+           <Switch>
+                <Route path="/report" exact>
+                     {homeShow&&<DetailHome />}
+                </Route>
+                <Route path="/report/sectors" exact>
+                     <SectorsOne />
+                </Route>
+                <Route path="/report/hedenbaiguullaga" exact>
+                     <TotalApproach />
+                </Route>
+            </Switch>
+
+           {rightMenu&&<HideMenu setRightMenu={setRightMenu} childData={childData} />}
         </Container>
     )
 }
@@ -65,9 +85,17 @@ const Container = styled.div`
         margin-bottom:10px;
         padding-bottom:10px;
         .title{
-            font-size:19px;
+            display:flex;
+            align-items:center;
+            font-size:15px;
             color:rgb(${(props)=> props.theme.textColor});
-            font-weight:500;
+            font-weight:600;
+            text-transform: uppercase;
+            font-style:italic;
+            svg{
+                margin:0px 8px;
+                font-size:22px;
+            }
         }
         .SmMenu{
             animation: ${rightAnimate} 0.8s ease;

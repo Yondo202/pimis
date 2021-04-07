@@ -63,7 +63,7 @@ function Layout({ setLocale }) {
               <Route path="/users" component={UserHandle} />
               <Route path="/projects" component={ProjectHandle} />
               <Route path="/projects1" component={ProjectHandle1} />
-              <Route path="/report" component={ReportLayout} />
+              <Route path="/report/" component={ReportLayout} />
               <Route path="/urgudul/:page">
                 <UrgudulNavigator preloaded={true} />
               </Route>
