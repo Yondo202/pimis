@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import FormInline from 'components/urgudul_components/formInline'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
@@ -6,6 +6,8 @@ import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import AlertContext from 'components/utilities/alertContext'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useHistory } from 'react-router-dom'
+import { Transition } from 'react-spring/renderprops'
+import CloseSVG from 'assets/svgComponents/closeSVG'
 
 
 const initialState = {
@@ -16,6 +18,10 @@ const initialState = {
 
 function UrgudulFront() {
     const [form, setForm] = useState(initialState)
+    const [period, setPeriod] = useState({
+        open: undefined,
+        period: {},
+    })
 
     const UrgudulCtx = useContext(UrgudulContext)
 
@@ -25,6 +31,17 @@ function UrgudulFront() {
             if (UrgudulCtx.data[key] !== null || UrgudulCtx.data[key] !== undefined) temp[key] = UrgudulCtx.data[key]
         })
         setForm({ ...form, ...temp })
+
+        axios.get('accept-periods', {
+            headers: { Authorization: getLoggedUserToken() },
+            params: { checkOpen: true }
+        }).then(res => {
+            console.log(res)
+            setPeriod(res.data.data)
+            if (res.data.data?.open === false) AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдөл авч эхлэх хугацаа нээгдээгүй байна.' })
+        }).catch(err => {
+            console.error(err.response)
+        })
     }, [UrgudulCtx.data.id])
 
     const handleClickForm = (key, value) => {
@@ -39,26 +56,30 @@ function UrgudulFront() {
 
     const history = useHistory()
 
-    const handleSubmit = () => {
-        setValidate(true)
-        const allValid = Object.values(form).every(value => !checkInvalid(value))
+    const handleSubmitNew = () => {
+        if (period.open) {
+            setValidate(true)
+            const allValid = Object.values(form).every(value => !checkInvalid(value))
 
-        if (allValid) {
-            axios.post('projects', form, {
-                headers: {
-                    'Authorization': getLoggedUserToken()
-                }
-            }).then(res => {
-                console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
-                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
-                history.push('/urgudul/2')
-            }).catch(err => {
-                console.log(err.response?.data)
-                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
-            })
+            if (allValid) {
+                axios.post('projects', form, {
+                    headers: {
+                        'Authorization': getLoggedUserToken()
+                    }
+                }).then(res => {
+                    console.log(res.data)
+                    UrgudulCtx.setData(res.data.data)
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
+                    history.push('/urgudul/2')
+                }).catch(err => {
+                    console.log(err.response?.data)
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
+                })
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+            }
         } else {
-            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+            setModalOpen(true)
         }
     }
 
@@ -97,6 +118,21 @@ function UrgudulFront() {
                 return false
         }
     }
+
+    const [modalOpen, setModalOpen] = useState(false)
+
+    const modalRef = useRef()
+
+    const handleClickOutside = (e) => {
+        if (modalOpen && !modalRef.current?.contains(e.target)) {
+            setModalOpen(false)
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    })
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed tw-text-gray-700">
@@ -143,9 +179,40 @@ function UrgudulFront() {
                 {UrgudulCtx.data.id ?
                     <ButtonTooltip classAppend="tw-mt-6" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmitEdit} />
                     :
-                    <ButtonTooltip classAppend="tw-mt-6" classButton="tw-px-8 tw-py-2 tw-bg-green-500 active:tw-bg-green-600 tw-text-15px" classLabel="tw-text-white" label="Маягт үүсгэх" onClick={handleSubmit} />
+                    <ButtonTooltip classAppend="tw-mt-6" classButton="tw-px-8 tw-py-2 tw-bg-green-500 active:tw-bg-green-600 tw-text-15px" classLabel="tw-text-white" label="Маягт үүсгэх" onClick={handleSubmitNew} />
                 }
             </div>
+
+            <Transition
+                items={modalOpen}
+                from={{ opacity: 0 }}
+                enter={{ opacity: 1 }}
+                leave={{ opacity: 0 }}>
+                {item => item && (anims =>
+                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
+                        <div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-max-w-md tw-ring-2 tw-ring-red-500" style={{ minWidth: 300 }} ref={modalRef}>
+                            <button className="tw-absolute tw-top-1.5 tw-right-1.5 tw-text-red-500 active:tw-text-red-600 tw-transition-colors focus:tw-outline-none tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={() => setModalOpen(false)}>
+                                <CloseSVG className="tw-w-5 tw-h-5" />
+                            </button>
+                            <div className="tw-text-center tw-text-base tw-p-2 tw-mt-4 tw-font-medium tw-to-red-500">
+                                Өргөдөл хүлээж авах хугацаа нээгдээгүй байна.
+                            </div>
+                            <div className="tw-text-center tw-text-sm tw-p-2 tw-my-4">
+                                {period.period.start_date
+                                    ? <span>
+                                        {`Дараагийн нээгдэх хугацааг `}
+                                        <span className="tw-font-medium tw-text-blue-500">{period.period.start_date}</span>
+                                        {` -аас `}
+                                        <span className="tw-font-medium tw-text-blue-500">{period.period.end_date}</span>
+                                        {` хооронд байхаар төлөвлөж байна.`}
+                                    </span>
+                                    : `Дараагийн нээгдэх хугацаа төлөвлөөгүй байна.`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </Transition>
         </div>
     )
 }
