@@ -11,7 +11,8 @@ import  { TopMenu } from "./TopMenu"
 
 const ReportLayout = ({ collapsed, toggled, handleToggleSidebar }) => {
     const [ childData, setChildData ] = useState(null);
-    const clickHandle = el =>{ setChildData(el); }
+    const [ cond, setCond ] = useState(false);
+    const clickHandle = el =>{ setChildData(el); setCond(prev=>!prev) }
 
     return (
         <Container className="ReportLayout">
@@ -19,7 +20,7 @@ const ReportLayout = ({ collapsed, toggled, handleToggleSidebar }) => {
                 <IntlProvider >
                     <ProSidebar collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
                             <SidebarHeader>
-                                <div className="headPar"><Link to="/report">Тайлагнал</Link></div>
+                                <div className="headPar"><Link to="/report" >Тайлагнал</Link></div>
                             </SidebarHeader>
                             <SidebarContent >
                                 <Menu iconShape="circle">
@@ -37,7 +38,7 @@ const ReportLayout = ({ collapsed, toggled, handleToggleSidebar }) => {
             </div>
             
             <div className="MainPar">
-               <TopMenu childData={childData} />
+               <TopMenu childData={childData} cond={cond} />
             </div>
         </Container>
     )
@@ -67,8 +68,8 @@ const Container = styled.div`
 const data = [
     { title: "Эхний асуулга уулзалтууд", icon: <IoIosBookmarks /> , child : [
         { title: "Нийт", items: [ 
-            { titles: "Хэдэн байгууллага хандсан" },
-            { titles: "Салбараар" },
+            { titles: "Хэдэн байгууллага хандсан", comp:"hedenbaiguullaga" },
+            { titles: "Салбараар", comp:"sectors" },
             { titles: "Ажилчдын тоогоор" },
             { titles: "Борлуулалтын хэмжээгээр" },
             { titles: "Сонирхож буй санхүүжилтийн чиглэлээр" },
@@ -78,7 +79,8 @@ const data = [
             { titles: "Экспортын улсуудаар" },
             { titles: "Хүсэлт гаргасан хүний албан тушаалаар" },
             { titles: "Хүсэлт гаргасан огноогоор ялгах" },
-         ]  },  
+         ]  
+        },  
      ] },
 
     { title: "1-р шат",  icon: <CgRowFirst /> , child : [
