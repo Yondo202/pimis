@@ -4,7 +4,6 @@ import 'components/admin/left_menu/styles/ReportStyle.scss';
 import { IntlProvider } from 'react-intl';
 import { Link } from "react-router-dom";
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarContent } from "react-pro-sidebar";
-import { IoIosBookmarks } from "react-icons/io";
 import { GiBackForth } from "react-icons/gi";
 import { CgRowFirst,CgRowLast } from "react-icons/cg";
 import  { TopMenu } from "./TopMenu"
@@ -36,7 +35,6 @@ const ReportLayout = ({ collapsed, toggled, handleToggleSidebar }) => {
                     </ProSidebar>
                 </IntlProvider>
             </div>
-            
             <div className="MainPar">
                <TopMenu childData={childData} cond={cond} />
             </div>
@@ -66,28 +64,27 @@ const Container = styled.div`
 `
 
 const data = [
-    { title: "Эхний асуулга уулзалтууд", icon: <IoIosBookmarks /> , child : [
-        { title: "Нийт", items: [ 
-            { titles: "Хэдэн байгууллага хандсан", comp:"hedenbaiguullaga" },
-            { titles: "Салбараар", comp:"sectors" },
-            { titles: "Ажилчдын тоогоор" },
-            { titles: "Борлуулалтын хэмжээгээр" },
-            { titles: "Сонирхож буй санхүүжилтийн чиглэлээр" },
-            { titles: "Хэдэн жил санхүүгийн тайлан гарган ажилласан" },
-            { titles: "Экспортын хэмжээгээр" },
-            { titles: "Экспортын гол нэрийн бүтээгдэхүүнээр" },
-            { titles: "Экспортын улсуудаар" },
-            { titles: "Хүсэлт гаргасан хүний албан тушаалаар" },
-            { titles: "Хүсэлт гаргасан огноогоор ялгах" },
-         ]  
-        },  
-     ] },
-
+    // { title: "Эхний асуулга уулзалтууд", icon: <IoIosBookmarks /> , child : [
+    //     { title: "Нийт", items: [ 
+    //         { titles: "Хэдэн байгууллага хандсан", comp:"hedenbaiguullaga" },
+    //         { titles: "Салбараар", comp:"sectors" },
+    //         { titles: "Ажилчдын тоогоор" },
+    //         { titles: "Борлуулалтын хэмжээгээр" },
+    //         { titles: "Сонирхож буй санхүүжилтийн чиглэлээр" },
+    //         { titles: "Хэдэн жил санхүүгийн тайлан гарган ажилласан" },
+    //         { titles: "Экспортын хэмжээгээр" },
+    //         { titles: "Экспортын гол нэрийн бүтээгдэхүүнээр" },
+    //         { titles: "Экспортын улсуудаар" },
+    //         { titles: "Хүсэлт гаргасан хүний албан тушаалаар" },
+    //         { titles: "Хүсэлт гаргасан огноогоор ялгах" },
+    //      ]  
+    //     },  
+    //  ] },
     { title: "1-р шат",  icon: <CgRowFirst /> , child : [
         { title: "Хандсан байгууллагууд", //Хэдэн байгууллага хандсанг ААН, Кластераар харуулах
             items: [
                 { titles: "Нэрсийн жагсаалтаар"  },
-                { titles: "Салбараар"  },
+                { titles: "Салбараар", comp:"sectors"  },
                 { titles: "Ажилчдын тоогоор"  },
                 { titles: "Борлуулалтын хэмжээгээр"  },
                 { titles: "Экспортын хэмжээгээр"  },
@@ -98,8 +95,8 @@ const data = [
 
         { title: "Шалгуур хангасан байгууллагууд", //Хэдэн байгууллага шалгуур хангасныг ААН, кластераар харуулах
             items: [
-                { titles: "Нэрсийн жагсаалтаар"  },
-                { titles: "Салбараар"  },
+                { titles: "Нэрсийн жагсаалтаар" , comp:"hedenbaiguullaga"  },
+                { titles: "Салбараар" },
                 { titles: "Ажилчдын тооны ангиллаар"  },
                 { titles: "Борлуулалтын хэмжээгээр"  },
                 { titles: "Экспортын хэмжээгээр харуулах"  },

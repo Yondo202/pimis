@@ -166,7 +166,7 @@ const animate = keyframes`
 const EdpInfComp = styled.div`
     color: rgb(${textColor });
     display:flex;
-    aling-items:center;
+    align-items:center;
     justify-content:center;
     padding-top:30px;
     .contentPar{

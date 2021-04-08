@@ -1,15 +1,14 @@
-import React,{ useEffect, useRef, useState } from 'react'
+import React,{ useRef } from 'react'
 import styled, { keyframes } from "styled-components"
 import { RiArrowLeftSFill } from "react-icons/ri"
 import { BiMenuAltLeft } from "react-icons/bi"
-import { Link, useParams, Switch, Route } from "react-router-dom"
-import SectorsOne from "./DetailCompOne/SectorsOne"
+import { Link } from "react-router-dom"
 
 export const DetailHome = () => {
  
     return (
         <Container>
-            <h1>Eto Home</h1>
+            <h1></h1>
         </Container>
     )
 }
