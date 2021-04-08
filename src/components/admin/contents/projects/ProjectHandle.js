@@ -144,7 +144,7 @@ export default function ProjectHandle() {
                     <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueLetterOI} alignment="left" />
 
                     <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
-                        <Column caption="Төслийг засах" cellRender={data => <ButtonEditProject data={data} />} headerCellRender={HeaderCell} width={90} />
+                        <Column caption="Төлөв" cellRender={data => <ButtonEditStatus data={data} />} headerCellRender={HeaderCell} />
                         <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} alignment="left" />
                         <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} alignment="center" />
                         <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} alignment="left" />
@@ -197,32 +197,60 @@ const ButtonNavProgress = (data) => {
     </button>
 }
 
-const ButtonEditProject = (data) => {
-    const history = useHistory()
+const statusNames = {
+    editable: 'Засвар нээлттэй',
+    locked: 'Засвар хаалттай',
+    approved: 'Дэмжигдсэн',
+    disapproved: 'Дэмжигдээгүй',
+    cancelled: 'Цуслагдсан',
+}
+
+const ButtonEditStatus = (data) => {
     const projectId = data.data.data.project?.id
-    const UrgudulCtx = useContext(UrgudulContext)
-    const AlertCtx = useContext(AlertContext)
-    const buttonClick = () => {
-        if (projectId) {
-            axios.get(`projects/${projectId}`, {
-                headers: { Authorization: getLoggedUserToken() }
-            }).then(res => {
-                console.log(res.data)
-                UrgudulCtx.setData(res.data.data)
-                history.push('/urgudul/1')
-            }).catch(err => {
-                console.log(err.response?.data)
-                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Өргөдлийн маягтын мэдээллийг уншиж чадсангүй.' })
-            })
-        } else {
-            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсгээгүй байна.' })
-        }
+    const status = data.data.data.project?.status
+    const handleStatusEdit = () => {
+        axios.put(`set-project-status/${projectId}`, { status: status }, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err.response)
+        })
     }
 
-    return <button className={`tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-4 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md ${!projectId && 'tw-opacity-70'}`} onClick={buttonClick}>
-        Засах
-    </button>
+    return (
+        <div className="tw-w-20 tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-2 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md tw-text-center" style={{ minWidth: 80 }}>
+            {statusNames[status] || 'Хоосон'}
+        </div>
+    )
 }
+
+// const ButtonEditProject = (data) => {
+//     const history = useHistory()
+//     const projectId = data.data.data.project?.id
+//     const UrgudulCtx = useContext(UrgudulContext)
+//     const AlertCtx = useContext(AlertContext)
+//     const buttonClick = () => {
+//         if (projectId) {
+//             axios.get(`projects/${projectId}`, {
+//                 headers: { Authorization: getLoggedUserToken() }
+//             }).then(res => {
+//                 console.log(res.data)
+//                 UrgudulCtx.setData(res.data.data)
+//                 history.push('/urgudul/1')
+//             }).catch(err => {
+//                 console.log(err.response?.data)
+//                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Өргөдлийн маягтын мэдээллийг уншиж чадсангүй.' })
+//             })
+//         } else {
+//             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсгээгүй байна.' })
+//         }
+//     }
+
+//     return <button className={`tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-4 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md ${!projectId && 'tw-opacity-70'}`} onClick={buttonClick}>
+//         Засах
+//     </button>
+// }
 
 const customizeTextCriteria = (cellInfo) => {
     switch (+cellInfo.value) {

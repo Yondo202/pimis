@@ -183,7 +183,7 @@ function UrgudulActivities() {
                 <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />
             </div>
 
-            <div className="tw-w-full tw-p-1 tw-pl-2">
+            <div className="tw-w-full tw-p-1 tw-pl-4">
                 <div className="tw-p-0.5 tw-text-sm tw-font-medium">
                     Нийт үйл ажиллагаануудын төсөвт зардал:
                     <span className="tw-ml-2 tw-text-base">${!isNaN(net) && net}</span>

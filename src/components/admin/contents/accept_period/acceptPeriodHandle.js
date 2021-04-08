@@ -323,7 +323,7 @@ export default function AcceptPeriodHandle() {
                 leave={{ opacity: 0 }}>
                 {item => item && (anims =>
                     <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
-                        <div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow" ref={modalRef}>
+                        <div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-ring-2 tw-ring-red-500" ref={modalRef}>
                             <div className="tw-p-2 tw-text-center" style={{ minWidth: 300 }}>
                                 Нээлттэй хугацааг устгах уу?
                             </div>
