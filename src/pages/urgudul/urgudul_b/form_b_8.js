@@ -448,19 +448,28 @@ function UrgudulCalculations() {
                 config={config.stiff}>
                 {item => item && (anims =>
                     <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10" style={anims}>
-                        <div className="tw-w-80 tw-p-1 tw-bg-white tw-rounded-md tw-grid tw-grid-cols-1 tw-shadow-md" ref={suggestPage5Ref}>
-                            <button className="tw-float-right tw-text-red-500 tw-justify-self-end focus:tw-outline-none active:tw-text-red-600 tw-transition-colors tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={() => setSuggestPage5Open(false)}>
-                                <CloseSVG className="tw-w-5 tw-h-5" />
-                            </button>
+                        <Transition
+                            items={suggestPage5Open}
+                            from={{ transform: 'translateY(-20px' }}
+                            enter={{ transform: 'translateY(0)' }}
+                            leave={{ transform: 'translateY(20px' }}
+                            config={config.stiff}>
+                            {item1 => item1 && (anims1 =>
+                                <div className="tw-w-80 tw-p-1 tw-bg-white tw-rounded-md tw-grid tw-grid-cols-1 tw-shadow-md tw-ring-2 tw-ring-indigo-500" style={anims1} ref={suggestPage5Ref}>
+                                    <button className="tw-float-right tw-text-red-500 tw-justify-self-end focus:tw-outline-none active:tw-text-red-600 tw-transition-colors tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={() => setSuggestPage5Open(false)}>
+                                        <CloseSVG className="tw-w-5 tw-h-5" />
+                                    </button>
 
-                            <div className="tw-text-15px tw-text-center tw-mx-6 md:tw-mx-10 tw-mt-2 tw-leading-relaxed">
-                                Төслийн дуусах хугацаа тодорхойгүй байна. Та эхлээд хуудас 5-ыг бөглөнө үү.
-                            </div>
+                                    <div className="tw-text-15px tw-text-center tw-mx-6 md:tw-mx-10 tw-mt-2 tw-leading-relaxed">
+                                        Төслийн дуусах хугацаа тодорхойгүй байна. Та эхлээд хуудас 5-ыг бөглөнө үү.
+                                    </div>
 
-                            <button className="tw-py-2 tw-px-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-text-white tw-rounded hover:tw-shadow-md focus:tw-outline-none tw-justify-self-center tw-mt-6 tw-mb-4 tw-text-sm" onClick={navToPage5}>
-                                5 хуудас руу шилжих
-                            </button>
-                        </div>
+                                    <button className="tw-py-2 tw-px-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-text-white tw-rounded hover:tw-shadow-md focus:tw-outline-none tw-justify-self-center tw-mt-6 tw-mb-4 tw-text-sm" onClick={navToPage5}>
+                                        5 хуудас руу шилжих
+                                    </button>
+                                </div>
+                            )}
+                        </Transition>
                     </div>
                 )}
             </Transition>

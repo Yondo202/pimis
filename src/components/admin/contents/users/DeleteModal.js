@@ -8,7 +8,7 @@ import UserContext from '../../../../context/UserContext'
 export const DeleteModal = ({ showModal,setShowModal,setUpdate, parent }) => {
     const modalRef = useRef();
     const ctx = useContext(UserContext);
-    const [ btnSpin, seBtnSpin  ] = useState(false);
+    const [ btnSpin, setBtnSpin  ] = useState(false);
 
     const animation = useSpring({
         config:{duration:330  },
