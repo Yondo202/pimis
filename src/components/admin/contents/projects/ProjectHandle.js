@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import DataGrid, { Column, FilterRow, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
+import DataGrid, { Column, Editing, FilterRow, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import EditDropdown from './editDropdown'
@@ -133,6 +133,7 @@ export default function ProjectHandle() {
                     <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
                     <HeaderFilter visible={true} />
                     <FilterRow visible={true} />
+                    {/* <Editing mode="cell" allowUpdating={true} /> */}
 
                     {/* <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} setEvaluatorsModal={setEvaluatorsModal} />} headerCellRender={HeaderCell} width={134} /> */}
                     <Column caption="Явцыг харах" cellRender={data => <ButtonNavProgress data={data} />} headerCellRender={HeaderCell} width={115} />
@@ -144,7 +145,8 @@ export default function ProjectHandle() {
                     <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueLetterOI} alignment="left" />
 
                     <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
-                        <Column caption="Төлөв" cellRender={data => <ButtonEditStatus data={data} />} headerCellRender={HeaderCell} />
+                        {/* <Column caption="Төлөв" cellRender={data => <ButtonEditStatus data={data} />} headerCellRender={HeaderCell} /> */}
+                        <Column dataField="project.status" caption="Төлөв" headerCellRender={HeaderCell} />
                         <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} alignment="left" />
                         <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} alignment="center" />
                         <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} alignment="left" />

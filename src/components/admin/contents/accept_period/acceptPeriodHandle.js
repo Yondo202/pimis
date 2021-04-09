@@ -364,8 +364,8 @@ export default function AcceptPeriodHandle() {
                         mode="row"
                         allowUpdating={true}
                         allowDeleting={true}
-                        allowAdding={true} />
-
+                        allowAdding={true}
+                    />
                     <Column dataField="eyear" caption="Жил" alignment="right" headerCellRender={HeaderCell} />
                     <Column dataField="quarter" caption="Улирал" alignment="right" headerCellRender={HeaderCell}>
                         <Lookup dataSource={quarters} displayExpr="Name" valueExpr="id" headerCellRender={HeaderCell} />
