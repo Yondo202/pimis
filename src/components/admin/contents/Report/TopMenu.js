@@ -15,14 +15,15 @@ export const TopMenu = ({childData,cond}) => {
     const [ classShow, setClassShow ] = useState(false);
     const [ titleHead, setTitleHead ] = useState("");
 
-
     useEffect(()=>{
         setRightMenu(false); setClassShow(false); setHomeShow(false); setTitleHead("");
     },[cond])
 
     const clickHandle = (el, title) =>{
-         setClassShow(true); setTitleHead(title);
-         setTimeout(()=>{ setHomeShow(true); history.push(`report/${el}`) },300)
+         if(el){
+            setClassShow(true); setTitleHead(title);
+            setTimeout(()=>{ setHomeShow(true); history.push(`report/${el}`) },300)
+         }
     }
     const menuHandle = () =>{ setRightMenu(true); }
      
@@ -35,11 +36,9 @@ export const TopMenu = ({childData,cond}) => {
 
             {!homeShow&&<div className={classShow?`buttonsPar Animate`:`buttonsPar`}>
                 {childData?.items.map(el=>{
-                    return(  <Link onClick={()=>clickHandle(el.comp,el.titles)} className="menuBtn">{el.titles}<RiArrowRightSFill /></Link>  )
+                    return(  <Link onClick={()=>clickHandle(el.comp,el.titles)} className={el.comp?`menuBtn`:`menuBtn desable`}>{el.titles}<RiArrowRightSFill /></Link>  )
                 })}
             </div>}
-
-           
 
            <Switch>
                 <Route path="/report" exact>
@@ -62,19 +61,16 @@ const animate = keyframes`
     0% { transform:translateX(-100px); opacity:0;  }
     100% { transform:translateX(0px); opacity:1;  }
 `
-
 const MenuBtnAnimate = keyframes`
    0% {  transform:scale(1); right:0px; top: 70px; }
    100% {  transform:scale(0); right:-800px; top: 50px; }
 `
-
 const rightAnimate = keyframes`
    0% {  transform:scale(0.5); opacity:0; background-color: rgba(0, 255, 0, 0.7);}
    40% {  transform:scale(1.6); opacity:0.8; background-color: rgba(0, 255, 0, 0.9);}
    100% {  transform:scale(1); opacity:1; background-color: rgba(0, 200, 255, 0.2); }
 `
-
-const Container = styled.div`  
+const Container = styled.div`
     position:relative;
     padding:10px 15px;
     .TitlePar{
@@ -120,6 +116,7 @@ const Container = styled.div`
         flex-wrap:wrap;
         width:100%;
         .menuBtn {
+                text-decoration:none;
                 animation:${animate} 0.6s ease;
                 overflow:hidden;
                 margin:10px 10px;
@@ -143,6 +140,9 @@ const Container = styled.div`
                 margin-left:5px;
                 font-size:17px;
             }
+        }
+        .desable{
+            /* background-image: linear-gradient(to right, #5895da, #5895da, #B0C3DA, #2664AD); */
         }
     }   
     .Animate{

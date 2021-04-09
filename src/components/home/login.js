@@ -24,10 +24,15 @@ function Login() {
       User.map(element=>{
           let field = element.name;
           let value = element.value;
-          finalOneUser[field] = value;
+          if(!value){
+            element.classList += " red" 
+          }else{
+            element.classList =- " red"
+            element.classList += " LoginInpName"
+            finalOneUser[field] = value;
+          }
       });
       userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-
       const UserRole = localStorage.getItem("role", []);
       if(UserRole==="admin"){ history.push('/')}else{ history.push('/') }
   }
@@ -94,7 +99,6 @@ const inputAnimate2 = keyframes`
 
 const Component = styled.div`
     font-family:${fontFamily};
-    // height:70vh;
     padding-top:10px;
     font-size:13px;
     margin-bottom:50px;
@@ -106,7 +110,6 @@ const Component = styled.div`
           width:100%;
           margin-bottom:10px;
         }
-
         .text{
           font-size:14px;
             font-weight:400;
@@ -145,7 +148,6 @@ const Component = styled.div`
                    color:rgba(0,0,0,0.7);
                    font-weight:500;
                }
-              
            }
         .name{
             padding:15px 0px;
@@ -178,8 +180,6 @@ const Component = styled.div`
             }
           }
        }
-      
-     
     }
   }
   .SubmitButtonPar{
@@ -249,7 +249,7 @@ const Component = styled.div`
         .SignBtn{
           cursor:pointer;
           color:${Color};
-      }
+        }
       }
       
   }

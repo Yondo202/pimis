@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-
+import styled, { keyframes } from 'styled-components'
 export const Color = "#036";
 export const ColorRgb = "0, 51, 102";
 export const textColor = "0, 18, 41";
@@ -167,7 +166,7 @@ export const AlertStyle = styled.div`
 `
 
 export const InputStyle = styled.div`
-            font-family:"'Roboto', sans-serif";
+            /* font-family:"'Roboto', sans-serif"; */
             // width:100%;
             font-size:13px;
             transition:all 0.3s ease;
@@ -277,5 +276,70 @@ export const InputStyle = styled.div`
             } */
           
 `
+const animateDate = keyframes`
+    0% { transform:translateY(30px); opacity:0; }
+    100% { transform:translateY(0px); opacity:1;}
+`
 
+export const ReportTop = styled.div`
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin:15px 0px;
+        .PdfExcelBtns{
+            .dx-button{
+                margin-left:10px;
+            }
+        }
+       .datePicker{
+           display:flex;
+           align-items:center;
+           .from, .to {
+                input{
+                    text-align:center;
+                    padding:8px 0px;
+                    box-shadow:1px 1px 9px -7px;
+                    border-radius:6px;
+                    font-weight:500;
+                }
+                .DayPickerInput-OverlayWrapper{
+                    animation: ${animateDate} 0.6s ease;
+                    z-index:2;
+                }
+            }
+            .red{
+                input{
+                    border:1px solid red;
 
+                }
+            }
+           svg{
+               margin:0px 10px;
+               font-size:18px;
+           }
+           .FilterDateBtn{
+               cursor: pointer;
+               margin-left:15px;
+               background-color:#201DD9;
+               text-align:center;
+               padding:5px 5px;
+               box-shadow:1px 1px 9px -7px;
+               border-radius:50%;
+               font-weight:500;
+               svg{
+                    margin:0px 0px;
+                    color:white;
+               }
+               &:hover{
+                background-color:#504EDF;
+               }
+           }
+           .reject{
+               background-color:#E45252;
+               &:hover{
+                  background-color:#E78484;
+               }
+           }
+       }
+`
