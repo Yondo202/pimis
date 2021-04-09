@@ -341,7 +341,7 @@ export default function AcceptPeriodHandle() {
             </Transition>
 
             <div className="tw-mt-8 tw-p-4 tw-pt-0 tw-bg-white tw-rounded-md tw-shadow tw-max-w-2xl">
-                <div className="tw-text-xl tw-font-medium tw-p-2 tw-pt-8">
+                <div className="tw-text-xl tw-font-medium tw-p-2 tw-pt-8 tw-text-center">
                     Өргөдөл хүлээн авах нээлттэй хугацааг тохируулах
                 </div>
 
@@ -368,7 +368,7 @@ export default function AcceptPeriodHandle() {
                     />
                     <Column dataField="eyear" caption="Жил" alignment="right" headerCellRender={HeaderCell} />
                     <Column dataField="quarter" caption="Улирал" alignment="right" headerCellRender={HeaderCell}>
-                        <Lookup dataSource={quarters} displayExpr="Name" valueExpr="id" headerCellRender={HeaderCell} />
+                        <Lookup dataSource={quarters} displayExpr="name" valueExpr="id" />
                     </Column>
                     <Column dataField="start_date" dataType="date" caption="Нээгдэх хугацаа" alignment="right" headerCellRender={HeaderCell} />
                     <Column dataField="end_date" dataType="date" caption="Хаагдах хугацаа" alignment="right" headerCellRender={HeaderCell} />
@@ -380,16 +380,16 @@ export default function AcceptPeriodHandle() {
 
 const quarters = [{
     id: 1,
-    Name: 'Q1',
+    name: 'Q1',
 }, {
     id: 2,
-    Name: 'Q2',
+    name: 'Q2',
 }, {
     id: 3,
-    Name: 'Q3',
+    name: 'Q3',
 }, {
     id: 4,
-    Name: 'Q4',
+    name: 'Q4',
 }]
 
 

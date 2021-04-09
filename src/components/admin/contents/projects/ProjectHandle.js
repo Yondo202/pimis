@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import DataGrid, { Column, Editing, FilterRow, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
+import DataGrid, { Column, Editing, FilterRow, HeaderFilter, Lookup, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import EditDropdown from './editDropdown'
@@ -109,11 +109,11 @@ export default function ProjectHandle() {
 
     return (
         <div className="tw-text-sm tw-text-gray-700">
-            <div className="tw-p-2 tw-mt-2 tw-text-lg tw-font-medium tw-text-center">
-                Дэмжлэг хүссэн өргөдлийн маягтууд
-            </div>
+            <div className="tw-px-3 tw-pt-2 tw-pb-6 tw-mt-4 tw-shadow-inner tw-bg-white tw-flex tw-flex-col tw-w-full tw-rounded-md" ref={containerRef}>
+                <div className="tw-p-2 tw-mt-6 tw-text-lg tw-font-medium tw-text-center">
+                    Дэмжлэг хүссэн өргөдлийн маягтууд
+                </div>
 
-            <div className="tw-px-3 tw-pt-2 tw-pb-6 tw-mt-4 tw-shadow-inner tw-bg-white tw-flex tw-w-full tw-rounded-md" ref={containerRef}>
                 <DataGrid
                     elementAttr={{ id: 'registered-companies-data-grid' }}
                     dataSource={data}
@@ -133,11 +133,10 @@ export default function ProjectHandle() {
                     <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
                     <HeaderFilter visible={true} />
                     <FilterRow visible={true} />
-                    {/* <Editing mode="cell" allowUpdating={true} /> */}
 
                     {/* <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} setEvaluatorsModal={setEvaluatorsModal} />} headerCellRender={HeaderCell} width={134} /> */}
-                    <Column caption="Явцыг харах" cellRender={data => <ButtonNavProgress data={data} />} headerCellRender={HeaderCell} width={115} />
-                    <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="center" />
+                    <Column caption="Явцыг харах" cellRender={data => <ButtonNavProgress data={data} />} headerCellRender={HeaderCell} />
+                    <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="left" />
                     <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} alignment="left" />
                     <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} customizeText={customizeTextCriteria} alignment="left" />
                     <Column dataField="esq" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} alignment="left" />
@@ -145,11 +144,13 @@ export default function ProjectHandle() {
                     <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueLetterOI} alignment="left" />
 
                     <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
-                        {/* <Column caption="Төлөв" cellRender={data => <ButtonEditStatus data={data} />} headerCellRender={HeaderCell} /> */}
-                        <Column dataField="project.status" caption="Төлөв" headerCellRender={HeaderCell} />
-                        <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} alignment="left" />
-                        <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} alignment="center" />
+                        <Column caption="Төлөв" cellRender={data => <ButtonNavStatus data={data} />} headerCellRender={HeaderCell} alignment="left" />
+                        {/* <Column dataField="project.status" caption="Төлөв" headerCellRender={HeaderCell} allowEditing={true} width={120}>
+                            <Lookup dataSource={statuses} displayExpr="display" valueExpr="value" />
+                        </Column> */}
                         <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} alignment="left" />
+                        <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} alignment="left" />
+                        <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} alignment="left" />
                         <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} customizeText={customizeTextConfirmed} alignment="left" />
                         <Column dataField="project.project_start" caption="Эхлэх хугацаа" headerCellRender={HeaderCell} alignment="left" />
                         <Column dataField="project.project_end" caption="Дуусах хугацаа" headerCellRender={HeaderCell} alignment="left" />
@@ -204,27 +205,24 @@ const statusNames = {
     locked: 'Засвар хаалттай',
     approved: 'Дэмжигдсэн',
     disapproved: 'Дэмжигдээгүй',
-    cancelled: 'Цуслагдсан',
+    cancelled: 'Цуцлагдсан',
 }
 
-const ButtonEditStatus = (data) => {
+// const statuses = Object.keys(statusNames).map((key) => ({ value: key, display: statusNames[key] }))
+
+const ButtonNavStatus = (data) => {
     const projectId = data.data.data.project?.id
     const status = data.data.data.project?.status
-    const handleStatusEdit = () => {
-        axios.put(`set-project-status/${projectId}`, { status: status }, {
-            headers: { Authorization: getLoggedUserToken() },
-        }).then(res => {
-            console.log(res)
-        }).catch(err => {
-            console.log(err.response)
+    const history = useHistory()
+    const buttonClick = () => {
+        history.push({
+            pathname: '/project-status',
+            search: `?projectId=${projectId}`
         })
     }
-
-    return (
-        <div className="tw-w-20 tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-2 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md tw-text-center" style={{ minWidth: 80 }}>
-            {statusNames[status] || 'Хоосон'}
-        </div>
-    )
+    return <button className="tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-2 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md" onClick={buttonClick}>
+        {statusNames[status] || 'Хоосон'}
+    </button>
 }
 
 // const ButtonEditProject = (data) => {
