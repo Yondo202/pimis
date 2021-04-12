@@ -29,6 +29,7 @@ const initialState = {
     email: null,
     website: null,
     company_size: null,
+    emp_count: null,
     project_plan: null,
     business_sectorId: null,
     foreign_invested: null,
@@ -288,6 +289,8 @@ function UrgudulApplicant() {
                         </tbody>
                     </table>
                 </div>
+
+                <FormInline label="Ажилтны тоо" type="numberFormat" value={form.emp_count || ''} name="emp_count" onChange={handleInputFormat} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" invalid={validate && checkInvalid(form.emp_count)} />
 
                 <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={form.business_sectorId} name="business_sectorId" handleChange={handleSetForm} invalid={validate && checkInvalid(form.business_sectorId)} />
 

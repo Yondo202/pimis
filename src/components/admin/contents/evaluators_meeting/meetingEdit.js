@@ -203,7 +203,7 @@ export default function EvaluatorsMeetingEdit(props) {
             </div>
 
             <div className="tw-flex tw-justify-end lg:tw-justify-center">
-                <button className="tw-py-1 tw-px-4 tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-4 lg:tw-mt-8 tw-mb-4 tw-mx-4" onClick={handleSubmit}>
+                <button className="tw-py-1.5 tw-px-8 tw-text-15px tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-4" onClick={handleSubmit}>
                     Хадгалах
                 </button>
             </div>

@@ -1,90 +1,188 @@
 import { useQuery } from 'components/utilities/useQueryLocation'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { DataGrid } from 'devextreme-react'
 import { Column, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
+import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
+import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
+import { config, Transition } from 'react-spring/renderprops'
+import AlertContext from 'components/utilities/alertContext'
 
 
 export default function ProjectStatusHandle() {
     const projectId = useQuery().get('projectId')
 
-    const [status, setStatus] = useState({})
+    const [status, setStatus] = useState(initialState)
 
     useEffect(() => {
         axios.get(`projects/${projectId}/status`, {
             headers: { Authorization: getLoggedUserToken() }
         }).then(res => {
             console.log(res)
-            setStatus(res.data.data)
+            setStatus(prev => ({ ...prev, ...res.data.data }))
         }).catch(err => {
             console.error(err.response)
         })
     }, [])
 
+    const handleInput = (key, value) => setStatus(prev => ({
+        ...prev, [key]: value,
+    }))
+
+    const AlertCtx = useContext(AlertContext)
+
+    const handleSubmit = () => {
+        axios.put(`projects/${projectId}/status`, { status: status.status, comment: status.comment }, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res)
+            setStatus(prev => ({ ...prev, ...res.data.data }))
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Төслийн төлвийг өөрчиллөө.' })
+        }).catch(err => {
+            console.error(err.response)
+            if (err.response.status === 490) {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Төлөв өөрчлөх эрх таньд олгогдоогүй байна.' })
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Төлөв өөрчилж чадсангүй.' })
+            }
+        })
+    }
+
+    const [statusDropdownOpen, setStatusDropdownOpen] = useState(false)
+
+    const handleStatusSelect = (status) => {
+        setStatus(prev => ({ ...prev, status: status }))
+        setStatusDropdownOpen(false)
+    }
+
+    const buttonRef = useRef()
+    const dropdownRef = useRef()
+
+    const handleClickOutside = (e) => {
+        if (!dropdownRef.current?.contains(e.target) && !buttonRef.current.contains(e.target)) {
+            setStatusDropdownOpen(false)
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside)
+        return () => document.removeEventListener('click', handleClickOutside)
+    })
+
+    const [histories, setHistories] = useState([])
+
+    const handleGetHistory = () => {
+        axios.get(`projects/${projectId}/status-history`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res)
+            setHistories(res.data.data)
+        }).catch(err => {
+            console.error(err.response)
+        })
+    }
+
     return (
-        <div className="tw-text-gray-700 tw-text-sm tw-px-3 tw-pt-2 tw-pb-6 tw-mt-4 tw-shadow-inner tw-bg-white tw-rounded-md">
-            <div className="tw-p-2 tw-mt-6 tw-text-lg tw-font-medium tw-text-center">
-                Төслийн төлвийг тохируулах
+        <div className="tw-text-gray-700 tw-text-sm">
+            <div className="tw-p-2 tw-mb-20 tw-mt-4 tw-shadow-inner tw-bg-white tw-rounded-md tw-max-w-4xl">
+                <div className="tw-p-2 tw-mt-6 tw-text-lg tw-font-medium tw-text-center">
+                    Төслийн төлвийг тохируулах
+                </div>
+
+                {/* <DataGrid
+                    elementAttr={{ id: 'company-statuses-data-grid' }}
+                    dataSource={data}
+                    showBorders={true}
+                    wordWrapEnabled={true}
+                    rowAlternationEnabled={true}
+                    columnAutoWidth={true}
+                    showRowLines={true}
+                    showColumnLines={true}
+                    loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
+                >
+                    <SearchPanel visible={true} width={240} placeholder="Хайх..." />
+                    <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
+                    <Paging defaultPageSize={20} />
+                    <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
+                    <HeaderFilter visible={true} />
+
+                    <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="left" />
+                    <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} alignment="left" />
+                    <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} alignment="left" />
+                    <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} alignment="left" />
+                    <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} alignment="left" />
+                    <Column dataField="project.status" caption="Төлөв" headerCellRender={HeaderCell} alignment="left" />
+                    <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} customizeText={customizeTextConfirmed} alignment="left" />
+                    <Column dataField="project.project_start" caption="Эхлэх хугацаа" headerCellRender={HeaderCell} alignment="left" />
+                    <Column dataField="project.project_end" caption="Дуусах хугацаа" headerCellRender={HeaderCell} alignment="left" />
+                </DataGrid> */}
+
+                <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-max-w-5xl tw-mt-6">
+                    <InfoItem label="Аж ахуйн нэгжийн нэр" value={status.company_name} />
+
+                    <InfoItem label="Төслийн дугаар" value={status.project_number} />
+
+                    <InfoItem label="Төслийн нэр" value={status.project_name} />
+
+                    <InfoItem label="Төслийн эхлэх хугацаа" value={status.project_start} />
+
+                    <InfoItem label="Өргөдөл үүсгэсэн өдөр" value={status.createdAt?.slice(0, 10)} />
+
+                    <div className="tw-flex tw-flex-col tw-items-start md:tw-col-span-2 tw-p-2 tw-ml-2 tw-relative">
+                        <div className="tw-border-b tw-border-gray-400 tw-rounded-b tw-pl-1 tw-pr-2">
+                            Төслийн төлвийг сонгох:
+                        </div>
+
+                        <button className="tw-mt-2 tw-rounded tw-py-1 tw-border tw-border-gray-500 focus:tw-outline-none tw-flex tw-items-center tw-px-2 tw-font-medium" style={{ minWidth: 160 }} onClick={() => setStatusDropdownOpen(prev => !prev)} ref={buttonRef}>
+                            <span className="tw-mr-2">{statusNames[status.status]}</span>
+                            <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-auto" />
+                        </button>
+
+                        <Transition
+                            items={statusDropdownOpen}
+                            from={{ height: 0, opacity: 0 }}
+                            enter={{ height: 'auto', opacity: 1 }}
+                            leave={{ height: 0, opacity: 0 }}
+                            config={config.stiff}>
+                            {item => item && (anims =>
+                                <div className="tw-absolute tw-z-10 tw-border tw-border-gray-400 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 72, minWidth: 160, ...anims }} ref={dropdownRef}>
+                                    {Object.keys(statusNames).map(status =>
+                                        <div className="tw-cursor-pointer tw-py-2 tw-text-13px tw-font-medium tw-px-2 hover:tw-bg-indigo-100 tw-transition-colors" key={status} onClick={() => handleStatusSelect(status)}>
+                                            {statusNames[status]}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </Transition>
+                    </div>
+
+                    <div className="tw-flex tw-flex-col tw-items-start md:tw-col-span-2 tw-p-2 tw-ml-2">
+                        <div className="tw-mt-2 tw-border-b tw-border-gray-400 tw-rounded-b tw-pl-1 tw-pr-2">
+                            Тайлбар:
+                        </div>
+
+                        <textarea className="tw-mt-2 tw-w-full tw-max-w-3xl focus:tw-outline-none tw-border tw-border-gray-500 tw-rounded py-1 tw-px-2" rows="5" value={status.comment || ''} onChange={e => handleInput('comment', e.target.value)} />
+                    </div>
+                </div>
+
+                <div className="tw-flex tw-justify-center">
+                    <button className="tw-py-1.5 tw-px-8 tw-text-15px tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-4" onClick={handleSubmit}>
+                        Хадгалах
+                    </button>
+                </div>
             </div>
 
-            {/* <DataGrid
-                elementAttr={{ id: 'company-statuses-data-grid' }}
-                dataSource={data}
-                showBorders={true}
-                wordWrapEnabled={true}
-                rowAlternationEnabled={true}
-                columnAutoWidth={true}
-                columnWidth="auto"
-                showRowLines={true}
-                showColumnLines={true}
-                loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
-            >
-                <SearchPanel visible={true} width={240} placeholder="Хайх..." />
-                <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
-                <Paging defaultPageSize={20} />
-                <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
-                <HeaderFilter visible={true} />
+            <div className="tw-p-2 tw-mb-20 tw-mt-4 tw-shadow-inner tw-bg-white tw-rounded-md tw-max-w-4xl">
+                <button className="tw-py-1.5 tw-px-8 tw-text-15px tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md" onClick={handleGetHistory}>
+                    Өөрчлөлтүүдийг харах
+                </button>
 
-                <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="left" />
-                <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} alignment="left" />
-                <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} alignment="left" />
-                <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} alignment="left" />
-                <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} alignment="left" />
-                <Column dataField="project.status" caption="Төлөв" headerCellRender={HeaderCell} alignment="left" />
-                <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} customizeText={customizeTextConfirmed} alignment="left" />
-                <Column dataField="project.project_start" caption="Эхлэх хугацаа" headerCellRender={HeaderCell} alignment="left" />
-                <Column dataField="project.project_end" caption="Дуусах хугацаа" headerCellRender={HeaderCell} alignment="left" />
-            </DataGrid> */}
-
-            <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-max-w-5xl tw-mt-6">
-                <div className="tw-flex tw-flex-col tw-p-2">
-                    <div className="">Аж ахуйн нэгжийн нэр</div>
-                    <div className="">{status.company_name}</div>
-                </div>
-
-                <div className="tw-flex tw-flex-col tw-p-2">
-                    <div className="">Төслийн дугаар</div>
-                    <div className="">{status.project_number}</div>
-                </div>
-
-                <div className="tw-flex tw-flex-col tw-p-2">
-                    <div className="">Төслийн нэр</div>
-                    <div className="">{status.project_name}</div>
-                </div>
-
-                <div className="tw-flex tw-flex-col md:tw-col-span-2 tw-p-2">
-                    <div className="">Төслийн төлвийг сонгох</div>
-                    <select className="tw-w-40 tw-border">
-                        <option value="AAAA" />
-                        <option value="BBBB" />
-                    </select>
-                </div>
-
-                <div className="tw-flex tw-flex-col md:tw-col-span-2 tw-p-2">
-                    <div className="">Тайлбар</div>
-                    <textarea className="tw-w-full tw-max-w-3xl focus:tw-outline-none tw-border" rows="5" />
-                </div>
+                {histories.map(history =>
+                    <div className="tw-border" key={history.id}>
+                        {history.id} {history.userComment}
+                    </div>
+                )}
             </div>
         </div>
     )
@@ -106,3 +204,24 @@ export default function ProjectStatusHandle() {
 //             break
 //     }
 // }
+
+const initialState = {
+    company_name: null,
+    project_name: null,
+    project_number: null,
+    project_start: null,
+    createdAt: null,
+    status: null,
+    comment: null,
+}
+
+const InfoItem = ({ label, value }) => (
+    <div className="tw-flex tw-flex-col tw-items-start tw-p-2 tw-ml-2">
+        <div className="tw-border-b tw-border-gray-400 tw-rounded-b tw-pl-1 tw-pr-2">
+            {label}:
+        </div>
+        <div className={`tw-inline-flex tw-h-7 tw-items-center tw-font-medium tw-truncate tw-px-2 ${!value && 'tw-text-gray-500'}`}>
+            {value ?? 'Хоосон'}
+        </div>
+    </div>
+)
