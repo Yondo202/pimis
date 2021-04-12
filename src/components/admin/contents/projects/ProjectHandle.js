@@ -80,7 +80,7 @@ export default function ProjectHandle() {
         window.addEventListener('resize', handleResize)
 
         return () => window.removeEventListener('resize', handleResize)
-    }, [containerRef])
+    }, [containerRef]);
 
     const [previewModal, setPreviewModal] = useState({
         open: false,
