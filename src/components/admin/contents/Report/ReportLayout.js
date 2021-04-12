@@ -49,17 +49,31 @@ const animate = keyframes`
     100% { transform:translateX(0px); opacity:1; }
 `
 const Container = styled.div`
+    /* background-color:red; */
+    width:100%;
     .leftMenu{
         animation: ${animate} 0.4s ease;
-        .pro-sidebar .pro-menu.shaped .pro-menu-item > .pro-inner-item > .pro-icon-wrapper {
-            animation: ${animate} 0.8s ease;
+        .pro-sidebar {
+            width:280px !important;
+            .pro-menu.shaped .pro-menu-item > .pro-inner-item > .pro-icon-wrapper {
+                animation: ${animate} 0.8s ease;
+            }
         }
+        
         .pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item > .pro-item-content {
             animation: ${animate} 0.8s ease;
         }
     }
     .MainPar{
         width:100%;
+        max-width:100%;
+    }
+    @media only screen and (max-width:1400px){
+        .leftMenu{
+            .pro-sidebar{
+                width:220px !important;
+            }
+        }
     }
 `
 
@@ -83,8 +97,8 @@ const data = [
     { title: "1-р шат",  icon: <CgRowFirst /> , child : [
         { title: "Хандсан байгууллагууд", //Хэдэн байгууллага хандсанг ААН, Кластераар харуулах
             items: [
-                { titles: "Нэрсийн жагсаалтаар"  },
-                { titles: "Салбараар", comp:"sectors"  },
+                { titles: "Нэрсийн жагсаалтаар", comp: "step-one/nersiinjagsaaltaar" },
+                { titles: "Салбараар", comp:"step-one/sectors"  },
                 { titles: "Ажилчдын тоогоор"  },
                 { titles: "Борлуулалтын хэмжээгээр"  },
                 { titles: "Экспортын хэмжээгээр"  },

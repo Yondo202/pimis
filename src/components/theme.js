@@ -287,6 +287,8 @@ export const ReportTop = styled.div`
         justify-content:space-between;
         align-items:center;
         margin:15px 0px;
+        flex-direction:row;
+      
         .PdfExcelBtns{
             .dx-button{
                 margin-left:10px;
@@ -342,4 +344,12 @@ export const ReportTop = styled.div`
                }
            }
        }
+
+    @media only screen and (max-width:1400px){
+        align-items:start;
+        flex-direction:column;
+        .datePicker{
+            margin-bottom:15px;
+        }
+    }
 `

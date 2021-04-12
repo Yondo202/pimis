@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Chart, Series, CommonSeriesSettings, Label, Format, Legend } from 'devextreme-react/chart';
 import { ReportTop } from "components/theme";
 import styled from "styled-components";
@@ -17,8 +17,8 @@ import ExcelJS from 'exceljs';
 import saveAs from 'file-saver';
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import 'react-day-picker/lib/style.css';
-import { DayFormat } from "../DayFormat";
-import { font } from "../Font"
+import { DayFormat } from "../../DayFormat";
+import { font } from "../../Font"
 
 const dataGridRef = React.createRef();
 
@@ -27,10 +27,23 @@ const SectorsOne = () => {
     const [ defaultRender, setDefaultRender ] = useState(false);
     const [ from, setFrom ] = useState({ class: "", value: null } );
     const [ to, setTo ] = useState({ class: "", value: null } );
+    const [width, setWidth] = useState();
 
     useEffect(()=>{
         go();
     },[defaultRender]);
+
+
+    const ParentRef = useRef(null);
+    useEffect(() => {
+        const handleResize = () => {
+            setWidth(ParentRef.current?.clientWidth);
+        }
+        if (width === undefined) handleResize()
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [ParentRef]);
 
     const exportGrid =()=> {
         const doc = new jsPDF('p', 'px', 'letter');
@@ -63,8 +76,11 @@ const SectorsOne = () => {
        const req = await axios.get(`reports/handsan-baiguullaguud?calctype=bySector&startDate=${from.value}&endDate=${to.value}`);  setMyDAta(req.data.data);
     }
 
+    console.log(`myData`, myData);
+
+
     return (
-        <Container>
+        <Container ref={ParentRef}>
            
              <ReportTop className="Topsector">
                     <div className="datePicker">
@@ -83,15 +99,13 @@ const SectorsOne = () => {
                         <Button text="EXCEL - хөрвүүлэх"  icon="xlsxfile"  onClick={()=>onExportingFunc(dataGridRef.current)}  />
                     </div>
             </ReportTop>
-                        
                 <DataGrid
                     ref={dataGridRef}
-                    dataSource={test}
+                    dataSource={myData}
                     showBorders={true}
-                    keyExpr="business_sectorId"
-                    // onExporting={onExportingFunc}
-                    AutoWidth={true}
-                    width={"100%"}
+                    // keyExpr="business_sectorId"
+                    columnAutoWidth={true}
+                    width={width?width:700}
                 >
                     <Selection
                         mode="multiple"
@@ -102,13 +116,16 @@ const SectorsOne = () => {
                     <FilterRow visible={true} />
                     <Paging defaultPageSize={10} />
 
-                    <Column width={90} alignment='center' dataField="business_sectorId" caption="ID" />
-                    <Column width={300} dataField="bdescription_mon" caption="Салбарын нэрс" />
-                    <Column width={300} alignment='center' dataField="count" caption="Нийт тоо" />
+                    {/* <Column alignment='center' dataField="business_sectorId" caption="ID" /> */}
+                    <Column headerCellRender={HeaderCell} alignment='center' dataField="count" caption="Нийт тоо" />
+                    <Column headerCellRender={HeaderCell} width={300} dataField="bdescription_mon" caption="Салбарын нэрс" />
+                    <Column headerCellRender={HeaderCell} alignment='center' dataField="shalguur_hangasan" caption="Шалгуур хангасан" />
+                    <Column headerCellRender={HeaderCell} alignment='center' dataField="shalguur_hangaagui" caption="Шалгуур хангаагүй" />
+                    <Column headerCellRender={HeaderCell} alignment='center' dataField="bo_asuumjbogloogui" caption="БО - ны асуумж бөглөөгүй" />
 
                     <Summary>
                         <TotalItem
-                            column="business_sectorId"
+                            column="count"
                             summaryType="count" 
                         />
                         {/* <TotalItem
@@ -123,8 +140,9 @@ const SectorsOne = () => {
                 <div className="ChartParent">
                     <Chart id="chart"
                         title="Нийт салбарын стастик"
-                        dataSource={test}
+                        dataSource={myData}
                         onPointClick={onPointClick}
+                        onLegendClick={onLegendClick}
                     >
                         <CommonSeriesSettings
                             argumentField="bdescription_mon"
@@ -132,22 +150,23 @@ const SectorsOne = () => {
                             hoverMode="allArgumentPoints"
                             selectionMode="allArgumentPoints"
                         >
-                        <Label visible={true}>
-                            <Format type="fixedPoint" precision={0} />
-                        </Label>
+                            <Label visible={true}>
+                                <Format type="fixedPoint" precision={0} />
+                            </Label>
                         </CommonSeriesSettings>
+
                         <Series
-                            argumentField="bdescription_mon"
+                            // argumentField="count"
                             valueField="count"
                             name="Нийт"
                         />
                         <Series
-                            valueField="success"
-                            name="Тэнцсэн"
+                            valueField={"shalguur_hangaagui"}
+                            name="Тэнцээгүй"
                         />
                         <Series
-                        valueField="reject"
-                        name="Тэнцээгүй"
+                            valueField="shalguur_hangasan"
+                            name="Тэнцсэн"
                         />
                         <Legend verticalAlignment="bottom" horizontalAlignment="center"></Legend>
                         <Export enabled={true} />
@@ -190,8 +209,21 @@ const SectorsOne = () => {
         });
         e.cancel = true;
     }
-    
 }
+
+function onLegendClick({ target: series }) {
+    if(series.isVisible()) {
+      series.hide();
+    } else {
+      series.show();
+    }
+  }
+  
+const HeaderCell = (data) => (
+    <div className="tw-text-gray-700">
+        {data.column.caption}
+    </div>
+)
 
 export default SectorsOne;
 
