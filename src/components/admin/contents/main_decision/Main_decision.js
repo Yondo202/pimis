@@ -1,32 +1,110 @@
-import React,{useState, useEffect} from 'react'
-import styled from 'styled-components'
-import {fontSize, textColor,InputStyle,ColorRgb,NextBtn } from '../../../theme'
-import {AiOutlineSend} from 'react-icons/ai'
-import {IoIosShareAlt} from 'react-icons/io'
-import axios from 'axiosbase'
-import Token from 'context/accessToken'
+import React,{useState, useEffect, useContext} from 'react'
+import { useParams, useHistory } from 'react-router-dom';
+import styled,{ keyframes } from 'styled-components'
+import {fontSize, textColor,InputStyle,ColorRgb,NextBtn,AlertStyle } from '../../../theme'
+import {AiOutlineSend} from 'react-icons/ai';
+import {IoIosShareAlt} from 'react-icons/io';
+import {MdKeyboardArrowLeft} from 'react-icons/md';
+import axios from 'axiosbase';
+import Token from 'context/accessToken';
+import UserContext from 'context/UserContext';
+import { IoMdCheckmarkCircle } from 'react-icons/io';
+import { CgDanger } from 'react-icons/cg';
+import AssistApprove from '../notifyPage/assistApprove/AssistApprove'
+import NotAssist from '../notifyPage/notAssist/NotAssist';
 
 function Main_decision() {
+    const ctx = useContext(UserContext);
+    const history = useHistory();
+    const param  = useParams().id;
+    const [ cond, setCond ] = useState(false);
+    const [ notifyShow, setNotifyShow ] = useState(0);
+    const [ notifyShow2, setNotifyShow2 ] = useState(0);
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
     const [ mainData, setMainData ] = useState(null);
     const [ members, setMembers ] = useState([]);
 
     useEffect(async()=>{
-        try{
-            const data = await axios.get(`evaluation-results/hurliin-negtgel?projectId=1&evaluationMeetingId=4`, { headers: { Authorization:Token() } })
-            console.log(data.data.data, " my data"); setMainData(data.data.data); setMembers(data.data.data.memberEvaluations);
-        }catch{
-            console.log("aldaa garsaaaa");
-        }
-      
+        await axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization:Token() } }).then((res)=>{
+            if(res.data.data){
+                setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
+                if(res.data.data.approved===true){ setNotifyShow2(1); }else if(res.data.data.approved===false){ setNotifyShow2(2); }else{ setNotifyShow2(0); }
+            }
+        }).catch((err)=>console.log(err.response.data.error, "aldaa garsaaaa"));
     },[]);
 
-    console.log(mainData, " my dataaaaaaaaaaaaaa");
+    const backHandle = (el) =>{ if(el==="projects"){  history.push(`/${el}`); }else{ history.push(`/progress/${el}`); } }
+
+    const clickHandle = (el) =>{
+        let inp = document.querySelector(".getInpp");
+        if(notifyShow2!==1){
+            if(inp.value===""){
+                setOpacity2('1');
+                setFinalErrorText('Та шалтгааныг оруулна уу?')
+                inp.classList += " red";
+            }else{
+                setOpacity2('0');
+                inp.classList =- " red";
+                inp.classList += " getInpp";
+                mainData[inp.name] = inp.value;
+                console.log(`mainData`, mainData);
+                axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization:Token() } }).then((res)=>{
+                console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
+            }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
+            }
+        }else{
+            mainData[inp.name] = inp.value;
+            axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization:Token() } }).then((res)=>{
+                console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
+            }).catch((err)=>{console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true);});
+        }
+    }
+
+    console.log(`notifyShow222`, notifyShow2);
+    
+    const clickHandle2 = (el) =>{
+        if(cond){
+            if(notifyShow2===1){
+                setNotifyShow(1);
+            }else if(notifyShow2===2){
+                let inp = document.querySelector(".getInpp");
+                if(inp.value===""){
+                    setOpacity2('1');
+                    setFinalErrorText('Та шалтгааныг оруулна уу?')
+                    inp.classList += " red";
+                }else{
+                    setOpacity2('0');
+                    inp.classList =- " red";
+                    inp.classList += " getInpp";
+                    setNotifyShow(2);
+                }
+            }else{
+                setNotifyShow(0);
+            }
+        }else{
+            setOpacity2('1');
+            setFinalErrorText('Та шийдвэрийн хуудсыг хадаглана уу?')
+        }
+    }
+
+    const changeHandleReason = (el) =>{
+        mainData["reason"] = el.target.value;
+        setMainData({ ...mainData });
+    }
 
     return (
-        <FeedBackCont className="container">
-            <div className="contentPar">
+        <>
+            {notifyShow===0?<FeedBackCont className="container">
+            {mainData?mainData.rejectedCount===0&&mainData.approvedCount===0?
+             <div className="NullPar">
+                <div className="nullTitle">
+                    <div onClick={()=>backHandle(mainData.userId)} className="BackPar"><div className="SvgPar"><MdKeyboardArrowLeft /></div>  <span>Буцах</span> </div>
+                    <h2 className="title">Санал хураалт хийгдээгүй байна</h2>
+                    <div className="desc"></div>
+                </div>
+            </div> 
+            : <div className="contentPar">
                 <div className="TitlePar">
                     <div className="title">ҮНЭЛГЭЭНИЙ ХОРООНЫ ШИЙДВЭРИЙН ХУУДАС</div>
                     <div className="desc">Төсөл бүрт өгсөн нэгтгэсэн санал </div>
@@ -39,19 +117,19 @@ function Main_decision() {
                         </tr>
                             <tr className="getTable1">
                                 <td>Байгууллагын нэр:</td>
-                                <td> <div className="input">{mainData&&mainData.company_name}</div></td>
+                                <td> <div className="input">{mainData?.company_name}</div></td>
                             </tr>
                             <tr className="getTable1">
                                 <td>Төслийн нэр:</td>
-                                <td><div className="input">{mainData&&mainData.project_name}</div> </td>
+                                <td><div className="input">{mainData?.project_name}</div> </td>
                             </tr>
                             <tr className="getTable1">
                                 <td>Өргөдлийн дугаар:</td>
-                                <td><div className="input">{mainData&&mainData.project_number}</div></td>
+                                <td><div className="input">{mainData?.project_number}</div></td>
                             </tr>
                             <tr className="getTable1">
                                 <td>Хурлын огноо:</td>
-                                <td><div className="input">{mainData&&mainData.meetingDate}</div></td>
+                                <td><div className="input">{mainData?.meetingDate}</div></td>
                             </tr>
                     </table>
                 </div>
@@ -70,46 +148,126 @@ function Main_decision() {
                             })}
                             <tr className="getTable1 B2">
                                         <td>Дэмжсэн саналын тоо</td>
-                                        {/* <td><InputStyle><input className={`input tableItem${i+1}`} placeholder="..." type="input" /> <div className="line" /></InputStyle></td> */}
-                                        <td><div className="input">{mainData&&mainData.aprrovedCount}</div></td>
+                                        <td><div className="input">{mainData?.approvedCount}</div></td>
                             </tr>
                             <tr className="getTable1 B2">
                                         <td>Татгалзсан саналын тоо</td>
-                                        {/* <td><InputStyle><input className={`input tableItem${i+1}`} placeholder="..." type="input" /> <div className="line" /></InputStyle></td> */}
-                                        <td><div className="input">{mainData&&mainData.rejectedCount}</div></td>
+                                        <td><div className="input">{mainData?.rejectedCount}</div></td>
                             </tr>
                             <tr className="getTable1 B2">
                                         <td>ЭЦСИЙН ДҮН</td>
-                                        {/* <td><InputStyle><input className={`input tableItem${i+1}`} placeholder="..." type="input" /> <div className="line" /></InputStyle></td> */}
-                                        <td><div className="input">{mainData&&mainData.approve===true? `Зөвшөөрсөн`:`Татгалзсан`}</div></td>
+                                        <td><div className="input">{mainData?mainData.approved===true? `Зөвшөөрсөн`:mainData.approved===false?`Татгалзсан`: null: null}</div></td>
                             </tr>
                     </table>
                 </div>
-
-                <div className="reasonPar">
-                            <div className="title">Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:</div>
-                            <div className="inpPar">
-                                 <div className="svg"><IoIosShareAlt /></div>
-                                <InputStyle className="inpp"><textarea className={`inputtt`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
-                            </div>
-                </div>
-
-
-
+                {notifyShow2!==1?<div className="reasonPar">
+                    <div className="title">Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:</div>
+                    <div className="inpPar">
+                            <div className="svg"><IoIosShareAlt /></div>
+                        <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
+                    </div>
+                </div>:<div className="reasonPar">
+                    <div className="title">Нэмэлт тайлбар бичих :</div>
+                    <div className="inpPar">
+                            <div className="svg"><IoIosShareAlt /></div>
+                        <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Нэмэлт тайлбарыг энд бичнэ үү..." /> <div className="line" /></InputStyle>
+                    </div>
+                </div>}
                 <div className="buttonPar">
                     <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                    <NextBtn className="SubmitButton" type="button">Хадгалах <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                </div>
+                <div className="buttonPar">
+                    {/* <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div> */}
+                    <NextBtn className="SubmitButton" onClick={()=>clickHandle2(mainData?mainData.approved:"code")} type="button">Мэдэгдэл илгээх<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                   {!cond&&<NextBtn className="SubmitButton" onClick={()=>clickHandle(mainData?mainData.approved:"code")} type="button">Хадгалах<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>} 
                 </div>
             </div>
-        </FeedBackCont>
+            :<div className="NullPar">
+                <div className="nullTitle">
+                    <div onClick={()=>backHandle('projects')} className="BackPar"><div className="SvgPar"><MdKeyboardArrowLeft /></div>  <span>Буцах</span> </div>
+                    <h2 className="title">Мэдээлэл ороогүй байна</h2>
+                    <div className="desc"></div>
+                </div>
+            </div> }
+        </FeedBackCont> : notifyShow===1
+                        ? <NotifyComp className="container"> <AssistApprove setNotifyShow={setNotifyShow} projectId={param} approve={mainData} /> </NotifyComp>
+                        : <NotifyComp className="container"> <NotAssist setNotifyShow={setNotifyShow} projectId={param} approve={mainData} /></NotifyComp> }
+            
+        <AlertStyle style={ctx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${ctx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
+            {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}
+            <span>{ctx.alert.text}</span>
+        </AlertStyle>
+        </>
     )
 }
 
 export default Main_decision
 
+const NotifyAnime = keyframes`
+    0% { margin-bottom:-30px; opacity: 0.4 }
+    100% { margin-bottom:0px; opacity: 1 }
+`
+
+const NotifyComp = styled.div`
+    animation: ${NotifyAnime} ease 0.5s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+`
+
+const homeAnime = keyframes`
+    0% { margin-top:-20px; opacity: 0.4 }
+    100% { margin-top:0px; opacity: 1 }
+`
+const homeAnimeSvg = keyframes`
+    0% { left:20px; opacity: 0.4; transform:scale(1) }
+    100% { left:0px; opacity: 1; transform:scale(1.2) }
+`
+
 const FeedBackCont = styled.div`
         color: rgba(${textColor});
         padding-bottom:50px;
+        .NullPar{
+            .nullTitle{
+                background-color:white;
+                padding:30px 100px;
+                font-size:${fontSize};
+                margin-top:30px;
+                border:1px solid rgba(0,0,0,.2);
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                .BackPar{
+                    padding:5px 15px; 
+                    cursor:pointer;
+                    display:flex;
+                    align-items:center;
+                    .SvgPar{
+                        height:30px;
+                        width:30px;
+                        position:relative;
+                        overflow:hidden;
+                        margin-right:5px;
+                        svg{
+                            position:absolute;
+                            top:10%;
+                            font-size:30px;
+                            animation: ${homeAnimeSvg} ease 1s infinite;
+                        }
+                    }
+                    span{
+                        font-size:16px;
+                    }
+                    &:hover{
+                        background-color:rgba(0,0,0,0.2);
+                    }
+                }
+                .title{
+                    font-size:24px;
+                    font-weight:500;
+                }
+            }
+        }
         .contentPar{
             .reasonPar{
                 .title{
@@ -162,8 +320,8 @@ const FeedBackCont = styled.div`
                 }
             }
             .infoWhere{
-                // width:100%;
                 margin-bottom:40px;
+                animation: ${homeAnime} ease 0.5s ; 
                 #customers {
                     border-collapse: collapse;
                     width: 100%;
@@ -231,6 +389,10 @@ const FeedBackCont = styled.div`
                 line-height:34px;
                 padding:0px 20px;
               }
+            .SubmitButton{
+                font-size:13px;
+                width:30%;
+            }
         }
         @media only screen and (max-width:786px){
             .contentPar{

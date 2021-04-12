@@ -34,5 +34,5 @@ export default {
       withSuffix: 'With Suffix',
       viewSource: 'View Source',
     },
-  };
+};
   

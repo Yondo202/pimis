@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useHistory } from 'react-router'
-import { Transition } from 'react-spring/renderprops'
+import { Transition, config } from 'react-spring/renderprops'
 import UsersSVG from 'assets/svgComponents/usersSVG'
 import ClipboardListSVG from 'assets/svgComponents/clipboardListSVG'
 import TrashSVG from 'assets/svgComponents/trashSVG'
@@ -104,15 +104,8 @@ export default function EvaluatorsMeetingsList(props) {
                                     </button>
                                 </div>
                                 <div className="tw-w-56 tw-flex tw-flex-nowrap tw-items-center tw-justify-center tw-ml-auto tw-text-13px">
-                                    {/* <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none" onClick={() => navigateMeeting(meeting.id)}>
-                                        <PenSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
-                                        Өөрчлөх
-                                    </button> */}
                                     <ButtonTooltip tooltip="Өөрчлөлт оруулах" beforeSVG={<PenSVG className="tw-w-4 tw-h-4" />} classButton="tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-p-1" onClick={() => navigateMeeting(meeting.id)} />
-                                    {/* <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none tw-ml-4" onClick={() => { }}>
-                                        <TrashSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
-                                        Устгах
-                                    </button> */}
+
                                     <ButtonTooltip tooltip="Устгах" beforeSVG={<TrashSVG className="tw-w-4 tw-h-4" />} classAppend="tw-ml-2" classButton="tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-p-1" />
                                 </div>
                             </div>
@@ -121,7 +114,8 @@ export default function EvaluatorsMeetingsList(props) {
                                 items={details.open && details.id === meeting.id}
                                 from={{ height: 0 }}
                                 enter={{ height: 'auto' }}
-                                leave={{ height: 0 }}>
+                                leave={{ height: 0 }}
+                                config={config.stiff}>
                                 {item => item && (anims =>
                                     <div className="tw-overflow-hidden tw-font-medium" style={{ ...anims, fontSize: '13px' }}>
                                         {{

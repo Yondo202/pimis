@@ -42,7 +42,6 @@ function MainRequest() {
             window.addEventListener("scroll", handleScroll);
             let resData = await axios.get(`pps-request?userId=${LocalId}`, {headers: {Authorization:AccessToken()}});
             if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data);
-                console.log(resData,"++++++++++++++++ --- +++++++");
                 helpCtx.TableIdControl(resData.data.data.id);
                 setNa3(resData.data.data.na3);
             }
@@ -52,12 +51,10 @@ function MainRequest() {
             let resData = await axios.get(`pps-request?userId=${param}`, {headers: {Authorization:AccessToken()}});
             if(resData.data.data.id){ setNa3(resData.data.data.na3); setInitialData(resData.data.data); ModalOpen(true); }
         }
-        console.log("-----------------------------------");
     },[param === "user"?helpCtx.reqMount:0]);
 
     const handleScroll = () => {  if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); } }
-    const backHanlde = () =>{ history.push(`/progress/${param}`); }
-    const backHanlde2 = () =>{ history.push(`/`); }
+    const backHanlde = () =>{ history.push(`/projects`); }
 
     const func = param === "user"&&helpCtx.StyleComp;
     const One = param === "user"&&helpCtx.GlobalStyle.tableOne;
@@ -67,8 +64,6 @@ function MainRequest() {
     const Five = param === "user"&&helpCtx.GlobalStyle.tableFive;
     const Six = param === "user"&&helpCtx.GlobalStyle.tableSix;
     const errMsg = () =>{ console.log("+*+*+* err Msg");};
-
-    console.log(helpCtx.reqMount)
 
     return (
         <>

@@ -20,16 +20,18 @@ function UrgudulOverview() {
     const UrgudulCtx = useContext(UrgudulContext)
 
     useEffect(() => {
-        let temp = {}
-        Object.keys(initialState).forEach(key => {
-            if (UrgudulCtx.data[key]) temp[key] = UrgudulCtx.data[key]
-        })
-        setForm({ ...form, ...temp })
-        UrgudulCtx.data.project_type === 1 && setIsCluster(true)
+        if (UrgudulCtx.data.id !== undefined) {
+            let temp = {}
+            Object.keys(initialState).forEach(key => {
+                if (UrgudulCtx.data[key]) temp[key] = UrgudulCtx.data[key]
+            })
+            setForm(prev => ({ ...prev, ...temp }))
+            UrgudulCtx.data.project_type === 1 && setIsCluster(true)
+        }
     }, [UrgudulCtx.data.id])
 
     const handleSetForm = (key, value) => {
-        setForm({ ...form, [key]: value })
+        setForm(prev => ({ ...prev, [key]: value }))
     }
 
     const AlertCtx = useContext(AlertContext)
@@ -85,11 +87,20 @@ function UrgudulOverview() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+            {UrgudulCtx.data.project_number &&
+                <div className="tw-ml-5 tw-my-2 tw-font-medium tw-text-13px">
+                    Өргөдлийн дугаар:
+                    <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                </div>
+            }
+
             <div className={`tw-font-medium tw-p-3 tw-flex tw-items-center ${validate && checkInvalid(form.applicant_overview) && 'tw-text-red-500'} tw-transition-colors tw-text-15px`}>
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">A3</span>
-                {isCluster ? '- Өргөдөл гаргагч кластерын хувьд кластерын хамтрагч талуудын товч танилцуулга'
-                    : '- Өргөдөл гаргагч аж ахуй нэгжийн товч танилцуулга'
-                }
+                <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A3</span>
+                <span className="tw-leading-tight">
+                    {isCluster ? '- Өргөдөл гаргагч кластерын хувьд кластерын хамтрагч талуудын товч танилцуулга'
+                        : '- Өргөдөл гаргагч аж ахуй нэгжийн товч танилцуулга'
+                    }
+                </span>
 
                 {isCluster ?
                     <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерын тэргүүлэгч аж ахуйн нэгж болон бусад гишүүдийн хооронд кластерын хамтын ажиллагаа хэрхэн эхэлж, ямар хугацаанд, ямар хэмжээнд явагдаж буй талаар товч мэдээлэл. Үүнд:" list={['Кластераар хамтарч хийж буй эсвэл кластер дотор солилцож буй гол бүтээгдэхүүн, үйлчилгээг үнийн дүнгийн хамт оруулна уу.', 'Мөн хамааралтай холбоод, судалгааны хүрээлэнгүүдтэй ямар хэмжээний хамааралтай ажилладаг талаарх мэдээлэл оруулна уу.']} position="bottom" />
@@ -99,18 +110,20 @@ function UrgudulOverview() {
             </div>
 
             <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                <FormRichText modules="full" value={form.applicant_overview || ''} name="applicant_overview" setForm={handleSetForm} />
+                <FormRichText modules="full" value={form.applicant_overview} name="applicant_overview" setForm={handleSetForm} />
             </div>
 
             <div className={`tw-font-medium tw-p-3 tw-flex tw-items-center ${validate && checkInvalid(form.applicant_experience) && 'tw-text-red-500'} tw-transition-colors tw-text-15px`}>
                 <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A4</span>
-                {`- Өргөдөл гаргагч ${isCluster ? 'кластерын' : 'ААН-ийн'} төслийг хэрэгжүүлэх техникийн туршлага`}
+                <span className="tw-leading-tight">
+                    {`- Өргөдөл гаргагч ${isCluster ? 'кластерын' : 'ААН-ийн'} төслийг хэрэгжүүлэх техникийн туршлага`}
+                </span>
 
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." position="bottom" />
             </div>
 
             <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                <FormRichText modules="full" value={form.applicant_experience || ''} name="applicant_experience" setForm={handleSetForm} />
+                <FormRichText modules="full" value={form.applicant_experience} name="applicant_experience" setForm={handleSetForm} />
             </div>
 
             <div className="tw-flex tw-justify-end">

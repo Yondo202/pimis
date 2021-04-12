@@ -16,7 +16,7 @@ const today = new Date(); const month = (today.getMonth()+1); const day = today.
 const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
 
 function TableOne(props) {
-    const init = "once" 
+    const init = "once"
     const history = useHistory();
     const [ btnCond, setBtnCond ] = useState(props.initialData?init:'twice');
     const [ secondChance, setSecondChance ] = useState([]);
@@ -30,27 +30,17 @@ function TableOne(props) {
     const [ Dname, setDname] = useState(null);
     const [Ddate, setDdate] = useState(null);
     const tablesContext = useContext(HelperContext);
-    
+
     useEffect(()=>{
         const finalData = [];
         dataOne.map((el,i)=>{
           if(props.initialData){
-              props.initialData.map((elem,index)=>{ 
+              props.initialData.map((elem,index)=>{
               if(i === index){el["id"] = elem.id; el["rvalue"] = elem.rvalue;  el["rownum"] = elem.rownum; }});
           } finalData.push(el);
       });
       setDname(props.initialName);setDdate(props.initialDate);setInitialData(finalData);
     },[props.initialData]);
-
-    const radioChange = (event)=> {
-        // console.log(event);
-      // let finalData = []
-      //  dataOne.map((el,i)=>{  props.initialData.map(elem=> elem); finalData.push(el); });
-      // finalData.map((el,i)=>{
-      //   if(el.id.toString() === event.target.id){ el["rvalue"] = event.target.value}
-      // })
-      //  setInitialData(finalData);
-    }
 
     const changeHandle = (e) =>{ setDname(e.target.value); }
     const changeHandleDate = (e)=>{ setDdate(e.target.value);}
@@ -77,7 +67,6 @@ function TableOne(props) {
 
               let confirm = document.getElementById("GetcheckBtn").checked;
               console.log(finalEnd, "final end");
-
 
              let arrs = [];  dataOne.map((el,i)=>{ finalOne2.map(elem=>{ if((i+1).toString()===elem.rownum && elem.rvalue === "true"){arrs.push(el.name); };});});
              setSecondChance(arrs);
@@ -129,10 +118,8 @@ function TableOne(props) {
                 }
               }
       }
-      const closeModalX=()=>{ setVisible2(false); };
-      const closeModal=()=>{ setBtnCond("twice"); setVisible2(false); };
-
-
+    const closeModalX=()=>{ setVisible2(false); };
+    const closeModal=()=>{ setBtnCond("twice"); setVisible2(false); };
 
     return (
         <Component1 className="container" >
@@ -178,9 +165,9 @@ function TableOne(props) {
                           <div className="row" >
                           <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
                           <div className="texts col-md-8 col-sm-4 col-4">{el.name}</div>
-                          <div className="radios col-md-1 col-sm-3 col-3"><input onChange={radioChange} className={`getinput22 inpTest3`} id={el.id}  type="radio" name={i + 1} checked={el.rvalue === "unconcern" ? true: false} value="unconcern"/></div>
-                          <div className="radios col-md-1 col-sm-2 col-2"><input onChange={radioChange} className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={el.rvalue === "true" ? true: false}  value="true"/> </div>
-                          <div className="radios col-md-1 col-sm-2 col-2"><input onChange={radioChange} className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={el.rvalue === "false" ? true: false}  value="false"/></div>
+                          <div className="radios col-md-1 col-sm-3 col-3"><input className={`getinput22 inpTest3`} id={el.id}  type="radio" name={i + 1} checked={el.rvalue === "unconcern" ? true: false} value="unconcern"/></div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={el.rvalue === "true" ? true: false}  value="true"/> </div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input className={`getinput22 inpTest3`} id={el.id} type="radio" name={i + 1} checked={el.rvalue === "false" ? true: false}  value="false"/></div>
                       </div>
                     </div>
                     )
@@ -196,7 +183,7 @@ function TableOne(props) {
                     </div>
                   </div>
                   )
-              }) }
+              })}
                 <div className="FinalBtn">
                     <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
                     <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
@@ -256,40 +243,18 @@ function TableOne(props) {
 export default TableOne
 
 const dataOne = [
-  {  name: "Цэрэг армийн ямар нэг зэвсэг" },
-  {
-      name: "Зэрлэг амьтан, ургамлын ховордсон төрөл зүйлийг олон улсын хэмжээнд худалдаалах тухай конвенц (CITES)-ийн хүрээнд хориглодог ан амьтан, ургамлын худалдаа"
-  },
-  {
-      name: "Байгаль, хүрээлэн буй орчинд генийн өөрчлөлтөд орсон организмуудыг гаргах"
-  },
-  {
-      name: "Хориглосон пестицид, хербицидийн үйлдвэрлэл, нийлүүлэлт, худалдаа"
-  },
-  {
-      name: "Далай тэнгист тороор загас барих"
-  },
-  {
-      name: "Цацраг идэвхт бүтээгдэхүүнүүд"
-  },
-  {
-      name: "Аюултай хог хаягдлын хадгалалт, боловсруулалт, зайлуулалт"
-  },
-  {
-      name: "Хлорфторт нүүрстөрөгчид, галлон болон Монреалийн протоколын хүрээнд зохицуулагддаг бусад бодисууд агуулсан тоног төхөөрөмж, хэрэгслийн үйлдвэрлэл"
-  },
-  {
-      name: "Олон хлорт бефенилиудын үзүүлэх нөлөө 0.005 %-аас хэтэрсэн агууламж бүхий цахилгаан хэрэгсэл, тоног төхөөрөмжийн үйлдвэрлэл"
-  },
-  {
-      name: "Шөрмөсөн чулуу агуулсан бүтээгдэхүүний үйлдвэрлэл"
-  },
-  {
-      name: "Цөмийн реакторууд, тэдгээрийн хэсгүүд"
-  },
-  {
-      name: "Тамхи (үйлдвэрлэлийн бус ба үйлдвэрлэлийн); Тамхины хатаасан навч боловсруулах машин"
-  },
+  { name: "Цэрэг армийн ямар нэг зэвсэг" },
+  { name: "Зэрлэг амьтан, ургамлын ховордсон төрөл зүйлийг олон улсын хэмжээнд худалдаалах тухай конвенц (CITES)-ийн хүрээнд хориглодог ан амьтан, ургамлын худалдаа" },
+  { name: "Байгаль, хүрээлэн буй орчинд генийн өөрчлөлтөд орсон организмуудыг гаргах" },
+  { name: "Хориглосон пестицид, хербицидийн үйлдвэрлэл, нийлүүлэлт, худалдаа" },
+  { name: "Далай тэнгист тороор загас барих" },
+  { name: "Цацраг идэвхт бүтээгдэхүүнүүд" },
+  { name: "Аюултай хог хаягдлын хадгалалт, боловсруулалт, зайлуулалт" },
+  { name: "Хлорфторт нүүрстөрөгчид, галлон болон Монреалийн протоколын хүрээнд зохицуулагддаг бусад бодисууд агуулсан тоног төхөөрөмж, хэрэгслийн үйлдвэрлэл" },
+  { name: "Олон хлорт бефенилиудын үзүүлэх нөлөө 0.005 %-аас хэтэрсэн агууламж бүхий цахилгаан хэрэгсэл, тоног төхөөрөмжийн үйлдвэрлэл" },
+  { name: "Шөрмөсөн чулуу агуулсан бүтээгдэхүүний үйлдвэрлэл" },
+  { name: "Цөмийн реакторууд, тэдгээрийн хэсгүүд" },
+  { name: "Тамхи (үйлдвэрлэлийн бус ба үйлдвэрлэлийн); Тамхины хатаасан навч боловсруулах машин" },
 ]
 
 
@@ -648,7 +613,7 @@ const Component1 = styled.div`
                         .next{ width:100%;}
                     }
                     .SingatureImg{
-                        width:100%;
+                        width:100%; 
                     }
                 }
             }

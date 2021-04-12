@@ -32,17 +32,19 @@ function UrgudulNoticeCluster() {
     const UrgudulCtx = useContext(UrgudulContext)
 
     useEffect(() => {
-        if (UrgudulCtx.data.noticeClusters && UrgudulCtx.data.noticeClusters?.length) {
-            setForm(prevState => {
-                const newForm = UrgudulCtx.data.noticeClusters
+        if (UrgudulCtx.data.id !== undefined) {
+            if (UrgudulCtx.data.noticeClusters && UrgudulCtx.data.noticeClusters?.length) {
+                setForm(prevState => {
+                    const newForm = UrgudulCtx.data.noticeClusters
+                    newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
+                    return newForm
+                })
+                setAgreed(true)
+            } else {
+                const newForm = form
                 newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
-                return newForm
-            })
-            setAgreed(true)
-        } else {
-            const newForm = form
-            newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
-            setForm([...newForm])
+                setForm([...newForm])
+            }
         }
     }, [UrgudulCtx.data.id])
 
@@ -75,6 +77,7 @@ function UrgudulNoticeCluster() {
     }
 
     const handleRemove = (index) => {
+
         setForm(form.filter((_, i) => i !== index))
     }
 
@@ -145,11 +148,20 @@ function UrgudulNoticeCluster() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-text-sm tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">D</span>
-                - Мэдэгдэл
+            <div className="">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                    <span className="tw-text-blue-500 tw-text-xl tw-mx-2">D</span>
+                    <span className="tw-leading-tight">- Мэдэгдэл</span>
 
-                <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерын өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерын өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." position="bottom" />
+                </div>
+
+                {UrgudulCtx.data.project_number &&
+                    <div className="tw-ml-5 tw-mb-2 tw-font-medium tw-text-13px">
+                        Өргөдлийн дугаар:
+                        <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                    </div>
+                }
             </div>
 
             <div>
@@ -248,7 +260,8 @@ function UrgudulNoticeCluster() {
                         Кластерийн гишүүн ААН-үүдийг төлөөлж:
                     </div>
 
-                    {form.filter((_, i) => i !== applicantIndex).map((item, i) =>
+                    {form.map((item, i) =>
+                        applicantIndex !== i &&
                         <div className="tw-flex even:tw-bg-gray-50" key={i}>
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                                 <FormSelect label="Аж ахуйн нэгжийн нэр" data={clusters} value={item.companyId} name="companyId" id={i} setForm={handleSetForm} displayName="company_name" classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-96" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.companyId)} />
@@ -262,7 +275,7 @@ function UrgudulNoticeCluster() {
                                         <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(item.representative_signature) ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
                                         <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(item.representative_signature) && 'tw-text-red-500'}`}>
                                             Гарын үсэг
-                                        </span>
+                                            </span>
                                     </div>
 
                                     <FormSignature value={item.representative_signature} name="representative_signature" id={i} setForm={handleSetForm} classAppend="tw-px-2 tw-py-2 tw-justify-center" canvasProps={{ width: 300, height: 100 }} />

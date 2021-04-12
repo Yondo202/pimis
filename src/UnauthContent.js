@@ -5,6 +5,7 @@ import HomeLogin from "./components/home/homeLogin";
 import MainForm from "./containers/checkComp/MainForm";
 import ResetPassword from "./components/home/ResetPassword";
 import Email from "./components/emailSend/Email"
+import SEctor from 'containers/users/Sector'
 
 const UnAuthContent = () => {
   return (
@@ -29,6 +30,7 @@ const UnAuthContent = () => {
           <ResetPassword />
         </motion.div>
       </Route>
+      <Route path="/sector" component={SEctor} exact />
     </Switch>
   );
 };

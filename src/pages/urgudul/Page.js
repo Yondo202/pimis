@@ -52,13 +52,15 @@ function UrgudulNavigator(props) {
 
     const UrgudulCtx = useContext(UrgudulContext)
 
-    const isCluster = UrgudulCtx.data.project_type === 1 || false
+    const isCluster = UrgudulCtx.data.project_type === 1 ? true : false
 
     const location = useLocation()
 
     const transitionsPages = useTransition(location, location => location.pathname, {
-        from: { opacity: 0, transform: slideLeft ? 'translateX(-100px)' : 'translateX(100px)' },
-        enter: { opacity: 1, transform: 'translateX(0)' },
+        // from: { opacity: 0, transform: slideLeft ? 'translateX(-100px)' : 'translateX(100px)' },
+        // enter: { opacity: 1, transform: 'translateX(0)' },
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
         leave: { display: 'none' },
         initial: { opacity: 1 },
     })
@@ -133,7 +135,7 @@ function UrgudulNavigator(props) {
     })
 
     return (
-        <div className="tw-relative tw-w-full tw-text-gray-700">
+        <div className="tw-relative tw-w-full tw-text-gray-700 tw-text-13px">
             <div className="tw-mt-4 tw-ml-4 tw-mb-10">
                 <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-5 tw-pr-6 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-text-15px tw-transition-colors" onClick={() => setPreviewModalOpen(true)}>
                     <SearchSVG className="tw-w-4 tw-h-4" />
@@ -216,7 +218,7 @@ function UrgudulNavigator(props) {
                         transitionsModalContent.map(({ item, key, props }) =>
                             item &&
                             <animated.div key={key} style={props} className="tw-bg-white tw-relative tw-rounded-md tw-shadow-lg tw-p-4 tw-m-8 tw-w-full tw-max-w-3xl tw-flex tw-flex-col tw-items-center">
-                                <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-2 tw-right-2" onClick={() => setModalOpen(false)}>
+                                <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-2 tw-right-2 tw-transition-colors" onClick={() => setModalOpen(false)}>
                                     <CloseSVG className="tw-w-6 tw-h-6" />
                                 </button>
 
@@ -224,14 +226,15 @@ function UrgudulNavigator(props) {
                                     {
                                         projects.map((item, i) =>
                                             <button className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300 focus:tw-outline-none tw-inline-flex tw-flex-col" key={item.id} onClick={() => loadProject(item.id)}>
-                                                <div className={`tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-justify-center tw-items-center tw-text-white tw-text-lg tw-font-bold ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
-                                                    ID: {item.id}
+                                                <div className={`tw-relative tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-justify-center tw-items-center tw-text-white tw-font-medium ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
+                                                    <span className="tw-text-sm">{item.project_number}</span>
+                                                    <span className="tw-text-xs tw-absolute tw-bottom-1 tw-right-2">{new Date(item.createdAt).toLocaleDateString()}</span>
                                                 </div>
                                                 <div className="tw-pl-2 tw-mt-1 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
                                                     {
                                                         {
                                                             1: 'Кластер',
-                                                            0: 'ААН',
+                                                            0: 'Аж ахуй нэгж',
                                                         }[item.project_type] || '--/--'
                                                     }
                                                 </div>

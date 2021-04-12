@@ -35,12 +35,10 @@ function AlertDialog() {
     const show = alert.open
 
     useEffect(() => {
-        const timer = setTimeout(() => {
+        show && setTimeout(() => {
             setAlert({ ...alert, open: false })
         }, 3000)
-
-        return () => clearTimeout(timer)
-    }, [alert, alert.open, setAlert])
+    }, [alert])
 
     const closeAlert = () => {
         setAlert({ ...alert, open: false })

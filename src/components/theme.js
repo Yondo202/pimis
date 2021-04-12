@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 export const Color = "#036";
 export const ColorRgb = "0, 51, 102";
 export const textColor = "0, 18, 41";
@@ -7,6 +7,7 @@ export const fontSize2 = '15px'
 export const fontSizeMobile = '13px'
 export const fontSizeMobile2 = '15px'
 export const fontFamily2 = "'Montserrat', sans-serif";
+// export const fontFamily = "'Rubik', sans-serif";
 export const fontFamily = "'Roboto', sans-serif";
 
 export const PrevBtn = styled.div`
@@ -27,7 +28,6 @@ export const PrevBtn = styled.div`
     border:1px solid rgba(63, 81, 181,0.5);
     width:30%;
     border-radius:5px;
-    
     &:hover{
       box-shadow:1px 1px 15px -2px black;
      .flexchild{
@@ -140,7 +140,7 @@ export const ButtonStyle = styled.button`
 `
 
 export const AlertStyle = styled.div`
-        z-index:2020;  
+        z-index:10002;
         transition:all 0.5s ease;
         position:fixed;
         // height:80px;
@@ -166,7 +166,7 @@ export const AlertStyle = styled.div`
 `
 
 export const InputStyle = styled.div`
-            font-family:"'Roboto', sans-serif";
+            /* font-family:"'Roboto', sans-serif"; */
             // width:100%;
             font-size:13px;
             transition:all 0.3s ease;
@@ -247,6 +247,99 @@ export const InputStyle = styled.div`
             .red{
                 border-bottom:1px solid rgba(255,0,0,0.8);
             }
+
+            /* .fileStyle[type="file"]{
+                height: 0;
+                overflow: hidden;
+                width: 0;
+            }
+            .fileStyleLabel{
+                font-size:13px;
+                background: #f15d22;
+                background: #008CBA;
+                border: none;
+                border-radius: 4px;
+                color: #fff;
+                cursor: pointer;
+                display: inline-block;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 500;
+                // margin-bottom: 1rem;
+                outline: none;
+                padding: 0.3rem 40px;
+                position: relative;
+                transition: all 0.3s;
+                vertical-align: middle;
+                &:hover{
+                    background:#00ace6;
+                }
+            } */
+          
+`
+const animateDate = keyframes`
+    0% { transform:translateY(30px); opacity:0; }
+    100% { transform:translateY(0px); opacity:1;}
 `
 
+export const ReportTop = styled.div`
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin:15px 0px;
+        .PdfExcelBtns{
+            .dx-button{
+                margin-left:10px;
+            }
+        }
+       .datePicker{
+           display:flex;
+           align-items:center;
+           .from, .to {
+                input{
+                    text-align:center;
+                    padding:8px 0px;
+                    box-shadow:1px 1px 9px -7px;
+                    border-radius:6px;
+                    font-weight:500;
+                }
+                .DayPickerInput-OverlayWrapper{
+                    animation: ${animateDate} 0.6s ease;
+                    z-index:2;
+                }
+            }
+            .red{
+                input{
+                    border:1px solid red;
 
+                }
+            }
+           svg{
+               margin:0px 10px;
+               font-size:18px;
+           }
+           .FilterDateBtn{
+               cursor: pointer;
+               margin-left:15px;
+               background-color:#201DD9;
+               text-align:center;
+               padding:5px 5px;
+               box-shadow:1px 1px 9px -7px;
+               border-radius:50%;
+               font-weight:500;
+               svg{
+                    margin:0px 0px;
+                    color:white;
+               }
+               &:hover{
+                background-color:#504EDF;
+               }
+           }
+           .reject{
+               background-color:#E45252;
+               &:hover{
+                  background-color:#E78484;
+               }
+           }
+       }
+`

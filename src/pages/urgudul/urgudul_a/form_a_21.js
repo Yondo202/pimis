@@ -17,6 +17,7 @@ import UploadSVG from 'assets/svgComponents/uploadSVG'
 import FileCard from 'pages/attachments/fileCard'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
+import TreeSelect from 'components/urgudul_components/treeSelect'
 
 
 const initialState = [
@@ -112,7 +113,7 @@ function UrugudulClusters() {
             const URL = window.URL.createObjectURL(res.data)
             FilePreviewCtx.setFile({ open: true, src: URL })
         }).catch(err => {
-            console.log(err.response?.data)
+            console.log(err.response)
         })
     }
 
@@ -137,9 +138,11 @@ function UrugudulClusters() {
     }
 
     const handleSetForm = (key, value, index) => {
-        const newForm = form
-        newForm[index][key] = value
-        setForm([...newForm])
+        setForm(prev => {
+            const newForm = [...prev]
+            newForm[index][key] = value
+            return newForm
+        })
     }
 
     const AlertCtx = useContext(AlertContext)
@@ -207,11 +210,20 @@ function UrugudulClusters() {
 
     return (
         <div className="tw-relative tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
-                - Кластерын гишүүн байгууллагууд
+            <div className="">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                    <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
+                    <span className="tw-leading-tight">- Кластерын гишүүн байгууллагууд</span>
 
-                <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Тухайн кластерт оролцогч, бусад аж ахуйн нэгжүүдийг жагсаалт, тэдгээрийн төлөөлөх албан тушаалтан, овог нэрийн хамт." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Тухайн кластерт оролцогч, бусад аж ахуйн нэгжүүдийг жагсаалт, тэдгээрийн төлөөлөх албан тушаалтан, овог нэрийн хамт." position="bottom" />
+                </div>
+
+                {UrgudulCtx.data.project_number &&
+                    <div className="tw-ml-5 tw-mb-2 tw-font-medium tw-text-13px">
+                        Өргөдлийн дугаар:
+                        <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                    </div>
+                }
             </div>
 
             <input className="tw-absolute tw-invisible" type="file" onChange={handleInputFile} ref={fileInputRef} />
@@ -228,7 +240,7 @@ function UrugudulClusters() {
 
                             <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.representative_email || ''} name="representative_email" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.representative_email)} />
 
-                            <SearchSelect label="Салбар" data={sectors} value={item.business_sectorId} name="business_sectorId" id={i} displayName="bdescription_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.business_sectorId)} />
+                            <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={item.business_sectorId} name="business_sectorId" index={i} handleChange={handleSetForm} />
 
                             <div className="tw-w-full tw-max-w-lg tw-flex">
                                 <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.company_size)} />

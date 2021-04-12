@@ -7,13 +7,13 @@
     padding: 8px;
     position: relative;
     background-color: white;
-    border: 1px solid red;
 }
 
 @media print {
     .letter-container {
         size: portrait A4;
-        margin: 0.5cm 0.7cm;
+        /* margin: 0.5cm 0.7cm; */
+        margin: 0;
     }
 }
 

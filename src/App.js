@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { motion } from "framer-motion";
+import { BrowserRouter as Router } from "react-router-dom";
 import Admin from "./containers/admin/MainMenu";
 import UserContext from "./context/UserContext";
 import UsersRoute from "containers/users/UsersRoute"
@@ -43,12 +42,13 @@ function App() {
         <FilePreviewStore>
           <Router>
             {
-              ctxUser.userInfo.userId ? ctxUser.userInfo.role !== "user" ? 
-              ctxUser.userInfo.role==="member" ?
-                (<MemberRoute />)
-              : ( <Admin /> ) 
-              : ( <UsersRoute />  )
-              : (<UnAuthContent />)
+              ctxUser.userInfo.userId
+                ? ctxUser.userInfo.role !== "user"
+                  ? ctxUser.userInfo.role === "member"
+                    ? (<MemberRoute />)
+                    : (<Admin />)
+                  : (<UsersRoute />)
+                : (<UnAuthContent />)
             }
           </Router>
           <FilePreviewModal />

@@ -35,9 +35,7 @@ function CompCheck() {
 
     useEffect(async()=>{
         const localId = localStorage.getItem("userId");
-        console.log('localId', localId)
         const data =  await axios.get(`criterias${param!=="user"?`?userId=${param}`:`?userId=${localId}`}`,{ headers: { Authorization:AccessToken() } });
-        console.log(data, " my data");
         let keys = Object.keys(data.data.data);
         if(keys.length > 1){
           setSuccess(data.data.data.approved);
@@ -50,8 +48,6 @@ function CompCheck() {
     const NextPageHandle = (el) =>{ history.push(el); };
 
     const clickHandles = (btn) =>{
-            console.log(btn, " --------  btn ----------")
-
               let rs2 = document.querySelectorAll(".inpTest333"); let arr2 = Array.from(rs2); let soloObject2 = {};  const cond = {};
               arr2.map((element,i)=>{
                   if(element.checked === true){
@@ -145,10 +141,10 @@ function CompCheck() {
                             <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                         </div>
                         <div className="Success">
-                            <NextBtn onClick={()=>NextPageHandle(`/progress/${param}`)} className="NextPageBtn" type="button"><div className="flexchild"><IoIosArrowBack/><IoIosArrowBack className="hide" /> <IoIosArrowBack className="hide1" /></div>Буцах</NextBtn>
+                            <NextBtn onClick={()=>NextPageHandle(`/progress`)} className="NextPageBtn" type="button"><div className="flexchild"><IoIosArrowBack/><IoIosArrowBack className="hide" /> <IoIosArrowBack className="hide1" /></div>Буцах</NextBtn>
                             {success === 1? <div className="item not"><IoMdCheckmarkCircle />Үндсэн шалгуурыг хангаагүй байна...</div> : success=== 2? <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div> :null }
                         </div> 
-                </div> : ( <NullParent className="BtnPar"><button onClick={()=>NextPageHandle(`/progress/${param}`)}><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> ) )
+                </div> : ( <NullParent className="BtnPar"><button onClick={()=>NextPageHandle(`/projects`)}><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> ) )
                 :  (  <div className="boxShadow">
                     <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
                     {initialData.map((el,i)=>{
@@ -156,21 +152,20 @@ function CompCheck() {
                             <div key={i} className="formTwoParent ">
                               <div className="headerPar">
                                   <div className="row" >
-                                  <div className="head1 col-md-10 col-sm-8 col-8">{el.title}</div>
-                                  <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
-                                  <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
+                                    <div className="head1 col-md-10 col-sm-8 col-8">{el.title}</div>
+                                    <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
+                                    <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
                                   </div>
                               </div>
                               {el.items.map((elem, ind)=>{
                                   return(
                                   <div className="headerParchild" key={ind}>
-                                      <div className="row" >
-                                      <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
-                                      <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
-                                      
-                                      <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
-                                      <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
-                                  </div>
+                                    <div className="row" >
+                                        <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
+                                        <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
+                                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
+                                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
+                                    </div>
                                   </div>
                                   )
                               })}
@@ -219,10 +214,10 @@ function CompCheck() {
                               </div>
                       </Modal>
 
-                        <div className="FinalBtn">
-                            <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
-                            <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
-                        </div>
+                      <div className="FinalBtn">
+                          <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
+                          <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
+                      </div>
 
                       {updateMount===1?success===1? <div className="Success"> <div className="item not"><IoMdCheckmarkCircle />Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.</div> </div> 
                       : <div className="Success">
@@ -235,7 +230,6 @@ function CompCheck() {
                         </div> )}
                   </div>
                 ) }
-
             </Component1>
       </motion.div>
         
@@ -246,7 +240,7 @@ export default CompCheck
 
 
 const NullParent = styled.div`
-    dispaly:flex;
+    display:flex;
     flex-direction:row;
     align-items:center;
     button{
@@ -272,7 +266,6 @@ const Component1 = styled.div`
     color:rgba(${textColor},0.9);
     transition: all 0.5s ease-out;
     font-family: ${fontFamily};
-
         .Modaltest{
           position:relative;
           width:100%;
@@ -369,7 +362,6 @@ const Component1 = styled.div`
         box-shadow:1px 1px 18px -5px;
         border-radius:6px;
         margin-bottom:80px;
-
         .Success{
           padding:0px 30px;
           padding-bottom:30px;
@@ -398,7 +390,6 @@ const Component1 = styled.div`
             }
           }
         }
-          
           .rowHeader{
             border-radius:6px 6px 0px 0px;
             background-color:white;

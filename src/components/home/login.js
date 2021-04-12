@@ -1,36 +1,41 @@
-import React,{ useContext, useState } from 'react'
-import styled from 'styled-components'
+import React,{ useContext, useState, useRef } from 'react'
+import styled, {keyframes} from 'styled-components'
 import {CgProfile} from 'react-icons/cg'
 import {BiLockOpen} from 'react-icons/bi'
 import {AiOutlineSend} from 'react-icons/ai'
 import {FaRegEye,FaRegEyeSlash} from 'react-icons/fa'
 import UserContext from "../../context/UserContext";
-import {fontFamily, Color,ColorRgb,InputStyle, NextBtn} from "../theme"
+import {fontFamily, Color,ColorRgb,InputStyle, NextBtn, fontFamily2} from "../theme"
 import Signup from './signup'
 import ForgetPassword from './ForgetPassword'
 import { useHistory } from 'react-router-dom'
 
 
 function Login() {
+  const refFocus = useRef(null);
   const history = useHistory();
   const userCtx = useContext(UserContext);
   const [Show, setShow] = useState(false);
 
-    const handleClick = (e) =>{
-        e.preventDefault();
-        let Username = document.querySelectorAll(".LoginInpName");
-        let User = Array.from(Username);
-        const finalOneUser = {}
-        User.map(element=>{
-            let field = element.name;
-            let value = element.value;
+  const handleClick = (e) =>{
+      let Username = document.querySelectorAll(".LoginInpName");
+      let User = Array.from(Username);
+      const finalOneUser = {}
+      User.map(element=>{
+          let field = element.name;
+          let value = element.value;
+          if(!value){
+            element.classList += " red" 
+          }else{
+            element.classList =- " red"
+            element.classList += " LoginInpName"
             finalOneUser[field] = value;
-        });
-        userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-
-        const UserRole = localStorage.getItem("role", []);
-        if(UserRole==="admin"){ history.push('/')}else{ history.push('/') }
-    }
+          }
+      });
+      userCtx.loginUser(finalOneUser.name,finalOneUser.password);
+      const UserRole = localStorage.getItem("role", []);
+      if(UserRole==="admin"){ history.push('/')}else{ history.push('/') }
+  }
     
     return (
         <Component>
@@ -45,7 +50,7 @@ function Login() {
                             <div className="name">
                                 <CgProfile />
                                 <InputStyle className="newInp">
-                                    <input type="input" className="LoginInpName" placeholder="Еmail хаягаараа нэвтэрнэ үү" name="name"  />
+                                    <input ref={refFocus} type="input" className="LoginInpName" placeholder="Еmail хаягаараа нэвтэрнэ үү" name="name"  />
                                     <div className="line"></div>
                                 </InputStyle>
                             </div>
@@ -67,7 +72,7 @@ function Login() {
                 </div>
                 <div className="SubmitButtonPar">
                     {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
-                     <NextBtn onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                     <NextBtn onClick={handleClick}  className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                 </div>
                 <Signup />
         </Component>
@@ -76,9 +81,24 @@ function Login() {
 
 export default Login
 
+const imageAnimate = keyframes`
+    0% { transform:translateY(-40px);opacity:0;  }
+    100% { transform:translateY(0px);opacity:1;  }
+`
+
+const inputAnimate = keyframes`
+    0% { transform:translateX(40px);opacity:0;  }
+    100% { transform:translateX(0px);opacity:1;  }
+`
+const inputAnimate2 = keyframes`
+    0% { transform:translateX(-40px);opacity:0;  }
+    100% { transform:translateX(0px);opacity:1;  }
+`
+
+
+
 const Component = styled.div`
     font-family:${fontFamily};
-    // height:70vh;
     padding-top:10px;
     font-size:13px;
     margin-bottom:50px;
@@ -86,12 +106,10 @@ const Component = styled.div`
         text-align:center;
         padding:15px 0px;
         img{
-          // width:100%;
-            // width:128px;
-            // height:50px;
-            margin-bottom:10px;
+          animation: ${imageAnimate} 1s ease;
+          width:100%;
+          margin-bottom:10px;
         }
-
         .text{
           font-size:14px;
             font-weight:400;
@@ -121,6 +139,7 @@ const Component = styled.div`
            display:flex;
            flex-direction:column;
            .labels{
+               animation: ${inputAnimate2} 1s ease;
                display:flex;
                flex-direction:row;
                justify-content:space-between;
@@ -129,7 +148,6 @@ const Component = styled.div`
                    color:rgba(0,0,0,0.7);
                    font-weight:500;
                }
-              
            }
         .name{
             padding:15px 0px;
@@ -139,12 +157,14 @@ const Component = styled.div`
             justify-content:start;
             width:100%;
             svg{
+              animation: ${inputAnimate2} 1s ease;
               color:rgba(${ColorRgb},0.7);
               font-size:28px;
               margin-right:15px;
               margin-bottom:5px;
             }
             .newInp{
+              animation: ${inputAnimate} 1s ease;
               font-size:15px;
               width:100%;
             }
@@ -160,8 +180,6 @@ const Component = styled.div`
             }
           }
        }
-      
-     
     }
   }
   .SubmitButtonPar{
@@ -215,6 +233,7 @@ const Component = styled.div`
         border:1px solid rgba(63, 81, 181,0.5);
         width:100%;
         border-radius:4px;
+        // box-shadow: 10px 16px 40px 0 rgb(84 210 117 / 46%);
     }
   
   }
@@ -230,14 +249,13 @@ const Component = styled.div`
         .SignBtn{
           cursor:pointer;
           color:${Color};
-      }
+        }
       }
       
   }
 
   @media only screen and (max-width:1308px){
     padding-top:0px;
-    // height:80vh;
     .SubmitButtonPar{
         .SubmitButton{
             width:100%;

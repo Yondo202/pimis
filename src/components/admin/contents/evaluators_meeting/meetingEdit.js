@@ -5,12 +5,11 @@ import { DataGrid, DateBox } from 'devextreme-react'
 import './style.css'
 import { Column, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
 import AlertContext from 'components/utilities/alertContext'
-import { useHistory, useLocation } from 'react-router'
+import { useHistory } from 'react-router'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import { statusWord } from './meetingsList'
+import { useQuery } from 'components/utilities/useQueryLocation'
 
-
-const useQuery = () => new URLSearchParams(useLocation().search)
 
 export default function EvaluatorsMeetingEdit(props) {
     const [approvedProjects, setApprovedProjects] = useState([])
@@ -20,7 +19,6 @@ export default function EvaluatorsMeetingEdit(props) {
     const [selectedEvaluators, setSelectedEvaluators] = useState([])
 
     const [meetingId, setMeetingId] = useState(useQuery().get('id'))
-
 
     useEffect(() => {
         axios.get('pps-infos/registered-companies', {
@@ -163,7 +161,7 @@ export default function EvaluatorsMeetingEdit(props) {
                     >
                         <SearchPanel visible={true} width={240} placeholder="Хайх..." />
                         <HeaderFilter visible={true} />
-                        <Scrolling mode="virtual" columnRenderingMode="virtual" showScrollbar="always" />
+                        <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
 
                         <Column caption="Сонгох" cellRender={data => <CheckboxCell id={data.data?.id} selected={selectedEvaluators} handleChange={handleEvaluatorChange} />} headerCellRender={HeaderCell} calculateCellValue={data => calculateIsChecked(data.id, selectedEvaluators)} dataField="_" />
                         <Column dataField="lastname" caption="Овог" headerCellRender={HeaderCell} />
@@ -191,7 +189,7 @@ export default function EvaluatorsMeetingEdit(props) {
                     >
                         <SearchPanel visible={true} width={240} placeholder="Хайх..." />
                         <HeaderFilter visible={true} />
-                        <Scrolling mode="virtual" columnRenderingMode="virtual" showScrollbar="always" />
+                        <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
                         <Paging defaultPageSize={20} />
                         <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
 

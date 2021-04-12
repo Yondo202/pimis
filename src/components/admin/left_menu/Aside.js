@@ -19,11 +19,6 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
     console.log(role);
   }, [ctxUser.userInfo.id]);
 
-
-  console.log(ctxUser.userInfo.role, "----user context");
-
-
-
   const intl = useIntl();
   return (
     <ProSidebar image={image ? sidebarBg : false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
@@ -46,6 +41,7 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             <MenuItem>Санхүүжилт</MenuItem>
             <MenuItem><Link to="/meetings">Үнэлгээний хорооны уулзалт</Link></MenuItem>
             <MenuItem><Link to="/maindecision">Үнэлгээний хорооны шийдвэр</Link></MenuItem>
+            <MenuItem><Link to="/report">Тайлан</Link></MenuItem>
           </SubMenu>
           {/* prefix={<span className="badge gray">3</span>} */}
           <SubMenu title="Сургалт" icon={<FaChalkboardTeacher />}>
@@ -62,7 +58,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             <MenuItem>
               <Link to="/users">Хэрэглэгчид</Link>{" "}
             </MenuItem>
-            <MenuItem> Төслийн нэгжийн мэдээлэл </MenuItem>
+            <MenuItem>
+              <Link to="/epd-information" >Төслийн нэгжийн мэдээлэл</Link>
+            </MenuItem>
             <SubMenu title="Түншлэлийн хөтөлбөр">
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.1 </MenuItem>
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.2 </MenuItem>
@@ -74,8 +72,10 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             <SubMenu title="Даатгал">
               <MenuItem>Тохиргоо -1</MenuItem>
             </SubMenu>
+            <MenuItem>
+              <Link to="/accept-periods">Нээлттэй хугацаа тохируулах</Link>{" "}
+            </MenuItem>
           </SubMenu>
-
           {/* {ctxUser.userInfo.role==="edpadmin"?<SubMenu title="Тохиргоо" icon={<MdSettings />}> </SubMenu>
           :<SubMenu ></SubMenu>} */}
         </Menu>

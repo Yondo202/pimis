@@ -57,6 +57,11 @@ const ComponentHome = styled.div`
                 position:absolute;
             }
         }
+        @media only screen and (max-width:1308px){
+            .mainFormPar{
+                width:60%;
+            }
+        }
         @media only screen and (max-width:968px){
             flex-direction:column-reverse;
             .mainContentPar{

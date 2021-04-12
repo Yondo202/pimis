@@ -130,11 +130,20 @@ function UrgudulNoticeCompany() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-text-sm tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">D</span>
-                - Мэдэгдэл
+            <div className="">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                    <span className="tw-text-blue-500 tw-text-xl tw-mx-2">D</span>
+                    <span className="tw-leading-tight">- Мэдэгдэл</span>
 
-                <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="ААН өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="ААН өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." position="bottom" />
+                </div>
+
+                {UrgudulCtx.data.project_number &&
+                    <div className="tw-ml-5 tw-mb-2 tw-font-medium tw-text-13px">
+                        Өргөдлийн дугаар:
+                        <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                    </div>
+                }
             </div>
 
             <div>
@@ -225,7 +234,8 @@ function UrgudulNoticeCompany() {
                         Болон бусад ажилчид:
                     </div>
 
-                    {form.filter((_, i) => i !== directorIndex).map((item, i) =>
+                    {form.map((item, i) =>
+                        directorIndex !== i &&
                         <div className="tw-flex even:tw-bg-gray-50" key={i}>
                             <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                                 <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-96" classLabel={i % 2 === 0 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.representative_positionId)} />

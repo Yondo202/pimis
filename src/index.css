@@ -8,6 +8,8 @@
   }
 }
 
+
+
 .container {
   max-width: 1060px;
 }
@@ -17,7 +19,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* font-family: "Montserrat", sans-serif !important; */
+  /* font-family: "Roboto", sans-serif !important; */
   letter-spacing: -0.1px !important;
   overflow-x: hidden;
   background-color: #f2f2f2 !important;

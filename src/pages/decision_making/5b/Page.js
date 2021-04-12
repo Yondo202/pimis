@@ -289,20 +289,33 @@ const initialState = [
     },
 ]
 
+const editors = ['edpadmin', 'member', 'ahlah_bhsh']
+
 export default function CompilationChecklist() {
     const [rows, setRows] = useState(initialState)
+    const [company, setCompany] = useState({})
+    const [evalautor, setEvaluator] = useState({})
+
+    const canEdit = editors.includes(evalautor.role)
+
+    const AlertCtx = useContext(AlertContext)
 
     const handleInput = (key, value, rowcode) => {
-        const index = rows.findIndex(row => row.rowcode === rowcode)
-        const newRows = rows
-        newRows[index][key] = value
-        setRows([...newRows])
+        if (canEdit) {
+            const index = rows.findIndex(row => row.rowcode === rowcode)
+            const newRows = rows
+            newRows[index][key] = value
+            setRows([...newRows])
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Засвар оруулах эрх байхгүй байна.' })
+        }
     }
 
     const projectId = useParams().id
+    const loggedUserId = localStorage.getItem('userId')
 
     useEffect(() => {
-        projectId &&
+        if (projectId) {
             axios.get(`projects/${projectId}/bds-evaluation5b`, {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
@@ -313,6 +326,46 @@ export default function CompilationChecklist() {
             }).catch(err => {
                 console.log(err.response?.data)
             })
+
+            axios.get('pps-infos/registered-companies', {
+                headers: { Authorization: getLoggedUserToken() },
+                params: { projectId: projectId },
+            }).then(res => {
+                console.log(res.data)
+                setCompany(res.data.data[0] ?? {})
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+
+            axios.get(`users/${loggedUserId}`, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                console.log(res.data)
+                setEvaluator(res.data.data)
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+        } else {
+            axios.get('pps-infos/registered-companies', {
+                headers: { Authorization: getLoggedUserToken() },
+                params: { userId: loggedUserId },
+            }).then(res => {
+                console.log(res.data)
+                setCompany(res.data.data[0] ?? {})
+
+                res.data.data[0]?.project?.id &&
+                    axios.get(`projects/${res.data.data[0].project.id}/bds-evaluation5b`, {
+                        headers: { Authorization: getLoggedUserToken() },
+                    }).then(res => {
+                        console.log(res.data)
+                        if (res.data.data?.length === initialState.length) {
+                            setRows(res.data.data)
+                        }
+                    })
+            }).catch(err => {
+                console.log(err.response?.data)
+            })
+        }
     }, [])
 
     const [commentsOpen, setCommentsOpen] = useState(initialCommentsOpen)
@@ -320,8 +373,6 @@ export default function CompilationChecklist() {
     const handleCommentOpen = (key, value) => {
         setCommentsOpen({ ...commentsOpen, [key]: value })
     }
-
-    const AlertCtx = useContext(AlertContext)
 
     const handleSubmit = () => {
         axios.post(`projects/${projectId}/bds-evaluation5b`, rows, {
@@ -339,21 +390,40 @@ export default function CompilationChecklist() {
 
     return (
         <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <button className="tw-float-right tw-m-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center" onClick={() => setPreviewModalOpen(true)}>
+            <button className="tw-float-right tw-mt-2 tw-mr-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center" onClick={() => setPreviewModalOpen(true)}>
                 <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
                 Харах
             </button>
 
-            <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<CompilationChecklistPreview rows={rows} />} />
+            <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<CompilationChecklistPreview rows={rows} company={company} />} />
 
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2">5b</span>
-                <span className="tw-text-base tw-leading-tight">
+            <div className="tw-font-medium tw-p-3 tw-pb-2 tw-flex tw-items-center">
+                <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-tight">5b</span>
+                <span className="tw-text-base">
                     - Бүрдүүлбэрийн нотлох баримтыг шалгах хуудас
                 </span>
             </div>
 
-            <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-2 tw-divide-y tw-divide-dashed">
+            <div className="tw-border-b tw-border-dashed tw-text-13px tw-pl-5 tw-pr-3 tw-pb-2 tw-font-medium tw-leading-snug">
+                <div className="tw-relative">
+                    Дугаар:
+                    <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.project?.project_number}</span>
+                </div>
+                <div className="tw-relative">
+                    Төрөл:
+                    <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.project?.project_type_name}</span>
+                </div>
+                <div className="tw-relative">
+                    Байгууллагын нэр:
+                    <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.companyname}</span>
+                </div>
+                <div className="tw-relative">
+                    Төслийн нэр:
+                    <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.project?.project_name}</span>
+                </div>
+            </div>
+
+            <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-3 tw-divide-y tw-divide-dashed">
                 {rows.map(row =>
                     <div key={row.rowcode}>
                         <div className="tw-flex tw-items-center tw-text-sm">
@@ -394,8 +464,8 @@ export default function CompilationChecklist() {
                 )}
             </div>
 
-            {projectId &&
-                <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
+            {projectId && canEdit &&
+                <div className="tw-flex tw-items-center tw-justify-end tw-h-20 tw-mt-2">
                     <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
                         Хадгалах
                     </button>

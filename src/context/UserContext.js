@@ -30,6 +30,7 @@ export const UserStore = (props) => {
     localStorage.setItem("expireDate", expireDate);
     localStorage.setItem("role", user.role);
     localStorage.setItem("username", user.name);
+    localStorage.setItem("signature", user.signature);
   };
 
   const loginUser = (email, password) => {
@@ -38,9 +39,10 @@ export const UserStore = (props) => {
         loginUserSuccess(res.data.token, res.data.refreshToken, res.data.expireDate, res.data.user);
       }).catch((err) => {
         console.log(err, "User context deeer aldaa garlaa");
-        if (err) {
+        if (err?.response?.data) {
           setErrMsg(err.response.data.error.message);
         } else {
+          setErrMsg("Холболт алдаатай байна")
           setUserInfo(initialUserInfo);
         }
       });
@@ -71,19 +73,17 @@ export const UserStore = (props) => {
       });
   };
 
-  const signUpUser = (userinfos) => {
+  const signUpUser = (userinfos) => {   
     axios.post("users/register", userinfos)
       .then((res) => {
         console.log(res, "^new user");
         setErrMsgSignUp({ msg: `Таны бүртгүүлсэн "${res.data.user.email}" имэйл хаягаар бид имэйл илгээсэн тул та шалгаж БАТАЛГААЖУУЛАЛТ дээр дарна уу.`, cond: true });;
       })
       .catch((e) => {
-        setErrMsgSignUp({ msg: e.response.data.error.message, cond: false });
-        setUserInfo(initialUserInfo);
+          setErrMsgSignUp({ msg: e.response?.data.error.message, cond: false });
+          setUserInfo(initialUserInfo);
       });
   };
-
-
 
   const logout = () => {
     localStorage.removeItem("userId");
@@ -93,6 +93,7 @@ export const UserStore = (props) => {
     localStorage.removeItem("role");
     localStorage.removeItem("username");
     localStorage.removeItem("tableId");
+    localStorage.removeItem("signature");
     setUserInfo({ userId: undefined });
 
     setTimeout(() => {
@@ -102,7 +103,7 @@ export const UserStore = (props) => {
 
   const alertText = (color, text, cond) => {
     setAlert({ color: color, text: text, cond: cond });
-    setTimeout(() => { setAlert({ cond: false }); }, [4000]);
+    setTimeout(() => { setAlert({ cond: false }); }, 4000);
   }
 
 

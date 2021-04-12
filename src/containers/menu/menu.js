@@ -2,15 +2,12 @@ import React,{useEffect, useState,useContext} from "react";
 import styled,{keyframes} from "styled-components";
 import { Link } from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import { fontFamily,ColorRgb,textColor } from '../../components/theme';
-import {IoIosLogOut} from 'react-icons/io';
-import {CgProfile} from 'react-icons/cg';
-import {IoNotificationsOutline,IoLockClosed} from 'react-icons/io5';
+import {IoNotificationsOutline,IoLockClosed,IoCaretDownOutline} from 'react-icons/io5';
 import {IoIosArrowForward} from 'react-icons/io';
+import {FaPenNib} from 'react-icons/fa';
+import {GiEntryDoor} from 'react-icons/gi';
 import { useLocation } from 'react-router-dom';
 import HamburgerMenu from 'react-hamburger-menu';
-import RequestOld from '../../containers/requestComp/mainRequestOld'
-import { Background } from "devextreme-react/range-selector";
 
 
 function Menu() {
@@ -32,26 +29,14 @@ function Menu() {
     const closeHandle = () =>{ setShowProfile(false); setProHover(false); } 
     
     useEffect(() => {
-      const userId = localStorage.getItem("userId", []);
       const userName = localStorage.getItem("username");
-      setUserName(userName);
-    }, []);
+      setUserName(userName); 
+      return console.log("sey good bay");
+    },[]);
 
     const handleClick = () => {
       close(!open);
     }
-
-    const clickhandle = ()=>{
-      userCtx.logout();
-      // setTimeout(()=>{
-      //   window.location.reload(false);
-      // },600);
-    };
-
-    const clickhandle2 = ()=>{
-      console.log("done");
-     
-    };
 
     useEffect(() => {
       const currentPath = location.pathname;
@@ -59,16 +44,13 @@ function Menu() {
       if(currentPath !== "/" && currentPath !== "/comp-request"){  setheaderHeight("45px");
       }else{ setheaderHeight("45px");}
       if(currentPath === "/"){setActiveMenu({Home:'line2',Req:'',Check:'',Maygt:''})}
-      // if(currentPath === "/admin"){ setDisplayNone("none");}
       if(currentPath === "/request/user"){setActiveMenu({Home: '',Req:'line2',Check: '',Maygt:''})}
       if(currentPath === "/check/user"){setActiveMenu({Home: '',Req:'',Check:'line2',Maygt: ''})}
       if(currentPath === "/urgudul/1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }
     }, [location]);
    
-
   return (
     <Componentss>
-     
       <div style={{height:headerHeight,display:diplayFlex}} className="MainMenus">
             <div style={currPath === "/"? {maxWidth:`1160px`}:{maxWidth:1000}} className="container">
                <input type="checkbox" id="check" name="check" />
@@ -102,22 +84,30 @@ function Menu() {
                         <div className="userMenuPar">
                           {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
                           <div className="Notification"><div className="notf" to="#" content="2" ><IoNotificationsOutline /></div> </div>
-                          <div className="UserNameMenu" content={userName} >
-                            <div style={proHover?{backgroundColor:`rgba(255,255,255,0.4)`}:{backgroundColor:`inherit`}} onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="par"><CgProfile /></div> 
+                          <div className="UserNameMenu" >
+                            <div style={proHover?{backgroundColor:`rgba(255,255,255,0.4)`}:{backgroundColor:`rgba(255,255,255,0.2)`}} onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="par"><IoCaretDownOutline /></div> 
 
-                             {showProfile&&<div onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="ghost"> <div className="HoverContent">  
-                                  <div className="UserInfo"> <img src="/user1.svg" alt="src" /> <span className="name">{userName}</span> </div>
+                             {showProfile&&<div onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="ghost"> 
+                             <div className="HoverContent">  
+                                  <div className="UserInfo"> <img src="/user1.svg" alt="src" /> <span className="name">{userCtx.userInfo.name}</span> </div>
+                                  <Link onClick={closeHandle} to="/signature" className="resPass">
+                                        <div className="initList"><div className="svg"><FaPenNib /></div><span>Хэрэглэгчийн мэдээлэл</span></div>
+                                        <div className="svgOther"><IoIosArrowForward /> </div>                               
+                                  </Link>
                                   <Link onClick={closeHandle} to="/changepass" className="resPass">
                                         <div className="initList"><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
+                                        <div className="svgOther"><IoIosArrowForward /> </div>                               
+                                  </Link>
+                                  <Link to="/" onClick={()=>{closeHandle();userCtx.logout()}}  className="resPass">
+                                        <div className="initList"><div className="svg"><GiEntryDoor /></div>  <span>Гарах</span></div>
                                         <div className="svgOther"><IoIosArrowForward /> </div>                               
                                   </Link>
                               </div></div>} 
 
                           </div>
-                          <span className="Logout"><Link  to="/" onClick={()=>userCtx.logout()}><span>Гарах</span><IoIosLogOut /></Link></span>
+                          {/* <span className="Logout"><Link  to="/" onClick={()=>userCtx.logout()}><span>Гарах</span><IoIosLogOut /></Link></span> */}
                         </div>
                 </span>
-
 
                 <div className="MobileMenu">
                     <label for="check" className="checkBtnHome">
@@ -134,7 +124,7 @@ function Menu() {
                                 animationDuration={0.5}
                             />
                     </label>
-                    <div className="headLogoPar"><img src="/edp_logo.png" /></div>
+                    <div className="headLogoPar"><img src="/edp_logo.png" alt="edp-logo" /></div>
                     <div></div>
                 </div>
             </div>
@@ -146,13 +136,12 @@ function Menu() {
 export default Menu;
 
 const cardAnimate = keyframes`
-    0% { transform:scale(1);opacity:0;  }
-    30% { transform:scale(1.037);opacity:0.7;  }
-    100% { transform:scale(1);opacity:1;  }
+    0% { transform:translateY(30px);opacity:0;  }
+    100% { transform:translateY(0px);opacity:1;  }
 `
 
 const Componentss = styled.div`
-    font-family:${fontFamily};
+    font-family: ${(props) => props.theme.fontFamily};
     letter-spacing: -0.1px;
     position: relative;
     z-index: 2;
@@ -183,13 +172,12 @@ const Componentss = styled.div`
   
     .MainMenus{
       position:relative;
-      // border-top: 0.1px solid rgba(${ColorRgb}, 0.5);
-      background-color:rgba(${ColorRgb});
+      background-color: rgba(${(props) => props.theme.ColorRgb});
       display:flex;
       flex-direction:row;
       align-items:center;
       width: 100%;
-      box-shadow: 0px 2px 8px -2px rgba(${ColorRgb}, 0.5);
+      box-shadow: 0px 2px 8px -2px rgba(${(props) => props.theme.ColorRgb}, 0.5);
     
         .MobileMenu{
           display:none;
@@ -217,8 +205,7 @@ const Componentss = styled.div`
             flex-direction:row;
             justify-content:space-between;
             align-items:center;
-            width:20%;
-            
+            width:10%;
             .Notification{
               .notf{
                 position:relative;
@@ -226,7 +213,7 @@ const Componentss = styled.div`
                 flex-direction:row;
                 align-items:center;
                 &::before{
-                  font-size:12px;
+                  font-size:11px;
                   font-weight:600;
                   display:flex;
                   align-items:center;
@@ -243,7 +230,7 @@ const Componentss = styled.div`
                 }
                 svg{
                   margin-left:8px;
-                  font-size:21px;
+                  font-size:24px;
                   color:rgba(255,255,255,0.9);
                   
                 }
@@ -254,7 +241,7 @@ const Componentss = styled.div`
               .ghost{
                 animation-name: ${cardAnimate};
                 animation-duration:0.5s;
-                color:rgba(${textColor},1);
+                color:rgba(${(props) => props.theme.textColor},1);
                 position:absolute;
                 top:5px;
                 right:0;
@@ -269,7 +256,7 @@ const Componentss = styled.div`
                   background-color:#fff;
                   max-height: calc(100vh - 60px);
                   box-shadow:1px 1px 20px -9px;
-                  width:250px;
+                  width:300px;
                   border-radius:4px;
                   .UserInfo{
                     display:flex;
@@ -288,7 +275,7 @@ const Componentss = styled.div`
                   }
                   .resPass{
                     text-decoration:none;
-                    color:rgba(${textColor},1);
+                    color:rgba(${(props) => props.theme.textColor},1);
                     cursor:pointer;
                     border-radius:4px;
                     width:100%;
@@ -303,7 +290,7 @@ const Componentss = styled.div`
                       span{
                         font-size:15px;
                         font-weight:500;
-                        color:rgba(${textColor},1);
+                        color:rgba(${(props) => props.theme.textColor},1);
                       }
                       .svg{
                         margin-right:14px;
@@ -317,7 +304,7 @@ const Componentss = styled.div`
                     }
                     .svgOther{
                       svg{
-                        color:rgba(${textColor},.7);
+                        color:rgba(${(props) => props.theme.textColor},.7);
                         font-size:22px;
                       }
                     }
@@ -326,12 +313,6 @@ const Componentss = styled.div`
                     }
                 }
               }
-              
-
-          // <div className="resPass">
-          //       <div className="initList><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
-          //       <div className="svgOther"><IoIosArrowForward /> </div>                               
-          // </div>
               }
               .par{
                 padding:4px 4px;

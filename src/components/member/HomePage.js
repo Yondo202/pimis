@@ -5,7 +5,7 @@ import {ColorRgb,textColor,fontFamily} from '../theme';
 import axios from 'axiosbase';
 import Token from 'context/accessToken';
 import DocumentTitle from 'containers/document/DocumentTitle'
-import {IoMdCheckmarkCircle} from 'react-icons/io'
+import { IoMdCheckmarkCircle } from 'react-icons/io'
 
 function HomePage({setNotify}) {
     DocumentTitle("EDP - Үнэлгээний хорооны гишүүн");
@@ -15,9 +15,10 @@ function HomePage({setNotify}) {
     const ClickHandle = e =>{ setParent(e); setShowModal(true);}
 
     useEffect(async()=>{
-        const data = await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token()}});
-        console.log(data, " my data+++++++++");
-        if(data.data.data[0]){ setCardData(data.data.data); };
+            await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token()}}).then((res)=>{
+                console.log(res, " my data+++++++++");
+                if(res.data.data[0]){ setCardData(res.data.data); };
+            }).catch((err)=> console.log(err.response.data.error))
     },[]);
 
     return (

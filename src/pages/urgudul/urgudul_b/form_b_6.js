@@ -39,9 +39,11 @@ function UrgudulActivities() {
     }
 
     const handleSetForm = (name, value, index) => {
-        const newForm = form
-        newForm[index][name] = value
-        setForm([...newForm])
+        setForm(prev => {
+            const newForm = [...prev]
+            newForm[index][name] = value
+            return newForm
+        })
     }
 
     const handleAdd = () => {
@@ -120,14 +122,25 @@ function UrgudulActivities() {
 
     return (
         <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-5">B6</span>
-                {isCluster ? '- Кластераар хийх үйл ажиллагаа' : '- Аж ахуйн нэгжээр хийх үйл ажиллагаа'}
+            <div className="">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                    <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B6</span>
+                    <span className="tw-leading-tight">
+                        {isCluster ? '- Кластераар хийх үйл ажиллагаа' : '- Аж ахуйн нэгжээр хийх үйл ажиллагаа'}
+                    </span>
 
-                {isCluster ?
-                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерт нийтэд нь нөлөөлөх үйл ажиллагаа, үр өгөөжийн талаар бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
-                    :
-                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Аж ахуйн нэгжийн хийг гүйцэтгэх үйл ажиллагааг бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
+                    {isCluster ?
+                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерт нийтэд нь нөлөөлөх үйл ажиллагаа, үр өгөөжийн талаар бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
+                        :
+                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Аж ахуйн нэгжийн хийг гүйцэтгэх үйл ажиллагааг бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
+                    }
+                </div>
+
+                {UrgudulCtx.data.project_number &&
+                    <div className="tw-ml-5 tw-mb-2 tw-font-medium tw-text-13px">
+                        Өргөдлийн дугаар:
+                        <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                    </div>
                 }
             </div>
 
@@ -170,7 +183,7 @@ function UrgudulActivities() {
                 <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />
             </div>
 
-            <div className="tw-w-full tw-p-1 tw-pl-2">
+            <div className="tw-w-full tw-p-1 tw-pl-4">
                 <div className="tw-p-0.5 tw-text-sm tw-font-medium">
                     Нийт үйл ажиллагаануудын төсөвт зардал:
                     <span className="tw-ml-2 tw-text-base">${!isNaN(net) && net}</span>

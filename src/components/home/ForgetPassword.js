@@ -41,29 +41,29 @@ function ForgetPassword() {
     return (
         <Component>
             <span className="forget" onClick={openModal}> Нууц үг мартсан</span>
-                        <Modal visible={visible} width="500" height="460" effect="fadeInDown" onClickAway={closeModal}>
-                            <div className="formOneParent">
-                            <div className="headPar">
-                                <span className="headText">Нууц үг сэргээх</span>
-                                {/* <a className="Close" href="javascript:void(0);" onClick={closeModal}>X</a> */}
-                            </div>
-                                <div className="inputPar">
-                                    <div className="inpChild">
-                                        <div className="labels"><span>Email</span> </div>
-                                        <div className="name">
-                                            <GoMail />
-                                            <InputStyle className="newInp">
-                                                <input type="text" className="Email  form__field" placeholder="Цахим шуудангаа оруулна уу" name="email" required /><div className="line"></div>
-                                            </InputStyle>
-                                        </div>
-                                    </div>
-                                    <div className="SubmitButtonPar">
-                                     <span className="colorText" style={{transform:`scale(${scale})`, color:color}}>{Errmsg}</span>
-                                          {/* {signUpCtx.userInfo.userId ? <span className="colorText" style={{transform:`scale(${scale})`}}>Амжилттай нэвтэрлээ...</span> : ()}   */}
-                                          <NextBtn onClick={handleClick}  className="SubmitButton">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
+                <Modal visible={visible} width="500" height="460" effect="fadeInDown" onClickAway={closeModal}>
+                    <div className="formOneParent">
+                        <div className="headPar">
+                            <span className="headText">Нууц үг сэргээх</span>
+                            {/* <a className="Close" href="javascript:void(0);" onClick={closeModal}>X</a> */}
+                        </div>
+                            <div className="inputPar">
+                                <div className="inpChild">
+                                    <div className="labels"><span>Email</span> </div>
+                                    <div className="name">
+                                        <GoMail />
+                                        <InputStyle className="newInp">
+                                            <input type="text" className="Email  form__field" placeholder="Цахим шуудангаа оруулна уу" name="email" required /><div className="line"></div>
+                                        </InputStyle>
                                     </div>
                                 </div>
+                                <div className="SubmitButtonPar">
+                                    <span className="colorText" style={{transform:`scale(${scale})`, color:color}}>{Errmsg}</span>
+                                        {/* {signUpCtx.userInfo.userId ? <span className="colorText" style={{transform:`scale(${scale})`}}>Амжилттай нэвтэрлээ...</span> : ()}   */}
+                                        <NextBtn onClick={handleClick}  className="SubmitButton">Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
+                                </div>
                             </div>
+                    </div>
                 </Modal>
         </Component>
     )

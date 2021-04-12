@@ -25,7 +25,7 @@ function TableTwo(props) {
     const [ Dname, setDname ] = useState(null);
     const [Ddate, setDdate] = useState(null);
 
-    useEffect(()=>{
+    useEffect(_=>{
         if(props.initialData){
             const finalData = []
             tableData.map((el,i)=>{
@@ -39,7 +39,8 @@ function TableTwo(props) {
     },[props.initialData]);
 
 
-    const onChangeHandle = (event) =>{ const finalData = [];
+    const onChangeHandle = (event) =>{
+        const finalData = [];
           tableData.map((el,i)=>{props.initialData.map(elem=> elem); finalData.push(el);
        });
         finalData.map((el, i )=>{
@@ -63,11 +64,18 @@ function TableTwo(props) {
     const onChangeFile = (event) =>{
         const formData = new FormData()
         formData.append('file', event.target.files[0]);
-        formData.append('description', event.target.id);
+        formData.append('description', event.target.tabIndex);
         axios.post('attach-files',formData, {headers: { 'Authorization': props.token, 'Content-Type': 'multipart/form-data', }})
         .then((res)=>{ 
             setFileSave(prev=> prev.concat(res.data.data));
         }).catch(err=>console.log(err));
+
+
+        // fileSave.map((elem,ind)=>{
+        //     if((i + 1)=== parseInt(elem.description)){ 
+                
+        //      }
+        // });
     }
    
     const changeHandleName = (e) =>{   setDname(e.target.value);  }
@@ -116,7 +124,6 @@ function TableTwo(props) {
         let rs4 = document.querySelectorAll(".getUser2");
         let arr4 = Array.from(rs4);
         let userInp = {};
-
         arr4.map(el=>{
             let field = el.name; let value = el.value; if(value===""){ el.classList += " red"; }else{  el.classList =- " red";  el.classList += " getUser2"; };  userInp[field] = value;
         });
@@ -148,6 +155,8 @@ function TableTwo(props) {
         }
         // console.log(finalEnd, "my all");
     }
+
+    console.log(`fileSave`, fileSave);
 
     return (
         <Component2 className="container">
@@ -187,7 +196,7 @@ function TableTwo(props) {
                                             <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
                                                 <div className="name">
                                                 <InputStyle className="newInp">
-                                                        <input max={Currentdate} onChange={onChangeGetDate} value={el.getDate} id={el.id} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" required />
+                                                        <input max={Currentdate} onChange={onChangeGetDate} value={el.getDate} id={el.id} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" />
                                                         <div className="line"></div>
                                                 </InputStyle>
                                                         </div> </div></div>
@@ -195,17 +204,20 @@ function TableTwo(props) {
                                             <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
                                                 <div className="name">
                                                 <InputStyle className="newInp">
-                                                        <input max={Currentdate} onChange={onChangeRecentDate} type="date" id={el.id} value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="recentDate" required />
+                                                        <input max={Currentdate} onChange={onChangeRecentDate} type="date" id={el.id} value={el.recentDate} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} onfocus="(this.type='text')" name="recentDate" />
                                                         <div className="line"></div>
                                                 </InputStyle>
                                                          </div> </div>  </div>
                                               </div>
                                 </div>
 
-                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.files?el.files.name:""}</div> </div>
+                                <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span style={el.files? {color:`${textColor},0.6`}: {color:`${textColor},0.9`}} >Батлагдсан баримт бичгүүд /хавсаргасан :</span>
+                                 <div className="filess">{el.files?el.files.name:""}</div>
+                                  </div>
                                         <div className="name"> <RiUpload2Line />  
                                         <InputStyle className="newInp">
-                                                <input type="file"  id={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
+                                                {/* <label className="fileStyleLabel" for={`file${i+1}`}> {el.files?"Өөрчлөх":"Хавсаргах"}</label> */}
+                                                <input type="file"  id={`file${i+1}`} tabIndex={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field fileStyle `}  name="file"  />
                                                 <div className="line"></div>
                                         </InputStyle>
                                         </div> </div>
@@ -260,10 +272,11 @@ function TableTwo(props) {
                                 </div>
                                 <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.files?el.files.name:""}</div> </div>
                                      <div className="name"> <RiUpload2Line /> 
-                                     <InputStyle className="newInp">
-                                            <input type="file" id={i + 1}  onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field `}  name="file"  />
-                                            <div className="line"></div>
-                                    </InputStyle>
+                                        <InputStyle className="newInp">
+                                                {/* <label className="fileStyleLabel" for={`file${i+1}`}>Хавсаргах</label> */}
+                                                <input type="file"  id={`file${i+1}`} tabIndex={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field fileStyle `}  name="file"  />
+                                                <div className="line"></div>
+                                        </InputStyle>
                                         </div> </div>
                                 </div>
                             </div>
@@ -399,11 +412,12 @@ const Component2 = styled.div`
                         justify-content:space-between;
                         font-size:13px;
                         span{
-                         
                          color:rgba(${textColor},.9);
                          font-weight:500;
                         }
                         .filess{
+                            margin-top:5px;
+                            font-weight:500;
                             color:green;
                         }
                      }
@@ -606,7 +620,7 @@ const Component2 = styled.div`
 
 
 const tableData = [
-  { items: "Үйлдвэрийн үйл ажиллагаа  (зөвшөөрөл, тусгай зөвшөөрөл гм)", list:[]},
+  {items: "Үйлдвэрийн үйл ажиллагаа  (зөвшөөрөл, тусгай зөвшөөрөл гм)", list:[]},
   {items: "Байгаль орчны үнэлгээ ", list:[]},
   {items: "Усан хангамж",list:[]},
   {items: "Хаягдал ус гаргах",list:["Хотын","Үйлдвэрийн","Бусад"]},
