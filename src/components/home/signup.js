@@ -95,7 +95,7 @@ function Signup() {
     const cond =signUpCtx.errMsgSignup.cond;
 
     // console.log(selectSectors, " my sector");
-    // console.log(`sectorData`, sectorData)
+    console.log(`sectorData`, sectorData);
  
     return (
         <Component className="SignUp">
