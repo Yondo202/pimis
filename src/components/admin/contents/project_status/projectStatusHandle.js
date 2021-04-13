@@ -60,7 +60,7 @@ export default function ProjectStatusHandle() {
     const dropdownRef = useRef()
 
     const handleClickOutside = (e) => {
-        if (!dropdownRef.current?.contains(e.target) && !buttonRef.current.contains(e.target)) {
+        if (!dropdownRef.current?.contains(e.target) && !buttonRef.current?.contains(e.target)) {
             setStatusDropdownOpen(false)
         }
     }
