@@ -121,7 +121,6 @@ export default function ProjectHandle() {
                     wordWrapEnabled={true}
                     rowAlternationEnabled={true}
                     columnAutoWidth={true}
-                    columnWidth="auto"
                     width={width && `${width - 25}px`}
                     showRowLines={true}
                     showColumnLines={true}
@@ -200,7 +199,7 @@ const ButtonNavProgress = (data) => {
     </button>
 }
 
-const statusNames = {
+export const statusNames = {
     editable: 'Засвар нээлттэй',
     locked: 'Засвар хаалттай',
     approved: 'Дэмжигдсэн',

@@ -392,7 +392,6 @@ const quarters = [{
     name: 'Q4',
 }]
 
-
 const HeaderCell = (data) => (
     <div className="tw-text-center tw-font-medium tw-text-gray-700 tw-text-sm tw-inline-flex">
         {data.column.caption}
