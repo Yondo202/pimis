@@ -80,7 +80,7 @@ export default function ProjectHandle() {
         window.addEventListener('resize', handleResize)
 
         return () => window.removeEventListener('resize', handleResize)
-    }, [containerRef]);
+    }, [containerRef, containerRef.current?.clientWidth])
 
     const [previewModal, setPreviewModal] = useState({
         open: false,
@@ -99,7 +99,7 @@ export default function ProjectHandle() {
     const getConsultantName = (id) => {
         if (id) {
             const consultant = consultants.filter(consultant => consultant.id === id)[0]
-            return `${consultant.lastname.substr(0, 1).toUpperCase()}. ${consultant.firstname}`
+            return consultant?.firstname && `${consultant?.lastname?.substr(0, 1).toUpperCase()}. ${consultant?.firstname}`
         }
     }
 
@@ -111,7 +111,7 @@ export default function ProjectHandle() {
         <div className="tw-text-sm tw-text-gray-700">
             <div className="tw-px-3 tw-pt-2 tw-pb-6 tw-mt-4 tw-shadow-inner tw-bg-white tw-flex tw-flex-col tw-w-full tw-rounded-md" ref={containerRef}>
                 <div className="tw-p-2 tw-mt-6 tw-text-lg tw-font-medium tw-text-center">
-                    Дэмжлэг хүссэн өргөдлийн маягтууд
+                    Бүртгүүлсэн байгууллагууд
                 </div>
 
                 <DataGrid
