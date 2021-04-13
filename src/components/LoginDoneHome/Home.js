@@ -33,6 +33,8 @@ function Home() {
             })
         }
     }, []);
+
+    console.log("----", infData)
     
     return (
         <HomeComponent style={userId ? { maxWidth: "2000px" } : { maxWidth: "1160px" }} className={`container`}>

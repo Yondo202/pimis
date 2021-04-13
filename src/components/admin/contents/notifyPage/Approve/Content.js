@@ -50,9 +50,8 @@ const nextWeek = addDays(today , 10); const day2 = nextWeek.getDate();const mont
                }, { headers: { Authorization: AuthToken() } }).then((res)=>{
                     console.log(res.data.success, "my Response");
                     this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true); setTimeout(()=>{this.props.history.push(`5a/${this.props?.projectId}`)},3000);
-                  }).catch((e)=>{
+                  }).catch(e=>{
                     this.alertText("orange", "Алдаа гарлаа", true);
-                    console.log(e, "err Response");
             });
         }
 

@@ -61,8 +61,6 @@ function Main_decision() {
         }
     }
 
-    console.log(`notifyShow222`, notifyShow2);
-    
     const clickHandle2 = (el) =>{
         if(cond){
             if(notifyShow2===1){
