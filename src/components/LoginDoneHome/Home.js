@@ -34,8 +34,6 @@ function Home() {
         }
     }, []);
 
-    console.log("----", infData)
-    
     return (
         <HomeComponent style={userId ? { maxWidth: "2000px" } : { maxWidth: "1160px" }} className={`container`}>
             {infData?.criteria === 1 ? <h2 style={{ marginTop: 50 }}>Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэх боломжгүй байна.</h2> : <> <div className="headerPar">
