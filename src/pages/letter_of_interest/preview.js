@@ -1,10 +1,10 @@
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import React, { useEffect, useState } from 'react'
 import { useRef } from 'react'
-import { useParams } from 'react-router'
 import { useReactToPrint } from 'react-to-print'
 import axios from 'axiosbase'
 import PrintSVG from 'assets/svgComponents/printSVG'
+import { useParams } from 'react-router'
 
 
 const initialState = {
@@ -33,15 +33,14 @@ export default function LetterPreview(props) {
         content: () => componentRef.current,
     })
 
-    const projectId = useParams().id
+    const userId = useParams().id
 
     useEffect(() => {
-        if (props.form === undefined || null) {
-            if (projectId !== undefined || null) {
-                axios.get(`letter-of-interests/${projectId}`, {
-                    headers: {
-                        'Authorization': getLoggedUserToken(),
-                    },
+        if (!props.form) {
+            if (userId !== undefined && userId !== null) {
+                axios.get(`letter-of-interests`, {
+                    headers: { 'Authorization': getLoggedUserToken() },
+                    params: { userId: userId },
                 }).then(res => {
                     console.log(res.data)
                     setForm({ ...form, ...res.data.data })
@@ -50,9 +49,7 @@ export default function LetterPreview(props) {
                 })
             } else {
                 axios.get('letter-of-interests', {
-                    headers: {
-                        'Authorization': getLoggedUserToken(),
-                    },
+                    headers: { 'Authorization': getLoggedUserToken() },
                 }).then(res => {
                     console.log(res.data)
                     setForm({ ...form, ...res.data.data })
@@ -153,32 +150,32 @@ export default function LetterPreview(props) {
                 <div dangerouslySetInnerHTML={{ __html: form.letter }} className="tw-mx-16 tw-mt-2 tw-p-1" style={{ minHeight: 740 }} />
 
                 <div className="tw-relative tw-h-40 tw-mt-10 tw-mx-24">
-                    <div className="tw-absolute tw-top-8 tw-left-2 tw-font-medium tw-text-base tw-uppercase">
+                    <div className="tw-absolute tw-top-4 tw-left-2 tw-font-medium tw-text-base tw-uppercase">
                         Хүндэтгэсэн:
                     </div>
 
                     <div className="tw-absolute tw-top-10 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw-w-full tw-flex tw-justify-center tw-items-center tw-z-10">
-                        <span className="tw-text-center tw-font-medium tw-mr-2 tw-py-1 tw-px-0.5 tw-uppercase tw-whitespace-nowrap">
+                        <span className="tw-text-center tw-font-medium tw-mr-2 tw-py-1 tw-px-0.5 tw-uppercase tw-whitespace-nowrap" style={{ minWidth: 90 }}>
                             {form.director_position}
                         </span>
 
                         {form.director_signature ?
-                            <img src={form.director_signature} className="tw-ml-2 tw-flex-shrink-0" style={{ width: 260, height: 90 }} alt="Гарын үсэг" />
+                            <img src={form.director_signature} className="tw-mx-2 tw-flex-shrink-0" style={{ width: 182, height: 63 }} alt="Гарын үсэг" />
                             :
-                            <div className="tw-ml-2 tw-flex-shrink-0" style={{ width: 260, height: 90 }} />
+                            <div className="tw-mx-2 tw-flex-shrink-0" style={{ width: 260, height: 90 }} />
                         }
 
-                        <span className="tw-text-center tw-font-medium tw-ml-2 tw-py-1 tw-px-0.5 tw-uppercase tw-whitespace-nowrap">
+                        <span className="tw-text-center tw-font-medium tw-ml-2 tw-py-1 tw-px-0.5 tw-uppercase tw-whitespace-nowrap" style={{ minWidth: 90 }}>
                             {form.director_name}
                         </span>
                     </div>
 
                     {form.company_stamp ?
-                        <div className="tw-w-44 tw-h-44 tw-absolute tw-top-2 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--z-10">
+                        <div className="tw-w-44 tw-h-44 tw-absolute tw--top-4 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--z-10">
                             <img src={form.company_stamp} alt="Байгууллагын тамга тэмдэг" className="tw-w-full tw-h-full tw-object-scale-down" />
                         </div>
                         :
-                        <div className="tw-w-44 tw-h-44 tw-absolute tw-top-2 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--z-10" />
+                        <div className="tw-w-44 tw-h-44 tw-absolute tw--top-4 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--z-10" />
                     }
                 </div>
             </div>

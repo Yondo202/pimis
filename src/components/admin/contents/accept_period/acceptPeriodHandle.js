@@ -34,7 +34,10 @@ export default function AcceptPeriodHandle() {
         }).then(res => {
             console.log(res)
             setPeriods(res.data.data)
-        }).catch(err => console.error(err.response))
+        }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Нээлттэй хугацааны мэдээллүүдийг татаж чадсангүй.' })
+        })
     }, [])
 
     const handleAddPeriod = () => {
@@ -145,8 +148,8 @@ export default function AcceptPeriodHandle() {
     }
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
+        document.addEventListener('click', handleClickOutside)
+        return () => document.removeEventListener('click', handleClickOutside)
     })
 
     const onRowInserted = (e) => {

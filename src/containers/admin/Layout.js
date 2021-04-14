@@ -31,6 +31,7 @@ import FirstEvaluationSendNotice from 'pages/decision_making/5a/sendNotice';
 import AcceptPeriodHandle from 'components/admin/contents/accept_period/acceptPeriodHandle'
 import ReportLayout from 'components/admin/contents/Report/ReportLayout';
 import ProjectStatusHandle from 'components/admin/contents/project_status/projectStatusHandle'
+import CurrencyRateHandle from 'components/admin/contents/currency_rate/currencyRateHandle';
 
 
 function Layout({ setLocale }) {
@@ -74,6 +75,7 @@ function Layout({ setLocale }) {
               <Route path="/accept-periods" component={AcceptPeriodHandle} />
               <Route path="/epd-information" component={EdpInformationHome} />
               <Route path="/project-status" component={ProjectStatusHandle} />
+              <Route path="/currency-rates" component={CurrencyRateHandle} />
 
               <Route path="/progress" component={Home} />
               <Route path="/request/:url" component={Request} />

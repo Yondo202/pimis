@@ -117,6 +117,7 @@ function UrgudulCalculations() {
 
     const [countries, setCounties] = useState([])
     const [products, setProducts] = useState([])
+    const [rates, setRates] = useState([])
 
     useEffect(() => {
         axios.get('countries')
@@ -130,10 +131,18 @@ function UrgudulCalculations() {
                 console.log(res.data)
                 setProducts(res.data.data.docs)
             })
+
+        axios.get('currency-rates')
+            .then(res => {
+                console.log(res.data)
+                setRates(res.data.data)
+            })
     }, [])
 
     const datesForm = sortDates(form.sales)
-    const datesFormObj = dates.reduce((a, c) => ({ ...a, [c]: null }), {})
+    const datesFormObj = datesForm.reduce((a, c) => ({ ...a, [c]: null }), {})
+
+    const getRate = (year) => rates.filter(rate => rate.eyear === year)[0]?.usd_to_mnt
 
     const handleAddCountry = () => {
         const newCountry = {
@@ -199,6 +208,7 @@ function UrgudulCalculations() {
                 allValid = allValid && datesForm.every(item => !checkInvalid(product[item]))
             }
         }
+        Object.keys(exportSums).forEach(key => allValid = allValid && !isNaN(exportSums[key]))
 
         if (UrgudulCtx.data.id) {
             if (allValid) {
@@ -268,7 +278,7 @@ function UrgudulCalculations() {
                         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B8</span>
                         <span className="tw-leading-tight">- Өөрийн төслийн хувьд дараах тооцооллыг хийнэ үү</span>
 
-                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
+                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Мөнгөн дүн бүхий тооцооллуудыг доллараар хийх ба тухайн онуудын долларын ханшийг зааж өгсөн болно." position="bottom" />
                     </div>
 
                     {UrgudulCtx.data.project_number &&
@@ -287,19 +297,38 @@ function UrgudulCalculations() {
                                 {datesForm.map(date => {
                                     switch (date) {
                                         case 'submitDate':
-                                            return <th className="tw-border tw-border-gray-300 tw-text-center" key={date}>
-                                                {`${form.submitDate.year || ''}-${form.submitDate.month || ''}`}
+                                            return <th className="tw-border tw-border-gray-300" key={date}>
+                                                <div className="tw-flex tw-flex-col tw-items-center tw-py-1">
+                                                    <span className="tw-mt-2">
+                                                        {`${form.submitDate.year || ''}-${form.submitDate.month || ''}`}
+                                                    </span>
+                                                    <span className="tw-text-xs tw-mt-1 tw-px-1 tw-text-indigo-500" style={{ minHeight: 15 }}>
+                                                        {getRate(form.submitDate.year) && `(${getRate(form.submitDate.year).toFixed(2)} ₮)`}
+                                                    </span>
+                                                </div>
                                             </th>
                                         case 'endDate':
                                             return <th className="tw-border tw-border-gray-300" key={date}>
-                                                <div className={`tw-flex tw-justify-around tw-items-center ${!endDateGiven && 'tw-bg-red-100 tw-rounded'} tw-mx-1`}>
-                                                    {`${form.endDate.year ? form.endDate.year : ''}-${form.endDate.month ? form.endDate.month : ''}`}
-                                                    <HelpPopup main="Төслийн дуусах хугацаа, жил сараар." position="bottom" />
+                                                <div className="tw-flex tw-flex-col tw-items-center tw-py-1">
+                                                    <div className={`tw-flex tw-justify-around tw-items-center ${!endDateGiven && 'tw-bg-red-100 tw-rounded'} tw-mx-1 tw-mt-1`}>
+                                                        {`${form.endDate.year ? form.endDate.year : ''}-${form.endDate.month ? form.endDate.month : ''}`}
+                                                        <HelpPopup main="Төслийн дуусах хугацаа, жил сараар." position="bottom" />
+                                                    </div>
+                                                    <span className="tw-text-xs tw-mt-0.5 tw-px-1 tw-text-indigo-500" style={{minHeight: 15}}>
+                                                        {getRate(form.endDate.year) && `(${getRate(form.endDate.year).toFixed(2)} ₮)`}
+                                                    </span>
                                                 </div>
                                             </th>
                                         default:
                                             return <th className="tw-border tw-border-gray-300 tw-text-center" key={date}>
-                                                {date}
+                                                <div className="tw-flex tw-flex-col tw-items-center tw-py-1">
+                                                    <span className="tw-mt-2">
+                                                        {date}
+                                                    </span>
+                                                    <span className="tw-text-xs tw-mt-1 tw-px-1 tw-text-indigo-500" style={{ minHeight: 15 }}>
+                                                        {getRate(+date) && `(${getRate(+date).toFixed(2)} ₮)`}
+                                                    </span>
+                                                </div>
                                             </th>
                                     }
                                 })}
@@ -361,8 +390,10 @@ function UrgudulCalculations() {
                                     </div>
                                 </td>
                                 {datesForm.map((item, i) =>
-                                    <td className="tw-border tw-border-gray-300 tw-px-1 tw-text-right tw-font-medium tw-truncate" style={{ maxWidth: 81 }} key={i}>
-                                        {exportSums[item] !== 0 && exportSums[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    <td className="tw-border tw-border-gray-300 tw-px-1" key={i}>
+                                        <div className={`tw-text-right tw-font-medium tw-truncate tw-w-20 tw-px-1 tw-py-0.5 tw-rounded ${validate && isNaN(exportSums[item]) && 'tw-bg-red-100'}`}>
+                                            {exportSums[item] !== 0 && exportSums[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </div>
                                     </td>
                                 )}
                                 <td className="tw-border tw-border-gray-300 tw-truncate tw-font-bold tw-text-center">$</td>
@@ -396,8 +427,9 @@ function UrgudulCalculations() {
                                                 </tr>
                                                 <tr className="tw-h-9">
                                                     <td className="tw-border tw-border-gray-300 tw-px-1">
-                                                        <div className="tw-flex">
-                                                            <input className={`tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-0.5 tw-ml-3 tw-rounded ${validate && checkInvalid(product.product_name) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-font-medium tw-placeholder-gray-500`} type="text" value={product.product_name || ''} onChange={e => handleSetFormProduct('product_name', e.target.value, j, i)} placeholder="Экспортын бүтгээгдэхүүн" title={product.product_name} />
+                                                        <div className="tw-flex tw-items-center">
+                                                            <input className={`tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-0.5 tw-ml-3 tw-rounded ${validate && checkInvalid(product.product_name) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-font-medium tw-placeholder-gray-500`} type="text" value={product.product_name || ''} onChange={e => handleSetFormProduct('product_name', e.target.value, j, i)} placeholder="Бүтээгдэхүүний код" title={product.product_name} />
+                                                            <HelpPopup classAppend="tw-ml-1" main="Гаалийн бараа, бүтээгдэхүүний кодыг бичнэ үү." position="bottom" />
                                                         </div>
                                                     </td>
                                                     {

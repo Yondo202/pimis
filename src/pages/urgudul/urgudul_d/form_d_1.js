@@ -213,7 +213,7 @@ function UrgudulNoticeCluster() {
                 </div>
 
                 <div className="tw-flex tw-justify-end tw-items-center">
-                    <button className="tw-inline-flex tw-items-center focus:tw-outline-none tw-rounded tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-pl-3 tw-pr-4 tw-py-1.5 tw-mr-4 tw-mb-4 tw-mt-2" onClick={() => setAgreed(!agreed)}>
+                    <button className="tw-inline-flex tw-items-center focus:tw-outline-none tw-rounded tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-pl-3 tw-pr-4 tw-py-1.5 tw-mr-4 tw-mb-6 tw-mt-6" onClick={() => setAgreed(!agreed)}>
                         <span className={`tw-rounded-full tw-border ${agreed ? 'tw-border-white' : 'tw-border-blue-300'} tw-transition-colors tw-w-4 tw-h-4 tw-flex tw-items-center tw-justify-center tw-mr-2`}>
                             <span className={`tw-rounded-full ${agreed ? 'tw-bg-white' : 'tw-bg-transparent'} tw-transition-colors tw-w-2 tw-h-2`}></span>
                         </span>
