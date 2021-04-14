@@ -85,7 +85,7 @@ function UrgudulChecklist() {
     }
 
     return (
-        <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto">
+        <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pb-20">
             <div className="tw-mt-8 tw-rounded-lg tw-shadow-md tw-min-w-min tw-p-2 tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
                 <div className="">
                     <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">

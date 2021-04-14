@@ -7,6 +7,7 @@
     padding: 8px;
     position: relative;
     background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.4);
 }
 
 @media print {
@@ -14,6 +15,7 @@
         size: portrait A4;
         /* margin: 0.5cm 0.7cm; */
         margin: 0;
+        border: none;
     }
 }
 

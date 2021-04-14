@@ -270,9 +270,9 @@ export default function LetterOfInterest() {
                         }
                         <input type="file" className="tw-invisible tw-absolute tw-h-0" onChange={handleUploadLogo} ref={inputRefLogo} />
 
-                        <input className={`tw-mt-1 tw-px-0.5 tw-text-center tw-text-sm tw-shadow-inner tw-rounded focus:tw-outline-none tw-uppercase tw-leading-tight ${validate && checkInvalid(form.company_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_name || ''} onChange={e => handleInput('company_name', e.target.value)} placeholder="ААН албан ёсны нэр" />
+                        <input className={`tw-mt-1 tw-px-0.5 tw-text-center tw-text-sm tw-shadow-inner tw-rounded focus:tw-outline-none tw-leading-tight ${validate && checkInvalid(form.company_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_name || ''} onChange={e => handleInput('company_name', e.target.value)} placeholder="ААН албан ёсны нэр" title="ААН албан ёсны нэр" />
 
-                        <textarea className={`tw-px-0.5 tw-shadow-inner tw-rounded focus:tw-outline-none tw-leading-tight tw-text-center tw-overflow-y-hidden tw-resize-y ${validate && checkInvalid(form.company_address) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ minHeight: 32, height: locationTextareaRef.current?.scrollHeight }} value={form.company_address || ''} onChange={e => handleInput('company_address', e.target.value)} placeholder="ААН хаяг бүтнээр" ref={locationTextareaRef} />
+                        <textarea className={`tw-mt-1 tw-px-0.5 tw-shadow-inner tw-rounded focus:tw-outline-none tw-leading-tight tw-text-center tw-overflow-y-hidden tw-resize-y ${validate && checkInvalid(form.company_address) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ minHeight: 32, height: locationTextareaRef.current?.scrollHeight }} value={form.company_address || ''} onChange={e => handleInput('company_address', e.target.value)} placeholder="ААН хаяг бүтнээр" title="ААН хаяг бүтнээр" ref={locationTextareaRef} />
 
                         <div className="tw-mt-1 tw-flex tw-justify-center">
                             <div className="tw-flex tw-items-center tw-mr-2 tw-leading-tight ">
@@ -290,53 +290,53 @@ export default function LetterOfInterest() {
                             </div>
                         </div>
 
-                        <div className="tw-mt-0.5 tw-flex tw-justify-center tw-items-center tw-leading-tight">
+                        <div className="tw-mt-1 tw-flex tw-justify-center tw-items-center tw-leading-tight">
                             <span className="tw-mr-1">
                                 Имэйл:
                             </span>
                             <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.company_email) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_email || ''} onChange={e => handleInput('company_email', e.target.value)} />
                         </div>
 
-                        <div className="tw-mt-0.5 tw-flex tw-justify-center tw-items-center tw-leading-tight">
+                        <div className="tw-mt-1 tw-flex tw-justify-center tw-items-center tw-leading-tight">
                             <span className="tw-mr-1">
                                 УБД:
                             </span>
                             <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.company_register) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_register || ''} onChange={e => handleInput('company_register', e.target.value)} />
                         </div>
 
-                        <div className="tw-mt-0.5 tw-flex tw-justify-center tw-items-center tw-leading-tight">
-                            <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.submit_date) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ width: 124 }} type="date" value={form.submit_date || ''} onChange={e => handleInput('submit_date', e.target.value)} />
+                        <div className="tw-mt-1 tw-flex tw-justify-center tw-items-center tw-leading-tight">
+                            <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.submit_date) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ width: 124 }} type="date" value={form.submit_date || ''} onChange={e => handleInput('submit_date', e.target.value)} title="Он сар өдөр" />
 
                             <span className="tw-ml-2">
                                 №:
                             </span>
-                            <input className={`tw-px-0.5 tw-ml-1 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-24 ${validate && checkInvalid(form.snumber) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.snumber || ''} onChange={e => handleInput('snumber', e.target.value)} />
+                            <input className={`tw-px-0.5 tw-ml-1 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-24 ${validate && checkInvalid(form.snumber) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.snumber || ''} onChange={e => handleInput('snumber', e.target.value)} title="Дугаар"/>
                         </div>
                     </div>
 
-                    <div className="tw-uppercase tw-text-center tw-text-2xl tw-px-8 tw-pt-8 tw-ml-8 tw-text-blue-500">
+                    <div className="tw-uppercase tw-text-center tw-font-medium tw-text-2xl tw-px-8 tw-pt-8 tw-ml-8">
                         "Экспортыг дэмжих төсөл"-д
                     </div>
                 </div>
 
-                <div className="tw-text-xl tw-mt-8 tw-flex tw-items-center" style={{ marginLeft: '18%' }}>
+                <div className="tw-text-2xl tw-mt-8 tw-flex tw-items-center" style={{ marginLeft: '18%' }}>
                     Төсөлд хамрагдах тухай
                     <button className="tw-ml-auto tw-mr-16 focus:tw-outline-none tw-text-indigo-500 active:tw-text-indigo-700" onClick={() => setHelpOpen(true)} ref={helpButtonRef}>
                         <QuestionMarkSVG className="tw-w-6 tw-h-6 tw-transition-colors" />
                     </button>
                 </div>
 
-                <div className={`tw-mx-16 tw-p-1 tw-flex tw-rounded ${validate && checkInvalid(form.letter, 'quill') && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ height: 690 }}>
+                <div className={`tw-mx-16 tw-p-1 tw-flex tw-rounded ${validate && checkInvalid(form.letter, 'quill') && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ height: 740 }}>
                     <ReactQuill theme="snow" modules={modules} tabIndex={0} value={form.letter} onChange={content => handleInput('letter', content)} placeholder={"Сонирхол илэрхийлэх албан тоотоо энд бичнэ үү."} />
                 </div>
 
                 <div className="tw-relative tw-h-40 tw-mt-10 tw-mx-24">
-                    <div className="tw-absolute tw-top-8 tw-left-2">
+                    <div className="tw-absolute tw-top-8 tw-left-2 tw-font-medium tw-text-base tw-uppercase">
                         Хүндэтгэсэн:
                     </div>
 
                     <div className="tw-absolute tw-top-10 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw-w-full tw-flex tw-justify-center tw-items-center tw-z-10">
-                        <input className={`tw-py-1 tw-px-0.5 tw-uppercase tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.director_position) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.director_position || ''} onChange={e => handleInput('director_position', e.target.value)} placeholder="Албан тушаал" />
+                        <input className={`tw-w-48 tw-text-center tw-font-medium tw-mr-2 tw-py-1 tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.director_position) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.director_position || ''} onChange={e => handleInput('director_position', e.target.value)} placeholder="Албан тушаал" title="Албан тушаал" />
 
                         <div className="tw-flex tw-items-start tw-ml-2">
                             <SignaturePad canvasProps={{ className: `tw-shadow-inner tw-bg-blue-100 tw-bg-opacity-50 tw-rounded ${validate && checkInvalid(form.director_signature) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`, width: 260, height: 90 }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
@@ -344,7 +344,7 @@ export default function LetterOfInterest() {
                             <ButtonTooltip tooltip="Арилгах" beforeSVG={<CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" />} onClick={handleClearSignature} classAppend="tw-w-px" classButton="tw-text-red-500 active:tw-text-red-600" />
                         </div>
 
-                        <input className={`tw-ml-2 tw-py-1 tw-px-0.5 tw-uppercase tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.director_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.director_name || ''} onChange={e => handleInput('director_name', e.target.value)} placeholder="Овог нэр" />
+                        <input className={`tw-w-60 tw-text-center tw-font-medium tw-ml-2 tw-py-1 tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.director_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.director_name || ''} onChange={e => handleInput('director_name', e.target.value)} placeholder="Овог нэр" title="Овог нэр" />
                     </div>
 
                     {form.company_stamp ?

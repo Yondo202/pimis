@@ -262,7 +262,7 @@ function UrgudulCalculations() {
 
     return (
         <div className="tw-flex tw-justify-center tw-w-full tw-px-4">
-            <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-max-w-full">
+            <div className="tw-mt-8 tw-mb-80 tw-py-2 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-max-w-full">
                 <div className="tw-border-b tw-border-dashed">
                     <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
                         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B8</span>

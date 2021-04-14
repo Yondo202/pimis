@@ -229,7 +229,7 @@ export default function UrgudulPreview(props) {
     const getProductName = (id) => products.filter(obj => obj.id === id)[0]?.description_mon
 
     return (
-        <div className="tw-text-sm tw-text-gray-700 tw-text-13px" id="urgudul-preview-page">
+        <div className="tw-text-sm tw-text-gray-700 tw-text-13px tw-bg-white tw-rounded tw-p-8 tw-mb-20" id="urgudul-preview-page">
             <button className="tw-mb-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-text-15px tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handlePrint}>
                 <span className="tw-text-sm">Хэвлэх болон PDF-ээр татах</span>
                 <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
