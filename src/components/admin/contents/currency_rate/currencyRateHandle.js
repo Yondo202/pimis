@@ -92,6 +92,7 @@ export default function CurrencyRateHandle() {
                     showRowLines={true}
                     showColumnLines={true}
                     columnAutoWidth={true}
+                    width={360}
                 >
                     <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
                     <Paging defaultPageSize={20} />
@@ -102,8 +103,8 @@ export default function CurrencyRateHandle() {
                         allowDeleting={true}
                         allowAdding={true}
                     />
-                    <Column dataField="eyear" caption="Он" alignment="right" headerCellRender={HeaderCell} />
-                    <Column dataField="usd_to_mnt" caption="Долларын ханш" alignment="right" headerCellRender={HeaderCell} />
+                    <Column dataField="eyear" caption="Он" alignment="right" headerCellRender={HeaderCell} customizeText={customizeTextYear} />
+                    <Column dataField="usd_to_mnt" caption="Долларын ханш" alignment="right" headerCellRender={HeaderCell} customizeText={customizeTextUSD} />
                 </DataGrid>
             </div>
         </div>
@@ -115,3 +116,7 @@ const HeaderCell = (data) => (
         {data.column.caption}
     </div>
 )
+
+const customizeTextYear = (cellinfo) => `${cellinfo.value} он`
+
+const customizeTextUSD = (cellinfo) => `${cellinfo.value} ₮`

@@ -28,7 +28,7 @@ const initialState = [
     },
     {
         "code": "prevbalance",
-        "description": "Өмнөх 2 жилийн санхүүгийн тайлан.",
+        "description": "Өмнөх 2 жилийн санхүүгийн тайлан. (Энэ оны санхүүгийн тайлангийн хамт)",
         "files": null,
     },
     {

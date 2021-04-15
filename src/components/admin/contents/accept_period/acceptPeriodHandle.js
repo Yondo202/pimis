@@ -22,6 +22,7 @@ loadMessages({
         "dxDataGrid-editingSaveRowChanges": "Хадгалах",
         "dxDataGrid-editingCancelRowChanges": "Болих",
         "dxDataGrid-editingDeleteRow": "Устгах",
+        "dxDataGrid-editingAddRow": "Шинээр бичвэр оруулах",
     }
 })
 
