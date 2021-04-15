@@ -105,7 +105,7 @@ const SectorsOne = () => {
                     showBorders={true}
                     // keyExpr="business_sectorId"
                     columnAutoWidth={true}
-                    width={width?width:700}
+                    width={width?width+30:700}
                 >
                     <Selection
                         mode="multiple"
