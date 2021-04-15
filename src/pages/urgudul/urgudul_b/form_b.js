@@ -9,6 +9,7 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import CalendarSVG from 'assets/svgComponents/calendarSVG'
 
 
 const initialState = {
@@ -56,6 +57,14 @@ function UrgudulBreakdown() {
     const handleSetForm = (key, value) => {
         setForm(prev => ({ ...prev, [key]: value }))
     }
+
+    useEffect(() => {
+        if (form.project_duration && form.project_start) {
+            const startDate = new Date(form.project_start)
+            const endDate = new Date(startDate.setMonth(startDate.getMonth() + +form.project_duration))
+            setForm(prev => ({ ...prev, project_end: endDate.toISOString().split('T')[0] }))
+        }
+    }, [form.project_duration, form.project_start])
 
     const AlertCtx = useContext(AlertContext)
 
@@ -123,7 +132,7 @@ function UrgudulBreakdown() {
                 }
             </div>
 
-            <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-center">
+            <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                 <div className="tw-w-full tw-max-w-lg tw-flex">
                     <FormInline label="Төслийн үргэлжлэх хугацаа" type="numberFormat" formats={{ format: '# сар' }} value={form.project_duration || ''} name="project_duration" onChange={handleInputFormat} classAppend="tw-flex-grow" classInput="tw-w-20" invalid={validate && checkInvalid(form.project_duration)} />
 
@@ -134,7 +143,15 @@ function UrgudulBreakdown() {
 
                 <FormInline label="Төслийн эхлэх хугацаа" type="date" value={form.project_start || ''} name="project_start" onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" invalid={validate && checkInvalid(form.project_start)} />
 
-                <FormInline label="Төслийн дуусах хугацаа" type="date" value={form.project_end || ''} name="project_end" onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" invalid={validate && checkInvalid(form.project_end)} />
+                <div className="tw-text-sm tw-p-3 tw-flex tw-flex-col tw-items-start tw-ml-6">
+                    <div className="tw-font-medium">
+                        Төслийн дуусах хугацаа:
+                    </div>
+                    <div className="tw-mt-1 tw-bg-indigo-50 tw-rounded tw-py-1 tw-pl-2 tw-pr-4 tw-text-sm tw-text-indigo-500 tw-font-medium tw-flex tw-items-center">
+                        <CalendarSVG className="tw-w-5 tw-h-5 tw-flex-shrink-0 tw-text-gray-600 tw-mr-2" />
+                        {form.project_end}
+                    </div>
+                </div>
             </div>
 
             <div className="tw-w-full">

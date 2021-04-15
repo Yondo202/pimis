@@ -94,12 +94,15 @@ function UrugudulDirectors() {
             allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key], key === 'project_contribution' && 'quill'))
         }
 
+        if (form.length < 3) {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Та доод тал нь 3-аас дээш түлхүүр ажилтны мэдээлэл оруулна уу.' })
+            return
+        }
+
         if (UrgudulCtx.data.id) {
             if (allValid) {
                 axios.put(`projects/${UrgudulCtx.data.id}`, { directors: form }, {
-                    headers: {
-                        'Authorization': getLoggedUserToken()
-                    }
+                    headers: { 'Authorization': getLoggedUserToken() },
                 })
                     .then(res => {
                         console.log(res.data)
@@ -143,7 +146,7 @@ function UrugudulDirectors() {
                     <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
                     <span className="tw-leading-tight">- Аж ахуйн нэгжийг төлөөлөгчид</span>
 
-                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Түлхүүр албан тушаалтны жагсаалт, тэдгээрийн овог нэр, албан тушаалын хамт." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="ААН нэгжийг төлөөлүүлж 3-аас түлхүүр албан тушаалтны мэдээллээ оруулна уу." position="bottom" />
                 </div>
 
                 {UrgudulCtx.data.project_number &&
@@ -196,7 +199,7 @@ function UrugudulDirectors() {
                     Түлхүүр албан тушаалтнууд
                 </div>
 
-                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />
+                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton={`tw-text-green-500 active:tw-text-green-600 ${validate && form.length < 3 && 'tw-border tw-border-red-500 tw-border-dashed'}`} />
             </div>
 
             <div className="tw-flex tw-justify-end">

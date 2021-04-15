@@ -56,7 +56,7 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
 
           <SubMenu title="Тохиргоо" icon={<MdSettings />}>
             <MenuItem>
-              <Link to="/users">Хэрэглэгчид</Link>{" "}
+              <Link to="/users">Хэрэглэгчид</Link>
             </MenuItem>
             <MenuItem>
               <Link to="/epd-information" >Төслийн нэгжийн мэдээлэл</Link>
@@ -73,7 +73,10 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               <MenuItem>Тохиргоо -1</MenuItem>
             </SubMenu>
             <MenuItem>
-              <Link to="/accept-periods">Нээлттэй хугацаа тохируулах</Link>{" "}
+              <Link to="/accept-periods">Нээлттэй хугацаа тохируулах</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/currency-rates">Ханшийн мэдээлэл оруулах</Link>
             </MenuItem>
           </SubMenu>
           {/* {ctxUser.userInfo.role==="edpadmin"?<SubMenu title="Тохиргоо" icon={<MdSettings />}> </SubMenu>

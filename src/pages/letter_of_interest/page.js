@@ -13,6 +13,7 @@ import './style.css'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import { Transition } from 'react-spring/renderprops'
 import QuestionMarkSVG from 'assets/svgComponents/questionMarkSVG'
+import PenAltSVG from 'assets/svgComponents/penAltSVG'
 
 
 const initialState = {
@@ -149,14 +150,13 @@ export default function LetterOfInterest() {
         }
     }
 
-    const projectId = useParams().id
+    const userId = useParams().id
 
     useEffect(() => {
-        if (projectId !== undefined && projectId !== null) {
-            axios.get(`letter-of-interests/${projectId}`, {
-                headers: {
-                    'Authorization': getLoggedUserToken(),
-                },
+        if (userId !== undefined && userId !== null) {
+            axios.get(`letter-of-interests`, {
+                headers: { 'Authorization': getLoggedUserToken() },
+                params: { userId: userId },
             }).then(res => {
                 console.log(res.data)
                 setForm({ ...form, ...res.data.data })
@@ -180,7 +180,7 @@ export default function LetterOfInterest() {
     const emptyDataURL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQYV2NgAAIAAAUAAarVyFEAAAAASUVORK5CYII='
 
     useEffect(() => {
-        sigCanvasRef.current.getTrimmedCanvas().toDataURL('image/png') === emptyDataURL && sigCanvasRef.current.fromDataURL(form.director_signature)
+        sigCanvasRef.current?.getTrimmedCanvas().toDataURL('image/png') === emptyDataURL && sigCanvasRef.current.fromDataURL(form.director_signature)
     }, [form.director_signature])
 
     const [previewModal, setPreviewModal] = useState(false)
@@ -215,9 +215,25 @@ export default function LetterOfInterest() {
     }
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
+        document.addEventListener('click', handleClickOutside)
+        document.addEventListener('click', handleClickOutsideSignature)
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside)
+            document.removeEventListener('click', handleClickOutsideSignature)
+        }
     })
+
+    const [signatureModalOpen, setSignatureModalOpen] = useState(false)
+
+    const signatureButtonRef = useRef()
+    const signatureModalRef = useRef()
+
+    const handleClickOutsideSignature = (e) => {
+        if (!signatureModalRef.current?.contains(e.target) && !signatureButtonRef.current?.contains(e.target)) {
+            setSignatureModalOpen(false)
+        }
+    }
 
     return (
         <div className="tw-text-gray-700 tw-text-sm">
@@ -236,7 +252,7 @@ export default function LetterOfInterest() {
                 enter={{ transform: 'translateX(0)', opacity: 1 }}
                 leave={{ transform: 'translateX(384px)', opacity: 0.4 }}>
                 {item => item && (anims =>
-                    <div className="tw-fixed tw-right-0 tw-top-20 tw-z-20 tw-bg-indigo-500 tw-text-white tw-ml-8 tw-w-full md:tw-w-96 tw-rounded-lg tw-p-2" style={anims} ref={helperRef}>
+                    <div className="tw-fixed tw-right-0 tw-top-20 tw-z-10 tw-bg-indigo-500 tw-text-white tw-ml-8 tw-w-full md:tw-w-96 tw-rounded-lg tw-p-2" style={anims} ref={helperRef}>
                         <div className="tw-mx-2 tw-text-13px tw-leading-snug">
                             Сонирхол албан тоот бичих зөвлөмж. Албан тоотдоо дараах зүйлсийг тусган бичнэ үү.
                         </div>
@@ -263,9 +279,9 @@ export default function LetterOfInterest() {
                                 </button>
                             </div>
                             :
-                            <button className={`tw-w-full tw-h-36 tw-justify-self-center tw-shadow-md tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-blue-400 tw-text-sm focus:tw-outline-none active:tw-text-blue-300 tw-transition-colors ${validate && checkInvalid(form.company_logo) && 'tw-border tw-border-red-500 tw-border-dashed'}`} onClick={() => inputRefLogo.current.click()}>
+                            <button className={`tw-w-full tw-h-36 tw-justify-self-center tw-shadow-inner tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-blue-500 tw-text-sm focus:tw-outline-none active:tw-text-blue-400 tw-transition-colors ${validate && checkInvalid(form.company_logo) && 'tw-border tw-border-red-500 tw-border-dashed'}`} onClick={() => inputRefLogo.current.click()} title="Компаний лого оруулах">
                                 <UploadSVG className="tw-w-8 tw-h-8" />
-                                <span className="tw-font-medium tw-mt-1">Лого</span>
+                                <span className="tw-font-medium tw-mt-1">Компаний лого</span>
                             </button>
                         }
                         <input type="file" className="tw-invisible tw-absolute tw-h-0" onChange={handleUploadLogo} ref={inputRefLogo} />
@@ -279,14 +295,14 @@ export default function LetterOfInterest() {
                                 <span className="tw-mr-1">
                                     Утас:
                                 </span>
-                                <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-20 ${validate && checkInvalid(form.company_phone) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_phone || ''} onChange={e => handleInput('company_phone', e.target.value)} />
+                                <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-20 ${validate && checkInvalid(form.company_phone) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_phone || ''} onChange={e => handleInput('company_phone', e.target.value)} title="Утас" />
                             </div>
 
                             <div className="tw-flex tw-items-center tw-leading-tight">
                                 <span className="tw-mr-1">
                                     Факс:
                                 </span>
-                                <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-20 ${validate && checkInvalid(form.company_fax) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_fax || ''} onChange={e => handleInput('company_fax', e.target.value)} />
+                                <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-20 ${validate && checkInvalid(form.company_fax) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_fax || ''} onChange={e => handleInput('company_fax', e.target.value)} title="Факс" />
                             </div>
                         </div>
 
@@ -294,23 +310,23 @@ export default function LetterOfInterest() {
                             <span className="tw-mr-1">
                                 Имэйл:
                             </span>
-                            <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.company_email) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_email || ''} onChange={e => handleInput('company_email', e.target.value)} />
+                            <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.company_email) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_email || ''} onChange={e => handleInput('company_email', e.target.value)} title="Имэйл" />
                         </div>
 
                         <div className="tw-mt-1 tw-flex tw-justify-center tw-items-center tw-leading-tight">
                             <span className="tw-mr-1">
                                 УБД:
                             </span>
-                            <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.company_register) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_register || ''} onChange={e => handleInput('company_register', e.target.value)} />
+                            <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.company_register) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_register || ''} onChange={e => handleInput('company_register', e.target.value)} title="Улсын бүртгэлийн дугаар" />
                         </div>
 
                         <div className="tw-mt-1 tw-flex tw-justify-center tw-items-center tw-leading-tight">
-                            <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.submit_date) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ width: 124 }} type="date" value={form.submit_date || ''} onChange={e => handleInput('submit_date', e.target.value)} title="Он сар өдөр" />
+                            <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.submit_date) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ width: 136 }} type="date" value={form.submit_date || ''} onChange={e => handleInput('submit_date', e.target.value)} title="Он сар өдөр" />
 
                             <span className="tw-ml-2">
                                 №:
                             </span>
-                            <input className={`tw-px-0.5 tw-ml-1 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-24 ${validate && checkInvalid(form.snumber) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.snumber || ''} onChange={e => handleInput('snumber', e.target.value)} title="Дугаар"/>
+                            <input className={`tw-px-0.5 tw-ml-1 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-24 ${validate && checkInvalid(form.snumber) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.snumber || ''} onChange={e => handleInput('snumber', e.target.value)} title="Дугаар" />
                         </div>
                     </div>
 
@@ -321,48 +337,85 @@ export default function LetterOfInterest() {
 
                 <div className="tw-text-2xl tw-mt-8 tw-flex tw-items-center" style={{ marginLeft: '18%' }}>
                     Төсөлд хамрагдах тухай
-                    <button className="tw-ml-auto tw-mr-16 focus:tw-outline-none tw-text-indigo-500 active:tw-text-indigo-700" onClick={() => setHelpOpen(true)} ref={helpButtonRef}>
+                    <button className="tw-ml-auto tw-mr-20 focus:tw-outline-none tw-text-indigo-500 active:tw-text-indigo-700" onClick={() => setHelpOpen(true)} ref={helpButtonRef}>
                         <QuestionMarkSVG className="tw-w-6 tw-h-6 tw-transition-colors" />
                     </button>
                 </div>
 
-                <div className={`tw-mx-16 tw-p-1 tw-flex tw-rounded ${validate && checkInvalid(form.letter, 'quill') && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ height: 740 }}>
+                <div className={`tw-mx-16 tw-p-1 tw-flex tw-rounded ${validate && checkInvalid(form.letter, 'quill') && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ height: 690 }}>
                     <ReactQuill theme="snow" modules={modules} tabIndex={0} value={form.letter} onChange={content => handleInput('letter', content)} placeholder={"Сонирхол илэрхийлэх албан тоотоо энд бичнэ үү."} />
                 </div>
 
                 <div className="tw-relative tw-h-40 tw-mt-10 tw-mx-24">
-                    <div className="tw-absolute tw-top-8 tw-left-2 tw-font-medium tw-text-base tw-uppercase">
+                    <div className="tw-absolute tw-top-4 tw-left-2 tw-font-medium tw-text-base tw-uppercase">
                         Хүндэтгэсэн:
                     </div>
 
-                    <div className="tw-absolute tw-top-10 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw-w-full tw-flex tw-justify-center tw-items-center tw-z-10">
+                    <div className="tw-absolute tw-top-6 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw-w-full tw-flex tw-justify-center tw-items-center tw-z-10">
                         <input className={`tw-w-48 tw-text-center tw-font-medium tw-mr-2 tw-py-1 tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.director_position) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.director_position || ''} onChange={e => handleInput('director_position', e.target.value)} placeholder="Албан тушаал" title="Албан тушаал" />
 
-                        <div className="tw-flex tw-items-start tw-ml-2">
-                            <SignaturePad canvasProps={{ className: `tw-shadow-inner tw-bg-blue-100 tw-bg-opacity-50 tw-rounded ${validate && checkInvalid(form.director_signature) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`, width: 260, height: 90 }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
+                        {form.company_stamp ?
+                            <div className="tw-w-44 tw-h-44 tw-mx-2 tw-relative">
+                                <img src={form.company_stamp} alt="Байгууллагын тамга тэмдэг" className="tw-w-full tw-h-full tw-object-scale-down tw-shadow-md tw-cursor-pointer" onClick={() => inputRefStamp.current.click()} />
+                                <button className="tw-absolute tw-top-0 tw-right-0 tw-text-red-500 active:tw-text-red-600 focus:tw-outline-none">
+                                    <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" onClick={() => handleInput('company_stamp', null)} />
+                                </button>
+                            </div>
+                            :
+                            <button className={`tw-w-44 tw-h-44 tw-mx-2 tw-shadow-inner tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-blue-500 focus:tw-outline-none active:tw-text-blue-400 tw-transition-colors ${validate && checkInvalid(form.company_stamp) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} onClick={() => inputRefStamp.current.click()} title="Байгууллагын тамга тэмдэг оруулах">
+                                <UploadSVG className="tw-w-8 tw-h-8" />
+                                <span className="tw-font-medium tw-mt-1 tw-text-sm">Тамга</span>
+                            </button>
+                        }
 
-                            <ButtonTooltip tooltip="Арилгах" beforeSVG={<CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" />} onClick={handleClearSignature} classAppend="tw-w-px" classButton="tw-text-red-500 active:tw-text-red-600" />
+                        <div className="tw-flex tw-items-center">
+                            <input className={`tw-w-60 tw-text-center tw-font-medium tw-ml-2 tw-py-1 tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.director_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.director_name || ''} onChange={e => handleInput('director_name', e.target.value)} placeholder="Овог нэр" title="Овог нэр" />
+
+                            <div className="tw-w-0 tw-h-10 tw-relative">
+                                <button className={`tw-absolute tw-top-0 tw-left-4 tw-text-blue-500 active:tw-text-blue-400 tw-transition-colors focus:tw-outline-none tw-shadow-inner tw-p-1 tw-rounded ${validate && checkInvalid(form.company_stamp) && 'tw-border tw-border-red-500 tw-border-dashed'}`} onClick={() => setSignatureModalOpen(true)} ref={signatureButtonRef} title="Гарын үсэг оруулах">
+                                    <PenAltSVG className="tw-w-8 tw-h-8 tw-transition-colors" />
+                                </button>
+                            </div>
                         </div>
-
-                        <input className={`tw-w-60 tw-text-center tw-font-medium tw-ml-2 tw-py-1 tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.director_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.director_name || ''} onChange={e => handleInput('director_name', e.target.value)} placeholder="Овог нэр" title="Овог нэр" />
                     </div>
 
-                    {form.company_stamp ?
-                        <div className="tw-w-44 tw-h-44 tw-absolute tw-top-2 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--z-10">
-                            <img src={form.company_stamp} alt="Байгууллагын тамга тэмдэг" className="tw-w-full tw-h-full tw-object-scale-down tw-shadow-md tw-cursor-pointer" onClick={() => inputRefStamp.current.click()} />
-                            <button className="tw-absolute tw-top-0 tw-right-0 tw-text-red-500 active:tw-text-red-600 focus:tw-outline-none">
-                                <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" onClick={() => handleInput('company_stamp', null)} />
-                            </button>
-                        </div>
-                        :
-                        <button className={`tw-w-44 tw-h-44 tw-shadow-md tw-absolute tw-top-2 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--z-10 tw-flex tw-flex-col tw-justify-end tw-items-center tw-text-blue-400 focus:tw-outline-none active:tw-text-blue-300 tw-transition-colors ${validate && checkInvalid(form.company_stamp) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} onClick={() => inputRefStamp.current.click()}>
-                            <UploadSVG className="tw-w-7 tw-h-7" />
-                            <span className="tw-font-medium tw-mb-1 tw-text-13px">Тамга</span>
-                        </button>
+                    {form.director_signature &&
+                        <img src={form.director_signature} className="tw-absolute tw-top-20 tw-z-10" style={{ width: 182, height: 63, left: 280 }} alt="" />
                     }
+
                     <input type="file" name="" id="" className="tw-invisible tw-absolute tw-h-0" onChange={handleUploadStamp} ref={inputRefStamp} />
                 </div>
             </div>
+
+            <Transition
+                items={signatureModalOpen}
+                from={{ opacity: 0 }}
+                enter={{ opacity: 1 }}
+                leave={{ opacity: 0 }}>
+                {item => item && (anims =>
+                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
+                        <div className="tw-bg-white tw-rounded tw-p-4 tw-relative tw-flex tw-flex-col" ref={signatureModalRef}>
+                            <button className="tw-absolute tw-top-1.5 tw-right-1.5 tw-text-red-500 active:tw-text-red-600 tw-transition-colors focus:tw-outline-none tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={() => setSignatureModalOpen(false)}>
+                                <CloseSVG className="tw-w-5 tw-h-5" />
+                            </button>
+                            <div className="tw-p-2 tw-text-sm tw-font-medium">
+                                Гарын үсэг зурах:
+                            </div>
+
+                            <SignaturePad canvasProps={{ className: 'tw-rounded tw-border tw-border-gray-400', width: 520, height: 180 }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
+
+                            <div className="tw-flex tw-justify-center tw-mt-4">
+                                <button className="tw-rounded tw-text-white tw-bg-gray-700 active:tw-bg-gray-600 tw-transition-colors tw-w-32 tw-py-1 focus:tw-outline-none" onClick={handleClearSignature}>
+                                    Арилгах
+                                </button>
+                                <button className="tw-rounded tw-text-white tw-bg-gray-700 active:tw-bg-gray-600 tw-transition-colors tw-w-32 tw-py-1 tw-ml-3 focus:tw-outline-none" onClick={() => setSignatureModalOpen(false)}>
+                                    Буцах
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </Transition>
 
             <div className="tw-flex tw-justify-center">
                 <button className="tw-mt-12 tw-mb-16 tw-bg-blue-800 tw-text-white tw-text-15px tw-rounded tw-py-2 tw-px-8 tw-font-medium hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSubmit}>
