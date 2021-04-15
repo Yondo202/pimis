@@ -16,7 +16,7 @@ function HomePage({setNotify}) {
 
     useEffect(async()=>{
             await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token()}}).then((res)=>{
-                console.log(res, " my data+++++++++");
+                console.log(res, " my data++++++----+++");
                 if(res.data.data[0]){ setCardData(res.data.data); };
             }).catch((err)=> console.log(err.response.data.error))
     },[]);

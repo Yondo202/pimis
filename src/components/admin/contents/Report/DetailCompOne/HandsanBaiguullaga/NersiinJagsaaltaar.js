@@ -100,7 +100,7 @@ const NersiinJagsaaltaar = () => {
                     showBorders={true}
                     // keyExpr="business_sectorId"
                     columnAutoWidth={true}
-                    width={width?width:700}
+                    width={width?width+30:700}
                 >
                     <Selection
                         mode="multiple"
@@ -191,13 +191,7 @@ const customizeTextConfirmed = (cellinfo) => {
     }
 }
 
-const HeaderStyle = styled.div`
-    font-weight:500;
-`
-
-
 export default NersiinJagsaaltaar;
-
 
 const Container = styled.div`
     max-width:1222px;
@@ -234,9 +228,6 @@ const Container = styled.div`
     }
 `
 
-  function onPointClick(e) {
-    e.target.select();
-  }
 
 const test = [
     { bdescription_mon: "Зам, Барилга", count: 24 ,business_sectorId:47 , success: 14, reject:10 },

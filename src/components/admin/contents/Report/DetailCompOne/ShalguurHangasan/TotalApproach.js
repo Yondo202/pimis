@@ -105,7 +105,7 @@ const TotalApproach = () => {
                     AutoWidth={true}
                     width={"100%"}
                     columnAutoWidth={true}
-                    width={width?width:700}
+                    width={width?width+30:700}
 
                 >
                     <Selection
