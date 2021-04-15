@@ -40,6 +40,7 @@ function UrgudulNoticeCluster() {
                     newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
                     return newForm
                 })
+                setCheckList(new Set([1, '2a', '2b', '2c', '2d', 3, 4, 5, 6, 7]))
                 setAgreed(true)
             } else {
                 const newForm = form
@@ -160,6 +161,17 @@ function UrgudulNoticeCluster() {
         }
     }
 
+    const handleClickAgree = () => {
+        if (checkList.size === 10) {
+            if (!agreed) {
+                setAgreed(true)
+                window.scrollBy({ top: 400, left: 0, behavior: 'smooth' })
+            }
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Дээрх мэдээлэлтэй уншиж танилцаад зөвлөж тэмдэглэнэ үү.' })
+        }
+    }
+
     return (
         <div className="tw-pb-20 tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm">
             <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
@@ -260,7 +272,7 @@ function UrgudulNoticeCluster() {
                     </div>
 
                     <div className="tw-flex tw-justify-end tw-items-center">
-                        <button className="tw-inline-flex tw-items-center focus:tw-outline-none tw-rounded tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-pl-3 tw-pr-4 tw-py-2 tw-mr-8 tw-mb-8 tw-mt-4" onClick={() => setAgreed(!agreed)}>
+                        <button className="tw-inline-flex tw-items-center focus:tw-outline-none tw-rounded tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-pl-3 tw-pr-4 tw-py-2 tw-mr-8 tw-mb-8 tw-mt-4" onClick={handleClickAgree}>
                             <span className={`tw-rounded-full tw-border ${agreed ? 'tw-border-white' : 'tw-border-blue-300'} tw-transition-colors tw-w-4 tw-h-4 tw-flex tw-items-center tw-justify-center tw-mr-2`}>
                                 <span className={`tw-rounded-full ${agreed ? 'tw-bg-white' : 'tw-bg-transparent'} tw-transition-colors tw-w-2 tw-h-2`}></span>
                             </span>
@@ -300,7 +312,7 @@ function UrgudulNoticeCluster() {
                                     <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(applicantItem.representative_signature) ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
                                     <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(applicantItem.representative_signature) && 'tw-text-red-500'}`}>
                                         Гарын үсэг
-                                </span>
+                                    </span>
                                 </div>
 
                                 <FormSignature value={applicantItem.representative_signature} name="representative_signature" id={applicantIndex} setForm={handleSetForm} classAppend="tw-pl-8 tw-pr-2 tw-py-2 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />

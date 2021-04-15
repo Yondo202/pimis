@@ -33,6 +33,8 @@ function UrgudulNoticeCompany() {
     useEffect(() => {
         if (UrgudulCtx.data.noticeCompany && UrgudulCtx.data.noticeCompany?.length) {
             setForm(UrgudulCtx.data.noticeCompany)
+            setCheckList(new Set([1, '2a', '2b', '2c', '2d', 3, 4, 5, 6]))
+            setAgreed(true)
         }
     }, [UrgudulCtx.data.id])
 
@@ -146,7 +148,7 @@ function UrgudulNoticeCompany() {
         if (checkList.size === 9) {
             if (!agreed) {
                 setAgreed(true)
-                window.scrollBy({ top: 200, left: 0, behavior: 'smooth' })
+                window.scrollBy({ top: 400, left: 0, behavior: 'smooth' })
             }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Дээрх мэдээлэлтэй уншиж танилцаад зөвлөж тэмдэглэнэ үү.' })

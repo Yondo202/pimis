@@ -219,10 +219,11 @@ const ButtonNavStatus = (data) => {
             search: `?projectId=${projectId}`
         })
     }
-    return status &&
-        <button className="tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-2 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md" style={{ minWidth: 118 }} onClick={buttonClick}>
+    return status
+        ? <button className="tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-2 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md" style={{ minWidth: 118 }} onClick={buttonClick}>
             {statusNames[status] || ''}
         </button>
+        : null
 }
 
 // const ButtonEditProject = (data) => {
