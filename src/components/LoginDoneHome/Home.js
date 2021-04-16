@@ -36,7 +36,9 @@ function Home() {
 
     return (
         <HomeComponent style={userId ? { maxWidth: "2000px" } : { maxWidth: "1160px" }} className={`container`}>
-            {infData?.criteria === 1 ? <h2 style={{ marginTop: 50 }}>Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэх боломжгүй байна.</h2> : <> <div className="headerPar">
+            {infData?.criteria === 1 ? <h3 style={{ marginTop: 50 }}>
+                Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
+                </h3> : <> <div className="headerPar">
                 {userId ? <div className="header row">
                     <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын нэр:</span>{infData?.companyname}</span> </div></div>
                     <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Төслийн нэр:</span>{infData?.project?.project_name}</span>  </div></div>

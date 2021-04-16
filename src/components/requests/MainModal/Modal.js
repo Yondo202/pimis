@@ -35,7 +35,7 @@ export const Modal = ({ showModal,setShowModal, initialData, param, na3 }) => {
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
     });
-    const backHanlde = () =>{ history.push(`/projects`); };
+    const backHanlde = () =>{ history.goBack(); };
 
     return(
         <>
