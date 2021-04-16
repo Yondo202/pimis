@@ -4,7 +4,7 @@ import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { config, Transition } from 'react-spring/renderprops'
 
 
@@ -159,15 +159,15 @@ function UrgudulChecklist() {
                             <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.signed} name="signed" onChange={handleInputCheckbox} />
                         </div>
                     </div>
-                </div>
 
-                <div className="tw-flex tw-justify-end">
-                    <button className={`tw-mt-6 tw-mb-4 tw-mr-4 tw-px-6 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-sm tw-font-medium tw-text-white focus:tw-outline-none tw-rounded tw-transition-colors ${isConfirmed && 'tw-opacity-70'}`} onClick={() => !isConfirmed && handleOpenModal()}>
-                        {isConfirmed
-                            ? `Өргөдөл баталгаажсан байна`
-                            : `Өргөдлийг баталгаажуулах`
-                        }
-                    </button>
+                    <div className="tw-flex tw-justify-end">
+                        <button className={`tw-mt-2 tw-mb-6 tw-mr-4 tw-px-6 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-sm tw-font-medium tw-text-white focus:tw-outline-none tw-rounded tw-transition-colors ${isConfirmed && 'tw-opacity-70'}`} onClick={() => !isConfirmed && handleOpenModal()}>
+                            {isConfirmed
+                                ? `Өргөдөл баталгаажсан байна`
+                                : `Өргөдлийг баталгаажуулах`
+                            }
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -261,6 +261,14 @@ function UrgudulChecklist() {
                                     Бусад шаардлагатай баримт бичиг.
                             </li>
                             </ol>
+
+                            <div className="tw-flex tw-justify-end">
+                                <Link to="/attachments">
+                                    <button className="tw-mt-2 tw-mb-6 tw-mr-4 tw-px-6 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-sm tw-font-medium tw-text-white focus:tw-outline-none tw-rounded tw-transition-colors">
+                                        Нотлох бичиг баримтууд
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 )}

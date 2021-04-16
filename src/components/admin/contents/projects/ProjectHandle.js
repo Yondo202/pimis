@@ -134,16 +134,16 @@ export default function ProjectHandle() {
                     <FilterRow visible={true} />
 
                     {/* <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} setEvaluatorsModal={setEvaluatorsModal} />} headerCellRender={HeaderCell} width={134} /> */}
-                    <Column caption="Явцыг харах" cellRender={data => <ButtonNavProgress data={data} />} headerCellRender={HeaderCell} />
+                    <Column caption="Явцыг харах" cellRender={data => <ButtonNavProgress data={data} />} headerCellRender={HeaderCell} alignment="left" minWidth={112} />
                     <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="left" />
                     <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} alignment="left" />
                     <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} customizeText={customizeTextCriteria} alignment="left" />
                     <Column dataField="esq" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} alignment="left" />
-                    <Column dataField="esm" caption="Ангилал" headerCellRender={HeaderCell} alignment="center" />
+                    <Column dataField="esm" caption="Ангилал" headerCellRender={HeaderCell} alignment="center" width={100} />
                     <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueLetterOI} alignment="left" />
 
                     <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
-                        <Column caption="Төлөв" cellRender={data => <ButtonNavStatus data={data} />} headerCellRender={HeaderCell} alignment="left" />
+                        <Column caption="Төлөв" cellRender={data => <ButtonNavStatus data={data} />} headerCellRender={HeaderCell} alignment="left" minWidth={139} />
                         {/* <Column dataField="project.status" caption="Төлөв" headerCellRender={HeaderCell} allowEditing={true} width={120}>
                             <Lookup dataSource={statuses} displayExpr="display" valueExpr="value" />
                         </Column> */}
@@ -219,9 +219,11 @@ const ButtonNavStatus = (data) => {
             search: `?projectId=${projectId}`
         })
     }
-    return <button className="tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-2 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md" onClick={buttonClick}>
-        {statusNames[status] || 'Хоосон'}
-    </button>
+    return status
+        ? <button className="tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-2 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md" style={{ minWidth: 118 }} onClick={buttonClick}>
+            {statusNames[status] || ''}
+        </button>
+        : null
 }
 
 // const ButtonEditProject = (data) => {

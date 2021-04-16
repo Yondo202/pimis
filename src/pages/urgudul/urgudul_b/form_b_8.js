@@ -278,7 +278,7 @@ function UrgudulCalculations() {
                         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B8</span>
                         <span className="tw-leading-tight">- Өөрийн төслийн хувьд дараах тооцооллыг хийнэ үү</span>
 
-                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Мөнгөн дүн бүхий тооцооллуудыг доллараар хийх ба тухайн онуудын долларын ханшийг зааж өгсөн болно." position="bottom" />
+                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Мөнгөн дүн бүхий тооцооллуудыг тухайн жилийн доор харуулсан тэр оны долларын ханшийг ашиглан доллар руу хөрвүүлж хийнэ үү." position="bottom" />
                     </div>
 
                     {UrgudulCtx.data.project_number &&
@@ -314,7 +314,7 @@ function UrgudulCalculations() {
                                                         {`${form.endDate.year ? form.endDate.year : ''}-${form.endDate.month ? form.endDate.month : ''}`}
                                                         <HelpPopup main="Төслийн дуусах хугацаа, жил сараар." position="bottom" />
                                                     </div>
-                                                    <span className="tw-text-xs tw-mt-0.5 tw-px-1 tw-text-indigo-500" style={{minHeight: 15}}>
+                                                    <span className="tw-text-xs tw-mt-0.5 tw-px-1 tw-text-indigo-500" style={{ minHeight: 15 }}>
                                                         {getRate(form.endDate.year) && `(${getRate(form.endDate.year).toFixed(2)} ₮)`}
                                                     </span>
                                                 </div>
