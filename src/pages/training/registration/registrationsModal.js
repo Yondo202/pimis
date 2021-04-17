@@ -1,7 +1,7 @@
 import CloseSVG from 'assets/svgComponents/closeSVG'
 import PlusSVG from 'assets/svgComponents/plusSVG'
 import React, { useEffect, useRef } from 'react'
-import { Transition } from 'react-spring/renderprops-universal'
+import { Transition } from 'react-spring/renderprops'
 
 
 export default function RegistrationsModal(props) {

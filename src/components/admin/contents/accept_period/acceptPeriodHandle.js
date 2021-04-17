@@ -51,7 +51,9 @@ export default function AcceptPeriodHandle() {
                 end_date: '',
             }
         })
+        console.log("i am run 😁😁😁")
     }
+    console.log('I rerendered 😀😀😀😀')
 
     const handleEditPeriod = (period) => {
         setModal({
@@ -149,8 +151,8 @@ export default function AcceptPeriodHandle() {
     }
 
     useEffect(() => {
-        document.addEventListener('click', handleClickOutside)
-        return () => document.removeEventListener('click', handleClickOutside)
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
     })
 
     const onRowInserted = (e) => {

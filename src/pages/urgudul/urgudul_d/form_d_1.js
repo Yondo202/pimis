@@ -14,6 +14,7 @@ import { useHistory } from 'react-router-dom'
 import FormSignature from 'components/urgudul_components/formSignature'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { Transition } from 'react-spring/renderprops'
+import LoadFromOtherProject from '../loadFromOtherProject'
 
 
 const initialState = [
@@ -27,7 +28,7 @@ const initialState = [
     },
 ]
 
-function UrgudulNoticeCluster() {
+function UrgudulNoticeCluster({ projects }) {
     const [form, setForm] = useState(initialState)
 
     const UrgudulCtx = useContext(UrgudulContext)
@@ -35,11 +36,9 @@ function UrgudulNoticeCluster() {
     useEffect(() => {
         if (UrgudulCtx.data.id !== undefined) {
             if (UrgudulCtx.data.noticeClusters && UrgudulCtx.data.noticeClusters?.length) {
-                setForm(prevState => {
-                    const newForm = UrgudulCtx.data.noticeClusters
-                    newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
-                    return newForm
-                })
+                const newForm = UrgudulCtx.data.noticeClusters
+                newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
+                setForm([...newForm])
                 setCheckList(new Set([1, '2a', '2b', '2c', '2d', 3, 4, 5, 6, 7]))
                 setAgreed(true)
             } else {
@@ -172,15 +171,43 @@ function UrgudulNoticeCluster() {
         }
     }
 
+    const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+
+    const loadFromOtherProjectNoticeCluster = (id) => {
+        if (!agreed) {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Эхлээд мэдэгдэлтэй танилцаж зөвшөөрч байна товчийг дарна уу.' })
+            return
+        }
+
+        axios.get(`projects/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res)
+            const loadNoticeCluster = res.data.data?.noticeClusters ?? []
+            if (loadNoticeCluster.length > 0) {
+                setForm(loadNoticeCluster)
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Кластерийн төлөөлөгчдийн мэдээллээ оруулаагүй өргөдөл байна.' })
+                return
+            }
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+        }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+        })
+    }
+
     return (
-        <div className="tw-pb-20 tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm">
+        <div className="tw-pb-10 tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm">
             <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
                 <div className="">
-                    <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                    <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px tw-relative">
                         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">D</span>
                         <span className="tw-leading-tight">- Мэдэгдэл</span>
 
-                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерын өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." position="bottom" />
+                        <HelpPopup classAppend="tw-ml-4 tw-mr-2 sm:tw-ml-12" main="Кластерын өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." position="bottom" />
+
+                        <LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectNoticeCluster} />
                     </div>
 
                     {UrgudulCtx.data.project_number &&

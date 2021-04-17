@@ -7,6 +7,7 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import LoadFromOtherProject from '../loadFromOtherProject'
 
 
 const initialState = {
@@ -14,7 +15,7 @@ const initialState = {
     applicant_experience: null,
 }
 
-function UrgudulOverview() {
+function UrgudulOverview({ projects }) {
     const [form, setForm] = useState(initialState)
 
     const UrgudulCtx = useContext(UrgudulContext)
@@ -85,12 +86,33 @@ function UrgudulOverview() {
 
     const [isCluster, setIsCluster] = useState(false)
 
+    const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+
+    const loadFromOtherProjectOverview = (id) => {
+        axios.get(`projects/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res)
+            const loadProject = res.data.data ?? {}
+            setForm({
+                applicant_overview: loadProject.applicant_overview || null,
+                applicant_experience: loadProject.applicant_experience || null,
+            })
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+        }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+        })
+    }
+
     return (
-        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             {UrgudulCtx.data.project_number &&
-                <div className="tw-ml-5 tw-my-2 tw-font-medium tw-text-13px">
+                <div className="tw-ml-5 tw-my-2 tw-font-medium tw-text-13px tw-relative">
                     Өргөдлийн дугаар:
                     <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+
+                    <LoadFromOtherProject classAppend="tw-absolute tw-right-4 tw--top-2.5" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectOverview} />
                 </div>
             }
 

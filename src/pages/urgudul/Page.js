@@ -21,7 +21,7 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import DocAddSVG from 'assets/svgComponents/docAddSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
-import { Transition } from 'react-spring/renderprops-universal'
+import { config, Transition } from 'react-spring/renderprops'
 import UrgudulPreview from './preview/Preview'
 
 
@@ -103,6 +103,7 @@ function UrgudulNavigator(props) {
     }
 
     const createProject = () => {
+        UrgudulCtx.setData({})
         setModalOpen(false)
         history.push('/urgudul/1')
     }
@@ -162,24 +163,25 @@ function UrgudulNavigator(props) {
             </div>
 
             {transitionsPages.map(({ item, props, key }) =>
-                <animated.div key={key} style={props}>
+                <animated.div key={key} className="tw-pb-10" style={props}>
                     <Switch location={item}>
                         <Route path="/urgudul/1">
                             <UrgudulFront />
                         </Route>
 
                         <Route path="/urgudul/2">
-                            <UrgudulApplicant />
+                            <UrgudulApplicant projects={projects} />
                         </Route>
 
                         <Route path="/urgudul/3">
-                            {
-                                isCluster ? <UrugudulClusters /> : <UrugudulDirectors />
+                            {isCluster
+                                ? <UrugudulClusters projects={projects} />
+                                : <UrugudulDirectors projects={projects} />
                             }
                         </Route>
 
                         <Route path="/urgudul/4">
-                            <UrgudulOverview />
+                            <UrgudulOverview projects={projects} />
                         </Route>
 
                         <Route path="/urgudul/5">
@@ -199,8 +201,9 @@ function UrgudulNavigator(props) {
                         </Route>
 
                         <Route path="/urgudul/9">
-                            {
-                                isCluster ? <UrgudulNoticeCluster /> : <UrgudulNoticeCompany />
+                            {isCluster
+                                ? <UrgudulNoticeCluster projects={projects} />
+                                : <UrgudulNoticeCompany projects={projects} />
                             }
                         </Route>
 
@@ -274,7 +277,8 @@ function UrgudulNavigator(props) {
                             items={previewModalOpen}
                             from={{ width: 0 }}
                             enter={{ width: 'auto' }}
-                            leave={{ width: 0 }}>
+                            leave={{ width: 0 }}
+                            config={config.stiff}>
                             {item => item && (anims =>
                                 <div className="tw-fixed tw-top-0 tw-left-0 tw-h-screen tw-overflow-y-auto tw-overflow-x-hidden tw-mr-8 tw-bg-white tw-px-4 tw-pb-2 tw-pt-4" style={anims} ref={previewContainerRef}>
                                     <button className="tw-text-red-500 active:tw-text-red-600 tw-rounded tw-border tw-border-red-500 active:tw-border-red-600 tw-absolute tw-top-1.5 tw-right-1.5 focus:tw-outline-none" onClick={() => setPreviewModalOpen(false)}>

@@ -215,12 +215,12 @@ export default function LetterOfInterest() {
     }
 
     useEffect(() => {
-        document.addEventListener('click', handleClickOutside)
-        document.addEventListener('click', handleClickOutsideSignature)
+        document.addEventListener('mousedown', handleClickOutside)
+        document.addEventListener('mousedown', handleClickOutsideSignature)
 
         return () => {
-            document.removeEventListener('click', handleClickOutside)
-            document.removeEventListener('click', handleClickOutsideSignature)
+            document.removeEventListener('mousedown', handleClickOutside)
+            document.removeEventListener('mousedown', handleClickOutsideSignature)
         }
     })
 

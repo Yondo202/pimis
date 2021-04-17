@@ -26,7 +26,8 @@ function SearchSelectCompact(props) {
     }, [props.data])
 
     useEffect(() => {
-        props.value && search === '' && setSearch(fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
+        const newSearch = fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] || ''
+        search !== newSearch && setSearch(newSearch)
     }, [props.value, fetch])
 
     const filter = (obj, searchState) => {
