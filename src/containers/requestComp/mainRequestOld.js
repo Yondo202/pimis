@@ -54,7 +54,7 @@ function MainRequest() {
     },[param === "user"?helpCtx.reqMount:0]);
 
     const handleScroll = () => {  if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); } }
-    const backHanlde = () =>{ history.push(`/projects`); }
+    const backHanlde = () =>{ history.goBack(); }
 
     const func = param === "user"&&helpCtx.StyleComp;
     const One = param === "user"&&helpCtx.GlobalStyle.tableOne;
