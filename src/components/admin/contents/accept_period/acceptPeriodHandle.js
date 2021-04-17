@@ -51,9 +51,7 @@ export default function AcceptPeriodHandle() {
                 end_date: '',
             }
         })
-        console.log("i am run 😁😁😁")
     }
-    console.log('I rerendered 😀😀😀😀')
 
     const handleEditPeriod = (period) => {
         setModal({
