@@ -18,6 +18,7 @@ import FileCard from 'pages/attachments/fileCard'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 import TreeSelect from 'components/urgudul_components/treeSelect'
+import LoadFromOtherProject from '../loadFromOtherProject'
 
 
 const initialState = [
@@ -34,7 +35,7 @@ const initialState = [
     },
 ]
 
-function UrugudulClusters() {
+function UrugudulClusters({ projects }) {
     const [form, setForm] = useState(initialState)
 
     const UrgudulCtx = useContext(UrgudulContext)
@@ -156,6 +157,11 @@ function UrugudulClusters() {
             allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key], key === 'project_contribution' && 'quill'))
         }
 
+        if (form.length < 1) {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Дор хаяж 1 кластерийн гишүүн байгууллагын мэдээлэл оруулна.' })
+            return
+        }
+
         if (UrgudulCtx.data.id) {
             if (allValid) {
                 axios.put(`projects/${UrgudulCtx.data.id}`, { clusters: form }, {
@@ -208,14 +214,37 @@ function UrugudulClusters() {
             })
     }, [])
 
+    const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+
+    const loadFromOtherProjectCluster = (id) => {
+        axios.get(`projects/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res)
+            const loadCluster = res.data.data?.clusters ?? []
+            if (loadCluster.length > 0) {
+                setForm(loadCluster)
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Кластерийн байгууллагуудын мэдээллээ оруулаагүй өргөдөл байна.' })
+                return
+            }
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+        }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+        })
+    }
+
     return (
-        <div className="tw-relative tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-relative tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="">
-                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px tw-relative">
                     <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
                     <span className="tw-leading-tight">- Кластерын гишүүн байгууллагууд</span>
 
-                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Тухайн кластерт оролцогч, бусад аж ахуйн нэгжүүдийг жагсаалт, тэдгээрийн төлөөлөх албан тушаалтан, овог нэрийн хамт." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-4 tw-mr-2 sm:tw-ml-12" main="Тухайн кластерт оролцогч, бусад аж ахуйн нэгжүүдийг жагсаалт, тэдгээрийн төлөөлөх албан тушаалтан, овог нэрийн хамт." position="bottom" />
+
+                    <LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectCluster} />
                 </div>
 
                 {UrgudulCtx.data.project_number &&
@@ -240,7 +269,7 @@ function UrugudulClusters() {
 
                             <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.representative_email || ''} name="representative_email" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.representative_email)} />
 
-                            <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={item.business_sectorId} name="business_sectorId" index={i} handleChange={handleSetForm} />
+                            <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={item.business_sectorId} name="business_sectorId" index={i} handleChange={handleSetForm} invalid={validate && checkInvalid(item.business_sectorId)} />
 
                             <div className="tw-w-full tw-max-w-lg tw-flex">
                                 <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.company_size)} />
@@ -329,7 +358,7 @@ function UrugudulClusters() {
                     Кластерийн гишүүн байгууллагууд
                 </div>
 
-                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classButton="tw-text-green-500 active:tw-text-green-600 tw-mr-2" />
+                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classButton={`tw-text-green-500 active:tw-text-green-600 tw-mr-2 ${validate && form.length < 1 && 'tw-border tw-border-red-500 tw-border-dashed'}`} />
             </div>
 
             <div className="tw-flex tw-justify-end">

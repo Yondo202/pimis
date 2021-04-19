@@ -115,7 +115,7 @@ function UrgudulBreakdown() {
     }
 
     return (
-        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="">
                 <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
                     <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B</span>
@@ -149,7 +149,7 @@ function UrgudulBreakdown() {
                     </div>
                     <div className="tw-mt-1 tw-bg-indigo-50 tw-rounded tw-py-1 tw-pl-2 tw-pr-4 tw-text-sm tw-text-indigo-500 tw-font-medium tw-flex tw-items-center">
                         <CalendarSVG className="tw-w-5 tw-h-5 tw-flex-shrink-0 tw-text-gray-600 tw-mr-2" />
-                        {form.project_end}
+                        {form.project_end || 'yyyy-mm-dd'}
                     </div>
                 </div>
             </div>

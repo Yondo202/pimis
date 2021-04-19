@@ -66,8 +66,8 @@ export default function ProjectStatusHandle() {
     }
 
     useEffect(() => {
-        document.addEventListener('click', handleClickOutside)
-        return () => document.removeEventListener('click', handleClickOutside)
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
     })
 
     const [histories, setHistories] = useState([])
@@ -146,7 +146,7 @@ export default function ProjectStatusHandle() {
                             leave={{ height: 0, opacity: 0 }}
                             config={config.stiff}>
                             {item => item && (anims =>
-                                <div className="tw-absolute tw-z-10 tw-border tw-border-gray-400 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 72, minWidth: 160, ...anims }} ref={dropdownRef}>
+                                <div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 72, minWidth: 160, ...anims }} ref={dropdownRef}>
                                     {Object.keys(statusNames).map(status =>
                                         <div className="tw-cursor-pointer tw-py-2 tw-text-13px tw-font-medium tw-px-2 hover:tw-bg-indigo-100 tw-transition-colors" key={status} onClick={() => handleStatusSelect(status)}>
                                             {statusNames[status]}

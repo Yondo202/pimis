@@ -12,6 +12,7 @@ import SearchSelect from 'components/urgudul_components/searchSelect'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import LoadFromOtherProject from '../loadFromOtherProject'
 
 
 const initialState = [
@@ -25,7 +26,7 @@ const initialState = [
     },
 ]
 
-function UrugudulDirectors() {
+function UrugudulDirectors({ projects }) {
     const [form, setForm] = useState(initialState)
 
     const UrgudulCtx = useContext(UrgudulContext)
@@ -139,14 +140,37 @@ function UrugudulDirectors() {
         }
     }
 
+    const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+
+    const loadFromOtherProjectDirectors = (id) => {
+        axios.get(`projects/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res)
+            const loadDirectors = res.data.data?.directors ?? []
+            if (loadDirectors.length > 0) {
+                setForm(loadDirectors)
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'ААН төлөөлөгчиддийн мэдээллээ оруулаагүй өргөдөл байна.' })
+                return
+            }
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+        }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+        })
+    }
+
     return (
-        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="">
-                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px tw-relative">
                     <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
                     <span className="tw-leading-tight">- Аж ахуйн нэгжийг төлөөлөгчид</span>
 
-                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="ААН нэгжийг төлөөлүүлж 3-аас түлхүүр албан тушаалтны мэдээллээ оруулна уу." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-4 tw-mr-2 sm:tw-ml-12" main="ААН нэгжийг төлөөлүүлж 3-аас түлхүүр албан тушаалтны мэдээллээ оруулна уу." position="bottom" />
+
+                    <LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectDirectors} />
                 </div>
 
                 {UrgudulCtx.data.project_number &&

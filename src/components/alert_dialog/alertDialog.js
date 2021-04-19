@@ -51,8 +51,8 @@ function AlertDialog() {
             leave={{ bottom: window.innerWidth < 640 ? '-32px' : '-48px' }}>
             {
                 show => show && (props =>
-                    <div style={props} className="tw-fixed tw-w-full tw-flex tw-justify-center">
-                        <div className={`tw-inline-flex tw-items-center tw-flex-grow tw-mx-2 tw-text-sm sm:tw-max-w-lg sm:tw-mx-0 tw-shadow-md tw-rounded-lg tw-p-1.5 tw-z-50 ${classTheme.bgColor[alert.variant]}`}>
+                    <div style={props} className="tw-fixed tw-w-full tw-flex tw-justify-center tw-z-50">
+                        <div className={`tw-inline-flex tw-items-center tw-flex-grow tw-mx-2 tw-text-sm sm:tw-max-w-lg sm:tw-mx-0 tw-shadow-md tw-rounded-lg tw-p-1.5 ${classTheme.bgColor[alert.variant]}`}>
                             <p className="tw-ml-2 tw-flex-grow tw-text-center tw-text-white tw-font-semibold">
                                 {alert.msg}
                             </p>

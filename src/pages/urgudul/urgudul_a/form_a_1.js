@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom'
 import FormSelect from 'components/urgudul_components/formSelect'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import TreeSelect from 'components/urgudul_components/treeSelect'
+import LoadFromOtherProject from '../loadFromOtherProject'
 
 
 const initialState = {
@@ -85,7 +86,7 @@ export const districts = [
     },
 ]
 
-function UrgudulApplicant() {
+function UrgudulApplicant({ projects }) {
     const [form, setForm] = useState(initialState)
 
     const UrgudulCtx = useContext(UrgudulContext)
@@ -190,16 +191,34 @@ function UrgudulApplicant() {
             })
     }, [])
 
+    const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+
+    const loadFromOtherProjectCompany = (id) => {
+        axios.get(`projects/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res)
+            const loadCompany = res.data.data?.company ?? {}
+            setForm({ ...initialState, ...loadCompany })
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+        }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+        })
+    }
+
     return (
-        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="">
-                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px tw-relative">
                     <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A1</span>
                     <span className="tw-leading-tight">- Өргөдөл гаргагч</span>
 
                     {isCluster &&
-                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." position="bottom" />
+                        <HelpPopup classAppend="tw-ml-4 tw-mr-2 sm:tw-ml-12" main="Кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." position="bottom" />
                     }
+
+                    <LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectCompany} />
                 </div>
 
                 {UrgudulCtx.data.project_number &&

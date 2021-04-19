@@ -272,7 +272,7 @@ function UrgudulCalculations() {
 
     return (
         <div className="tw-flex tw-justify-center tw-w-full tw-px-4">
-            <div className="tw-mt-8 tw-mb-80 tw-py-2 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-max-w-full">
+            <div className="tw-mt-8 tw-mb-70 tw-py-2 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-max-w-full">
                 <div className="tw-border-b tw-border-dashed">
                     <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
                         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B8</span>
@@ -310,8 +310,8 @@ function UrgudulCalculations() {
                                         case 'endDate':
                                             return <th className="tw-border tw-border-gray-300" key={date}>
                                                 <div className="tw-flex tw-flex-col tw-items-center tw-py-1">
-                                                    <div className={`tw-flex tw-justify-around tw-items-center ${!endDateGiven && 'tw-bg-red-100 tw-rounded'} tw-mx-1 tw-mt-1`}>
-                                                        {`${form.endDate.year ? form.endDate.year : ''}-${form.endDate.month ? form.endDate.month : ''}`}
+                                                    <div className={`tw-flex tw-justify-around tw-items-center ${!endDateGiven && 'tw-bg-red-100 tw-rounded'} tw-px-1 tw-mt-1`}>
+                                                        {`${form.endDate.year ? form.endDate.year : '....'}-${form.endDate.month ? form.endDate.month : '..'}`}
                                                         <HelpPopup main="Төслийн дуусах хугацаа, жил сараар." position="bottom" />
                                                     </div>
                                                     <span className="tw-text-xs tw-mt-0.5 tw-px-1 tw-text-indigo-500" style={{ minHeight: 15 }}>

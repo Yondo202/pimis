@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import FormRichText from 'components/urgudul_components/formRichText'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
-import { Transition } from 'react-spring/renderprops-universal'
+import { Transition } from 'react-spring/renderprops'
 import FileCard from 'pages/attachments/fileCard'
 import AlertContext from 'components/utilities/alertContext'
 import axios from 'axiosbase'
