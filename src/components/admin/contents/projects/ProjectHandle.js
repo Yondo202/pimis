@@ -101,7 +101,7 @@ export default function ProjectHandle() {
         if (id) {
             const consultant = consultants.filter(consultant => consultant.id === id)[0]
             return consultant?.firstname
-                ? `${consultant?.lastname?.substr(0, 1).toUpperCase()}. ${consultant?.firstname}`
+                ? `${consultant.lastname?.substr(0, 1).toUpperCase()}. ${consultant.firstname}`
                 : null
         } else {
             return null
@@ -113,8 +113,8 @@ export default function ProjectHandle() {
     }
 
     return (
-        <div className="tw-text-sm tw-text-gray-700">
-            <div className="tw-px-3 tw-pt-2 tw-pb-6 tw-mt-4 tw-shadow-inner tw-bg-white tw-flex tw-flex-col tw-w-full tw-rounded-md tw-overflow-hidden" ref={containerRef}>
+        <div className="tw-text-sm tw-text-gray-700 tw-pb-10">
+            <div className="tw-px-3 tw-pt-2 tw-pb-6 tw-shadow tw-bg-white tw-flex tw-flex-col tw-w-full tw-rounded tw-overflow-hidden" ref={containerRef}>
                 <div className="tw-p-2 tw-mt-6 tw-text-lg tw-font-medium tw-text-center">
                     Бүртгүүлсэн байгууллагууд
                 </div>
@@ -130,6 +130,7 @@ export default function ProjectHandle() {
                     showRowLines={true}
                     showColumnLines={true}
                     loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
+                    noDataText="Мэдээлэл байхгүй байна."
                 >
                     <SearchPanel visible={true} width={240} placeholder="Хайх..." />
                     <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
