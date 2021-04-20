@@ -1,10 +1,10 @@
 import React,{useState, useContext,useEffect} from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useHistory } from 'react-router-dom'
 import {IoMdCheckmarkCircle,IoIosArrowBack  } from 'react-icons/io';
 import { fontFamily, textColor, Color,fontSize,NextBtn } from '../theme';
-import {AiOutlineSend} from 'react-icons/ai'
+import {AiOutlineSend, AiOutlineCheckCircle} from 'react-icons/ai'
 import {CgDanger} from 'react-icons/cg'
 import UserContext from '../../context/UserContext'
 import AccessToken from '../../context/accessToken'
@@ -20,6 +20,7 @@ function CompCheck() {
     const param = useParams().url;
     const ctx = useContext(UserContext);
     const history = useHistory();
+    const [ showFinal, setShowFinal ] = useState(false);
     const [ count, setCount ] = useState(0);
     const [ success, setSuccess ] = useState(0);
     const [ btnCond, setBtnCond ] = useState(init);
@@ -50,6 +51,17 @@ function CompCheck() {
 
     const OneBack = () =>{
       history.goBack();
+    }
+
+    const FinalClick = el =>{
+      if(el){
+        setShowFinal(true);
+        setTimeout(()=>{
+          setVisible(false);
+        },10000)
+      }else{
+        setVisible(false);
+      }
     }
 
     const clickHandles = (btn) =>{
@@ -94,13 +106,12 @@ function CompCheck() {
                 setOpacity("0");
                 setOpacity2("0");
                 axios.post(`criterias`, soloObject2, {headers:{ Authorization:AccessToken() } }).then(res=>{
-                  console.log(res);
-                  setUpdateMount(2); ctx.alertText('green, Амжилттай илгээгдлээ', true); setBtnSpin(false);
+                  setUpdateMount(2); ctx.alertText('green, Амжилттай илгээгдлээ', true); setBtnSpin(false); setVisible(true);
                 }).catch(err=>{setFinalErrorText("Серверт алдаа гарлаа."); setBtnSpin(false);});
               }
     }
 
-    const closeMModalX=()=>{ setVisible2(false); }
+    const closeMModalX=()=>{ setVisible2(false);}
     const closeModal=(el)=>{
         if(el==="shuud"){
           setBtnCond("twice");  setVisible2(false);
@@ -222,9 +233,9 @@ function CompCheck() {
                       </Modal>
 
                       <Modal visible={visible} width="800" effect="fadeInDown" >
-                              <div className="Modaltest Modaltest22">
-                                <div onClick={closeMModalX} className="headPar"><span >x</span></div>
-                                  <div className="ModalTextPar">
+                              <div  className="Modaltest Modaltest22">
+                               {showFinal&&<div onClick={()=>setVisible(false)} className="headPar"><span >x</span></div>} 
+                                  <div style={showFinal?{opacity:0.4}:{opacity:1}} className="ModalTextPar">
                                     <div className="redPAr">
                                         <div className="redDesc"> Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна.</div>
                                     </div>
@@ -236,10 +247,19 @@ function CompCheck() {
 
                                     </div>
                                     <div className="btnPar">
-                                        <button class="btn btn-primary">Тийм </button>
-                                        <button class="btn btn-primary">Үгүй </button>
+                                        <button class="btn btn-primary" onClick={()=>FinalClick(true)}>Тийм </button>
+                                        <button class="btn btn-primary" onClick={()=>FinalClick(false)}>Үгүй </button>
                                     </div>
                                   </div>
+                                  
+                                  {showFinal&&<div className="correctPar">
+                                        <AiOutlineCheckCircle />
+                                      <span>
+                                        Таны асуулгаас харахад танай байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт ААН-ээр тэнцэхээс
+                                        гадна кластерын толгой компаниар тэнцэх боломжтой байна.
+                                      </span>
+                                  </div>} 
+                                  
                               </div>
                       </Modal>
 
@@ -289,7 +309,10 @@ let easing = [0, 0, 0.56, 0.95];
 const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
     enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
 
-
+const animate = keyframes`
+  0% { transform:translateX(100px); opacity:0; }
+  100% { transform:translate(0px); opacity:1;  }
+`
 
 const Component1 = styled.div`
     margin-top:40px;
@@ -382,6 +405,23 @@ const Component1 = styled.div`
                 text-align:start;
                 color:#FF4333;
               }
+            }
+          }
+          .correctPar{
+            display:flex;
+            align-items:center;
+            padding:20px 50px;
+            border-top:3px solid green;
+            border-radius:8px;
+            svg{
+              width:15%;
+              color:green;
+              font-size:24px;
+            }
+            span{
+              font-size:15px;
+              font-weight:500;
+              animation: ${animate} 0.8s ease;
             }
           }
         }

@@ -65,6 +65,8 @@ function MainRequest() {
     const Six = param === "user"&&helpCtx.GlobalStyle.tableSix;
     const errMsg = () =>{ console.log("+*+*+* err Msg");};
 
+
+    console.log(`object`, helpCtx.GlobalStyle.tableheight);
     return (
         <>
             {param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />:<NullParent className="BtnPar"><button onClick={backHanlde} ><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> )
