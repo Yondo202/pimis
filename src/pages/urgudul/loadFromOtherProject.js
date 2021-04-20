@@ -70,7 +70,7 @@ export default function LoadFromOtherProject(props) {
                     leave={{ height: 0, opacity: 0 }}
                     config={config.stiff}>
                     {item => item && (anims =>
-                        <div className="tw-absolute tw-right-0 tw-top-1 tw-z-10 tw-rounded tw-overflow-hidden tw-divide-y tw-divide-dashed tw-text-xs tw-font-medium tw-w-40 tw-bg-blue-700 tw-text-white" style={anims} ref={dropdownRef}>
+                        <div className="tw-absolute tw-right-0 tw-top-1 tw-z-10 tw-rounded tw-overflow-hidden tw-divide-y tw-divide-dashed tw-text-xs tw-font-medium tw-w-40 tw-bg-blue-700 tw-text-white tw-overflow-y-auto tw-overflow-x-hidden" style={{ ...anims, maxHeight: 500 }} ref={dropdownRef}>
                             {props.otherProjects.map(project =>
                                 <div className="tw-cursor-pointer tw-py-2 tw-font-medium tw-px-2 hover:tw-bg-blue-600 tw-transition-colors" onClick={() => setLoadModal({ open: true, id: project.id })}>
                                     {project.project_number}

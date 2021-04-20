@@ -12,7 +12,6 @@ import { UrgudulStore } from "components/utilities/urgudulContext"
 import UrgudulNavigator from "pages/urgudul/Page"
 import BusinessSectorEditor from "pages/business_sector_edit/editorPage";
 import ProductsEditor from "pages/products_edit/editorPage";
-import LetterOfInterest from "pages/letter_of_interest/page";
 import FirstEvaluation from "pages/decision_making/5a/Page";
 import CompilationCheck from "pages/decision_making/5b/Page";
 import AnalystReport from "pages/decision_making/5c/Page";
@@ -24,9 +23,8 @@ import TrainingPartnerRegistration from 'pages/training/partner_registration/Pag
 import TrainingFeedback from 'pages/training/feedback/Page';
 import PdfTest from 'components/check/PdfTest'
 import MiddleRoute from "containers/middle/middleRoute"
+import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import Holidays from "components/holidays/Holidays"
-
-
 
 
 function UsersRoute() {
@@ -55,7 +53,7 @@ function UsersRoute() {
                     {/* <Route path="/members" component={MembersHome} />
                     <Route path="/memberdecision" component={MemberDecision} /> */}
 
-                    <Route path="/letter-of-interest" component={LetterOfInterest} />
+                    <Route path="/letter-of-interest" component={LetterNavigator} />
                     <Route path="/urgudul/:page" component={UrgudulNavigator} />
 
                     <Route path="/attachments" component={AttachmentUploads} />

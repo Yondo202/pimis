@@ -491,8 +491,8 @@ export default function UrgudulPreview(props) {
                     </div>
                 </div>
 
-                <div className="tw-text-center tw-text-base tw-p-4 tw-pt-6 tw-font-medium">
-                    {project.createdAt?.slice(0, 10).replaceAll('-', '.') || '   '}
+                <div className="tw-text-center tw-text-base tw-p-4 tw-pt-8 tw-font-medium">
+                    {new Date(project.createdAt).toLocaleDateString()}
                 </div>
             </div>
         </div>

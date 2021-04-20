@@ -15,7 +15,7 @@ function ActiveComp(props) {
                             <Link to={!props.prew ? `/request/user` : `/request/${props.prew}`}
                              className={!props.data.esm? `items` : props.data.esm === "A" ? `items itemsNotApproved` : props.data.esm === "B" ?  `itemsActive` : props.data.esm === "C" || props.data.esm === "F"  ? `itemsActive`: `items itemsNotWait`}>2. Байгаль орчны үнэлгээний асуумж </Link>
                             <div className="line" ></div>
-                            <Link to={props.prew ? `/letter-of-interest/${props.prew}` : '/letter-of-interest'} className={props.data.letterOfInterst === true ? `itemsActive` : `items`} >3. Сонирхол илэрхийлэх албан тоот</Link>
+                            <Link to={props.prew ? `/letter-of-interest?userId=${props.prew}` : '/letter-of-interest'} className={props.data.letterOfInterst === true ? `itemsActive` : `items`} >3. Сонирхол илэрхийлэх албан тоот</Link>
                         </div>
                         <div className="lineFull" ></div>
                         <Link to={props.prew ? `/urgudul-preview/${props.data.project?.id}` : '/urgudul/1'} className={props.data.project && props.data.project.confirmed === 1 ? `resultActive` : `resultDesable`} >4. Өргөдлийн маягт </Link>

@@ -21,14 +21,13 @@ function ButtonTooltip(props) {
             <button className={`tw-rounded hover:tw-shadow-md focus:tw-outline-none tw-flex tw-items-center ${props.classButton} tw-transition-colors`} onClick={props.onClick} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} ref={buttonRef}>
                 {props.beforeSVG}
 
-                {
-                    props.label && <span className={`tw-mx-1 tw-font-medium ${props.classLabel}`}>{props.label}</span>
+                {props.label &&
+                    <span className={`tw-mx-1 tw-font-medium ${props.classLabel}`}>{props.label}</span>
                 }
 
                 {props.afterSVG}
             </button>
-            {
-                props.tooltip &&
+            {props.tooltip &&
                 <div className={`tw-absolute tw-px-2 tw-py-0.5 tw-rounded-md tw-bg-gray-600 tw-bg-opacity-90 tw-text-white tw-text-xs tw-font-normal tw-italic tw-text-center tw-z-10 ${hovered ? 'tw-visible tw-opacity-100 tw-block' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} ref={tooltipRef} style={positionStyle}>
                     {props.tooltip}
                 </div>
