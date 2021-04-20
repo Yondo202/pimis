@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import FormRichText from 'components/urgudul_components/formRichText'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
-import { Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import FileCard from 'pages/attachments/fileCard'
 import AlertContext from 'components/utilities/alertContext'
 import axios from 'axiosbase'
@@ -222,13 +222,13 @@ export default function TrainingRegistration() {
                                 leave={{ opacity: 0 }}>
                                 {item => item
                                     ? anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileCard name={form.introduction_file?.name} type={form.introduction_file?.mimetype} size={form.introduction_file?.size} classAppend="" uploading={form.introduction_file === 'loading' && true} removeFile={() => handleRemoveFile('introduction_file')} downloadFile={() => handleDownloadFile('introduction_file')} />
-                                        </div>
+                                        </animated.div>
                                     : anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileAttachButton onClick={() => handleFileClick('introduction_file')} />
-                                        </div>
+                                        </animated.div>
                                 }
                             </Transition>
                         </div>
@@ -247,13 +247,13 @@ export default function TrainingRegistration() {
                                 leave={{ opacity: 0 }}>
                                 {item => item
                                     ? anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileCard name={form.request_file?.name} type={form.request_file?.mimetype} size={form.request_file?.size} classAppend="" uploading={form.request_file === 'loading' && true} removeFile={() => handleRemoveFile('request_file')} downloadFile={() => handleDownloadFile('request_file')} />
-                                        </div>
+                                        </animated.div>
                                     : anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileAttachButton onClick={() => handleFileClick('request_file')} />
-                                        </div>
+                                        </animated.div>
                                 }
                             </Transition>
                         </div>
@@ -272,13 +272,13 @@ export default function TrainingRegistration() {
                                 leave={{ opacity: 0 }}>
                                 {item => item
                                     ? anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileCard name={form.identity_file?.name} type={form.identity_file?.mimetype} size={form.identity_file?.size} classAppend="" uploading={form.identity_file === 'loading' && true} removeFile={() => handleRemoveFile('identity_file')} downloadFile={() => handleDownloadFile('identity_file')} />
-                                        </div>
+                                        </animated.div>
                                     : anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileAttachButton onClick={() => handleFileClick('identity_file')} />
-                                        </div>
+                                        </animated.div>
                                 }
                             </Transition>
                         </div>

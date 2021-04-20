@@ -1,58 +1,153 @@
 import { useQuery } from 'components/utilities/useQueryLocation'
 import FileCard from 'pages/attachments/fileCard'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import { useContext } from 'react'
+import AlertContext from 'components/utilities/alertContext'
+import FilePreviewContext from 'components/utilities/filePreviewContext'
+import { animated, Transition } from 'react-spring/renderprops'
+import FileCardAdd from 'pages/attachments/fileCardAdd'
+import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
+import HelpPopup from 'components/help_popup/helpPopup'
+import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
+import PenAltSVG from 'assets/svgComponents/penAltSVG'
+
 
 export default function LetterUpload() {
-   const [file, setFile] = useState({})
-   const [letter, setLetter] = useState({})
+   const [file, setFile] = useState(null)
 
    const userId = useQuery().get('userId')
 
    useEffect(() => {
-      userId && axios.get('letter-of-interests', {
-         headers: { Authorization: getLoggedUserToken() },
-      }).then(res => {
-         console.log(res.data)
-         setLetter(res.data.data)
-      }).catch(err => {
-         console.log(err.response?.data)
-      })
+      if (userId !== null && userId !== undefined) {
+         // axios.get('', {
+         //    headers: { Authorization: getLoggedUserToken() },
+         // }).then(res => {
+         //    console.log(res)
+         // }).catch(err => {
+         //    console.error(err.response)
+         // })
+      } else {
+         // axios.get('', {
+         //    headers: { Authorization: getLoggedUserToken() },
+         // }).then(res => {
+         //    console.log(res)
+         // }).catch(err => {
+         //    console.error(err.response)
+         // })
+      }
    }, [])
+
+   const AlertCtx = useContext(AlertContext)
+
+   const fileInputRef = useRef()
+
+   const handleAddFileClick = () => fileInputRef.current.click()
+
+
+   const handleInputFile = (e) => {
+      const formData = new FormData()
+      if (!e.target.files[0]) return
+      formData.append('file', e.target.files[0])
+      formData.append('description', 'Сонирхол илэрхийлэх албан тоот файлаар.')
+      setFile('loading')
+
+      axios.post('attach-files', formData, {
+         headers: {
+            'Authorization': getLoggedUserToken(),
+            'Content-Type': 'multipart/form-data',
+         }
+      }).then(res => {
+         console.log(res)
+         setFile(res.data.data)
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсаргасан файлыг хадгалагдлаа.' })
+      }).catch(err => {
+         console.log(err.response)
+         setFile(null)
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
+      })
+   }
+
+   const handleRemoveFile = () => setFile(null)
+
+   const FilePreviewCtx = useContext(FilePreviewContext)
+
+   const handleDownloadFile = () => {
+      axios.get(`attach-files/${file.id}`, {
+         headers: { Authorization: getLoggedUserToken() },
+         responseType: 'blob',
+      }).then(res => {
+         console.log(res)
+         const URL = window.URL.createObjectURL(res.data)
+         FilePreviewCtx.setFile({ open: true, src: URL })
+      }).catch(err => {
+         console.log(err.response)
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+      })
+   }
 
    const history = useHistory()
 
-   const navLetterOIWeb = () => {
-      history.push('/letter-of-interest/web')
-   }
+   const handleNavLetterOIWeb = () => history.push('/letter-of-interest/web')
 
    return (
-      <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-         <div className="tw-font-medium tw-p-3 tw-pb-2 tw-flex tw-items-center">
-            <span className="tw-text-xl tw-mx-2 tw-leading-tight tw-text-blue-500">3</span>
-            <span className="tw-text-base">
-               - Сонирхол илэрхийлэх албан тоот
-            </span>
-         </div>
-
-         <div className="">
-            <div className="">
-               Сонирхол илэрхийлэх албан тоотоо файлаар хавсаргах
+      <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-w-full">
+         <div className="tw-w-11/12 tw-max-w-2xl tw-mx-auto tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-divide-y tw-divide-dashed">
+            <div className="tw-font-medium tw-p-3 tw-mb-1 tw-pb-2 tw-flex tw-items-center">
+               <span className="tw-text-xl tw-mx-2 tw-leading-tight tw-text-blue-500">3</span>
+               <span className="tw-text-15px tw-mr-4">
+                  - Сонирхол илэрхийлэх албан тоот
+               </span>
+               <HelpPopup classAppend="" main="Та албан тоотоо файлаар хавсаргаж болно. Эсвэл энэхүү хуудаснаас цахим хэлбэрээр үүсгэх гэж ороод бөглөж болно." position="bottom" />
             </div>
 
-            <FileCard />
-         </div>
+            <div className="tw-relative tw-p-2 tw-pl-4">
+               <div className="tw-text-15px tw-font-medium tw-flex tw-items-center tw-mt-2">
+                  <PaperClipSVG className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-600" />
+                  Сонирхол илэрхийлэх албан тоот файлаар хавсаргах
+               </div>
 
-         <div className="">
-            <div className="">
-               Сонирхол илэрхийлэх албан тоот цахим хэлбэрээр ирүүлэх
+               <div className="tw-mt-3 tw-ml-3">
+                  <Transition
+                     items={file}
+                     from={{ transform: 'scale(0)' }}
+                     enter={{ transform: 'scale(1)' }}
+                     leave={{ display: 'none' }}>
+                     {item => item
+                        ? anims => <animated.div className="tw-inline-flex tw-my-1 tw-mx-1.5" style={anims}>
+                           <FileCard name={file?.name} type={file?.mimetype} size={file?.size} classAppend="" uploading={file === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} />
+                        </animated.div>
+
+                        : anims => <animated.div className="tw-inline-flex tw-my-1 tw-mx-1.5" style={anims}>
+                           <FileCardAdd classAppend="" onClick={handleAddFileClick} />
+                        </animated.div>
+                     }
+                  </Transition>
+               </div>
+
+               <div className="tw-flex tw-justify-center">
+                  <button className="tw-my-2 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow tw-px-6 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none">
+                     Хадгалах
+                  </button>
+               </div>
+
+               <input className="tw-absolute tw-invisible" type="file" onChange={handleInputFile} ref={fileInputRef} />
             </div>
-            <div className="">
-               <button className="" onClick={navLetterOIWeb}>
-                  Цахим хэлбэрээр үүсгэх
-               </button>
+
+            <div className="tw-p-2 tw-pl-4">
+               <div className="tw-text-15px tw-font-medium tw-mt-2 tw-flex tw-items-center">
+                  <PenAltSVG className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-600" />
+                  Сонирхол илэрхийлэх албан тоот цахим хэлбэрээр үүсгэх
+               </div>
+
+               <div className="tw-flex tw-justify-center">
+                  <button className="tw-mt-24 tw-mb-10 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow tw-pl-5 tw-pr-3 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none" onClick={handleNavLetterOIWeb}>
+                     Цахим хэлбэрээр үүсгэх
+                  <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform-gpu tw--rotate-90 tw-ml-1" />
+                  </button>
+               </div>
             </div>
          </div>
       </div>

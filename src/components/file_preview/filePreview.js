@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import CloseSVG from 'assets/svgComponents/closeSVG'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
-import { Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import DownloadSVG from 'assets/svgComponents/downloadSVG'
 
 
@@ -71,9 +71,9 @@ export default function FilePreviewModal() {
             leave={{ opacity: 0 }}
             onDestroyed={!show && handleOnDestroyed}>
             {show => show && (props =>
-                <div style={props} className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8">
-                    <div className={`tw-relative tw-bg-white tw-rounded-md tw-shadow-lg tw-p-2 tw-pt-10 tw-inline-flex tw-flex-col tw-justify-center tw-items-center ${sizeFull && 'tw-w-full tw-h-full'} tw-max-w-full tw-max-h-full`} ref={modalRef}>
-                        <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-z-20 tw-top-2 tw-right-2" onClick={handleClose}>
+                <animated.div style={props} className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-50 tw-p-2 sm:tw-p-8">
+                    <div className={`tw-relative tw-bg-white tw-rounded-md tw-shadow-lg tw-p-2 tw-pt-10 tw-inline-flex tw-flex-col tw-justify-center tw-items-center ${sizeFull && 'tw-w-full tw-h-full'} tw-max-w-full tw-max-h-full tw-z-50`} ref={modalRef}>
+                        <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-z-10 tw-top-2 tw-right-2" onClick={handleClose}>
                             <CloseSVG className="tw-w-6 tw-h-6" />
                         </button>
 
@@ -92,7 +92,7 @@ export default function FilePreviewModal() {
 
                         <a className="tw-absolute tw-invisible" href={src} download ref={linkRef}> </a>
                     </div>
-                </div>
+                </animated.div>
             )}
         </Transition>
     )

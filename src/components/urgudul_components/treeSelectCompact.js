@@ -3,8 +3,8 @@ import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import MinusSVG from 'assets/svgComponents/minusSVG'
 import PlusSVG from 'assets/svgComponents/plusSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
-import React, { useEffect, useRef, useState } from 'react'
-import { Transition, config } from 'react-spring/renderprops'
+import React, { useRef, useState } from 'react'
+import { Transition, config, animated } from 'react-spring/renderprops'
 
 
 export default function TreeSelectCompact(props) {
@@ -44,7 +44,7 @@ export default function TreeSelectCompact(props) {
                 leave={{ height: 0, opacity: 0 }}
                 config={config.stiff}>
                 {item => item && (anims =>
-                    <div className="tw-overflow-y-auto tw-overflow-x-hidden tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-fixed tw-z-10 tw-text-13px" style={{ width: props.selectWidth, top: buttonRef.current?.getBoundingClientRect().top + 26, left: buttonRef.current?.getBoundingClientRect().left, ...anims }}>
+                    <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-fixed tw-z-10 tw-text-13px" style={{ width: props.selectWidth, top: buttonRef.current?.getBoundingClientRect().top + 26, left: buttonRef.current?.getBoundingClientRect().left, ...anims }}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">
                             <div className={`tw-flex tw-items-center tw-border-b ${search ? 'tw-border-blue-500 tw-text-blue-500' : 'tw-border-gray-600 tw-text-gray-600'} tw-pb-0.5 tw-my-1.5 tw-mr-2 tw-transition-colors`}>
                                 <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
@@ -61,7 +61,7 @@ export default function TreeSelectCompact(props) {
                                 Буцах
                             </button>
                         </div>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
         </div>

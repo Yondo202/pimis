@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import axios from 'axiosbase'
 import PrintSVG from 'assets/svgComponents/printSVG'
-import { useParams } from 'react-router'
+import { useQuery } from 'components/utilities/useQueryLocation'
 
 
 const initialState = {
@@ -33,7 +33,7 @@ export default function LetterPreview(props) {
         content: () => componentRef.current,
     })
 
-    const userId = useParams().id
+    const userId = useQuery().get('userId')
 
     useEffect(() => {
         if (!props.form) {
@@ -62,7 +62,7 @@ export default function LetterPreview(props) {
 
     return (
         <div className="tw-relative tw-text-gray-700 tw-text-sm tw-mb-12">
-            <button className="tw-ml-2 tw-mb-8 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-text-15px" onClick={handlePrint}>
+            <button className="tw-mb-6 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-text-15px" onClick={handlePrint}>
                 <span className="tw-text-sm">Хэвлэх болон PDF-ээр татах</span>
                 <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
             </button>

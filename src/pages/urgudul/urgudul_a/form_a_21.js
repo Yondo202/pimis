@@ -69,6 +69,7 @@ function UrugudulClusters({ projects }) {
 
     const handleInputFile = (e) => {
         const formData = new FormData()
+        if (!e.target.files[0]) return
         formData.append('file', e.target.files[0])
         formData.append('description', 'Кластерийн гишүүн байгууллагуудын хамтын ажиллагааны гэрээ')
         const newForm = form
@@ -353,7 +354,7 @@ function UrugudulClusters({ projects }) {
                 </div>
             )}
 
-            <div className="tw-flex tw-justify-end tw-items-center tw-pt-2">
+            <div className="tw-flex tw-justify-end tw-items-center tw-py-1">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
                     Кластерийн гишүүн байгууллагууд
                 </div>

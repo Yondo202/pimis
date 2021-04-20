@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useHistory } from 'react-router'
-import { Transition, config } from 'react-spring/renderprops'
+import { Transition, config, animated } from 'react-spring/renderprops'
 import UsersSVG from 'assets/svgComponents/usersSVG'
 import ClipboardListSVG from 'assets/svgComponents/clipboardListSVG'
 import TrashSVG from 'assets/svgComponents/trashSVG'
@@ -56,8 +56,8 @@ export default function EvaluatorsMeetingsList(props) {
     })
 
     return (
-        <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-w-full tw-pt-10 tw-pb-10">
-            <div className="tw-bg-white tw-rounded tw-shadow tw-w-full tw-max-w-6xl tw-p-2">
+        <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-w-full tw-pb-10">
+            <div className="tw-bg-white tw-rounded tw-shadow tw-w-full tw-p-2" style={{ maxWidth: 1040 }}>
                 <div className="tw-text-lg tw-font-medium tw-p-2 tw-text-center tw-mt-6">
                     Үнэлгээний хорооны уулзалт
                 </div>
@@ -119,7 +119,7 @@ export default function EvaluatorsMeetingsList(props) {
                                         leave={{ height: 0 }}
                                         config={config.stiff}>
                                         {item => item && (anims =>
-                                            <div className="tw-overflow-hidden tw-font-medium" style={{ ...anims, fontSize: '13px' }}>
+                                            <animated.div className="tw-overflow-hidden tw-font-medium" style={{ ...anims, fontSize: '13px' }}>
                                                 {{
                                                     'members':
                                                         <div className="tw-overflow-y-auto" style={{ maxHeight: 320 }}>
@@ -202,7 +202,7 @@ export default function EvaluatorsMeetingsList(props) {
                                                             )}
                                                         </div>,
                                                 }[details.type]}
-                                            </div>
+                                            </animated.div>
                                         )}
                                     </Transition>
                                 </div>

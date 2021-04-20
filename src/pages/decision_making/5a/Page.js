@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import axios from "axiosbase"
 import getLoggedUserToken from "components/utilities/getLoggedUserToken"
-import { config, Transition } from "react-spring/renderprops"
+import { animated, config, Transition } from "react-spring/renderprops"
 import ButtonTooltip from "components/button_tooltip/buttonTooltip"
 import AnnotationSVG from "assets/svgComponents/annotationSVG"
 import AlertContext from "components/utilities/alertContext"
@@ -194,9 +194,9 @@ const FirstEvaluation = () => {
               leave={{ height: 0, opacity: 0 }}
               config={config.stiff}>
               {item => item && (anims =>
-                <div className="tw-flex tw-justify-end tw-items-start tw-overflow-hidden" style={anims}>
+                <animated.div className="tw-flex tw-justify-end tw-items-start tw-overflow-hidden" style={anims}>
                   <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-px-1.5 tw-py-1 tw-mt-1 tw-mx-3 tw-mb-3 tw-resize-none tw-text-13px" value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />
-                </div>
+                </animated.div>
               )}
             </Transition>
           </div>

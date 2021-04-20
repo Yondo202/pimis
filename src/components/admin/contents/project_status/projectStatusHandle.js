@@ -6,7 +6,7 @@ import { DataGrid } from 'devextreme-react'
 import { Column, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
 import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
-import { config, Transition } from 'react-spring/renderprops'
+import { animated, config, Transition } from 'react-spring/renderprops'
 import AlertContext from 'components/utilities/alertContext'
 import AnnotationSVG from 'assets/svgComponents/annotationSVG'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
@@ -151,13 +151,13 @@ export default function ProjectStatusHandle() {
                             leave={{ height: 0, opacity: 0 }}
                             config={config.stiff}>
                             {item => item && (anims =>
-                                <div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 72, minWidth: 160, ...anims }} ref={dropdownRef}>
+                                <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 72, minWidth: 160, ...anims }} ref={dropdownRef}>
                                     {Object.keys(statusNames).map(status =>
                                         <div className="tw-cursor-pointer tw-py-2 tw-text-13px tw-font-medium tw-px-2 hover:tw-bg-indigo-100 tw-transition-colors" key={status} onClick={() => handleStatusSelect(status)}>
                                             {statusNames[status]}
                                         </div>
                                     )}
-                                </div>
+                                </animated.div>
                             )}
                         </Transition>
                     </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { config, Transition } from 'react-spring/renderprops'
+import { animated, config, Transition } from 'react-spring/renderprops'
 import PenSVG from 'assets/svgComponents/penSVG'
 
 
@@ -31,13 +31,13 @@ export default function EditDropdown(props) {
                     leave={{ opacity: 0 }}
                     config={config.stiff}>
                     {open => open && (anims =>
-                        <div style={anims} className="tw-absolute tw-top-7 tw--right-2 tw-w-64 tw-grid tw-grid-cols-1 tw-z-10 tw-bg-white tw-rounded-md tw-shadow-md tw-divide-y tw-divide-dashed" ref={dropdownRef}>
+                        <animated.div style={anims} className="tw-absolute tw-top-7 tw--right-2 tw-w-64 tw-grid tw-grid-cols-1 tw-z-10 tw-bg-white tw-rounded-md tw-shadow-md tw-divide-y tw-divide-dashed" ref={dropdownRef}>
                             {props.items?.map(item =>
                                 <button className="tw-font-medium tw-p-2 tw-pl-3 hover:tw-bg-blue-100 tw-whitespace-nowrap tw-text-left first:tw-rounded-t-md last:tw-rounded-b-md focus:tw-outline-none tw-text-13px" onClick={() => { item.function(props.id); setOpen(false) }} key={item.label}>
                                     {item.label}
                                 </button>
                             )}
-                        </div>
+                        </animated.div>
                     )}
                 </Transition>
             </div>

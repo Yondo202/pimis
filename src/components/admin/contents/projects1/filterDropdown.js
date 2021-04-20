@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { translation } from 'components/admin/contents/projects1/ProjectHandle'
-import { config, Transition } from 'react-spring/renderprops'
+import { animated, config, Transition } from 'react-spring/renderprops'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 
 
@@ -40,13 +40,13 @@ export default function FilterDropDown(props) {
                 leave={{ opacity: 0 }}
                 config={config.stiff}>
                 {dropdown => dropdown && (props =>
-                    <div style={props} className="tw-absolute tw-top-8 tw--right-2 tw-w-40 tw-grid tw-grid-cols-1 tw-z-10 tw-bg-white tw-rounded-md tw-shadow-md tw-divide-y tw-divide-dashed" ref={dropdownRef}>
+                    <animated.div style={props} className="tw-absolute tw-top-8 tw--right-2 tw-w-40 tw-grid tw-grid-cols-1 tw-z-10 tw-bg-white tw-rounded-md tw-shadow-md tw-divide-y tw-divide-dashed" ref={dropdownRef}>
                         {Object.keys(translation).map(key =>
                             <button className="tw-font-medium tw-p-2 tw-pl-3 hover:tw-bg-blue-100 tw-whitespace-nowrap tw-text-left first:tw-rounded-t-md last:tw-rounded-b-md focus:tw-outline-none tw-text-13px" key={key} onClick={() => handleSelect(key)}>
                                 {translation[key]}
                             </button>
                         )}
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
         </div>

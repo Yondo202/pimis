@@ -4,7 +4,7 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import PenAltSVG from 'assets/svgComponents/penAltSVG'
 import TrashSVG from 'assets/svgComponents/trashSVG'
 import PlusSVG from 'assets/svgComponents/plusSVG'
-import { Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import CloseSVG from 'assets/svgComponents/closeSVG'
 import { DataGrid } from 'devextreme-react'
 import { Column, Editing, HeaderFilter, Lookup, Paging, Scrolling } from 'devextreme-react/data-grid'
@@ -278,7 +278,7 @@ export default function AcceptPeriodHandle() {
                 enter={{ opacity: 1 }}
                 leave={{ opacity: 0 }}>
                 {item => item && (anims =>
-                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
+                    <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
                         <div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow" ref={modalRef}>
                             <button className="tw-absolute tw-top-1.5 tw-right-1.5 tw-text-red-500 active:tw-text-red-600 tw-transition-colors focus:tw-outline-none tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={handleCloseModal}>
                                 <CloseSVG className="tw-w-5 tw-h-5" />
@@ -316,7 +316,7 @@ export default function AcceptPeriodHandle() {
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
 
@@ -326,7 +326,7 @@ export default function AcceptPeriodHandle() {
                 enter={{ opacity: 1 }}
                 leave={{ opacity: 0 }}>
                 {item => item && (anims =>
-                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
+                    <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
                         <div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-ring-2 tw-ring-red-500" ref={modalRef}>
                             <div className="tw-p-2 tw-text-center" style={{ minWidth: 300 }}>
                                 Нээлттэй хугацааг устгах уу?
@@ -340,7 +340,7 @@ export default function AcceptPeriodHandle() {
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
 
