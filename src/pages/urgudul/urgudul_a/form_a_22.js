@@ -218,7 +218,7 @@ function UrugudulDirectors({ projects }) {
                 </div>
             )}
 
-            <div className="tw-flex tw-justify-end tw-items-center tw-pt-2">
+            <div className="tw-flex tw-justify-end tw-items-center tw-py-1">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
                     Түлхүүр албан тушаалтнууд
                 </div>

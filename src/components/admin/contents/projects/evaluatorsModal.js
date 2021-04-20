@@ -3,7 +3,7 @@ import SearchSVG from 'assets/svgComponents/searchSVG'
 import axios from 'axiosbase'
 import { DateBox } from 'devextreme-react'
 import React, { useEffect, useRef, useState } from 'react'
-import { config, Transition } from 'react-spring/renderprops'
+import { animated, config, Transition } from 'react-spring/renderprops'
 import RowMember from './rowMember'
 
 
@@ -79,7 +79,7 @@ export default function EvaluatorsModal(props) {
             leave={{ opacity: 0 }}
             config={config.stiff}>
             {showModal => showModal && (anims =>
-                <div style={anims} className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8">
+                <animated.div style={anims} className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8">
                     <div className="tw-relative tw-bg-white tw-rounded-lg tw-shadow-md tw-p-4 tw-m-2 tw-w-full tw-max-w-2xl tw-text-sm" ref={modalRef}>
                         <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-2 tw-right-2" onClick={handleEvaluatorsClose}>
                             <CloseSVG className="tw-w-6 tw-h-6" />
@@ -169,7 +169,7 @@ export default function EvaluatorsModal(props) {
                             </button>
                         </div>
                     </div>
-                </div>
+                </animated.div>
             )}
         </Transition>
     )

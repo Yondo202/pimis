@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import FormRichText from 'components/urgudul_components/formRichText'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import AnnotationSVG from 'assets/svgComponents/annotationSVG'
-import { config, Transition } from 'react-spring/renderprops'
+import { animated, config, Transition } from 'react-spring/renderprops'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
@@ -412,23 +412,23 @@ export default function AnalystReport() {
                     leave={{ opacity: 0, display: 'none' }}>
                     {item => item
                         ? anims =>
-                            <div className="tw-mt-3" style={anims}>
+                            <animated.div className="tw-mt-3" style={anims}>
                                 <div className="tw-font-medium">
                                     Төслийг дэмжиж буй бол хэрэгжүүлэх явцад анхаарах зөвлөмж:
                                 </div>
                                 <div className="tw-mt-1 tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-shadow-inner tw-rounded-lg" style={{ minHeight: '128px', maxHeight: '768px' }}>
                                     <FormRichText modules="small" value={info.accept_tips} name="accept_tips" setForm={handleInputEvaluator} />
                                 </div>
-                            </div>
+                            </animated.div>
                         : anims =>
-                            <div className="tw-mt-3" style={anims}>
+                            <animated.div className="tw-mt-3" style={anims}>
                                 <div className="tw-font-medium">
                                     Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:
                                 </div>
                                 <div className="tw-mt-1 tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-shadow-inner tw-rounded-lg" style={{ minHeight: '128px', maxHeight: '768px' }}>
                                     <FormRichText modules="small" value={info.decline_reason} name="decline_reason" setForm={handleInputEvaluator} />
                                 </div>
-                            </div>
+                            </animated.div>
                     }
                 </Transition>
             </div>

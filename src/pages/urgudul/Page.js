@@ -62,7 +62,6 @@ function UrgudulNavigator(props) {
         from: { opacity: 0 },
         enter: { opacity: 1 },
         leave: { display: 'none' },
-        initial: { opacity: 1 },
     })
 
     const [modalOpen, setModalOpen] = useState(props.preloaded ? false : true)
@@ -137,14 +136,14 @@ function UrgudulNavigator(props) {
 
     return (
         <div className="tw-relative tw-w-full tw-text-gray-700 tw-text-13px">
-            <div className="tw-mt-4 tw-ml-4 tw-mb-10">
-                <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-5 tw-pr-6 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-text-15px tw-transition-colors" onClick={() => setPreviewModalOpen(true)}>
+            <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-flex tw-justify-start tw-py-2 tw-my-4">
+                <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-3 tw-pr-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={() => setPreviewModalOpen(true)}>
                     <SearchSVG className="tw-w-4 tw-h-4" />
                     <span className="tw-text-sm tw-ml-2">Урьдчилж харах</span>
                 </button>
             </div>
 
-            <div className="tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
+            <div className="tw-py-1 tw-px-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
                 <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 1 && 'tw-invisible'} tw-transition-shadow`} onClick={handlePrev}>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90" />
                     <span className="tw-mr-1 tw-text-13px">Өмнөх</span>
@@ -272,7 +271,7 @@ function UrgudulNavigator(props) {
                 enter={{ opacity: 1 }}
                 leave={{ opacity: 0 }}>
                 {item => item && (anims1 =>
-                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-bg-gray-700 tw-bg-opacity-80 tw-z-10" style={anims1}>
+                    <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-bg-gray-700 tw-bg-opacity-80 tw-z-10" style={anims1}>
                         <Transition
                             items={previewModalOpen}
                             from={{ width: 0 }}
@@ -280,16 +279,16 @@ function UrgudulNavigator(props) {
                             leave={{ width: 0 }}
                             config={config.stiff}>
                             {item => item && (anims =>
-                                <div className="tw-fixed tw-top-0 tw-left-0 tw-h-screen tw-overflow-y-auto tw-overflow-x-hidden tw-mr-8 tw-bg-white tw-px-4 tw-pb-2 tw-pt-4" style={anims} ref={previewContainerRef}>
+                                <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-h-screen tw-overflow-y-auto tw-overflow-x-hidden tw-mr-8 tw-bg-white tw-px-4 tw-pb-2 tw-pt-4" style={anims} ref={previewContainerRef}>
                                     <button className="tw-text-red-500 active:tw-text-red-600 tw-rounded tw-border tw-border-red-500 active:tw-border-red-600 tw-absolute tw-top-1.5 tw-right-1.5 focus:tw-outline-none" onClick={() => setPreviewModalOpen(false)}>
                                         <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" />
                                     </button>
 
                                     <UrgudulPreview project={UrgudulCtx.data} />
-                                </div>
+                                </animated.div>
                             )}
                         </Transition>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
         </div>

@@ -5,7 +5,7 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import { Link, useHistory } from 'react-router-dom'
-import { config, Transition } from 'react-spring/renderprops'
+import { animated, config, Transition } from 'react-spring/renderprops'
 
 
 const initialState = {
@@ -177,7 +177,7 @@ function UrgudulChecklist() {
                 enter={{ opacity: 1 }}
                 leave={{ opacity: 0 }}>
                 {item => item && (anims =>
-                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
+                    <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
                         <Transition
                             items={modalOpen}
                             from={{ transform: 'translateY(-20px)' }}
@@ -185,7 +185,7 @@ function UrgudulChecklist() {
                             leave={{ transform: 'translateY(20px)' }}
                             config={config.stiff}>
                             {item1 => item1 && (anims1 =>
-                                <div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-max-w-md tw-ring-2 tw-ring-indigo-500" style={anims1} ref={modalRef}>
+                                <animated.div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-max-w-md tw-ring-2 tw-ring-indigo-500" style={anims1} ref={modalRef}>
                                     <div className="tw-text-15px tw-p-2 tw-text-center tw-font-medium">
                                         Анхааруулга
                                     </div>
@@ -200,10 +200,10 @@ function UrgudulChecklist() {
                                             Болих
                                         </button>
                                     </div>
-                                </div>
+                                </animated.div>
                             )}
                         </Transition>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
 
@@ -213,7 +213,7 @@ function UrgudulChecklist() {
                 enter={{ transform: 'scale(1)' }}
                 leave={{ transform: 'scale(0)' }}>
                 {item => item && (anims =>
-                    <div className="tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-min-w-min tw-p-2 tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed" style={anims}>
+                    <animated.div className="tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-min-w-min tw-p-2 tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed" style={anims}>
                         <div className="tw-p-3 tw-font-medium tw-text-blue-500 tw-text-base">
                             <span className="tw-mx-2">Бүрдүүлэх нотлох бичиг баримтууд</span>
                         </div>
@@ -270,7 +270,7 @@ function UrgudulChecklist() {
                                 </Link>
                             </div>
                         </div>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
         </div >

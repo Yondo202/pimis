@@ -1,6 +1,6 @@
 import PlusSVG from 'assets/svgComponents/plusSVG'
 import React, { useEffect, useRef, useState } from 'react'
-import { config, Transition } from 'react-spring/renderprops'
+import { animated, config, Transition } from 'react-spring/renderprops'
 
 
 export default function LoadFromOtherProject(props) {
@@ -54,9 +54,9 @@ export default function LoadFromOtherProject(props) {
                     enter={{ width: 'auto', marginRight: 4, marginLeft: 4, opacity: 1 }}
                     leave={{ width: 0, marginRight: 0, marginLeft: 0, opacity: 0 }}>
                     {item => item && (anims =>
-                        <span className="tw-text-13px tw-whitespace-nowrap tw-overflow-clip tw-overflow-hidden" style={anims}>
+                        <animated.span className="tw-text-13px tw-whitespace-nowrap tw-overflow-clip tw-overflow-hidden" style={anims}>
                             Бусад өргөдлөөс мэдээлэл оруулах
-                        </span>
+                        </animated.span>
                     )}
                 </Transition>
                 <PlusSVG className="tw-w-6 tw-h-6" />
@@ -70,13 +70,13 @@ export default function LoadFromOtherProject(props) {
                     leave={{ height: 0, opacity: 0 }}
                     config={config.stiff}>
                     {item => item && (anims =>
-                        <div className="tw-absolute tw-right-0 tw-top-1 tw-z-10 tw-rounded tw-overflow-hidden tw-divide-y tw-divide-dashed tw-text-xs tw-font-medium tw-w-40 tw-bg-blue-700 tw-text-white tw-overflow-y-auto tw-overflow-x-hidden" style={{ ...anims, maxHeight: 500 }} ref={dropdownRef}>
+                        <animated.div className="tw-absolute tw-right-0 tw-top-1 tw-z-10 tw-rounded tw-overflow-hidden tw-divide-y tw-divide-dashed tw-text-xs tw-font-medium tw-w-40 tw-bg-blue-700 tw-text-white tw-overflow-y-auto tw-overflow-x-hidden" style={{ ...anims, maxHeight: 500 }} ref={dropdownRef}>
                             {props.otherProjects.map(project =>
                                 <div className="tw-cursor-pointer tw-py-2 tw-font-medium tw-px-2 hover:tw-bg-blue-600 tw-transition-colors" onClick={() => setLoadModal({ open: true, id: project.id })}>
                                     {project.project_number}
                                 </div>
                             )}
-                        </div>
+                        </animated.div>
                     )}
                 </Transition>
             </div>
@@ -87,7 +87,7 @@ export default function LoadFromOtherProject(props) {
                 enter={{ opacity: 1 }}
                 leave={{ opacity: 0 }}>
                 {item => item && (anims =>
-                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
+                    <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
                         <Transition
                             items={loadModal.open}
                             from={{ transform: 'translateY(-20px)' }}
@@ -95,7 +95,7 @@ export default function LoadFromOtherProject(props) {
                             leave={{ transform: 'translateY(20px)' }}
                             config={config.stiff}>
                             {item1 => item1 && (anims1 =>
-                                <div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-max-w-md tw-ring-2 tw-ring-indigo-500" style={anims1} ref={loadModalRef}>
+                                <animated.div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-max-w-md tw-ring-2 tw-ring-indigo-500" style={anims1} ref={loadModalRef}>
                                     <div className="tw-text-15px tw-p-2 tw-text-center tw-font-medium">
                                         Анхааруулга
                                     </div>
@@ -110,10 +110,10 @@ export default function LoadFromOtherProject(props) {
                                             Болих
                                         </button>
                                     </div>
-                                </div>
+                                </animated.div>
                             )}
                         </Transition>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
         </div>

@@ -6,7 +6,7 @@ import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import AlertContext from 'components/utilities/alertContext'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useHistory } from 'react-router-dom'
-import { config, Transition } from 'react-spring/renderprops'
+import { animated, config, Transition } from 'react-spring/renderprops'
 import CloseSVG from 'assets/svgComponents/closeSVG'
 
 
@@ -190,7 +190,7 @@ function UrgudulFront() {
                 enter={{ transform: 'scale (1)' }}
                 leave={{ transform: 'scale (0)' }}>
                 {item => item && (anims =>
-                    <div className="tw-mt-8 tw-mb-20 tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-flex-col tw-items-center tw-font-medium" style={anims}>
+                    <animated.div className="tw-mt-8 tw-mb-20 tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-flex-col tw-items-center tw-font-medium" style={anims}>
                         <div className="tw-text-center tw-text-base tw-p-2 tw-mt-2">
                             Өргөдөл хүлээж авах хугацаа нээгдээгүй байна.
                         </div>
@@ -206,7 +206,7 @@ function UrgudulFront() {
                                 : `Дараагийн нээгдэх хугацааг төлөвлөөгүй байна.`
                             }
                         </div>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
 
@@ -216,7 +216,7 @@ function UrgudulFront() {
                 enter={{ opacity: 1 }}
                 leave={{ opacity: 0 }}>
                 {item => item && (anims =>
-                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
+                    <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
                         <Transition
                             items={modalOpen}
                             from={{ transform: 'translateY(-20px)' }}
@@ -224,7 +224,7 @@ function UrgudulFront() {
                             leave={{ transform: 'translateY(20px)' }}
                             config={config.stiff}>
                             {item1 => item1 && (anims1 =>
-                                <div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-max-w-md tw-ring-2 tw-ring-indigo-500 tw-font-medium" style={{ minWidth: 300, ...anims1 }} ref={modalRef}>
+                                <animated.div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-max-w-md tw-ring-2 tw-ring-indigo-500 tw-font-medium" style={{ minWidth: 300, ...anims1 }} ref={modalRef}>
                                     <button className="tw-absolute tw-top-1.5 tw-right-1.5 tw-text-red-500 active:tw-text-red-600 tw-transition-colors focus:tw-outline-none tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={() => setModalOpen(false)}>
                                         <CloseSVG className="tw-w-5 tw-h-5" />
                                     </button>
@@ -243,10 +243,10 @@ function UrgudulFront() {
                                             : `Дараагийн нээгдэх хугацааг төлөвлөөгүй байна.`
                                         }
                                     </div>
-                                </div>
+                                </animated.div>
                             )}
                         </Transition>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
         </div>

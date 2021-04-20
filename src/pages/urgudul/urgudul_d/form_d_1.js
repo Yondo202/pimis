@@ -13,7 +13,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import FormSignature from 'components/urgudul_components/formSignature'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
-import { Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import LoadFromOtherProject from '../loadFromOtherProject'
 
 
@@ -317,7 +317,7 @@ function UrgudulNoticeCluster({ projects }) {
                 enter={{ transform: 'scale(1)' }}
                 leave={{ transform: 'scale(0)' }}>
                 {item => item && (anims =>
-                    <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed" style={anims}>
+                    <animated.div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed" style={anims}>
                         <div className="tw-p-2 tw-pl-4 tw-pt-4 tw-text-blue-500 tw-font-medium">
                             Өргөдөл гаргагч ААН төлөөлж:
                         </div>
@@ -393,7 +393,7 @@ function UrgudulNoticeCluster({ projects }) {
                         <div className="tw-flex tw-justify-end">
                             <ButtonTooltip classAppend="tw-mt-6 tw-mb-4 tw-mr-4" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
                         </div>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
         </div>
