@@ -20,7 +20,6 @@ import {ColorRgb, textColor} from '../../components/theme'
 import AccessToken from '../../context/accessToken'
 import DocumentTitle from 'containers/document/DocumentTitle'
 
-
 function MainRequest() {
     DocumentTitle("Байгаль орчны үнэлгээний асуумж");
     const history = useHistory();
@@ -65,8 +64,6 @@ function MainRequest() {
     const Six = param === "user"&&helpCtx.GlobalStyle.tableSix;
     const errMsg = () =>{ console.log("+*+*+* err Msg");};
 
-
-    console.log(`object`, helpCtx.GlobalStyle.tableheight);
     return (
         <>
             {param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />:<NullParent className="BtnPar"><button onClick={backHanlde} ><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> )

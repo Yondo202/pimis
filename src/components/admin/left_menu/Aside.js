@@ -73,6 +73,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               <MenuItem>Тохиргоо -1</MenuItem>
             </SubMenu>
             <MenuItem>
+              <Link to="/holidays">Амралтын өдөр сонгох</Link>
+            </MenuItem>
+            <MenuItem>
               <Link to="/accept-periods">Нээлттэй хугацаа тохируулах</Link>
             </MenuItem>
             <MenuItem>
