@@ -24,6 +24,7 @@ import TrainingFeedback from 'pages/training/feedback/Page';
 import PdfTest from 'components/check/PdfTest'
 import MiddleRoute from "containers/middle/middleRoute"
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
+import Holidays from "components/holidays/Holidays"
 
 
 function UsersRoute() {
@@ -40,6 +41,8 @@ function UsersRoute() {
 
                     <Route path="/check/:url" component={CheckComp} />
                     <Route path="/checks/test" component={PdfTest} />
+                    <Route path="/holiday" component={Holidays} />
+
                     {/* <Route path="/notify-page/:paramId" component={MainPage} /> */}
 
                     {/* <Route path="/comp-request" component={MainRequest} /> */}
