@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components"
 import 'react-calendar/dist/Calendar.css';
 import 'moment/locale/mn';
@@ -9,13 +9,15 @@ import 'react-day-picker/lib/style.css';
 
 
 const Holidays = () => {
+    const [ reRender, setreRender ] = React.useState(false);
     const [ selectedDay, setSelectedDays ] = React.useState([]);
     const [ RenderDays, setRenderDays ] = React.useState([]);
 
 
     React.useEffect(()=>{
         fetchDate();
-    },[])
+        console.log("----------------");
+    },[reRender])
 
     const fetchDate = async () =>{
        const date = await axios.get("holidays");
@@ -35,12 +37,12 @@ const Holidays = () => {
           console.log(`day`, new Date(day));
           const formated =`${day.getFullYear()}-${day.getMonth()+1}-${day.getDate()}`
           axios.delete(`holidays/${formated}`).then(res=>{
-            setSelectedDays(selectedDays);
+            setSelectedDays(selectedDays); setreRender(prev=>!prev);
           })
         } else {
           selectedDays.push(day);
            axios.post("holidays", { days: day}).then(res=>{
-                 setSelectedDays(selectedDays);
+                 setSelectedDays(selectedDays); setreRender(prev=>!prev);
             })
         }
         // setSelectedDays(selectedDays);
