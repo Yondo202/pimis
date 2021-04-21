@@ -25,6 +25,7 @@ import PdfTest from 'components/check/PdfTest'
 import MiddleRoute from "containers/middle/middleRoute"
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import Holidays from "components/holidays/Holidays"
+import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 
 
 function UsersRoute() {
@@ -55,6 +56,7 @@ function UsersRoute() {
 
                     <Route path="/letter-of-interest" component={LetterNavigator} />
                     <Route path="/urgudul/:page" component={UrgudulNavigator} />
+                    <Route path="/urgudul-preview/:id" component={UrgudulPreviewForUser} />
 
                     <Route path="/attachments" component={AttachmentUploads} />
 
