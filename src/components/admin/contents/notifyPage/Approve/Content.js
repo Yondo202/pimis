@@ -19,7 +19,6 @@ const day = today.getDate();
 const addDays=(dateObj, numDays)=>{ dateObj.setDate(dateObj.getDate() + numDays);  return dateObj;}
 const nextWeek = addDays(today , 10); const day2 = nextWeek.getDate();const month2 = (nextWeek.getMonth()+1); const year2 = nextWeek.getFullYear();
 
-
 const DataList = [
     "Экспорт хөгжлийн төлөвлөгөө" ,
     "Байгаль орчны үнэлгээний асуумжийг нотлох баримт бичгүүд, Байгаль орчны удирдлагын төлөвлөгөө" ,
@@ -48,6 +47,9 @@ const DataList = [
          signature : null || localStorage.getItem("signature"),
         }
     }
+
+
+
     alertText = ( color, text, cond ) => {
         this.setState({ color:color, text:text, cond:cond  });
          setTimeout(()=>{ this.setState({ color:color, text:text, cond:false })},[4000]);
