@@ -31,11 +31,8 @@ import ReportLayout from 'components/admin/contents/Report/ReportLayout';
 import ProjectStatusHandle from 'components/admin/contents/project_status/projectStatusHandle'
 import CurrencyRateHandle from 'components/admin/contents/currency_rate/currencyRateHandle'
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
-<<<<<<< HEAD
 import { UrgudulPreviewForAdmin } from 'pages/urgudul/preview/previewPages'
-=======
 import Holidays from "components/holidays/Holidays"
->>>>>>> d706d58abf2f3188ffb1279bd9d9b56873475fe1
 
 
 function Layout({ setLocale }) {
