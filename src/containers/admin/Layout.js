@@ -33,6 +33,7 @@ import ProjectStatusHandle from 'components/admin/contents/project_status/projec
 import CurrencyRateHandle from 'components/admin/contents/currency_rate/currencyRateHandle'
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import Holidays from "components/holidays/Holidays"
+import Financing from "components/admin/contents/financing/MainPage"
 
 
 function Layout({ setLocale }) {
@@ -68,6 +69,7 @@ function Layout({ setLocale }) {
               <Route path="/projects1" component={ProjectHandle1} />
               <Route path="/report/" component={ReportLayout} />
               <Route path="/holidays" component={Holidays} />
+              <Route path="/financing" component={Financing} />
 
               <Route path="/urgudul/:page">
                 <UrgudulNavigator preloaded={true} />

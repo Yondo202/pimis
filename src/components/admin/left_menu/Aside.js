@@ -37,8 +37,8 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
         </Menu> */}
         <Menu iconShape="circle">
           <SubMenu title="Түншлэлийн хөтөлбөр" icon={<GiProgression />}>
-            <MenuItem>  <Link to="/projects"> Бүртгүүлсэн байгууллагууд</Link> </MenuItem>
-            <MenuItem>Санхүүжилт</MenuItem>
+            <MenuItem><Link to="/projects"> Бүртгүүлсэн байгууллагууд</Link> </MenuItem>
+            <MenuItem><Link to="/financing">Санхүүжилт</Link></MenuItem>
             <MenuItem><Link to="/meetings">Үнэлгээний хорооны уулзалт</Link></MenuItem>
             <MenuItem><Link to="/maindecision">Үнэлгээний хорооны шийдвэр</Link></MenuItem>
             <MenuItem><Link to="/report">Тайлан</Link></MenuItem>

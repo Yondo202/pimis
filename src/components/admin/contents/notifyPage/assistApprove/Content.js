@@ -12,11 +12,6 @@ import { AiFillCloseCircle } from "react-icons/ai"
 
 const today = new Date();
 const month = (today.getMonth()+1);const year = today.getFullYear();const day = today.getDate();
-const addDays=(dateObj, numDays)=>{ dateObj.setDate(dateObj.getDate() + numDays);  return dateObj;}
-const nextWeek = addDays(today , 5); const day2 = nextWeek.getDate();const month2 = (nextWeek.getMonth()+1); const year2 = nextWeek.getFullYear();
-
-
-
 
 class Content extends React.Component {
     constructor(props) {
@@ -55,8 +50,8 @@ class Content extends React.Component {
     signatureVerify = () =>{  this.props.history.push(`/users`) }
 
     render() {
-        
         const app = this.props.approve;
+        console.log("--------------dd-----my APpp", app);
         const edpInfo = this.props?.edpInfo
         return (
             <>
@@ -77,7 +72,11 @@ class Content extends React.Component {
                     <div className="toname">Эрхэм <span className="name">{app?.company?.representative_name}</span> Танд,</div><br/>
                     <div className="contentPar">
                         <div className="items">Экспортыг дэмжих төсөлд таны илгээсэн {app?.project_number} Дугаартай өргөдөл нь шинжээчийн дүгнэлт болон  {year}оны  {month}сарын {day}өдрийн хуралдсан үнэлгээний хорооны шийдвэрээр шалгаруулалтанд амжилттай тэнцэж, түншлэлийн хөтөлбөрийн дэмжлэг авах болзлыг хангасанд баяр хүргэж байна. </div> <br />
-                        <div className="items">Энэхүү захидлаар танд Түншлэлийн гэрээг илгээж буй бөгөөд гарын үсэг, тамга тэмдгээр баталгаажуулсан гэрээг та энэхүү захидал илгээсэн өдрөөс ажлын 5 хоногийн дотор буюу {year2}оны  {month2}сарын {day2}өдрийн 18 цагаас өмнө хэвлэмэл байдлаар болон электрон хувилбараар давхар илгээхийг хүсч байна. </div> <br />
+                        <div className="items">Энэхүү захидлаар танд Түншлэлийн гэрээг илгээж буй бөгөөд гарын үсэг, тамга тэмдгээр баталгаажуулсан гэрээг та энэхүү
+                         захидал илгээсэн өдрөөс ажлын 5 хоногийн дотор буюу 
+                         <span style={{fontWeight:"500"}}>{app.final_date.slice(0,4)}оны  {app.final_date.slice(5,7)}сарын {app.final_date.slice(8,10)}өдрийн 18 цагаас өмнө</span>
+                          хэвлэмэл байдлаар болон 
+                         электрон хувилбараар давхар илгээхийг хүсч байна. </div> <br />
                         <div className="items">Хэрэв дээр дурдсан хугацаанд гэрээ ирээгүй тохиолдолд танай байгууллагыг энэхүү түншлэлийн дэмжлэг авахаас татгалзсанд тооцох тул хүндэтгэх шалтгаантай тохиолдолд албан бичиг эсвэл албан имэйлээр хүсэлтээ тайлбарлан илгээнэ үү. </div> <br />
                     </div>
                     <div className="toname">Хэрэв танд гэрээтэй холбоотой асуулт байвал  <span className="name">" {edpInfo?.email} "</span>хаягаар холбогдоно уу.</div><br />
@@ -127,7 +126,9 @@ const EmailHTML = (props, edpInfo, username, signature) => renderEmail(
 
 
                     <Box style={{textAlign:"start",width:"100%", margin:'13px 0px', fontSize:'13px'}}>Экспортыг дэмжих төсөлд таны илгээсэн {props?.project_number} Дугаартай өргөдөл нь шинжээчийн дүгнэлт болон <Span style={{color:"#222222",fontWeight:"500", fontSize:'13px'}}>{year}оны  {month}сарын {day}өдрийн</Span>  хуралдсан үнэлгээний хорооны шийдвэрээр шалгаруулалтанд амжилттай тэнцэж, түншлэлийн хөтөлбөрийн дэмжлэг авах болзлыг хангасанд баяр хүргэж байна.  </Box>
-                    <Box style={{textAlign:"start",width:"100%", margin:'13px 0px', fontSize:'13px'}}>Энэхүү захидлаар танд Түншлэлийн гэрээг илгээж буй бөгөөд гарын үсэг, тамга тэмдгээр баталгаажуулсан гэрээг та энэхүү захидал илгээсэн өдрөөс <Span style={{color:"#222222",fontWeight:"500", fontSize:'13px'}}>ажлын 5 хоногийн дотор буюу {year2}оны  {month2}сарын {day2}өдрийн 18 цагаас өмнө</Span> хэвлэмэл байдлаар болон электрон хувилбараар давхар илгээхийг хүсч байна.  </Box>
+                    <Box style={{textAlign:"start",width:"100%", margin:'13px 0px', fontSize:'13px'}}>Энэхүү захидлаар танд Түншлэлийн гэрээг илгээж буй бөгөөд гарын үсэг, тамга тэмдгээр баталгаажуулсан гэрээг та энэхүү захидал илгээсэн өдрөөс
+                     <Span style={{color:"#222222",fontWeight:"500", fontSize:'13px'}}>ажлын 5 хоногийн дотор буюу {props?.final_date.slice(0,4)}оны  {props?.final_date.slice(5,7)}сарын {props?.final_date.slice(8,10)}өдрийн 18 цагаас өмнө</Span>
+                      хэвлэмэл байдлаар болон электрон хувилбараар давхар илгээхийг хүсч байна.  </Box>
                     <Box style={{textAlign:"start",width:"100%", margin:'13px 0px', fontSize:'13px'}}>Хэрэв дээр дурдсан хугацаанд гэрээ ирээгүй тохиолдолд танай байгууллагыг энэхүү түншлэлийн дэмжлэг авахаас татгалзсанд тооцох тул хүндэтгэх шалтгаантай тохиолдолд албан бичиг эсвэл албан имэйлээр хүсэлтээ тайлбарлан илгээнэ үү. </Box>
                 
                     <Box style={{textAlign:"start",width:"100%", marginTop:'5px',marginBottom:'22px', fontSize:'13px'}}>Хэрэв танд гэрээтэй холбоотой асуулт байвал " {edpInfo?.email} " хаягаар холбогдоно уу. </Box>

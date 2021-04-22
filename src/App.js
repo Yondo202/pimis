@@ -13,7 +13,6 @@ import 'devextreme/dist/css/dx.common.css'
 import 'assets/devExtremeTheme/dx.material.blue-light-compact.css'
 import MemberRoute from 'containers/member/MemberRoute'
 
-
 function App() {
   const [userId, setUserId] = useState(null);
   const ctxUser = useContext(UserContext);
