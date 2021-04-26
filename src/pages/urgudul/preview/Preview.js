@@ -12,6 +12,7 @@ import { districts } from 'pages/urgudul/urgudul_a/form_a_1'
 import { useParams } from 'react-router-dom'
 import { sortDates } from 'pages/urgudul/urgudul_b/form_b_8'
 import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
+import RowFile from './rowFile'
 
 
 const labels = {
@@ -34,6 +35,7 @@ const labels = {
         email: 'Имэйл хаяг',
         website: 'Вэбсайт',
         company_size: 'Компаний хэмжээ',
+        emp_count: 'Ажилтны тоо',
         project_plan: 'Төслийн төлөвлөлт, гүйцэтгэл дэх оролцоо',
         business_sectorId: 'Салбар',
         foreign_invested: 'Гадаад хөрөнгө оруулалттай эсэх',
@@ -189,6 +191,11 @@ export default function UrgudulPreview(props) {
                 console.log(res.data)
                 setProducts(res.data.data.docs)
             })
+        axios.get('currency-rates')
+            .then(res => {
+                console.log(res.data)
+                setRates(res.data.data)
+            })
     }, [])
 
     const getOccupationName = (id) => occupations.filter(obj => obj.id === id)[0]?.description_mon
@@ -210,6 +217,10 @@ export default function UrgudulPreview(props) {
     const getCountryName = (id) => countries.filter(obj => obj.id === id)[0]?.description_mon
 
     const dates = project.exportDatas?.sales ? sortDates(project.exportDatas?.sales) : []
+    const sliceIndex = Math.floor(dates.length / 2) + dates.length % 2
+    const datesFirstHalf = dates.slice(0, sliceIndex)
+    const datesSecondHalf = dates.slice(sliceIndex)
+    const dateHalves = [datesFirstHalf, datesSecondHalf]
 
     const exportSums = dates.reduce((acc, cur) => ({ ...acc, [cur]: null }), {})
 
@@ -228,6 +239,12 @@ export default function UrgudulPreview(props) {
     const [products, setProducts] = useState([])
 
     const getProductName = (id) => products.filter(obj => obj.id === id)[0]?.description_mon
+
+    const sumBudgetCost = project.activities?.map(activity => + activity.budget_cost).reduce((acc, cv) => acc + cv, 0)
+
+    const [rates, setRates] = useState([])
+
+    const getRate = (year) => rates.filter(rate => rate.eyear === year)[0]?.usd_to_mnt
 
     return (
         <div className="tw-overflow-x-auto tw-overflow-y-hidden">
@@ -282,7 +299,8 @@ export default function UrgudulPreview(props) {
                             <Row label={labels.company.handphone} value={project.company?.handphone} />
                             <Row label={labels.company.email} value={project.company?.email} />
                             <Row label={labels.company.website} value={project.company?.website} />
-                            <Row label={labels.company.company_size} value={companySizes[project.company?.company_size]} />
+                            <Row label={labels.company.company_size} value={companySizes[project.company?.company_size - 1]} />
+                            <Row label={labels.company.emp_count} value={project.company?.emp_count?.toLocaleString()} />
                             <Row label={labels.company.business_sectorId} value={getSectorName(project.company?.business_sectorId)} />
                             <Row label={labels.company.foreign_invested} value={project.company?.foreign_invested ? 'Тийм' : 'Үгүй'} />
                             {project.company?.foreign_invested === 1 &&
@@ -307,10 +325,10 @@ export default function UrgudulPreview(props) {
                                     <Row label={labels.clusters.representative_phone} value={item.representative_phone} />
                                     <Row label={labels.clusters.representative_email} value={item.representative_email} />
                                     <Row label={labels.clusters.business_sectorId} value={getSectorName(item.business_sectorId)} />
-                                    <Row label={labels.clusters.company_size} value={companySizes[item.company_size]} />
+                                    <Row label={labels.clusters.company_size} value={companySizes[item.company_size - 1]} />
                                     <Row label={labels.clusters.support_recipient} value={item.support_recipient ? 'Тийм' : 'Үгүй'} />
                                     <RowHtml label={labels.clusters.project_contribution} html={item.project_contribution} borderBottom={true} />
-                                    <Row label={labels.clusters.attachedFiles} value={item.attachedFiles[0]?.name} />
+                                    <RowFile label={labels.clusters.attachedFiles} file={item.attachedFiles[0]} />
                                 </div>
                             ) :
                             project.directors?.map((item, i) =>
@@ -365,9 +383,12 @@ export default function UrgudulPreview(props) {
                         {project.activities?.map((item, i) =>
                             <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
                                 <RowHtml label={labels.activities.activity[type]} html={item.activity} borderBottom={true} />
-                                <Row label={labels.activities.budget_cost} value={item.budget_cost?.toLocaleString()} />
+                                <Row label={labels.activities.budget_cost} value={item.budget_cost?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} />
                             </div>
                         )}
+                        <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400 tw-font-medium">
+                            <Row label="Нийт үйл ажиллагаануудын төсөвт зардал" value={sumBudgetCost?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} />
+                        </div>
                     </div>
 
                     <div className="no-break">
@@ -388,79 +409,102 @@ export default function UrgudulPreview(props) {
                             B8 - Төслийн тооцоолол
                         </div>
                         {Object.keys(project.exportDatas || {}).length > 0 ?
-                            <table className="tw-border-collapse tw-table-auto tw-w-full">
-                                <thead>
-                                    <tr>
-                                        <th className="tw-border tw-border-gray-400"></th>
-                                        {dates.map(date => {
-                                            switch (date) {
-                                                case 'submitDate':
-                                                    return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-0.5" key={date}>
-                                                        {`${project.exportDatas?.submitDate?.year || '__'}-${project.exportDatas?.submitDate?.month || '__'}`}
-                                                    </th>
-                                                case 'endDate':
-                                                    return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-0.5" key={date}>
-                                                        {`${project.exportDatas?.endDate?.year ? project.exportDatas?.endDate?.year : '__'}-${project.exportDatas?.endDate?.month ? project.exportDatas?.endDate?.month : '__'}`}
-                                                    </th>
-                                                default:
-                                                    return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1" key={date}>
-                                                        {date}
-                                                    </th>
-                                            }
-                                        })}
-                                        <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1">Нэгж</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Борлуулалт</td>
-                                        {dates.map((item, i) =>
-                                            <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.sales?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                        )}
-                                        <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Ажлын байр</td>
-                                        {dates.map((item, i) =>
-                                            <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.fullTime_workplace?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                        )}
-                                        <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Бүтээмж</td>
-                                        {dates.map((item, i) =>
-                                            <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.productivity?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                        )}
-                                        <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Экспорт</td>
-                                        {dates.map((item, i) =>
-                                            <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{exportSums[item] !== 0 && exportSums[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                        )}
-                                        <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
-                                    </tr>
-                                    {project.exportDatas?.export_details?.map((country, i) =>
-                                        <Fragment key={i}>
-                                            <tr>
-                                                <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1" colSpan={dates.length + 2}>{getCountryName(country?.countryId)} - экспорт хийсэн улс</td>
-                                            </tr>
-                                            {country?.export_products?.map((product, j) =>
-                                                <Fragment key={j}>
-                                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-3" colSpan={dates.length + 2}>{getProductName(product?.productId)} - экспортын бүтээгдэхүүний ангилал</td>
-                                                    <tr>
-                                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-5">{product?.product_name}</td>
-                                                        {dates.map((item, k) =>
-                                                            <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={k}>{product?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                                        )}
-                                                        <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
-                                                    </tr>
-                                                </Fragment>
+                            dateHalves.map((dates, h) =>
+                                <table className="tw-border-collapse tw-table-auto tw-w-full tw-mt-6" key={h}>
+                                    <thead>
+                                        <tr>
+                                            <th className="tw-border tw-border-gray-400"></th>
+                                            {dates.map(date => {
+                                                switch (date) {
+                                                    case 'submitDate':
+                                                        return <th className="tw-border tw-border-gray-400 tw-font-medium" key={date}>
+                                                            <div className="tw-flex tw-flex-col tw-items-center">
+                                                                <span className="tw-px-0.5">
+                                                                    {`${project.exportDatas?.submitDate?.year || '__'}-${project.exportDatas?.submitDate?.month || '__'}`}
+                                                                </span>
+                                                                <span className="tw-text-xs tw-px-0.5">
+                                                                    {getRate(project.exportDatas?.submitDate?.year) && `(${getRate(project.exportDatas?.submitDate?.year).toFixed(2)} ₮)`}
+                                                                </span>
+                                                            </div>
+                                                        </th>
+                                                    case 'endDate':
+                                                        return <th className="tw-border tw-border-gray-400 tw-font-medium" key={date}>
+                                                            <div className="tw-flex tw-flex-col tw-items-center">
+                                                                <span className="tw-px-0.5">
+                                                                    {`${project.exportDatas?.endDate?.year || '__'}-${project.exportDatas?.endDate?.month || '__'}`}
+                                                                </span>
+                                                                <span className="tw-text-xs tw-px-0.5">
+                                                                    {getRate(project.exportDatas?.endDate?.year) && `(${getRate(project.exportDatas?.endDate?.year).toFixed(2)} ₮)`}
+                                                                </span>
+                                                            </div>
+                                                        </th>
+                                                    default:
+                                                        return <th className="tw-border tw-border-gray-400 tw-font-medium" key={date}>
+                                                            <div className="tw-flex tw-flex-col tw-items-center">
+                                                                <span className="tw-px-1">
+                                                                    {date}
+                                                                </span>
+                                                                <span className="tw-text-xs tw-px-0.5">
+                                                                    {getRate(+date) && `(${getRate(+date).toFixed(2)} ₮)`}
+                                                                </span>
+                                                            </div>
+                                                        </th>
+                                                }
+                                            })}
+                                            <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1">Нэгж</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Борлуулалт</td>
+                                            {dates.map((item, i) =>
+                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.sales?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                             )}
-                                        </Fragment>
-                                    )}
-                                </tbody>
-                            </table>
+                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Ажлын байр</td>
+                                            {dates.map((item, i) =>
+                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.fullTime_workplace?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                            )}
+                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Бүтээмж</td>
+                                            {dates.map((item, i) =>
+                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.productivity?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                            )}
+                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Экспорт</td>
+                                            {dates.map((item, i) =>
+                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{exportSums[item] !== 0 && exportSums[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                            )}
+                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                        </tr>
+                                        {project.exportDatas?.export_details?.map((country, i) =>
+                                            <Fragment key={i}>
+                                                <tr>
+                                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1" colSpan={dates.length + 2}>{getCountryName(country?.countryId)} - экспорт хийсэн улс</td>
+                                                </tr>
+                                                {country?.export_products?.map((product, j) =>
+                                                    <Fragment key={j}>
+                                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-3" colSpan={dates.length + 2}>{getProductName(product?.productId)} - экспортын бүтээгдэхүүний ангилал</td>
+                                                        <tr>
+                                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-5">{product?.product_name}</td>
+                                                            {dates.map((item, k) =>
+                                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={k}>{product?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                            )}
+                                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                                        </tr>
+                                                    </Fragment>
+                                                )}
+                                            </Fragment>
+                                        )}
+                                    </tbody>
+                                </table>
+                            )
                             :
                             <div className="tw-border tw-border-gray-400 tw-px-2 tw-py-4">
                                 Төслийн тооцоолол хүснэгтийн мэдээлэл оруулаагүй байна.

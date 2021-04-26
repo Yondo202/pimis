@@ -23,6 +23,7 @@ import DocAddSVG from 'assets/svgComponents/docAddSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
 import { config, Transition } from 'react-spring/renderprops'
 import UrgudulPreview from './preview/Preview'
+import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
 
 
 function UrgudulNavigator(props) {
@@ -232,8 +233,9 @@ function UrgudulNavigator(props) {
                                     {
                                         projects.map((item, i) =>
                                             <button className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300 focus:tw-outline-none tw-inline-flex tw-flex-col" key={item.id} onClick={() => loadProject(item.id)}>
-                                                <div className={`tw-relative tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-justify-center tw-items-center tw-text-white tw-font-medium ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
+                                                <div className={`tw-relative tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-white tw-font-medium ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
                                                     <span className="tw-text-sm">{item.project_number}</span>
+                                                    <span className="tw-text-sm">{statusNames[item.status]}</span>
                                                     <span className="tw-text-xs tw-absolute tw-bottom-1 tw-right-2">{new Date(item.createdAt).toLocaleDateString()}</span>
                                                 </div>
                                                 <div className="tw-pl-2 tw-mt-1 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
