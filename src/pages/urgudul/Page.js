@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Switch, Route, useHistory, useParams, useLocation } from 'react-router-dom'
 import UrgudulFront from './formFront'
 import UrgudulApplicant from './urgudul_a/form_a_1'
-import UrugudulClusters from './urgudul_a/form_a_21'
-import UrugudulDirectors from './urgudul_a/form_a_22'
+import UrgudulClusters from './urgudul_a/form_a_21'
+import UrgudulDirectors from './urgudul_a/form_a_22'
 import UrgudulBreakdown from './urgudul_b/form_b'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import UrgudulActivities from './urgudul_b/form_b_6'
@@ -21,8 +21,9 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import DocAddSVG from 'assets/svgComponents/docAddSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
-import { Transition } from 'react-spring/renderprops-universal'
+import { config, Transition } from 'react-spring/renderprops'
 import UrgudulPreview from './preview/Preview'
+import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
 
 
 function UrgudulNavigator(props) {
@@ -62,7 +63,6 @@ function UrgudulNavigator(props) {
         from: { opacity: 0 },
         enter: { opacity: 1 },
         leave: { display: 'none' },
-        initial: { opacity: 1 },
     })
 
     const [modalOpen, setModalOpen] = useState(props.preloaded ? false : true)
@@ -88,21 +88,26 @@ function UrgudulNavigator(props) {
 
     const loadProject = (id) => {
         axios.get(`projects/${id}`, {
-            headers: {
-                'Authorization': getLoggedUserToken(),
-            }
+            headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
             console.log(res.data)
-            UrgudulCtx.setData(res.data.data)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээллийг амжилттай уншлаа.' })
-            setModalOpen(false)
+            const project = res.data.data
+            if (project.status === 'editable') {
+                UrgudulCtx.setData(res.data.data)
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягтыг нээлээ.' })
+                setModalOpen(false)
+            } else {
+                history.push(`/urgudul-preview/${project.id}`)
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягтыг нээлээ. Засвар оруулах боломжгүй өргөдөл байна.' })
+            }
         }).catch(err => {
             console.log(err.response?.data)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Өргөдлийн маягтыг нээж чадсангүй.' })
         })
     }
 
     const createProject = () => {
+        UrgudulCtx.setData({})
         setModalOpen(false)
         history.push('/urgudul/1')
     }
@@ -136,14 +141,14 @@ function UrgudulNavigator(props) {
 
     return (
         <div className="tw-relative tw-w-full tw-text-gray-700 tw-text-13px">
-            <div className="tw-mt-4 tw-ml-4 tw-mb-10">
-                <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-5 tw-pr-6 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-text-15px tw-transition-colors" onClick={() => setPreviewModalOpen(true)}>
+            <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-flex tw-justify-start tw-py-2 tw-my-4">
+                <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-3 tw-pr-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={() => setPreviewModalOpen(true)}>
                     <SearchSVG className="tw-w-4 tw-h-4" />
                     <span className="tw-text-sm tw-ml-2">Урьдчилж харах</span>
                 </button>
             </div>
 
-            <div className="tw-p-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
+            <div className="tw-py-1 tw-px-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
                 <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 1 && 'tw-invisible'} tw-transition-shadow`} onClick={handlePrev}>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90" />
                     <span className="tw-mr-1 tw-text-13px">Өмнөх</span>
@@ -162,24 +167,25 @@ function UrgudulNavigator(props) {
             </div>
 
             {transitionsPages.map(({ item, props, key }) =>
-                <animated.div key={key} style={props}>
+                <animated.div key={key} className="tw-pb-10" style={props}>
                     <Switch location={item}>
                         <Route path="/urgudul/1">
                             <UrgudulFront />
                         </Route>
 
                         <Route path="/urgudul/2">
-                            <UrgudulApplicant />
+                            <UrgudulApplicant projects={projects} />
                         </Route>
 
                         <Route path="/urgudul/3">
-                            {
-                                isCluster ? <UrugudulClusters /> : <UrugudulDirectors />
+                            {isCluster
+                                ? <UrgudulClusters projects={projects} />
+                                : <UrgudulDirectors projects={projects} />
                             }
                         </Route>
 
                         <Route path="/urgudul/4">
-                            <UrgudulOverview />
+                            <UrgudulOverview projects={projects} />
                         </Route>
 
                         <Route path="/urgudul/5">
@@ -199,8 +205,9 @@ function UrgudulNavigator(props) {
                         </Route>
 
                         <Route path="/urgudul/9">
-                            {
-                                isCluster ? <UrgudulNoticeCluster /> : <UrgudulNoticeCompany />
+                            {isCluster
+                                ? <UrgudulNoticeCluster projects={projects} />
+                                : <UrgudulNoticeCompany projects={projects} />
                             }
                         </Route>
 
@@ -226,14 +233,16 @@ function UrgudulNavigator(props) {
                                     {
                                         projects.map((item, i) =>
                                             <button className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300 focus:tw-outline-none tw-inline-flex tw-flex-col" key={item.id} onClick={() => loadProject(item.id)}>
-                                                <div className={`tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-justify-center tw-items-center tw-text-white tw-text-lg tw-font-bold ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
-                                                    ID: {item.id}
+                                                <div className={`tw-relative tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-white tw-font-medium ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
+                                                    <span className="tw-text-sm">{item.project_number}</span>
+                                                    <span className="tw-text-sm">{statusNames[item.status]}</span>
+                                                    <span className="tw-text-xs tw-absolute tw-bottom-1 tw-right-2">{new Date(item.createdAt).toLocaleDateString()}</span>
                                                 </div>
                                                 <div className="tw-pl-2 tw-mt-1 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
                                                     {
                                                         {
                                                             1: 'Кластер',
-                                                            0: 'ААН',
+                                                            0: 'Аж ахуй нэгж',
                                                         }[item.project_type] || '--/--'
                                                     }
                                                 </div>
@@ -268,23 +277,24 @@ function UrgudulNavigator(props) {
                 enter={{ opacity: 1 }}
                 leave={{ opacity: 0 }}>
                 {item => item && (anims1 =>
-                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-bg-gray-700 tw-bg-opacity-80 tw-z-10" style={anims1}>
+                    <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-bg-gray-700 tw-bg-opacity-80 tw-z-10" style={anims1}>
                         <Transition
                             items={previewModalOpen}
                             from={{ width: 0 }}
                             enter={{ width: 'auto' }}
-                            leave={{ width: 0 }}>
+                            leave={{ width: 0 }}
+                            config={config.stiff}>
                             {item => item && (anims =>
-                                <div className="tw-fixed tw-top-0 tw-left-0 tw-h-screen tw-overflow-y-auto tw-overflow-x-hidden tw-mr-8 tw-bg-white tw-px-4 tw-pb-2 tw-pt-4" style={anims} ref={previewContainerRef}>
+                                <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-h-screen tw-overflow-y-auto tw-overflow-x-hidden tw-bg-white tw-px-2 tw-pt-6 tw-max-w-full" style={anims} ref={previewContainerRef}>
                                     <button className="tw-text-red-500 active:tw-text-red-600 tw-rounded tw-border tw-border-red-500 active:tw-border-red-600 tw-absolute tw-top-1.5 tw-right-1.5 focus:tw-outline-none" onClick={() => setPreviewModalOpen(false)}>
                                         <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" />
                                     </button>
 
                                     <UrgudulPreview project={UrgudulCtx.data} />
-                                </div>
+                                </animated.div>
                             )}
                         </Transition>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
         </div>

@@ -2,7 +2,7 @@ import AlertContext from 'components/utilities/alertContext'
 import FileCard from 'pages/attachments/fileCard'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRef } from 'react'
-import { Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
@@ -158,13 +158,13 @@ export default function TrainingPartnerRegistration() {
                                 leave={{ opacity: 0 }}>
                                 {item => item
                                     ? anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileCard name={form.introduction_file?.name} type={form.introduction_file?.mimetype} size={form.introduction_file?.size} classAppend="" uploading={form.introduction_file === 'loading' && true} removeFile={() => handleRemoveFile('introduction_file')} downloadFile={() => handleDownloadFile('introduction_file')} />
-                                        </div>
+                                        </animated.div>
                                     : anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileAttachButton onClick={() => handleFileClick('introduction_file')} />
-                                        </div>
+                                        </animated.div>
                                 }
                             </Transition>
                         </div>
@@ -183,13 +183,13 @@ export default function TrainingPartnerRegistration() {
                                 leave={{ opacity: 0 }}>
                                 {item => item
                                     ? anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileCard name={form.experience_file?.name} type={form.experience_file?.mimetype} size={form.experience_file?.size} classAppend="" uploading={form.experience_file === 'loading' && true} removeFile={() => handleRemoveFile('experience_file')} downloadFile={() => handleDownloadFile('experience_file')} />
-                                        </div>
+                                        </animated.div>
                                     : anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileAttachButton onClick={() => handleFileClick('experience_file')} />
-                                        </div>
+                                        </animated.div>
                                 }
                             </Transition>
                         </div>
@@ -208,13 +208,13 @@ export default function TrainingPartnerRegistration() {
                                 leave={{ opacity: 0 }}>
                                 {item => item
                                     ? anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileCard name={form.legal_entity?.name} type={form.legal_entity?.mimetype} size={form.legal_entity?.size} classAppend="" uploading={form.legal_entity === 'loading' && true} removeFile={() => handleRemoveFile('legal_entity')} downloadFile={() => handleDownloadFile('legal_entity')} />
-                                        </div>
+                                        </animated.div>
                                     : anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileAttachButton onClick={() => handleFileClick('legal_entity')} />
-                                        </div>
+                                        </animated.div>
                                 }
                             </Transition>
                         </div>
@@ -233,13 +233,13 @@ export default function TrainingPartnerRegistration() {
                                 leave={{ opacity: 0 }}>
                                 {item => item
                                     ? anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileCard name={form.trainers?.name} type={form.trainers?.mimetype} size={form.trainers?.size} classAppend="" uploading={form.trainers === 'loading' && true} removeFile={() => handleRemoveFile('trainers')} downloadFile={() => handleDownloadFile('trainers')} />
-                                        </div>
+                                        </animated.div>
                                     : anims =>
-                                        <div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
+                                        <animated.div className="tw-absolute tw-top-2 tw-left-2" style={anims}>
                                             <FileAttachButton onClick={() => handleFileClick('trainers')} />
-                                        </div>
+                                        </animated.div>
                                 }
                             </Transition>
                         </div>

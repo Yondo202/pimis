@@ -4,7 +4,7 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import PenAltSVG from 'assets/svgComponents/penAltSVG'
 import TrashSVG from 'assets/svgComponents/trashSVG'
 import PlusSVG from 'assets/svgComponents/plusSVG'
-import { Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import CloseSVG from 'assets/svgComponents/closeSVG'
 import { DataGrid } from 'devextreme-react'
 import { Column, Editing, HeaderFilter, Lookup, Paging, Scrolling } from 'devextreme-react/data-grid'
@@ -22,6 +22,7 @@ loadMessages({
         "dxDataGrid-editingSaveRowChanges": "Хадгалах",
         "dxDataGrid-editingCancelRowChanges": "Болих",
         "dxDataGrid-editingDeleteRow": "Устгах",
+        "dxDataGrid-editingAddRow": "Шинээр бичвэр оруулах",
     }
 })
 
@@ -34,7 +35,10 @@ export default function AcceptPeriodHandle() {
         }).then(res => {
             console.log(res)
             setPeriods(res.data.data)
-        }).catch(err => console.error(err.response))
+        }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Нээлттэй хугацааны мэдээллүүдийг татаж чадсангүй.' })
+        })
     }, [])
 
     const handleAddPeriod = () => {
@@ -224,7 +228,7 @@ export default function AcceptPeriodHandle() {
     }
 
     return (
-        <div className="tw-text-sm tw-text-gray-700">
+        <div className="tw-text-sm tw-text-gray-700 tw-pb-10">
             <div className="tw-text-xl tw-font-medium tw-p-2 tw-mt-2">
                 Өргөдөл хүлээн авах нээлттэй хугацааг тохируулах
             </div>
@@ -274,7 +278,7 @@ export default function AcceptPeriodHandle() {
                 enter={{ opacity: 1 }}
                 leave={{ opacity: 0 }}>
                 {item => item && (anims =>
-                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
+                    <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
                         <div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow" ref={modalRef}>
                             <button className="tw-absolute tw-top-1.5 tw-right-1.5 tw-text-red-500 active:tw-text-red-600 tw-transition-colors focus:tw-outline-none tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={handleCloseModal}>
                                 <CloseSVG className="tw-w-5 tw-h-5" />
@@ -312,7 +316,7 @@ export default function AcceptPeriodHandle() {
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
 
@@ -322,7 +326,7 @@ export default function AcceptPeriodHandle() {
                 enter={{ opacity: 1 }}
                 leave={{ opacity: 0 }}>
                 {item => item && (anims =>
-                    <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
+                    <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
                         <div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-ring-2 tw-ring-red-500" ref={modalRef}>
                             <div className="tw-p-2 tw-text-center" style={{ minWidth: 300 }}>
                                 Нээлттэй хугацааг устгах уу?
@@ -336,12 +340,12 @@ export default function AcceptPeriodHandle() {
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
 
-            <div className="tw-mt-8 tw-p-4 tw-pt-0 tw-bg-white tw-rounded-md tw-shadow tw-max-w-2xl">
-                <div className="tw-text-xl tw-font-medium tw-p-2 tw-pt-8">
+            <div className="tw-mt-8 tw-p-4 tw-pt-0 tw-bg-white tw-rounded tw-shadow tw-max-w-2xl">
+                <div className="tw-text-lg tw-font-medium tw-p-2 tw-pt-8 tw-text-center">
                     Өргөдөл хүлээн авах нээлттэй хугацааг тохируулах
                 </div>
 
@@ -364,11 +368,11 @@ export default function AcceptPeriodHandle() {
                         mode="row"
                         allowUpdating={true}
                         allowDeleting={true}
-                        allowAdding={true} />
-
+                        allowAdding={true}
+                    />
                     <Column dataField="eyear" caption="Жил" alignment="right" headerCellRender={HeaderCell} />
                     <Column dataField="quarter" caption="Улирал" alignment="right" headerCellRender={HeaderCell}>
-                        <Lookup dataSource={quarters} displayExpr="Name" valueExpr="id" headerCellRender={HeaderCell} />
+                        <Lookup dataSource={quarters} displayExpr="name" valueExpr="id" />
                     </Column>
                     <Column dataField="start_date" dataType="date" caption="Нээгдэх хугацаа" alignment="right" headerCellRender={HeaderCell} />
                     <Column dataField="end_date" dataType="date" caption="Хаагдах хугацаа" alignment="right" headerCellRender={HeaderCell} />
@@ -380,18 +384,17 @@ export default function AcceptPeriodHandle() {
 
 const quarters = [{
     id: 1,
-    Name: 'Q1',
+    name: 'Q1',
 }, {
     id: 2,
-    Name: 'Q2',
+    name: 'Q2',
 }, {
     id: 3,
-    Name: 'Q3',
+    name: 'Q3',
 }, {
     id: 4,
-    Name: 'Q4',
+    name: 'Q4',
 }]
-
 
 const HeaderCell = (data) => (
     <div className="tw-text-center tw-font-medium tw-text-gray-700 tw-text-sm tw-inline-flex">

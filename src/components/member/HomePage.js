@@ -16,7 +16,7 @@ function HomePage({setNotify}) {
 
     useEffect(async()=>{
             await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token()}}).then((res)=>{
-                console.log(res, " my data+++++++++");
+                console.log(res, "------------");
                 if(res.data.data[0]){ setCardData(res.data.data); };
             }).catch((err)=> console.log(err.response.data.error))
     },[]);
@@ -47,7 +47,7 @@ function HomePage({setNotify}) {
                                         </div>
                                         <div className="contItem">
                                                 <span className="title">Санхүүжилтийн хэмжээ :</span>
-                                                <span className="desc">{el.budgetCost}</span>
+                                                <span className="desc">{el.budgetCost} $</span>
                                         </div>
                                         <div className="mains">
                                                 <div className="buttons Active">

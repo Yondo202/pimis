@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Chart, Series, CommonSeriesSettings, Label, Format, Legend } from 'devextreme-react/chart';
-import { ReportTop } from "components/theme";
-import styled from "styled-components";
-import { IoIosArrowRoundForward } from "react-icons/io";
-import { BiFilterAlt } from "react-icons/bi";
-import { MdNotInterested } from "react-icons/md";
-import axios from "axiosbase";
+import React, { useEffect, useState, useRef } from 'react'
+import styled, { keyframes } from "styled-components"
+import { ReportTop } from "components/theme"
+import axios from "axiosbase"
+import { IoIosArrowRoundForward } from "react-icons/io"
+import { BiFilterAlt } from "react-icons/bi"
+import { MdNotInterested } from "react-icons/md"
 import DataGrid, { Column, Selection, FilterRow, Paging, Summary, TotalItem , Export} from 'devextreme-react/data-grid';
 import Button from 'devextreme-react/button';
 import { jsPDF } from 'jspdf';
@@ -17,27 +16,38 @@ import ExcelJS from 'exceljs';
 import saveAs from 'file-saver';
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import 'react-day-picker/lib/style.css';
-import { DayFormat } from "../DayFormat";
-import { font } from "../Font"
+import { DayFormat } from "../../DayFormat";
+import { font } from "../../Font";
 
 const dataGridRef = React.createRef();
 
-const SectorsOne = () => {
-    const [ myData, setMyDAta ] = useState(null);
+const TotalApproach = () => {
     const [ defaultRender, setDefaultRender ] = useState(false);
+    const [ myData, setMyDAta ] = useState(null);
     const [ from, setFrom ] = useState({ class: "", value: null } );
     const [ to, setTo ] = useState({ class: "", value: null } );
+    const [width, setWidth] = useState();
 
     useEffect(()=>{
-        go();
-    },[defaultRender]);
+         go();
+    },[defaultRender])
+
+    const ParentRef = useRef(null);
+    useEffect(() => {
+        const handleResize = () => {
+            setWidth(ParentRef.current?.clientWidth);
+        }
+        if (width === undefined) handleResize()
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [ParentRef]);
 
     const exportGrid =()=> {
         const doc = new jsPDF('p', 'px', 'letter');
         doc.addFileToVFS('PTSans-Regular-normal.ttf', font);
         doc.addFont('PTSans-Regular-normal.ttf', 'PTSans-Regular', 'normal');
         doc.setFont("PTSans-Regular");
-     
         const dataGrid = dataGridRef.current.instance;
         exportDataGridToPdf({
           jsPDFDocument: doc,
@@ -49,7 +59,8 @@ const SectorsOne = () => {
     }
 
     const go = async ()=>{
-        const req = await axios.get(`reports/handsan-baiguullaguud?calctype=bySector`);
+        const req = await axios.get(`reports/shalguur-hangasan?calctype=byCompany`);
+        // localhost:3000/api/reports/shalguur-hangasan?calctype=byCompany&startDate=2021-01-01&endDate=2021-04-01
         setMyDAta(req.data.data); setFrom({ value:null }); setTo({value:null});
     }
 
@@ -60,56 +71,66 @@ const SectorsOne = () => {
             else{ setTo({class: "", value:to.value} ); setFrom({class: "", value:from.value} ); filter();  }
     }
     const filter = async () =>{
-       const req = await axios.get(`reports/handsan-baiguullaguud?calctype=bySector&startDate=${from.value}&endDate=${to.value}`);  setMyDAta(req.data.data);
+       const req = await axios.get(`reports/shalguur-hangasan?calctype=byCompany&startDate=${from.value}&endDate=${to.value}`);  setMyDAta(req.data.data);
     }
-
+ 
     return (
-        <Container>
-           
-             <ReportTop className="Topsector">
+        <Container ref={ParentRef}>
+
+                <ReportTop className="Topsector">
                     <div className="datePicker">
                         <div className={`from ${from.class}`}>
                             <DayPickerInput  placeholder={"Эхлэх"} onDayChange={changeDate} value={from.value} dayPickerProps={{todayButton: 'Өнөөдөр'}} />
                         </div>
                         <IoIosArrowRoundForward />
                         <div className={`to ${to.class}`}>
-                        <DayPickerInput placeholder={"Дуусах"} onDayChange={changeDateTo} value={to.value} dayPickerProps={{todayButton: 'Өнөөдөр'}} />
+                           <DayPickerInput placeholder={"Дуусах"} onDayChange={changeDateTo} value={to.value} dayPickerProps={{todayButton: 'Өнөөдөр'}} />
                         </div>
                         <div onClick={FilterDateHandle} className="FilterDateBtn"> <BiFilterAlt /> </div>
-                        {from.value&&to.value?<div onClick={()=>setDefaultRender(prev=>!prev)} className="FilterDateBtn reject"> <MdNotInterested /> </div>:""}
+                         {from.value&&to.value?<div onClick={()=>setDefaultRender(prev=>!prev)} className="FilterDateBtn reject"> <MdNotInterested /> </div>:""}
                     </div>
                     <div className="PdfExcelBtns">
                         <Button id='exportButton' icon='exportpdf' text='PDF - татах' onClick={exportGrid}   />
                         <Button text="EXCEL - хөрвүүлэх"  icon="xlsxfile"  onClick={()=>onExportingFunc(dataGridRef.current)}  />
                     </div>
-            </ReportTop>
+                </ReportTop>
+                
                         
                 <DataGrid
                     ref={dataGridRef}
-                    dataSource={test}
+                    dataSource={myData}
                     showBorders={true}
-                    keyExpr="business_sectorId"
+                    keyExpr="userId"
                     // onExporting={onExportingFunc}
                     AutoWidth={true}
                     width={"100%"}
+                    columnAutoWidth={true}
+                    width={width?width+30:700}
+
                 >
                     <Selection
                         mode="multiple"
                         // selectAllMode={allMode}
                         showCheckBoxesMode={`none`}
-                        
                     />
                     <FilterRow visible={true} />
                     <Paging defaultPageSize={10} />
-
-                    <Column width={90} alignment='center' dataField="business_sectorId" caption="ID" />
+                    {/* <Export enabled={true} /> */}
+                    {/* <Column dataField="orderId" caption="Order ID" width={90} /> */}
+                    <Column width={90} alignment='center' dataField="userId" caption="ID" />
+                    <Column width={90} alignment='center' dataField="esm" caption="Ангилал" />
+                    <Column width={300} dataField="companyname" caption="Компаны нэр"/>
                     <Column width={300} dataField="bdescription_mon" caption="Салбарын нэрс" />
-                    <Column width={300} alignment='center' dataField="count" caption="Нийт тоо" />
+                    <Column width={300} dataField="companyregister" caption="Регистр" />
+                    {/* <Column width={300} alignment='center' dataField="count" caption="Нийт тоо" /> */}
+                    {/* <Column dataField="date" dataType="date" /> */}
+                    {/* <Column dataField="amount" format="currency" width={90} /> */}
 
                     <Summary>
                         <TotalItem
-                            column="business_sectorId"
-                            summaryType="count" 
+                            column="userId"
+                            summaryType="count"
+                            // customizeText={"Нийт"}
                         />
                         {/* <TotalItem
                             column="count"
@@ -118,49 +139,13 @@ const SectorsOne = () => {
                          /> */}
                     </Summary>
                 </DataGrid>
-
-
-                <div className="ChartParent">
-                    <Chart id="chart"
-                        title="Нийт салбарын стастик"
-                        dataSource={test}
-                        onPointClick={onPointClick}
-                    >
-                        <CommonSeriesSettings
-                            argumentField="bdescription_mon"
-                            type="bar"
-                            hoverMode="allArgumentPoints"
-                            selectionMode="allArgumentPoints"
-                        >
-                        <Label visible={true}>
-                            <Format type="fixedPoint" precision={0} />
-                        </Label>
-                        </CommonSeriesSettings>
-                        <Series
-                            argumentField="bdescription_mon"
-                            valueField="count"
-                            name="Нийт"
-                        />
-                        <Series
-                            valueField="success"
-                            name="Тэнцсэн"
-                        />
-                        <Series
-                        valueField="reject"
-                        name="Тэнцээгүй"
-                        />
-                        <Legend verticalAlignment="bottom" horizontalAlignment="center"></Legend>
-                        <Export enabled={true} />
-                    </Chart>
-                </div>
         </Container>
     )
 
-
-
-  function onExportingFunc(e) {
+    function onExportingFunc(e) { 
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Салбараар ангилах');
+    
         exportDataGrid({
           component: e.instance,
           worksheet: worksheet,
@@ -190,53 +175,39 @@ const SectorsOne = () => {
         });
         e.cancel = true;
     }
-    
 }
 
-export default SectorsOne;
-
+export default TotalApproach;
 
 const Container = styled.div`
     max-width:1222px;
     width:100%;
-    .ChartParent{
-        margin-top:15px;
-        width:100%;
-        background-color:white;
-        text-align:center;
-        padding:30px 10px;
-    }
-    .dx-visibility-change-handler{
+    .dx-visibility-change-handler, .dx-widget{
+        /* box-shadow:1px 1px 10px -6px; */
+        
         &:last-child{
             box-shadow:1px 1px 10px -6px;
         }
         .dx-datagrid{
-                td{
-                    /* text-align: left !important; */
-                    border-right:1px solid #ababab;
-                    &:last-child{
-                        border-right:none;
-                    }
+            .dx-texteditor-input-container{
+                input{
+                    /* display:none; */
                 }
-            .dx-datagrid-total-footer{
-                td{
+            }
+            td{
+                /* text-align: left !important; */
+                border-right:1px solid #ababab;
+                &:last-child{
                     border-right:none;
                 }
             }
+            .dx-datagrid-total-footer{
+                td{
+                    /* text-align: left !important; */
+                    border-right:none;
+                }
+            }
+           
         }
     }
 `
-
-  function onPointClick(e) {
-    e.target.select();
-  }
-
-const test = [
-    { bdescription_mon: "Зам, Барилга", count: 24 ,business_sectorId:47 , success: 14, reject:10 },
-    { bdescription_mon: "Уул уурхай", count: 43 ,business_sectorId:1, success: 10, reject:33 },
-    { bdescription_mon: "Хөдөө аж ахуй", count: 31 ,business_sectorId:2, success: 21, reject:10 },
-    { bdescription_mon: "Технилоги", count: 25 ,business_sectorId:5, success: 15, reject:10 },
-    { bdescription_mon: "Барилга", count: 27 ,business_sectorId:6, success: 10, reject:17 },
- ]
-
-

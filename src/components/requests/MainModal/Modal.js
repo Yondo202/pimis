@@ -19,7 +19,6 @@ export const Modal = ({ showModal,setShowModal, initialData, param, na3 }) => {
         opacity: showModal ? 1 : 0,
         transform: showModal ? `translateX(0%)` : `translateX(-100%)`
     });
-
     const closeModal = e =>{ if(modalRef.current === e.target){ setShowModal(false);}}
     
     const keyPress = useCallback(e=>{
@@ -36,7 +35,7 @@ export const Modal = ({ showModal,setShowModal, initialData, param, na3 }) => {
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
     });
-    const backHanlde = () =>{ history.push(`/projects`); };
+    const backHanlde = () =>{ history.goBack(); };
 
     return(
         <>

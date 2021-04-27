@@ -20,7 +20,6 @@ import {ColorRgb, textColor} from '../../components/theme'
 import AccessToken from '../../context/accessToken'
 import DocumentTitle from 'containers/document/DocumentTitle'
 
-
 function MainRequest() {
     DocumentTitle("Байгаль орчны үнэлгээний асуумж");
     const history = useHistory();
@@ -54,7 +53,7 @@ function MainRequest() {
     },[param === "user"?helpCtx.reqMount:0]);
 
     const handleScroll = () => {  if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); } }
-    const backHanlde = () =>{ history.push(`/projects`); }
+    const backHanlde = () =>{ history.goBack(); }
 
     const func = param === "user"&&helpCtx.StyleComp;
     const One = param === "user"&&helpCtx.GlobalStyle.tableOne;

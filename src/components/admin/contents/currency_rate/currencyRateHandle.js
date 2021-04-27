@@ -1,0 +1,122 @@
+import React, { useContext, useEffect, useState } from 'react'
+import axios from 'axiosbase'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import AlertContext from 'components/utilities/alertContext'
+import { DataGrid } from 'devextreme-react'
+import { Column, Editing, HeaderFilter, Paging, Scrolling } from 'devextreme-react/data-grid'
+import './dataGrid.css'
+
+
+export default function CurrencyRateHandle() {
+    const [rates, setRates] = useState([])
+
+    const AlertCtx = useContext(AlertContext)
+
+    useEffect(() => {
+        axios.get('currency-rates').then(res => {
+            console.log(res)
+            setRates(res.data.data)
+        }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Ханшийн мэдээллийг татаж чадсангүй.' })
+        })
+    }, [])
+
+    const onRowInserted = (e) => {
+        axios.post('currency-rates', e.data, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res)
+            setRates(res.data.data)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Ханшийн мэдээллийг хадгаллаа.' })
+        }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Ханшийн мэдээллийг нэмж чадсангүй.' })
+            axios.get('currency-rates').then(res => {
+                console.log(res)
+                setRates(res.data.data)
+            }).catch(err => console.error(err.response))
+        })
+    }
+
+    const onRowUpdated = (e) => {
+        axios.put('currency-rates', e.data, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res)
+            setRates(res.data.data)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Ханшийн мэдээллийг өөрчиллөө.' })
+        }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Ханшийн мэдээллийг өөрчилж чадсангүй.' })
+            axios.get('currency-rates').then(res => {
+                console.log(res)
+                setRates(res.data.data)
+            }).catch(err => console.error(err.response))
+        })
+    }
+
+    const onRowRemoved = (e) => {
+        axios.delete('currency-rates', {
+            headers: { Authorization: getLoggedUserToken() },
+            params: { id: e.data.id },
+        }).then(res => {
+            console.log(res)
+            setRates(res.data.data)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Ханшийн мэдээллийг устгалаа.' })
+        }).catch(err => {
+            console.log(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Ханшийн мэдээллийг устгаж чадсангүй.' })
+            axios.get('currency-rates').then(res => {
+                console.log(res)
+                setRates(res.data.data)
+            }).catch(err => console.error(err.response))
+        })
+    }
+
+    return (
+        <div className="tw-text-gray-700 tw-text-sm tw-pb-10">
+            <div className="tw-mt-8 tw-p-4 tw-pt-0 tw-bg-white tw-rounded tw-shadow tw-max-w-2xl">
+                <div className="tw-text-lg tw-font-medium tw-p-2 tw-pt-8 tw-text-center">
+                    Төслийн тооцоололд хэрэглэгдэх ханшийн мэдээллийг оруулах
+                </div>
+
+                <DataGrid
+                    elementAttr={{ id: 'currency-rates-data-grid' }}
+                    dataSource={rates}
+                    showBorders={true}
+                    onRowInserted={onRowInserted}
+                    onRowUpdated={onRowUpdated}
+                    onRowRemoved={onRowRemoved}
+                    rowAlternationEnabled={true}
+                    showRowLines={true}
+                    showColumnLines={true}
+                    columnAutoWidth={true}
+                    width={360}
+                >
+                    <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
+                    <Paging defaultPageSize={20} />
+                    <HeaderFilter visible={true} />
+                    <Editing
+                        mode="row"
+                        allowUpdating={true}
+                        allowDeleting={true}
+                        allowAdding={true}
+                    />
+                    <Column dataField="eyear" caption="Он" alignment="right" headerCellRender={HeaderCell} customizeText={customizeTextYear} />
+                    <Column dataField="usd_to_mnt" caption="Долларын ханш" alignment="right" headerCellRender={HeaderCell} customizeText={customizeTextUSD} />
+                </DataGrid>
+            </div>
+        </div>
+    )
+}
+
+const HeaderCell = (data) => (
+    <div className="tw-text-center tw-font-medium tw-text-gray-700 tw-text-sm tw-inline-flex">
+        {data.column.caption}
+    </div>
+)
+
+const customizeTextYear = (cellinfo) => `${cellinfo.value} он`
+
+const customizeTextUSD = (cellinfo) => `${cellinfo.value} ₮`

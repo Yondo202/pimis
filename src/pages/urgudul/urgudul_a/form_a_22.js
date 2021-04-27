@@ -12,6 +12,7 @@ import SearchSelect from 'components/urgudul_components/searchSelect'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import LoadFromOtherProject from '../loadFromOtherProject'
 
 
 const initialState = [
@@ -25,7 +26,7 @@ const initialState = [
     },
 ]
 
-function UrugudulDirectors() {
+function UrgudulDirectors({ projects }) {
     const [form, setForm] = useState(initialState)
 
     const UrgudulCtx = useContext(UrgudulContext)
@@ -94,12 +95,15 @@ function UrugudulDirectors() {
             allValid = allValid && Object.keys(initialState[0]).every(key => !checkInvalid(obj[key], key === 'project_contribution' && 'quill'))
         }
 
+        if (form.length < 3) {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Та доод тал нь 3-аас дээш түлхүүр ажилтны мэдээлэл оруулна уу.' })
+            return
+        }
+
         if (UrgudulCtx.data.id) {
             if (allValid) {
                 axios.put(`projects/${UrgudulCtx.data.id}`, { directors: form }, {
-                    headers: {
-                        'Authorization': getLoggedUserToken()
-                    }
+                    headers: { 'Authorization': getLoggedUserToken() },
                 })
                     .then(res => {
                         console.log(res.data)
@@ -136,14 +140,37 @@ function UrugudulDirectors() {
         }
     }
 
+    const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+
+    const loadFromOtherProjectDirectors = (id) => {
+        axios.get(`projects/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            console.log(res)
+            const loadDirectors = res.data.data?.directors ?? []
+            if (loadDirectors.length > 0) {
+                setForm(loadDirectors)
+            } else {
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'ААН төлөөлөгчиддийн мэдээллээ оруулаагүй өргөдөл байна.' })
+                return
+            }
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+        }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+        })
+    }
+
     return (
-        <div className="tw-mt-8 tw-mb-20 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
+        <div className="tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="">
-                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px">
+                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px tw-relative">
                     <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
                     <span className="tw-leading-tight">- Аж ахуйн нэгжийг төлөөлөгчид</span>
 
-                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Түлхүүр албан тушаалтны жагсаалт, тэдгээрийн овог нэр, албан тушаалын хамт." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-4 tw-mr-2 sm:tw-ml-12" main="ААН нэгжийг төлөөлүүлж 3-аас түлхүүр албан тушаалтны мэдээллээ оруулна уу." position="bottom" />
+
+                    <LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectDirectors} />
                 </div>
 
                 {UrgudulCtx.data.project_number &&
@@ -191,12 +218,12 @@ function UrugudulDirectors() {
                 </div>
             )}
 
-            <div className="tw-flex tw-justify-end tw-items-center tw-pt-2">
+            <div className="tw-flex tw-justify-end tw-items-center tw-py-1">
                 <div className="tw-text-xs tw-italic tw-text-gray-600 tw-mr-2">
                     Түлхүүр албан тушаалтнууд
                 </div>
 
-                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />
+                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton={`tw-text-green-500 active:tw-text-green-600 ${validate && form.length < 3 && 'tw-border tw-border-red-500 tw-border-dashed'}`} />
             </div>
 
             <div className="tw-flex tw-justify-end">
@@ -206,4 +233,4 @@ function UrugudulDirectors() {
     )
 }
 
-export default UrugudulDirectors
+export default UrgudulDirectors

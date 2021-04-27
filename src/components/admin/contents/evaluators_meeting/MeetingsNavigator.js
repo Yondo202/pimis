@@ -44,7 +44,7 @@ export default function EvaluatorsMeetingsNavigator() {
     }, [])
 
     return transitionsPages.map(({ item, props, key }) =>
-        <animated.div key={key} style={props}>
+        <animated.div className="tw-relative" key={key} style={props}>
             <Switch location={item}>
                 <Route exact path="/meetings">
                     <EvaluatorsMeetingsList evaluators={evaluators} projects={projects} />

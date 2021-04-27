@@ -5,8 +5,9 @@ import { RiArrowRightSFill } from "react-icons/ri"
 import { BiMenuAltRight } from "react-icons/bi"
 import { MdKeyboardArrowRight } from "react-icons/md"
 import { DetailHome, HideMenu } from "./DetailHome"
-import SectorsOne from "./DetailCompOne/SectorsOne"
-import TotalApproach from "./DetailCompOne/TotalApproach"
+import SectorsOne from "./DetailCompOne/HandsanBaiguullaga/SectorsOne"
+import TotalApproach from "./DetailCompOne/ShalguurHangasan/TotalApproach"
+import NersiinJagsaaltaar from "./DetailCompOne/HandsanBaiguullaga/NersiinJagsaaltaar"
 
 export const TopMenu = ({childData,cond}) => {
     const history = useHistory();
@@ -44,8 +45,11 @@ export const TopMenu = ({childData,cond}) => {
                 <Route path="/report" exact>
                      {homeShow&&<DetailHome />}
                 </Route>
-                <Route path="/report/sectors" exact>
-                     <SectorsOne />
+                <Route path="/report/step-one/sectors" exact>
+                    <SectorsOne />
+                </Route>
+                <Route path="/report/step-one/nersiinjagsaaltaar" exact>
+                    <NersiinJagsaaltaar />
                 </Route>
                 <Route path="/report/hedenbaiguullaga" exact>
                      <TotalApproach />
@@ -71,6 +75,7 @@ const rightAnimate = keyframes`
    100% {  transform:scale(1); opacity:1; background-color: rgba(0, 200, 255, 0.2); }
 `
 const Container = styled.div`
+    width:100%;
     position:relative;
     padding:10px 15px;
     .TitlePar{

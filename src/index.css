@@ -8,8 +8,6 @@
   }
 }
 
-
-
 .container {
   max-width: 1060px;
 }
@@ -31,6 +29,7 @@ body {
 
 ::-webkit-scrollbar {
   width: 6px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {

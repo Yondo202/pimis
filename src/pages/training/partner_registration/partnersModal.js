@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react'
-import { Transition } from 'react-spring/renderprops-universal'
+import { animated, Transition } from 'react-spring/renderprops'
 import axios from 'axiosbase'
 import CloseSVG from 'assets/svgComponents/closeSVG'
 import PlusSVG from 'assets/svgComponents/plusSVG'
@@ -48,14 +48,14 @@ export default function PartnersModal(props) {
             enter={{ opacity: 1 }}
             leave={{ opacity: 0 }}>
             {item => item && (anims =>
-                <div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-flex tw-justify-center tw-items-center" style={anims}>
+                <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-flex tw-justify-center tw-items-center" style={anims}>
                     <Transition
                         items={showModal}
                         from={{ transform: 'translateY(-20px)' }}
                         enter={{ transform: 'translateY(0)' }}
                         leave={{ transform: 'translateY(20px)' }}>
                         {item1 => item1 && (anims1 =>
-                            <div style={anims1} className="tw-bg-white tw-relative tw-rounded-md tw-shadow-lg tw-p-4 tw-m-8 tw-w-full tw-max-w-3xl tw-flex tw-flex-col tw-items-center" ref={modalRef}>
+                            <animated.div style={anims1} className="tw-bg-white tw-relative tw-rounded-md tw-shadow-lg tw-p-4 tw-m-8 tw-w-full tw-max-w-3xl tw-flex tw-flex-col tw-items-center" ref={modalRef}>
                                 <button className="tw-border focus:tw-outline-none tw-text-red-500 active:tw-text-red-700 tw-border-red-500 tw-rounded-md tw-absolute tw-top-2 tw-right-2 tw-transition-colors" onClick={() => setModal(false)}>
                                     <CloseSVG className="tw-w-6 tw-h-6" />
                                 </button>
@@ -90,10 +90,10 @@ export default function PartnersModal(props) {
                                         </div>
                                     </button>
                                 </div>
-                            </div>
+                            </animated.div>
                         )}
                     </Transition>
-                </div>
+                </animated.div>
             )}
         </Transition>
     )

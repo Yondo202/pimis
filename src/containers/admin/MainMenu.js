@@ -16,8 +16,8 @@ function Main() {
       <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <Route path="/" >
           <IntlProvider locale={locale} messages={messages[locale]}>
-          <Layout setLocale={setLocale} />
-        </IntlProvider>
+            <Layout setLocale={setLocale} />
+          </IntlProvider>
       </Route>
       </motion.div>
     </Switch>

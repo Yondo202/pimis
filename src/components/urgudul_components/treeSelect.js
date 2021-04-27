@@ -5,7 +5,7 @@ import PlusSVG from 'assets/svgComponents/plusSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
 import SelectorSVG from 'assets/svgComponents/selectorSVG'
 import React, { useState } from 'react'
-import { Transition, config } from 'react-spring/renderprops'
+import { Transition, config, animated } from 'react-spring/renderprops'
 
 
 export default function TreeSelect(props) {
@@ -53,7 +53,7 @@ export default function TreeSelect(props) {
                 leave={{ height: 0, opacity: 0 }}
                 config={config.stiff}>
                 {item => item && (anims =>
-                    <div className="tw-overflow-y-auto tw-overflow-x-hidden tw-my-2 tw-border tw-border-gray-500 tw-rounded tw-ml-9 tw-mr-5 tw-bg-white" style={anims}>
+                    <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-my-2 tw-border tw-border-gray-500 tw-rounded tw-ml-9 tw-mr-5 tw-bg-white" style={anims}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">
                             <div className={`tw-flex tw-items-center tw-border-b ${search ? 'tw-border-blue-500 tw-text-blue-500' : 'tw-border-gray-600 tw-text-gray-600'} tw-pb-0.5 tw-my-1.5 tw-mr-2 tw-transition-colors`}>
                                 <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
@@ -64,7 +64,7 @@ export default function TreeSelect(props) {
                         {parents.map(parent =>
                             <Tree parent={parent} childs={props.data.filter(item => item.parentId === parent.id && item[display].toLowerCase().includes(search.toLowerCase()))} display={display} handleSelectId={handleSelectId} value={props.value} />
                         )}
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
         </div>

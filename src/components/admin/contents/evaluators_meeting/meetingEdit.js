@@ -116,96 +116,98 @@ export default function EvaluatorsMeetingEdit(props) {
     const history = useHistory()
 
     return (
-        <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0">
-            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/meetings')}>
+        <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-pb-10 tw-w-full">
+            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/meetings')}>
                 <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
                 Буцах
             </button>
 
-            <div className="tw-text-lg tw-font-medium tw-p-2 tw-ml-4 tw-mt-10">
-                Үнэлгээний хорооны уулзалт
-            </div>
+            <div className="tw-bg-white tw-rounded tw-shadow tw-p-2 tw-mt-6 tw-w-full tw-max-w-5xl">
+                <div className="tw-text-lg tw-font-medium tw-text-center tw-p-2 tw-mt-6">
+                    Үнэлгээний хорооны уулзалт
+                </div>
 
-            <div className="tw-flex tw-flex-wrap tw-justify-between">
-                <div className="tw-inline-flex tw-flex-wrap tw-items-center tw-mt-5 tw-p-2 tw-mr-4">
-                    <div className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight">
-                        Уулзалтын цаг товлох:
+                <div className="tw-flex tw-flex-wrap tw-justify-between tw-mt-5">
+                    <div className="tw-inline-flex tw-flex-wrap tw-items-center tw-p-2 tw-mr-4">
+                        <div className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight">
+                            Уулзалтын цаг товлох:
+                        </div>
+                        <DateBox className="tw-ml-8" type="date" elementAttr={{ id: 'meeting-datebox' }} value={date} onValueChanged={handleSetDateTime} />
                     </div>
-                    <DateBox className="tw-ml-8" type="date" elementAttr={{ id: 'meeting-datebox' }} value={date} onValueChanged={handleSetDateTime} />
+
+                    <div className="tw-inline-flex tw-flex-wrap tw-items-center tw-p-2 tw-mr-2">
+                        <span className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight">
+                            Төлөв:
+                        </span>
+                        <span className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight tw-ml-4" style={{ minWidth: 80 }}>
+                            {statusWord(status)}
+                        </span>
+                    </div>
                 </div>
 
-                <div className="tw-inline-flex tw-flex-wrap tw-items-center tw-mt-5 tw-p-2">
-                    <span className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight">
-                        Төлөв:
-                    </span>
-                    <span className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight tw-ml-4" style={{ minWidth: 80 }}>
-                        {statusWord(status)}
-                    </span>
-                </div>
-            </div>
+                <div className="tw-px-2 tw-mt-6 tw-w-full">
+                    <div className="tw-font-medium tw-text-15px">
+                        Үнэлгээний хорооны гишүүд сонгох
+                    </div>
+                    <div className="tw-max-w-5xl">
+                        <DataGrid
+                            dataSource={evaluators}
+                            showBorders={true}
+                            wordWrapEnabled={true}
+                            rowAlternationEnabled={true}
+                            columnAutoWidth={true}
+                            showRowLines={true}
+                            showColumnLines={true}
+                            loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
+                        >
+                            <SearchPanel visible={true} width={240} placeholder="Хайх..." />
+                            <HeaderFilter visible={true} />
+                            <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
 
-            <div className="tw-p-3 tw-pb-6 tw-bg-white tw-rounded-md tw-shadow-inner mt-1">
-                <div className="tw-font-medium">
-                    Үнэлгээний хорооны гишүүд сонгох
+                            <Column caption="Сонгох" cellRender={data => <CheckboxCell id={data.data?.id} selected={selectedEvaluators} handleChange={handleEvaluatorChange} />} headerCellRender={HeaderCell} calculateCellValue={data => calculateIsChecked(data.id, selectedEvaluators)} dataField="_" />
+                            <Column dataField="lastname" caption="Овог" headerCellRender={HeaderCell} />
+                            <Column dataField="firstname" caption="Нэр" headerCellRender={HeaderCell} />
+                            <Column dataField="phone" caption="Утас" headerCellRender={HeaderCell} />
+                            <Column dataField="email" caption="И-мэйл" headerCellRender={HeaderCell} />
+                        </DataGrid>
+                    </div>
                 </div>
-                <div className="tw-max-w-5xl">
-                    <DataGrid
-                        dataSource={evaluators}
-                        showBorders={true}
-                        wordWrapEnabled={true}
-                        rowAlternationEnabled={true}
-                        columnAutoWidth={true}
-                        showRowLines={true}
-                        showColumnLines={true}
-                        loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
-                    >
-                        <SearchPanel visible={true} width={240} placeholder="Хайх..." />
-                        <HeaderFilter visible={true} />
-                        <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
 
-                        <Column caption="Сонгох" cellRender={data => <CheckboxCell id={data.data?.id} selected={selectedEvaluators} handleChange={handleEvaluatorChange} />} headerCellRender={HeaderCell} calculateCellValue={data => calculateIsChecked(data.id, selectedEvaluators)} dataField="_" />
-                        <Column dataField="lastname" caption="Овог" headerCellRender={HeaderCell} />
-                        <Column dataField="firstname" caption="Нэр" headerCellRender={HeaderCell} />
-                        <Column dataField="phone" caption="Утас" headerCellRender={HeaderCell} />
-                        <Column dataField="email" caption="И-мэйл" headerCellRender={HeaderCell} />
-                    </DataGrid>
+                <div className="tw-px-2 tw-mt-12 tw-w-full">
+                    <div className="tw-font-medium tw-text-15px">
+                        Тэнцсэн төслүүдээс сонгох
+                    </div>
+                    <div className="tw-max-w-5xl">
+                        <DataGrid
+                            dataSource={approvedProjects}
+                            showBorders={true}
+                            wordWrapEnabled={true}
+                            rowAlternationEnabled={true}
+                            columnAutoWidth={true}
+                            showRowLines={true}
+                            showColumnLines={true}
+                            loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
+                        >
+                            <SearchPanel visible={true} width={240} placeholder="Хайх..." />
+                            <HeaderFilter visible={true} />
+                            <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
+                            <Paging defaultPageSize={20} />
+                            <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
+
+                            <Column caption="Сонгох" cellRender={data => <CheckboxCell id={data.data?.project?.id} selected={selectedProjects} handleChange={handleProjectChange} />} headerCellRender={HeaderCell} calculateCellValue={data => calculateIsChecked(data.project.id, selectedProjects)} dataField="_" />
+                            <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} />
+                            <Column dataField="companyregister" caption="Регистр" headerCellRender={HeaderCell} />
+                            <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} />
+                            <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} />
+                        </DataGrid>
+                    </div>
                 </div>
-            </div>
 
-            <div className="tw-mt-10 tw-p-3 tw-pb-6 tw-bg-white tw-rounded-md tw-shadow-inner">
-                <div className="tw-font-medium">
-                    Тэнцсэн төслүүдээс сонгох
+                <div className="tw-flex tw-justify-center">
+                    <button className="tw-py-1.5 tw-px-8 tw-text-15px tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow tw-mt-10 tw-mb-6" onClick={handleSubmit}>
+                        Хадгалах
+                    </button>
                 </div>
-                <div className="tw-max-w-5xl">
-                    <DataGrid
-                        dataSource={approvedProjects}
-                        showBorders={true}
-                        wordWrapEnabled={true}
-                        rowAlternationEnabled={true}
-                        columnAutoWidth={true}
-                        showRowLines={true}
-                        showColumnLines={true}
-                        loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
-                    >
-                        <SearchPanel visible={true} width={240} placeholder="Хайх..." />
-                        <HeaderFilter visible={true} />
-                        <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
-                        <Paging defaultPageSize={20} />
-                        <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
-
-                        <Column caption="Сонгох" cellRender={data => <CheckboxCell id={data.data?.project?.id} selected={selectedProjects} handleChange={handleProjectChange} />} headerCellRender={HeaderCell} calculateCellValue={data => calculateIsChecked(data.project.id, selectedProjects)} dataField="_" />
-                        <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} />
-                        <Column dataField="companyregister" caption="Регистр" headerCellRender={HeaderCell} />
-                        <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} />
-                        <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} />
-                    </DataGrid>
-                </div>
-            </div>
-
-            <div className="tw-flex tw-justify-end lg:tw-justify-center">
-                <button className="tw-py-1 tw-px-4 tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-4 lg:tw-mt-8 tw-mb-4 tw-mx-4" onClick={handleSubmit}>
-                    Хадгалах
-                </button>
             </div>
         </div>
     )

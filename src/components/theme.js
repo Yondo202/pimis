@@ -287,7 +287,10 @@ export const ReportTop = styled.div`
         justify-content:space-between;
         align-items:center;
         margin:15px 0px;
+        flex-direction:row;
+      
         .PdfExcelBtns{
+            display:flex;
             .dx-button{
                 margin-left:10px;
             }
@@ -320,7 +323,7 @@ export const ReportTop = styled.div`
            }
            .FilterDateBtn{
                cursor: pointer;
-               margin-left:15px;
+               margin-left:8px;
                background-color:#201DD9;
                text-align:center;
                padding:5px 5px;
@@ -342,4 +345,12 @@ export const ReportTop = styled.div`
                }
            }
        }
+
+    @media only screen and (max-width:1300px){
+        align-items:start;
+        flex-direction:column;
+        .datePicker{
+            margin-bottom:15px;
+        }
+    }
 `

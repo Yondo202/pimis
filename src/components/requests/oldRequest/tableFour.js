@@ -185,7 +185,6 @@ function TableFour(props) {
                    setFinalMsg("0"); setFinalTextScale("1"); setFinalText("Та шалгуур хангаж байна..."); setOpacity2("0");
                     finalEnd.PPS4["esm"] = "F";
                     setSpnBtn(true);
-                    console.log("F Angilal");
                     if(Dname){
                       axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{setSpnBtn(false); setTimeout(()=>{
                       helperContext.alertText('green', 'Та шалгуур хангаж байна..', true); history.push("/"); },4000) }).catch((err)=>{ helperContext.alertText('orange', 'Алдаа гарлаа', true);});

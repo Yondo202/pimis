@@ -1,10 +1,10 @@
 import React,{useState, useContext,useEffect} from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useHistory } from 'react-router-dom'
 import {IoMdCheckmarkCircle,IoIosArrowBack  } from 'react-icons/io';
 import { fontFamily, textColor, Color,fontSize,NextBtn } from '../theme';
-import {AiOutlineSend} from 'react-icons/ai'
+import {AiOutlineSend, AiOutlineCheckCircle} from 'react-icons/ai'
 import {CgDanger} from 'react-icons/cg'
 import UserContext from '../../context/UserContext'
 import AccessToken from '../../context/accessToken'
@@ -20,11 +20,13 @@ function CompCheck() {
     const param = useParams().url;
     const ctx = useContext(UserContext);
     const history = useHistory();
+    const [ showFinal, setShowFinal ] = useState(false);
     const [ count, setCount ] = useState(0);
     const [ success, setSuccess ] = useState(0);
     const [ btnCond, setBtnCond ] = useState(init);
     const [ secondChance, setSecondChance ] = useState({});
-    const [visible2, setVisible2] = useState(false);
+    const [ visible, setVisible] = useState(false);
+    const [ visible2, setVisible2] = useState(false);
     const [ BtnSpin, setBtnSpin ] = useState(false);
     const [ updateMount, setUpdateMount ] = useState(0);
     const [ initialData, setInitialData ] = useState(allData);
@@ -47,6 +49,21 @@ function CompCheck() {
     },[updateMount]);
     const NextPageHandle = (el) =>{ history.push(el); };
 
+    const OneBack = () =>{
+      history.goBack();
+    }
+
+    const FinalClick = el =>{
+      if(el){
+        setShowFinal(true);
+        setTimeout(()=>{
+          setVisible(false);
+        },10000)
+      }else{
+        setVisible(false);
+      }
+    }
+
     const clickHandles = (btn) =>{
               let rs2 = document.querySelectorAll(".inpTest333"); let arr2 = Array.from(rs2); let soloObject2 = {};  const cond = {};
               arr2.map((element,i)=>{
@@ -61,6 +78,8 @@ function CompCheck() {
               let keys = Object.keys(soloObject2);
               const Procent = keys.length * 100 / 25;
               const FinalProcent = Math.round(Procent);
+
+              console.log(`soloObject2`, soloObject2);
 
               if(keys.length < 25){
                 setOpacity("1");
@@ -87,13 +106,12 @@ function CompCheck() {
                 setOpacity("0");
                 setOpacity2("0");
                 axios.post(`criterias`, soloObject2, {headers:{ Authorization:AccessToken() } }).then(res=>{
-                  console.log(res);
-                  setUpdateMount(2); ctx.alertText('green, Амжилттай илгээгдлээ', true); setBtnSpin(false);
+                  setUpdateMount(2); ctx.alertText('green, Амжилттай илгээгдлээ', true); setBtnSpin(false); setVisible(true);
                 }).catch(err=>{setFinalErrorText("Серверт алдаа гарлаа."); setBtnSpin(false);});
               }
     }
 
-    const closeMModalX=()=>{ setVisible2(false); }
+    const closeMModalX=()=>{ setVisible2(false);}
     const closeModal=(el)=>{
         if(el==="shuud"){
           setBtnCond("twice");  setVisible2(false);
@@ -141,10 +159,10 @@ function CompCheck() {
                             <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                         </div>
                         <div className="Success">
-                            <NextBtn onClick={()=>NextPageHandle(`/progress`)} className="NextPageBtn" type="button"><div className="flexchild"><IoIosArrowBack/><IoIosArrowBack className="hide" /> <IoIosArrowBack className="hide1" /></div>Буцах</NextBtn>
-                            {success === 1? <div className="item not"><IoMdCheckmarkCircle />Үндсэн шалгуурыг хангаагүй байна...</div> : success=== 2? <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div> :null }
+                            <NextBtn onClick={()=>OneBack()} className="NextPageBtn" type="button"><div className="flexchild"><IoIosArrowBack/><IoIosArrowBack className="hide" /> <IoIosArrowBack className="hide1" /></div>Буцах</NextBtn>
+                            {success === 1? <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> : success=== 2? <div className="item"><IoMdCheckmarkCircle />Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна.</div> :null }
                         </div> 
-                </div> : ( <NullParent className="BtnPar"><button onClick={()=>NextPageHandle(`/projects`)}><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> ) )
+                </div> : ( <NullParent className="BtnPar"><button onClick={()=>OneBack()}><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> ) )
                 :  (  <div className="boxShadow">
                     <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
                     {initialData.map((el,i)=>{
@@ -214,14 +232,47 @@ function CompCheck() {
                               </div>
                       </Modal>
 
+                      <Modal visible={visible} width="800" effect="fadeInDown" >
+                              <div  className="Modaltest Modaltest22">
+                               {showFinal&&<div onClick={()=>setVisible(false)} className="headPar"><span >x</span></div>} 
+                                  <div style={showFinal?{opacity:0.4}:{opacity:1}} className="ModalTextPar">
+                                    <div className="redPAr">
+                                        <div className="redDesc"> Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна.</div>
+                                    </div>
+                                    <div className="mainText">
+                                        <div className="title">Жилийн борлуулалтын орлого нь 100 мянган ам.доллароос их бол  <span style={{fontWeight:"400"}}> ( тийм ) </span>
+                                         гэсэн хариултыг сонгоно уу? 
+                                        </div>
+                                        <span className="Nemelts"> ( Хэрэв цар тахлын үед борлуулалт огцом буурсан бол 2018, 2019 оны борлуулалтын орлогыг мэдээлэлд орлуулж болно )</span> 
+
+                                    </div>
+                                    <div className="btnPar">
+                                        <button class="btn btn-primary" onClick={()=>FinalClick(true)}>Тийм </button>
+                                        <button class="btn btn-primary" onClick={()=>FinalClick(false)}>Үгүй </button>
+                                    </div>
+                                  </div>
+                                  
+                                  {showFinal&&<div className="correctPar">
+                                        <AiOutlineCheckCircle />
+                                      <span>
+                                        Таны асуулгаас харахад танай байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт ААН-ээр тэнцэхээс
+                                        гадна кластерын толгой компаниар тэнцэх боломжтой байна.
+                                      </span>
+                                  </div>} 
+                                  
+                              </div>
+                      </Modal>
+
+
+
                       <div className="FinalBtn">
                           <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
                           <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
                       </div>
 
-                      {updateMount===1?success===1? <div className="Success"> <div className="item not"><IoMdCheckmarkCircle />Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.</div> </div> 
+                      {updateMount===1?success===1? <div className="Success"> <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> </div> 
                       : <div className="Success">
-                          <div className="item"><IoMdCheckmarkCircle />Та манай үндсэн шалгуурыг хангаж байна</div>
+                          <div className="item"><IoMdCheckmarkCircle />Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна. </div>
                           <NextBtn onClick={()=>NextPageHandle('/request/user')} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
                         </div> 
                       :( <div className="buttonPar">
@@ -258,7 +309,10 @@ let easing = [0, 0, 0.56, 0.95];
 const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
     enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
 
-
+const animate = keyframes`
+  0% { transform:translateX(100px); opacity:0; }
+  100% { transform:translate(0px); opacity:1;  }
+`
 
 const Component1 = styled.div`
     margin-top:40px;
@@ -344,16 +398,54 @@ const Component1 = styled.div`
             }
             .redPAr{
               margin-bottom:15px;
-              .redTitle{
+              .redDesc{
                 font-size:15px;
                 font-weight:500;
-                color:#FF1300;
                 margin-bottom:15px;
-              }
-              .redDesc{
                 text-align:start;
                 color:#FF4333;
               }
+            }
+          }
+          .correctPar{
+            display:flex;
+            align-items:center;
+            padding:20px 50px;
+            border-top:3px solid green;
+            border-radius:8px;
+            svg{
+              width:15%;
+              color:green;
+              font-size:24px;
+            }
+            span{
+              font-size:15px;
+              font-weight:500;
+              animation: ${animate} 0.8s ease;
+            }
+          }
+        }
+        .Modaltest22{
+          .ModalTextPar{
+            .btnPar{
+              button{
+                font-size:15px;
+                padding:4px 40px;
+              }
+            }
+            .mainText{
+              .title{
+                font-size:15px;
+              }
+            }
+            .redPAr{
+              margin-bottom:15px;
+                .redDesc{
+                  font-weight:400;
+                  font-size:18px;
+                  text-align:start;
+                  color:green;
+                }
             }
           }
         }

@@ -1,10 +1,10 @@
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import React, { useEffect, useState } from 'react'
 import { useRef } from 'react'
-import { useParams } from 'react-router'
 import { useReactToPrint } from 'react-to-print'
 import axios from 'axiosbase'
 import PrintSVG from 'assets/svgComponents/printSVG'
+import { useQuery } from 'components/utilities/useQueryLocation'
 
 
 const initialState = {
@@ -33,15 +33,14 @@ export default function LetterPreview(props) {
         content: () => componentRef.current,
     })
 
-    const projectId = useParams().id
+    const userId = useQuery().get('userId')
 
     useEffect(() => {
-        if (props.form === undefined || null) {
-            if (projectId !== undefined || null) {
-                axios.get(`letter-of-interests/${projectId}`, {
-                    headers: {
-                        'Authorization': getLoggedUserToken(),
-                    },
+        if (!props.form) {
+            if (userId !== undefined && userId !== null) {
+                axios.get(`letter-of-interests`, {
+                    headers: { 'Authorization': getLoggedUserToken() },
+                    params: { userId: userId },
                 }).then(res => {
                     console.log(res.data)
                     setForm({ ...form, ...res.data.data })
@@ -50,9 +49,7 @@ export default function LetterPreview(props) {
                 })
             } else {
                 axios.get('letter-of-interests', {
-                    headers: {
-                        'Authorization': getLoggedUserToken(),
-                    },
+                    headers: { 'Authorization': getLoggedUserToken() },
                 }).then(res => {
                     console.log(res.data)
                     setForm({ ...form, ...res.data.data })
@@ -64,8 +61,8 @@ export default function LetterPreview(props) {
     }, [])
 
     return (
-        <div className="tw-relative tw-text-gray-700 tw-text-sm">
-            <button className="tw-ml-2 tw-mb-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-text-15px" onClick={handlePrint}>
+        <div className="tw-relative tw-text-gray-700 tw-text-sm tw-mb-12">
+            <button className="tw-mb-6 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-text-15px" onClick={handlePrint}>
                 <span className="tw-text-sm">Хэвлэх болон PDF-ээр татах</span>
                 <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
             </button>
@@ -85,7 +82,7 @@ export default function LetterPreview(props) {
                             {form.company_name}
                         </span>
 
-                        <span className="tw-px-0.5 tw-leading-tight tw-text-center">
+                        <span className="tw-mt-1 tw-px-1 tw-leading-tight tw-text-center">
                             {form.company_address}
                         </span>
 
@@ -109,25 +106,25 @@ export default function LetterPreview(props) {
                             </div>
                         </div>
 
-                        <div className="tw-mt-0.5 tw-flex tw-justify-center tw-items-center tw-leading-tight">
+                        <div className="tw-mt-1 tw-flex tw-justify-center tw-items-center tw-leading-tight">
                             <span className="tw-mr-1">
                                 Имэйл:
                             </span>
-                            <span className="tw-px-0.5">
+                            <span className="tw-px-1">
                                 {form.company_email}
                             </span>
                         </div>
 
-                        <div className="tw-mt-0.5 tw-flex tw-justify-center tw-items-center tw-leading-tight">
+                        <div className="tw-mt-1 tw-flex tw-justify-center tw-items-center tw-leading-tight">
                             <span className="tw-mr-1">
                                 УБД:
                                 </span>
-                            <span className="tw-px-0.5">
+                            <span className="tw-px-1">
                                 {form.company_register}
                             </span>
                         </div>
 
-                        <div className="tw-mt-0.5 tw-flex tw-justify-center tw-items-center tw-leading-tight">
+                        <div className="tw-mt-1 tw-flex tw-justify-center tw-items-center tw-leading-tight">
                             <span className="tw-px-0.5">
                                 {form.submit_date}
                             </span>
@@ -141,44 +138,44 @@ export default function LetterPreview(props) {
                         </div>
                     </div>
 
-                    <div className="tw-uppercase tw-text-center tw-text-xl tw-px-8 tw-pt-8 tw-ml-8">
+                    <div className="tw-uppercase tw-text-center tw-font-medium tw-text-xl tw-px-8 tw-pt-8 tw-ml-8">
                         "Экспортыг дэмжих төсөл"-д
                     </div>
                 </div>
 
-                <div className="tw-text-xl tw-mt-8" style={{ marginLeft: '18%' }}>
+                <div className="tw-text-2xl tw-font-medium tw-mt-8" style={{ marginLeft: '18%' }}>
                     Төсөлд хамрагдах тухай
-                    </div>
+                </div>
 
-                <div dangerouslySetInnerHTML={{ __html: form.letter }} className="tw-mx-16 tw-mt-2 tw-p-1" />
+                <div dangerouslySetInnerHTML={{ __html: form.letter }} className="tw-mx-16 tw-mt-2 tw-p-1" style={{ minHeight: 740 }} />
 
                 <div className="tw-relative tw-h-40 tw-mt-10 tw-mx-24">
-                    <div className="tw-absolute tw-top-8 tw-left-2">
+                    <div className="tw-absolute tw-top-4 tw-left-2 tw-font-medium tw-text-base tw-uppercase">
                         Хүндэтгэсэн:
                     </div>
 
                     <div className="tw-absolute tw-top-10 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw-w-full tw-flex tw-justify-center tw-items-center tw-z-10">
-                        <span className="tw-py-1 tw-px-0.5 tw-uppercase tw-whitespace-nowrap">
+                        <span className="tw-text-center tw-font-medium tw-mr-2 tw-py-1 tw-px-0.5 tw-uppercase tw-whitespace-nowrap" style={{ minWidth: 90 }}>
                             {form.director_position}
                         </span>
 
                         {form.director_signature ?
-                            <img src={form.director_signature} className="tw-ml-2 tw-flex-shrink-0" style={{ width: 260, height: 90 }} alt="Гарын үсэг" />
+                            <img src={form.director_signature} className="tw-mx-2 tw-flex-shrink-0" style={{ width: 182, height: 63 }} alt="Гарын үсэг" />
                             :
-                            <div className="tw-ml-2 tw-flex-shrink-0" style={{ width: 260, height: 90 }} />
+                            <div className="tw-mx-2 tw-flex-shrink-0" style={{ width: 260, height: 90 }} />
                         }
 
-                        <span className="tw-ml-2 tw-py-1 tw-px-0.5 tw-uppercase tw-whitespace-nowrap">
+                        <span className="tw-text-center tw-font-medium tw-ml-2 tw-py-1 tw-px-0.5 tw-uppercase tw-whitespace-nowrap" style={{ minWidth: 90 }}>
                             {form.director_name}
                         </span>
                     </div>
 
                     {form.company_stamp ?
-                        <div className="tw-w-44 tw-h-44 tw-absolute tw-top-2 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--z-10">
+                        <div className="tw-w-44 tw-h-44 tw-absolute tw--top-4 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--z-10">
                             <img src={form.company_stamp} alt="Байгууллагын тамга тэмдэг" className="tw-w-full tw-h-full tw-object-scale-down" />
                         </div>
                         :
-                        <div className="tw-w-44 tw-h-44 tw-absolute tw-top-2 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--z-10" />
+                        <div className="tw-w-44 tw-h-44 tw-absolute tw--top-4 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw--z-10" />
                     }
                 </div>
             </div>

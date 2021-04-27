@@ -15,7 +15,7 @@ function bytesFormat(x) {
 
 export default function FileCard(props) {
     return (
-        <div className={`tw-inline-flex tw-bg-indigo-50 tw-rounded-lg ${props.classAppend} ${props.uploading && 'tw-animate-pulse'}`}>
+        <div className={`tw-inline-flex tw-bg-indigo-50 tw-rounded-lg ${props.classAppend} ${props.uploading && 'tw-animate-pulse'}`} style={props.style}>
             <div className="tw-relative">
                 <svg className="tw-h-20" viewBox="0 0 285 350" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" clipRule="evenodd" d="M0.725098 20.775C0.725098 9.78453 9.63483 0.875 20.6251 0.875H194.75L284.3 90.425V329.225C284.3 340.215 275.39 349.125 264.4 349.125H20.6251C9.63483 349.125 0.725098 340.215 0.725098 329.225V20.775Z" fill="url(#paint0_linear)" />

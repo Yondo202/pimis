@@ -15,6 +15,9 @@ const month = (today.getMonth()+1);const year = today.getFullYear();const day = 
 const addDays=(dateObj, numDays)=>{ dateObj.setDate(dateObj.getDate() + numDays);  return dateObj;}
 const nextWeek = addDays(today , 5); const day2 = nextWeek.getDate();const month2 = (nextWeek.getMonth()+1); const year2 = nextWeek.getFullYear();
 
+
+
+
 class Content extends React.Component {
     constructor(props) {
         super(props)
@@ -52,6 +55,7 @@ class Content extends React.Component {
     signatureVerify = () =>{  this.props.history.push(`/users`) }
 
     render() {
+        
         const app = this.props.approve;
         const edpInfo = this.props?.edpInfo
         return (

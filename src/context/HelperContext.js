@@ -2,7 +2,7 @@ import React,{useEffect, useState} from "react";
 import axios from "../axiosbase";
 
 const HelperContext = React.createContext();
-const initialStyle ={tableOne: "0%", tableTwo: "100%",tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%", tableheight: 150,}
+const initialStyle ={tableOne: "0%", tableTwo: "100%",tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%", tableheight: 180,}
 const initialSee = { tableOneData : {}, tableTwoData: {}, tableThree : {}, tableFour : {} }
 
 export const HelpStore = (props) =>{
@@ -17,9 +17,9 @@ export const HelpStore = (props) =>{
 
     const StyleComp = (valueOne,valueTwo, valueThree,valueFour,valueFive,valueSix) =>{
         if(valueOne === "0%"){
-          setGlobalStyle({  tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 230});
+          setGlobalStyle({  tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 180 });
         }else if(valueTwo === "0%"){
-          setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix,tableheight: 450 });
+          setGlobalStyle({ tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 450 });
         }else if(valueThree === "0%"){
           setGlobalStyle({tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 400 });
         }else if(valueFour === "0%"){
@@ -31,7 +31,7 @@ export const HelpStore = (props) =>{
         }else{
           setGlobalStyle({tableOne: valueOne,tableTwo: valueTwo,  tableThree: valueThree, tableFour : valueFour, tableFive : valueFive, tableSix : valueSix, tableheight: 250 });
         }
-      }
+    }
 
     const alertText = ( color, text, cond ) =>{ setAlert({ color:color, text:text, cond:cond });  setTimeout(()=>{ setAlert({ cond:false }); },4000); }
 

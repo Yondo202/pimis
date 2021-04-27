@@ -21,15 +21,18 @@ import AttachmentUploads from 'pages/attachments/page';
 import FirstEvaluation from 'pages/decision_making/5a/Page';
 import CompilationChecklist from 'pages/decision_making/5b/Page';
 import AnalystReport from 'pages/decision_making/5c/Page';
-import UrgudulPreview from 'pages/urgudul/preview/Preview';
-import MainDecision from '../../components/admin/contents/main_decision/Main_decision'
-import NotifyPage1 from '../../components/admin/contents/notifyPage/MainPage'
-import LetterPreview from 'pages/letter_of_interest/preview';
-import EvaluatorsMeetingsNavigator from 'components/admin/contents/evaluators_meeting/MeetingsNavigator';
-import EdpInformationHome from 'components/admin/contents/edpInformation/EdpInformation'
-import FirstEvaluationSendNotice from 'pages/decision_making/5a/sendNotice';
-import AcceptPeriodHandle from 'components/admin/contents/accept_period/acceptPeriodHandle';
-import ReportLayout from 'components/admin/contents/Report/ReportLayout'
+import MainDecision from '../../components/admin/contents/main_decision/Main_decision';
+import NotifyPage1 from '../../components/admin/contents/notifyPage/MainPage';
+import EvaluatorsMeetingsNavigator from 'components/admin/contents/evaluators_meeting/MeetingsNavigator'
+import EdpInformationHome from 'components/admin/contents/edpInformation/EdpInformation';
+import FirstEvaluationSendNotice from 'pages/decision_making/5a/sendNotice'
+import AcceptPeriodHandle from 'components/admin/contents/accept_period/acceptPeriodHandle'
+import ReportLayout from 'components/admin/contents/Report/ReportLayout';
+import ProjectStatusHandle from 'components/admin/contents/project_status/projectStatusHandle'
+import CurrencyRateHandle from 'components/admin/contents/currency_rate/currencyRateHandle'
+import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
+import { UrgudulPreviewForAdmin } from 'pages/urgudul/preview/previewPages'
+import Holidays from "components/holidays/Holidays"
 
 
 function Layout({ setLocale }) {
@@ -64,6 +67,8 @@ function Layout({ setLocale }) {
               <Route path="/projects" component={ProjectHandle} />
               <Route path="/projects1" component={ProjectHandle1} />
               <Route path="/report/" component={ReportLayout} />
+              <Route path="/holidays" component={Holidays} />
+
               <Route path="/urgudul/:page">
                 <UrgudulNavigator preloaded={true} />
               </Route>
@@ -71,6 +76,8 @@ function Layout({ setLocale }) {
               <Route path="/meetings" component={EvaluatorsMeetingsNavigator} />
               <Route path="/accept-periods" component={AcceptPeriodHandle} />
               <Route path="/epd-information" component={EdpInformationHome} />
+              <Route path="/project-status" component={ProjectStatusHandle} />
+              <Route path="/currency-rates" component={CurrencyRateHandle} />
 
               <Route path="/progress" component={Home} />
               <Route path="/request/:url" component={Request} />
@@ -80,8 +87,8 @@ function Layout({ setLocale }) {
               {/* <Route path="/memberdecision" component={MemberDecision} /> */}
               <Route path="/maindecision/:id" component={MainDecision} />
 
-              <Route path="/letter-of-interest/:id" component={LetterPreview} />
-              <Route path="/urgudul-preview/:id" component={UrgudulPreview} />
+              <Route path="/letter-of-interest" component={LetterNavigator} />
+              <Route path="/urgudul-preview/:id" component={UrgudulPreviewForAdmin} />
               <Route path="/attachments/:id" component={AttachmentUploads} />
               <Route exact path="/5a/:id" component={FirstEvaluation} />
               <Route path="/5a/:id/send-notice" component={FirstEvaluationSendNotice} />

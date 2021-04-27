@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import SearchSVG from 'assets/svgComponents/searchSVG'
 import axios from 'axiosbase'
-import { config, Transition } from 'react-spring/renderprops'
+import { animated, config, Transition } from 'react-spring/renderprops'
 
 
 function SearchSelectCompact(props) {
@@ -26,7 +26,8 @@ function SearchSelectCompact(props) {
     }, [props.data])
 
     useEffect(() => {
-        props.value && search === '' && setSearch(fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
+        const newSearch = fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] || ''
+        search !== newSearch && setSearch(newSearch)
     }, [props.value, fetch])
 
     const filter = (obj, searchState) => {
@@ -89,7 +90,7 @@ function SearchSelectCompact(props) {
                 leave={{ opacity: 0 }}
                 config={config.stiff}>
                 {item => item && (anims =>
-                    <div className={`tw-fixed ${!props.selectWidth && 'tw-w-full'} tw-bg-white tw-z-10 tw-text-13px tw-rounded tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto`} style={{ height: props.selectHeight || 426, width: props.selectWidth, top: searchBarRef.current?.getBoundingClientRect().top + 26, left: searchBarRef.current?.getBoundingClientRect().left, ...anims }}>
+                    <animated.div className={`tw-fixed ${!props.selectWidth && 'tw-w-full'} tw-bg-white tw-z-10 tw-text-13px tw-rounded tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto`} style={{ height: props.selectHeight || 426, width: props.selectWidth, top: searchBarRef.current?.getBoundingClientRect().top + 26, left: searchBarRef.current?.getBoundingClientRect().left, ...anims }}>
                         {
                             fetch.filter(obj => filter(obj, search)).length ?
                                 fetch.filter(obj => filter(obj, search)).sort(compare).map((item, i) =>
@@ -100,7 +101,7 @@ function SearchSelectCompact(props) {
                                 :
                                 <p className="tw-p-1 tw-text-xs tw-text-center tw-mt-4 tw-italic tw-opacity-80">Хайлт олдсонгүй.</p>
                         }
-                    </div>
+                    </animated.div>
                 )}
             </Transition>
         </div>

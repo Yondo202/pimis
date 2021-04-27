@@ -6,6 +6,7 @@ import { Email, Item, Span, A, renderEmail, Box,Image} from 'react-html-email'
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
 import { RiAddCircleFill } from 'react-icons/ri';
+import { HiMinusCircle } from 'react-icons/hi';
 import {AlertStyle, InputStyle, NextBtn} from 'components/theme'
 import AuthToken from 'context/accessToken'
 import Modal from 'react-awesome-modal';
@@ -17,6 +18,21 @@ const year = today.getFullYear();
 const day = today.getDate();
 const addDays=(dateObj, numDays)=>{ dateObj.setDate(dateObj.getDate() + numDays);  return dateObj;}
 const nextWeek = addDays(today , 10); const day2 = nextWeek.getDate();const month2 = (nextWeek.getMonth()+1); const year2 = nextWeek.getFullYear();
+
+const DataList = [
+    "Экспорт хөгжлийн төлөвлөгөө" ,
+    "Байгаль орчны үнэлгээний асуумжийг нотлох баримт бичгүүд, Байгаль орчны удирдлагын төлөвлөгөө" ,
+    "Хуулийн этгээдийн улсын бүртгэлийн гэрчилгээний хуулбар" ,
+    "Өмнөх 2 жилийн санхүүгийн тайлан /энэ оны санхүүгийн тайлангийн хамт/" ,
+    "Холбогдох дүүргийн татварын албанаас 12 сараас дээш хугацааны татварын өргүйг нотолсон тодорхойлолт, баримт" ,
+    "Холбогдох нийгмийн даатгалын газраас  12 сараас дээш хугацааны өргүйг нотолсон тодорхойлолт, баримт, нийгмийн даатгал төлдөг ажилчдын тооны мэдээлэл" ,
+    "Монголбанкны зээлийн мэдээллийн сангаас муу ангиллын зээлгүйг нотолсон тодорхойлолт, баримт" ,
+    "Хуулийн этгээдийн эцсийн өмчлөгчдийг тодорхойлох баримт" ,
+    "Өргөдөл гаргагч байгууллагын түлхүүр албан тушаалтнуудын ажлын туршлага, ур чадварыг илэрхийлэх намтар (Дор хаяж 3 албан тушаалтны мэдээлэл)" ,
+    "Экспортын болон кластерын гэрээ хэлцэл, оюуны өмчийн эзэмшлийн нотолгоо" ,
+    "Санхүүжилтийг бүрэн хийх боломжтойг нотолсон баримт бичиг, банкны хуулга гм" ,
+    // { title : "Бусад шаардлагатай баримт бичиг" ,
+]
 
  class Content extends React.Component {
     constructor(props) {
@@ -31,10 +47,23 @@ const nextWeek = addDays(today , 10); const day2 = nextWeek.getDate();const mont
          signature : null || localStorage.getItem("signature"),
         }
     }
+
+
+
     alertText = ( color, text, cond ) => {
         this.setState({ color:color, text:text, cond:cond  });
          setTimeout(()=>{ this.setState({ color:color, text:text, cond:false })},[4000]);
     }
+
+
+    
+    DeleteHandle = (el) =>{
+
+        this.setState({
+            myData: this.state.myData.filter(item => item !==el)
+        })
+    }
+
     clickHandle = () => {
         if(!this.state.signature){
             // this.alertText("orange", "Та гарын үсэгээ баталгаажуулна уу?", true);
@@ -49,16 +78,17 @@ const nextWeek = addDays(today , 10); const day2 = nextWeek.getDate();const mont
                 approved : true
                }, { headers: { Authorization: AuthToken() } }).then((res)=>{
                     console.log(res.data.success, "my Response");
-                    this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true); setTimeout(()=>{this.props.history.push(`5a/${this.props?.projectId}`)},3000);
-                  }).catch((e)=>{
+                    this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true); setTimeout(()=>{this.props.history.goBack()},3000);
+                  }).catch(e=>{
                     this.alertText("orange", "Алдаа гарлаа", true);
-                    console.log(e, "err Response");
             });
         }
 
        
     };
-    changeHandle = (event) =>{ this.setState({  rejectReason: event.target.value }) }
+    changeHandle = (event) =>{
+         this.setState({  rejectReason: event.target.value })
+    }
 
     addBtn = (el) =>{
         if(this.state.addInp.length===0){
@@ -77,6 +107,7 @@ const nextWeek = addDays(today , 10); const day2 = nextWeek.getDate();const mont
         const data = this.props?.data
         const edpInfo = this.props?.edpInfo
         return (
+
             <>
                 <Modal visible={this.state.visible} width="620" height="280" effect="fadeInDown" onClickAway={this.closeModal}   >
                     <ModalStyle className="modalPar">
@@ -101,10 +132,10 @@ const nextWeek = addDays(today , 10); const day2 = nextWeek.getDate();const mont
                     </div><br />
                         <div className="listItems">
                             {this.state.myData.map((el)=>{
-                                return( <div className="items">• {el.title}</div> )
+                                return( <div className="items"><div><HiMinusCircle onClick={()=>this.DeleteHandle(el)} /></div><span>{el}</span> </div> )
                             })}
                         </div>
-                        {this.state.addInp.map(el=> <InputStyle  className="btnStyle"><input onChange={this.changeHandle} name={`title`} className="getInp" name="addition" placeholder="Нэмэлтээр оруулах..." /><div className="line"></div> </InputStyle> )}   
+                        {this.state.addInp.map(el=> <InputStyle  className="btnStyle"><textarea onChange={this.changeHandle} name={`title`} className="getInp" name="addition" placeholder="Нэмэлтээр оруулах..." /><div className="line"></div> </InputStyle> )}   
                         
                         {this.state.addInp.length===0?<div onClick={()=>this.addBtn(1)} className="addBtn"><RiAddCircleFill /> <span>Бусад нэмэлт шаардлагатай баримт бичиг</span></div>:null} <br /><br />
 
@@ -130,6 +161,9 @@ const nextWeek = addDays(today , 10); const day2 = nextWeek.getDate();const mont
 }
 
 export default withRouter(Content);
+
+
+const bla2 = `<h1>lallalalalla</h1>`
 
 
 const EmailHTML = (stateData, data, edpInfo, userName, rejectReason) => renderEmail(
@@ -165,7 +199,7 @@ const EmailHTML = (stateData, data, edpInfo, userName, rejectReason) => renderEm
                     <Box style={{textAlign:"start",width:"100%",marginTop:'5px',marginBottom:'10px', fontSize:'13px', fontWeight:"500"}}>Шаардлагатай материалын жагсаалт:</Box>
 
                     <Box style={{width:"100%",marginBottom:'32px', marginLeft:"30px", fontSize:'13px'}}>
-                             {stateData.map((el)=> <Item style={{color:"#222222", width:"100%", fontSize:'13px', padding:"3px 0px"}}>• {el.title}</Item>)}
+                             {stateData.map((el)=> <Item style={{color:"#222222", width:"100%", fontSize:'13px', padding:"3px 0px"}}>• {el}</Item>)}
                              {rejectReason!==""?<Item style={{color:"#222222", width:"100%", fontSize:'13px', padding:"3px 0px"}}>• {rejectReason}</Item>: null}  
                     </Box>
 
@@ -235,117 +269,119 @@ const ModalStyle = styled.div`
 
 
 const MainPar = styled.div`
-      margin-bottom:20px;
-      background-color:white;
-      max-width:850px;
-      margin-top:20px;
-      font-size:13px;
-      padding:30px 60px;
-      border:1px solid rgba(0,0,0,.3);
-      .title{
-          font-weight:500;
-          margin-bottom:30px;
-          text-align:center;
-          padding: 15px 30px;
-      }
-      .btnStyle{
-          margin:15px 30px;
-      }
-      .addBtn{
-          margin-top:16px;
-          display:flex;
-          align-items:center;
-          margin-left:30px;
-          svg{
-              cursor:pointer;
-              margin-right: 15px;
-              font-size: 20px;
-              color: green;
-              &:hover{
-                font-size: 20px;
-                color:lightgreen;
-              }
-          }
-      }
-      .nameTitle{
-          display:flex;
-          align-items:center;
-          padding:5px 0px;
-          .SignaturePar{
-            img{
-               width:150px;
-               height:75px;
-               object-fit:contain;
-               margin-right:15px;
-            }
-          }
-          .smtitle{
-              font-weight:500;
-              width:40%;
-          }
-          .A22{
-              font-weight:500;
-          }
-          .MemeberInfo{
-              margin-left:30px;
-          }
-        }
-
-      .A2{
-          .smtitle{
-              width:30%;
-          }
-      }
-      .listItems{
-          margin-left:30px;
-          .items{
-              padding:5px 0px;
-          }
-      }
-      .toname{
-          margin:20px 0px;
-          .name{
-              font-weight:500;
-              padding:0px 10px;
-          }
-      }
-     
-    @media only screen and (max-width:768px){
-        padding: 15px 15px;
-    }
-
-    @page{
-        size: 210mm 297mm;
-    }
-    @media print{
-      margin-bottom:30px;
-      background-color:white;
-      margin-top:40px;
-      font-size:17px;
-      padding:30px 120px;
-      border-style:none;
-      max-width:1200px;
+        margin-bottom:20px;
+        background-color:white;
+        max-width:850px;
+        margin-top:20px;
+        font-size:13px;
+        padding:30px 60px;
+        border:1px solid rgba(0,0,0,.3);
         .title{
-            padding:0px 30px;
-            margin-bottom:50px;
+            font-weight:500;
+            margin-bottom:30px;
+            text-align:center;
+            padding: 15px 30px;
+        }
+        .btnStyle{
+            margin:15px 30px;
+            textarea{
+                height:100px;
+            }
+        }
+        .addBtn{
+            margin-top:16px;
+            display:flex;
+            align-items:center;
+            margin-left:30px;
+            svg{
+                cursor:pointer;
+                margin-right: 15px;
+                font-size: 20px;
+                color: green;
+                &:hover{
+                    font-size: 20px;
+                    color:lightgreen;
+                }
+            }
+        }
+        .nameTitle{
+            display:flex;
+            align-items:center;
+            padding:5px 0px;
+            .SignaturePar{
+                img{
+                width:150px;
+                height:75px;
+                object-fit:contain;
+                margin-right:15px;
+                }
+            }
+            .smtitle{
+                font-weight:500;
+                width:40%;
+            }
+            .A22{
+                font-weight:500;
+            }
+            .MemeberInfo{
+                margin-left:30px;
+            }
+            }
+
+        .A2{
+            .smtitle{
+                width:30%;
+            }
+        }
+        .listItems{
+            margin-left:30px;
+            .items{
+                display:flex;
+                padding:5px 0px;
+                svg{
+                    transition:all 0.3s ease;
+                    cursor:pointer;
+                    margin-right: 15px;
+                    font-size: 18px;
+                    color: red;
+                    &:hover{
+                        transform:rotate(180deg);
+                        font-size: 18px;
+                        color: #FF5733;
+                    }
+                }
+            }
+        }
+        .toname{
+            margin:20px 0px;
+            .name{
+                font-weight:500;
+                padding:0px 10px;
+            }
+        }
+        
+        @media only screen and (max-width:768px){
+            padding: 15px 15px;
+        }
+
+        @page{
+            size: 210mm 297mm;
+        }
+        @media print{
+        margin-bottom:30px;
+        background-color:white;
+        margin-top:40px;
+        font-size:17px;
+        padding:30px 120px;
+        border-style:none;
+        max-width:1200px;
+            .title{
+                padding:0px 30px;
+                margin-bottom:50px;
+            }
         }
     }
-}
 `
 
-const DataList = [
-    { title : "Экспорт хөгжлийн төлөвлөгөө" },
-    { title : "Байгаль орчны үнэлгээний асуумжийг нотлох баримт бичгүүд, Байгаль орчны удирдлагын төлөвлөгөө" },
-    { title : "Хуулийн этгээдийн улсын бүртгэлийн гэрчилгээний хуулбар" },
-    { title : "Өмнөх 2 жилийн санхүүгийн тайлан /энэ оны санхүүгийн тайлангийн хамт/" },
-    { title : "Холбогдох дүүргийн татварын албанаас 12 сараас дээш хугацааны татварын өргүйг нотолсон тодорхойлолт, баримт" },
-    { title : "Холбогдох нийгмийн даатгалын газраас  12 сараас дээш хугацааны өргүйг нотолсон тодорхойлолт, баримт, нийгмийн даатгал төлдөг ажилчдын тооны мэдээлэл" },
-    { title : "Монголбанкны зээлийн мэдээллийн сангаас муу ангиллын зээлгүйг нотолсон тодорхойлолт, баримт" },
-    { title : "Хуулийн этгээдийн эцсийн өмчлөгчдийг тодорхойлох баримт" },
-    { title : "Өргөдөл гаргагч байгууллагын түлхүүр албан тушаалтнуудын ажлын туршлага, ур чадварыг илэрхийлэх намтар (Дор хаяж 3 албан тушаалтны мэдээлэл)" },
-    { title : "Экспортын болон кластерын гэрээ хэлцэл, оюуны өмчийн эзэмшлийн нотолгоо" },
-    { title : "Санхүүжилтийг бүрэн хийх боломжтойг нотолсон баримт бичиг, банкны хуулга гм" },
-    // { title : "Бусад шаардлагатай баримт бичиг" },
-   
- ]
+
 
