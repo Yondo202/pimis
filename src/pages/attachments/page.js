@@ -86,6 +86,7 @@ export default function AttachmentUploads() {
 
     const handleButtonClick = (code) => {
         setEditCode(code)
+        inputRef.current.value = null
         inputRef.current.click()
     }
 

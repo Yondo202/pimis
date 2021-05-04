@@ -46,6 +46,7 @@ export default function TrainingPartnerRegistration() {
 
     const handleFileClick = (key) => {
         setEditKey(key)
+        fileInputRef.current.value = null
         fileInputRef.current.click()
     }
 

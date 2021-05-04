@@ -490,7 +490,11 @@ export default function UrgudulPreview(props) {
                                                 </tr>
                                                 {country?.export_products?.map((product, j) =>
                                                     <Fragment key={j}>
-                                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-3" colSpan={dates.length + 2}>{getProductName(product?.productId)} - экспортын бүтээгдэхүүний ангилал</td>
+                                                        <tr>
+                                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-3" colSpan={dates.length + 2}>
+                                                                {getProductName(product?.productId)} - экспортын бүтээгдэхүүний ангилал
+                                                            </td>
+                                                        </tr>
                                                         <tr>
                                                             <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-5">{product?.product_name}</td>
                                                             {dates.map((item, k) =>

@@ -64,6 +64,7 @@ function UrgudulClusters({ projects }) {
 
     const handleFileInputClick = (index) => {
         setEditIndex(index)
+        fileInputRef.current.value = null
         fileInputRef.current.click()
     }
 
@@ -86,7 +87,6 @@ function UrgudulClusters({ projects }) {
             const newForm = form
             newForm[editIndex].attachedFiles = [res.data.data]
             setForm([...newForm])
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээний файл амжилттай хадгалагдлаа.' })
         }).catch(err => {
             console.log(err.response?.data)
             const newForm = form
