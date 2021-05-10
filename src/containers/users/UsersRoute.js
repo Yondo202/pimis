@@ -27,13 +27,14 @@ import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import Test from "components/Test"
-import TrainingEdit from 'pages/training/training/trainingEdit';
+import TrainingEdit from 'pages/training/training_admin/trainingEdit';
 
 
 function UsersRoute() {
     return (
         <HelpStore>
             <Menu />
+
             <UrgudulStore>
                 <Switch>
                     <Route path="/" exact>
@@ -41,14 +42,10 @@ function UsersRoute() {
                             <LoginDoneHome2 />
                         </motion.div>
                     </Route>
-
                     <Route path="/check/:url" component={CheckComp} />
                     <Route path="/checks/test" component={PdfTest} />
-
                     <Route path="/test" component={Test} />
-
                     {/* <Route path="/notify-page/:paramId" component={MainPage} /> */}
-
                     {/* <Route path="/comp-request" component={MainRequest} /> */}
                     <Route path="/request/:url" component={MainRequestOld} />
                     <Route path="/feedback" component={Feedback} />
@@ -56,26 +53,19 @@ function UsersRoute() {
                     <Route path="/email2" component={EmialSender2} />
                     {/* <Route path="/members" component={MembersHome} />
                     <Route path="/memberdecision" component={MemberDecision} /> */}
-
                     <Route path="/letter-of-interest" component={LetterNavigator} />
                     <Route path="/urgudul/:page" component={UrgudulNavigator} />
                     <Route path="/urgudul-preview/:id" component={UrgudulPreviewForUser} />
-
                     <Route path="/attachments" component={AttachmentUploads} />
-
                     <Route path="/5a" component={FirstEvaluation} />
                     <Route path="/5b" component={CompilationCheck} />
                     <Route path="/5c" component={AnalystReport} />
-
                     <Route path="/sector-edit" component={BusinessSectorEditor} />
                     <Route path="/product-edit" component={ProductsEditor} />
-
                     <Route path="/training/1" component={TrainingRegistration} />
                     <Route path="/training/2" component={TrainingRequest} />
                     <Route path="/training/3" component={TrainingPartnerRegistration} />
                     <Route path="/training/4" component={TrainingFeedback} />
-                    <Route path="/train/1" component={TrainingEdit} />
-
                     <MiddleRoute />
                 </Switch>
             </UrgudulStore>
