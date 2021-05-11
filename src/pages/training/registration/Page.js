@@ -59,6 +59,7 @@ export default function TrainingRegistration() {
 
     const handleFileInput = (e) => {
         const formData = new FormData()
+        if (!e.target.files[0]) return
         formData.append('file', e.target.files[0])
         formData.append('description', descriptions[editKey])
         setForm({ ...form, [editKey]: 'loading' })
@@ -79,9 +80,7 @@ export default function TrainingRegistration() {
         })
     }
 
-    const handleRemoveFile = (key) => {
-        setForm({ ...form, [key]: null })
-    }
+    const handleRemoveFile = (key) => setForm(prev => ({ ...prev, [key]: null }))
 
     const FilePreviewCtx = useContext(FilePreviewContext)
 

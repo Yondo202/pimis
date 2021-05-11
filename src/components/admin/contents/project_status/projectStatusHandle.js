@@ -93,12 +93,12 @@ export default function ProjectStatusHandle() {
 
     return (
         <div className="tw-text-gray-700 tw-text-sm tw-pb-10">
-            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/projects')}>
+            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/projects')}>
                 <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
                 Буцах
             </button>
 
-            <div className="tw-p-2 tw-mt-6 tw-bg-white tw-rounded tw-shadow tw-max-w-4xl">
+            <div className="tw-p-2 tw-mt-6 tw-bg-white tw-rounded tw-shadow-md tw-max-w-4xl">
                 <div className="tw-p-2 tw-mt-6 tw-text-lg tw-font-medium tw-text-center">
                     Төслийн төлвийг тохируулах
                 </div>
@@ -156,8 +156,7 @@ export default function ProjectStatusHandle() {
                             items={statusDropdownOpen}
                             from={{ height: 0, opacity: 0 }}
                             enter={{ height: 'auto', opacity: 1 }}
-                            leave={{ height: 0, opacity: 0 }}
-                            config={config.stiff}>
+                            leave={{ height: 0, opacity: 0 }}>
                             {item => item && (anims =>
                                 <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 72, minWidth: 160, ...anims }} ref={dropdownRef}>
                                     {Object.keys(statusNames).map(status =>
@@ -180,13 +179,13 @@ export default function ProjectStatusHandle() {
                 </div>
 
                 <div className="tw-flex tw-justify-center">
-                    <button className="tw-py-1.5 tw-px-8 tw-text-15px tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-4" onClick={handleSubmit}>
+                    <button className="tw-py-1.5 tw-px-8 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-4" onClick={handleSubmit}>
                         Хадгалах
                     </button>
                 </div>
             </div>
 
-            <div className="tw-p-2 tw-pb-4 tw-mb-20 tw-mt-8 tw-bg-white tw-rounded tw-shadow tw-max-w-4xl tw-flex tw-flex-col tw-items-start tw-overflow-x-auto tw-overflow-y-hidden">
+            <div className="tw-p-2 tw-pb-4 tw-mb-20 tw-mt-8 tw-bg-white tw-rounded tw-shadow-md tw-max-w-4xl tw-flex tw-flex-col tw-items-start tw-overflow-x-auto tw-overflow-y-hidden">
                 <button className="tw-m-2 tw-py-1.5 tw-px-4 tw-text-sm tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md" onClick={handleGetHistory}>
                     Өөрчлөлтүүдийг харах
                 </button>
@@ -196,8 +195,7 @@ export default function ProjectStatusHandle() {
                         items={historiesOpen}
                         from={{ height: 0, opacity: 0, marginTop: 0 }}
                         enter={{ height: 'auto', opacity: 1, marginTop: 4 }}
-                        leave={{ height: 0, opacity: 0, marginTop: 0 }}
-                        config={config.stiff}>
+                        leave={{ height: 0, opacity: 0, marginTop: 0 }}>
                         {item => item && (anims => histories.length
                             ? <div className="tw-divide-y tw-divide-dashed tw-rounded tw-border tw-border-gray-500" style={anims}>
                                 {histories.map(history =>
@@ -284,8 +282,7 @@ const HistoryItem = ({ history }) => {
                 items={commentOpen}
                 from={{ height: 0, opacity: 0 }}
                 enter={{ height: 'auto', opacity: 1 }}
-                leave={{ height: 0, opacity: 0 }}
-                config={config.stiff}>
+                leave={{ height: 0, opacity: 0 }}>
                 {item => item && (anims =>
                     <div className="tw-flex tw-justify-end tw-overflow-hidden" style={anims}>
                         <div className="tw-border tw-border-gray-500 tw-rounded tw-mt-1 tw-mr-3 tw-mb-3 tw-py-1 tw-px-2" style={{ minHeight: 60, width: 447 }}>

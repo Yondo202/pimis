@@ -221,10 +221,9 @@ function UrgudulFront() {
                             items={modalOpen}
                             from={{ transform: 'translateY(-20px)' }}
                             enter={{ transform: 'translateY(-0)' }}
-                            leave={{ transform: 'translateY(20px)' }}
-                            config={config.stiff}>
+                            leave={{ transform: 'translateY(20px)' }}>
                             {item1 => item1 && (anims1 =>
-                                <animated.div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-max-w-md tw-ring-2 tw-ring-indigo-500 tw-font-medium" style={{ minWidth: 300, ...anims1 }} ref={modalRef}>
+                                <animated.div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow-md tw-max-w-md tw-ring-2 tw-ring-indigo-500 tw-font-medium" style={{ minWidth: 300, ...anims1 }} ref={modalRef}>
                                     <button className="tw-absolute tw-top-1.5 tw-right-1.5 tw-text-red-500 active:tw-text-red-600 tw-transition-colors focus:tw-outline-none tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={() => setModalOpen(false)}>
                                         <CloseSVG className="tw-w-5 tw-h-5" />
                                     </button>

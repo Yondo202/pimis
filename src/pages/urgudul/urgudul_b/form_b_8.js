@@ -476,16 +476,14 @@ function UrgudulCalculations() {
                 from={{ opacity: 0 }}
                 enter={{ opacity: 1 }}
                 leave={{ opacity: 0 }}
-                initial={{ opacity: 0 }}
-                config={config.stiff}>
+                initial={{ opacity: 0 }}>
                 {item => item && (anims =>
                     <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10" style={anims}>
                         <Transition
                             items={suggestPage5Open}
                             from={{ transform: 'translateY(-20px' }}
                             enter={{ transform: 'translateY(0)' }}
-                            leave={{ transform: 'translateY(20px' }}
-                            config={config.stiff}>
+                            leave={{ transform: 'translateY(20px' }}>
                             {item1 => item1 && (anims1 =>
                                 <animated.div className="tw-w-80 tw-p-1 tw-bg-white tw-rounded-md tw-grid tw-grid-cols-1 tw-shadow-md tw-ring-2 tw-ring-indigo-500" style={anims1} ref={suggestPage5Ref}>
                                     <button className="tw-float-right tw-text-red-500 tw-justify-self-end focus:tw-outline-none active:tw-text-red-600 tw-transition-colors tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={() => setSuggestPage5Open(false)}>

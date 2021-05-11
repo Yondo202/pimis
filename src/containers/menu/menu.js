@@ -56,7 +56,7 @@ function Menu() {
                <input type="checkbox" id="check" name="check" />
                 <span className="menuPar">
                       <div className="backgroundGhost"></div>
-                      <label for="check" className="checkBtn">
+                      <label htmlFor="check" className="checkBtn">
                           <HamburgerMenu
                               isOpen={open}
                               menuClicked={handleClick}
@@ -110,7 +110,7 @@ function Menu() {
                 </span>
 
                 <div className="MobileMenu">
-                    <label for="check" className="checkBtnHome">
+                    <label htmlFor="check" className="checkBtnHome">
                             <HamburgerMenu
                                 isOpen={open}
                                 menuClicked={handleClick}

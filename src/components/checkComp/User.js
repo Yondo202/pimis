@@ -16,7 +16,7 @@ function User() {
                               <div className="form__group">
                                 <div className="inpPar"> 
                                   <input type="input" className="userInp form__field" placeholder="Аж ахуйн нэр" name="compname" required />
-                                  <label for="name" className="form__label">Аж ахуйн нэр</label>
+                                  <label htmlFor="name" className="form__label">Аж ахуйн нэр</label>
                                 </div>
                               </div>
                         </div>
@@ -27,7 +27,7 @@ function User() {
                           <div className="icon"><RiRegisteredLine/></div>
                             <div className="form__group">
                                 <input type="input" className="userInp form__field" placeholder="Регистерийн дугаар" name="registernum" required />
-                                <label for="name" className="form__label">Регистерийн дугаар</label>
+                                <label htmlFor="name" className="form__label">Регистерийн дугаар</label>
                               </div>
                       </div>
                             

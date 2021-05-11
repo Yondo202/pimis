@@ -37,8 +37,7 @@ export default function FilterDropDown(props) {
             <Transition items={dropdown}
                 from={{ opacity: 0 }}
                 enter={{ opacity: 1 }}
-                leave={{ opacity: 0 }}
-                config={config.stiff}>
+                leave={{ opacity: 0 }}>
                 {dropdown => dropdown && (props =>
                     <animated.div style={props} className="tw-absolute tw-top-8 tw--right-2 tw-w-40 tw-grid tw-grid-cols-1 tw-z-10 tw-bg-white tw-rounded-md tw-shadow-md tw-divide-y tw-divide-dashed" ref={dropdownRef}>
                         {Object.keys(translation).map(key =>

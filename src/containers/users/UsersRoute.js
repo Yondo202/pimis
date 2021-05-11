@@ -28,6 +28,7 @@ import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import Test from "components/Test"
 import TrainingEdit from 'pages/training/training_admin/trainingEdit';
+import TrainingNavigatorUser from 'pages/training/training_user/TrainingNavigator';
 
 
 function UsersRoute() {
@@ -66,6 +67,7 @@ function UsersRoute() {
                     <Route path="/training/2" component={TrainingRequest} />
                     <Route path="/training/3" component={TrainingPartnerRegistration} />
                     <Route path="/training/4" component={TrainingFeedback} />
+                    <Route path="/trainings" component={TrainingNavigatorUser} />
                     <MiddleRoute />
                 </Switch>
             </UrgudulStore>

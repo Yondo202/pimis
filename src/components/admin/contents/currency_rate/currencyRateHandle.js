@@ -76,7 +76,7 @@ export default function CurrencyRateHandle() {
 
     return (
         <div className="tw-text-gray-700 tw-text-sm tw-pb-10">
-            <div className="tw-mt-8 tw-p-4 tw-pt-0 tw-bg-white tw-rounded tw-shadow tw-max-w-2xl">
+            <div className="tw-mt-8 tw-p-4 tw-pt-0 tw-bg-white tw-rounded tw-shadow-md tw-max-w-2xl">
                 <div className="tw-text-lg tw-font-medium tw-p-2 tw-pt-8 tw-text-center">
                     Төслийн тооцоололд хэрэглэгдэх ханшийн мэдээллийг оруулах
                 </div>

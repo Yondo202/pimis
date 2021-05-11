@@ -29,8 +29,7 @@ export default function PreviewModal(props) {
             items={showModal}
             from={{ opacity: 0 }}
             enter={{ opacity: 1 }}
-            leave={{ opacity: 0 }}
-            config={config.stiff}>
+            leave={{ opacity: 0 }}>
             {showModal => showModal && (anims =>
                 <animated.div style={anims} className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-20 tw-p-2 sm:tw-p-8">
                     <div className="tw-relative tw-bg-white tw-rounded-lg tw-shadow-md tw-p-8 tw-m-2 tw-max-h-full tw-max-w-screen-xl tw-box-border tw-overflow-auto" ref={modalRef}>

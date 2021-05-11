@@ -282,8 +282,7 @@ function UrgudulNavigator(props) {
                             items={previewModalOpen}
                             from={{ width: 0 }}
                             enter={{ width: 'auto' }}
-                            leave={{ width: 0 }}
-                            config={config.stiff}>
+                            leave={{ width: 0 }}>
                             {item => item && (anims =>
                                 <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-h-screen tw-overflow-y-auto tw-overflow-x-hidden tw-bg-white tw-px-2 tw-pt-6 tw-max-w-full" style={anims} ref={previewContainerRef}>
                                     <button className="tw-text-red-500 active:tw-text-red-600 tw-rounded tw-border tw-border-red-500 active:tw-border-red-600 tw-absolute tw-top-1.5 tw-right-1.5 focus:tw-outline-none" onClick={() => setPreviewModalOpen(false)}>

@@ -28,8 +28,7 @@ export default function EditDropdown(props) {
                 <Transition items={open}
                     from={{ opacity: 0 }}
                     enter={{ opacity: 1 }}
-                    leave={{ opacity: 0 }}
-                    config={config.stiff}>
+                    leave={{ opacity: 0 }}>
                     {open => open && (anims =>
                         <animated.div style={anims} className="tw-absolute tw-top-7 tw--right-2 tw-w-64 tw-grid tw-grid-cols-1 tw-z-10 tw-bg-white tw-rounded-md tw-shadow-md tw-divide-y tw-divide-dashed" ref={dropdownRef}>
                             {props.items?.map(item =>

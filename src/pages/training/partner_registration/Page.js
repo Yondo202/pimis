@@ -52,6 +52,7 @@ export default function TrainingPartnerRegistration() {
 
     const handleFileInput = (e) => {
         const formData = new FormData()
+        if (!e.target.files[0]) return
         formData.append('file', e.target.files[0])
         formData.append('description', descriptions[editKey])
         setForm({ ...form, [editKey]: 'loading' })

@@ -21,8 +21,10 @@ export default function TrainingList() {
       })
    }, [])
 
+   const history = useHistory()
+
    return (
-      <div className="tw-absolute tw-rounded tw-shadow bg-white tw-w-full tw-p-2">
+      <div className="tw-absolute tw-rounded tw-shadow-md bg-white tw-w-full tw-p-2">
          <div className="tw-text-center tw-p-2 tw-mt-6 tw-text-lg tw-font-semibold">
             Сургалтын мэдээлэл оруулах
          </div>
@@ -46,17 +48,24 @@ export default function TrainingList() {
             <FilterRow visible={true} />
 
             <Column dataField="training_name" caption="Сургалтын нэр" headerCellRender={HeaderCell} />
-            <Column caption="Сургалтын агуулга, файлаар" cellRender={data => <ButtonFliePreview data={data} />} headerCellRender={HeaderCell} />
+            <Column caption="Сургалтын агуулга, файлаар" cellRender={data => <ButtonFliePreview data={data} />} headerCellRender={HeaderCell} width={160} />
             <Column dataField="training_type" caption="Сургалтын төрөл" headerCellRender={HeaderCell} />
             <Column dataField="training_method" caption="Сургалтын хэлбэр" headerCellRender={HeaderCell} />
             <Column dataField="start_date" caption="Сургалт эхлэх өдөр" headerCellRender={HeaderCell} />
             <Column dataField="end_date" caption="Сургалт дуусах өдөр" headerCellRender={HeaderCell} />
             <Column dataField="start_time" caption="Сургалтын цаг" headerCellRender={HeaderCell} />
-            <Column dataField="organizer" caption="Сургалт зохион байгуулагч байгууллага" headerCellRender={HeaderCell} />
+            <Column dataField="organizer" caption="Сургалт зохион байгуулах байгууллага" headerCellRender={HeaderCell} />
             <Column dataField="location" caption="Байршил, сургалт зохион байгуулагдах хаяг" headerCellRender={HeaderCell} />
+            <Column dataField="participant_number" caption="Оролцогчдын тоо" headerCellRender={HeaderCell} />
             <Column dataField="scope" caption="Сургалтын цар хүрээ" headerCellRender={HeaderCell} />
             <Column caption="Сургалтын мэдээллийг засварлах" cellRender={data => <ButtonNavTraining data={data} />} headerCellRender={HeaderCell} />
          </DataGrid>
+
+         <div className="tw-flex tw-justify-center">
+            <button className="tw-py-1.5 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-12 tw-mb-6" onClick={() => history.push(`/trainings/id`)}>
+               Сургалт нэмэх
+            </button>
+         </div>
       </div>
    )
 }
@@ -72,12 +81,12 @@ const ButtonNavTraining = ({ data }) => {
    const history = useHistory()
    const handleClick = () => {
       if (trainingId !== null && trainingId !== undefined) {
-         history.push(`/trainings/${data.data.id}`)
+         history.push(`/trainings/id/${data.data.id}`)
       }
    }
    return (
       <button
-         className="tw-rounded-sm tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-px-2 tw-py-0.5 focus:tw-outline-none"
+         className="tw-rounded-sm tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-px-2 tw-py-1 focus:tw-outline-none"
          onClick={handleClick}>
          Засах
       </button>
@@ -103,8 +112,10 @@ const ButtonFliePreview = ({ data }) => {
    }
    return (
       <button
-         className="tw-rounded-sm tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-px-2 tw-py-0.5 focus:tw-outline-none"
-         onClick={handleDownloadFile}>
+         className="tw-rounded-sm tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-px-2 tw-py-1 focus:tw-outline-none tw-truncate"
+         style={{ width: 138 }}
+         onClick={handleDownloadFile}
+         title={module_file?.name}>
          {module_file?.name}
       </button>
    )

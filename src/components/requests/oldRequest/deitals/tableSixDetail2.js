@@ -80,7 +80,7 @@ function TableSixDetails2(props) {
                                 <div className="name"> <VscOpenPreview />
                                     <div className="form__group">
                                         <input type="text" value={el.messure} id={el.id} onChange={changeHandle1} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="messure" required />
-                                        <label for="name" className=" form__label">Ямар өгөгдөхүүнийг хэмжих</label>
+                                        <label htmlFor="name" className=" form__label">Ямар өгөгдөхүүнийг хэмжих</label>
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@ function TableSixDetails2(props) {
                                 <div className="name"> <VscChecklist />
                                     <div className="form__group">
                                         <input type="text" value={el.where_messure} onChange={changeHandle2} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where_messure" required />
-                                        <label for="name" className=" form__label">Хаана өгөгдөхүүнийг хэмжих</label>
+                                        <label htmlFor="name" className=" form__label">Хаана өгөгдөхүүнийг хэмжих</label>
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@ function TableSixDetails2(props) {
                                 <div className="name"> <VscCloudDownload />
                                     <div className="form__group">
                                         <input type="text" value={el.monitoring} onChange={changeHandle3} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
-                                        <label for="name" className=" form__label">Хэрхэн</label>
+                                        <label htmlFor="name" className=" form__label">Хэрхэн</label>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@ function TableSixDetails2(props) {
                                 <div className="name"> <VscCloudUpload />
                                     <div className="form__group">
                                         <input type="text" value={el.monitor_duration} onChange={changeHandle4} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor_duration" required />
-                                        <label for="name" className=" form__label">Хэзээ </label>
+                                        <label htmlFor="name" className=" form__label">Хэзээ </label>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@ function TableSixDetails2(props) {
                                 <div className="name"> <div className="svg">₮</div>
                                     <div className="form__group">
                                         <input style={{textAlign:`right`,paddingRight:15}} type="number" value={el.cost} onChange={changeHandle5} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
-                                        <label for="name" className=" form__label">Мониторингийн зардал </label>
+                                        <label htmlFor="name" className=" form__label">Мониторингийн зардал </label>
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +135,7 @@ function TableSixDetails2(props) {
                                 <div className="name"> <VscAccount />
                                     <div className="form__group">
                                         <input type="text" value={el.hostname} onChange={changeHandle6} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
-                                        <label for="name" className=" form__label">Хариуцах эзэн</label>
+                                        <label htmlFor="name" className=" form__label">Хариуцах эзэн</label>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +146,7 @@ function TableSixDetails2(props) {
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
                                         <input type="date" value={el.startdate} onChange={changeHandle7} id={el.id} max={Currentdate} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
-                                        <label for="name"  className=" form__label">Он-сар-өдөр</label>
+                                        <label htmlFor="name"  className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +156,7 @@ function TableSixDetails2(props) {
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
                                         <input type="date" max={Currentdate} value={el.enddate} onChange={changeHandle8} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
-                                        <label for="name" className=" form__label">Он-сар-өдөр</label>
+                                        <label htmlFor="name" className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@ function TableSixDetails2(props) {
                                     <div className="name"> <VscOpenPreview />
                                         <div className="form__group">
                                             <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="messure" required />
-                                            <label for="name" className=" form__label">Ямар өгөгдөхүүнийг хэмжих</label>
+                                            <label htmlFor="name" className=" form__label">Ямар өгөгдөхүүнийг хэмжих</label>
                                         </div>
                                     </div>
                                 </div>
@@ -186,7 +186,7 @@ function TableSixDetails2(props) {
                                     <div className="name"> <VscChecklist />
                                         <div className="form__group">
                                             <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where_messure" required />
-                                            <label for="name" className=" form__label">Хаана өгөгдөхүүнийг хэмжих</label>
+                                            <label htmlFor="name" className=" form__label">Хаана өгөгдөхүүнийг хэмжих</label>
                                         </div>
                                     </div>
                                 </div>
@@ -197,7 +197,7 @@ function TableSixDetails2(props) {
                                     <div className="name"> <VscCloudDownload />
                                         <div className="form__group">
                                             <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
-                                            <label for="name" className=" form__label">Хэрхэн</label>
+                                            <label htmlFor="name" className=" form__label">Хэрхэн</label>
                                         </div>
                                     </div>
                                 </div>
@@ -207,7 +207,7 @@ function TableSixDetails2(props) {
                                     <div className="name"> <VscCloudUpload />
                                         <div className="form__group">
                                             <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor_duration" required />
-                                            <label for="name" className=" form__label">Хэзээ</label>
+                                            <label htmlFor="name" className=" form__label">Хэзээ</label>
                                         </div>
                                     </div>
                                 </div>
@@ -222,7 +222,7 @@ function TableSixDetails2(props) {
                                     {/* <VscFoldDown /> */}
                                         <div className="form__group">
                                             <input style={{textAlign:`right`,paddingRight:15}} type="number" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
-                                            <label for="name" className=" form__label">Мониторингийн зардал </label>
+                                            <label htmlFor="name" className=" form__label">Мониторингийн зардал </label>
                                         </div>
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@ function TableSixDetails2(props) {
                                     <div className="name"> <VscAccount />
                                         <div className="form__group">
                                             <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
-                                            <label for="name" className=" form__label">Хариуцах эзэн</label>
+                                            <label htmlFor="name" className=" form__label">Хариуцах эзэн</label>
                                         </div>
                                     </div>
                                 </div>
@@ -243,7 +243,7 @@ function TableSixDetails2(props) {
                                     <div className="name"> <GoCalendar />
                                         <div className="form__group">
                                             <input type="date" max={Currentdate} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
-                                            <label for="name"  className=" form__label">Он-сар-өдөр</label>
+                                            <label htmlFor="name"  className=" form__label">Он-сар-өдөр</label>
                                         </div>
                                     </div>
                                 </div>
@@ -253,7 +253,7 @@ function TableSixDetails2(props) {
                                     <div className="name"> <GoCalendar />
                                         <div className="form__group">
                                             <input type="date" max={Currentdate}  className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
-                                            <label for="name" className=" form__label">Он-сар-өдөр</label>
+                                            <label htmlFor="name" className=" form__label">Он-сар-өдөр</label>
                                         </div>
                                     </div>
                                 </div>

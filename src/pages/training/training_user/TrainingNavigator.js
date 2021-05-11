@@ -1,10 +1,10 @@
 import React from 'react'
 import { Route, Switch, useLocation } from 'react-router-dom'
 import { animated, useTransition, config } from 'react-spring'
-import TrainingEdit from './trainingEdit'
 import TrainingList from './trainingsList'
+import TrainingUserRegistration from './userRegistration'
 
-export default function TrainingNavigatorAdmin() {
+export default function TrainingNavigatorUser() {
    const location = useLocation()
 
    const transitionsPages = useTransition(location, location => location.pathname, {
@@ -21,11 +21,8 @@ export default function TrainingNavigatorAdmin() {
             <Route exact path="/trainings">
                <TrainingList />
             </Route>
-            <Route path="/trainings/id/">
-               <TrainingEdit />
-            </Route>
-            <Route path="/trainings/id/:id">
-               <TrainingEdit />
+            <Route path="/trainings/:id/registration">
+               <TrainingUserRegistration />
             </Route>
          </Switch>
       </animated.div>

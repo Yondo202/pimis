@@ -69,8 +69,7 @@ export default function LoadFromOtherProject(props) {
                     items={loadDropdownOpen}
                     from={{ height: 0, opacity: 0 }}
                     enter={{ height: 'auto', opacity: 1 }}
-                    leave={{ height: 0, opacity: 0 }}
-                    config={config.stiff}>
+                    leave={{ height: 0, opacity: 0 }}>
                     {item => item && (anims =>
                         <animated.div className="tw-absolute tw-right-0 tw-top-1 tw-z-10 tw-rounded tw-overflow-hidden tw-divide-y tw-divide-dashed tw-text-xs tw-font-medium tw-w-40 tw-bg-blue-700 tw-text-white tw-overflow-y-auto tw-overflow-x-hidden" style={{ ...anims, maxHeight: 500 }} ref={dropdownRef}>
                             {props.otherProjects.map(project =>
@@ -94,10 +93,9 @@ export default function LoadFromOtherProject(props) {
                             items={loadModal.open}
                             from={{ transform: 'translateY(-20px)' }}
                             enter={{ transform: 'translateY(0)' }}
-                            leave={{ transform: 'translateY(20px)' }}
-                            config={config.stiff}>
+                            leave={{ transform: 'translateY(20px)' }}>
                             {item1 => item1 && (anims1 =>
-                                <animated.div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-max-w-md tw-ring-2 tw-ring-indigo-500" style={anims1} ref={loadModalRef}>
+                                <animated.div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow-md tw-max-w-md tw-ring-2 tw-ring-indigo-500" style={anims1} ref={loadModalRef}>
                                     <div className="tw-text-15px tw-p-2 tw-text-center tw-font-medium">
                                         Анхааруулга
                                     </div>

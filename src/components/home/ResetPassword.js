@@ -109,7 +109,7 @@ function ResetPassword() {
                             <BiLockOpen />
                                 <div className="form__group">
                                     <input onFocus={()=> setPasswordFocused(true)} onChange={e => onChangePassword(e.target.value)} type={hidden ? "password" : "text"} className="Password form__field" value={password} placeholder="Регистерийн дугаар" name="password" required />
-                                    <label for="name" className="form__label">Шинэ нууц үг</label>
+                                    <label htmlFor="name" className="form__label">Шинэ нууц үг</label>
                                 </div>
                                 <div className="toggleSvg" onClick={toggleShow}><IoEyeOutline /></div>
                         </div>
@@ -118,7 +118,7 @@ function ResetPassword() {
                             <BiLockOpen />
                                 <div className="form__group">
                                     <input type={hidden2 ? "password" : "text"}  className="Password form__field"  placeholder="Регистерийн дугаар" name="passwordagain" required />
-                                    <label for="name" className="form__label">Нууц үгээ давтаж оруулна уу?</label>
+                                    <label htmlFor="name" className="form__label">Нууц үгээ давтаж оруулна уу?</label>
                                 </div>
                                 <div className="toggleSvg" onClick={toggleShow2}><IoEyeOutline /></div>
                         </div>

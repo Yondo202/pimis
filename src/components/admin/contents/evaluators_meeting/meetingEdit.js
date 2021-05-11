@@ -117,12 +117,12 @@ export default function EvaluatorsMeetingEdit(props) {
 
     return (
         <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-pb-10 tw-w-full">
-            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/meetings')}>
+            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/meetings')}>
                 <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
                 Буцах
             </button>
 
-            <div className="tw-bg-white tw-rounded tw-shadow tw-p-2 tw-mt-6 tw-w-full tw-max-w-5xl">
+            <div className="tw-bg-white tw-rounded tw-shadow-md tw-p-2 tw-mt-6 tw-w-full tw-max-w-5xl">
                 <div className="tw-text-lg tw-font-medium tw-text-center tw-p-2 tw-mt-6">
                     Үнэлгээний хорооны уулзалт
                 </div>
@@ -204,7 +204,7 @@ export default function EvaluatorsMeetingEdit(props) {
                 </div>
 
                 <div className="tw-flex tw-justify-center">
-                    <button className="tw-py-1.5 tw-px-8 tw-text-15px tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow tw-mt-10 tw-mb-6" onClick={handleSubmit}>
+                    <button className="tw-py-1.5 tw-px-8 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-10 tw-mb-6" onClick={handleSubmit}>
                         Хадгалах
                     </button>
                 </div>

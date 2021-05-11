@@ -87,8 +87,7 @@ function SearchSelectCompact(props) {
                 items={focused}
                 from={{ opacity: 0 }}
                 enter={{ opacity: 1 }}
-                leave={{ opacity: 0 }}
-                config={config.stiff}>
+                leave={{ opacity: 0 }}>
                 {item => item && (anims =>
                     <animated.div className={`tw-fixed ${!props.selectWidth && 'tw-w-full'} tw-bg-white tw-z-10 tw-text-13px tw-rounded tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto`} style={{ height: props.selectHeight || 426, width: props.selectWidth, top: searchBarRef.current?.getBoundingClientRect().top + 26, left: searchBarRef.current?.getBoundingClientRect().left, ...anims }}>
                         {

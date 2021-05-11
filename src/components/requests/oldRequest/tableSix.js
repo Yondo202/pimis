@@ -172,7 +172,7 @@ function TableSix(props) {
                                                                : <input type="input" className="getUserInp2 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             }
                                             
-                                            <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
+                                            <label htmlFor="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
                                 </div>
@@ -187,7 +187,7 @@ function TableSix(props) {
                                                                 :<input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp2 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />         
                                             }
                                                 
-                                                <label for="password" className="form__label">Өдөр-Сар-Он </label>
+                                                <label htmlFor="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
                                     </div>
