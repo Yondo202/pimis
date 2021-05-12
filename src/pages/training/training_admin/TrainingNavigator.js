@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Switch, useLocation } from 'react-router-dom'
 import { animated, useTransition, config } from 'react-spring'
+import TrainingRegisteredUsersList from './registeredUsersList'
 import TrainingEdit from './trainingEdit'
 import TrainingList from './trainingsList'
 
@@ -26,6 +27,9 @@ export default function TrainingNavigatorAdmin() {
             </Route>
             <Route path="/trainings/id/:id">
                <TrainingEdit />
+            </Route>
+            <Route path="/trainings/registered-users">
+               <TrainingRegisteredUsersList />
             </Route>
          </Switch>
       </animated.div>
