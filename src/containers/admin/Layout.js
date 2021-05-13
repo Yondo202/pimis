@@ -34,6 +34,7 @@ import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import { UrgudulPreviewForAdmin } from 'pages/urgudul/preview/previewPages'
 import Holidays from "components/holidays/Holidays"
 import TrainingNavigatorAdmin from 'pages/training/training_admin/TrainingNavigator';
+import TrainingRequestsList from 'pages/training/training_admin/requestsList';
 
 
 function Layout({ setLocale }) {
@@ -93,6 +94,7 @@ function Layout({ setLocale }) {
               <Route path="/5b/:id" component={CompilationChecklist} />
               <Route path="/5c/:id" component={AnalystReport} />
               <Route path="/trainings" component={TrainingNavigatorAdmin} />
+              <Route path="/training-requests" component={TrainingRequestsList} />
               <MiddleRoute />
             </Switch>
           </UrgudulStore>

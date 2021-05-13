@@ -91,7 +91,7 @@ export default function TrainingUserRegistration() {
       })
    }
 
-   const trainingId = useParams().id
+   const trainingId = useParams().trainingId
 
    const handleSubmit = () => {
       if (trainingId !== undefined && trainingId !== null) {
@@ -129,7 +129,7 @@ export default function TrainingUserRegistration() {
                Сургалтанд бүртгүүлэх
             </div>
 
-            <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+            <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-pl-1 tw-pr-4">
                <FormInline label="Овог нэр" type="text" value={registration.fullname ?? ''} name="fullname" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" />
 
                <FormOptions label="Хүйс" options={['Эрэгтэй', 'Эмэгтэй']} values={['Эрэгтэй', 'Эмэгтэй']} value={registration.gender ?? ''} name="gender" setForm={handleInput} classAppend="tw-w-full tw-max-w-lg" />
@@ -178,7 +178,7 @@ export default function TrainingUserRegistration() {
                      {item => item
                         ? anims =>
                            <animated.div className="tw-overflow-y-hidden" style={anims}>
-                              <FormLabel label="Та доорх хэсэгт өөрийн ажиллаж буй байгууллагын танилцуулгыг хавсаргана уу." SVG={PaperClipSVG} />
+                              <FormLabel classAppend="tw--mt-3" label="Та доорх хэсэгт өөрийн ажиллаж буй байгууллагын танилцуулгыг хавсаргана уу." SVG={PaperClipSVG} />
                               <div className="tw-h-20 tw-pl-8 tw-mt-3">
                                  <Transition
                                     items={registration.company_introduction_file}
@@ -194,7 +194,7 @@ export default function TrainingUserRegistration() {
                            </animated.div>
                         : anims =>
                            <animated.div className="tw-overflow-y-hidden" style={anims}>
-                              <FormLabel label="Та доорх хэсэгт өөрийн ажиллаж буй байгууллагын танилцуулгыг бичнэ үү." SVG={PenSVG} />
+                              <FormLabel classAppend="tw--mt-3" label="Та доорх хэсэгт өөрийн ажиллаж буй байгууллагын танилцуулгыг бичнэ үү." SVG={PenSVG} />
                               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: '128px', maxHeight: '768px' }}>
                                  <FormRichText modules="small" value={registration.company_introduction ?? ''} name="company_introduction" setForm={handleInput} />
                               </div>
@@ -267,12 +267,13 @@ const initialState = {
    register_file: null,
 }
 
-const FormLabel = ({ label, SVG, classAppend, spanHeight }) => (
-   <div className={`tw-flex tw-items-center tw-pl-3 tw-pt-2 ${classAppend ?? ''}`}>
+export const FormLabel = ({ label, SVG, classAppend, spanHeight, HelpPopup }) => (
+   <div className={`tw-flex tw-items-center tw-pl-3 tw-pt-4 ${classAppend ?? ''}`}>
       <SVG className="tw-w-5 tw-h-5 tw-text-gray-600 tw-transition-colors tw-flex-shrink-0" />
       <span className="tw-mx-2 tw-text-sm tw-font-medium tw-transition-colors tw-leading-tight" style={{ height: spanHeight ?? 'auto' }}>
          {label}
       </span>
+      {HelpPopup && HelpPopup}
    </div>
 )
 

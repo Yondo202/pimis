@@ -37,16 +37,27 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
         </Menu> */}
         <Menu iconShape="circle">
           <SubMenu title="Түншлэлийн хөтөлбөр" icon={<GiProgression />}>
-            <MenuItem>  <Link to="/projects"> Бүртгүүлсэн байгууллагууд</Link> </MenuItem>
+            <MenuItem>
+              <Link to="/projects"> Бүртгүүлсэн байгууллагууд</Link>
+            </MenuItem>
             <MenuItem>Санхүүжилт</MenuItem>
-            <MenuItem><Link to="/meetings">Үнэлгээний хорооны уулзалт</Link></MenuItem>
-            <MenuItem><Link to="/maindecision">Үнэлгээний хорооны шийдвэр</Link></MenuItem>
-            <MenuItem><Link to="/report">Тайлан</Link></MenuItem>
+            <MenuItem>
+              <Link to="/meetings">Үнэлгээний хорооны уулзалт</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/maindecision">Үнэлгээний хорооны шийдвэр</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/report">Тайлан</Link>
+            </MenuItem>
           </SubMenu>
           {/* prefix={<span className="badge gray">3</span>} */}
           <SubMenu title="Сургалт" icon={<FaChalkboardTeacher />}>
             <MenuItem>
               <Link to="/trainings">Сургалтууд</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/training-requests">Захиалгат сургалтын хүсэлтүүд</Link>
             </MenuItem>
             <SubMenu title="Тайлангууд">
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.1 </MenuItem>

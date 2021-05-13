@@ -43,7 +43,7 @@ export default function TrainingList() {
    }
 
    return (
-      <div className="tw-text-gray-700 tw-text-sm tw-absolute tw-w-full tw-px-4 tw-pt-8 tw-pb-20">
+      <div className="tw-w-full">
          <div className="tw-bg-white tw-rounded tw-shadow-md w-full tw-p-2 tw-pt-8">
             <div className="tw-text-base tw-font-medium tw-text-center tw-mb-8">
                Зохион байгуулагдах сургалтууд
@@ -81,7 +81,7 @@ export default function TrainingList() {
                                  return <td className="tw-border tw-border-gray-400" key={field}>
                                     <button className="focus:tw-outline-none tw-rounded tw-px-2 tw-py-0.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-text-white" onClick={() => navRegistration(training.id)}>
                                        Бүртгүүлэх
-                                 </button>
+                                    </button>
                                  </td>
                               default:
                                  return <td className="tw-border tw-border-gray-400" key={field}>

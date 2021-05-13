@@ -113,7 +113,7 @@ const MasterDetails = ({ data }) => {
    )
 }
 
-const RenderRichText = ({ html }) => (
+export const RenderRichText = ({ html }) => (
    <div className="tw-px-2 tw-pt-3 tw-pb-5 tw-text-gray-700">
       {html
          ? <div className="tw-p-2 tw-rounded tw-shadow-inner tw-border tw-border-gray-300" style={{ minHeight: 128, maxWidth: 726 }} dangerouslySetInnerHTML={{ __html: html }} />

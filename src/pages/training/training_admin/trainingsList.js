@@ -49,7 +49,7 @@ export default function TrainingList() {
             <FilterRow visible={true} />
 
             <Column dataField="training_name" caption="Сургалтын нэр" headerCellRender={HeaderCell} />
-            <Column caption="Сургалтын агуулга, файлаар" cellRender={data => <ButtonFliePreview data={data} />} headerCellRender={HeaderCell} width={160} />
+            <Column dataField="module_file.name" caption="Сургалтын агуулга, файлаар" cellRender={data => <ButtonFliePreview data={data} />} headerCellRender={HeaderCell} width={160} />
             <Column dataField="training_type" caption="Сургалтын төрөл" headerCellRender={HeaderCell} />
             <Column dataField="training_method" caption="Сургалтын хэлбэр" headerCellRender={HeaderCell} />
             <Column dataField="start_date" caption="Сургалт эхлэх өдөр" headerCellRender={HeaderCell} />
@@ -57,7 +57,7 @@ export default function TrainingList() {
             <Column dataField="start_time" caption="Сургалтын цаг" headerCellRender={HeaderCell} />
             <Column dataField="organizer" caption="Сургалт зохион байгуулах байгууллага" headerCellRender={HeaderCell} />
             <Column dataField="location" caption="Байршил, сургалт зохион байгуулагдах хаяг" headerCellRender={HeaderCell} />
-            <Column caption="Оролцогчдын тоо" cellRender={data => <ButtonNavRegisteredUsers data={data} />} alignment="center" headerCellRender={HeaderCell} />
+            <Column dataField="participant_number" caption="Оролцогчдын тоо" cellRender={data => <ButtonNavRegisteredUsers data={data} />} alignment="center" headerCellRender={HeaderCell} />
             <Column dataField="scope" caption="Сургалтын цар хүрээ" headerCellRender={HeaderCell} />
             <Column caption="Сургалтын мэдээллийг засварлах" cellRender={data => <ButtonNavTraining data={data} />} alignment="center" headerCellRender={HeaderCell} />
          </DataGrid>
