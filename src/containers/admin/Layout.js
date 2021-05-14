@@ -35,6 +35,7 @@ import { UrgudulPreviewForAdmin } from 'pages/urgudul/preview/previewPages'
 import Holidays from "components/holidays/Holidays"
 import TrainingNavigatorAdmin from 'pages/training/training_admin/TrainingNavigator';
 import TrainingRequestsList from 'pages/training/training_admin/requestsList';
+import FeedbackQuestionnaireHandle from 'components/admin/contents/feedback_questionnaire/feedbackQuestionnaireHandle';
 
 
 function Layout({ setLocale }) {
@@ -95,6 +96,7 @@ function Layout({ setLocale }) {
               <Route path="/5c/:id" component={AnalystReport} />
               <Route path="/trainings" component={TrainingNavigatorAdmin} />
               <Route path="/training-requests" component={TrainingRequestsList} />
+              <Route path="/training-questionnaire" component={FeedbackQuestionnaireHandle} />
               <MiddleRoute />
             </Switch>
           </UrgudulStore>
