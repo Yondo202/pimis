@@ -13,7 +13,6 @@ import UserHandle from 'components/admin/contents/users/UserHandle';
 import ProjectHandle from 'components/admin/contents/projects/ProjectHandle'
 import { UrgudulStore } from 'components/utilities/urgudulContext'
 import UrgudulNavigator from 'pages/urgudul/Page'
-import ProjectHandle1 from 'components/admin/contents/projects1/ProjectHandle'
 import Home from 'components/LoginDoneHome/Home'
 import Request from 'containers/requestComp/mainRequestOld'
 import Check from 'components/check/compCheck'
@@ -70,7 +69,6 @@ function Layout({ setLocale }) {
               <Route path="/" component={HomeAdmin} exact />
               <Route path="/users" component={UserHandle} />
               <Route path="/projects" component={ProjectHandle} />
-              <Route path="/projects1" component={ProjectHandle1} />
               <Route path="/report/" component={ReportLayout} />
               <Route path="/holidays" component={Holidays} />
               {/* <Route path="/urgudul/:page">

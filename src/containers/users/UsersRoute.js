@@ -10,24 +10,17 @@ import LoginDoneHome2 from "components/LoginDoneHome/Home";
 import MainRequestOld from "containers/requestComp/mainRequestOld";
 import { UrgudulStore } from "components/utilities/urgudulContext"
 import UrgudulNavigator from "pages/urgudul/Page"
-import BusinessSectorEditor from "pages/business_sector_edit/editorPage";
-import ProductsEditor from "pages/products_edit/editorPage";
 import FirstEvaluation from "pages/decision_making/5a/Page";
 import CompilationCheck from "pages/decision_making/5b/Page";
 import AnalystReport from "pages/decision_making/5c/Page";
 import AttachmentUploads from "pages/attachments/page";
 import WorkPerformance from 'components/workPerformance/MainWorkPerformance'
-import TrainingRegistration from 'pages/training/registration/Page';
-import TrainingRequest from 'pages/training/request/Page';
-import TrainingPartnerRegistration from 'pages/training/partner_registration/Page';
-import TrainingFeedback from 'pages/training/feedback/Page';
 import PdfTest from 'components/check/PdfTest'
 import MiddleRoute from "containers/middle/middleRoute"
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import Test from "components/Test"
-import TrainingEdit from 'pages/training/training_admin/trainingEdit';
 import TrainingNavigatorUser from 'pages/training/training_user/TrainingNavigator';
 
 
@@ -61,12 +54,6 @@ function UsersRoute() {
                     <Route path="/5a" component={FirstEvaluation} />
                     <Route path="/5b" component={CompilationCheck} />
                     <Route path="/5c" component={AnalystReport} />
-                    <Route path="/sector-edit" component={BusinessSectorEditor} />
-                    <Route path="/product-edit" component={ProductsEditor} />
-                    <Route path="/training/1" component={TrainingRegistration} />
-                    <Route path="/training/2" component={TrainingRequest} />
-                    <Route path="/training/3" component={TrainingPartnerRegistration} />
-                    <Route path="/training/4" component={TrainingFeedback} />
                     <Route path="/trainings" component={TrainingNavigatorUser} />
                     <MiddleRoute />
                 </Switch>
@@ -75,4 +62,4 @@ function UsersRoute() {
     )
 }
 
-export default UsersRoute
+export default UsersRoute;

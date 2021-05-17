@@ -54,7 +54,7 @@ export default function TrainingList() {
             <Column dataField="training_method" caption="Сургалтын хэлбэр" headerCellRender={HeaderCell} />
             <Column dataField="start_date" caption="Сургалт эхлэх өдөр" headerCellRender={HeaderCell} />
             <Column dataField="end_date" caption="Сургалт дуусах өдөр" headerCellRender={HeaderCell} />
-            <Column dataField="start_time" caption="Сургалтын цаг" headerCellRender={HeaderCell} />
+            <Column dataField="start_time" caption="Сургалтын цаг" calculateCellValue={calculateCellValueTime} headerCellRender={HeaderCell} />
             <Column dataField="organizer" caption="Сургалт зохион байгуулах байгууллага" headerCellRender={HeaderCell} />
             <Column dataField="location" caption="Байршил, сургалт зохион байгуулагдах хаяг" headerCellRender={HeaderCell} />
             <Column dataField="participant_number" caption="Оролцогчдын тоо" cellRender={data => <ButtonNavRegisteredUsers data={data} />} alignment="center" headerCellRender={HeaderCell} />
@@ -63,7 +63,7 @@ export default function TrainingList() {
          </DataGrid>
 
          <div className="tw-flex tw-justify-center">
-            <button className="tw-py-1.5 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-12 tw-mb-6" onClick={handleAddTraining}>
+            <button className="tw-py-2 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-12 tw-mb-6" onClick={handleAddTraining}>
                Сургалт нэмэх
             </button>
          </div>
@@ -142,3 +142,5 @@ const ButtonNavRegisteredUsers = ({ data }) => {
       </button>
    )
 }
+
+const calculateCellValueTime = (rowData) => `${rowData?.start_time?.slice(0, 5)} - ${rowData?.end_time?.slice(0, 5)}`

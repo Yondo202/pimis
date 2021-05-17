@@ -22,7 +22,7 @@ export default function TrainingNavigatorAdmin() {
             <Route exact path="/trainings">
                <TrainingList />
             </Route>
-            <Route path="/trainings/id/">
+            <Route exact path="/trainings/id/">
                <TrainingEdit />
             </Route>
             <Route path="/trainings/id/:id">

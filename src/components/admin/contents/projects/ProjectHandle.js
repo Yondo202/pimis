@@ -1,16 +1,10 @@
-import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import DataGrid, { Column, Editing, FilterRow, HeaderFilter, Lookup, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
+import React, { useEffect, useRef, useState } from 'react'
+import DataGrid, { Column, FilterRow, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
-import EditDropdown from './editDropdown'
-import UrgudulContext from 'components/utilities/urgudulContext'
-import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import './dataGrid.css'
-import PreviewModal from './previewModal'
 import { loadMessages } from 'devextreme/localization'
-import EvaluatorsModal from './evaluatorsModal'
-
 
 loadMessages({
     "en": {
@@ -49,16 +43,6 @@ export default function ProjectHandle() {
 
         axios.get('users', {
             headers: { Authorization: getLoggedUserToken() },
-            params: { role: 'member' }
-        }).then(res => {
-            console.log(res.data)
-            setMembers(res.data.data)
-        }).catch(err => {
-            console.log(err.response?.data)
-        })
-
-        axios.get('users', {
-            headers: { Authorization: getLoggedUserToken() },
             params: { role: 'bh_zovloh' }
         }).then(res => {
             console.log(res.data)
@@ -82,18 +66,6 @@ export default function ProjectHandle() {
 
         return () => window.removeEventListener('resize', handleResize)
     }, [])
-
-    const [previewModal, setPreviewModal] = useState({
-        open: false,
-        id: '',
-    })
-
-    const [evaluatorsModal, setEvaluatorsModal] = useState({
-        open: false,
-        project: {},
-    })
-
-    const [members, setMembers] = useState([])
 
     const [consultants, setConsultants] = useState([])
 
@@ -139,7 +111,6 @@ export default function ProjectHandle() {
                     <HeaderFilter visible={true} />
                     <FilterRow visible={true} />
 
-                    {/* <Column caption="Үйлдэл" cellRender={data => <EditDropdown data={data} handleEditProject={handleEditProject} setPreviewModal={setPreviewModal} setEvaluatorsModal={setEvaluatorsModal} />} headerCellRender={HeaderCell} width={134} /> */}
                     <Column caption="Явцыг харах" cellRender={data => <ButtonNavProgress data={data} />} headerCellRender={HeaderCell} alignment="left" width={115} />
                     <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="left" minWidth={120} />
                     <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} alignment="left" />
@@ -166,10 +137,6 @@ export default function ProjectHandle() {
                     <Column dataField="lastEvalution" caption="Бизнес шинжээчийн үнэлгээ" headerCellRender={HeaderCell} calculateCellValue={calculateCellValue5c} cellRender={cellRender5c} alignment="left" width={131} />
                 </DataGrid>
             </div>
-
-            <PreviewModal previewModal={previewModal} setPreviewModal={setPreviewModal} />
-
-            <EvaluatorsModal evaluatorsModal={evaluatorsModal} setEvaluatorsModal={setEvaluatorsModal} members={members} />
         </div>
     )
 }
@@ -230,33 +197,6 @@ const ButtonNavStatus = (data) => {
         </button>
         : null
 }
-
-// const ButtonEditProject = (data) => {
-//     const history = useHistory()
-//     const projectId = data.data.data.project?.id
-//     const UrgudulCtx = useContext(UrgudulContext)
-//     const AlertCtx = useContext(AlertContext)
-//     const buttonClick = () => {
-//         if (projectId) {
-//             axios.get(`projects/${projectId}`, {
-//                 headers: { Authorization: getLoggedUserToken() }
-//             }).then(res => {
-//                 console.log(res.data)
-//                 UrgudulCtx.setData(res.data.data)
-//                 history.push('/urgudul/1')
-//             }).catch(err => {
-//                 console.log(err.response?.data)
-//                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Өргөдлийн маягтын мэдээллийг уншиж чадсангүй.' })
-//             })
-//         } else {
-//             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсгээгүй байна.' })
-//         }
-//     }
-
-//     return <button className={`tw-bg-gray-700 tw-rounded-sm tw-py-1 tw-px-4 tw-text-white tw-whitespace-nowrap focus:tw-outline-none active:tw-bg-gray-800 tw-transition-colors hover:tw-shadow-md ${!projectId && 'tw-opacity-70'}`} onClick={buttonClick}>
-//         Засах
-//     </button>
-// }
 
 const criteriaTexts = {
     1: 'Тэнцээгүй',

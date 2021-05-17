@@ -42,7 +42,7 @@ export default function TrainingFeedback() {
    const handleNavTrainings = () => history.push('/trainings')
 
    const handleSubmit = () => {
-      axios.post(`training-requests`, feedback, {
+      axios.post(`training-feedbacks`, feedback, {
          headers: { Authorization: getLoggedUserToken() },
          params: { trainingId: trainingId },
       }).then(res => {
@@ -58,6 +58,12 @@ export default function TrainingFeedback() {
       categories.add(question.category)
    }
 
+   const handleInput = (key, value, index) => setFeedback(prev => {
+      const newState = [...prev]
+      newState[index][key] = value
+      return newState
+   })
+
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-absolute tw-flex tw-justify-center tw-w-full tw-px-4 tw-pt-8 tw-pb-20">
          <div className="tw-rounded tw-shadow-md tw-bg-white tw-max-w-5xl tw-w-full tw-relative">
@@ -70,10 +76,6 @@ export default function TrainingFeedback() {
 
             <div className="tw-text-base tw-font-medium tw-text-center tw-mb-4 tw-mt-2">
                Сургалтанд үнэлгээ өгөх
-            </div>
-
-            <div className="">
-
             </div>
 
             <table>
@@ -94,15 +96,17 @@ export default function TrainingFeedback() {
                            return <tr className="">
                               <td colSpan="6">
                                  <div className="">
-                                    {questionnaire.filter(question => question.category === 'Бичвэр').map(question =>
-                                       <div className="">
+                                    {questionnaire.filter(question => question.category === 'Бичвэр').map(question => {
+                                       const index = feedback.findIndex(item => item.category === question.category && item.description === question.description)
+                                       return <div className="" key={question.description}>
                                           <div className="">
                                              {question.description}
                                           </div>
                                           <div className="tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                                             <FormRichText modules="small" value={''} name="company_introduction" setForm={() => { }} />
+                                             <FormRichText modules="small" value={feedback[index]?.comment} name="comment" id={index} setForm={handleInput} />
                                           </div>
                                        </div>
+                                    }
                                     )}
                                  </div>
                               </td>
@@ -116,11 +120,11 @@ export default function TrainingFeedback() {
                               {questionnaire.filter(question => question.category === category).map(question =>
                                  <tr className="" key={question.id}>
                                     <td className="tw-border tw-border-gray-400">{question.description}</td>
-                                    <EvaluationTdElement />
-                                    <EvaluationTdElement />
-                                    <EvaluationTdElement />
-                                    <EvaluationTdElement />
-                                    <EvaluationTdElement />
+                                    <EvaluationTdElement question={question} feedback={feedback} setFeedback={setFeedback} rating={1} />
+                                    <EvaluationTdElement question={question} feedback={feedback} setFeedback={setFeedback} rating={2} />
+                                    <EvaluationTdElement question={question} feedback={feedback} setFeedback={setFeedback} rating={3} />
+                                    <EvaluationTdElement question={question} feedback={feedback} setFeedback={setFeedback} rating={4} />
+                                    <EvaluationTdElement question={question} feedback={feedback} setFeedback={setFeedback} rating={5} />
                                  </tr>
                               )}
                            </Fragment>
@@ -139,11 +143,24 @@ export default function TrainingFeedback() {
    )
 }
 
-const EvaluationTdElement = ({ }) => {
+const EvaluationTdElement = ({ question, feedback, setFeedback, rating }) => {
+   const index = feedback.findIndex(item => item.category === question.category && item.description === question.description)
+
+   const handleClick = () => {
+      setFeedback(prev => {
+         const newState = [...prev]
+         newState[index].evaluation = rating
+         return newState
+      })
+   }
 
    return (
-      <td className="tw-border tw-border-gray-400" onClick={() => { }}>
-         ***
+      <td className="tw-border tw-border-gray-400 tw-w-8" onClick={handleClick}>
+         {feedback[index]?.evaluation === rating &&
+            <div className="tw-rounded-full tw-w-6 tw-h-6 tw-flex tw-items-center tw-justify-center tw-border-2 tw-border-blue-500">
+               <span className="tw-h-3 tw-w-3 tw-bg-blue-500 tw-rounded-full" />
+            </div>
+         }
       </td>
    )
 }
