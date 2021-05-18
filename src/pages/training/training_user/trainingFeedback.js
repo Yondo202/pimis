@@ -48,8 +48,10 @@ export default function TrainingFeedback() {
       }).then(res => {
          console.log(res)
          setFeedback(res.data.data)
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын үнэлгээг хадгаллаа.' })
       }).catch(err => {
          console.error(err.response)
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын үнэлгээг хадгалж чадсангүй.' })
       })
    }
 
@@ -57,12 +59,19 @@ export default function TrainingFeedback() {
    for (const question of questionnaire) {
       categories.add(question.category)
    }
-
-   const handleInput = (key, value, index) => setFeedback(prev => {
-      const newState = [...prev]
-      newState[index][key] = value
-      return newState
+   if (categories.has('Бичвэр')) categories.delete('Бичвэр')
+   const categroiesArr = [...categories].sort((a, b) => {
+      const orderA = questionnaire.find(question => question.category === a).category_order
+      const orderB = questionnaire.find(question => question.category === b).category_order
+      return orderA - orderB
    })
+   categroiesArr.push('Бичвэр')
+
+   // const handleInput = (key, value, index) => setFeedback(prev => {
+   //    const newState = [...prev]
+   //    newState[index][key] = value
+   //    return newState
+   // })
 
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-absolute tw-flex tw-justify-center tw-w-full tw-px-4 tw-pt-8 tw-pb-20">
@@ -78,7 +87,7 @@ export default function TrainingFeedback() {
                Сургалтанд үнэлгээ өгөх
             </div>
 
-            <table>
+            {/* <table>
                <thead>
                   <tr>
                      <th className="tw-border tw-border-gray-400">Ангилал</th>
@@ -106,8 +115,7 @@ export default function TrainingFeedback() {
                                              <FormRichText modules="small" value={feedback[index]?.comment} name="comment" id={index} setForm={handleInput} />
                                           </div>
                                        </div>
-                                    }
-                                    )}
+                                    })}
                                  </div>
                               </td>
                            </tr>
@@ -131,7 +139,11 @@ export default function TrainingFeedback() {
                      }
                   })}
                </tbody>
-            </table>
+            </table> */}
+
+            {categroiesArr.map((category, i) =>
+               <FormCategory category={category} feedback={feedback} setFeedback={setFeedback} key={category} index={i} />
+            )}
 
             <div className="tw-flex tw-justify-center">
                <button className="focus:tw-outline-none tw-rounded hover:tw-shadow-md tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-px-8 tw-py-2 tw-text-white tw-font-medium tw-mt-12 tw-mb-8" onClick={handleSubmit}>
@@ -143,24 +155,68 @@ export default function TrainingFeedback() {
    )
 }
 
-const EvaluationTdElement = ({ question, feedback, setFeedback, rating }) => {
-   const index = feedback.findIndex(item => item.category === question.category && item.description === question.description)
+// const EvaluationTdElement = ({ question, feedback, setFeedback, rating }) => {
+//    const index = feedback.findIndex(item => item.category === question.category && item.description === question.description)
 
-   const handleClick = () => {
-      setFeedback(prev => {
-         const newState = [...prev]
-         newState[index].evaluation = rating
-         return newState
-      })
-   }
+//    const handleClick = () => {
+//       setFeedback(prev => {
+//          const newState = [...prev]
+//          newState[index].evaluation = rating
+//          return newState
+//       })
+//    }
+
+//    return (
+//       <td className="tw-border tw-border-gray-400 tw-w-8" onClick={handleClick}>
+//          {feedback[index]?.evaluation === rating &&
+//             <div className="tw-rounded-full tw-w-6 tw-h-6 tw-flex tw-items-center tw-justify-center tw-border-2 tw-border-blue-500">
+//                <span className="tw-h-3 tw-w-3 tw-bg-blue-500 tw-rounded-full" />
+//             </div>
+//          }
+//       </td>
+//    )
+// }
+
+const FormCategory = ({ category, feedback, setFeedback, index }) => {
+   const feedbackFiltered = feedback.filter(question => question.category === category)
+
+   const handleInput = (key, value, index) => setFeedback(prev => {
+      const newState = [...prev]
+      newState[index][key] = value
+      return newState
+   })
 
    return (
-      <td className="tw-border tw-border-gray-400 tw-w-8" onClick={handleClick}>
-         {feedback[index]?.evaluation === rating &&
-            <div className="tw-rounded-full tw-w-6 tw-h-6 tw-flex tw-items-center tw-justify-center tw-border-2 tw-border-blue-500">
-               <span className="tw-h-3 tw-w-3 tw-bg-blue-500 tw-rounded-full" />
+      <div className="tw-mt-2">
+         <div className="tw-text-15px tw-px-2 tw-py-0.5 tw-font-medium">
+            {index + 1}. {category}
+         </div>
+
+         {feedbackFiltered.map(question => {
+            const rowIndex = feedback.findIndex(item => item.category === category && item.description === question.description)
+
+            return <div className="tw-mt-2" key={question.description}>
+               <div className="tw-ml-4 tw-px-2 tw-py-0.5 tw-font-medium">
+                  •  {question.description}
+               </div>
+
+               {category === 'Бичвэр'
+                  ? <div className="tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-p-1 tw-pl-4 tw-mr-3" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                     <FormRichText modules="small" value={feedback[rowIndex].comment} name="comment" id={rowIndex} setForm={handleInput} />
+                  </div>
+
+                  : <div className="tw-flex tw-items-center tw-justify-center tw-mt-1 tw-font-medium tw-overflow-x-auto tw-mx-4 tw-px-2 tw-py-0.5">
+                     <span className="tw-mr-3 tw-whitespace-nowrap">Огт санал нийлэхгүй</span>
+                     {[...Array(5).keys()].map(i =>
+                        <span className={`tw-flex-shrink-0 tw-mx-3 tw-rounded-full tw-cursor-pointer tw-border-2 tw-border-gray-500 tw-flex tw-justify-center tw-items-center tw-w-6 tw-h-6 ${question.evaluation === i + 1 ? 'tw-bg-blue-500 tw-border-blue-500 tw-text-white' : 'tw-text-gray-600'} tw-transition-colors`} onClick={() => handleInput('evaluation', i + 1, rowIndex)} key={i}>
+                           <span style={{ paddingTop: 1, paddingRight: 1 }}>{i + 1}</span>
+                        </span>
+                     )}
+                     <span className="tw-ml-3 tw-whitespace-nowrap">Бүрэн санал нийлнэ</span>
+                  </div>
+               }
             </div>
-         }
-      </td>
+         })}
+      </div>
    )
 }

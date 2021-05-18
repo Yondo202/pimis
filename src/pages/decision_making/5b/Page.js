@@ -303,9 +303,9 @@ export default function CompilationChecklist() {
     const handleInput = (key, value, rowcode) => {
         if (canEdit) {
             const index = rows.findIndex(row => row.rowcode === rowcode)
-            const newRows = rows
+            const newRows = [...rows]
             newRows[index][key] = value
-            setRows([...newRows])
+            setRows(newRows)
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Засвар оруулах эрх байхгүй байна.' })
         }
