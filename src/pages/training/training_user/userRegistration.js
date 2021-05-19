@@ -12,8 +12,8 @@ import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 import AlertContext from 'components/utilities/alertContext'
-import { useHistory, useParams } from 'react-router'
-import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
+import { useParams } from 'react-router'
+import {titleClass, buttonClass } from './trainingsList'
 
 export default function TrainingUserRegistration() {
    const [registration, setRegistration] = useState(initialState)
@@ -111,140 +111,127 @@ export default function TrainingUserRegistration() {
       }
    }
 
-   const history = useHistory()
-
-   const handleNavTrainings = () => history.push('/trainings')
-
    return (
-      <div className="tw-text-gray-700 tw-text-sm tw-absolute tw-flex tw-justify-center tw-w-full tw-px-4 tw-pt-8 tw-pb-20">
-         <div className="tw-rounded tw-shadow-md tw-bg-white tw-max-w-5xl tw-w-full tw-relative">
-            <div className="tw-flex">
-               <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-3 tw-pr-5 tw-text-sm tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-my-2 tw-ml-2" onClick={handleNavTrainings}>
-                  <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform-gpu tw-rotate-90 tw-mr-1" />
-                  Буцах
-               </button>
+      <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-relative tw-p-2 tw-pb-12">
+         <div className={titleClass}>
+            Сургалтанд бүртгүүлэх
+         </div>
+
+         <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-pl-1 tw-pr-4 tw-mt-3">
+            <FormInline label="Овог нэр" type="text" value={registration.fullname ?? ''} name="fullname" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+
+            <FormOptions label="Хүйс" options={['Эрэгтэй', 'Эмэгтэй']} values={['Эрэгтэй', 'Эмэгтэй']} value={registration.gender ?? ''} name="gender" setForm={handleInput} classAppend="tw-w-full tw-max-w-lg" />
+
+            <FormInline label="Регистрийн дугаар" type="text" value={registration.register_number ?? ''} name="register_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" />
+
+            <FormInline label="Утасны дугаар" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={registration.phone ?? ''} name="phone" onChange={handleInputFormat} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+
+            <FormInline label="Имэйл хаяг" type="email" value={registration.email ?? ''} name="email" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" validate={true} />
+
+            <FormInline label="Байгууллагын нэр" type="text" value={registration.company_name ?? ''} name="company_name" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+
+            <FormInline label="Одоогийн ажлын албан тушаал" type="text" value={registration.employee_position ?? ''} name="employee_position" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" />
+
+            <TreeSelect data={sectors} label="Ямар чиглэлээр үйл ажиллагаа явуулдаг вэ?" displayName="bdescription_mon" value={registration.business_sectorId} name="business_sectorId" handleChange={handleInput} />
+
+            <FormInline label="Жилийн борлуулалтын тоо хэмжээ" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={registration.annual_sales ?? ''} name="annual_sales" onChange={handleInputFormat} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" />
+
+            <div className="tw-w-full md:tw-col-span-2">
+               <FormLabel label="Манай сургалтад хамрагдах нь танд ямар ашиг тустай вэ? Энэхүү сургалтаас ямар үр дүн хүлээж байгаа вэ?" SVG={PenSVG} />
+
+               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                  <FormRichText modules="small" value={registration.training_benefit ?? ''} name="training_benefit" setForm={handleInput} />
+               </div>
             </div>
 
-            <div className="tw-text-base tw-font-medium tw-text-center tw-mb-4 tw-mt-2">
-               Сургалтанд бүртгүүлэх
-            </div>
-
-            <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-pl-1 tw-pr-4">
-               <FormInline label="Овог нэр" type="text" value={registration.fullname ?? ''} name="fullname" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" />
-
-               <FormOptions label="Хүйс" options={['Эрэгтэй', 'Эмэгтэй']} values={['Эрэгтэй', 'Эмэгтэй']} value={registration.gender ?? ''} name="gender" setForm={handleInput} classAppend="tw-w-full tw-max-w-lg" />
-
-               <FormInline label="Регистрийн дугаар" type="text" value={registration.register_number ?? ''} name="register_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" />
-
-               <FormInline label="Утасны дугаар" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={registration.phone ?? ''} name="phone" onChange={handleInputFormat} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" />
-
-               <FormInline label="Имэйл хаяг" type="email" value={registration.email ?? ''} name="email" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" validate={true} />
-
-               <FormInline label="Байгууллагын нэр" type="text" value={registration.company_name ?? ''} name="company_name" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" />
-
-               <FormInline label="Одоогийн ажлын албан тушаал" type="text" value={registration.employee_position ?? ''} name="employee_position" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" />
-
-               <TreeSelect data={sectors} label="Ямар чиглэлээр үйл ажиллагаа явуулдаг вэ?" displayName="bdescription_mon" value={registration.business_sectorId} name="business_sectorId" handleChange={handleInput} />
-
-               <FormInline label="Жилийн борлуулалтын тоо хэмжээ" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={registration.annual_sales ?? ''} name="annual_sales" onChange={handleInputFormat} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" />
-
-               <div className="tw-w-full md:tw-col-span-2">
-                  <FormLabel label="Манай сургалтад хамрагдах нь танд ямар ашиг тустай вэ? Энэхүү сургалтаас ямар үр дүн хүлээж байгаа вэ?" SVG={PenSVG} />
-
-                  <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                     <FormRichText modules="small" value={registration.training_benefit ?? ''} name="training_benefit" setForm={handleInput} />
-                  </div>
+            <div className="tw-w-full md:tw-col-span-2">
+               <div className="tw-flex tw-items-end tw-text-13px tw-mt-5 tw-mb-2">
+                  <span className="tw-border-b tw-border-gray-400 tw-ml-3 tw-pl-1 tw-pr-4 tw-font-medium tw-pb-0.5">
+                     Байгууллагын танилцуулга:
+                  </span>
+                  <button className={tab ? classActiveTab : classInactiveTab} onClick={() => setTab(true)}>
+                     Файлаар
+                  </button>
+                  <button className={tab ? classInactiveTab : classActiveTab} onClick={() => setTab(false)}>
+                     Бичихээр
+                  </button>
+                  <span className="tw-flex-grow tw-border-b tw-border-gray-400 tw-mr-3" />
                </div>
 
-               <div className="tw-w-full md:tw-col-span-2">
-                  <div className="tw-flex tw-items-end tw-text-13px tw-mt-5 tw-mb-2">
-                     <span className="tw-border-b tw-border-gray-400 tw-ml-3 tw-pl-1 tw-pr-4 tw-font-medium tw-pb-0.5">
-                        Байгууллагын танилцуулга:
-                     </span>
-                     <button className={tab ? classActiveTab : classInactiveTab} onClick={() => setTab(true)}>
-                        Файлаар
-                     </button>
-                     <button className={tab ? classInactiveTab : classActiveTab} onClick={() => setTab(false)}>
-                        Бичихээр
-                     </button>
-                     <span className="tw-flex-grow tw-border-b tw-border-gray-400 tw-mr-3" />
-                  </div>
+               <Transition
+                  items={tab}
+                  from={{ opacity: 0, height: 'auto' }}
+                  enter={{ opacity: 1, height: 'auto' }}
+                  leave={{ display: 'none' }}>
+                  {item => item
+                     ? anims =>
+                        <animated.div className="tw-overflow-y-hidden" style={anims}>
+                           <FormLabel classAppend="tw--mt-3" label="Та доорх хэсэгт өөрийн ажиллаж буй байгууллагын танилцуулгыг хавсаргана уу." SVG={PaperClipSVG} />
+                           <div className="tw-h-28 tw-pl-8 tw-mt-3">
+                              <Transition
+                                 items={registration.company_introduction_file}
+                                 from={{ transform: 'scale(0)' }}
+                                 enter={{ transform: 'scale(1)' }}
+                                 leave={{ display: 'none' }}>
+                                 {item1 => item1
+                                    ? anims1 => <AnimatedFileCard name={item1?.name} type={item1?.mimetype} size={item1?.size} classAppend="" uploading={item1 === 'loading' && true} removeFile={() => handleRemoveFile('company_introduction_file')} downloadFile={() => handleDownloadFile(item1.id)} style={anims1} />
+                                    : anims1 => <AnimatedFileCardAdd classAppend="" onClick={() => handleFileClick('company_introduction_file')} style={anims1} />
+                                 }
+                              </Transition>
+                           </div>
+                        </animated.div>
+                     : anims =>
+                        <animated.div className="tw-overflow-y-hidden" style={anims}>
+                           <FormLabel classAppend="tw--mt-3" label="Та доорх хэсэгт өөрийн ажиллаж буй байгууллагын танилцуулгыг бичнэ үү." SVG={PenSVG} />
+                           <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                              <FormRichText modules="small" value={registration.company_introduction ?? ''} name="company_introduction" setForm={handleInput} />
+                           </div>
+                        </animated.div>
+                  }
+               </Transition>
+            </div>
 
+            <div className="">
+               <FormLabel classAppend="tw-mt-4" label="Та доорх хэсэгт ажилтнаа сургалтад хамруулах тухай байгууллагын хүсэлт, албан тоотыг хавсаргана уу." SVG={PaperClipSVG} />
+               <div className="tw-h-20 tw-pl-8 tw-mt-3">
                   <Transition
-                     items={tab}
-                     from={{ opacity: 0, height: 'auto' }}
-                     enter={{ opacity: 1, height: 'auto' }}
+                     items={registration.company_request_file}
+                     from={{ transform: 'scale(0)' }}
+                     enter={{ transform: 'scale(1)' }}
                      leave={{ display: 'none' }}>
-                     {item => item
-                        ? anims =>
-                           <animated.div className="tw-overflow-y-hidden" style={anims}>
-                              <FormLabel classAppend="tw--mt-3" label="Та доорх хэсэгт өөрийн ажиллаж буй байгууллагын танилцуулгыг хавсаргана уу." SVG={PaperClipSVG} />
-                              <div className="tw-h-20 tw-pl-8 tw-mt-3">
-                                 <Transition
-                                    items={registration.company_introduction_file}
-                                    from={{ transform: 'scale(0)' }}
-                                    enter={{ transform: 'scale(1)' }}
-                                    leave={{ display: 'none' }}>
-                                    {item1 => item1
-                                       ? anims1 => <AnimatedFileCard name={item1?.name} type={item1?.mimetype} size={item1?.size} classAppend="" uploading={item1 === 'loading' && true} removeFile={() => handleRemoveFile('company_introduction_file')} downloadFile={() => handleDownloadFile(item1.id)} style={anims1} />
-                                       : anims1 => <AnimatedFileCardAdd classAppend="" onClick={() => handleFileClick('company_introduction_file')} style={anims1} />
-                                    }
-                                 </Transition>
-                              </div>
-                           </animated.div>
-                        : anims =>
-                           <animated.div className="tw-overflow-y-hidden" style={anims}>
-                              <FormLabel classAppend="tw--mt-3" label="Та доорх хэсэгт өөрийн ажиллаж буй байгууллагын танилцуулгыг бичнэ үү." SVG={PenSVG} />
-                              <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                                 <FormRichText modules="small" value={registration.company_introduction ?? ''} name="company_introduction" setForm={handleInput} />
-                              </div>
-                           </animated.div>
+                     {item1 => item1
+                        ? anims1 => <AnimatedFileCard name={item1?.name} type={item1?.mimetype} size={item1?.size} classAppend="" uploading={item1 === 'loading' && true} removeFile={() => handleRemoveFile('company_request_file')} downloadFile={() => handleDownloadFile(item1.id)} style={anims1} />
+                        : anims1 => <AnimatedFileCardAdd classAppend="" onClick={() => handleFileClick('company_request_file')} style={anims1} />
                      }
                   </Transition>
                </div>
-
-               <div className="">
-                  <FormLabel classAppend="tw-mt-4" spanHeight={35} label="Та доорх хэсэгт ажилтнаа сургалтад хамруулах тухай байгууллагын хүсэлт, албан тоотыг хавсаргана уу." SVG={PaperClipSVG} />
-                  <div className="tw-h-20 tw-pl-8 tw-mt-3">
-                     <Transition
-                        items={registration.company_request_file}
-                        from={{ transform: 'scale(0)' }}
-                        enter={{ transform: 'scale(1)' }}
-                        leave={{ display: 'none' }}>
-                        {item1 => item1
-                           ? anims1 => <AnimatedFileCard name={item1?.name} type={item1?.mimetype} size={item1?.size} classAppend="" uploading={item1 === 'loading' && true} removeFile={() => handleRemoveFile('company_request_file')} downloadFile={() => handleDownloadFile(item1.id)} style={anims1} />
-                           : anims1 => <AnimatedFileCardAdd classAppend="" onClick={() => handleFileClick('company_request_file')} style={anims1} />
-                        }
-                     </Transition>
-                  </div>
-               </div>
-
-               <div className="">
-                  <FormLabel classAppend="tw-mt-4" spanHeight={35} label="Та доорх хэсэгт иргэний үнэмлэхний хуулбарыг хавсаргана уу." SVG={PaperClipSVG} />
-                  <div className="tw-h-20 tw-pl-8 tw-mt-3">
-                     <Transition
-                        items={registration.register_file}
-                        from={{ transform: 'scale(0)' }}
-                        enter={{ transform: 'scale(1)' }}
-                        leave={{ display: 'none' }}>
-                        {item1 => item1
-                           ? anims1 => <AnimatedFileCard name={item1?.name} type={item1?.mimetype} size={item1?.size} classAppend="" uploading={item1 === 'loading' && true} removeFile={() => handleRemoveFile('register_file')} downloadFile={() => handleDownloadFile(item1.id)} style={anims1} />
-                           : anims1 => <AnimatedFileCardAdd classAppend="" onClick={() => handleFileClick('register_file')} style={anims1} />
-                        }
-                     </Transition>
-                  </div>
-               </div>
             </div>
 
-            <input className="tw-invisible tw-absolute tw-w-0 tw-h-0" type="file" onChange={handleFileInput} ref={fileInputRef} />
-
-            <div className="tw-flex tw-justify-center">
-               <button
-                  className="focus:tw-outline-none tw-rounded hover:tw-shadow-md tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-px-8 tw-py-2 tw-text-white tw-font-medium tw-mt-12 tw-mb-8"
-                  onClick={handleSubmit}>
-                  Бүртгүүлэх
-               </button>
+            <div className="">
+               <FormLabel classAppend="tw-mt-4" label="Та доорх хэсэгт иргэний үнэмлэхний хуулбарыг хавсаргана уу." SVG={PaperClipSVG} />
+               <div className="tw-h-20 tw-pl-8 tw-mt-3">
+                  <Transition
+                     items={registration.register_file}
+                     from={{ transform: 'scale(0)' }}
+                     enter={{ transform: 'scale(1)' }}
+                     leave={{ display: 'none' }}>
+                     {item1 => item1
+                        ? anims1 => <AnimatedFileCard name={item1?.name} type={item1?.mimetype} size={item1?.size} classAppend="" uploading={item1 === 'loading' && true} removeFile={() => handleRemoveFile('register_file')} downloadFile={() => handleDownloadFile(item1.id)} style={anims1} />
+                        : anims1 => <AnimatedFileCardAdd classAppend="" onClick={() => handleFileClick('register_file')} style={anims1} />
+                     }
+                  </Transition>
+               </div>
             </div>
+         </div>
+
+         <input className="tw-invisible tw-absolute tw-w-0 tw-h-0" type="file" onChange={handleFileInput} ref={fileInputRef} />
+
+         <div className="tw-flex tw-justify-end">
+            <button
+               className={`${buttonClass} tw-text-sm tw-px-4 tw-m-4 tw-mt-8`}
+               onClick={handleSubmit}>
+               Бүртгүүлэх
+            </button>
          </div>
       </div>
    )
@@ -267,10 +254,10 @@ const initialState = {
    register_file: null,
 }
 
-export const FormLabel = ({ label, SVG, classAppend, spanHeight, HelpPopup }) => (
+export const FormLabel = ({ label, SVG, classAppend, HelpPopup }) => (
    <div className={`tw-flex tw-items-center tw-pl-3 tw-pt-4 ${classAppend ?? ''}`}>
       <SVG className="tw-w-5 tw-h-5 tw-text-gray-600 tw-transition-colors tw-flex-shrink-0" />
-      <span className="tw-mx-2 tw-text-sm tw-font-medium tw-transition-colors tw-leading-tight" style={{ height: spanHeight ?? 'auto' }}>
+      <span className="tw-mx-2 tw-text-sm tw-font-medium tw-transition-colors tw-leading-tight">
          {label}
       </span>
       {HelpPopup && HelpPopup}

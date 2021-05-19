@@ -144,7 +144,7 @@ function UrgudulFront() {
                     {UrgudulCtx.data.project_number &&
                         <div className="tw-mb-2 tw-font-medium tw-text-13px tw-px-2 tw-text-center">
                             Өргөдлийн дугаар:
-                        <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                            <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
                         </div>
                     }
                 </div>

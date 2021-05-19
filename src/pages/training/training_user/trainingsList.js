@@ -5,13 +5,14 @@ import AlertContext from 'components/utilities/alertContext'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 import { useHistory } from 'react-router'
 import { Transition, animated, Spring } from 'react-spring/renderprops'
-import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import CalendarSVG from 'assets/svgComponents/calendarSVG'
 import ClockSVG from 'assets/svgComponents/clockSVG'
 import LocationMarkerSVG from 'assets/svgComponents/locationMarker'
 import UsersSVG from 'assets/svgComponents/usersSVG'
-import HelpPopup from 'components/help_popup/helpPopup'
 import LibrarySVG from 'assets/svgComponents/librarySVG'
+import { Link } from 'react-router-dom'
+import ModalWindow from 'components/modal_window/modalWindow'
+import ExclamationSVG from 'assets/svgComponents/exclamationSVG'
 
 export default function TrainingList() {
    const [trainings, setTrainings] = useState([])
@@ -32,13 +33,6 @@ export default function TrainingList() {
       })
    }, [])
 
-   const history = useHistory()
-
-   const navRegistration = (id, e) => {
-      e.stopPropagation()
-      history.push(`/trainings/${id}/registration`)
-   }
-
    const handleDownloadFile = (id) => {
       axios.get(`attach-files/${id}`, {
          headers: { Authorization: getLoggedUserToken() },
@@ -53,72 +47,84 @@ export default function TrainingList() {
       })
    }
 
+   const [modalOpenIsFull, setModalOpenIsFull] = useState(false)
+
+   useEffect(() => {
+      const timer = setTimeout(() => {
+         if (modalOpenIsFull === true) {
+            setModalOpenIsFull(false)
+         }
+      }, 3000)
+      return () => clearTimeout(timer)
+   }, [modalOpenIsFull])
+
    return (
-      <div className="tw-text-gray-700 tw-text-sm tw-absolute tw-w-full tw-px-4 tw-pt-8 tw-pb-20 tw-flex tw-justify-center">
-         <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-w-full tw-max-w-2xl tw-p-2 tw-pt-8 tw-pb-8">
-            <div className="tw-text-base tw-font-medium tw-text-center tw-mb-8">
-               Зохион байгуулагдах сургалтууд
-            </div>
-
-            {/* <table className="">
-               <thead>
-                  <tr>
-                     {tableHeaders.map(header =>
-                        <th className="tw-border tw-border-gray-400" key={header}>
-                           {header}
-                        </th>
-                     )}
-                  </tr>
-               </thead>
-               <tbody>
-                  {trainings.map(training =>
-                     <tr className="" key={training.id}>
-                        {rowFields.map(field => {
-                           switch (field) {
-                              case 'module_file':
-                                 return <td className="tw-border tw-border-gray-400" key={field}>
-                                    <button
-                                       className="tw-w-32 tw-truncate focus:tw-outline-none tw-rounded tw-px-2 tw-py-0.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-text-white"
-                                       onClick={() => handleDownloadFile(training.module_file?.id)}
-                                       title={training.module_file?.name}>
-                                       {training.module_file?.name}
-                                    </button>
-                                 </td>
-                              case 'start_time':
-                                 return <td className="tw-border tw-border-gray-400" key={field}>
-                                    {training.start_time} - {training.end_time}
-                                 </td>
-                              case 'registerButton':
-                                 return <td className="tw-border tw-border-gray-400" key={field}>
-                                    <button className="focus:tw-outline-none tw-rounded tw-px-2 tw-py-0.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-text-white" onClick={() => navRegistration(training.id)}>
-                                       Бүртгүүлэх
-                                    </button>
-                                 </td>
-                              default:
-                                 return <td className="tw-border tw-border-gray-400" key={field}>
-                                    {training[field]}
-                                 </td>
-                           }
-                        })}
-                     </tr>
-                  )}
-               </tbody>
-            </table> */}
-
-            <div className="tw-text-15px tw-font-medium tw-px-2 tw-py-1 tw-text-gray-600">
-               Зарлагдсан сургалтууд
-            </div>
-
-            <div className="tw-overflow-x-hidden tw-overflow-y-auto tw-p-2" style={{ maxHeight: 768 }}>
-               {trainings.map(training =>
-                  <TrainingCard training={training} key={training.id} navRegistration={navRegistration} handleDownloadFile={handleDownloadFile} />
-               )}
-            </div>
-
-            <TrainingRequest />
-
-            <TrainingFeedback />
+      <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-p-2 tw-pb-12">
+         <div className={titleClass}>
+            Зарлагдсан сургалтууд
          </div>
+
+         {/* <table className="">
+            <thead>
+               <tr>
+                  {tableHeaders.map(header =>
+                     <th className="tw-border tw-border-gray-400" key={header}>
+                        {header}
+                     </th>
+                  )}
+               </tr>
+            </thead>
+            <tbody>
+               {trainings.map(training =>
+                  <tr className="" key={training.id}>
+                     {rowFields.map(field => {
+                        switch (field) {
+                           case 'module_file':
+                              return <td className="tw-border tw-border-gray-400" key={field}>
+                                 <button
+                                    className="tw-w-32 tw-truncate focus:tw-outline-none tw-rounded tw-px-2 tw-py-0.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-text-white"
+                                    onClick={() => handleDownloadFile(training.module_file?.id)}
+                                    title={training.module_file?.name}>
+                                    {training.module_file?.name}
+                                 </button>
+                              </td>
+                           case 'start_time':
+                              return <td className="tw-border tw-border-gray-400" key={field}>
+                                 {training.start_time} - {training.end_time}
+                              </td>
+                           case 'registerButton':
+                              return <td className="tw-border tw-border-gray-400" key={field}>
+                                 <button className="focus:tw-outline-none tw-rounded tw-px-2 tw-py-0.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-text-white" onClick={() => navRegistration(training.id)}>
+                                    Бүртгүүлэх
+                                 </button>
+                              </td>
+                           default:
+                              return <td className="tw-border tw-border-gray-400" key={field}>
+                                 {training[field]}
+                              </td>
+                        }
+                     })}
+                  </tr>
+               )}
+            </tbody>
+         </table> */}
+
+         {trainings.map(training =>
+            <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
+         )}
+         {[{ ...trainings[0], training_name: 'Экпортыг дэмжих төслийн ерөнхий сургалт', registeredUserCount: 25 }].map(training =>
+            <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
+         )}
+
+         <ModalWindow modalOpen={modalOpenIsFull} setModalOpen={setModalOpenIsFull} modalAppend="tw-p-5">
+            <div className="tw-px-4 tw-pt-4 tw-pb-2 tw-font-medium tw-text-base tw-flex tw-items-center tw-justify-center">
+               Уучлаарай
+               <ExclamationSVG className="tw-w-6 tw-h-6 tw-text-red-500 tw-ml-1" />
+            </div>
+            <div className="tw-font-medium tw-py-4 tw-px-4">
+               Бүртгэл дүүрсэн байна.
+            </div>
+         </ModalWindow>
       </div>
    )
 }
@@ -153,123 +159,94 @@ export default function TrainingList() {
 //    'registerButton',
 // ]
 
-const TrainingCard = ({ training, navRegistration, handleDownloadFile }) => {
+const TrainingCard = ({ training, handleDownloadFile, setModalOpenIsFull }) => {
    const [expanded, setExpanded] = useState(false)
+
+   const history = useHistory()
+
+   const navRegistration = (id, e) => {
+      e.stopPropagation()
+
+      if (isFull) {
+         return setModalOpenIsFull(true)
+      }
+      history.push(`/trainings/${id}/registration`)
+   }
 
    const handleViewFile = (e) => {
       e.stopPropagation()
       handleDownloadFile(training.module_file.id)
    }
 
+   const isFull = training.registeredUserCount >= training.participant_number
+
    return (
-      <div className="tw-rounded-lg tw-cursor-pointer tw-border tw-border-gray-500 tw-w-full tw-p-1 tw-mb-4 tw-font-medium tw-relative" onClick={() => setExpanded(prev => !prev)}>
-         <div className="tw-text-base tw-px-2 tw-border-b tw-border-gray-500 tw-flex tw-items-center tw-justify-between tw-py-1 tw--mx-1">
-            {training.training_name}
-            <span className="tw-flex tw-items-center tw-mr-1">
-               <UsersSVG className="tw-w-5 tw-h-5 tw-mr-1" />
-               {training.registeredUserCount}/{training.participant_number}
-            </span>
+      <div className="tw-cursor-pointer tw-mt-4 tw-rounded-md tw-shadow-md tw-p-4" onClick={() => setExpanded(prev => !prev)}>
+         <div className="tw-flex">
+            <div className="tw-flex-grow">
+               <div className="tw-flex tw-items-center tw-text-blue-500 tw-font-semibold tw-text-15px">
+                  {training.training_name}
+               </div>
+               <div className="tw-flex tw-items-center tw-font-medium tw-mt-1">
+                  <UsersSVG className={`tw-w-4 tw-h-4 tw-mr-2 ${isFull ? 'tw-text-red-500' : 'tw-text-green-500'} tw-transition-colors`} strokeWidth={2.4} />
+                  {training.registeredUserCount}/{training.participant_number}
+               </div>
+            </div>
+            <button className={`tw-flex-shrink-0 tw-self-end ${buttonClass}`} onClick={e => navRegistration(training.id, e)}>
+               Бүртгүүлэх
+            </button>
          </div>
 
-         <Spring
-            from={{ height: 30 }}
-            to={{ height: expanded ? 'auto' : 76 }}>
-            {anims =>
-               <animated.div className="tw-overflow-hidden" style={anims}>
-                  <div className="hover:tw-bg-blue-500 hover:tw-text-white tw-rounded-md tw-transition-colors tw-pt-0.5 tw-pb-1 tw-px-1 tw-mt-1" onClick={handleViewFile}>
-                     <span className="tw-border-b tw-border-current tw-inline-flex tw-items-center">
-                        <span className="tw-mr-0.5">
-                           Сургалтын агуулгыг харах
-                        </span>
-                        <PaperClipSVG className="tw-w-5 tw-h-5" />
-                     </span>
+         <Transition
+            items={expanded}
+            from={{ height: 0 }}
+            enter={{ height: 'auto' }}
+            leave={{ height: 0 }}>
+            {item => item && (anims =>
+               <animated.div className="tw-overflow-hidden tw-text-13px tw-font-medium" style={anims}>
+                  <div className="tw-pt-1 tw-pl-6">
+                     <button className="focus:tw-outline-none tw-font-medium tw-border-b tw-border-gray-600 tw-transition-colors tw-transition-shadow hover:tw-shadow-md" onClick={handleViewFile}>
+                        Сургалтын агуулгыг харах
+                     </button>
                   </div>
-                  <div className="tw-px-1 tw-mt-0.5">
-                     Төрөл: {training.training_type}
+                  <div className="tw-mt-1 tw-pl-6">
+                     <span className="tw-mr-2 tw-border-b tw-border-gray-600">Төрөл:</span>
+                     {training.training_type}
                   </div>
-                  <div className="tw-px-1 tw-mt-0.5">
-                     Орчин: {training.training_method}
+                  <div className="tw-mt-1 tw-pl-6">
+                     <span className="tw-mr-2 tw-border-b tw-border-gray-600">Орчин:</span>
+                     {training.training_method}
                   </div>
-                  <div className="tw-flex tw-items-center tw-px-1 tw-mt-0.5">
+                  <div className="tw-flex tw-items-center tw-mt-1">
                      <CalendarSVG className="tw-w-5 tw-h-5 tw-mr-1" />
                      <span className="">{training.start_date}</span>
                      <span className="tw-mx-1">–</span>
                      <span className="">{training.end_date}</span>
                   </div>
-                  <div className="tw-flex tw-items-center tw-px-1 tw-mt-0.5">
+                  <div className="tw-flex tw-items-center tw-mt-1">
                      <ClockSVG className="tw-w-5 tw-h-5 tw-mr-1" />
                      <span className="">{training.start_time?.slice(0, 5)}</span>
                      <span className="tw-mx-1">–</span>
                      <span className="">{training.end_time?.slice(0, 5)}</span>
                   </div>
-                  <div className="tw-flex tw-items-center tw-px-1 tw-mt-0.5">
+                  <div className="tw-flex tw-items-center tw-mt-1">
                      <LibrarySVG className="w-5 tw-h-5 tw-mr-1" />
                      {training.organizer}
                   </div>
-                  <div className="tw-flex tw-items-center tw-px-1 tw-mt-0.5">
+                  <div className="tw-flex tw-items-center tw-mt-1">
                      <LocationMarkerSVG className="w-5 tw-h-5 tw-mr-1" />
                      {training.location}
                   </div>
-                  <div className="tw-px-1 tw-mt-0.5">
+                  <div className="tw-mt-1 tw-pl-6">
                      {training.scope}
                   </div>
-                  <div className="tw-flex tw-justify-end">
-                     <button className="focus:tw-outline-none tw-rounded tw-px-5 tw-py-1 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-text-white tw-mb-2 tw-mr-2" onClick={e => navRegistration(training.id, e)}>
-                        Бүртгүүлэх
-                     </button>
-                  </div>
                </animated.div>
-            }
-         </Spring>
+            )}
+         </Transition>
       </div>
    )
 }
 
-const TrainingRequest = () => {
-   const history = useHistory()
-   const handleNavRequest = () => history.push('/trainings/request')
+export const titleClass = 'tw-text-sm tw-font-medium tw-uppercase tw-p-1 tw-border-b tw-border-gray-400'
 
-   return (
-      <div className="tw-mt-6 tw-w-full">
-         <div className="tw-flex tw-items-center tw-border-b tw-border-gray-500">
-            <span className="tw-text-15px tw-font-medium tw-px-1 tw-py-1 tw-text-gray-600">
-               Захиалгат сургалтын хүсэлт илгээх
-            </span>
-            <HelpPopup classAppend="tw-mx-2" popupClass="tw-w-96" main="Та захиалгат сургалтын хүсэлтээр дамжуулан сургалт зохион байгуулагч талуудад өөрт хэрэгтэй байгаа сургалтын чиглэл, хөтөлбөрийн талаарх мэдээллийг хүргүүлэх боломжтой." position="bottom" />
-         </div>
-
-         <div className="tw-flex tw-justify-end">
-            <button className="focus:tw-outline-none tw-rounded hover:tw-shadow-md tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-px-8 tw-py-1.5 tw-text-white tw-font-medium tw-my-4 tw-mr-4" onClick={handleNavRequest}>
-               Хүсээлт илгээх
-            </button>
-         </div>
-      </div>
-   )
-}
-
-const TrainingFeedback = () => {
-   const [code, setCode] = useState('')
-
-   const history = useHistory()
-   const handleNavFeedback = () => history.push(`/trainings/${1}/feedback`)
-
-   return (
-      <div className="tw-mt-6 tw-w-full">
-         <div className="tw-flex tw-items-center tw-border-b tw-border-gray-500">
-            <span className="tw-text-15px tw-font-medium tw-px-1 tw-py-1 tw-text-gray-600">
-               Сургалтад үнэлгээ өгөх
-            </span>
-            <HelpPopup classAppend="tw-mx-2" popupClass="tw-w-96" main="Та өөрийн хамрагдсан сургалтанд үнэлгээ өгөх, сургалтын талаарх санал хүсэлтээ ирүүлэх хүсэлтэй бол үүгээр хандана уу." list={['Сургалтанд бүртгүүлэх үед имэйл хаягаар ирсэн кодыг оруулна уу.']} position="bottom" />
-         </div>
-
-         <div className="tw-flex tw-items-center tw-justify-end">
-            <span className="tw-mr-2 tw-font-medium">Код:</span>
-            <input className="tw-px-1.5 tw-py-1 tw-w-20 tw-rounded focus:tw-ring-2 tw-ring-blue-500 focus:tw-outline-none tw-border-2 tw-border-blue-500 tw-transition-colors" type="text" value={code} onChange={e => setCode(e.target.value)} />
-
-            <button className="focus:tw-outline-none tw-rounded hover:tw-shadow-md tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-px-8 tw-py-1.5 tw-text-white tw-font-medium tw-ml-4 tw-my-4 tw-mr-4" onClick={handleNavFeedback}>
-               Үнэлгий өгөх
-            </button>
-         </div>
-      </div>
-   )
-}
+export const buttonClass = 'tw-rounded tw-border tw-border-blue-500 tw-text-xs tw-text-blue-500 tw-px-2.5 tw-py-1 focus:tw-outline-none active:tw-border-blue-700 active:tw-text-blue-700 tw-transition-colors tw-transition-shadow hover:tw-shadow-md tw-font-medium'

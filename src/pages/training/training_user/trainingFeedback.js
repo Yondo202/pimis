@@ -1,11 +1,11 @@
-import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import React, { useContext, useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router'
+import { useParams } from 'react-router'
 import axios from 'axiosbase'
-import { Fragment } from 'react'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import FormRichText from 'components/urgudul_components/formRichText'
+import { titleClass, buttonClass } from './trainingsList'
+import CheckCircleSVG from 'assets/svgComponents/checkCircleSVG'
 
 export default function TrainingFeedback() {
    const [feedback, setFeedback] = useState([])
@@ -36,10 +36,6 @@ export default function TrainingFeedback() {
    }, [])
 
    const trainingId = useParams().trainingId
-
-   const history = useHistory()
-
-   const handleNavTrainings = () => history.push('/trainings')
 
    const handleSubmit = () => {
       axios.post(`training-feedbacks`, feedback, {
@@ -74,20 +70,12 @@ export default function TrainingFeedback() {
    // })
 
    return (
-      <div className="tw-text-gray-700 tw-text-sm tw-absolute tw-flex tw-justify-center tw-w-full tw-px-4 tw-pt-8 tw-pb-20">
-         <div className="tw-rounded tw-shadow-md tw-bg-white tw-max-w-5xl tw-w-full tw-relative">
-            <div className="tw-flex">
-               <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-3 tw-pr-5 tw-text-sm tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-my-2 tw-ml-2" onClick={handleNavTrainings}>
-                  <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform-gpu tw-rotate-90 tw-mr-1" />
-                  Буцах
-               </button>
-            </div>
+      <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-relative tw-p-2 tw-pb-12">
+         <div className={titleClass}>
+            Сургалтанд үнэлгээ өгөх
+         </div>
 
-            <div className="tw-text-base tw-font-medium tw-text-center tw-mb-4 tw-mt-2">
-               Сургалтанд үнэлгээ өгөх
-            </div>
-
-            {/* <table>
+         {/* <table>
                <thead>
                   <tr>
                      <th className="tw-border tw-border-gray-400">Ангилал</th>
@@ -141,15 +129,16 @@ export default function TrainingFeedback() {
                </tbody>
             </table> */}
 
-            {categroiesArr.map((category, i) =>
-               <FormCategory category={category} feedback={feedback} setFeedback={setFeedback} key={category} index={i} />
-            )}
+         {categroiesArr.map((category, i) =>
+            <FormCategory category={category} feedback={feedback} setFeedback={setFeedback} key={category} index={i} />
+         )}
 
-            <div className="tw-flex tw-justify-center">
-               <button className="focus:tw-outline-none tw-rounded hover:tw-shadow-md tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-px-8 tw-py-2 tw-text-white tw-font-medium tw-mt-12 tw-mb-8" onClick={handleSubmit}>
-                  Илгээх
+         <div className="tw-flex tw-justify-end">
+            <button
+               className={`${buttonClass} tw-text-sm tw-px-4 tw-m-4`}
+               onClick={handleSubmit}>
+               Үнэлгээ өгөх
                </button>
-            </div>
          </div>
       </div>
    )
@@ -187,32 +176,36 @@ const FormCategory = ({ category, feedback, setFeedback, index }) => {
    })
 
    return (
-      <div className="tw-mt-2">
-         <div className="tw-text-15px tw-px-2 tw-py-0.5 tw-font-medium">
+      <div className="tw-pt-4 tw-pb-2">
+         <div className="tw-text-15px tw-font-medium tw-text-blue-500 tw-pl-2 tw-tracking-wide">
             {index + 1}. {category}
          </div>
 
          {feedbackFiltered.map(question => {
             const rowIndex = feedback.findIndex(item => item.category === category && item.description === question.description)
 
-            return <div className="tw-mt-2" key={question.description}>
-               <div className="tw-ml-4 tw-px-2 tw-py-0.5 tw-font-medium">
-                  •  {question.description}
+            return <div className="tw-rounded-md tw-shadow-md tw-py-2 tw-px-4 tw-mt-2 tw-mb-6" key={question.description}>
+               <div className="tw-font-medium tw-mt-2 tw-flex tw-items-center">
+                  <CheckCircleSVG className="tw-w-5 tw-h-5 tw-mr-1 tw-text-green-500" />
+                  {question.description}
                </div>
 
                {category === 'Бичвэр'
-                  ? <div className="tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-p-1 tw-pl-4 tw-mr-3" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                  ? <div className="tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-p-2 tw-pl-5 tw-mr-3" style={{ minHeight: '128px', maxHeight: '768px' }}>
                      <FormRichText modules="small" value={feedback[rowIndex].comment} name="comment" id={rowIndex} setForm={handleInput} />
                   </div>
 
-                  : <div className="tw-flex tw-items-center tw-justify-center tw-mt-1 tw-font-medium tw-overflow-x-auto tw-mx-4 tw-px-2 tw-py-0.5">
-                     <span className="tw-mr-3 tw-whitespace-nowrap">Огт санал нийлэхгүй</span>
+                  : <div className="tw-flex tw-items-center tw-justify-center tw-font-medium tw-overflow-x-auto tw-mt-2 tw-mb-1 tw-text-13px tw-tracking-wide tw-text-gray-600">
+                     <span className="tw-mr-1 tw-whitespace-nowrap">Огт санал нийлэхгүй</span>
                      {[...Array(5).keys()].map(i =>
-                        <span className={`tw-flex-shrink-0 tw-mx-3 tw-rounded-full tw-cursor-pointer tw-border-2 tw-border-gray-500 tw-flex tw-justify-center tw-items-center tw-w-6 tw-h-6 ${question.evaluation === i + 1 ? 'tw-bg-blue-500 tw-border-blue-500 tw-text-white' : 'tw-text-gray-600'} tw-transition-colors`} onClick={() => handleInput('evaluation', i + 1, rowIndex)} key={i}>
+                        <button
+                           className={`focus:tw-outline-none tw-flex-shrink-0 tw-mx-3 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-w-6 tw-h-6 ${question.evaluation === i + 1 ? 'tw-bg-blue-500 tw-text-white' : 'tw-shadow-inner tw-border-b'} tw-font-medium tw-transition-colors`}
+                           onClick={() => handleInput('evaluation', i + 1, rowIndex)}
+                           key={i}>
                            <span style={{ paddingTop: 1, paddingRight: 1 }}>{i + 1}</span>
-                        </span>
+                        </button>
                      )}
-                     <span className="tw-ml-3 tw-whitespace-nowrap">Бүрэн санал нийлнэ</span>
+                     <span className="tw-ml-1 tw-whitespace-nowrap">Бүрэн санал нийлнэ</span>
                   </div>
                }
             </div>

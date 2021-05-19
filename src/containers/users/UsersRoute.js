@@ -21,7 +21,7 @@ import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import Test from "components/Test"
-import TrainingNavigatorUser from 'pages/training/training_user/TrainingNavigator';
+import TrainingFrontPage from 'pages/training/frontPage';
 
 
 function UsersRoute() {
@@ -54,7 +54,9 @@ function UsersRoute() {
                     <Route path="/5a" component={FirstEvaluation} />
                     <Route path="/5b" component={CompilationCheck} />
                     <Route path="/5c" component={AnalystReport} />
-                    <Route path="/trainings" component={TrainingNavigatorUser} />
+                    <Route path="/trainings">
+                        <TrainingFrontPage user={true} />
+                    </Route>
                     <MiddleRoute />
                 </Switch>
             </UrgudulStore>
