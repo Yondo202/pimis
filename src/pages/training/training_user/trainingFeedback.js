@@ -6,6 +6,8 @@ import AlertContext from 'components/utilities/alertContext'
 import FormRichText from 'components/urgudul_components/formRichText'
 import { titleClass, buttonClass } from './trainingsList'
 import CheckCircleSVG from 'assets/svgComponents/checkCircleSVG'
+import ModalWindow from 'components/modal_window/modalWindow'
+import ShieldCheckSVG from 'assets/svgComponents/shieldCheckSVG'
 
 export default function TrainingFeedback() {
    const [feedback, setFeedback] = useState([])
@@ -69,11 +71,55 @@ export default function TrainingFeedback() {
    //    return newState
    // })
 
+   const [modalOpenPass, setModalOpenPass] = useState(true)
+   const [passcode, setPasscode] = useState('')
+   const [validation, setValidation] = useState(false)
+   const [training, setTraining] = useState({})
+
+   const handleSubmitPasscode = () => {
+      if (passcode === '' || passcode === null) {
+         setValidation(true)
+         return
+      }
+
+      setTraining('loading')
+
+      axios.get('trainings/find/' + passcode, {
+         // params: { passcode: passcode },
+      }).then(res => {
+         console.log(res)
+         if (res.data.data === null) {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалт олдсонгүй.' })
+         }
+         setTraining(res.data.data)
+         setModalOpenPass(false)
+      }).catch(err => {
+         console.error(err.response)
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээллийг татаж чадсангүй.' })
+      })
+   }
+
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-relative tw-p-2 tw-pb-12">
          <div className={titleClass}>
             Сургалтанд үнэлгээ өгөх
          </div>
+
+         <ModalWindow modalOpen={modalOpenPass} setModalOpen={setModalOpenPass} modalAppend="tw-p-5 tw-max-w-sm tw-flex tw-flex-col">
+            <div className="tw-flex tw-items-center tw-justify-center tw-font-medium tw-text-15px tw-p-2">
+               Нууц үг
+               <ShieldCheckSVG className="tw-w-5 tw-h-5 tw-ml-1 tw-text-blue-500" />
+            </div>
+            <div className="tw-text-center tw-font-medium tw-text-sm tw-p-2 tw-mt-2">
+               Сургалтанд бүртгүүлэх үед имэйлээр ирсэн нууц үгийг оруулна уу.
+            </div>
+            <div className="tw-flex tw-items-center tw-p-2 tw-justify-center tw-text-13px tw-mt-2">
+               <input className="tw-py-1 tw-px-2 tw-rounded focus:tw-outline-none focus:tw-ring-1 tw-ring-blue-600 tw-border tw-border-gray-400 tw-transition-colors tw-mr-2 tw-w-32" type="text" value={passcode} onChange={e => setPasscode(e.target.value)} />
+               <button className={`${buttonClass}`} onClick={handleSubmitPasscode}>
+                  Оруулах
+               </button>
+            </div>
+         </ModalWindow>
 
          {/* <table>
                <thead>
@@ -186,26 +232,31 @@ const FormCategory = ({ category, feedback, setFeedback, index }) => {
 
             return <div className="tw-rounded-md tw-shadow-md tw-py-2 tw-px-4 tw-mt-2 tw-mb-6" key={question.description}>
                <div className="tw-font-medium tw-mt-2 tw-flex tw-items-center">
-                  <CheckCircleSVG className="tw-w-5 tw-h-5 tw-mr-1 tw-text-green-500" />
+                  <CheckCircleSVG className="tw-w-5 tw-h-5 tw-mr-1 tw-text-green-500 tw-flex-grow-0" />
                   {question.description}
                </div>
 
                {category === 'Бичвэр'
-                  ? <div className="tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-p-2 tw-pl-5 tw-mr-3" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                  ? <div className="tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-p-2 tw-pl-5 tw-mr-3" style={{ minHeight: 160, maxHeight: 786 }}>
                      <FormRichText modules="small" value={feedback[rowIndex].comment} name="comment" id={rowIndex} setForm={handleInput} />
                   </div>
 
-                  : <div className="tw-flex tw-items-center tw-justify-center tw-font-medium tw-overflow-x-auto tw-mt-2 tw-mb-1 tw-text-13px tw-tracking-wide tw-text-gray-600">
-                     <span className="tw-mr-1 tw-whitespace-nowrap">Огт санал нийлэхгүй</span>
-                     {[...Array(5).keys()].map(i =>
-                        <button
-                           className={`focus:tw-outline-none tw-flex-shrink-0 tw-mx-3 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-w-6 tw-h-6 ${question.evaluation === i + 1 ? 'tw-bg-blue-500 tw-text-white' : 'tw-shadow-inner tw-border-b'} tw-font-medium tw-transition-colors`}
-                           onClick={() => handleInput('evaluation', i + 1, rowIndex)}
-                           key={i}>
-                           <span style={{ paddingTop: 1, paddingRight: 1 }}>{i + 1}</span>
-                        </button>
-                     )}
-                     <span className="tw-ml-1 tw-whitespace-nowrap">Бүрэн санал нийлнэ</span>
+                  : <div className="tw-flex tw-flex-col tw-items-center tw-font-medium tw-mt-2 tw-mb-1 tw-text-13px tw-tracking-wide tw-text-gray-600 tw-px-4">
+                     <div className="tw-max-w-sm tw-flex tw-justify-between tw-w-full">
+                        <span className="tw-mr-1 tw-whitespace-nowrap">Огт санал нийлэхгүй</span>
+                        <span className="tw-ml-1 tw-whitespace-nowrap">Бүрэн санал нийлнэ</span>
+                     </div>
+
+                     <div className="tw-flex tw-justify-around tw-w-full tw-max-w-xs tw-mt-2">
+                        {[...Array(5).keys()].map(i =>
+                           <button
+                              className={`focus:tw-outline-none tw-flex-shrink-0 tw-mx-3 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-w-6 tw-h-6 ${question.evaluation === i + 1 ? 'tw-bg-blue-500 tw-text-white' : 'tw-shadow-inner tw-border-b'} tw-font-medium tw-transition-colors`}
+                              onClick={() => handleInput('evaluation', i + 1, rowIndex)}
+                              key={i}>
+                              <span style={{ paddingTop: 1, paddingRight: 1 }}>{i + 1}</span>
+                           </button>
+                        )}
+                     </div>
                   </div>
                }
             </div>

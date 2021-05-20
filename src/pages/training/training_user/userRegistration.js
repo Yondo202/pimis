@@ -13,7 +13,7 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useParams } from 'react-router'
-import {titleClass, buttonClass } from './trainingsList'
+import { titleClass, buttonClass } from './trainingsList'
 
 export default function TrainingUserRegistration() {
    const [registration, setRegistration] = useState(initialState)
@@ -139,7 +139,7 @@ export default function TrainingUserRegistration() {
             <div className="tw-w-full md:tw-col-span-2">
                <FormLabel label="Манай сургалтад хамрагдах нь танд ямар ашиг тустай вэ? Энэхүү сургалтаас ямар үр дүн хүлээж байгаа вэ?" SVG={PenSVG} />
 
-               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: '128px', maxHeight: '768px' }}>
+               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 786 }}>
                   <FormRichText modules="small" value={registration.training_benefit ?? ''} name="training_benefit" setForm={handleInput} />
                </div>
             </div>
@@ -183,7 +183,7 @@ export default function TrainingUserRegistration() {
                      : anims =>
                         <animated.div className="tw-overflow-y-hidden" style={anims}>
                            <FormLabel classAppend="tw--mt-3" label="Та доорх хэсэгт өөрийн ажиллаж буй байгууллагын танилцуулгыг бичнэ үү." SVG={PenSVG} />
-                           <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: '128px', maxHeight: '768px' }}>
+                           <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 768 }}>
                               <FormRichText modules="small" value={registration.company_introduction ?? ''} name="company_introduction" setForm={handleInput} />
                            </div>
                         </animated.div>

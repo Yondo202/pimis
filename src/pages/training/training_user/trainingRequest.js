@@ -60,7 +60,7 @@ export default function TrainingRequest() {
             <div className="tw-w-full md:tw-col-span-2">
                <FormLabel label="Хуулийн этгээдийн товч тахилцуулга." SVG={PenSVG} />
 
-               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: '128px', maxHeight: '768px' }}>
+               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 786 }}>
                   <FormRichText modules="small" value={request.company_introduction ?? ''} name="company_introduction" setForm={handleInput} />
                </div>
             </div>
@@ -78,7 +78,7 @@ export default function TrainingRequest() {
                   <FormLabel label="Та ямар чиглэлээр ямар сургалт авах хүсэлтэй байгаа вэ? Та сургалтын хэрэгцээ, шаардлагаа тодорхой бичнэ үү." SVG={PenSVG} HelpPopup={<HelpPopup classAppend="tw-mx-2" main="Экспортод чиглэсэн байх шаардлагатай." position="bottom" />} />
                </div>
 
-               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: '128px', maxHeight: '768px' }}>
+               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 786 }}>
                   <FormRichText modules="small" value={request.training_request ?? ''} name="training_request" setForm={handleInput} />
                </div>
             </div>
@@ -86,7 +86,7 @@ export default function TrainingRequest() {
             <div className="tw-w-full md:tw-col-span-2">
                <FormLabel label="Та сургалтад хамрагдсанаар та ямар ур чадвар эзэмших вэ? Та сургалтаас авах ашиг, үр дүнгийн талаар дэлгэрэнгүй бичнэ үү." SVG={PenSVG} />
 
-               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: '128px', maxHeight: '768px' }}>
+               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 786 }}>
                   <FormRichText modules="small" value={request.training_benefit ?? ''} name="training_benefit" setForm={handleInput} />
                </div>
             </div>
