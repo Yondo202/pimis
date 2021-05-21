@@ -22,7 +22,6 @@ export default function TrainingList() {
 
    useEffect(() => {
       axios.get('trainings', {
-         headers: { Authorization: getLoggedUserToken() },
          params: { user: true }
       }).then(res => {
          console.log(res)
@@ -112,9 +111,9 @@ export default function TrainingList() {
          {trainings.map(training =>
             <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
          )}
-         {[{ ...trainings[0], training_name: 'Экпортыг дэмжих төслийн ерөнхий сургалт', registeredUserCount: 25 }].map(training =>
+         {/* {[{ ...trainings[0], training_name: 'Экпортыг дэмжих төслийн ерөнхий сургалт', registeredUserCount: 25 }].map(training =>
             <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
-         )}
+         )} */}
 
          <ModalWindow modalOpen={modalOpenIsFull} setModalOpen={setModalOpenIsFull} modalAppend="tw-p-5">
             <div className="tw-px-4 tw-pt-4 tw-pb-2 tw-font-medium tw-text-base tw-flex tw-items-center tw-justify-center">

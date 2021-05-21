@@ -21,7 +21,7 @@ export default function TrainingFrontPage({ user }) {
                <div className="tw-flex tw-flex-col tw-rounded-lg tw-shadow-md tw-p-1.5 tw-h-full tw-bg-white">
                   <SidebarItem label="Сургалтын бүртгэл" link="/trainings" pathnames={['trainings', 'registration']} pathOfLast={pathOfLast} SVG={ClipboardListSVG} />
                   <SidebarItem label="Захиалгат сургалтын хүсэлт" link="/trainings/request" pathnames={['request']} pathOfLast={pathOfLast} SVG={AnnotationSVG} />
-                  <SidebarItem label="Сургалтын үнэлгээ" link="/trainings/2/feedback" pathnames={['feedback']} pathOfLast={pathOfLast} SVG={ClipboardCheckSVG} />
+                  <SidebarItem label="Сургалтын үнэлгээ" link="/trainings/feedback" pathnames={['feedback']} pathOfLast={pathOfLast} SVG={ClipboardCheckSVG} />
                </div>
             </div>
 
@@ -36,7 +36,7 @@ export default function TrainingFrontPage({ user }) {
                <div className="sm:tw-hidden tw-relative tw-flex tw-mt-4 tw-rounded-lg tw-shadow-md tw-py-2.5 tw-px-2">
                   <NavbarItem label="Сургалтын бүртгэл" link="/trainings" pathnames={['trainings', 'registration']} pathOfLast={pathOfLast} SVG={ClipboardListSVG} />
                   <NavbarItem label="Захиалгат сургалтын хүсэлт" link="/trainings/request" pathnames={['request']} pathOfLast={pathOfLast} SVG={AnnotationSVG} />
-                  <NavbarItem label="Сургалтын үнэлгээ" link="/trainings/2/feedback" pathnames={['feedback']} pathOfLast={pathOfLast} SVG={ClipboardCheckSVG} />
+                  <NavbarItem label="Сургалтын үнэлгээ" link="/trainings/feedback" pathnames={['feedback']} pathOfLast={pathOfLast} SVG={ClipboardCheckSVG} />
                </div>
 
                <div className="tw-flex-grow tw-mt-6">

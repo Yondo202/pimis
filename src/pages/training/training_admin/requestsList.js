@@ -16,7 +16,7 @@ export default function TrainingRequestsList() {
    const AlertCtx = useContext(AlertContext)
 
    useEffect(() => {
-      axios.get('training-requests', {
+      axios.get('trainings/requests', {
          headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
          console.log(res)

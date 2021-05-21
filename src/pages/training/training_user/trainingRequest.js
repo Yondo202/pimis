@@ -30,16 +30,15 @@ export default function TrainingRequest() {
    const AlertCtx = useContext(AlertContext)
 
    const handleSubmit = () => {
-      axios.post('training-requests', request, {
-         headers: { Authorization: getLoggedUserToken() },
-      }).then(res => {
-         console.log(res)
-         setRequest(res.data.data)
-         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын хүсэлт илгээгдлээ.' })
-      }).catch(err => {
-         console.error(err.response)
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хүсэлт илгээж чадсангүй.' })
-      })
+      axios.post('trainings/requests', request)
+         .then(res => {
+            console.log(res)
+            setRequest(res.data.data)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын хүсэлтийг илгээлээ.' })
+         }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хүсэлт илгээж чадсангүй.' })
+         })
    }
 
    return (

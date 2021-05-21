@@ -28,7 +28,7 @@ export default function TrainingNavigatorUser() {
             <Route path="/trainings/request">
                <TrainingRequest />
             </Route>
-            <Route path="/trainings/:trainingId/feedback">
+            <Route path="/trainings/feedback">
                <TrainingFeedback />
             </Route>
          </Switch>

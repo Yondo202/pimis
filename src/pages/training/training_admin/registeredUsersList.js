@@ -25,9 +25,8 @@ export default function TrainingRegisteredUsersList() {
 
    useEffect(() => {
       if (trainingId !== undefined && trainingId !== null) {
-         axios.get('training-registrations', {
+         axios.get(`trainings/${trainingId}/registrations`, {
             headers: { Authorization: getLoggedUserToken() },
-            params: { trainingId: trainingId },
          }).then(res => {
             console.log(res)
             setRegisteredUsers(res.data.data)

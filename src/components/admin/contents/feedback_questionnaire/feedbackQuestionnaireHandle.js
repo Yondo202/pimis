@@ -12,7 +12,7 @@ export default function FeedbackQuestionnaireHandle() {
    const AlertCtx = useContext(AlertContext)
 
    useEffect(() => {
-      axios.get('training-questionnaire', {
+      axios.get('trainings/questionnaire', {
          headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
          console.log(res)
@@ -38,7 +38,7 @@ export default function FeedbackQuestionnaireHandle() {
    const maxCategoryOrder = questionnaire.reduce((acc, cv) => acc = Math.max(acc, cv.category_order), 0)
 
    const handleSubmit = () => {
-      axios.post('training-questionnaire', questionnaire, {
+      axios.post('trainings/questionnaire', questionnaire, {
          headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
          console.log(res)

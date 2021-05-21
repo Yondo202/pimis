@@ -8,6 +8,12 @@ import { titleClass, buttonClass } from './trainingsList'
 import CheckCircleSVG from 'assets/svgComponents/checkCircleSVG'
 import ModalWindow from 'components/modal_window/modalWindow'
 import ShieldCheckSVG from 'assets/svgComponents/shieldCheckSVG'
+import { Transition, animated } from 'react-spring/renderprops'
+import SpinnerSVG from 'assets/svgComponents/spinnerSVG'
+import CalendarSVG from 'assets/svgComponents/calendarSVG'
+import LibrarySVG from 'assets/svgComponents/librarySVG'
+import ClipboardListSVG from 'assets/svgComponents/clipboardListSVG'
+import ExclamationSVG from 'assets/svgComponents/exclamationSVG'
 
 export default function TrainingFeedback() {
    const [feedback, setFeedback] = useState([])
@@ -16,39 +22,47 @@ export default function TrainingFeedback() {
    const AlertCtx = useContext(AlertContext)
 
    useEffect(() => {
-      axios.get('training-questionnaire', {
-         headers: { Authorization: getLoggedUserToken() },
-      }).then(res => {
-         console.log(res)
-         setQuestionnaire(res.data.data)
-         const initialFeedback = []
-         for (const question of res.data.data) {
-            initialFeedback.push({
-               category: question.category,
-               description: question.description,
-               evaluation: null,
-               comment: null,
-            })
-         }
-         setFeedback(initialFeedback)
-      }).catch(err => {
-         console.error(err.response)
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Асуумжуудыг татаж чадсангүй.' })
-      })
+      axios.get('trainings/questionnaire')
+         .then(res => {
+            console.log(res)
+            setQuestionnaire(res.data.data)
+            const initialFeedback = []
+            for (const question of res.data.data) {
+               initialFeedback.push({
+                  category: question.category,
+                  description: question.description,
+                  evaluation: null,
+                  comment: null,
+               })
+            }
+            setFeedback(initialFeedback)
+         }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Асуумжуудыг татаж чадсангүй.' })
+         })
    }, [])
 
-   const trainingId = useParams().trainingId
-
    const handleSubmit = () => {
-      axios.post(`training-feedbacks`, feedback, {
-         headers: { Authorization: getLoggedUserToken() },
-         params: { trainingId: trainingId },
+      if (training.id === null || training.id === undefined) {
+         setModalOpenPass(true)
+         setErrorMsg('Нууц кодоо оруулна уу.')
+         return
+      } else {
+         setErrorMsg('')
+      }
+
+      axios.post(`trainings/${training.id}/feedbacks`, feedback, {
+         params: { registrationId: training.trainingRegistrations[0].id },
       }).then(res => {
          console.log(res)
          setFeedback(res.data.data)
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын үнэлгээг хадгаллаа.' })
       }).catch(err => {
          console.error(err.response)
+         if (err.response.status === 490) {
+            setModalOpenFeedbackGiven(true)
+            return
+         }
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын үнэлгээг хадгалж чадсангүй.' })
       })
    }
@@ -73,31 +87,52 @@ export default function TrainingFeedback() {
 
    const [modalOpenPass, setModalOpenPass] = useState(true)
    const [passcode, setPasscode] = useState('')
-   const [validation, setValidation] = useState(false)
+   const [errorMsg, setErrorMsg] = useState('')
    const [training, setTraining] = useState({})
 
    const handleSubmitPasscode = () => {
       if (passcode === '' || passcode === null) {
-         setValidation(true)
+         setErrorMsg('Нууц кодоо оруулна уу.')
          return
+      } else {
+         setErrorMsg('')
       }
-
       setTraining('loading')
-
-      axios.get('trainings/find/' + passcode, {
-         // params: { passcode: passcode },
+      axios.get(`trainings/find-by`, {
+         params: { passcode: passcode },
       }).then(res => {
          console.log(res)
-         if (res.data.data === null) {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалт олдсонгүй.' })
+         const training = res.data.data
+         if (training === null) {
+            setTraining({})
+            setErrorMsg('Нууц код буруу байна.')
+            return
+         }
+         const registrationId = training.trainingRegistrations[0]?.id
+         if (registrationId === null || registrationId === undefined) {
+            setTraining({})
+            setErrorMsg('Бүртгэл олдсонгүй.')
+            return
          }
          setTraining(res.data.data)
          setModalOpenPass(false)
+         setErrorMsg('')
       }).catch(err => {
          console.error(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээллийг татаж чадсангүй.' })
       })
    }
+
+   const [modalOpenFeedbackGiven, setModalOpenFeedbackGiven] = useState(false)
+
+   useEffect(() => {
+      const timer = setTimeout(() => {
+         if (modalOpenFeedbackGiven === true) {
+            setModalOpenFeedbackGiven(false)
+         }
+      }, 3000)
+      return () => clearTimeout(timer)
+   }, [modalOpenFeedbackGiven])
 
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-relative tw-p-2 tw-pb-12">
@@ -107,19 +142,65 @@ export default function TrainingFeedback() {
 
          <ModalWindow modalOpen={modalOpenPass} setModalOpen={setModalOpenPass} modalAppend="tw-p-5 tw-max-w-sm tw-flex tw-flex-col">
             <div className="tw-flex tw-items-center tw-justify-center tw-font-medium tw-text-15px tw-p-2">
-               Нууц үг
+               Нууц код
                <ShieldCheckSVG className="tw-w-5 tw-h-5 tw-ml-1 tw-text-blue-500" />
             </div>
             <div className="tw-text-center tw-font-medium tw-text-sm tw-p-2 tw-mt-2">
-               Сургалтанд бүртгүүлэх үед имэйлээр ирсэн нууц үгийг оруулна уу.
+               Сургалтанд бүртгүүлэх үед имэйлээр ирсэн нууц кодоо оруулна уу.
             </div>
             <div className="tw-flex tw-items-center tw-p-2 tw-justify-center tw-text-13px tw-mt-2">
-               <input className="tw-py-1 tw-px-2 tw-rounded focus:tw-outline-none focus:tw-ring-1 tw-ring-blue-600 tw-border tw-border-gray-400 tw-transition-colors tw-mr-2 tw-w-32" type="text" value={passcode} onChange={e => setPasscode(e.target.value)} />
-               <button className={`${buttonClass}`} onClick={handleSubmitPasscode}>
+               <input className="tw-py-1 tw-px-2 tw-rounded focus:tw-outline-none tw-border tw-border-gray-400 tw-transition-colors tw-mr-2 tw-w-24 focus:tw-ring-1 tw-ring-blue-600" type="text" value={passcode} onChange={e => setPasscode(e.target.value)} />
+               <button className={`${buttonClass} tw-flex tw-items-center`} onClick={handleSubmitPasscode}>
                   Оруулах
+                  <Transition
+                     items={training === 'loading'}
+                     from={{ width: 0, marginLeft: 0 }}
+                     enter={{ width: 'auto', marginLeft: 2 }}
+                     leave={{ width: 0, marginLeft: 0 }}>
+                     {item => item && (anims =>
+                        <animated.span style={anims}>
+                           <SpinnerSVG className="tw-w-4 tw-h-4 tw-animate-spin" style={anims} />
+                        </animated.span>
+                     )}
+                  </Transition>
                </button>
             </div>
+            <Transition
+               items={errorMsg}
+               from={{ transform: 'scale(0)', marginTop: 0 }}
+               enter={{ transform: 'scale(1)', marginTop: 8 }}
+               leave={{ display: 'none' }}>
+               {item => item && (anims =>
+                  <animated.div className="tw-text-red-500 tw-text-center tw-italic tw-font-medium" style={anims}>
+                     {errorMsg}
+                  </animated.div>
+               )}
+            </Transition>
          </ModalWindow>
+
+         <div className="tw-mt-4 tw-px-2 tw-pb-2 tw-font-medium">
+            <div className="tw-flex tw-items-center tw-py-1">
+               <ClipboardListSVG className="tw-w-5 tw-h-5 tw-text-blue-500 tw-mr-1" />
+               <span className="tw-text-gray-600 tw-mr-3">Сургалтын нэр:</span>
+               <span className="tw-uppercase">{training.training_name}</span>
+            </div>
+            <div className="tw-flex tw-items-center tw-py-1">
+               <LibrarySVG className="tw-w-5 tw-h-5 tw-text-blue-500 tw-mr-1" />
+               <span className="tw-text-gray-600 tw-mr-3">Зохион байгуулагч:</span>
+               <span className="tw-uppercase">{training.organizer}</span>
+            </div>
+            <div className="tw-flex tw-items-center tw-py-1">
+               <CalendarSVG className="tw-w-5 tw-h-5 tw-text-blue-500 tw-mr-1" />
+               <span className="tw-text-gray-600 tw-mr-3">Огноо:</span>
+               <span className="">{training.start_date}</span>
+               <span className="tw-mx-1">–</span>
+               <span className="">{training.end_date}</span>
+            </div>
+         </div>
+
+         <div className="tw-rounded-md tw-shadow-md tw-py-2 tw-px-4 tw-font-medium tw-text-13px tw-mb-4 tw-text-gray-600" style={{ textIndent: 16 }}>
+            Мэдэгдэл тус бүрт санал нийлж байгаа, эсвэл санал нийлэхгүй байгаагаа “1”-ээс “5” хүртэлх оноогоор үнэлнэ. Үнэлгээ “1” нь огт санал нийлэхгүй байгааг, “5” нь бүрэн санал нийлж буйг, харин “3” нь санал нийлэх, нийлэхгүй байгаагийн аль нь ч биш гэдгийг илэрхийлнэ.
+         </div>
 
          {/* <table>
                <thead>
@@ -186,6 +267,16 @@ export default function TrainingFeedback() {
                Үнэлгээ өгөх
                </button>
          </div>
+
+         <ModalWindow modalOpen={modalOpenFeedbackGiven} setModalOpen={setModalOpenFeedbackGiven} modalAppend="tw-p-5">
+            <div className="tw-px-4 tw-pt-4 tw-pb-2 tw-font-medium tw-text-base tw-flex tw-items-center tw-justify-center">
+               Уучлаарай
+               <ExclamationSVG className="tw-w-6 tw-h-6 tw-text-red-500 tw-ml-1" />
+            </div>
+            <div className="tw-font-medium tw-py-4 tw-px-4">
+               Та сургатанд үнэлгээ өгсөн байна.
+            </div>
+         </ModalWindow>
       </div>
    )
 }
@@ -222,7 +313,7 @@ const FormCategory = ({ category, feedback, setFeedback, index }) => {
    })
 
    return (
-      <div className="tw-pt-4 tw-pb-2">
+      <div className="tw-mt-5">
          <div className="tw-text-15px tw-font-medium tw-text-blue-500 tw-pl-2 tw-tracking-wide">
             {index + 1}. {category}
          </div>

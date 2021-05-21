@@ -14,6 +14,9 @@ import FilePreviewContext from 'components/utilities/filePreviewContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useParams } from 'react-router'
 import { titleClass, buttonClass } from './trainingsList'
+import ModalWindow from 'components/modal_window/modalWindow'
+import ExclamationSVG from 'assets/svgComponents/exclamationSVG'
+import CheckCircleSVG from 'assets/svgComponents/checkCircleSVG'
 
 export default function TrainingUserRegistration() {
    const [registration, setRegistration] = useState(initialState)
@@ -95,21 +98,38 @@ export default function TrainingUserRegistration() {
 
    const handleSubmit = () => {
       if (trainingId !== undefined && trainingId !== null) {
-         axios.post(`training-registrations`, registration, {
-            headers: { Authorization: getLoggedUserToken() },
-            params: { trainingId: trainingId }
-         }).then(res => {
-            console.log(res)
-            setRegistration(res.data.data)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Танийг сургалтанд бүртгэлээ.' })
-         }).catch(err => {
-            console.error(err.response)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Танийг сургалтанд бүртгэж чадсангүй.' })
-         })
+         axios.post(`trainings/${trainingId}/registrations`, registration)
+            .then(res => {
+               console.log(res)
+               setRegisterSuccessInfo({ fullname: registration.fullname })
+               setModalOpenRegisterSuccess(true)
+               setRegistration(initialState)
+            }).catch(err => {
+               console.error(err.response)
+               if (err.response.status === 490) {
+                  setModalOpenIsFull(true)
+                  return
+               }
+               AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Танийг сургалтанд бүртгэж чадсангүй.' })
+            })
       } else {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Бүртгүүлэх сургалтаа сонгоно уу.' })
       }
    }
+
+   const [modalOpenIsFull, setModalOpenIsFull] = useState(false)
+
+   useEffect(() => {
+      const timer = setTimeout(() => {
+         if (modalOpenIsFull === true) {
+            setModalOpenIsFull(false)
+         }
+      }, 3000)
+      return () => clearTimeout(timer)
+   }, [modalOpenIsFull])
+
+   const [modalOpenRegisterSuccess, setModalOpenRegisterSuccess] = useState(false)
+   const [registerSuccessInfo, setRegisterSuccessInfo] = useState({ fullname: '' })
 
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-relative tw-p-2 tw-pb-12">
@@ -233,6 +253,26 @@ export default function TrainingUserRegistration() {
                Бүртгүүлэх
             </button>
          </div>
+
+         <ModalWindow modalOpen={modalOpenIsFull} setModalOpen={setModalOpenIsFull} modalAppend="tw-p-5">
+            <div className="tw-px-4 tw-pt-4 tw-pb-2 tw-font-medium tw-text-base tw-flex tw-items-center tw-justify-center">
+               Уучлаарай
+               <ExclamationSVG className="tw-w-6 tw-h-6 tw-text-red-500 tw-ml-1" />
+            </div>
+            <div className="tw-font-medium tw-py-4 tw-px-4">
+               Бүртгэл дүүрсэн байна.
+            </div>
+         </ModalWindow>
+
+         <ModalWindow modalOpen={modalOpenRegisterSuccess} setModalOpen={setModalOpenRegisterSuccess} modalAppend="tw-p-5 tw-max-w-sm">
+            <div className="tw-px-4 tw-pt-4 tw-pb-2 tw-font-medium tw-text-base tw-flex tw-items-center tw-justify-center">
+               Бүртгэл хийгдлээ
+               <CheckCircleSVG className="tw-w-6 tw-h-6 tw-text-green-500 tw-ml-1" />
+            </div>
+            <div className="tw-font-medium tw-py-4 tw-px-4 tw-text-center">
+               {registerSuccessInfo.fullname} танийг сургалтанд бүртгэлээ. Та имэйлээ шалгана уу, баярлалаа.
+            </div>
+         </ModalWindow>
       </div>
    )
 }
