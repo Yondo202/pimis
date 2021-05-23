@@ -57,7 +57,7 @@ export default function EvaluatorsMeetingsList(props) {
 
     return (
         <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-w-full tw-pb-10">
-            <div className="tw-bg-white tw-rounded tw-shadow tw-w-full tw-p-2" style={{ maxWidth: 1040 }}>
+            <div className="tw-bg-white tw-rounded tw-shadow-md tw-w-full tw-p-2" style={{ maxWidth: 1040 }}>
                 <div className="tw-text-lg tw-font-medium tw-p-2 tw-text-center tw-mt-6">
                     Үнэлгээний хорооны уулзалт
                 </div>
@@ -116,8 +116,7 @@ export default function EvaluatorsMeetingsList(props) {
                                         items={details.open && details.id === meeting.id}
                                         from={{ height: 0 }}
                                         enter={{ height: 'auto' }}
-                                        leave={{ height: 0 }}
-                                        config={config.stiff}>
+                                        leave={{ height: 0 }}>
                                         {item => item && (anims =>
                                             <animated.div className="tw-overflow-hidden tw-font-medium" style={{ ...anims, fontSize: '13px' }}>
                                                 {{
@@ -215,7 +214,7 @@ export default function EvaluatorsMeetingsList(props) {
                 </div>
 
                 <div className="tw-flex tw-justify-center">
-                    <button className="tw-py-1.5 tw-px-6 tw-text-15px tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow tw-mt-8 tw-mb-8" onClick={() => history.push('/meetings/id')}>
+                    <button className="tw-py-1.5 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-8" onClick={() => history.push('/meetings/id')}>
                         Уулзалт нэмэх
                     </button>
                 </div>

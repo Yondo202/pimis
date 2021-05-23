@@ -17,27 +17,33 @@ import LetterPreview from './preview'
 
 
 export default function LetterUpload() {
-   const [file, setFile] = useState(null)
+   const [form, setForm] = useState({
+      attachedFile: null,
+   })
 
    const userId = useQuery().get('userId')
 
    useEffect(() => {
       if (userId !== null && userId !== undefined) {
-         // axios.get('', {
-         //    headers: { Authorization: getLoggedUserToken() },
-         // }).then(res => {
-         //    console.log(res)
-         // }).catch(err => {
-         //    console.error(err.response)
-         // })
+         axios.get('letter-of-interests', {
+            headers: { Authorization: getLoggedUserToken() },
+            params: { userId: userId },
+         }).then(res => {
+            console.log(res)
+            setForm(res.data.data)
+         }).catch(err => {
+            console.error(err.response)
+         })
       } else {
-         // axios.get('', {
-         //    headers: { Authorization: getLoggedUserToken() },
-         // }).then(res => {
-         //    console.log(res)
-         // }).catch(err => {
-         //    console.error(err.response)
-         // })
+         axios.get('letter-of-interests', {
+            headers: { Authorization: getLoggedUserToken() },
+            params: { file: true },
+         }).then(res => {
+            console.log(res)
+            setForm(res.data.data)
+         }).catch(err => {
+            console.error(err.response)
+         })
       }
    }, [])
 
@@ -45,14 +51,17 @@ export default function LetterUpload() {
 
    const fileInputRef = useRef()
 
-   const handleAddFileClick = () => fileInputRef.current.click()
+   const handleAddFileClick = () => {
+      fileInputRef.current.value = null
+      fileInputRef.current.click()
+   }
 
    const handleInputFile = (e) => {
       const formData = new FormData()
       if (!e.target.files[0]) return
       formData.append('file', e.target.files[0])
       formData.append('description', 'Сонирхол илэрхийлэх албан тоот файлаар.')
-      setFile('loading')
+      setForm({ attachedFile: 'loading' })
 
       axios.post('attach-files', formData, {
          headers: {
@@ -61,21 +70,20 @@ export default function LetterUpload() {
          }
       }).then(res => {
          console.log(res)
-         setFile(res.data.data)
-         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсаргасан файлыг хадгалагдлаа.' })
+         setForm({ attachedFile: res.data.data })
       }).catch(err => {
          console.log(err.response)
-         setFile(null)
+         setForm({ attachedFile: null })
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
       })
    }
 
-   const handleRemoveFile = () => setFile(null)
+   const handleRemoveFile = () => setForm({ attachedFile: null })
 
    const FilePreviewCtx = useContext(FilePreviewContext)
 
    const handleDownloadFile = () => {
-      axios.get(`attach-files/${file.id}`, {
+      axios.get(`attach-files/${form.attachedFile?.id}`, {
          headers: { Authorization: getLoggedUserToken() },
          responseType: 'blob',
       }).then(res => {
@@ -93,7 +101,33 @@ export default function LetterUpload() {
    const handleNavLetterOIWeb = () => history.push('/letter-of-interest/web')
 
    const AnimatedFileCard = animated(FileCard)
-   const AnimtaedFileCardAdd = animated(FileCardAdd)
+   const AnimatedFileCardAdd = animated(FileCardAdd)
+
+   const handleSubmitFile = () => {
+      if (form.id) {
+         axios.put(`letter-of-interests/${form.id}`, form, {
+            headers: { Authorization: getLoggedUserToken() },
+         }).then(res => {
+            console.log(res)
+            setForm(res.data.data)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файлаар хавсаргасныг хадгаллаа.' })
+         }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
+         })
+      } else {
+         axios.post(`letter-of-interests`, form, {
+            headers: { Authorization: getLoggedUserToken() },
+         }).then(res => {
+            console.log(res)
+            setForm(res.data.data)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файлаар хавсаргасныг хадгаллаа.' })
+         }).catch(err => {
+            console.error(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
+         })
+      }
+   }
 
    return (
       <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-w-full">
@@ -119,18 +153,18 @@ export default function LetterUpload() {
 
                <div className="tw-mt-3 tw-ml-3">
                   <Transition
-                     items={file}
+                     items={form.attachedFile}
                      from={{ transform: 'scale(0)' }}
                      enter={{ transform: 'scale(1)' }}
                      leave={{ display: 'none' }}>
                      {item => item
                         ? anims =>
-                           <AnimatedFileCard name={file?.name} type={file?.mimetype} size={file?.size} classAppend="tw-my-1 tw-mx-1.5" uploading={file === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
+                           <AnimatedFileCard name={item?.name} type={item?.mimetype} size={item?.size} classAppend="tw-my-1 tw-mx-1.5" uploading={item === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
                         : anims => (userId
                            ? <div className="tw-pt-4 tw-pb-2 tw-font-medium tw-italic tw-text-gray-500">
-                              Файлаар илүүлээгүй байна.
+                              Файлаар иpүүлээгүй байна.
                            </div>
-                           : <AnimtaedFileCardAdd classAppend="tw-my-1 tw-mx-1.5" onClick={handleAddFileClick} style={anims} />
+                           : <AnimatedFileCardAdd classAppend="tw-my-1 tw-mx-1.5" onClick={handleAddFileClick} style={anims} />
                         )
                      }
                   </Transition>
@@ -138,9 +172,9 @@ export default function LetterUpload() {
 
                {!userId &&
                   <div className="tw-flex tw-justify-center">
-                     <button className="tw-my-2 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow tw-px-6 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none">
+                     <button className="tw-my-2 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow-md tw-px-6 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none" onClick={handleSubmitFile}>
                         Хадгалах
-                  </button>
+                     </button>
                   </div>
                }
 
@@ -157,12 +191,16 @@ export default function LetterUpload() {
                </div>
 
                {userId
-                  ? <div className="tw-mt-6 tw-px-2 tw-w-full tw-overflow-x-auto tw-overflow-y-hidden">
-                     <LetterPreview />
-                  </div>
+                  ? form.letter
+                     ? <div className="tw-mt-6 tw-px-2 tw-w-full tw-overflow-x-auto tw-overflow-y-hidden">
+                        <LetterPreview form={form} />
+                     </div>
+                     : <div className="tw-ml-3 tw-mt-3 tw-pt-4 tw-pb-2 tw-font-medium tw-italic tw-text-gray-500">
+                        Цахимаар үүсгээгүй байна.
+                     </div>
 
                   : <div className="tw-flex tw-justify-center">
-                     <button className="tw-mt-28 tw-mb-6 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow tw-pl-5 tw-pr-3 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none" onClick={handleNavLetterOIWeb}>
+                     <button className="tw-mt-28 tw-mb-6 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow-md tw-pl-5 tw-pr-3 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none" onClick={handleNavLetterOIWeb}>
                         Цахим хэлбэрээр үүсгэх
                         <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform-gpu tw--rotate-90 tw-ml-1" />
                      </button>

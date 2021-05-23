@@ -216,7 +216,7 @@ function TableTwo(props) {
                                   </div>
                                         <div className="name"> <RiUpload2Line />  
                                         <InputStyle className="newInp">
-                                                {/* <label className="fileStyleLabel" for={`file${i+1}`}> {el.files?"Өөрчлөх":"Хавсаргах"}</label> */}
+                                                {/* <label className="fileStyleLabel" htmlFor={`file${i+1}`}> {el.files?"Өөрчлөх":"Хавсаргах"}</label> */}
                                                 <input type="file"  id={`file${i+1}`} tabIndex={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field fileStyle `}  name="file"  />
                                                 <div className="line"></div>
                                         </InputStyle>
@@ -273,7 +273,7 @@ function TableTwo(props) {
                                 <div className="col-md-4 col-sm-12 col-12 headLeftBorder"> <div className="inpChild"><div className="labels"><span>Батлагдсан баримт бичгүүд /хавсаргасан :</span> <div className="filess">{el.files?el.files.name:""}</div> </div>
                                      <div className="name"> <RiUpload2Line /> 
                                         <InputStyle className="newInp">
-                                                {/* <label className="fileStyleLabel" for={`file${i+1}`}>Хавсаргах</label> */}
+                                                {/* <label className="fileStyleLabel" htmlFor={`file${i+1}`}>Хавсаргах</label> */}
                                                 <input type="file"  id={`file${i+1}`} tabIndex={i + 1} onChange={onChangeFile} accept=".xlsx,.xls,img/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" className={` GetFilesData LoginInpName form__field fileStyle `}  name="file"  />
                                                 <div className="line"></div>
                                         </InputStyle>

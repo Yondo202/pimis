@@ -20,7 +20,7 @@ export default function FileCardAdd(props) {
             </defs>
          </svg>
 
-         <ButtonTooltip tooltip="Файл нэмж оруулах" beforeSVG={<PlusSVG className="tw-w-10 tw-h-10" />} classAppend="tw-right-13 tw-w-0" classButton="tw-text-white hover:tw-shadow-none" />
+         <ButtonTooltip tooltip="Файл оруулах" beforeSVG={<PlusSVG className="tw-w-10 tw-h-10" />} classAppend="tw-right-13 tw-w-0" classButton="tw-text-white hover:tw-shadow-none" />
       </div>
    )
 }

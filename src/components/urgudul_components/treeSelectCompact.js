@@ -41,8 +41,7 @@ export default function TreeSelectCompact(props) {
                 items={open}
                 from={{ height: 0, opacity: 0 }}
                 enter={{ height: props.selectHeight || 426, opacity: 1 }}
-                leave={{ height: 0, opacity: 0 }}
-                config={config.stiff}>
+                leave={{ height: 0, opacity: 0 }}>
                 {item => item && (anims =>
                     <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-fixed tw-z-10 tw-text-13px" style={{ width: props.selectWidth, top: buttonRef.current?.getBoundingClientRect().top + 26, left: buttonRef.current?.getBoundingClientRect().left, ...anims }}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">
@@ -80,8 +79,7 @@ const Tree = ({ parent, childs, display, handleSelectId, value }) => {
                             items={!open}
                             from={{ opacity: 0 }}
                             enter={{ opacity: 1 }}
-                            leave={{ display: 'none' }}
-                            config={config.stiff}>
+                            leave={{ display: 'none' }}>
                             {item => item
                                 ? anims => <PlusSVG className="tw-w-4 tw-h-4 tw-text-blue-500" style={anims} />
                                 : anims => <MinusSVG className="tw-w-3 tw-h-3 tw-text-blue-500" style={anims} />
@@ -100,8 +98,7 @@ const Tree = ({ parent, childs, display, handleSelectId, value }) => {
                 items={open}
                 from={{ height: 0, opacity: 0 }}
                 enter={{ height: 'auto', opacity: 1 }}
-                leave={{ height: 0, opacity: 0 }}
-                config={config.stiff}>
+                leave={{ height: 0, opacity: 0 }}>
                 {item1 => item1 && (anims1 =>
                     <div className="tw-overflow-hidden tw-divide-y tw-divide-dashed tw-ml-4" style={anims1}>
                         {childs.map(child =>
@@ -111,8 +108,7 @@ const Tree = ({ parent, childs, display, handleSelectId, value }) => {
                                         items={child.id === value}
                                         from={{ opacity: 0 }}
                                         enter={{ opacity: 1 }}
-                                        leave={{ opacity: 0 }}
-                                        config={config.stiff}>
+                                        leave={{ opacity: 0 }}>
                                         {item => item && (anims =>
                                             <CheckSVG className="tw-w-4 tw-h-4 tw-text-blue-500" style={anims} />
                                         )}

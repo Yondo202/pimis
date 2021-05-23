@@ -50,8 +50,7 @@ export default function TreeSelect(props) {
                 items={open}
                 from={{ height: 0, opacity: 0 }}
                 enter={{ height: 300, opacity: 1 }}
-                leave={{ height: 0, opacity: 0 }}
-                config={config.stiff}>
+                leave={{ height: 0, opacity: 0 }}>
                 {item => item && (anims =>
                     <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-my-2 tw-border tw-border-gray-500 tw-rounded tw-ml-9 tw-mr-5 tw-bg-white" style={anims}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">
@@ -62,7 +61,7 @@ export default function TreeSelect(props) {
                         </div>
 
                         {parents.map(parent =>
-                            <Tree parent={parent} childs={props.data.filter(item => item.parentId === parent.id && item[display].toLowerCase().includes(search.toLowerCase()))} display={display} handleSelectId={handleSelectId} value={props.value} />
+                            <Tree parent={parent} childs={props.data.filter(item => item.parentId === parent.id && item[display].toLowerCase().includes(search.toLowerCase()))} display={display} handleSelectId={handleSelectId} value={props.value} key={parent.id} />
                         )}
                     </animated.div>
                 )}
@@ -83,8 +82,7 @@ const Tree = ({ parent, childs, display, handleSelectId, value }) => {
                             items={!open}
                             from={{ opacity: 0 }}
                             enter={{ opacity: 1 }}
-                            leave={{ display: 'none' }}
-                            config={config.stiff}>
+                            leave={{ display: 'none' }}>
                             {item => item
                                 ? anims => <PlusSVG className="tw-w-4 tw-h-4 tw-text-blue-500" style={anims} />
                                 : anims => <MinusSVG className="tw-w-3 tw-h-3 tw-text-blue-500" style={anims} />
@@ -103,19 +101,17 @@ const Tree = ({ parent, childs, display, handleSelectId, value }) => {
                 items={open}
                 from={{ height: 0, opacity: 0 }}
                 enter={{ height: 'auto', opacity: 1 }}
-                leave={{ height: 0, opacity: 0 }}
-                config={config.stiff}>
+                leave={{ height: 0, opacity: 0 }}>
                 {item1 => item1 && (anims1 =>
                     <div className="tw-overflow-hidden tw-divide-y tw-divide-dashed tw-ml-4" style={anims1}>
                         {childs.map(child =>
-                            <div className="tw-p-1 tw-pl-1.5 tw-cursor-pointer tw-flex tw-items-center" onClick={() => handleSelectId(child.id)}>
+                            <div className="tw-p-1 tw-pl-1.5 tw-cursor-pointer tw-flex tw-items-center" onClick={() => handleSelectId(child.id)} key={child.id}>
                                 <div className="tw-border tw-border-blue-500 tw-rounded-sm tw-flex tw-items-center tw-justify-center tw-w-4 tw-h-4 tw-ml-1 tw-mr-2 tw-flex-shrink-0">
                                     <Transition
                                         items={child.id === value}
                                         from={{ opacity: 0 }}
                                         enter={{ opacity: 1 }}
-                                        leave={{ opacity: 0 }}
-                                        config={config.stiff}>
+                                        leave={{ opacity: 0 }}>
                                         {item => item && (anims =>
                                             <CheckSVG className="tw-w-4 tw-h-4 tw-text-blue-500" style={anims} />
                                         )}

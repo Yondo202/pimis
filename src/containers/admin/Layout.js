@@ -13,7 +13,6 @@ import UserHandle from 'components/admin/contents/users/UserHandle';
 import ProjectHandle from 'components/admin/contents/projects/ProjectHandle'
 import { UrgudulStore } from 'components/utilities/urgudulContext'
 import UrgudulNavigator from 'pages/urgudul/Page'
-import ProjectHandle1 from 'components/admin/contents/projects1/ProjectHandle'
 import Home from 'components/LoginDoneHome/Home'
 import Request from 'containers/requestComp/mainRequestOld'
 import Check from 'components/check/compCheck'
@@ -33,7 +32,13 @@ import CurrencyRateHandle from 'components/admin/contents/currency_rate/currency
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import { UrgudulPreviewForAdmin } from 'pages/urgudul/preview/previewPages'
 import Holidays from "components/holidays/Holidays"
+<<<<<<< HEAD
 import Financing from "components/admin/contents/financing/MainPage"
+=======
+import TrainingNavigatorAdmin from 'pages/training/training_admin/TrainingNavigator';
+import TrainingRequestsList from 'pages/training/training_admin/requestsList';
+import FeedbackQuestionnaireHandle from 'components/admin/contents/feedback_questionnaire/feedbackQuestionnaireHandle';
+>>>>>>> e922941075de5f03b45f1661f79e4698f1cbc8a4
 
 
 function Layout({ setLocale }) {
@@ -53,6 +58,7 @@ function Layout({ setLocale }) {
       <div className="MainParent">
         <Aside image={image} collapsed={collapsed} rtl={rtl} toggled={toggled} handleToggleSidebar={handleToggleSidebar} />
       </div>
+
       <div className="container-fluid ContentPar">
         <Main image={image} toggled={toggled} collapsed={collapsed} rtl={rtl}
           handleToggleSidebar={handleToggleSidebar}
@@ -60,35 +66,35 @@ function Layout({ setLocale }) {
           handleRtlChange={handleRtlChange}
           handleImageChange={handleImageChange}
         />
+
         <div className="itemsPar2">
           <UrgudulStore>
             <Switch>
               <Route path="/" component={HomeAdmin} exact />
               <Route path="/users" component={UserHandle} />
               <Route path="/projects" component={ProjectHandle} />
-              <Route path="/projects1" component={ProjectHandle1} />
               <Route path="/report/" component={ReportLayout} />
               <Route path="/holidays" component={Holidays} />
+<<<<<<< HEAD
               <Route path="/financing" component={Financing} />
 
               <Route path="/urgudul/:page">
+=======
+              {/* <Route path="/urgudul/:page">
+>>>>>>> e922941075de5f03b45f1661f79e4698f1cbc8a4
                 <UrgudulNavigator preloaded={true} />
-              </Route>
-
+              </Route> */}
               <Route path="/meetings" component={EvaluatorsMeetingsNavigator} />
               <Route path="/accept-periods" component={AcceptPeriodHandle} />
               <Route path="/epd-information" component={EdpInformationHome} />
               <Route path="/project-status" component={ProjectStatusHandle} />
               <Route path="/currency-rates" component={CurrencyRateHandle} />
-
               <Route path="/progress" component={Home} />
               <Route path="/request/:url" component={Request} />
               <Route path="/check/:url" component={Check} />
               <Route path="/notify-page/:paramId" component={NotifyPage1} />
-
               {/* <Route path="/memberdecision" component={MemberDecision} /> */}
               <Route path="/maindecision/:id" component={MainDecision} />
-
               <Route path="/letter-of-interest" component={LetterNavigator} />
               <Route path="/urgudul-preview/:id" component={UrgudulPreviewForAdmin} />
               <Route path="/attachments/:id" component={AttachmentUploads} />
@@ -96,7 +102,9 @@ function Layout({ setLocale }) {
               <Route path="/5a/:id/send-notice" component={FirstEvaluationSendNotice} />
               <Route path="/5b/:id" component={CompilationChecklist} />
               <Route path="/5c/:id" component={AnalystReport} />
-
+              <Route path="/trainings" component={TrainingNavigatorAdmin} />
+              <Route path="/training-requests" component={TrainingRequestsList} />
+              <Route path="/training-questionnaire" component={FeedbackQuestionnaireHandle} />
               <MiddleRoute />
             </Switch>
           </UrgudulStore>
@@ -117,7 +125,6 @@ const cardAnimate = keyframes`
   0% { transform:translateY(30px);opacity:0; }
   100% { transform:translateY(0px);opacity:1; }
 `
-
 const AdminApp = styled.div`
     .MainParent{
         height:100vh;
@@ -311,4 +318,3 @@ const AdminApp = styled.div`
         }
     }
 `
-

@@ -1,0 +1,27 @@
+#registred-users-datagrid .dx-datagrid-rowsview .dx-row>.dx-master-detail-cell {
+   padding: 10px;
+}
+
+#registred-users-datagrid .dx-datagrid-group-closed {
+   font: 24px/24px DXIcons;
+   color: #6B7280;
+}
+
+#registred-users-datagrid .dx-datagrid-group-opened {
+   font: 24px/24px DXIcons;
+   color: #6B7280;
+}
+
+#training-requests-datagrid .dx-datagrid-rowsview .dx-row>.dx-master-detail-cell {
+   padding: 10px;
+}
+
+#training-requests-datagrid .dx-datagrid-group-closed {
+   font: 24px/24px DXIcons;
+   color: #6B7280;
+}
+
+#training-requests-datagrid .dx-datagrid-group-opened {
+   font: 24px/24px DXIcons;
+   color: #6B7280;
+}

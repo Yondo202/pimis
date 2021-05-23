@@ -118,7 +118,7 @@ function TableFive(props) {
                                                     :<input type="input" className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
                                             }
                                             
-                                            <label for="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
+                                            <label htmlFor="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                         </div>
                                     </div>
                                 </div>
@@ -128,11 +128,11 @@ function TableFive(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <div className="form__group">
-                                                {Dname?<input type="date" value={Ddate} onChange={changeDateHandle} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
-                                                        : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" placeholder="Регистерийн дугаар" name="date" required />
+                                                {Dname?<input type="date" value={Ddate} onChange={changeDateHandle} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" name="date" required />
+                                                        : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" name="date" required />
                                                 }
                                                 
-                                                <label for="password" className="form__label">Өдөр-Сар-Он </label>
+                                                <label htmlFor="password" className="form__label">Өдөр-Сар-Он </label>
                                             </div>
                                         </div>
                                     </div>

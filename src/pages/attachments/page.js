@@ -86,6 +86,7 @@ export default function AttachmentUploads() {
 
     const handleButtonClick = (code) => {
         setEditCode(code)
+        inputRef.current.value = null
         inputRef.current.click()
     }
 
@@ -139,6 +140,7 @@ export default function AttachmentUploads() {
             FilePreviewCtx.setFile({ open: true, src: URL })
         }).catch(err => {
             console.log(err.response)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг татаж чадсангүй.' })
         })
     }
 

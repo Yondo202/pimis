@@ -90,7 +90,7 @@ function TableFiveDetails2(props) {
                                 <div className="name"> <VscOpenPreview />
                                     <div className="form__group">
                                         <input type="text" id={el.id} onChange={changeHandle1} value={el.issue} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
-                                        <label for="name" className=" form__label">Асуудал</label>
+                                        <label htmlFor="name" className=" form__label">Асуудал</label>
                                     </div>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@ function TableFiveDetails2(props) {
                                 <div className="name"> <VscChecklist />
                                     <div className="form__group">
                                         <input type="input" id={el.id} onChange={changeHandle2} value={el.reduce} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce" required />
-                                        <label for="name" className=" form__label">Нөлөөллийг бууруулах арга хэмжээ</label>
+                                        <label htmlFor="name" className=" form__label">Нөлөөллийг бууруулах арга хэмжээ</label>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@ function TableFiveDetails2(props) {
                                 <div className="name"> <VscCloudDownload />
                                     <div className="form__group">
                                         <input type="input" id={el.id} onChange={changeHandle3} value={el.standard_mgl} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard_mgl" required />
-                                        <label for="name" className=" form__label">Монгол улс</label>
+                                        <label htmlFor="name" className=" form__label">Монгол улс</label>
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +121,7 @@ function TableFiveDetails2(props) {
                                 <div className="name"> <VscCloudUpload />
                                     <div className="form__group">
                                         <input type="input" id={el.id} onChange={changeHandle4} value={el.standard_world} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard_world" required />
-                                        <label for="name" className=" form__label">Дэлхийн банк</label>
+                                        <label htmlFor="name" className=" form__label">Дэлхийн банк</label>
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@ function TableFiveDetails2(props) {
                                 {/* <VscFoldDown /> */}
                                     <div className="form__group">
                                         <input style={{textAlign:`right`,paddingRight:15}} type="number" id={el.id} onChange={changeHandle5} value={el.reduce_cost} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce_cost" required />
-                                        <label for="name" className=" form__label">Үйл ажиллагааны зардал</label>
+                                        <label htmlFor="name" className=" form__label">Үйл ажиллагааны зардал</label>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +146,7 @@ function TableFiveDetails2(props) {
                                 <div className="name"> <VscAccount />
                                     <div className="form__group">
                                         <input type="input" id={el.id} onChange={changeHandle6} value={el.hostname}  className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
-                                        <label for="name" className=" form__label">Хариуцах эзэн</label>
+                                        <label htmlFor="name" className=" form__label">Хариуцах эзэн</label>
                                     </div>
                                 </div>
                             </div>
@@ -157,7 +157,7 @@ function TableFiveDetails2(props) {
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
                                         <input type="date" id={el.id} onChange={changeHandle7} value={el.startdate}  max={Currentdate} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
-                                        <label for="name"  className=" form__label">Он-сар-өдөр</label>
+                                        <label htmlFor="name"  className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +167,7 @@ function TableFiveDetails2(props) {
                                 <div className="name"> <GoCalendar />
                                     <div className="form__group">
                                         <input type="date" id={el.id} max={Currentdate} onChange={changeHandle8} value={el.enddate}   className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
-                                        <label for="name" className=" form__label">Он-сар-өдөр</label>
+                                        <label htmlFor="name" className=" form__label">Он-сар-өдөр</label>
                                     </div>
                                 </div>
                             </div>
@@ -186,7 +186,7 @@ function TableFiveDetails2(props) {
                                     <div className="name"> <VscOpenPreview />
                                         <div className="form__group">
                                             <input type="text" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="issue" required />
-                                            <label for="name" className=" form__label">Асуудал</label>
+                                            <label htmlFor="name" className=" form__label">Асуудал</label>
                                         </div>
                                     </div>
                                 </div>
@@ -196,7 +196,7 @@ function TableFiveDetails2(props) {
                                     <div className="name"> <VscChecklist />
                                         <div className="form__group">
                                             <input type="input" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce" required />
-                                            <label for="name" className=" form__label">Нөлөөллийг бууруулах арга хэмжээ</label>
+                                            <label htmlFor="name" className=" form__label">Нөлөөллийг бууруулах арга хэмжээ</label>
                                         </div>
                                     </div>
                                 </div>
@@ -207,7 +207,7 @@ function TableFiveDetails2(props) {
                                     <div className="name"> <VscCloudDownload />
                                         <div className="form__group">
                                             <input type="input" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard_mgl" required />
-                                            <label for="name" className=" form__label">Монгол улс</label>
+                                            <label htmlFor="name" className=" form__label">Монгол улс</label>
                                         </div>
                                     </div>
                                 </div>
@@ -217,7 +217,7 @@ function TableFiveDetails2(props) {
                                     <div className="name"> <VscCloudUpload />
                                         <div className="form__group">
                                             <input type="input" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="standard_world" required />
-                                            <label for="name" className=" form__label">Дэлхийн банк</label>
+                                            <label htmlFor="name" className=" form__label">Дэлхийн банк</label>
                                         </div>
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@ function TableFiveDetails2(props) {
                                          {/* <VscFoldDown /> */}
                                         <div className="form__group">
                                             <input style={{textAlign:`right`,paddingRight:15}} type="number" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="reduce_cost" required />
-                                            <label for="name" className=" form__label">Үйл ажиллагааны зардал</label>
+                                            <label htmlFor="name" className=" form__label">Үйл ажиллагааны зардал</label>
                                         </div>
                                     </div>
                                 </div>
@@ -242,7 +242,7 @@ function TableFiveDetails2(props) {
                                     <div className="name"> <VscAccount />
                                         <div className="form__group">
                                             <input type="input" className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
-                                            <label for="name" className=" form__label">Хариуцах эзэн</label>
+                                            <label htmlFor="name" className=" form__label">Хариуцах эзэн</label>
                                         </div>
                                     </div>
                                 </div>
@@ -253,7 +253,7 @@ function TableFiveDetails2(props) {
                                     <div className="name"> <GoCalendar />
                                         <div className="form__group">
                                             <input type="date" max={Currentdate} className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
-                                            <label for="name"  className=" form__label">Он-сар-өдөр</label>
+                                            <label htmlFor="name"  className=" form__label">Он-сар-өдөр</label>
                                         </div>
                                     </div>
                                 </div>
@@ -263,7 +263,7 @@ function TableFiveDetails2(props) {
                                     <div className="name"> <GoCalendar />
                                         <div className="form__group">
                                             <input type="date" max={Currentdate}  className={`passa${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
-                                            <label for="name" className=" form__label">Он-сар-өдөр</label>
+                                            <label htmlFor="name" className=" form__label">Он-сар-өдөр</label>
                                         </div>
                                     </div>
                                 </div>

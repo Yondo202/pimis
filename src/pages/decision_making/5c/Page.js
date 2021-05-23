@@ -462,8 +462,7 @@ export default function AnalystReport() {
                             items={commentsOpen[row.rowcode]}
                             from={{ height: 0, opacity: 0 }}
                             enter={{ height: 'auto', opacity: 1 }}
-                            leave={{ height: 0, opacity: 0 }}
-                            config={config.stiff}>
+                            leave={{ height: 0, opacity: 0 }}>
                             {item => item && (anims =>
                                 <div className="tw-flex tw-justify-end tw-items-start tw-overflow-hidden" style={anims}>
                                     <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-px-1.5 tw-py-1 tw-mt-1 tw-mx-3 tw-mb-3 tw-resize-none tw-text-13px" value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />

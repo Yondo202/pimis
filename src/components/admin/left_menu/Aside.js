@@ -37,16 +37,36 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
         </Menu> */}
         <Menu iconShape="circle">
           <SubMenu title="Түншлэлийн хөтөлбөр" icon={<GiProgression />}>
+<<<<<<< HEAD
             <MenuItem><Link to="/projects"> Бүртгүүлсэн байгууллагууд</Link> </MenuItem>
             <MenuItem><Link to="/financing">Санхүүжилт</Link></MenuItem>
             <MenuItem><Link to="/meetings">Үнэлгээний хорооны уулзалт</Link></MenuItem>
             <MenuItem><Link to="/maindecision">Үнэлгээний хорооны шийдвэр</Link></MenuItem>
             <MenuItem><Link to="/report">Тайлан</Link></MenuItem>
+=======
+            <MenuItem>
+              <Link to="/projects"> Бүртгүүлсэн байгууллагууд</Link>
+            </MenuItem>
+            <MenuItem>Санхүүжилт</MenuItem>
+            <MenuItem>
+              <Link to="/meetings">Үнэлгээний хорооны уулзалт</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/maindecision">Үнэлгээний хорооны шийдвэр</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/report">Тайлан</Link>
+            </MenuItem>
+>>>>>>> e922941075de5f03b45f1661f79e4698f1cbc8a4
           </SubMenu>
           {/* prefix={<span className="badge gray">3</span>} */}
           <SubMenu title="Сургалт" icon={<FaChalkboardTeacher />}>
-            <MenuItem>Зохион байгуулах хүсэлт</MenuItem>
-            <MenuItem>Сургалтууд</MenuItem>
+            <MenuItem>
+              <Link to="/trainings">Сургалтууд</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/training-requests">Захиалгат сургалтын хүсэлтүүд</Link>
+            </MenuItem>
             <SubMenu title="Тайлангууд">
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.1 </MenuItem>
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.2 </MenuItem>
@@ -66,8 +86,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.2 </MenuItem>
             </SubMenu>
             <SubMenu title="Сургалт">
-              <MenuItem>Сургалтын байгууллагууд</MenuItem>
-              <MenuItem>Сургалтын төрлүүд</MenuItem>
+              <MenuItem>
+                <Link to="/training-questionnaire">Сургалтын үнэлгээний асуумжууд</Link>
+              </MenuItem>
             </SubMenu>
             <SubMenu title="Даатгал">
               <MenuItem>Тохиргоо -1</MenuItem>

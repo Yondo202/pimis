@@ -182,10 +182,9 @@ function UrgudulChecklist() {
                             items={modalOpen}
                             from={{ transform: 'translateY(-20px)' }}
                             enter={{ transform: 'translateY(0)' }}
-                            leave={{ transform: 'translateY(20px)' }}
-                            config={config.stiff}>
+                            leave={{ transform: 'translateY(20px)' }}>
                             {item1 => item1 && (anims1 =>
-                                <animated.div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow tw-max-w-md tw-ring-2 tw-ring-indigo-500" style={anims1} ref={modalRef}>
+                                <animated.div className="tw-bg-white tw-p-4 tw-relative tw-rounded tw-shadow-md tw-max-w-md tw-ring-2 tw-ring-indigo-500" style={anims1} ref={modalRef}>
                                     <div className="tw-text-15px tw-p-2 tw-text-center tw-font-medium">
                                         Анхааруулга
                                     </div>

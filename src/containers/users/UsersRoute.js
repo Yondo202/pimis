@@ -10,17 +10,11 @@ import LoginDoneHome2 from "components/LoginDoneHome/Home";
 import MainRequestOld from "containers/requestComp/mainRequestOld";
 import { UrgudulStore } from "components/utilities/urgudulContext"
 import UrgudulNavigator from "pages/urgudul/Page"
-import BusinessSectorEditor from "pages/business_sector_edit/editorPage";
-import ProductsEditor from "pages/products_edit/editorPage";
 import FirstEvaluation from "pages/decision_making/5a/Page";
 import CompilationCheck from "pages/decision_making/5b/Page";
 import AnalystReport from "pages/decision_making/5c/Page";
 import AttachmentUploads from "pages/attachments/page";
 import WorkPerformance from 'components/workPerformance/MainWorkPerformance'
-import TrainingRegistration from 'pages/training/registration/Page';
-import TrainingRequest from 'pages/training/request/Page';
-import TrainingPartnerRegistration from 'pages/training/partner_registration/Page';
-import TrainingFeedback from 'pages/training/feedback/Page';
 import PdfTest from 'components/check/PdfTest'
 import MiddleRoute from "containers/middle/middleRoute"
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
@@ -29,6 +23,7 @@ import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import Test from "components/Test"
+import TrainingFrontPage from 'pages/training/frontPage';
 
 >>>>>>> 4afe35e993aaf54b445851b7194e9f99a202b240
 
@@ -36,6 +31,7 @@ function UsersRoute() {
     return (
         <HelpStore>
             <Menu />
+
             <UrgudulStore>
                 <Switch>
                     <Route path="/" exact>
@@ -43,12 +39,14 @@ function UsersRoute() {
                             <LoginDoneHome2 />
                         </motion.div>
                     </Route>
-
                     <Route path="/check/:url" component={CheckComp} />
                     <Route path="/checks/test" component={PdfTest} />
+<<<<<<< HEAD
                     
+=======
+                    <Route path="/test" component={Test} />
+>>>>>>> e922941075de5f03b45f1661f79e4698f1cbc8a4
                     {/* <Route path="/notify-page/:paramId" component={MainPage} /> */}
-
                     {/* <Route path="/comp-request" component={MainRequest} /> */}
                     <Route path="/request/:url" component={MainRequestOld} />
                     <Route path="/feedback" component={Feedback} />
@@ -56,24 +54,16 @@ function UsersRoute() {
                     <Route path="/email2" component={EmialSender2} />
                     {/* <Route path="/members" component={MembersHome} />
                     <Route path="/memberdecision" component={MemberDecision} /> */}
-
                     <Route path="/letter-of-interest" component={LetterNavigator} />
                     <Route path="/urgudul/:page" component={UrgudulNavigator} />
                     <Route path="/urgudul-preview/:id" component={UrgudulPreviewForUser} />
-
                     <Route path="/attachments" component={AttachmentUploads} />
-
                     <Route path="/5a" component={FirstEvaluation} />
                     <Route path="/5b" component={CompilationCheck} />
                     <Route path="/5c" component={AnalystReport} />
-
-                    <Route path="/sector-edit" component={BusinessSectorEditor} />
-                    <Route path="/product-edit" component={ProductsEditor} />
-
-                    <Route path="/training/1" component={TrainingRegistration} />
-                    <Route path="/training/2" component={TrainingRequest} />
-                    <Route path="/training/3" component={TrainingPartnerRegistration} />
-                    <Route path="/training/4" component={TrainingFeedback} />
+                    <Route path="/trainings">
+                        <TrainingFrontPage user={true} />
+                    </Route>
                     <MiddleRoute />
                 </Switch>
             </UrgudulStore>
@@ -81,4 +71,4 @@ function UsersRoute() {
     )
 }
 
-export default UsersRoute
+export default UsersRoute;
