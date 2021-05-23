@@ -24,6 +24,13 @@ import TrainingFeedback from 'pages/training/feedback/Page';
 import PdfTest from 'components/check/PdfTest'
 import MiddleRoute from "containers/middle/middleRoute"
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
+<<<<<<< HEAD
+=======
+import Holidays from "components/holidays/Holidays"
+import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
+import Test from "components/Test"
+
+>>>>>>> 4afe35e993aaf54b445851b7194e9f99a202b240
 
 function UsersRoute() {
     return (
@@ -52,6 +59,7 @@ function UsersRoute() {
 
                     <Route path="/letter-of-interest" component={LetterNavigator} />
                     <Route path="/urgudul/:page" component={UrgudulNavigator} />
+                    <Route path="/urgudul-preview/:id" component={UrgudulPreviewForUser} />
 
                     <Route path="/attachments" component={AttachmentUploads} />
 

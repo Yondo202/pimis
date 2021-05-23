@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Switch, Route, useHistory, useParams, useLocation } from 'react-router-dom'
 import UrgudulFront from './formFront'
 import UrgudulApplicant from './urgudul_a/form_a_1'
-import UrugudulClusters from './urgudul_a/form_a_21'
-import UrugudulDirectors from './urgudul_a/form_a_22'
+import UrgudulClusters from './urgudul_a/form_a_21'
+import UrgudulDirectors from './urgudul_a/form_a_22'
 import UrgudulBreakdown from './urgudul_b/form_b'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import UrgudulActivities from './urgudul_b/form_b_6'
@@ -87,17 +87,21 @@ function UrgudulNavigator(props) {
 
     const loadProject = (id) => {
         axios.get(`projects/${id}`, {
-            headers: {
-                'Authorization': getLoggedUserToken(),
-            }
+            headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
             console.log(res.data)
-            UrgudulCtx.setData(res.data.data)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээллийг амжилттай уншлаа.' })
-            setModalOpen(false)
+            const project = res.data.data
+            if (project.status === 'editable') {
+                UrgudulCtx.setData(res.data.data)
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягтыг нээлээ.' })
+                setModalOpen(false)
+            } else {
+                history.push(`/urgudul-preview/${project.id}`)
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягтыг нээлээ. Засвар оруулах боломжгүй өргөдөл байна.' })
+            }
         }).catch(err => {
             console.log(err.response?.data)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Өргөдлийн маягтыг нээж чадсангүй.' })
         })
     }
 
@@ -174,8 +178,8 @@ function UrgudulNavigator(props) {
 
                         <Route path="/urgudul/3">
                             {isCluster
-                                ? <UrugudulClusters projects={projects} />
-                                : <UrugudulDirectors projects={projects} />
+                                ? <UrgudulClusters projects={projects} />
+                                : <UrgudulDirectors projects={projects} />
                             }
                         </Route>
 
@@ -279,7 +283,7 @@ function UrgudulNavigator(props) {
                             leave={{ width: 0 }}
                             config={config.stiff}>
                             {item => item && (anims =>
-                                <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-h-screen tw-overflow-y-auto tw-overflow-x-hidden tw-mr-8 tw-bg-white tw-px-4 tw-pb-2 tw-pt-4" style={anims} ref={previewContainerRef}>
+                                <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-h-screen tw-overflow-y-auto tw-overflow-x-hidden tw-bg-white tw-px-2 tw-pt-6 tw-max-w-full" style={anims} ref={previewContainerRef}>
                                     <button className="tw-text-red-500 active:tw-text-red-600 tw-rounded tw-border tw-border-red-500 active:tw-border-red-600 tw-absolute tw-top-1.5 tw-right-1.5 focus:tw-outline-none" onClick={() => setPreviewModalOpen(false)}>
                                         <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" />
                                     </button>

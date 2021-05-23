@@ -13,6 +13,7 @@ import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import HelpPopup from 'components/help_popup/helpPopup'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import PenAltSVG from 'assets/svgComponents/penAltSVG'
+import LetterPreview from './preview'
 
 
 export default function LetterUpload() {
@@ -45,7 +46,6 @@ export default function LetterUpload() {
    const fileInputRef = useRef()
 
    const handleAddFileClick = () => fileInputRef.current.click()
-
 
    const handleInputFile = (e) => {
       const formData = new FormData()
@@ -92,21 +92,29 @@ export default function LetterUpload() {
 
    const handleNavLetterOIWeb = () => history.push('/letter-of-interest/web')
 
+   const AnimatedFileCard = animated(FileCard)
+   const AnimtaedFileCardAdd = animated(FileCardAdd)
+
    return (
       <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-w-full">
-         <div className="tw-w-11/12 tw-max-w-2xl tw-mx-auto tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-divide-y tw-divide-dashed">
+         <div className={`tw-w-full ${userId ? 'tw-max-w-5xl' : 'tw-max-w-2xl'} tw-mx-auto tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-divide-y tw-divide-dashed`}>
             <div className="tw-font-medium tw-p-3 tw-mb-1 tw-pb-2 tw-flex tw-items-center">
                <span className="tw-text-xl tw-mx-2 tw-leading-tight tw-text-blue-500">3</span>
                <span className="tw-text-15px tw-mr-4">
                   - Сонирхол илэрхийлэх албан тоот
                </span>
-               <HelpPopup classAppend="" main="Та албан тоотоо файлаар хавсаргаж болно. Эсвэл энэхүү хуудаснаас цахим хэлбэрээр үүсгэх гэж ороод бөглөж болно." position="bottom" />
+               {!userId &&
+                  <HelpPopup classAppend="" main="Та сонирхол илэрхийлэх албан тоотоо файлаар хавсаргах юм уу, эсвэл цахим хэлбэрээр үүсгэж болно." position="bottom" />
+               }
             </div>
 
             <div className="tw-relative tw-p-2 tw-pl-4">
                <div className="tw-text-15px tw-font-medium tw-flex tw-items-center tw-mt-2">
                   <PaperClipSVG className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-600" />
-                  Сонирхол илэрхийлэх албан тоот файлаар хавсаргах
+                  {userId
+                     ? 'Сонирхол илэрхийлэх албан тоот файлаар'
+                     : 'Сонирхол илэрхийлэх албан тоот файлаар хавсаргах'
+                  }
                </div>
 
                <div className="tw-mt-3 tw-ml-3">
@@ -116,22 +124,25 @@ export default function LetterUpload() {
                      enter={{ transform: 'scale(1)' }}
                      leave={{ display: 'none' }}>
                      {item => item
-                        ? anims => <animated.div className="tw-inline-flex tw-my-1 tw-mx-1.5" style={anims}>
-                           <FileCard name={file?.name} type={file?.mimetype} size={file?.size} classAppend="" uploading={file === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} />
-                        </animated.div>
-
-                        : anims => <animated.div className="tw-inline-flex tw-my-1 tw-mx-1.5" style={anims}>
-                           <FileCardAdd classAppend="" onClick={handleAddFileClick} />
-                        </animated.div>
+                        ? anims =>
+                           <AnimatedFileCard name={file?.name} type={file?.mimetype} size={file?.size} classAppend="tw-my-1 tw-mx-1.5" uploading={file === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
+                        : anims => (userId
+                           ? <div className="tw-pt-4 tw-pb-2 tw-font-medium tw-italic tw-text-gray-500">
+                              Файлаар илүүлээгүй байна.
+                           </div>
+                           : <AnimtaedFileCardAdd classAppend="tw-my-1 tw-mx-1.5" onClick={handleAddFileClick} style={anims} />
+                        )
                      }
                   </Transition>
                </div>
 
-               <div className="tw-flex tw-justify-center">
-                  <button className="tw-my-2 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow tw-px-6 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none">
-                     Хадгалах
+               {!userId &&
+                  <div className="tw-flex tw-justify-center">
+                     <button className="tw-my-2 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow tw-px-6 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none">
+                        Хадгалах
                   </button>
-               </div>
+                  </div>
+               }
 
                <input className="tw-absolute tw-invisible" type="file" onChange={handleInputFile} ref={fileInputRef} />
             </div>
@@ -139,15 +150,24 @@ export default function LetterUpload() {
             <div className="tw-p-2 tw-pl-4">
                <div className="tw-text-15px tw-font-medium tw-mt-2 tw-flex tw-items-center">
                   <PenAltSVG className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-600" />
-                  Сонирхол илэрхийлэх албан тоот цахим хэлбэрээр үүсгэх
+                  {userId
+                     ? 'Сонирхол илэрхийлэх албан тоот цахимаар'
+                     : 'Сонирхол илэрхийлэх албан тоот цахим хэлбэрээр үүсгэх'
+                  }
                </div>
 
-               <div className="tw-flex tw-justify-center">
-                  <button className="tw-mt-24 tw-mb-10 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow tw-pl-5 tw-pr-3 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none" onClick={handleNavLetterOIWeb}>
-                     Цахим хэлбэрээр үүсгэх
-                  <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform-gpu tw--rotate-90 tw-ml-1" />
-                  </button>
-               </div>
+               {userId
+                  ? <div className="tw-mt-6 tw-px-2 tw-w-full tw-overflow-x-auto tw-overflow-y-hidden">
+                     <LetterPreview />
+                  </div>
+
+                  : <div className="tw-flex tw-justify-center">
+                     <button className="tw-mt-28 tw-mb-6 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow tw-pl-5 tw-pr-3 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none" onClick={handleNavLetterOIWeb}>
+                        Цахим хэлбэрээр үүсгэх
+                        <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform-gpu tw--rotate-90 tw-ml-1" />
+                     </button>
+                  </div>
+               }
             </div>
          </div>
       </div>

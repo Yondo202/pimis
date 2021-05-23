@@ -26,7 +26,7 @@ const initialState = [
     },
 ]
 
-function UrugudulDirectors({ projects }) {
+function UrgudulDirectors({ projects }) {
     const [form, setForm] = useState(initialState)
 
     const UrgudulCtx = useContext(UrgudulContext)
@@ -233,4 +233,4 @@ function UrugudulDirectors({ projects }) {
     )
 }
 
-export default UrugudulDirectors
+export default UrgudulDirectors

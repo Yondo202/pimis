@@ -11,6 +11,7 @@ import RowHtml from './rowHtml'
 import { districts } from 'pages/urgudul/urgudul_a/form_a_1'
 import { useParams } from 'react-router-dom'
 import { sortDates } from 'pages/urgudul/urgudul_b/form_b_8'
+import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
 
 
 const labels = {
@@ -129,7 +130,7 @@ export default function UrgudulPreview(props) {
 
     const AlertCtx = useContext(AlertContext)
 
-    const params = useParams()
+    const projectId = useParams().id
 
     useEffect(() => {
         if (props.id) {
@@ -142,8 +143,8 @@ export default function UrgudulPreview(props) {
                 console.log(err.response?.data)
                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
             })
-        } else if (params.id) {
-            axios.get(`projects/${params.id}`, {
+        } else if (projectId) {
+            axios.get(`projects/${projectId}`, {
                 headers: { 'Authorization': getLoggedUserToken() }
             }).then(res => {
                 console.log(res.data)
@@ -229,270 +230,281 @@ export default function UrgudulPreview(props) {
     const getProductName = (id) => products.filter(obj => obj.id === id)[0]?.description_mon
 
     return (
-        <div className="tw-text-sm tw-text-gray-700 tw-text-13px tw-bg-white tw-rounded tw-p-8 tw-mb-20" id="urgudul-preview-page">
-            <button className="tw-mb-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-text-15px tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handlePrint}>
-                <span className="tw-text-sm">Хэвлэх болон PDF-ээр татах</span>
-                <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
-            </button>
+        <div className="tw-overflow-x-auto tw-overflow-y-hidden">
+            <div className="tw-text-sm tw-text-gray-700 tw-text-13px tw-bg-white tw-rounded tw-p-4" id="urgudul-preview-page">
+                <div className="tw-flex tw-justify-between tw-items-center">
+                    <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-text-15px tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handlePrint}>
+                        <span className="tw-text-sm">Хэвлэх болон PDF-ээр татах</span>
+                        <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
+                    </button>
 
-            <div className="preview-container" ref={componentRef}>
-                <div className="tw-text-xl text-center tw-font-medium tw-p-4 tw-mt-2 tw-mb-2">
-                    Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт
-                </div>
-
-                <div className="no-break">
-                    <div className="tw-px-2 tw-pt-2 tw-pb-1.5 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800">
-                        Өргөдлийн дугаар:
-                        <span className="tw-ml-2 tw-text-sm tw-tracking-wide">{project.project_number}</span>
-                    </div>
-                    <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
-                        <Row label={labels.front.project_type} value={project.project_type === 1 ? 'Кластер' : (project.project_type === 0 && 'Аж ахуйн нэгж')} />
-                        <Row label={labels.front.company_name} value={project.company_name} />
-                        <Row label={labels.front.project_name} value={project.project_name} />
+                    <div className="tw-text-15px tw-font-medium tw-pr-2 tw-flex tw-items-center">
+                        Статус:
+                        <span className="tw-text-indigo-600 tw-ml-1 tw-bg-indigo-50 tw-rounded tw-px-1.5 tw-py-0.5">
+                            {statusNames[project.status]}
+                        </span>
                     </div>
                 </div>
 
-                <div className="no-break">
-                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                        A1 - Өргөдөл гаргагч
+                <div className="preview-container" ref={componentRef}>
+                    <div className="tw-text-xl text-center tw-font-medium tw-p-4 tw-mt-3 tw-mb-3">
+                        Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт
                     </div>
-                    <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
-                        <Row label={labels.company.company_name} value={project.company?.company_name} />
-                        <Row label={labels.company.representative_name} value={project.company?.representative_name} />
-                        <Row label={labels.company.representative_position} value={project.company?.representative_position} />
-                        <Row label={labels.company.registered_date} value={project.company?.registered_date} />
-                        <Row label={labels.company.registration_number} value={project.company?.registration_number} />
-                        <Row label={labels.company.official_address} value={project.company?.official_address} />
-                        <Row label={labels.company.locationId} value={getLocationName(project.company?.locationId)} />
-                        {project.company?.locationId === 39 &&
-                            <Row label={labels.company.districtId} value={getDistrictName(project.company?.districtId)} />
-                        }
-                        <Row label={labels.company.telephone} value={project.company?.telephone} />
-                        <Row label={labels.company.handphone} value={project.company?.handphone} />
-                        <Row label={labels.company.email} value={project.company?.email} />
-                        <Row label={labels.company.website} value={project.company?.website} />
-                        <Row label={labels.company.company_size} value={companySizes[project.company?.company_size]} />
-                        <Row label={labels.company.business_sectorId} value={getSectorName(project.company?.business_sectorId)} />
-                        <Row label={labels.company.foreign_invested} value={project.company?.foreign_invested ? 'Тийм' : 'Үгүй'} />
-                        {project.company?.foreign_invested === 1 &&
-                            <>
-                                <Row label={labels.company.invested_countryid} value={getCountryName(project.company?.invested_countryid)} />
-                                <Row label={labels.company.investment_percent} value={project.company?.investment_percent + '%'} />
-                            </>
-                        }
-                        <RowHtml label={labels.company.project_plan} html={project.company?.project_plan} />
-                    </div>
-                </div>
 
-                <div className="no-break">
-                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                        A2 - {isCluster ? 'Кластерын гишүүн байгууллагууд' : 'Аж ахуйн нэгжийг төлөөлөгчид'}
-                    </div>
-                    {isCluster ?
-                        project.clusters?.map((item, i) =>
-                            <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
-                                <Row label={labels.clusters.company_name} value={item.company_name} />
-                                <Row label={labels.clusters.representative_name} value={item.representative_name} />
-                                <Row label={labels.clusters.representative_phone} value={item.representative_phone} />
-                                <Row label={labels.clusters.representative_email} value={item.representative_email} />
-                                <Row label={labels.clusters.business_sectorId} value={getSectorName(item.business_sectorId)} />
-                                <Row label={labels.clusters.company_size} value={companySizes[item.company_size]} />
-                                <Row label={labels.clusters.support_recipient} value={item.support_recipient ? 'Тийм' : 'Үгүй'} />
-                                <RowHtml label={labels.clusters.project_contribution} html={item.project_contribution} borderBottom={true} />
-                                <Row label={labels.clusters.attachedFiles} value={item.attachedFiles[0]?.name} />
-                            </div>
-                        ) :
-                        project.directors?.map((item, i) =>
-                            <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
-                                <Row label={labels.directors.position} value={getOccupationName(item.position)} />
-                                <Row label={labels.directors.director_name} value={item.director_name} />
-                                <Row label={labels.directors.employed_date} value={item.employed_date} />
-                                <RowHtml label={labels.directors.project_contribution} html={item.project_contribution} />
-                            </div>
-                        )
-                    }
-                </div>
-
-                <div className="no-break">
-                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                        A3 - Товч танилцуулга
-                    </div>
-                    <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
-                        <RowHtml label={labels.a3_4.applicant_overview[type]} html={project.applicant_overview} />
-                    </div>
-                </div>
-
-                <div className="no-break">
-                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-t-0 tw-border-gray-800">
-                        A4 - Техникийн туршлага
-                    </div>
-                    <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
-                        <RowHtml label={labels.a3_4.applicant_experience[type]} html={project.applicant_experience} />
-                    </div>
-                </div>
-
-                <div className="no-break">
-                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                        B - Төслийн задаргаа
-                    </div>
-                    <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" style={{ breakInside: 'avoid' }}>
-                        <Row label={labels.b.project_duration} value={`${project.project_duration} сар`} />
-                        <Row label={labels.b.project_start} value={project.project_start} />
-                        <Row label={labels.b.project_end} value={project.project_end} />
-                        <RowHtml label={labels.b.project_introduction} html={project.project_introduction} />
-                        <RowHtml label={labels.b.preperation} html={project.preperation} />
-                        <RowHtml label={labels.b.identified_problems} html={project.identified_problems} />
-                        <RowHtml label={labels.b.suggested_solutions} html={project.suggested_solutions} />
-                        <RowHtml label={labels.b.expected_result} html={project.expected_result} />
-                    </div>
-                </div>
-
-                <div className="no-break">
-                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                        B6 - үйл ажиллагаа
-                    </div>
-                    {project.activities?.map((item, i) =>
-                        <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
-                            <RowHtml label={labels.activities.activity[type]} html={item.activity} borderBottom={true} />
-                            <Row label={labels.activities.budget_cost} value={item.budget_cost?.toLocaleString()} />
+                    <div className="no-break">
+                        <div className="tw-px-2 tw-pt-2 tw-pb-1.5 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800">
+                            Өргөдлийн дугаар:
+                            <span className="tw-ml-2 tw-text-sm tw-tracking-wide">{project.project_number}</span>
                         </div>
-                    )}
-                </div>
-
-                <div className="no-break">
-                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                        B7 - Төслийн үр ашгийн талаар
+                        <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
+                            <Row label={labels.front.project_type} value={project.project_type === 1 ? 'Кластер' : (project.project_type === 0 && 'Аж ахуйн нэгж')} />
+                            <Row label={labels.front.company_name} value={project.company_name} />
+                            <Row label={labels.front.project_name} value={project.project_name} />
+                        </div>
                     </div>
-                    <div className="tw-border tw-border-t-0 tw-border-gray-400">
-                        {Object.entries(labels.benefit).filter(([key, value]) => key !== 'growths_explanation' && key !== 'assumptions').map(([key, value]) =>
-                            <Row label={value} value={project.benefit?.[key] && project.benefit[key].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%'} key={key} />
+
+                    <div className="no-break">
+                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            A1 - Өргөдөл гаргагч
+                        </div>
+                        <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
+                            <Row label={labels.company.company_name} value={project.company?.company_name} />
+                            <Row label={labels.company.representative_name} value={project.company?.representative_name} />
+                            <Row label={labels.company.representative_position} value={project.company?.representative_position} />
+                            <Row label={labels.company.registered_date} value={project.company?.registered_date} />
+                            <Row label={labels.company.registration_number} value={project.company?.registration_number} />
+                            <Row label={labels.company.official_address} value={project.company?.official_address} />
+                            <Row label={labels.company.locationId} value={getLocationName(project.company?.locationId)} />
+                            {project.company?.locationId === 39 &&
+                                <Row label={labels.company.districtId} value={getDistrictName(project.company?.districtId)} />
+                            }
+                            <Row label={labels.company.telephone} value={project.company?.telephone} />
+                            <Row label={labels.company.handphone} value={project.company?.handphone} />
+                            <Row label={labels.company.email} value={project.company?.email} />
+                            <Row label={labels.company.website} value={project.company?.website} />
+                            <Row label={labels.company.company_size} value={companySizes[project.company?.company_size]} />
+                            <Row label={labels.company.business_sectorId} value={getSectorName(project.company?.business_sectorId)} />
+                            <Row label={labels.company.foreign_invested} value={project.company?.foreign_invested ? 'Тийм' : 'Үгүй'} />
+                            {project.company?.foreign_invested === 1 &&
+                                <>
+                                    <Row label={labels.company.invested_countryid} value={getCountryName(project.company?.invested_countryid)} />
+                                    <Row label={labels.company.investment_percent} value={project.company?.investment_percent + '%'} />
+                                </>
+                            }
+                            <RowHtml label={labels.company.project_plan} html={project.company?.project_plan} />
+                        </div>
+                    </div>
+
+                    <div className="no-break">
+                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            A2 - {isCluster ? 'Кластерын гишүүн байгууллагууд' : 'Аж ахуйн нэгжийг төлөөлөгчид'}
+                        </div>
+                        {isCluster ?
+                            project.clusters?.map((item, i) =>
+                                <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
+                                    <Row label={labels.clusters.company_name} value={item.company_name} />
+                                    <Row label={labels.clusters.representative_name} value={item.representative_name} />
+                                    <Row label={labels.clusters.representative_phone} value={item.representative_phone} />
+                                    <Row label={labels.clusters.representative_email} value={item.representative_email} />
+                                    <Row label={labels.clusters.business_sectorId} value={getSectorName(item.business_sectorId)} />
+                                    <Row label={labels.clusters.company_size} value={companySizes[item.company_size]} />
+                                    <Row label={labels.clusters.support_recipient} value={item.support_recipient ? 'Тийм' : 'Үгүй'} />
+                                    <RowHtml label={labels.clusters.project_contribution} html={item.project_contribution} borderBottom={true} />
+                                    <Row label={labels.clusters.attachedFiles} value={item.attachedFiles[0]?.name} />
+                                </div>
+                            ) :
+                            project.directors?.map((item, i) =>
+                                <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
+                                    <Row label={labels.directors.position} value={getOccupationName(item.position)} />
+                                    <Row label={labels.directors.director_name} value={item.director_name} />
+                                    <Row label={labels.directors.employed_date} value={item.employed_date} />
+                                    <RowHtml label={labels.directors.project_contribution} html={item.project_contribution} />
+                                </div>
+                            )
+                        }
+                    </div>
+
+                    <div className="no-break">
+                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            A3 - Товч танилцуулга
+                        </div>
+                        <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
+                            <RowHtml label={labels.a3_4.applicant_overview[type]} html={project.applicant_overview} />
+                        </div>
+                    </div>
+
+                    <div className="no-break">
+                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-t-0 tw-border-gray-800">
+                            A4 - Техникийн туршлага
+                        </div>
+                        <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
+                            <RowHtml label={labels.a3_4.applicant_experience[type]} html={project.applicant_experience} />
+                        </div>
+                    </div>
+
+                    <div className="no-break">
+                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            B - Төслийн задаргаа
+                        </div>
+                        <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" style={{ breakInside: 'avoid' }}>
+                            <Row label={labels.b.project_duration} value={`${project.project_duration} сар`} />
+                            <Row label={labels.b.project_start} value={project.project_start} />
+                            <Row label={labels.b.project_end} value={project.project_end} />
+                            <RowHtml label={labels.b.project_introduction} html={project.project_introduction} />
+                            <RowHtml label={labels.b.preperation} html={project.preperation} />
+                            <RowHtml label={labels.b.identified_problems} html={project.identified_problems} />
+                            <RowHtml label={labels.b.suggested_solutions} html={project.suggested_solutions} />
+                            <RowHtml label={labels.b.expected_result} html={project.expected_result} />
+                        </div>
+                    </div>
+
+                    <div className="no-break">
+                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            B6 - үйл ажиллагаа
+                        </div>
+                        {project.activities?.map((item, i) =>
+                            <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
+                                <RowHtml label={labels.activities.activity[type]} html={item.activity} borderBottom={true} />
+                                <Row label={labels.activities.budget_cost} value={item.budget_cost?.toLocaleString()} />
+                            </div>
                         )}
-                        <RowHtml label={labels.benefit.growths_explanation} html={project.benefit?.growths_explanation} />
-                        <RowHtml label={labels.benefit.assumptions} html={project.benefit?.assumptions} />
                     </div>
-                </div>
 
-                <div className="no-break">
-                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-b-0 tw-border-gray-800 tw-mt-8">
-                        B8 - Төслийн тооцоолол
-                    </div>
-                    {Object.keys(project.exportDatas || {}).length > 0 ?
-                        <table className="tw-border-collapse tw-table-auto tw-w-full">
-                            <thead>
-                                <tr>
-                                    <th className="tw-border tw-border-gray-400"></th>
-                                    {dates.map(date => {
-                                        switch (date) {
-                                            case 'submitDate':
-                                                return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-0.5" key={date}>
-                                                    {`${project.exportDatas?.submitDate?.year || '__'}-${project.exportDatas?.submitDate?.month || '__'}`}
-                                                </th>
-                                            case 'endDate':
-                                                return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-0.5" key={date}>
-                                                    {`${project.exportDatas?.endDate?.year ? project.exportDatas?.endDate?.year : '__'}-${project.exportDatas?.endDate?.month ? project.exportDatas?.endDate?.month : '__'}`}
-                                                </th>
-                                            default:
-                                                return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1" key={date}>
-                                                    {date}
-                                                </th>
-                                        }
-                                    })}
-                                    <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1">Нэгж</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Борлуулалт</td>
-                                    {dates.map((item, i) =>
-                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.sales?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                    )}
-                                    <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
-                                </tr>
-                                <tr>
-                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Ажлын байр</td>
-                                    {dates.map((item, i) =>
-                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.fullTime_workplace?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                    )}
-                                    <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
-                                </tr>
-                                <tr>
-                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Бүтээмж</td>
-                                    {dates.map((item, i) =>
-                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.productivity?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                    )}
-                                    <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
-                                </tr>
-                                <tr>
-                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Экспорт</td>
-                                    {dates.map((item, i) =>
-                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{exportSums[item] !== 0 && exportSums[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                    )}
-                                    <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
-                                </tr>
-                                {project.exportDatas?.export_details?.map((country, i) =>
-                                    <Fragment key={i}>
-                                        <tr>
-                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1" colSpan={dates.length + 2}>{getCountryName(country?.countryId)} - экспорт хийсэн улс</td>
-                                        </tr>
-                                        {country?.export_products?.map((product, j) =>
-                                            <Fragment key={j}>
-                                                <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-3" colSpan={dates.length + 2}>{getProductName(product?.productId)} - экспортын бүтээгдэхүүний ангилал</td>
-                                                <tr>
-                                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-5">{product?.product_name}</td>
-                                                    {dates.map((item, k) =>
-                                                        <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={k}>{product?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                                    )}
-                                                    <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
-                                                </tr>
-                                            </Fragment>
-                                        )}
-                                    </Fragment>
-                                )}
-                            </tbody>
-                        </table>
-                        :
-                        <div className="tw-border tw-border-gray-400 tw-px-2 tw-py-4">
-                            Төслийн тооцоолол хүснэгтийн мэдээлэл оруулаагүй байна.
+                    <div className="no-break">
+                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            B7 - Төслийн үр ашгийн талаар
                         </div>
-                    }
-                </div>
-
-                <div className="no-break">
-                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                        D - Мэдэгдэл
+                        <div className="tw-border tw-border-t-0 tw-border-gray-400">
+                            {Object.entries(labels.benefit).filter(([key, value]) => key !== 'growths_explanation' && key !== 'assumptions').map(([key, value]) =>
+                                <Row label={value} value={project.benefit?.[key] && project.benefit[key].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%'} key={key} />
+                            )}
+                            <RowHtml label={labels.benefit.growths_explanation} html={project.benefit?.growths_explanation} />
+                            <RowHtml label={labels.benefit.assumptions} html={project.benefit?.assumptions} />
+                        </div>
                     </div>
-                    {isCluster ?
-                        project.noticeClusters?.map((item, i) =>
-                            <div className="tw-border tw-border-t-0 tw-border-gray-400" key={i}>
-                                <Row label={labels.noticeClusters.companyId} value={getCompanyName(item.id)} />
-                                <Row label={labels.noticeClusters.representative_positionId} value={getOccupationName(item.id)} />
-                                <Row label={labels.noticeClusters.representative_name} value={item.representative_name} />
-                                <RowImage label={labels.noticeClusters.representative_signature} src={item.representative_signature} />
-                                <Row label={labels.noticeClusters.submitDate} value={item.submitDate} />
+
+                    <div className="no-break">
+                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-b-0 tw-border-gray-800 tw-mt-8">
+                            B8 - Төслийн тооцоолол
+                        </div>
+                        {Object.keys(project.exportDatas || {}).length > 0 ?
+                            <table className="tw-border-collapse tw-table-auto tw-w-full">
+                                <thead>
+                                    <tr>
+                                        <th className="tw-border tw-border-gray-400"></th>
+                                        {dates.map(date => {
+                                            switch (date) {
+                                                case 'submitDate':
+                                                    return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-0.5" key={date}>
+                                                        {`${project.exportDatas?.submitDate?.year || '__'}-${project.exportDatas?.submitDate?.month || '__'}`}
+                                                    </th>
+                                                case 'endDate':
+                                                    return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-0.5" key={date}>
+                                                        {`${project.exportDatas?.endDate?.year ? project.exportDatas?.endDate?.year : '__'}-${project.exportDatas?.endDate?.month ? project.exportDatas?.endDate?.month : '__'}`}
+                                                    </th>
+                                                default:
+                                                    return <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1" key={date}>
+                                                        {date}
+                                                    </th>
+                                            }
+                                        })}
+                                        <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1">Нэгж</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Борлуулалт</td>
+                                        {dates.map((item, i) =>
+                                            <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.sales?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        )}
+                                        <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Ажлын байр</td>
+                                        {dates.map((item, i) =>
+                                            <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.fullTime_workplace?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        )}
+                                        <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Бүтээмж</td>
+                                        {dates.map((item, i) =>
+                                            <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.productivity?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        )}
+                                        <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Экспорт</td>
+                                        {dates.map((item, i) =>
+                                            <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{exportSums[item] !== 0 && exportSums[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        )}
+                                        <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                    </tr>
+                                    {project.exportDatas?.export_details?.map((country, i) =>
+                                        <Fragment key={i}>
+                                            <tr>
+                                                <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1" colSpan={dates.length + 2}>{getCountryName(country?.countryId)} - экспорт хийсэн улс</td>
+                                            </tr>
+                                            {country?.export_products?.map((product, j) =>
+                                                <Fragment key={j}>
+                                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-3" colSpan={dates.length + 2}>{getProductName(product?.productId)} - экспортын бүтээгдэхүүний ангилал</td>
+                                                    <tr>
+                                                        <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-5">{product?.product_name}</td>
+                                                        {dates.map((item, k) =>
+                                                            <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={k}>{product?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                        )}
+                                                        <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                                    </tr>
+                                                </Fragment>
+                                            )}
+                                        </Fragment>
+                                    )}
+                                </tbody>
+                            </table>
+                            :
+                            <div className="tw-border tw-border-gray-400 tw-px-2 tw-py-4">
+                                Төслийн тооцоолол хүснэгтийн мэдээлэл оруулаагүй байна.
                             </div>
-                        ) :
-                        project.noticeCompany?.map((item, i) =>
-                            <div className="tw-border tw-border-t-0 tw-border-gray-400" key={i}>
-                                <Row label={labels.noticeCompany.representative_positionId} value={getOccupationName(item.id)} />
-                                <Row label={labels.noticeCompany.representative_name} value={item.representative_name} />
-                                <RowImage label={labels.noticeCompany.representative_signature} src={item.representative_signature} />
-                                <Row label={labels.noticeCompany.submitDate} value={item.submitDate} />
-                            </div>
-                        )
-                    }
-                </div>
-
-                <div className="no-break">
-                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                        E - Шалгах хуудас
+                        }
                     </div>
-                    <div className="tw-border tw-border-t-0 tw-border-gray-400">
-                        <Row label={labels.e.confirmed} value={project.confirmed ? 'Тийм' : 'Үгүй'} />
-                    </div>
-                </div>
 
-                <div className="tw-text-center tw-text-base tw-p-4 tw-pt-8 tw-font-medium">
-                    {new Date(project.createdAt).toLocaleDateString()}
+                    <div className="no-break">
+                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            D - Мэдэгдэл
+                        </div>
+                        {isCluster ?
+                            project.noticeClusters?.map((item, i) =>
+                                <div className="tw-border tw-border-t-0 tw-border-gray-400" key={i}>
+                                    <Row label={labels.noticeClusters.companyId} value={getCompanyName(item.id)} />
+                                    <Row label={labels.noticeClusters.representative_positionId} value={getOccupationName(item.id)} />
+                                    <Row label={labels.noticeClusters.representative_name} value={item.representative_name} />
+                                    <RowImage label={labels.noticeClusters.representative_signature} src={item.representative_signature} />
+                                    <Row label={labels.noticeClusters.submitDate} value={item.submitDate} />
+                                </div>
+                            ) :
+                            project.noticeCompany?.map((item, i) =>
+                                <div className="tw-border tw-border-t-0 tw-border-gray-400" key={i}>
+                                    <Row label={labels.noticeCompany.representative_positionId} value={getOccupationName(item.id)} />
+                                    <Row label={labels.noticeCompany.representative_name} value={item.representative_name} />
+                                    <RowImage label={labels.noticeCompany.representative_signature} src={item.representative_signature} />
+                                    <Row label={labels.noticeCompany.submitDate} value={item.submitDate} />
+                                </div>
+                            )
+                        }
+                    </div>
+
+                    <div className="no-break">
+                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            E - Шалгах хуудас
+                        </div>
+                        <div className="tw-border tw-border-t-0 tw-border-gray-400">
+                            <Row label={labels.e.confirmed} value={project.confirmed ? 'Тийм' : 'Үгүй'} />
+                        </div>
+                    </div>
+
+                    <div className="tw-text-center tw-text-base tw-p-4 tw-pt-8 tw-font-medium">
+                        {new Date(project.createdAt).toLocaleDateString()}
+                    </div>
                 </div>
             </div>
         </div>

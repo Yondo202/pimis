@@ -122,7 +122,7 @@ export default function EvaluatorsMeetingEdit(props) {
                 Буцах
             </button>
 
-            <div className="tw-bg-white tw-rounded tw-shadow tw-p-2 tw-mt-8 tw-w-full tw-max-w-5xl">
+            <div className="tw-bg-white tw-rounded tw-shadow tw-p-2 tw-mt-6 tw-w-full tw-max-w-5xl">
                 <div className="tw-text-lg tw-font-medium tw-text-center tw-p-2 tw-mt-6">
                     Үнэлгээний хорооны уулзалт
                 </div>

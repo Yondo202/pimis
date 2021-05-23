@@ -35,7 +35,7 @@ const initialState = [
     },
 ]
 
-function UrugudulClusters({ projects }) {
+function UrgudulClusters({ projects }) {
     const [form, setForm] = useState(initialState)
 
     const UrgudulCtx = useContext(UrgudulContext)
@@ -369,4 +369,4 @@ function UrugudulClusters({ projects }) {
     )
 }
 
-export default UrugudulClusters
+export default UrgudulClusters

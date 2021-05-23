@@ -10,6 +10,7 @@ import { animated, config, Transition } from 'react-spring/renderprops'
 import AlertContext from 'components/utilities/alertContext'
 import AnnotationSVG from 'assets/svgComponents/annotationSVG'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
+import { useHistory } from 'react-router'
 
 
 export default function ProjectStatusHandle() {
@@ -88,9 +89,16 @@ export default function ProjectStatusHandle() {
         })
     }
 
+    const history = useHistory()
+
     return (
         <div className="tw-text-gray-700 tw-text-sm tw-pb-10">
-            <div className="tw-p-2 tw-mt-4 tw-bg-white tw-rounded tw-shadow tw-max-w-4xl">
+            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/projects')}>
+                <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
+                Буцах
+            </button>
+
+            <div className="tw-p-2 tw-mt-6 tw-bg-white tw-rounded tw-shadow tw-max-w-4xl">
                 <div className="tw-p-2 tw-mt-6 tw-text-lg tw-font-medium tw-text-center">
                     Төслийн төлвийг тохируулах
                 </div>

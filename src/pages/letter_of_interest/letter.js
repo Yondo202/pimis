@@ -229,8 +229,8 @@ export default function LetterOfInterest() {
 
     return (
         <div className="tw-text-gray-700 tw-text-sm tw-absolute tw-top-0 tw-w-full tw-flex tw-justify-center tw-pt-6 tw-pb-20">
-            <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-py-2 tw-px-4">
-                <div className="tw-flex tw-justify-between tw-py-2 tw-mb-6">
+            <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-py-2 tw-px-4 tw-w-full tw-overflow-x-auto tw-overflow-y-hidden" style={{ maxWidth: 1040 }}>
+                <div className="tw-flex tw-justify-between tw-mt-2 tw-mb-8">
                     <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-3 tw-pr-5 tw-text-sm tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleNavLetterIO}>
                         <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform-gpu tw-rotate-90 tw-mr-1" />
                         Буцах
