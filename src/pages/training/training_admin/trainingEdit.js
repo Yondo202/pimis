@@ -170,11 +170,11 @@ export default function TrainingEdit() {
                </FormElement>
 
                <FormElement label="Сургалт эхлэх өдөр">
-                  <input className="tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-500 tw-px-1.5 tw-bg-transparent" type="date" style={{ width: 146, paddingTop: 3, paddingBottom: 3 }} value={training.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value)} />
+                  <input className="tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-400 tw-px-1.5 tw-bg-transparent" type="date" style={{ width: 146, paddingTop: 3, paddingBottom: 3 }} value={training.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value)} />
                </FormElement>
 
                <FormElement label="Сургалт дуусах өдөр">
-                  <input className="tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-500 tw-px-1.5 tw-bg-transparent" type="date" style={{ width: 146, paddingTop: 3, paddingBottom: 3 }} value={training.end_date ?? ''} onChange={e => handleInput('end_date', e.target.value)} />
+                  <input className="tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-400 tw-px-1.5 tw-bg-transparent" type="date" style={{ width: 146, paddingTop: 3, paddingBottom: 3 }} value={training.end_date ?? ''} onChange={e => handleInput('end_date', e.target.value)} />
                </FormElement>
 
                <FormElement label="Сургалтын цаг" childrenAppend="tw--mt-3" height={72}>
@@ -235,7 +235,7 @@ const FormElement = ({ label, children, type, width, value, keyName, onChange, h
          {children
             ? children
             : <input
-               className="focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-500 tw-border tw-border-gray-400 tw-rounded tw-px-2 tw-py-1 tw-transition-colors tw-bg-transparent tw-max-w-sm"
+               className="focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-400 tw-border tw-border-gray-400 tw-rounded tw-px-2 tw-py-1 tw-transition-colors tw-bg-transparent tw-max-w-sm"
                type={type ?? 'text'}
                style={{ width: width ?? '100%' }}
                value={value ?? ''}
@@ -279,7 +279,7 @@ const SelectChild = ({ options, value, keyName, handleInput }) => {
    return (
       <div className="tw-relative tw-h-20 tw-w-full">
          <button
-            className="tw-w-52 tw-h-7 tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-border tw-border-gray-400 tw-flex tw-items-center focus:tw-ring-2 tw-ring-blue-500 tw-transition-colors"
+            className="tw-w-52 tw-h-7 tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-border tw-border-gray-400 tw-flex tw-items-center focus:tw-ring-2 tw-ring-blue-400 tw-transition-colors"
             onClick={() => setDropOpen(prev => !prev)}
             ref={buttonRef}>
             <span className="tw-mx-2">

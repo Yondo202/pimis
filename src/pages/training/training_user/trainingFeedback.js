@@ -149,7 +149,7 @@ export default function TrainingFeedback() {
                Сургалтанд бүртгүүлэх үед имэйлээр ирсэн нууц кодоо оруулна уу.
             </div>
             <div className="tw-flex tw-items-center tw-p-2 tw-justify-center tw-text-13px tw-mt-2">
-               <input className="tw-py-1 tw-px-2 tw-rounded focus:tw-outline-none tw-border tw-border-gray-400 tw-transition-colors tw-mr-2 tw-w-24 focus:tw-ring-1 tw-ring-blue-600" type="text" value={passcode} onChange={e => setPasscode(e.target.value)} />
+               <input className="tw-py-1 tw-px-2 tw-rounded focus:tw-outline-none tw-border tw-border-gray-400 tw-transition-colors tw-mr-2 tw-w-24 focus:tw-ring-1 tw-ring-blue-400" type="text" value={passcode} onChange={e => setPasscode(e.target.value)} />
                <button className={`${buttonClass} tw-flex tw-items-center`} onClick={handleSubmitPasscode}>
                   Оруулах
                   <Transition
