@@ -140,8 +140,8 @@ function TableOne(props) {
                             </ul>
                         </div>
                         <div className="btnPar">
-                            <button onClick={()=>{clickHandles("twice"); closeModal()}} class="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
-                            <button onClick={closeModal} class="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
+                            <button onClick={()=>{clickHandles("twice"); closeModal()}} className="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
+                            <button onClick={closeModal} className="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
                         </div>
                       </div>
                   </div>

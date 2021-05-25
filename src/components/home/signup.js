@@ -186,7 +186,7 @@ function Signup() {
                                 <div className="btnPar">
                                     <span style={{color:color1}} className="text">Дээрх анхааруулгатай танилцан хүлээн зөвшөөрч байвал ✔ дарна уу..</span>
                                    <input name="confirm" id="GetcheckBtn2" className="check" type="checkbox" />
-                                   <button onClick={closeModal2} class="btn btn-primary">Уншиж танилцсан</button>
+                                   <button onClick={closeModal2} className="btn btn-primary">Уншиж танилцсан</button>
                                 </div>
 
                               </div>

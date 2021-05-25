@@ -35,9 +35,10 @@ function AlertDialog() {
     const show = alert.open
 
     useEffect(() => {
-        show && setTimeout(() => {
-            setAlert({ ...alert, open: false })
+        const timer = setTimeout(() => {
+            if (show === true) closeAlert()
         }, 3000)
+        return () => clearTimeout(timer)
     }, [alert])
 
     const closeAlert = () => {
@@ -51,12 +52,12 @@ function AlertDialog() {
             leave={{ bottom: window.innerWidth < 640 ? '-32px' : '-48px' }}>
             {show => show && (props =>
                 <animated.div style={props} className="tw-fixed tw-w-full tw-flex tw-justify-center tw-z-50">
-                    <div className={`tw-inline-flex tw-items-center tw-flex-grow tw-mx-2 tw-text-sm sm:tw-max-w-lg sm:tw-mx-0 tw-shadow-md tw-rounded-lg tw-p-1.5 ${classTheme.bgColor[alert.variant]}`}>
+                    <div className={`tw-inline-flex tw-items-center tw-flex-grow tw-mx-2 tw-text-sm sm:tw-max-w-lg sm:tw-mx-0 tw-shadow-md tw-rounded-lg tw-p-1.5 ${classTheme.bgColor[alert.variant]} tw-transition-colors`}>
                         <p className="tw-ml-2 tw-flex-grow tw-text-center tw-text-white tw-font-semibold">
                             {alert.msg}
                         </p>
-                        <button className={`tw-ml-2 tw-rounded-lg focus:tw-outline-none ${classTheme.btnColor[alert.variant]} active:${classTheme.btnActiveColor[alert.variant]}`} onClick={closeAlert}>
-                            <CloseSVG className={`tw-w-6 tw-h-6 ${classTheme.svgColor[alert.variant]}`} />
+                        <button className={`tw-ml-2 tw-rounded-lg focus:tw-outline-none ${classTheme.btnColor[alert.variant]} active:${classTheme.btnActiveColor[alert.variant]} tw-transition-colors`} onClick={closeAlert}>
+                            <CloseSVG className={`tw-w-6 tw-h-6 ${classTheme.svgColor[alert.variant]} tw-transition-colors`} />
                         </button>
                     </div>
                 </animated.div >

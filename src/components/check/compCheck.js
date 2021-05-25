@@ -225,8 +225,8 @@ function CompCheck() {
                                         </ul>
                                     </div>
                                     <div className="btnPar">
-                                        <button onClick={()=>{clickHandles("twice"); closeModal("shuud")}} class="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
-                                        <button onClick={()=>closeModal(1)} class="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
+                                        <button onClick={()=>{clickHandles("twice"); closeModal("shuud")}} className="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
+                                        <button onClick={()=>closeModal(1)} className="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
                                     </div>
                                   </div>
                               </div>
@@ -247,8 +247,8 @@ function CompCheck() {
 
                                     </div>
                                     <div className="btnPar">
-                                        <button class="btn btn-primary" onClick={()=>FinalClick(true)}>Тийм </button>
-                                        <button class="btn btn-primary" onClick={()=>FinalClick(false)}>Үгүй </button>
+                                        <button className="btn btn-primary" onClick={()=>FinalClick(true)}>Тийм </button>
+                                        <button className="btn btn-primary" onClick={()=>FinalClick(false)}>Үгүй </button>
                                     </div>
                                   </div>
                                   

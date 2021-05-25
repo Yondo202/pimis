@@ -6,7 +6,6 @@ import MainForm from "./containers/checkComp/MainForm";
 import ResetPassword from "./components/home/ResetPassword";
 import Email from "./components/emailSend/Email"
 import SEctor from 'containers/users/Sector'
-import TrainingNavigatorUser from "pages/training/training_user/TrainingNavigator";
 import TrainingFrontPage from "pages/training/frontPage";
 
 const UnAuthContent = () => {

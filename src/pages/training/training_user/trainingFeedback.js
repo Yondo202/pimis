@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router'
 import axios from 'axiosbase'
-import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import FormRichText from 'components/urgudul_components/formRichText'
 import { titleClass, buttonClass } from './trainingsList'
@@ -67,17 +65,20 @@ export default function TrainingFeedback() {
       })
    }
 
-   const categories = new Set()
+   let category
+   let categoryOrder
+   const categoriesArr = []
    for (const question of questionnaire) {
-      categories.add(question.category)
+      if (category !== question.category || categoryOrder !== question.category_order) {
+         categoriesArr.push({
+            category: question.category,
+            categoryOrder: question.category_order,
+         })
+         category = question.category
+         categoryOrder = question.category_order
+      }
    }
-   if (categories.has('Бичвэр')) categories.delete('Бичвэр')
-   const categroiesArr = [...categories].sort((a, b) => {
-      const orderA = questionnaire.find(question => question.category === a).category_order
-      const orderB = questionnaire.find(question => question.category === b).category_order
-      return orderA - orderB
-   })
-   categroiesArr.push('Бичвэр')
+   categoriesArr.sort((a, b) => a.categoryOrder - b.categoryOrder)
 
    // const handleInput = (key, value, index) => setFeedback(prev => {
    //    const newState = [...prev]
@@ -119,6 +120,7 @@ export default function TrainingFeedback() {
          setErrorMsg('')
       }).catch(err => {
          console.error(err.response)
+         setTraining({})
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээллийг татаж чадсангүй.' })
       })
    }
@@ -256,8 +258,8 @@ export default function TrainingFeedback() {
                </tbody>
             </table> */}
 
-         {categroiesArr.map((category, i) =>
-            <FormCategory category={category} feedback={feedback} setFeedback={setFeedback} key={category} index={i} />
+         {categoriesArr.map((categoryObj, i) =>
+            <FormCategory category={categoryObj.category} feedback={feedback} setFeedback={setFeedback} key={categoryObj.categoryOrder} index={i} />
          )}
 
          <div className="tw-flex tw-justify-end">
@@ -314,9 +316,11 @@ const FormCategory = ({ category, feedback, setFeedback, index }) => {
 
    return (
       <div className="tw-mt-5">
-         <div className="tw-text-15px tw-font-medium tw-text-blue-500 tw-pl-2 tw-tracking-wide">
-            {index + 1}. {category}
-         </div>
+         {category !== 'Бичвэр' &&
+            <div className="tw-text-15px tw-font-medium tw-text-blue-500 tw-pl-2 tw-tracking-wide">
+               {index + 1}. {category}
+            </div>
+         }
 
          {feedbackFiltered.map(question => {
             const rowIndex = feedback.findIndex(item => item.category === category && item.description === question.description)
@@ -328,11 +332,11 @@ const FormCategory = ({ category, feedback, setFeedback, index }) => {
                </div>
 
                {category === 'Бичвэр'
-                  ? <div className="tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-p-2 tw-pl-5 tw-mr-3" style={{ minHeight: 160, maxHeight: 786 }}>
+                  ? <div className="tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-p-2 tw-pl-5 tw-pb-3 tw-mr-3" style={{ minHeight: 160, maxHeight: 512 }}>
                      <FormRichText modules="small" value={feedback[rowIndex].comment} name="comment" id={rowIndex} setForm={handleInput} />
                   </div>
 
-                  : <div className="tw-flex tw-flex-col tw-items-center tw-font-medium tw-mt-2 tw-mb-1 tw-text-13px tw-tracking-wide tw-text-gray-600 tw-px-4">
+                  : <div className="tw-flex tw-flex-col tw-items-center tw-font-medium tw-mt-2 tw-mb-2 tw-text-13px tw-tracking-wide tw-text-gray-600 tw-px-4">
                      <div className="tw-max-w-sm tw-flex tw-justify-between tw-w-full">
                         <span className="tw-mr-1 tw-whitespace-nowrap">Огт санал нийлэхгүй</span>
                         <span className="tw-ml-1 tw-whitespace-nowrap">Бүрэн санал нийлнэ</span>

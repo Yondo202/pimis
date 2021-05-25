@@ -6,6 +6,10 @@
     --border-color: #6B7280;
 }
 
+.quill .ql-stroke {
+    stroke: var(--label-color);
+}
+
 .quill .ql-toolbar {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
