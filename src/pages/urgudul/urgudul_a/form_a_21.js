@@ -200,7 +200,7 @@ function UrgudulClusters({ projects }) {
                 return true
             case '<p><br></p>':
                 if (type === 'quill') return true
-                break
+                else return false
             default:
                 return false
         }

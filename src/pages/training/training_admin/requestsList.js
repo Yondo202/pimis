@@ -8,6 +8,8 @@ import { HeaderCell } from './trainingsList'
 import { Item } from 'devextreme-react/tab-panel'
 import { RenderRichText } from './registeredUsersList'
 import './style.css'
+import ResetSVG from 'assets/svgComponents/resetSVG'
+import FilterSVG from 'assets/svgComponents/filterSVG'
 
 export default function TrainingRequestsList() {
    const [requests, setRequests] = useState([])
@@ -52,10 +54,59 @@ export default function TrainingRequestsList() {
       return () => window.removeEventListener('resize', handleResize)
    }, [])
 
+   const [params, setParams] = useState({
+      startDate: null,
+      endDate: null,
+   })
+
+   const handleInputParams = (key, value) => setParams(prev => ({ ...prev, [key]: value }))
+
+   const handleResetDates = () => setParams(prev => ({ ...prev, startDate: null, endDate: null }))
+
+   const handleApplyFilter = () => {
+      axios.get('trainings/requests', {
+         headers: { Authorization: getLoggedUserToken() },
+         params: params,
+      }).then(res => {
+         console.log(res)
+         setRequests(res.data.data)
+      }).catch(err => {
+         console.error(err.response)
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Мэдээллийг татаж чадсангүй.' })
+      })
+   }
+
    return (
-      <div className="tw-rounded tw-shadow-md tw-bg-white tw-w-full tw-p-2 tw-pb-14" ref={containerRef}>
+      <div className="tw-rounded tw-shadow-md tw-bg-white tw-w-full tw-p-2 tw-pb-14 tw-text-gray-700 tw-text-sm" ref={containerRef}>
          <div className="tw-text-center tw-p-2 tw-mt-6 tw-text-lg tw-font-semibold">
             Захиалгат сургалтын хүсэлтүүд
+         </div>
+
+         <div className="tw-mt-4 tw-text-13px">
+            <div className="tw-flex tw-items-center tw-mt-2 tw-pl-1.5">
+               <span className="tw-font-medium tw-mr-2">Илгээсэн хугацаа:</span>
+               <div className="tw-relative tw-p-0.5">
+                  <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.startDate} onChange={e => handleInputParams('startDate', e.target.value)} />
+                  {!params.startDate &&
+                     <span className="tw-absolute tw-left-1 tw-bg-white tw-py-0.5 tw-pl-2 tw-pr-1 tw-text-gray-500" style={{ width: 102, top: 5 }}>Эхлэх хугацаа:</span>
+                  }
+               </div>
+               <div className="tw-relative tw-p-0.5 tw-ml-3">
+                  <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.endDate} onChange={e => handleInputParams('endDate', e.target.value)} />
+                  {!params.endDate &&
+                     <span className="tw-absolute tw-left-1 tw-bg-white tw-py-0.5 tw-pl-2 tw-pr-1 tw-text-gray-500" style={{ top: 5 }}>Дуусах хугацаа:</span>
+                  }
+               </div>
+               <button className="tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-ml-2 tw-rounded tw-p-1 tw-flex tw-items-center focus:tw-outline-none" onClick={handleResetDates}>
+                  <ResetSVG className="tw-w-4 tw-h-4" />
+               </button>
+            </div>
+            <div className="tw-mt-2 tw-pl-2">
+               <button className="tw-flex tw-items-center tw-px-3 tw-py-1 tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white focus:tw-outline-none tw-rounded" onClick={handleApplyFilter}>
+                  <span className="">Шүүх</span>
+                  <FilterSVG className="tw-w-4 tw-h-4 tw-ml-1" />
+               </button>
+            </div>
          </div>
 
          <DataGrid

@@ -30,7 +30,9 @@ export default function LetterUpload() {
             params: { userId: userId },
          }).then(res => {
             console.log(res)
-            setForm(res.data.data)
+            if (res.data.data !== null && res.data.data !== undefined) {
+               setForm(res.data.data)
+            }
          }).catch(err => {
             console.error(err.response)
          })
@@ -40,7 +42,9 @@ export default function LetterUpload() {
             params: { file: true },
          }).then(res => {
             console.log(res)
-            setForm(res.data.data)
+            if (res.data.data !== null && res.data.data !== undefined) {
+               setForm(res.data.data)
+            }
          }).catch(err => {
             console.error(err.response)
          })

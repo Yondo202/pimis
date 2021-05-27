@@ -4,7 +4,7 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 import { useHistory } from 'react-router'
-import { Transition, animated, Spring } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops'
 import CalendarSVG from 'assets/svgComponents/calendarSVG'
 import ClockSVG from 'assets/svgComponents/clockSVG'
 import LocationMarkerSVG from 'assets/svgComponents/locationMarker'
@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom'
 import ModalWindow from 'components/modal_window/modalWindow'
 import ExclamationSVG from 'assets/svgComponents/exclamationSVG'
 
-export default function TrainingList() {
+export default function TrainingsList() {
    const [trainings, setTrainings] = useState([])
 
    const AlertCtx = useContext(AlertContext)
@@ -22,7 +22,7 @@ export default function TrainingList() {
 
    useEffect(() => {
       axios.get('trainings', {
-         params: { user: true }
+         params: { status: 'active' },
       }).then(res => {
          console.log(res)
          setTrainings(res.data.data)

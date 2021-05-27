@@ -59,11 +59,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             <MenuItem>
               <Link to="/training-requests">Захиалгат сургалтын хүсэлтүүд</Link>
             </MenuItem>
-            <SubMenu title="Тайлангууд">
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.1 </MenuItem>
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.2 </MenuItem>
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.3 </MenuItem>
-            </SubMenu>
+            <MenuItem>
+              <Link to="/training-report">Тайлан</Link>
+            </MenuItem>
           </SubMenu>
 
           <SubMenu title="Тохиргоо" icon={<MdSettings />}>

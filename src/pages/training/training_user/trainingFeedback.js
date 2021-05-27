@@ -54,7 +54,7 @@ export default function TrainingFeedback() {
       }).then(res => {
          console.log(res)
          setFeedback(res.data.data)
-         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын үнэлгээг хадгаллаа.' })
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын үнэлгээг хүлээж авлаа.' })
       }).catch(err => {
          console.error(err.response)
          if (err.response.status === 490) {
@@ -121,7 +121,7 @@ export default function TrainingFeedback() {
       }).catch(err => {
          console.error(err.response)
          setTraining({})
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээллийг татаж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээллийг олж чадсангүй.' })
       })
    }
 
