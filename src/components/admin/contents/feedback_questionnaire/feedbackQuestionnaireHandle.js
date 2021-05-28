@@ -251,7 +251,7 @@ const EditableCategory = ({ category, categoryOrder, handleChangeCategory }) => 
          {catEditting
             ? <input className={`${inputClass} tw-flex-grow tw-ml-3`} style={inputStyle} value={catEdit} onChange={e => setCatEdit(e.target.value)} onBlur={handleBlurCat} autoFocus />
             : <span className="tw-flex tw-items-center tw-ml-3">
-               <span className={categoryIsText && 'tw-text-blue-500'}>
+               <span className={categoryIsText ? 'tw-text-blue-500' : ''}>
                   {category}
                </span>
                <PenAltSVG className={`${svgClass} tw-ml-1`} onClick={handleFocusCat} />

@@ -14,6 +14,7 @@ export default function TrainingNavigatorUser() {
       enter: { opacity: 1 },
       leave: { display: 'none' },
       initial: { opacity: 1 },
+      config: { tension: 300, clamp: true },
    })
 
    return transitionsPages.map(({ item, props, key }) =>

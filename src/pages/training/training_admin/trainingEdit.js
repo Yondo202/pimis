@@ -21,6 +21,7 @@ loadMessages({
 
 export default function TrainingEdit() {
    const [training, setTraining] = useState(initialState)
+   const [organizations, setOrganizations] = useState([])
 
    const handleInput = (key, value) => setTraining(prev => ({ ...prev, [key]: value }))
 
@@ -40,6 +41,13 @@ export default function TrainingEdit() {
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтыг татаж чадсангүй.' })
          })
       }
+      axios.get('trainings/organizations', {
+         headers: { Authorization: getLoggedUserToken() },
+      }).then(res => {
+         setOrganizations(res.data.data)
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын байгууллагуудыг татаж чадсангүй.' })
+      })
    }, [])
 
    const handleSubmit = () => {
@@ -49,10 +57,10 @@ export default function TrainingEdit() {
          }).then(res => {
             console.log(res)
             setTraining(res.data.data)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллэл нэмэгдлээ' })
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллийг шинэчиллээ.' })
          }).catch(err => {
             console.error(err.response)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалт үүсгэж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээллийг засаж чадсангүй.' })
          })
       }
       else {
@@ -62,10 +70,10 @@ export default function TrainingEdit() {
             console.log(res)
             setTraining(res.data.data)
             setTrainingId(res.data.data.id)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллэл нэмэгдлээ' })
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллэл нэмэгдлээ.' })
          }).catch(err => {
             console.error(err.response)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалт засаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээл нэмж чадсангүй.' })
          })
       }
    }
@@ -137,7 +145,7 @@ export default function TrainingEdit() {
          </button>
 
          <div className="tw-rounded tw-shadow-md tw-bg-white tw-max-w-5xl tw-w-full tw-pt-8 tw-mt-6">
-            <div className="tw-text-center tw-p-2 tw-mb-8 tw-text-lg tw-font-semibold">
+            <div className="tw-text-center tw-p-2 tw-mb-8 tw-text-lg tw-font-medium">
                Сургалтын мэдээлэл оруулах
             </div>
 
@@ -189,7 +197,9 @@ export default function TrainingEdit() {
                   </div>
                </FormElement>
 
-               <FormElement label="Сургалт зохион байгуулах байгууллага" value={training.organizer} keyName="organizer" onChange={handleInput} />
+               <FormElement label="Сургалт зохион байгуулах байгууллага">
+                  <SelectIdChild options={organizations} displayName="organization_name" value={training.trainerOrganizationId} keyName="trainerOrganizationId" handleInput={handleInput} />
+               </FormElement>
 
                <FormElement label="Байршил, сургалт зохион байгуулагдах хаяг" value={training.location} keyName="location" onChange={handleInput} />
 
@@ -219,13 +229,13 @@ const initialState = {
    end_date: null,
    start_time: null,
    end_time: null,
-   organizer: null,
+   trainerOrganizationId: null,
    location: null,
    participant_number: null,
    scope: null,
 }
 
-const FormElement = ({ label, children, type, width, value, keyName, onChange, height, childrenAppend }) => (
+export const FormElement = ({ label, children, type, width, value, keyName, onChange, height, childrenAppend }) => (
    <div className="tw-relative tw-pt-4 tw-pl-4 tw-pr-6 tw-pb-2 tw-w-full tw-flex tw-flex-wrap sm:tw-flex-nowrap odd:tw-bg-gray-50">
       <div className="tw-font-medium tw-w-full sm:tw-w-2/5 tw-mb-2 tw-text-gray-600">
          {label}:
@@ -324,6 +334,61 @@ const SelectChild = ({ options, value, keyName, handleInput }) => {
                      Бусад:
                   </span>
                   <input className="tw-w-full tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none tw-py-1 tw-px-1.5 tw-ml-3 focus:tw-ring-2 tw-ring-blue-500 tw-max-w-sm tw-bg-transparent" type="text" value={value ?? ''} onChange={e => handleInput(keyName, e.target.value)} />
+               </animated.div>
+            )}
+         </Transition>
+      </div>
+   )
+}
+
+const SelectIdChild = ({ options, displayName, value, keyName, handleInput }) => {
+   const [dropOpen, setDropOpen] = useState(false)
+
+   const buttonRef = useRef()
+   const dropDownRef = useRef()
+
+   const handleClickOutside = (e) => {
+      if (!buttonRef.current?.contains(e.target) && !dropDownRef.current?.contains(e.target)) {
+         setDropOpen(false)
+      }
+   }
+
+   useEffect(() => {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+   })
+
+   return (
+      <div className="tw-relative tw-h-20 tw-w-full">
+         <button
+            className="tw-w-52 tw-h-7 tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-border tw-border-gray-400 tw-flex tw-items-center focus:tw-ring-2 tw-ring-blue-400 tw-transition-colors"
+            onClick={() => setDropOpen(prev => !prev)}
+            ref={buttonRef}>
+            <span className="tw-mx-2">
+               {options.includes(value)
+                  ? value
+                  : 'Сонгох'
+               }
+            </span>
+            <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-auto tw-mr-1" />
+         </button>
+
+         <Transition
+            items={dropOpen}
+            from={{ height: 0, opacity: 0 }}
+            enter={{ height: 'auto', opacity: 1 }}
+            leave={{ height: 0, opacity: 0 }}
+            config={{ tension: 300 }}>
+            {item => item && (anims =>
+               <animated.div
+                  className="tw-absolute tw-top-8 tw-left-0 tw-w-52 tw-rounded tw-shadow-md tw-z-10 tw-border tw-border-gray-400 tw-bg-white tw-overflow-hidden tw-divide-y tw-divide-dashed"
+                  style={anims}
+                  ref={dropDownRef}>
+                  {options.map(option =>
+                     <div className="tw-cursor-pointer tw-py-1 tw-px-1.5 hover:tw-bg-blue-500 hover:tw-text-white tw-transition-colors" key={option} onClick={() => { }}>
+                        {option}
+                     </div>
+                  )}
                </animated.div>
             )}
          </Transition>

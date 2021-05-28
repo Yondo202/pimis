@@ -90,7 +90,7 @@ export default function TrainingRequest() {
 
             <TreeSelect data={sectors} label="Харьялагдах салбар" displayName="bdescription_mon" value={request.business_sectorId} name="business_sectorId" handleChange={handleInput} invalid={validate && checkInvalid(request.business_sectorId)} />
 
-            <FormInline label="Улсын бүртгэлийн дугаар" type="text" value={request.company_registration_number ?? ''} name="company_registration_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" invalid={validate && checkInvalid(request.company_registration_number)} />
+            <FormInline label="Улсын бүртгэлийн дугаар" type="number" value={request.company_registration_number ?? ''} name="company_registration_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" invalid={validate && checkInvalid(request.company_registration_number)} />
 
             <FormInline label="Сургалтад хамрагдах ажилчдын тоо" type="number" value={request.participant_number ?? ''} name="participant_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" invalid={validate && checkInvalid(request.participant_number)} />
 

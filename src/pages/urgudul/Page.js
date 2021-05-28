@@ -21,7 +21,7 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import DocAddSVG from 'assets/svgComponents/docAddSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
-import { config, Transition } from 'react-spring/renderprops'
+import { Transition } from 'react-spring/renderprops'
 import UrgudulPreview from './preview/Preview'
 import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
 
@@ -63,6 +63,7 @@ function UrgudulNavigator(props) {
         from: { opacity: 0 },
         enter: { opacity: 1 },
         leave: { display: 'none' },
+        config: { tension: 300, clamp: true },
     })
 
     const [modalOpen, setModalOpen] = useState(props.preloaded ? false : true)

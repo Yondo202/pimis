@@ -59,7 +59,7 @@ export default function TrainingRegisteredUsersList() {
          </button>
 
          <div className="tw-rounded tw-shadow-md tw-bg-white tw-w-full tw-p-2 tw-mt-6 tw-pb-14">
-            <div className="tw-text-center tw-p-2 tw-mt-6 tw-text-lg tw-font-semibold">
+            <div className="tw-text-center tw-p-2 tw-mt-6 tw-text-lg tw-font-medium">
                <span className="tw-italic tw-mr-2">"{trainingName}"</span>
                cургалтанд бүртгүүлсэн хэрэглэгчид
             </div>

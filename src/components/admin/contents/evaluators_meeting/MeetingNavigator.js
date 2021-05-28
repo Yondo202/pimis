@@ -7,16 +7,15 @@ import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import './style.css'
 
-
-export default function EvaluatorsMeetingsNavigator() {
+export default function EvaluatorsMeetingNavigator() {
     const location = useLocation()
 
     const transitionsPages = useTransition(location, location => location.pathname, {
-        from: { opacity: 0, transform: location.pathname === '/meetings' ? 'translateX(-200px)' : 'translateX(200px)' },
+        from: { opacity: 0, transform: location.pathname === '/meetings' ? 'translateX(-320px)' : 'translateX(320px)' },
         enter: { opacity: 1, transform: 'translateX(0)' },
-        leave: { opacity: 0, transform: location.pathname === '/meetings' ? 'translateX(200px)' : 'translateX(-200px)' },
+        leave: { opacity: 0, transform: location.pathname === '/meetings' ? 'translateX(320px)' : 'translateX(-320px)' },
         initial: { opacity: 1 },
-        config: { tension: 300 },
+        config: { tension: 300, clamp: true },
     })
 
     const [projects, setProjects] = useState([])

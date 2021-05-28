@@ -78,7 +78,7 @@ export default function TrainingRequestsList() {
 
    return (
       <div className="tw-rounded tw-shadow-md tw-bg-white tw-w-full tw-p-2 tw-pb-14 tw-text-gray-700 tw-text-sm" ref={containerRef}>
-         <div className="tw-text-center tw-p-2 tw-mt-6 tw-text-lg tw-font-semibold">
+         <div className="tw-text-center tw-p-2 tw-mt-6 tw-text-lg tw-font-medium">
             Захиалгат сургалтын хүсэлтүүд
          </div>
 
@@ -137,6 +137,7 @@ export default function TrainingRequestsList() {
             <Column dataField="business_sectorId" caption="Харьялагдах салбар" calculateCellValue={calculateCellSector} headerCellRender={HeaderCell} minWidth={240} />
             <Column dataField="company_registration_number" caption="Улсын бүртгэлийн дугаар" headerCellRender={HeaderCell} />
             <Column dataField="participant_number" caption="Сургалтад хамрагдах ажилчдын тоо" headerCellRender={HeaderCell} minWidth={100} />
+            <Column dataField="createdAt" dataType="date" caption="Ирүүлсэн хугацаа" headerCellRender={HeaderCell} />
 
             <MasterDetail enabled={true} component={MasterDetails} />
          </DataGrid>

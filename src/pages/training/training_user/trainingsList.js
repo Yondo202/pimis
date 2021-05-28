@@ -183,7 +183,7 @@ const TrainingCard = ({ training, handleDownloadFile, setModalOpenIsFull }) => {
       <div className="tw-cursor-pointer tw-mt-4 tw-rounded-md tw-shadow-md tw-p-4" onClick={() => setExpanded(prev => !prev)}>
          <div className="tw-flex">
             <div className="tw-flex-grow">
-               <div className="tw-flex tw-items-center tw-text-blue-500 tw-font-semibold tw-text-15px">
+               <div className="tw-flex tw-items-center tw-text-blue-500 tw-font-medium tw-text-15px">
                   {training.training_name}
                </div>
                <div className="tw-flex tw-items-center tw-font-medium tw-mt-1">

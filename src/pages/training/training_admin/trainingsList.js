@@ -55,7 +55,7 @@ export default function TrainingsList() {
 
    return (
       <div className="tw-absolute tw-rounded tw-shadow-md tw-bg-white tw-w-full tw-p-2 tw-text-gray-700 tw-text-sm">
-         <div className="tw-text-center tw-p-2 tw-mt-6 tw-text-lg tw-font-semibold">
+         <div className="tw-text-center tw-p-2 tw-mt-6 tw-text-lg tw-font-medium">
             Сургалтууд
          </div>
 
@@ -67,13 +67,13 @@ export default function TrainingsList() {
             <div className="tw-flex tw-items-center tw-mt-2 tw-pl-1.5">
                <span className="tw-font-medium tw-mr-2">Хугацаа:</span>
                <div className="tw-relative tw-p-0.5">
-                  <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.startDate} onChange={e => handleInputParams('startDate', e.target.value)} />
+                  <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.startDate ?? ''} onChange={e => handleInputParams('startDate', e.target.value)} />
                   {!params.startDate &&
                      <span className="tw-absolute tw-left-1 tw-bg-white tw-py-0.5 tw-pl-2 tw-pr-1 tw-text-gray-500" style={{ width: 102, top: 5 }}>Эхлэх хугацаа:</span>
                   }
                </div>
                <div className="tw-relative tw-p-0.5 tw-ml-3">
-                  <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.endDate} onChange={e => handleInputParams('endDate', e.target.value)} />
+                  <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.endDate ?? ''} onChange={e => handleInputParams('endDate', e.target.value)} />
                   {!params.endDate &&
                      <span className="tw-absolute tw-left-1 tw-bg-white tw-py-0.5 tw-pl-2 tw-pr-1 tw-text-gray-500" style={{ top: 5 }}>Дуусах хугацаа:</span>
                   }
@@ -112,8 +112,8 @@ export default function TrainingsList() {
             <Column dataField="module_file.name" caption="Сургалтын агуулга, файлаар" cellRender={data => <ButtonFliePreview data={data} />} headerCellRender={HeaderCell} width={160} />
             <Column dataField="training_type" caption="Сургалтын төрөл" headerCellRender={HeaderCell} />
             <Column dataField="training_method" caption="Сургалтын хэлбэр" headerCellRender={HeaderCell} />
-            <Column dataField="start_date" caption="Сургалт эхлэх өдөр" headerCellRender={HeaderCell} />
-            <Column dataField="end_date" caption="Сургалт дуусах өдөр" headerCellRender={HeaderCell} />
+            <Column dataField="start_date" dataType="date" caption="Сургалт эхлэх өдөр" headerCellRender={HeaderCell} />
+            <Column dataField="end_date" dataType="date" caption="Сургалт дуусах өдөр" headerCellRender={HeaderCell} />
             <Column dataField="start_time" caption="Сургалтын цаг" calculateCellValue={calculateCellValueTime} headerCellRender={HeaderCell} />
             <Column dataField="organizer" caption="Сургалт зохион байгуулах байгууллага" headerCellRender={HeaderCell} />
             <Column dataField="location" caption="Байршил, сургалт зохион байгуулагдах хаяг" headerCellRender={HeaderCell} />

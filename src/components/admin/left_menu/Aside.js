@@ -77,6 +77,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             </SubMenu>
             <SubMenu title="Сургалт">
               <MenuItem>
+                <Link to="/trainer-organizations">Сургалт зохион байгуулагч байгууллагууд</Link>
+              </MenuItem>
+              <MenuItem>
                 <Link to="/training-questionnaire">Сургалтын үнэлгээний асуумжууд</Link>
               </MenuItem>
             </SubMenu>
