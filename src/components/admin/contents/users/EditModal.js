@@ -15,8 +15,9 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
 
     useEffect(() => {
         const final = [];
-        Role.map(el => { if (el.value === parent.role) { el["code"] = true; } else { el["code"] = false; } final.push(el); })
+        Role.forEach(el => { if (el.value === parent.role) { el["code"] = true; } else { el["code"] = false; } final.push(el); })
         setPer(final);
+        if (parent.trainerOrganizationId !== null && parent.trainerOrganizationId !== undefined) { setTrainerId(parent.trainerOrganizationId) }
     }, [showModal]);
 
     const animation = useSpring({
@@ -31,14 +32,14 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
         setBtnSpin(true);
         e.preventDefault();
         let getInp = document.querySelectorAll('.getMainInp22'); let cond = [];
-        let arr = Array.from(getInp); const final = {}; arr.map(el => { final[el.name] = el.value; if (el.value !== "") { cond.push(el.name); } });
+        let arr = Array.from(getInp); const final = {}; arr.forEach(el => { final[el.name] = el.value; if (el.value !== "") { cond.push(el.name); } });
         let getInp2 = document.querySelectorAll('.getRoles');
-        let arr2 = Array.from(getInp2); arr2.map(el => { if (el.checked === true) { final[el.name] = el.value; cond.push(el.name); } });
+        let arr2 = Array.from(getInp2); arr2.forEach(el => { if (el.checked === true) { final[el.name] = el.value; cond.push(el.name); } });
 
         if (parent.role === "edpuser") {
             let permission = []; let smObj = {};
             let getInp3 = document.querySelectorAll('.getPermission');
-            let arr3 = Array.from(getInp3); arr3.map(el => {
+            let arr3 = Array.from(getInp3); arr3.forEach(el => {
                 if (el.checked === true) { smObj[el.value] = true } else { smObj[el.value] = false }
             });
             permission.push(smObj); final["permission"] = permission
@@ -64,7 +65,7 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
 
     const roleHandle = (event) => {
         const final = []
-        Role.map(el => { if (el.value === event.target.value) { el["code"] = true; } else { el["code"] = false; } final.push(el); })
+        Role.forEach(el => { if (el.value === event.target.value) { el["code"] = true; } else { el["code"] = false; } final.push(el); })
         setPer(final);
     }
 

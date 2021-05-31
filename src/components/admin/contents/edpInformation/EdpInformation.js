@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { InputStyle,textColor,NextBtn } from 'components/theme';
+import { InputStyle, textColor, NextBtn } from 'components/theme';
 import { FiArrowRight } from 'react-icons/fi';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { ImLocation2 } from 'react-icons/im';
 import { GrMail } from 'react-icons/gr';
-import { FaRegistered,FaRegWindowRestore,FaFax,FaPhoneAlt, } from 'react-icons/fa';
-import {AiOutlineSend} from 'react-icons/ai';
+import { FaRegistered, FaRegWindowRestore, FaFax, FaPhoneAlt, } from 'react-icons/fa';
+import { AiOutlineSend } from 'react-icons/ai';
 import axios from 'axiosbase';
 import AccessToken from 'context/accessToken';
 import UserContext from 'context/UserContext'
@@ -14,145 +14,146 @@ import UserContext from 'context/UserContext'
 
 function EdpInformation() {
     const ctx = useContext(UserContext);
-    const [ Data, setData ] = useState(null);
-    const [ deleteInf, setDeleteInf ] = useState(false);
-    const [ spnBtn, setSpnBtn ] = useState(false);
-    const [ opacity2, setOpacity2] = useState("0");
-    const [ FinalErrorText, setFinalErrorText] = useState("");
+    const [Data, setData] = useState(null);
+    const [deleteInf, setDeleteInf] = useState(false);
+    const [spnBtn, setSpnBtn] = useState(false);
+    const [opacity2, setOpacity2] = useState("0");
+    const [FinalErrorText, setFinalErrorText] = useState("");
 
-    useEffect(async()=>{
-        await axios.get(`edp-info`,{ headers: { Authorization: AccessToken()}}).then(res=>{
-            if(res.data.data){ setData(res.data.data); }
+    useEffect(() => {
+        axios.get(`edp-info`, { headers: { Authorization: AccessToken() } }).then(res => {
+            if (res.data.data) { setData(res.data.data); }
         })
-    },[spnBtn])
+    }, [spnBtn])
 
-    const clickHandles = () =>{
+    const clickHandles = () => {
         let inp = document.querySelectorAll('.getInput'); let arr = Array.from(inp); let final = {};
-        arr.map(el=>{
-            if(el.value){
+        arr.forEach(el => {
+            if (el.value) {
                 final[el.name] = el.value;
-                el.classList =- " red";
+                el.classList = - " red";
                 el.classList += " getInput";
-            }else{
+            } else {
                 el.classList += " red";
             }
         });
-        if(Object.keys(final).length < 7){
+        if (Object.keys(final).length < 7) {
             setOpacity2("1"); setFinalErrorText("Мэдээллийг гүйцэд оруулна уу...");
-        }else{
+        } else {
             setSpnBtn(true);
             // if(!Data){ final["manager_signature"] = imgData }else{ final["manager_signature"] = Data.manager_signature }
             setOpacity2("0"); setFinalErrorText("");
-            axios.post(`edp-info`, final, { headers: { Authorization: AccessToken()} }).then(res=>{
-                console.log(res, " res"); ctx.alertText('green', "Амжилттай хадаглагдлаа", true);  setSpnBtn(false);
-            }).catch(err=>{ setSpnBtn(false); ctx.alertText('orange', "Алдаа гарлаа", true); console.log(err.response.data) });
+            axios.post(`edp-info`, final, { headers: { Authorization: AccessToken() } }).then(res => {
+                console.log(res, " res"); ctx.alertText('green', "Амжилттай хадаглагдлаа", true); setSpnBtn(false);
+            }).catch(err => { setSpnBtn(false); ctx.alertText('orange', "Алдаа гарлаа", true); console.log(err.response.data) });
         }
     }
-    
-    const onChangeHandle = (el) =>{
-        let change= Data[el.target.name]= el.target.value; let final = { change, ...Data }; setData(final);
+
+    const onChangeHandle = (el) => {
+        let change = Data[el.target.name] = el.target.value; let final = { change, ...Data }; setData(final);
     }
-    const deletHandle = () =>{ setDeleteInf(true); setTimeout(()=>{ setDeleteInf(false)},5000) }
-    const deleteHandleData =(el) =>{ 
-        axios.delete(`edp-info/delete/${el}`, { headers: { Authorization:AccessToken() } }).then((res)=>{ ctx.alertText('green', "Устгагдсан", true);  setSpnBtn(true); setSpnBtn(false); 
-        }).catch((err)=>{ ctx.alertText('orange', "Алдаа гарлаа", true); })
-     }
+    const deletHandle = () => { setDeleteInf(true); setTimeout(() => { setDeleteInf(false) }, 5000) }
+    const deleteHandleData = (el) => {
+        axios.delete(`edp-info/delete/${el}`, { headers: { Authorization: AccessToken() } }).then((res) => {
+            ctx.alertText('green', "Устгагдсан", true); setSpnBtn(true); setSpnBtn(false);
+        }).catch((err) => { ctx.alertText('orange', "Алдаа гарлаа", true); })
+    }
 
     return (
         <EdpInfComp>
             <div className="contentPar">
                 <div className="TitlePar">
-                     <div className="title">Төслийн мэдээлэл</div>
-                    {Data&&<div onClick={deletHandle} className="DeleteBtn"><TiDeleteOutline /> Устгах</div>} 
-                    {deleteInf&&<div className="verification"><div onClick={()=>deleteHandleData(Data?.id)} className="yeas">Устгах</div><div onClick={()=>setDeleteInf(false)} className="no">Үгүй</div> </div>}
+                    <div className="title">Төслийн мэдээлэл</div>
+                    {Data && <div onClick={deletHandle} className="DeleteBtn"><TiDeleteOutline /> Устгах</div>}
+                    {deleteInf && <div className="verification"><div onClick={() => deleteHandleData(Data?.id)} className="yeas">Устгах</div><div onClick={() => setDeleteInf(false)} className="no">Үгүй</div> </div>}
                 </div>
 
-                {Data? (<div className="content">
+                {Data ? (<div className="content">
                     <div className="inpPar">
                         <div className="inputs">
                             {/* <span className="inpTitle">Төслийн нэгжийн албан ёсны нэр</span> */}
-                           <div className="inpp"><div className="svgPar"><FaRegWindowRestore /></div><InputStyle className="inpChild"><input value={Data.comp_name} onChange={onChangeHandle} className="getInput" name="comp_name" type="text" placeholder="Төслийн нэгжийн албан ёсны нэр" /> <div className="line" /> </InputStyle> </div> 
+                            <div className="inpp"><div className="svgPar"><FaRegWindowRestore /></div><InputStyle className="inpChild"><input value={Data.comp_name} onChange={onChangeHandle} className="getInput" name="comp_name" type="text" placeholder="Төслийн нэгжийн албан ёсны нэр" /> <div className="line" /> </InputStyle> </div>
                         </div>
                         <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><FiArrowRight /></div><InputStyle className="inpChild"><input value={Data.manager_name} onChange={onChangeHandle} className="getInput" name="manager_name" type="text" placeholder="Төслийн зохицуулагчийн нэр" /> <div className="line" /> </InputStyle> </div> 
-                        </div>
-                    </div>
-
-                    <div className="inpPar">
-                        <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><FaRegistered /></div><InputStyle className="inpChild"><input value={Data.register} onChange={onChangeHandle} className="getInput" type="text" name="register" placeholder="Регистр ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div> 
-                        </div>
-                        <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><FaFax /></div><InputStyle className="inpChild"><input value={Data.fax} onChange={onChangeHandle} className="getInput" type="text" name="fax" placeholder="Fax - аа оруулна уу..." /> <div className="line" /> </InputStyle> </div> 
+                            <div className="inpp"><div className="svgPar"><FiArrowRight /></div><InputStyle className="inpChild"><input value={Data.manager_name} onChange={onChangeHandle} className="getInput" name="manager_name" type="text" placeholder="Төслийн зохицуулагчийн нэр" /> <div className="line" /> </InputStyle> </div>
                         </div>
                     </div>
 
                     <div className="inpPar">
                         <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><FaPhoneAlt /></div><InputStyle className="inpChild"><input value={Data.phone} onChange={onChangeHandle} className="getInput" type="text" name="phone" placeholder="Утасны дугаар..." /> <div className="line" /> </InputStyle> </div> 
+                            <div className="inpp"><div className="svgPar"><FaRegistered /></div><InputStyle className="inpChild"><input value={Data.register} onChange={onChangeHandle} className="getInput" type="text" name="register" placeholder="Регистр ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div>
                         </div>
                         <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><GrMail /></div><InputStyle className="inpChild"><input value={Data.email} onChange={onChangeHandle} className="getInput" type="text" name="email" placeholder="Email - ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div> 
+                            <div className="inpp"><div className="svgPar"><FaFax /></div><InputStyle className="inpChild"><input value={Data.fax} onChange={onChangeHandle} className="getInput" type="text" name="fax" placeholder="Fax - аа оруулна уу..." /> <div className="line" /> </InputStyle> </div>
                         </div>
                     </div>
 
                     <div className="inpPar">
                         <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><ImLocation2 /></div><InputStyle className="inpChild"><input value={Data.address} onChange={onChangeHandle} className="getInput" name="address" type="text" placeholder="Хаяг..." /> <div className="line" /> </InputStyle> </div> 
+                            <div className="inpp"><div className="svgPar"><FaPhoneAlt /></div><InputStyle className="inpChild"><input value={Data.phone} onChange={onChangeHandle} className="getInput" type="text" name="phone" placeholder="Утасны дугаар..." /> <div className="line" /> </InputStyle> </div>
                         </div>
                         <div className="inputs">
-                           {/* <div className="inpp"><div className="svgPar"><GrMail /></div><InputStyle className="inpChild"><input type="text" placeholder="Email - ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div>  */}
+                            <div className="inpp"><div className="svgPar"><GrMail /></div><InputStyle className="inpChild"><input value={Data.email} onChange={onChangeHandle} className="getInput" type="text" name="email" placeholder="Email - ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div>
+                        </div>
+                    </div>
+
+                    <div className="inpPar">
+                        <div className="inputs">
+                            <div className="inpp"><div className="svgPar"><ImLocation2 /></div><InputStyle className="inpChild"><input value={Data.address} onChange={onChangeHandle} className="getInput" name="address" type="text" placeholder="Хаяг..." /> <div className="line" /> </InputStyle> </div>
+                        </div>
+                        <div className="inputs">
+                            {/* <div className="inpp"><div className="svgPar"><GrMail /></div><InputStyle className="inpChild"><input type="text" placeholder="Email - ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div>  */}
                         </div>
                     </div>
                     {/* <Signature url={Data.manager_signature} setImgData={setImgData} />  */}
                 </div>)
-                 :(<div className="content">
-                    <div className="inpPar">
-                        <div className="inputs">
-                            {/* <span className="inpTitle">Төслийн нэгжийн албан ёсны нэр</span> */}
-                           <div className="inpp"><div className="svgPar"><FaRegWindowRestore /></div><InputStyle className="inpChild"><input className="getInput" name="comp_name" type="text" placeholder="Төслийн нэгжийн албан ёсны нэр" /> <div className="line" /> </InputStyle> </div> 
+                    : (<div className="content">
+                        <div className="inpPar">
+                            <div className="inputs">
+                                {/* <span className="inpTitle">Төслийн нэгжийн албан ёсны нэр</span> */}
+                                <div className="inpp"><div className="svgPar"><FaRegWindowRestore /></div><InputStyle className="inpChild"><input className="getInput" name="comp_name" type="text" placeholder="Төслийн нэгжийн албан ёсны нэр" /> <div className="line" /> </InputStyle> </div>
+                            </div>
+                            <div className="inputs">
+                                <div className="inpp"><div className="svgPar"><FiArrowRight /></div><InputStyle className="inpChild"><input className="getInput" name="manager_name" type="text" placeholder="Төслийн зохицуулагчийн нэр" /> <div className="line" /> </InputStyle> </div>
+                            </div>
                         </div>
-                        <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><FiArrowRight /></div><InputStyle className="inpChild"><input className="getInput" name="manager_name" type="text" placeholder="Төслийн зохицуулагчийн нэр" /> <div className="line" /> </InputStyle> </div> 
-                        </div>
-                    </div>
 
-                    <div className="inpPar">
-                        <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><FaRegistered /></div><InputStyle className="inpChild"><input className="getInput" type="text" name="register" placeholder="Регистр ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div> 
+                        <div className="inpPar">
+                            <div className="inputs">
+                                <div className="inpp"><div className="svgPar"><FaRegistered /></div><InputStyle className="inpChild"><input className="getInput" type="text" name="register" placeholder="Регистр ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div>
+                            </div>
+                            <div className="inputs">
+                                <div className="inpp"><div className="svgPar"><FaFax /></div><InputStyle className="inpChild"><input className="getInput" type="text" name="fax" placeholder="Fax - аа оруулна уу..." /> <div className="line" /> </InputStyle> </div>
+                            </div>
                         </div>
-                        <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><FaFax /></div><InputStyle className="inpChild"><input className="getInput" type="text" name="fax" placeholder="Fax - аа оруулна уу..." /> <div className="line" /> </InputStyle> </div> 
-                        </div>
-                    </div>
 
-                    <div className="inpPar">
-                        <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><FaPhoneAlt /></div><InputStyle className="inpChild"><input className="getInput" type="text" name="phone" placeholder="Утасны дугаар..." /> <div className="line" /> </InputStyle> </div> 
+                        <div className="inpPar">
+                            <div className="inputs">
+                                <div className="inpp"><div className="svgPar"><FaPhoneAlt /></div><InputStyle className="inpChild"><input className="getInput" type="text" name="phone" placeholder="Утасны дугаар..." /> <div className="line" /> </InputStyle> </div>
+                            </div>
+                            <div className="inputs">
+                                <div className="inpp"><div className="svgPar"><GrMail /></div><InputStyle className="inpChild"><input className="getInput" type="text" name="email" placeholder="Email - ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div>
+                            </div>
                         </div>
-                        <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><GrMail /></div><InputStyle className="inpChild"><input className="getInput" type="text" name="email" placeholder="Email - ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div> 
-                        </div>
-                    </div>
 
-                    <div className="inpPar">
-                        <div className="inputs">
-                           <div className="inpp"><div className="svgPar"><ImLocation2 /></div><InputStyle className="inpChild"><input className="getInput" name="address" type="text" placeholder="Хаяг..." /> <div className="line" /> </InputStyle> </div> 
+                        <div className="inpPar">
+                            <div className="inputs">
+                                <div className="inpp"><div className="svgPar"><ImLocation2 /></div><InputStyle className="inpChild"><input className="getInput" name="address" type="text" placeholder="Хаяг..." /> <div className="line" /> </InputStyle> </div>
+                            </div>
+                            <div className="inputs">
+                                {/* <div className="inpp"><div className="svgPar"><GrMail /></div><InputStyle className="inpChild"><input type="text" placeholder="Email - ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div>  */}
+                            </div>
                         </div>
-                        <div className="inputs">
-                           {/* <div className="inpp"><div className="svgPar"><GrMail /></div><InputStyle className="inpChild"><input type="text" placeholder="Email - ээ оруулна уу..." /> <div className="line" /> </InputStyle> </div>  */}
-                        </div>
-                    </div>
-                    {/* <Signature url={null} setImgData={setImgData} />  */}
-                </div>)}
+                        {/* <Signature url={null} setImgData={setImgData} />  */}
+                    </div>)}
 
                 <div className="buttonPar">
-                    <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                    <NextBtn onClick={()=>clickHandles()} style={spnBtn===false? { width:"30%" }:{ width:"10%" }}  className="SubmitButton" type="button">{spnBtn===false?(<>Хадгалах <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
+                    <div style={{ opacity: `${opacity2}` }} className="errtext">{FinalErrorText}</div>
+                    <NextBtn onClick={() => clickHandles()} style={spnBtn === false ? { width: "30%" } : { width: "10%" }} className="SubmitButton" type="button">{spnBtn === false ? (<>Хадгалах <div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>) : <img src="/gif1.gif" alt="spin" />}</NextBtn>
                 </div>
             </div>
 
-           
+
         </EdpInfComp>
     )
 }
@@ -164,7 +165,7 @@ const animate = keyframes`
     100% { transform:translateY(0px);opacity:1; }
 `
 const EdpInfComp = styled.div`
-    color: rgb(${textColor });
+    color: rgb(${textColor});
     display:flex;
     align-items:center;
     justify-content:center;
@@ -287,7 +288,7 @@ const EdpInfComp = styled.div`
                             background-color:rgb(225,235,235);
                             svg{
                                 font-size:16px;
-                                color:rgba(${textColor },0.6);
+                                color:rgba(${textColor},0.6);
                             }
                         }
                         .inpChild{
@@ -304,7 +305,7 @@ const EdpInfComp = styled.div`
                     .inpTitle{
                         font-size:12.5px;
                         font-weight:500;
-                        color: rgba(${textColor },0.7);
+                        color: rgba(${textColor},0.7);
                     }
                 }
                 .A1{

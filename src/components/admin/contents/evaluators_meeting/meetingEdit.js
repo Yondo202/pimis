@@ -8,7 +8,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import { statusWord } from './meetingsList'
-import { useQuery } from 'components/utilities/useQueryLocation'
+import useQuery from 'components/utilities/useQueryLocation'
 
 
 export default function EvaluatorsMeetingEdit(props) {
@@ -25,10 +25,8 @@ export default function EvaluatorsMeetingEdit(props) {
             headers: { Authorization: getLoggedUserToken() },
             params: { condition: 'approved' },
         }).then(res => {
-            console.log(res.data)
             setApprovedProjects(res.data.data)
         }).catch(err => {
-            console.log(err.response?.data)
         })
 
         if (meetingId) {
@@ -36,13 +34,10 @@ export default function EvaluatorsMeetingEdit(props) {
                 headers: { Authorization: getLoggedUserToken() },
                 params: { id: meetingId }
             }).then(res => {
-                console.log(res.data)
                 setDate(res.data.data?.[0]?.sdate)
                 setSelectedEvaluators(res.data.data?.[0]?.members)
                 setSelectedProjects(res.data.data?.[0]?.projects)
                 setStatus(res.data.data?.[0]?.status)
-            }).catch(err => {
-                console.log(err.response?.data)
             })
         }
     }, [])
@@ -83,10 +78,8 @@ export default function EvaluatorsMeetingEdit(props) {
                 }, {
                     headers: { Authorization: getLoggedUserToken() },
                 }).then(res => {
-                    console.log(res.data)
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өөрчлөлтийг хадгаллаа.' })
                 }).catch(err => {
-                    console.log(err.response?.data)
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
             } else {
@@ -98,11 +91,9 @@ export default function EvaluatorsMeetingEdit(props) {
                 }, {
                     headers: { Authorization: getLoggedUserToken() },
                 }).then(res => {
-                    console.log(res.data)
                     setMeetingId(res.data.data?.id)
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Уулзалтыг нэмлээ.' })
                 }).catch(err => {
-                    console.log(err.response?.data)
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
             }
@@ -204,7 +195,7 @@ export default function EvaluatorsMeetingEdit(props) {
                 </div>
 
                 <div className="tw-flex tw-justify-center">
-                    <button className="tw-py-1.5 tw-px-8 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-10 tw-mb-6" onClick={handleSubmit}>
+                    <button className="tw-py-1.5 tw-px-8 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-10 tw-mb-6 tw-text-13px" onClick={handleSubmit}>
                         Хадгалах
                     </button>
                 </div>

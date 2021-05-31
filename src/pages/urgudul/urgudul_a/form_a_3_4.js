@@ -51,13 +51,11 @@ function UrgudulOverview({ projects }) {
                     }
                 })
                     .then(res => {
-                        console.log(res.data)
                         UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Танилцуулга мэдээлэл хадгалагдлаа.' })
                         history.push('/urgudul/5')
                     })
                     .catch(err => {
-                        console.log(err.response?.data)
                         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                     })
             } else {
@@ -92,7 +90,6 @@ function UrgudulOverview({ projects }) {
         axios.get(`projects/${id}`, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res)
             const loadProject = res.data.data ?? {}
             setForm({
                 applicant_overview: loadProject.applicant_overview || null,
@@ -100,7 +97,6 @@ function UrgudulOverview({ projects }) {
             })
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
         }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
         })
     }

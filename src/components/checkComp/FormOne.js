@@ -1,9 +1,9 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components'
 import FormTwo from './FormTwo';
 import { Link, animateScroll as scroll } from "react-scroll";
-import axios from'axios';
-import {fontFamily2,fontFamily} from '../theme'
+import axios from 'axios';
+import { fontFamily2, fontFamily } from '../theme'
 
 function FormOne() {
   const [childStyle, setChildStyle] = React.useState('0');
@@ -12,59 +12,62 @@ function FormOne() {
   const [responseTextscale, setResponseTextscale] = React.useState("0");
   const [dataFinal, setData] = React.useState({});
   const [dataDetal, setDataDetal] = React.useState([]);
-  
-  useEffect(async () => {
-    const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=1&pageSize=3' );
-    const Data1 = result.data.data.docs[0]
-    setData(Data1);
-    setDataDetal(Data1.questiondetails)
-  },[]);
 
-  const clickHandle = (element) =>{
-            let rs = document.querySelectorAll(".inpTest"); let arr = Array.from(rs); let finalOne = {};
-          arr.map(element=>{
-              if(element.checked === true){ let field = element.name; let value = element.value; finalOne[field] = value }
-          });
-          if(finalOne.o1ne === "91"){
-            setResponseText("Түншлэлийн хөтөлбөрт хамрагдах боломжгүй байна...");
-            setResponseTextscale("1");
-            setResTextstyle("red");
-            setChildStyle("0");
-            scroll.scrollTo(0);
-          }else if(finalOne.o1ne === undefined){
-            setResponseText("Та хариултаас сонголтоо хийнэ үү...");
-            setResponseTextscale("1");
-            setResTextstyle("red");
-            setChildStyle("0");
-            scroll.scrollTo(0);
-          } else{
-            setChildStyle("1");
-            setResponseText("d");
-            setResponseTextscale("0");
-            setResTextstyle("black");
-            scroll.scrollTo(610);
-          }
+  useEffect(() => {
+    void async function fetch() {
+      const result = await axios.get('http://192.168.88.78:3000/api/questions?page=1&pageSize=3');
+      const Data1 = result.data.data.docs[0]
+      setData(Data1);
+      setDataDetal(Data1.questiondetails)
+    }()
+  }, []);
+
+  const clickHandle = (element) => {
+    let rs = document.querySelectorAll(".inpTest"); let arr = Array.from(rs); let finalOne = {};
+    arr.forEach(element => {
+      if (element.checked === true) { let field = element.name; let value = element.value; finalOne[field] = value }
+    });
+    if (finalOne.o1ne === "91") {
+      setResponseText("Түншлэлийн хөтөлбөрт хамрагдах боломжгүй байна...");
+      setResponseTextscale("1");
+      setResTextstyle("red");
+      setChildStyle("0");
+      scroll.scrollTo(0);
+    } else if (finalOne.o1ne === undefined) {
+      setResponseText("Та хариултаас сонголтоо хийнэ үү...");
+      setResponseTextscale("1");
+      setResTextstyle("red");
+      setChildStyle("0");
+      scroll.scrollTo(0);
+    } else {
+      setChildStyle("1");
+      setResponseText("d");
+      setResponseTextscale("0");
+      setResTextstyle("black");
+      scroll.scrollTo(610);
+    }
   }
 
-    return (
-        <Component >
-          <div className="formOneParent">
-            <div className="headerPar" style={{color:`${resTextstyle}`}} >1. {dataFinal.description}<span className="tseg">*</span></div>
-              {dataDetal.map((el,i)=>{
-                return( 
-                   <div className="radioPar" key={i}>
-                    <input className="getinput inpTest" type="radio" tabIndex={dataFinal.code}  name="o1ne" value={el.id}/>
-                    <label >{el.description}</label>
-                 </div> 
-                 )})}
-              <div className="errText" style={{transform:`scale(${responseTextscale})`}} >{responseText}</div>
-              <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>clickHandle()}>
-                <button onClick={clickHandle} className="TestButton">Шалгах</button>
-              </Link>
-          </div>
-            <FormTwo SoloStyle={childStyle} />
-        </Component>
-    )
+  return (
+    <Component >
+      <div className="formOneParent">
+        <div className="headerPar" style={{ color: `${resTextstyle}` }} >1. {dataFinal.description}<span className="tseg">*</span></div>
+        {dataDetal.map((el, i) => {
+          return (
+            <div className="radioPar" key={i}>
+              <input className="getinput inpTest" type="radio" tabIndex={dataFinal.code} name="o1ne" value={el.id} />
+              <label >{el.description}</label>
+            </div>
+          )
+        })}
+        <div className="errText" style={{ transform: `scale(${responseTextscale})` }} >{responseText}</div>
+        <Link activeClass="active" to="section1" spy={true} smooth={true} offset={-70} duration={0} onClick={() => clickHandle()}>
+          <button onClick={clickHandle} className="TestButton">Шалгах</button>
+        </Link>
+      </div>
+      <FormTwo SoloStyle={childStyle} />
+    </Component>
+  )
 }
 
 export default FormOne

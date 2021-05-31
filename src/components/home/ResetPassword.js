@@ -1,138 +1,136 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components";
-import {BiLockOpen} from 'react-icons/bi'
-import {IoEyeOutline} from 'react-icons/io5'
-import {AiOutlineSend} from 'react-icons/ai'
+import { BiLockOpen } from 'react-icons/bi'
+import { IoEyeOutline } from 'react-icons/io5'
+import { AiOutlineSend } from 'react-icons/ai'
 import Ghost from '../Ghost'
-import {Link,useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "../../axiosbase";
-import {fontFamily} from '../theme'
+import { fontFamily } from '../theme'
 import PasswordInducator from './PasswordIndicator'
 
 const isNumberRegx = /\d/;
-const specialCharacterRegx = /[ ~@#$%^&*()_+\-=[\]{;':\\|,.<>\/?]/;
+const specialCharacterRegx = /[ ~@#$%^&*()_+\-=[\]{;':\\|,.<>/?]/;
 
 function ResetPassword() {
-    const {id}  = useParams();
-    const [scale, setScale] = useState("0");
-    const [errText, setErrText] = useState("Мэдээлэл дутуу байна");
-    const [color, setColor ] = useState("red");
-    const [HomeBtn, setHomeBtn] = useState("0");
-    const [SendBtn, setSendBtn] = useState("1");
-    const [hidden, setHidden ] = useState(true);
-    const [hidden2, setHidden2 ] = useState(true);
+  const { id } = useParams();
+  const [scale, setScale] = useState("0");
+  const [errText, setErrText] = useState("Мэдээлэл дутуу байна");
+  const [color, setColor] = useState("red");
+  const [HomeBtn, setHomeBtn] = useState("0");
+  const [SendBtn, setSendBtn] = useState("1");
+  const [hidden, setHidden] = useState(true);
+  const [hidden2, setHidden2] = useState(true);
 
-    const toggleShow=()=> { setHidden( !hidden );}
-    const toggleShow2=()=> { setHidden2( !hidden2 ); }
+  const toggleShow = () => { setHidden(!hidden); }
+  const toggleShow2 = () => { setHidden2(!hidden2); }
 
-    // const ["password" ToggleIcon ] = usePasswordToggle();
-    const [passwordFocused, setPasswordFocused] = useState(false);
-    const [password, setPassword] = useState("");
-    const [passwordValidity, setPasswordValidity  ] = useState({
-      minCar: null,
-      number: null,
-      specialChar: null
+  // const ["password" ToggleIcon ] = usePasswordToggle();
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordValidity, setPasswordValidity] = useState({
+    minCar: null,
+    number: null,
+    specialChar: null
+  });
+
+  const onChangePassword = password => {
+    setPassword(password);
+
+    setPasswordValidity({
+      minChar: password.length >= 8 ? true : false,
+      number: isNumberRegx.test(password) ? true : false,
+      specialChar: specialCharacterRegx.test(password) ? true : false
     });
+  }
 
-    const onChangePassword =password =>{
-      setPassword(password);
+  const handleClick = async (e) => {
+    e.preventDefault();
 
-      setPasswordValidity({
-        minChar: password.length >=8 ? true : false,
-        number: isNumberRegx.test(password) ? true : false, 
-        specialChar: specialCharacterRegx.test(password) ? true : false
-      });
+    console.log(passwordValidity.minChar, "min chaR1");
+    console.log(passwordValidity.number, "min chaR2");
+    console.log(passwordValidity.specialChar, "min chaR3");
+
+    let rs = document.querySelectorAll(".Password");
+    let arr = Array.from(rs);
+    let finalOne = {};
+    arr.forEach(element => {
+      let field = element.name;
+      let value = element.value;
+      finalOne[field] = value;
+    });
+    if (finalOne.password !== finalOne.passwordagain) {
+      setErrText("Нууц үг адил биш байна..");
+      setScale("1");
+      setColor("red");
+      setHomeBtn("0");
+    } else if (passwordValidity.minChar === false || passwordValidity.number === false || passwordValidity.specialChar === false) {
+      setErrText("Нууц үгийн нөхцөлөө шалгана уу..");
+      setScale("1");
+      setColor("red");
+      setHomeBtn("0");
+    } else {
+      await axios.post('users/reset-password', { password: finalOne.password, resetToken: id })
+        .then((res) => {
+          console.log(res, "forget res");
+          console.log(res.data.success, "forget res success");
+          if (res.data.success === true) {
+            setErrText(" ✓ Нууц үг амжилттай солигдлоо");
+            setScale("1");
+            setColor("green");
+            setHomeBtn("1");
+            setSendBtn("0");
+          }
+        }).catch((e) => {
+          console.log(e.response.data.error.message, "err Response");
+          // setErrmsg(e.response.data.error.message);
+          if (e.response.data.error.message) {
+            setErrText(e.response.data.error.message);
+            setScale("1");
+            setColor("red");
+            setHomeBtn("0");
+          }
+        });
     }
+  }
 
-        const handleClick = async (e) =>{
-          e.preventDefault();
+  return (
+    <Component className="container-fluid">
+      <Ghost />
+      <form onSubmit={handleClick}>
+        <div className="formOneParent">
+          <div className="headPar">
+            <span className="headText">Нууц үг сэргээх</span>
+          </div>
+          <div className="inputPar">
+            <div className="name">
+              <BiLockOpen />
+              <div className="form__group">
+                <input onFocus={() => setPasswordFocused(true)} onChange={e => onChangePassword(e.target.value)} type={hidden ? "password" : "text"} className="Password form__field" value={password} placeholder="Регистерийн дугаар" name="password" required />
+                <label htmlFor="name" className="form__label">Шинэ нууц үг</label>
+              </div>
+              <div className="toggleSvg" onClick={toggleShow}><IoEyeOutline /></div>
+            </div>
+            {passwordFocused && <PasswordInducator validity={passwordValidity} />}
+            <div className="name">
+              <BiLockOpen />
+              <div className="form__group">
+                <input type={hidden2 ? "password" : "text"} className="Password form__field" placeholder="Регистерийн дугаар" name="passwordagain" required />
+                <label htmlFor="name" className="form__label">Нууц үгээ давтаж оруулна уу?</label>
+              </div>
+              <div className="toggleSvg" onClick={toggleShow2}><IoEyeOutline /></div>
+            </div>
+          </div>
+        </div>
 
-          console.log(passwordValidity.minChar, "min chaR1");
-          console.log(passwordValidity.number, "min chaR2");
-          console.log(passwordValidity.specialChar, "min chaR3");
-
-             let rs = document.querySelectorAll(".Password");
-             let arr = Array.from(rs);
-             let finalOne = {};
-            arr.map(element=>{
-                  let field = element.name;
-                  let value = element.value;
-                  finalOne[field] = value;
-            });
-            if(finalOne.password !== finalOne.passwordagain){
-              setErrText("Нууц үг адил биш байна..");
-              setScale("1");
-              setColor("red");
-              setHomeBtn("0");
-            }else if(passwordValidity.minChar === false || passwordValidity.number === false || passwordValidity.specialChar === false){
-              setErrText("Нууц үгийн нөхцөлөө шалгана уу..");
-              setScale("1");
-              setColor("red");
-              setHomeBtn("0");
-            }else{
-                await axios.post('users/reset-password',  { password: finalOne.password,resetToken:id })
-                .then((res)=>{
-                console.log(res, "forget res");
-                console.log(res.data.success, "forget res success");
-                if(res.data.success === true){
-                  setErrText(" ✓ Нууц үг амжилттай солигдлоо");
-                  setScale("1");
-                  setColor("green");
-                  setHomeBtn("1");
-                  setSendBtn("0");
-                }
-              }).catch((e)=>{
-                console.log(e.response.data.error.message, "err Response");
-                // setErrmsg(e.response.data.error.message);
-                if(e.response.data.error.message){
-                  setErrText(e.response.data.error.message);
-                  setScale("1");
-                  setColor("red");
-                  setHomeBtn("0");
-                }
-              });
-            }
-      }
-
-      // console.log(id, "params id");
-
-    return (
-        <Component className="container-fluid">
-          <Ghost />
-            <form onSubmit={handleClick}>
-                <div className="formOneParent">
-                <div className="headPar">
-                  <span className="headText">Нууц үг сэргээх</span>
-                  </div>
-                    <div className="inputPar">
-                        <div className="name">
-                            <BiLockOpen />
-                                <div className="form__group">
-                                    <input onFocus={()=> setPasswordFocused(true)} onChange={e => onChangePassword(e.target.value)} type={hidden ? "password" : "text"} className="Password form__field" value={password} placeholder="Регистерийн дугаар" name="password" required />
-                                    <label htmlFor="name" className="form__label">Шинэ нууц үг</label>
-                                </div>
-                                <div className="toggleSvg" onClick={toggleShow}><IoEyeOutline /></div>
-                        </div>
-                          {passwordFocused && <PasswordInducator validity={passwordValidity} />}
-                        <div className="name">
-                            <BiLockOpen />
-                                <div className="form__group">
-                                    <input type={hidden2 ? "password" : "text"}  className="Password form__field"  placeholder="Регистерийн дугаар" name="passwordagain" required />
-                                    <label htmlFor="name" className="form__label">Нууц үгээ давтаж оруулна уу?</label>
-                                </div>
-                                <div className="toggleSvg" onClick={toggleShow2}><IoEyeOutline /></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="SubmitButtonPar">
-                  <span className="colorText" style={{transform:`scale(${scale})`, color:color}}>{errText} </span>
-                  <span  className="homeLogin" style={{transform:`scale(${HomeBtn})`}} ><Link to="/">Нэвтрэх</Link></span>
-                  <button className="SubmitButton" style={{transform:`scale(${SendBtn})`}} type="submit">Сэргээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
-                </div>
-            </form>
-        </Component>
-    )
+        <div className="SubmitButtonPar">
+          <span className="colorText" style={{ transform: `scale(${scale})`, color: color }}>{errText} </span>
+          <span className="homeLogin" style={{ transform: `scale(${HomeBtn})` }} ><Link to="/">Нэвтрэх</Link></span>
+          <button className="SubmitButton" style={{ transform: `scale(${SendBtn})` }} type="submit">Сэргээх<div className="flexchild"><AiOutlineSend /> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
+        </div>
+      </form>
+    </Component>
+  )
 }
 
 export default ResetPassword

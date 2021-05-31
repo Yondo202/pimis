@@ -14,10 +14,8 @@ export default function CurrencyRateHandle() {
 
     useEffect(() => {
         axios.get('currency-rates').then(res => {
-            console.log(res)
             setRates(res.data.data)
         }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Ханшийн мэдээллийг татаж чадсангүй.' })
         })
     }, [])
@@ -26,16 +24,13 @@ export default function CurrencyRateHandle() {
         axios.post('currency-rates', e.data, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res)
             setRates(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Ханшийн мэдээллийг хадгаллаа.' })
         }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Ханшийн мэдээллийг нэмж чадсангүй.' })
             axios.get('currency-rates').then(res => {
-                console.log(res)
                 setRates(res.data.data)
-            }).catch(err => console.error(err.response))
+            })
         })
     }
 
@@ -43,16 +38,13 @@ export default function CurrencyRateHandle() {
         axios.put('currency-rates', e.data, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res)
             setRates(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Ханшийн мэдээллийг өөрчиллөө.' })
         }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Ханшийн мэдээллийг өөрчилж чадсангүй.' })
             axios.get('currency-rates').then(res => {
-                console.log(res)
                 setRates(res.data.data)
-            }).catch(err => console.error(err.response))
+            })
         })
     }
 
@@ -61,16 +53,13 @@ export default function CurrencyRateHandle() {
             headers: { Authorization: getLoggedUserToken() },
             params: { id: e.data.id },
         }).then(res => {
-            console.log(res)
             setRates(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Ханшийн мэдээллийг устгалаа.' })
         }).catch(err => {
-            console.log(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Ханшийн мэдээллийг устгаж чадсангүй.' })
             axios.get('currency-rates').then(res => {
-                console.log(res)
                 setRates(res.data.data)
-            }).catch(err => console.error(err.response))
+            })
         })
     }
 

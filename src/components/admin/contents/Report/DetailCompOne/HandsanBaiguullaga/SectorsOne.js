@@ -78,7 +78,6 @@ const SectorsOne = () => {
 
     console.log(`myData`, myData);
 
-
     return (
         <Container ref={ParentRef}>
            

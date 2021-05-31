@@ -79,17 +79,13 @@ function UrgudulActivities() {
                         headers: {
                             'Authorization': getLoggedUserToken()
                         }
+                    }).then(res => {
+                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагааны талаарх мэдээлэл хадгалагдлаа.' })
+                        history.push('/urgudul/7')
+                    }).catch(err => {
+                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                     })
-                        .then(res => {
-                            console.log(res.data)
-                            UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагааны талаарх мэдээлэл хадгалагдлаа.' })
-                            history.push('/urgudul/7')
-                        })
-                        .catch(err => {
-                            console.log(err.response?.data)
-                            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                        })
                 } else {
                     AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Экспортыг дэмжих төслөөс хүссэн санхүүжилт $50,000 -оос хэтэрсэн байна.' })
                 }

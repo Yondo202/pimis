@@ -177,8 +177,6 @@ const HeaderCell = (data) => (
     </div>
 )
 const customizeTextConfirmed = (cellinfo) => {
-
-    console.log(`cellinfo`, cellinfo);
     switch (cellinfo.value) {
         case 0:
             return 'Бөглөөгүй'

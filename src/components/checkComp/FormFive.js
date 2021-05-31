@@ -1,49 +1,51 @@
-import React,{useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import FormSix from './FormSix'
-import axios from'axios';
+import axios from 'axios';
 
 function FormFive(props) {
 
   const [dataFinal, setData] = useState({});
   const [dataDetail, setDataDetal] = useState([]);
 
-  useEffect(async () => {
-    const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=2&pageSize=3' );
-    const Data1 = result.data.data.docs[1]
-    setData(Data1);
-    // setDataDetal(Data1.questiondetails);
-  },[]);
+  useEffect(() => {
+    void async function fetch() {
+      const result = await axios.get('http://192.168.88.78:3000/api/questions?page=2&pageSize=3');
+      const Data1 = result.data.data.docs[1]
+      setData(Data1);
+      // setDataDetal(Data1.questiondetails);
+    }()
+  }, []);
 
-    return (
-        <Component2 style={{transform:`scale(${props.SoloStyle})`}}>
-        {/* <Components > */}
-            <div className="rowHeader">5. {dataFinal.description}<span className="tseg">*</span></div>
-            <div className="formTwoParent ">
-              <div className="headerPar">
-                <div className="row" >
-                  <div className="col-md-8 col-sm-8 col-6"> Шалгуур </div>
-                  <div className="col-md-2 col-sm-2 col-3"> Тийм </div>
-                  <div className="col-md-2 col-sm-2 col-3">Үгүй </div>
-                </div>
+  return (
+    <Component2 style={{ transform: `scale(${props.SoloStyle})` }}>
+      {/* <Components > */}
+      <div className="rowHeader">5. {dataFinal.description}<span className="tseg">*</span></div>
+      <div className="formTwoParent ">
+        <div className="headerPar">
+          <div className="row" >
+            <div className="col-md-8 col-sm-8 col-6"> Шалгуур </div>
+            <div className="col-md-2 col-sm-2 col-3"> Тийм </div>
+            <div className="col-md-2 col-sm-2 col-3">Үгүй </div>
+          </div>
+        </div>
+        {dataDetail.map((el, i) => {
+          return (
+            <div className="headerParchild" key={i}>
+              <div className="row" >
+                <div className="col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
+                <div className="col-md-7 col-sm-7 col-5">{el.description}</div>
+                <div className="col-md-2 col-sm-2 col-3"><input className="getinput3" tabIndex={dataFinal.code} type="radio" name={el.id} value="1" /></div>
+                <div className="col-md-2 col-sm-2 col-3"><input className="getinput3" tabIndex={dataFinal.code} type="radio" name={el.id} value="0" /></div>
               </div>
-              {dataDetail.map((el,i)=>{
-                return(
-                  <div className="headerParchild" key={i}>
-                  <div className="row" >
-                    <div className="col-md-1 col-sm-1 col-1">{`${i+1}`}</div>
-                    <div className="col-md-7 col-sm-7 col-5">{el.description}</div>
-                    <div className="col-md-2 col-sm-2 col-3"><input className="getinput3" tabIndex={dataFinal.code} type="radio" name={el.id} value="1"/></div>
-                    <div className="col-md-2 col-sm-2 col-3"><input className="getinput3" tabIndex={dataFinal.code} type="radio" name={el.id} value="0"/></div>
-                  </div>
-                </div>
-                )
-              })}
-
             </div>
-              <FormSix />
-        </Component2>
-    )
+          )
+        })}
+
+      </div>
+      <FormSix />
+    </Component2>
+  )
 }
 
 export default FormFive
@@ -139,12 +141,17 @@ const Component2 = styled.div`
         
 `
 
-
 const tableData = [
-  { name: "12 сараас дээш хугацаатай Татварын ерөнхий газраас татвар төлөлт болон татварын өртэй юу?",
-    Fieldcount:"1"},
-  {name: "12 сараас дээш хугацаатай Нийгмийн даатгалын газраас нийгмийн даатгалын өртэй юу? ",
-    Fieldcount:"2"},
-  {name: "Монгол банкны чанаргүй зээлийн мэдээллийн санд муу ангиллын зээлийн түүхтэй юу?",
-    Fieldcount:"3"}
+  {
+    name: "12 сараас дээш хугацаатай Татварын ерөнхий газраас татвар төлөлт болон татварын өртэй юу?",
+    Fieldcount: "1"
+  },
+  {
+    name: "12 сараас дээш хугацаатай Нийгмийн даатгалын газраас нийгмийн даатгалын өртэй юу? ",
+    Fieldcount: "2"
+  },
+  {
+    name: "Монгол банкны чанаргүй зээлийн мэдээллийн санд муу ангиллын зээлийн түүхтэй юу?",
+    Fieldcount: "3"
+  }
 ];

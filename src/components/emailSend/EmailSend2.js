@@ -7,8 +7,6 @@ function EmailSend2() {
     const [ Text , setText ] = useState("Илгээхэд алдаа гарлаа");
     const [ Scale , setScale ] = useState("0");
     const clickHandle = async () =>{
-        // console.log(EmailHTML, "html One");
-
        await axios.post('send-pps-notice',  {
             // html: Html,
             email: "yondooo61@gmail.com",

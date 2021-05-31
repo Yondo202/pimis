@@ -127,10 +127,8 @@ export default function LetterOfInterest() {
                         'Authorization': getLoggedUserToken(),
                     },
                 }).then(res => {
-                    console.log(res.data)
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
                 }).catch(err => {
-                    console.log(err.response?.data)
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хадгалж чадсангүй.' })
                 })
             } else {
@@ -139,11 +137,9 @@ export default function LetterOfInterest() {
                         'Authorization': getLoggedUserToken(),
                     },
                 }).then(res => {
-                    console.log(res.data)
                     setForm({ ...form, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
                 }).catch(err => {
-                    console.log(err.response?.data)
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хадгалж чадсангүй.' })
                 })
             }
@@ -158,10 +154,7 @@ export default function LetterOfInterest() {
                 'Authorization': getLoggedUserToken(),
             },
         }).then(res => {
-            console.log(res.data)
             setForm({ ...form, ...res.data.data })
-        }).catch(err => {
-            console.log(err.response?.data)
         })
     }, [])
 

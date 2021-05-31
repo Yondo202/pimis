@@ -81,12 +81,10 @@ function UrgudulBreakdown() {
                         'Authorization': getLoggedUserToken()
                     }
                 }).then(res => {
-                    console.log(res.data)
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Төслийн задаргаа хадгалагдлаа.' })
                     history.push('/urgudul/6')
                 }).catch(err => {
-                    console.log(err.response?.data)
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
             } else {

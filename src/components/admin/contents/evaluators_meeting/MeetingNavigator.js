@@ -25,20 +25,14 @@ export default function EvaluatorsMeetingNavigator() {
         axios.get('pps-infos/registered-companies', {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res.data)
             setProjects(res.data.data)
-        }).catch(err => {
-            console.log(err.response?.data)
         })
 
         axios.get('users', {
             headers: { Authorization: getLoggedUserToken() },
             params: { role: 'member' }
         }).then(res => {
-            console.log(res.data)
             setEvaluators(res.data.data)
-        }).catch(err => {
-            console.log(err.response?.data)
         })
     }, [])
 

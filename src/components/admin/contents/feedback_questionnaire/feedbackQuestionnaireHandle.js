@@ -16,10 +16,8 @@ export default function FeedbackQuestionnaireHandle() {
       axios.get('trainings/questionnaire', {
          headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
-         console.log(res)
          setQuestionnaire(res.data.data)
       }).catch(err => {
-         console.error(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Асуумжуудыг татаж чадсангүй.' })
       })
    }, [])
@@ -45,11 +43,9 @@ export default function FeedbackQuestionnaireHandle() {
       axios.post('trainings/questionnaire', questionnaire, {
          headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
-         console.log(res)
          setQuestionnaire(res.data.data)
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үнэлгээний асуумжуудыг хадгаллаа.' })
       }).catch(err => {
-         console.error(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Үнэлгээний асуумжуудыг хадгалж чадсангүй.' })
       })
    }
@@ -100,11 +96,11 @@ export default function FeedbackQuestionnaireHandle() {
             </div>
 
             <div className="tw-italic tw-text-gray-600 tw-font-semibold tw-mt-4 tw-p-1 tw-pl-4 tw-text-13px tw-font-sans">
-               *Бичвэр - гэсэн ангилал үүсгэснээр сургалтын үнэлгээг асуулжийн дагуу бичгээр авах боломжтой.
+               *Бичвэр - гэсэн ангилал үүсгэснээр сургалтын үнэлгээг асуумжийн дагуу бичгээр авах боломжтой.
             </div>
 
             <div className="tw-flex tw-justify-center">
-               <button className="tw-py-1.5 tw-px-8 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-10 tw-mb-6" onClick={handleSubmit}>
+               <button className="tw-py-1.5 tw-px-8 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-10 tw-mb-6 tw-text-13px" onClick={handleSubmit}>
                   Хадгалах
                </button>
             </div>

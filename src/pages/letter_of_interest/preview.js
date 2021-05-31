@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import axios from 'axiosbase'
 import PrintSVG from 'assets/svgComponents/printSVG'
-import { useQuery } from 'components/utilities/useQueryLocation'
+import useQuery from 'components/utilities/useQueryLocation'
 
 
 const initialState = {
@@ -42,19 +42,13 @@ export default function LetterPreview(props) {
                     headers: { 'Authorization': getLoggedUserToken() },
                     params: { userId: userId },
                 }).then(res => {
-                    console.log(res.data)
                     setForm({ ...form, ...res.data.data })
-                }).catch(err => {
-                    console.log(err.response?.data)
                 })
             } else {
                 axios.get('letter-of-interests', {
                     headers: { 'Authorization': getLoggedUserToken() },
                 }).then(res => {
-                    console.log(res.data)
                     setForm({ ...form, ...res.data.data })
-                }).catch(err => {
-                    console.log(err.response?.data)
                 })
             }
         }

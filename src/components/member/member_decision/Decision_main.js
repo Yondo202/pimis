@@ -1,236 +1,239 @@
-import React,{ useEffect, useState } from 'react';
-import styled,{keyframes} from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { useHistory, useParams } from 'react-router-dom';
-import {fontSize, textColor,InputStyle,NextBtn,ColorRgb } from '../../theme';
+import { fontSize, textColor, InputStyle, NextBtn, ColorRgb } from '../../theme';
 import { animateScroll as scroll } from "react-scroll";
 import Signature from './Signature';
 import axios from '../../../axiosbase';
 import Token from 'context/accessToken';
-import {IoMdCheckmarkCircle  } from 'react-icons/io';
+import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
 
-const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
-const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
+const today = new Date(); const month = (today.getMonth() + 1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length === 1 ? '0' + month : month) + '-' + (day.toString().length === 1 ? '0' + day : day);
 
 function Decision_main() {
     const { slug } = useParams();
     const history = useHistory();
-    const [ Data, setData ] = useState(null);
-    const [ spin, setSpin ] = useState(false);
-    const [ ReasonData, setReasonData ] = useState(infoWhere2);
-    const [ sanalData, setSanalData ] = useState(false);
-    const [ type, setType ] = useState(false);
-    const [ alert, setAlert ] = useState({ color:'yellow', text: 'null',cond: false });
+    const [Data, setData] = useState(null);
+    const [spin, setSpin] = useState(false);
+    const [ReasonData, setReasonData] = useState(infoWhere2);
+    const [sanalData, setSanalData] = useState(false);
+    const [type, setType] = useState(false);
+    const [alert, setAlert] = useState({ color: 'yellow', text: 'null', cond: false });
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
-    const [otherOne, setOtherOne] = useState({Cname: "getInputt", checked:null, self:""  });
-    const [ imgData, setImgData ] = useState(null);
-    const [ other, setOther ] = useState(null);
+    const [otherOne, setOtherOne] = useState({ Cname: "getInputt", checked: null, self: "" });
+    const [imgData, setImgData] = useState(null);
+    const [other, setOther] = useState(null);
 
-    useEffect(async()=>{
-        await axios.get(`evaluation-meetings/scheduled-projects?parentId=${slug}`, { headers : { Authorization: Token()}}).then(res=>{
+    useEffect(() => {
+        axios.get(`evaluation-meetings/scheduled-projects?parentId=${slug}`, { headers: { Authorization: Token() } }).then(res => {
             console.log(res, "resss+-+--+-+-+-+-");
             setData(res.data.data[0]);
-           if(res.data.data[0].sanalinnHuudas.approve!==null){ setSanalData(true);
-                if(res.data.data[0].sanalinnHuudas.reject_reason.code === "other"){
+            if (res.data.data[0].sanalinnHuudas.approve !== null) {
+                setSanalData(true);
+                if (res.data.data[0].sanalinnHuudas.reject_reason.code === "other") {
                     setOther(res.data.data[0].sanalinnHuudas.reject_reason.reason);
-                }else{
-                    setReasonData(infoWhere2.filter(el=> el.code===res.data.data[0].sanalinnHuudas.reject_reason.code));
+                } else {
+                    setReasonData(infoWhere2.filter(el => el.code === res.data.data[0].sanalinnHuudas.reject_reason.code));
                 }
             }
-        }).catch((err)=> console.log(err.response.data, "+++++++++"))
-    },[]);
+        }).catch((err) => console.log(err.response.data, "+++++++++"))
+    }, []);
 
-    const checkedHandle = (event) =>{
-       let arr = document.querySelectorAll('.checkCond'); let arr2 = Array.from(arr); let arr3 = [];
+    const checkedHandle = (event) => {
+        let arr = document.querySelectorAll('.checkCond'); let arr2 = Array.from(arr); let arr3 = [];
 
-       arr2.map((el,i)=>{
-        if(el.checked==true){ if(el.value === "false"){ arr3.push(el);} }
-       });
-       if(arr3.length > 0){ setType(true);}else{ setType(false); }
+        arr2.forEach((el, i) => {
+            if (el.checked == true) { if (el.value === "false") { arr3.push(el); } }
+        });
+        if (arr3.length > 0) { setType(true); } else { setType(false); }
     }
 
-    const alertHandle = (color, text, cond) =>{setAlert({color:color, text:text, cond:cond}); setTimeout(()=>{ setAlert({color:color, text:text, cond:false});},3000); }
+    const alertHandle = (color, text, cond) => { setAlert({ color: color, text: text, cond: cond }); setTimeout(() => { setAlert({ color: color, text: text, cond: false }); }, 3000); }
 
-    const onChange1 = (e) =>{
-        if(e.target.value.length > 1){ setOtherOne({ Cname:"", checked:false, self:"getInputt" })
-        }else{setOtherOne({ Cname:"getInputt", checked:null, self:"" })}
+    const onChange1 = (e) => {
+        if (e.target.value.length > 1) {
+            setOtherOne({ Cname: "", checked: false, self: "getInputt" })
+        } else { setOtherOne({ Cname: "getInputt", checked: null, self: "" }) }
     }
 
-    const ClickHandle = () =>{
+    const ClickHandle = () => {
         let inp = document.querySelectorAll(".getInputt"); let arr = Array.from(inp); let final = {}; let dd = {}; let cond = 0
-        arr.map(el=>{
-            if(el.type === "radio"){
-                if(el.checked === true){
+        arr.forEach(el => {
+            if (el.type === "radio") {
+                if (el.checked === true) {
                     let obj = {};
-                    if(el.name==="reject_reason"){
+                    if (el.name === "reject_reason") {
                         let ob = {}; ob["reason"] = el.value; ob["code"] = el.id; final[el.name] = ob;
-                    }else{
-                        if(el.value ==="false"){
+                    } else {
+                        if (el.value === "false") {
                             let next = document.querySelectorAll(`.${el.name}${el.id}_why`); let otherArr = Array.from(next);
-                            otherArr.map(elem=>{ if(elem.value!==""){ if(elem.id){ obj[elem.name] = elem.value; }else{ obj[elem.name] = elem.value; } }else{ obj["reason"] = null; cond = 1; };});
-                        }else{ obj["reason"] = null }
+                            otherArr.forEach(elem => { if (elem.value !== "") { if (elem.id) { obj[elem.name] = elem.value; } else { obj[elem.name] = elem.value; } } else { obj["reason"] = null; cond = 1; }; });
+                        } else { obj["reason"] = null }
                         final[el.name] = obj;
                         obj["checked"] = el.value;
                     }
                 }
-            }else{
-                if(el.name === "reject_reason"){
-                     dd["code"] = el.id; dd["reason"] = el.value; final[el.name] = dd; 
-                }else{ if(!el.value){  el.classList += " RedPar"; }else{ final[el.name] = el.value; el.classList =- " RedPar"; el.classList += " getInputt" }
+            } else {
+                if (el.name === "reject_reason") {
+                    dd["code"] = el.id; dd["reason"] = el.value; final[el.name] = dd;
+                } else {
+                    if (!el.value) { el.classList += " RedPar"; } else { final[el.name] = el.value; el.classList = - " RedPar"; el.classList += " getInputt" }
                 }
             }
         });
         final["projectId"] = Data.projectId; final["evaluationMeetingId"] = Data.evaluationMeetingId;
-        if(imgData!==null){final["signature"] = imgData;}; let keys = Object.keys(final); 
+        if (imgData !== null) { final["signature"] = imgData; }; let keys = Object.keys(final);
 
-        if(type?keys.length < 6:keys.length < 5){
+        if (type ? keys.length < 6 : keys.length < 5) {
             setFinalErrorText("Та гүйцэд бөгөлнө үү..."); setOpacity2("1"); scroll.scrollTo(0);
-        }else if(cond !== 0){
+        } else if (cond !== 0) {
             setFinalErrorText("Хэрэв татгалзсан бол шалтгааныг бичнэ үү..."); scroll.scrollTo(200); setOpacity2("1");
-        }else{
+        } else {
             setSpin(true);
             setOpacity2("0");
-            axios.post(`evaluation-results/member-vote`,final, { headers: { Authorization: Token()}} ).then((res)=>{ alertHandle("green","Амжилттай илгээлээ", true ); setTimeout(()=>{ history.push("/"); setSpin(false); },2000); console.log(`res`, res) })
-            .catch((err)=> {setSpin(false); alertHandle("orange","Алдаа гарлааа",true);  console.log(`err`, err)});
+            axios.post(`evaluation-results/member-vote`, final, { headers: { Authorization: Token() } }).then((res) => { alertHandle("green", "Амжилттай илгээлээ", true); setTimeout(() => { history.push("/"); setSpin(false); }, 2000); console.log(`res`, res) })
+                .catch((err) => { setSpin(false); alertHandle("orange", "Алдаа гарлааа", true); console.log(`err`, err) });
         }
         console.log(final, "^final");
     }
 
     return (
         <>
-        <FeedBackCont className="container">
-            <div className="contentPar">
-                <div className="TitlePar">
-                    <div className="title">Үнэлгээний хорооны гишүүдийн саналын хуудас</div>
-                </div>
-                <div className="compName">
-                    <div className="title">Байгууллагын нэр:</div>
-                     {Data?<span className="val">{Data.company_name}</span>:<span className="val"></span>}   
-                    {/* <InputStyle  className="nameText"><input className="getInputt" name="compname" placeholder="Байгууллагын нэр..."  type="text" />  <div className="line"></div></InputStyle> */}
-                </div>
-                <div className="compName">
-                    <div className="title">Төслийн нэр:</div>
-                    {Data?<span className="val">{Data.project_name}</span>:<span className="val"></span>}   
-                </div>
-                <div className="compName">
-                    <div className="title">Өргөдлийн дугаар:</div>
-                    {Data?<span className="val">{Data.project_number}</span>:<span className="val"></span>}   
-                </div>
-                <div className="compName">
-                    <div className="title">Хурлын огноо:</div>
-                    {Data?<span className="val">{Data.meetingDate}</span>:<span className="val"></span>}   
-                </div>
-                <div style={{marginBottom:35}} className="compName">
-                    <div className="title">Үнэлгээний хорооны гишүүний овог, нэр:</div>
-                    {Data?<span className="val">{Data.memberInfo.fullName}</span>:<span className="val"></span>}   
-                </div>
+            <FeedBackCont className="container">
+                <div className="contentPar">
+                    <div className="TitlePar">
+                        <div className="title">Үнэлгээний хорооны гишүүдийн саналын хуудас</div>
+                    </div>
+                    <div className="compName">
+                        <div className="title">Байгууллагын нэр:</div>
+                        {Data ? <span className="val">{Data.company_name}</span> : <span className="val"></span>}
+                        {/* <InputStyle  className="nameText"><input className="getInputt" name="compname" placeholder="Байгууллагын нэр..."  type="text" />  <div className="line"></div></InputStyle> */}
+                    </div>
+                    <div className="compName">
+                        <div className="title">Төслийн нэр:</div>
+                        {Data ? <span className="val">{Data.project_name}</span> : <span className="val"></span>}
+                    </div>
+                    <div className="compName">
+                        <div className="title">Өргөдлийн дугаар:</div>
+                        {Data ? <span className="val">{Data.project_number}</span> : <span className="val"></span>}
+                    </div>
+                    <div className="compName">
+                        <div className="title">Хурлын огноо:</div>
+                        {Data ? <span className="val">{Data.meetingDate}</span> : <span className="val"></span>}
+                    </div>
+                    <div style={{ marginBottom: 35 }} className="compName">
+                        <div className="title">Үнэлгээний хорооны гишүүний овог, нэр:</div>
+                        {Data ? <span className="val">{Data.memberInfo.fullName}</span> : <span className="val"></span>}
+                    </div>
 
-                <div className="infoWhere">
+                    <div className="infoWhere">
                         <div className="Title Title4"><span className="circle">⬤</span>Төсөл хэрэгжүүлэгчийн чадавхийг үнэлсэн үнэлгээ </div>
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
-                            {sanalData && Data.sanalinnHuudas.assess_one.checked !==null? 
-                            <div className="checkItem">
-                                <div className="item"><input className="radio getInputt" type="radio" name="assess_one" checked={Data.sanalinnHuudas.assess_one.checked?true:false} value="true" /> <span>Зөвшөөрсөн</span></div>  
-                                <div className="item"><input className="radio getInputt" type="radio" name="assess_one" checked={Data.sanalinnHuudas.assess_one.checked?false:true} value="false" /> <span>Татгалзсан</span></div>
-                            </div>
-                            :
-                            <div className="checkItem">
-                                <div className="item"><input className="radio getInputt checkCond" type="radio" onChange={checkedHandle} name="assess_one" value="true" /> <span>Зөвшөөрсөн</span></div>  
-                                <div className="item"><input className="radio getInputt checkCond" type="radio" onChange={checkedHandle} name="assess_one" value="false" /> <span>Татгалзсан</span></div>
-                            </div>}
+                            {sanalData && Data.sanalinnHuudas.assess_one.checked !== null ?
+                                <div className="checkItem">
+                                    <div className="item"><input className="radio getInputt" type="radio" name="assess_one" checked={Data.sanalinnHuudas.assess_one.checked ? true : false} value="true" /> <span>Зөвшөөрсөн</span></div>
+                                    <div className="item"><input className="radio getInputt" type="radio" name="assess_one" checked={Data.sanalinnHuudas.assess_one.checked ? false : true} value="false" /> <span>Татгалзсан</span></div>
+                                </div>
+                                :
+                                <div className="checkItem">
+                                    <div className="item"><input className="radio getInputt checkCond" type="radio" onChange={checkedHandle} name="assess_one" value="true" /> <span>Зөвшөөрсөн</span></div>
+                                    <div className="item"><input className="radio getInputt checkCond" type="radio" onChange={checkedHandle} name="assess_one" value="false" /> <span>Татгалзсан</span></div>
+                                </div>}
                         </div>
-                        {sanalData && Data.sanalinnHuudas.assess_one.checked !==null? 
-                        Data.sanalinnHuudas.assess_one.checked === false?
-                        <div className="Title3">
-                            <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div> 
-                            <InputStyle className="nameText"><textarea className="assess_one_why" name="reason" value={Data.sanalinnHuudas.assess_one.reason} placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
-                        </div> : null
+                        {sanalData && Data.sanalinnHuudas.assess_one.checked !== null ?
+                            Data.sanalinnHuudas.assess_one.checked === false ?
+                                <div className="Title3">
+                                    <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div>
+                                    <InputStyle className="nameText"><textarea className="assess_one_why" name="reason" value={Data.sanalinnHuudas.assess_one.reason} placeholder="шалтгаанаа бичнэ үү..." type="text" />  <div className="line"></div></InputStyle>
+                                </div> : null
                             :
-                        <div className="Title3">
-                            <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div> 
-                            <InputStyle className="nameText"><textarea className="assess_one_why" name="reason" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
-                        </div>}
-                        
-                </div>
+                            <div className="Title3">
+                                <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div>
+                                <InputStyle className="nameText"><textarea className="assess_one_why" name="reason" placeholder="шалтгаанаа бичнэ үү..." type="text" />  <div className="line"></div></InputStyle>
+                            </div>}
 
-                <div className="infoWhere">
+                    </div>
+
+                    <div className="infoWhere">
                         <div className="Title Title4"><span className="circle">⬤</span>Экспортын төсөлд өгсөн үнэлгээ</div>
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
 
-                            {sanalData && Data.sanalinnHuudas.assess_two.checked!==null? 
+                            {sanalData && Data.sanalinnHuudas.assess_two.checked !== null ?
                                 <div className="checkItem">
-                                    <div className="item"><input className="radio getInputt" type="radio" name="assess_two" checked={Data.sanalinnHuudas.assess_two.checked?true:false} value="true" /> <span>Зөвшөөрсөн</span></div>  
-                                    <div className="item"><input className="radio getInputt" type="radio" name="assess_two" checked={Data.sanalinnHuudas.assess_two.checked?false:true} value="false" /> <span>Татгалзсан</span></div>
+                                    <div className="item"><input className="radio getInputt" type="radio" name="assess_two" checked={Data.sanalinnHuudas.assess_two.checked ? true : false} value="true" /> <span>Зөвшөөрсөн</span></div>
+                                    <div className="item"><input className="radio getInputt" type="radio" name="assess_two" checked={Data.sanalinnHuudas.assess_two.checked ? false : true} value="false" /> <span>Татгалзсан</span></div>
                                 </div>
-                            : 
+                                :
                                 <div className="checkItem">
-                                    <div className="item"><input className="radio getInputt checkCond" type="radio" onChange={checkedHandle} name="assess_two" value="true" /> <span>Зөвшөөрсөн</span></div>  
+                                    <div className="item"><input className="radio getInputt checkCond" type="radio" onChange={checkedHandle} name="assess_two" value="true" /> <span>Зөвшөөрсөн</span></div>
                                     <div className="item"><input className="radio getInputt checkCond" type="radio" onChange={checkedHandle} name="assess_two" value="false" /> <span>Татгалзсан</span></div>
                                 </div>
                             }
 
-                            
+
                         </div>
 
-                        {sanalData && Data.sanalinnHuudas.assess_two.checked !==null? 
-                        Data.sanalinnHuudas.assess_two.checked === false?
-                        <div className="Title3">
-                            <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div> 
-                            <InputStyle className="nameText"><textarea className="assess_two_why" name="reason" value={Data.sanalinnHuudas.assess_two.reason} placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
-                        </div> : null
+                        {sanalData && Data.sanalinnHuudas.assess_two.checked !== null ?
+                            Data.sanalinnHuudas.assess_two.checked === false ?
+                                <div className="Title3">
+                                    <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div>
+                                    <InputStyle className="nameText"><textarea className="assess_two_why" name="reason" value={Data.sanalinnHuudas.assess_two.reason} placeholder="шалтгаанаа бичнэ үү..." type="text" />  <div className="line"></div></InputStyle>
+                                </div> : null
                             :
-                        <div className="Title3">
-                            <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div> 
-                            <InputStyle className="nameText"><textarea className="assess_two_why" name="reason" placeholder="шалтгаанаа бичнэ үү..."  type="text" />  <div className="line"></div></InputStyle>
-                        </div>}
-                </div>
-
-               <Signature url={sanalData?Data.sanalinnHuudas.signature:null} setImgData={setImgData} /> 
-
-                {sanalData? Data.sanalinnHuudas.approve===false?
-                <div className="infoWhere">
-                    <div className="Title"><span className="circle">⬤</span>Татгалзсан шийдвэрийн хариу :</div>
-                    <div className="inpPar">
-                        <div className="items">
-                              <div className="title">Шалтгаан :</div><span>{other?other: Data.sanalinnHuudas.reject_reason.reason}</span>
-                        </div>
+                            <div className="Title3">
+                                <div className="text">Хэрэв татгалзсан бол шалтгааныг бичнэ үү:</div>
+                                <InputStyle className="nameText"><textarea className="assess_two_why" name="reason" placeholder="шалтгаанаа бичнэ үү..." type="text" />  <div className="line"></div></InputStyle>
+                            </div>}
                     </div>
-                 </div>
-                :   null  : !type? null:
-                <div className="infoWhere Anime">
-                    <div className="Title"><span className="circle">⬤</span>Өргөдөл гаргагч нь Экспортыг дэмжих төслөөс цахим хаягаар бичгээр хариуг авах бөгөөд хэрэв татгалзсан шийдвэрийн хариуг өгч буй бол шалтгааныг заавал бичнэ. Жишээ шалтгаанууд: :</div>
-                    <div className="inpPar">
-                            {ReasonData.map((el,i)=>{
-                                    return(
+
+                    <Signature url={sanalData ? Data.sanalinnHuudas.signature : null} setImgData={setImgData} />
+
+                    {sanalData ? Data.sanalinnHuudas.approve === false ?
+                        <div className="infoWhere">
+                            <div className="Title"><span className="circle">⬤</span>Татгалзсан шийдвэрийн хариу :</div>
+                            <div className="inpPar">
+                                <div className="items">
+                                    <div className="title">Шалтгаан :</div><span>{other ? other : Data.sanalinnHuudas.reject_reason.reason}</span>
+                                </div>
+                            </div>
+                        </div>
+                        : null : !type ? null :
+                        <div className="infoWhere Anime">
+                            <div className="Title"><span className="circle">⬤</span>Өргөдөл гаргагч нь Экспортыг дэмжих төслөөс цахим хаягаар бичгээр хариуг авах бөгөөд хэрэв татгалзсан шийдвэрийн хариуг өгч буй бол шалтгааныг заавал бичнэ. Жишээ шалтгаанууд: :</div>
+                            <div className="inpPar">
+                                {ReasonData.map((el, i) => {
+                                    return (
                                         <div className="items">
                                             <input className={`radio ${otherOne.Cname}`} value={el.title} checked={otherOne.checked} id={el.code} name="reject_reason" type="radio" /><div className="title">{el.title}</div>
                                         </div>
                                     )
-                            })}
-                            <div className="items">
-                            <div className="title">Бусад :</div><InputStyle className="nameText"><input className={otherOne.self} id="other" onChange={onChange1} name="reject_reason" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
+                                })}
+                                <div className="items">
+                                    <div className="title">Бусад :</div><InputStyle className="nameText"><input className={otherOne.self} id="other" onChange={onChange1} name="reject_reason" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                }
-                {sanalData? null : 
-                    <div className="buttonPar">
-                        <div style={{opacity:opacity2}} className="errtext">{FinalErrorText}</div>
-                        <div onClick={ClickHandle} style={!spin?{width:`40%`,opacity:1}: {width:`10%`,opacity:0.6}} className="btn btn-primary">{!spin?`Илгээх`: <img src="/gif1.gif" alt-="edp-img" /> } </div>
-                    </div>
-                }
-                
-            </div>
+                    }
+                    {sanalData ? null :
+                        <div className="buttonPar">
+                            <div style={{ opacity: opacity2 }} className="errtext">{FinalErrorText}</div>
+                            <div onClick={ClickHandle} style={!spin ? { width: `40%`, opacity: 1 } : { width: `10%`, opacity: 0.6 }} className="btn btn-primary">{!spin ? `Илгээх` : <img src="/gif1.gif" alt-="edp-img" alt=""/>} </div>
+                        </div>
+                    }
 
-            
-        </FeedBackCont>
-        <AlertStyle style={alert.cond === true ? {bottom:`100px`, opacity:`1`, borderLeft:`4px solid ${alert.color}`} : {bottom:`50px`, opacity:`0`}} >
-            {alert.color=== "green"?<IoMdCheckmarkCircle style={{color:`${alert.color}`}} className="true" /> : <CgDanger style={{color:`${alert.color}`}} className="true" /> }
-            <span>{alert.text}</span>
-        </AlertStyle>
+                </div>
+
+
+            </FeedBackCont>
+            <AlertStyle style={alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${alert.color}` } : { bottom: `50px`, opacity: `0` }} >
+                {alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${alert.color}` }} className="true" /> : <CgDanger style={{ color: `${alert.color}` }} className="true" />}
+                <span>{alert.text}</span>
+            </AlertStyle>
         </>
     )
 }
@@ -495,13 +498,13 @@ const FeedBackCont = styled.div`
 
 
 const infoWhere2 = [
-    {  title: "Өргөдөл гаргагч нь шалгуур хангалтыг хангаагүй", code: "shalguur_hangaagui" },
-    {  title: "Өргөдөл нь дутуу материалтай", code: "orgodol_dutuu"},
-    {  title: "Үндсэн мэдүүлэг нь урьдчилсан мэдүүлэгтэй зөрүүтэй", code: "meduuleg_zorvvtei" },
-    {  title: "Төсөл нь экспортын чиглэлд хамааралгүй", code: "hamaaralgui_tosol" },
-    {  title: "Экспортын төлөвлөгөө нь чанарын шаардлага хангахуйц тодорхой бус", code: "todorhoi_bus"},
-    {  title: "Өргөдөл гаргагч нь төслийг санхүүжүүлэх чадвартайг нотлоогүй эсвэл чадваргүй", code: "chadvargui" },
-    {  title: "Өгөгдсөн хугацаанаас өмнө шаардлагатай материал илгээгээгүй", code: "hugatsaanda_amjaagui"},
+    { title: "Өргөдөл гаргагч нь шалгуур хангалтыг хангаагүй", code: "shalguur_hangaagui" },
+    { title: "Өргөдөл нь дутуу материалтай", code: "orgodol_dutuu" },
+    { title: "Үндсэн мэдүүлэг нь урьдчилсан мэдүүлэгтэй зөрүүтэй", code: "meduuleg_zorvvtei" },
+    { title: "Төсөл нь экспортын чиглэлд хамааралгүй", code: "hamaaralgui_tosol" },
+    { title: "Экспортын төлөвлөгөө нь чанарын шаардлага хангахуйц тодорхой бус", code: "todorhoi_bus" },
+    { title: "Өргөдөл гаргагч нь төслийг санхүүжүүлэх чадвартайг нотлоогүй эсвэл чадваргүй", code: "chadvargui" },
+    { title: "Өгөгдсөн хугацаанаас өмнө шаардлагатай материал илгээгээгүй", code: "hugatsaanda_amjaagui" },
 ]
 
 

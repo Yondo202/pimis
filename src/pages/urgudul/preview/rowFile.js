@@ -20,11 +20,9 @@ export default function RowFile(props) {
          headers: { Authorization: getLoggedUserToken() },
          responseType: 'blob',
       }).then(res => {
-         console.log(res)
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         console.log(err.response)
          AlertCtx.setAlert({open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг татаж чадсангүй.'})
       })
    }

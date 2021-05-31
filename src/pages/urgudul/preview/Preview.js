@@ -139,20 +139,16 @@ export default function UrgudulPreview(props) {
             axios.get(`projects/${props.id}`, {
                 headers: { 'Authorization': getLoggedUserToken() }
             }).then(res => {
-                console.log(res.data)
                 setProject(res.data.data)
             }).catch(err => {
-                console.log(err.response?.data)
                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
             })
         } else if (projectId) {
             axios.get(`projects/${projectId}`, {
                 headers: { 'Authorization': getLoggedUserToken() }
             }).then(res => {
-                console.log(res.data)
                 setProject(res.data.data)
             }).catch(err => {
-                console.log(err.response?.data)
                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягтын мэдээллийг уншиж чадсангүй.' })
             })
         } else if (props.project) {
@@ -166,36 +162,24 @@ export default function UrgudulPreview(props) {
     const [occupations, setOccupations] = useState([])
 
     useEffect(() => {
-        axios.get('occupations')
-            .then(res => {
-                console.log(res.data)
-                setOccupations(res.data.data)
-            })
-        axios.get('business-sector')
-            .then(res => {
-                console.log(res.data)
-                setSectors(res.data.data)
-            })
-        axios.get('locations')
-            .then(res => {
-                console.log(res.data)
-                setLocations(res.data.data)
-            })
-        axios.get('countries')
-            .then(res => {
-                console.log(res.data)
-                setCountries(res.data.data)
-            })
-        axios.get('products')
-            .then(res => {
-                console.log(res.data)
-                setProducts(res.data.data.docs)
-            })
-        axios.get('currency-rates')
-            .then(res => {
-                console.log(res.data)
-                setRates(res.data.data)
-            })
+        axios.get('occupations').then(res => {
+            setOccupations(res.data.data)
+        })
+        axios.get('business-sector').then(res => {
+            setSectors(res.data.data)
+        })
+        axios.get('locations').then(res => {
+            setLocations(res.data.data)
+        })
+        axios.get('countries').then(res => {
+            setCountries(res.data.data)
+        })
+        axios.get('products').then(res => {
+            setProducts(res.data.data.docs)
+        })
+        axios.get('currency-rates').then(res => {
+            setRates(res.data.data)
+        })
     }, [])
 
     const getOccupationName = (id) => occupations.filter(obj => obj.id === id)[0]?.description_mon

@@ -13,15 +13,15 @@ import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 
 export default function TrainingsList() {
    const [trainings, setTrainings] = useState([])
+   const [userRole, setUserRole] = useState(localStorage.getItem('role'))
+   const [trainerOrgId, setTrainerOrgId] = useState(+localStorage.getItem('trainerOrganizationId'))
 
    useEffect(() => {
       axios.get('trainings', {
-         headers: { Authorization: getLoggedUserToken() }
+         headers: { Authorization: getLoggedUserToken() },
+         params: userRole === 'trainer' && { organizationId: trainerOrgId },
       }).then(res => {
-         console.log(res)
          setTrainings(res.data.data)
-      }).catch(err => {
-         console.error(err.response)
       })
    }, [])
 
@@ -45,10 +45,8 @@ export default function TrainingsList() {
          headers: { Authorization: getLoggedUserToken() },
          params: params,
       }).then(res => {
-         console.log(res)
          setTrainings(res.data.data)
       }).catch(err => {
-         console.error(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Мэдээллийг татаж чадсангүй.' })
       })
    }
@@ -72,7 +70,7 @@ export default function TrainingsList() {
                      <span className="tw-absolute tw-left-1 tw-bg-white tw-py-0.5 tw-pl-2 tw-pr-1 tw-text-gray-500" style={{ width: 102, top: 5 }}>Эхлэх хугацаа:</span>
                   }
                </div>
-               <div className="tw-relative tw-p-0.5 tw-ml-3">
+               <div className="tw-relative tw-p-0.5 tw-ml-2">
                   <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.endDate ?? ''} onChange={e => handleInputParams('endDate', e.target.value)} />
                   {!params.endDate &&
                      <span className="tw-absolute tw-left-1 tw-bg-white tw-py-0.5 tw-pl-2 tw-pr-1 tw-text-gray-500" style={{ top: 5 }}>Дуусах хугацаа:</span>
@@ -112,18 +110,18 @@ export default function TrainingsList() {
             <Column dataField="module_file.name" caption="Сургалтын агуулга, файлаар" cellRender={data => <ButtonFliePreview data={data} />} headerCellRender={HeaderCell} width={160} />
             <Column dataField="training_type" caption="Сургалтын төрөл" headerCellRender={HeaderCell} />
             <Column dataField="training_method" caption="Сургалтын хэлбэр" headerCellRender={HeaderCell} />
-            <Column dataField="start_date" dataType="date" caption="Сургалт эхлэх өдөр" headerCellRender={HeaderCell} />
-            <Column dataField="end_date" dataType="date" caption="Сургалт дуусах өдөр" headerCellRender={HeaderCell} />
+            <Column dataField="start_date" dataType="date" caption="Эхлэх өдөр" headerCellRender={HeaderCell} />
+            <Column dataField="end_date" dataType="date" caption="Дуусах өдөр" headerCellRender={HeaderCell} />
             <Column dataField="start_time" caption="Сургалтын цаг" calculateCellValue={calculateCellValueTime} headerCellRender={HeaderCell} />
-            <Column dataField="organizer" caption="Сургалт зохион байгуулах байгууллага" headerCellRender={HeaderCell} />
-            <Column dataField="location" caption="Байршил, сургалт зохион байгуулагдах хаяг" headerCellRender={HeaderCell} />
+            <Column dataField="trainerOrganization.organization_name" caption="Сургалт зохион байгуулагч" headerCellRender={HeaderCell} />
+            <Column dataField="location" caption="Байршил хаяг" headerCellRender={HeaderCell} />
             <Column dataField="participant_number" caption="Оролцогчдын тоо" cellRender={data => <ButtonNavRegisteredUsers data={data} />} alignment="center" headerCellRender={HeaderCell} />
             <Column dataField="scope" caption="Сургалтын цар хүрээ" headerCellRender={HeaderCell} />
             <Column caption="Сургалтын мэдээллийг засварлах" cellRender={data => <ButtonNavTraining data={data} />} alignment="center" headerCellRender={HeaderCell} />
          </DataGrid>
 
          <div className="tw-flex tw-justify-center">
-            <button className="tw-py-2 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-12 tw-mb-6" onClick={handleAddTraining}>
+            <button className="tw-py-2 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-12 tw-mb-6 tw-text-13px" onClick={handleAddTraining}>
                Сургалт нэмэх
             </button>
          </div>
@@ -164,11 +162,9 @@ const ButtonFliePreview = ({ data }) => {
          headers: { Authorization: getLoggedUserToken() },
          responseType: 'blob',
       }).then(res => {
-         console.log(res)
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         console.log(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
       })
    }

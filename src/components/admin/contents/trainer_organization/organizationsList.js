@@ -56,8 +56,8 @@ export default function TrainerOrganizationsList() {
          </DataGrid>
 
          <div className="tw-flex tw-justify-center">
-            <button className="tw-py-2 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-12 tw-mb-6" onClick={handleAddOrg}>
-               Сургалт нэмэх
+            <button className="tw-py-2 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-12 tw-mb-6 tw-text-13px" onClick={handleAddOrg}>
+               Сургалтын байгууллага нэмэх
             </button>
          </div>
       </div>

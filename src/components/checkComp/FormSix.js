@@ -1,35 +1,37 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components'
-import axios from'axios';
+import axios from 'axios';
 import User from "./User";
 
 function FormSix() {
-
   const [dataFinal, setData] = React.useState({});
   const [dataDetal, setDataDetal] = React.useState([]);
 
-  useEffect(async () => {
-    const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=2&pageSize=3' );
-    const Data1 = result.data.data.docs[2]
-    setData(Data1);
-    setDataDetal(Data1.questiondetails);
-  },[]);
-    return (
-        <Component3 >
-            <div className="formOneParent">
-                <div className="headerPar"  >6. {dataFinal.description}<span className="tseg">*</span></div>
-              {dataDetal.map(el=>{
-                return(
-                  <div className="radioPar">
-                    <input className="getinput inpTest2" tabIndex={dataFinal.code}  type="radio" name="s6ix" value={el.id}/>
-                    <label >{el.description}</label>
-                 </div>
-                )
-              })}
+  useEffect(() => {
+    void async function fetch() {
+      const result = await axios.get('http://192.168.88.78:3000/api/questions?page=2&pageSize=3');
+      const Data1 = result.data.data.docs[2]
+      setData(Data1);
+      setDataDetal(Data1.questiondetails);
+    }()
+  }, []);
+
+  return (
+    <Component3 >
+      <div className="formOneParent">
+        <div className="headerPar"  >6. {dataFinal.description}<span className="tseg">*</span></div>
+        {dataDetal.map(el => {
+          return (
+            <div className="radioPar">
+              <input className="getinput inpTest2" tabIndex={dataFinal.code} type="radio" name="s6ix" value={el.id} />
+              <label >{el.description}</label>
             </div>
-           <User />
-        </Component3>
-    )
+          )
+        })}
+      </div>
+      <User />
+    </Component3>
+  )
 }
 
 export default FormSix

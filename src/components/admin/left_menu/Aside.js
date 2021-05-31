@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { MenuColor, MainFontSize, fontFamily } from "../ThemeAdmin";
@@ -8,18 +8,10 @@ import { FaChalkboardTeacher } from "react-icons/fa";
 import { MdSettings } from "react-icons/md";
 import { GiProgression } from "react-icons/gi";
 import sidebarBg from "./bg_image/bg1.jpg";
-import UserContext from '../../../context/UserContext'
-
 
 const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
-  const ctxUser = useContext(UserContext);
-
-  useEffect(() => {
-    let role = localStorage.getItem("role");
-    console.log(role);
-  }, [ctxUser.userInfo.id]);
-
   const intl = useIntl();
+
   return (
     <ProSidebar image={image ? sidebarBg : false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
       <SidebarHeader>

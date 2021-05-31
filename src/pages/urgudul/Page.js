@@ -76,13 +76,10 @@ function UrgudulNavigator(props) {
         if (modalOpen) {
             axios.get('projects', {
                 headers: {
-                    'Authorization': getLoggedUserToken()
+                    'Authorization': getLoggedUserToken(),
                 }
             }).then(res => {
-                console.log(res.data)
                 setProjects(res.data.data)
-            }).catch(err => {
-                console.log(err.response?.data)
             })
         }
     }, [modalOpen])
@@ -91,7 +88,6 @@ function UrgudulNavigator(props) {
         axios.get(`projects/${id}`, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res.data)
             const project = res.data.data
             if (project.status === 'editable') {
                 UrgudulCtx.setData(res.data.data)
@@ -102,7 +98,6 @@ function UrgudulNavigator(props) {
                 AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягтыг нээлээ. Засвар оруулах боломжгүй өргөдөл байна.' })
             }
         }).catch(err => {
-            console.log(err.response?.data)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Өргөдлийн маягтыг нээж чадсангүй.' })
         })
     }

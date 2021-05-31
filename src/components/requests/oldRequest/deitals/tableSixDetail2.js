@@ -1,191 +1,93 @@
-import React, { useState,useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { textColor, ColorRgb } from '../../../theme';
-import {GoCalendar} from 'react-icons/go'
-import {VscAccount,VscFoldDown,VscCloudUpload,VscCloudDownload,VscChecklist,VscOpenPreview} from 'react-icons/vsc'
-import {IoIosAddCircleOutline} from 'react-icons/io'
+import { GoCalendar } from 'react-icons/go'
+import { VscAccount, VscCloudUpload, VscCloudDownload, VscChecklist, VscOpenPreview } from 'react-icons/vsc'
+import { IoIosAddCircleOutline } from 'react-icons/io'
 
-const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
-const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
+const today = new Date(); const month = (today.getMonth() + 1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length === 1 ? '0' + month : month) + '-' + (day.toString().length === 1 ? '0' + day : day);
 
 function TableSixDetails2(props) {
-    const initialList = [{id: 1}];
-    const [ initialData, setInitialData ] = useState([]);
-    const AddHandle = ()=>{
-        const list = initialData.concat( {id: 1});
+    const initialList = [{ id: 1 }];
+    const [initialData, setInitialData] = useState([]);
+    const AddHandle = () => {
+        const list = initialData.concat({ id: 1 });
         setInitialData(list);
     }
     useEffect(() => {
-        if(props.initialData){
+        if (props.initialData) {
             setInitialData(props.initialData);
-        }else{
+        } else {
             setInitialData(initialList);
         }
     }, [props.initialData]);
-      
-    const changeHandle1 = (event) =>{
-        const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["messure"] = event.target.value };finalData.push(el) })
-        setInitialData(finalData);
-    }
-    const changeHandle2 = (event) =>{
-        const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["where_messure"] = event.target.value };finalData.push(el) })
-        setInitialData(finalData);
-    }
-    const changeHandle3 = (event) =>{
-        const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["monitoring"] = event.target.value };finalData.push(el) })
-        setInitialData(finalData);
-    }
-    const changeHandle4 = (event) =>{
-        const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["monitor_duration"] = event.target.value };finalData.push(el) })
-        setInitialData(finalData);
-    }
-    const changeHandle5 = (event) =>{
-        const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["cost"] = event.target.value };finalData.push(el) })
-        setInitialData(finalData);
-    }
-    const changeHandle6 = (event) =>{
-        const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["hostname"] = event.target.value };finalData.push(el) })
-        setInitialData(finalData);
-    }
-    const changeHandle7 = (event) =>{
-        const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["startdate"] = event.target.value };finalData.push(el) })
-        setInitialData(finalData);
-    }
-    const changeHandle8 = (event) =>{
-        const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["enddate"] = event.target.value };finalData.push(el) })
-        setInitialData(finalData);
-    }
 
-    // console.log(initialData, "666");
+    const changeHandle1 = (event) => {
+        const finalData = []
+        props.initialData.forEach((el, i) => { if (el.id.toString() === event.target.id) { el["messure"] = event.target.value }; finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle2 = (event) => {
+        const finalData = []
+        props.initialData.forEach((el, i) => { if (el.id.toString() === event.target.id) { el["where_messure"] = event.target.value }; finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle3 = (event) => {
+        const finalData = []
+        props.initialData.forEach((el, i) => { if (el.id.toString() === event.target.id) { el["monitoring"] = event.target.value }; finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle4 = (event) => {
+        const finalData = []
+        props.initialData.forEach((el, i) => { if (el.id.toString() === event.target.id) { el["monitor_duration"] = event.target.value }; finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle5 = (event) => {
+        const finalData = []
+        props.initialData.forEach((el, i) => { if (el.id.toString() === event.target.id) { el["cost"] = event.target.value }; finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle6 = (event) => {
+        const finalData = []
+        props.initialData.forEach((el, i) => { if (el.id.toString() === event.target.id) { el["hostname"] = event.target.value }; finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle7 = (event) => {
+        const finalData = []
+        props.initialData.forEach((el, i) => { if (el.id.toString() === event.target.id) { el["startdate"] = event.target.value }; finalData.push(el) })
+        setInitialData(finalData);
+    }
+    const changeHandle8 = (event) => {
+        const finalData = []
+        props.initialData.forEach((el, i) => { if (el.id.toString() === event.target.id) { el["enddate"] = event.target.value }; finalData.push(el) })
+        setInitialData(finalData);
+    }
 
     return (
         <Component3Detail>
 
-            {props.initialData!==null ? (initialData.map((el,i)=>{
-                return(
+            {props.initialData !== null ? (initialData.map((el, i) => {
+                return (
                     <div id={i} className="GetItemAdd666 DetailPar" key={i}>
-                    <div className="Title"> {i + 1} . БҮТЭЭН БАЙГУУЛАЛТЫН ҮЕ ШАТ :</div>
-                    <div className="formOneParent">
-                        <div className="inputPar">
-                            <div className="inpChild">
-                                <div className="labels"><span>Ямар өгөгдөхүүнийг хэмжих	:</span> </div>
-                                <div className="name"> <VscOpenPreview />
-                                    <div className="form__group">
-                                        <input type="text" value={el.messure} id={el.id} onChange={changeHandle1} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="messure" required />
-                                        <label htmlFor="name" className=" form__label">Ямар өгөгдөхүүнийг хэмжих</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="inpChild">
-                                <div className="labels"><span>Хаана өгөгдөхүүнийг хэмжих :</span> </div>
-                                <div className="name"> <VscChecklist />
-                                    <div className="form__group">
-                                        <input type="text" value={el.where_messure} onChange={changeHandle2} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where_messure" required />
-                                        <label htmlFor="name" className=" form__label">Хаана өгөгдөхүүнийг хэмжих</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="inputPar">
-                            <div className="inpChild">
-                                <div className="labels"><span>өгөгдөхүүнд мониторинг хийх (ашиглах тоног төхөөрөмж)	 :</span> </div>
-                                <div className="name"> <VscCloudDownload />
-                                    <div className="form__group">
-                                        <input type="text" value={el.monitoring} onChange={changeHandle3} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
-                                        <label htmlFor="name" className=" form__label">Хэрхэн</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="inpChild">
-                                <div className="labels"><span>Мониторингийн давтамж буюу үргэлжлэх байдал :</span> </div>
-                                <div className="name"> <VscCloudUpload />
-                                    <div className="form__group">
-                                        <input type="text" value={el.monitor_duration} onChange={changeHandle4} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor_duration" required />
-                                        <label htmlFor="name" className=" form__label">Хэзээ </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style={{borderStyle:"none"}} className="formOneParent">
-                        <div className="inputPar">
-                            <div className="inpChild">
-                                <div className="labels"><span>Тоног төхөөрөмжийн зардал буюу гүйцэтгэгчийн төлбөр :</span> </div>
-                                <div className="name"> <div className="svg">₮</div>
-                                    <div className="form__group">
-                                        <input style={{textAlign:`right`,paddingRight:15}} type="number" value={el.cost} onChange={changeHandle5} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
-                                        <label htmlFor="name" className=" form__label">Мониторингийн зардал </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="inpChild">
-                                <div className="labels"><span>Хариуцах эзэн :</span> </div>
-                                <div className="name"> <VscAccount />
-                                    <div className="form__group">
-                                        <input type="text" value={el.hostname} onChange={changeHandle6} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
-                                        <label htmlFor="name" className=" form__label">Хариуцах эзэн</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="inputPar">
-                            <div className="inpChild">
-                                <div className="labels"><span>Эхлэх хугацаа :</span> </div>
-                                <div className="name"> <GoCalendar />
-                                    <div className="form__group">
-                                        <input type="date" value={el.startdate} onChange={changeHandle7} id={el.id} max={Currentdate} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
-                                        <label htmlFor="name"  className=" form__label">Он-сар-өдөр</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="inpChild">
-                                <div className="labels"><span>Дуусах хугацаа :</span> </div>
-                                <div className="name"> <GoCalendar />
-                                    <div className="form__group">
-                                        <input type="date" max={Currentdate} value={el.enddate} onChange={changeHandle8} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
-                                        <label htmlFor="name" className=" form__label">Он-сар-өдөр</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                 </div>
-                )
-            })) : (
-                initialData.map((el,i)=>{
-                    return(
-                        <div id={i}  className="GetItemAdd666 DetailPar" key={i}>
-                        <div className="Title"> {i + 1} . ҮЙЛ АЖИЛЛАГААНЫ ҮЕ ШАТ :</div>
+                        <div className="Title"> {i + 1} . БҮТЭЭН БАЙГУУЛАЛТЫН ҮЕ ШАТ :</div>
                         <div className="formOneParent">
                             <div className="inputPar">
                                 <div className="inpChild">
                                     <div className="labels"><span>Ямар өгөгдөхүүнийг хэмжих	:</span> </div>
                                     <div className="name"> <VscOpenPreview />
                                         <div className="form__group">
-                                            <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="messure" required />
+                                            <input type="text" value={el.messure} id={el.id} onChange={changeHandle1} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="messure" required />
                                             <label htmlFor="name" className=" form__label">Ямар өгөгдөхүүнийг хэмжих</label>
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <div className="inpChild">
                                     <div className="labels"><span>Хаана өгөгдөхүүнийг хэмжих :</span> </div>
                                     <div className="name"> <VscChecklist />
                                         <div className="form__group">
-                                            <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where_messure" required />
+                                            <input type="text" value={el.where_messure} onChange={changeHandle2} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where_messure" required />
                                             <label htmlFor="name" className=" form__label">Хаана өгөгдөхүүнийг хэмжих</label>
                                         </div>
                                     </div>
@@ -196,42 +98,41 @@ function TableSixDetails2(props) {
                                     <div className="labels"><span>өгөгдөхүүнд мониторинг хийх (ашиглах тоног төхөөрөмж)	 :</span> </div>
                                     <div className="name"> <VscCloudDownload />
                                         <div className="form__group">
-                                            <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
+                                            <input type="text" value={el.monitoring} onChange={changeHandle3} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
                                             <label htmlFor="name" className=" form__label">Хэрхэн</label>
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <div className="inpChild">
                                     <div className="labels"><span>Мониторингийн давтамж буюу үргэлжлэх байдал :</span> </div>
                                     <div className="name"> <VscCloudUpload />
                                         <div className="form__group">
-                                            <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor_duration" required />
-                                            <label htmlFor="name" className=" form__label">Хэзээ</label>
+                                            <input type="text" value={el.monitor_duration} onChange={changeHandle4} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor_duration" required />
+                                            <label htmlFor="name" className=" form__label">Хэзээ </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-    
-                        <div style={{borderStyle:"none"}} className="formOneParent">
+
+                        <div style={{ borderStyle: "none" }} className="formOneParent">
                             <div className="inputPar">
                                 <div className="inpChild">
                                     <div className="labels"><span>Тоног төхөөрөмжийн зардал буюу гүйцэтгэгчийн төлбөр :</span> </div>
-                                    <div className="name"><div className="svg">₮</div>
-                                    {/* <VscFoldDown /> */}
+                                    <div className="name"> <div className="svg">₮</div>
                                         <div className="form__group">
-                                            <input style={{textAlign:`right`,paddingRight:15}} type="number" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
+                                            <input style={{ textAlign: `right`, paddingRight: 15 }} type="number" value={el.cost} onChange={changeHandle5} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
                                             <label htmlFor="name" className=" form__label">Мониторингийн зардал </label>
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <div className="inpChild">
                                     <div className="labels"><span>Хариуцах эзэн :</span> </div>
                                     <div className="name"> <VscAccount />
                                         <div className="form__group">
-                                            <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
+                                            <input type="text" value={el.hostname} onChange={changeHandle6} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
                                             <label htmlFor="name" className=" form__label">Хариуцах эзэн</label>
                                         </div>
                                     </div>
@@ -242,30 +143,127 @@ function TableSixDetails2(props) {
                                     <div className="labels"><span>Эхлэх хугацаа :</span> </div>
                                     <div className="name"> <GoCalendar />
                                         <div className="form__group">
-                                            <input type="date" max={Currentdate} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
-                                            <label htmlFor="name"  className=" form__label">Он-сар-өдөр</label>
+                                            <input type="date" value={el.startdate} onChange={changeHandle7} id={el.id} max={Currentdate} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
+                                            <label htmlFor="name" className=" form__label">Он-сар-өдөр</label>
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <div className="inpChild">
                                     <div className="labels"><span>Дуусах хугацаа :</span> </div>
                                     <div className="name"> <GoCalendar />
                                         <div className="form__group">
-                                            <input type="date" max={Currentdate}  className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
+                                            <input type="date" max={Currentdate} value={el.enddate} onChange={changeHandle8} id={el.id} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
                                             <label htmlFor="name" className=" form__label">Он-сар-өдөр</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                     </div>
+                    </div>
+                )
+            })) : (
+                initialData.map((el, i) => {
+                    return (
+                        <div id={i} className="GetItemAdd666 DetailPar" key={i}>
+                            <div className="Title"> {i + 1} . ҮЙЛ АЖИЛЛАГААНЫ ҮЕ ШАТ :</div>
+                            <div className="formOneParent">
+                                <div className="inputPar">
+                                    <div className="inpChild">
+                                        <div className="labels"><span>Ямар өгөгдөхүүнийг хэмжих	:</span> </div>
+                                        <div className="name"> <VscOpenPreview />
+                                            <div className="form__group">
+                                                <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="messure" required />
+                                                <label htmlFor="name" className=" form__label">Ямар өгөгдөхүүнийг хэмжих</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="inpChild">
+                                        <div className="labels"><span>Хаана өгөгдөхүүнийг хэмжих :</span> </div>
+                                        <div className="name"> <VscChecklist />
+                                            <div className="form__group">
+                                                <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="where_messure" required />
+                                                <label htmlFor="name" className=" form__label">Хаана өгөгдөхүүнийг хэмжих</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="inputPar">
+                                    <div className="inpChild">
+                                        <div className="labels"><span>өгөгдөхүүнд мониторинг хийх (ашиглах тоног төхөөрөмж)	 :</span> </div>
+                                        <div className="name"> <VscCloudDownload />
+                                            <div className="form__group">
+                                                <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitoring" required />
+                                                <label htmlFor="name" className=" form__label">Хэрхэн</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="inpChild">
+                                        <div className="labels"><span>Мониторингийн давтамж буюу үргэлжлэх байдал :</span> </div>
+                                        <div className="name"> <VscCloudUpload />
+                                            <div className="form__group">
+                                                <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="monitor_duration" required />
+                                                <label htmlFor="name" className=" form__label">Хэзээ</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style={{ borderStyle: "none" }} className="formOneParent">
+                                <div className="inputPar">
+                                    <div className="inpChild">
+                                        <div className="labels"><span>Тоног төхөөрөмжийн зардал буюу гүйцэтгэгчийн төлбөр :</span> </div>
+                                        <div className="name"><div className="svg">₮</div>
+                                            {/* <VscFoldDown /> */}
+                                            <div className="form__group">
+                                                <input style={{ textAlign: `right`, paddingRight: 15 }} type="number" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="cost" required />
+                                                <label htmlFor="name" className=" form__label">Мониторингийн зардал </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="inpChild">
+                                        <div className="labels"><span>Хариуцах эзэн :</span> </div>
+                                        <div className="name"> <VscAccount />
+                                            <div className="form__group">
+                                                <input type="text" className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="hostname" required />
+                                                <label htmlFor="name" className=" form__label">Хариуцах эзэн</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="inputPar">
+                                    <div className="inpChild">
+                                        <div className="labels"><span>Эхлэх хугацаа :</span> </div>
+                                        <div className="name"> <GoCalendar />
+                                            <div className="form__group">
+                                                <input type="date" max={Currentdate} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="startdate" required />
+                                                <label htmlFor="name" className=" form__label">Он-сар-өдөр</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="inpChild">
+                                        <div className="labels"><span>Дуусах хугацаа :</span> </div>
+                                        <div className="name"> <GoCalendar />
+                                            <div className="form__group">
+                                                <input type="date" max={Currentdate} className={`APSA${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="enddate" required />
+                                                <label htmlFor="name" className=" form__label">Он-сар-өдөр</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     )
                 })
             )}
 
-            {!props.initialData&&<div className="AddItemBtn">  <IoIosAddCircleOutline onClick={AddHandle} /></div>}
-           
+            {!props.initialData && <div className="AddItemBtn">  <IoIosAddCircleOutline onClick={AddHandle} /></div>}
+
 
             {/* <button >hahahaha</button> */}
 

@@ -12,7 +12,6 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
-import SearchSelect from 'components/urgudul_components/searchSelect'
 import UploadSVG from 'assets/svgComponents/uploadSVG'
 import FileCard from 'pages/attachments/fileCard'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
@@ -83,12 +82,10 @@ function UrgudulClusters({ projects }) {
                 'Content-Type': 'multipart/form-data',
             }
         }).then(res => {
-            console.log(res.data)
             const newForm = form
             newForm[editIndex].attachedFiles = [res.data.data]
             setForm([...newForm])
         }).catch(err => {
-            console.log(err.response?.data)
             const newForm = form
             newForm[editIndex].attachedFiles = null
             setForm([...newForm])
@@ -111,11 +108,9 @@ function UrgudulClusters({ projects }) {
             },
             responseType: 'blob',
         }).then(res => {
-            console.log(res)
             const URL = window.URL.createObjectURL(res.data)
             FilePreviewCtx.setFile({ open: true, src: URL })
         }).catch(err => {
-            console.log(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг татаж чадсангүй.' })
         })
     }
@@ -170,17 +165,13 @@ function UrgudulClusters({ projects }) {
                     headers: {
                         'Authorization': getLoggedUserToken()
                     }
+                }).then(res => {
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Кластерийн мэдээлэл хадгалагдлаа.' })
+                    history.push('/urgudul/4')
+                }).catch(err => {
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
-                    .then(res => {
-                        console.log(res.data)
-                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Кластерийн мэдээлэл хадгалагдлаа.' })
-                        history.push('/urgudul/4')
-                    })
-                    .catch(err => {
-                        console.log(err.response?.data)
-                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                    })
             } else {
                 AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
             }
@@ -209,11 +200,9 @@ function UrgudulClusters({ projects }) {
     const [sectors, setSectors] = useState([])
 
     useEffect(() => {
-        axios.get('business-sector')
-            .then(res => {
-                console.log(res.data)
-                setSectors(res.data.data)
-            })
+        axios.get('business-sector').then(res => {
+            setSectors(res.data.data)
+        })
     }, [])
 
     const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
@@ -222,7 +211,6 @@ function UrgudulClusters({ projects }) {
         axios.get(`projects/${id}`, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res)
             const loadCluster = res.data.data?.clusters ?? []
             if (loadCluster.length > 0) {
                 setForm(loadCluster)
@@ -232,7 +220,6 @@ function UrgudulClusters({ projects }) {
             }
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
         }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
         })
     }

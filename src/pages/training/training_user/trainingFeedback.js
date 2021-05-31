@@ -22,7 +22,6 @@ export default function TrainingFeedback() {
    useEffect(() => {
       axios.get('trainings/questionnaire')
          .then(res => {
-            console.log(res)
             setQuestionnaire(res.data.data)
             const initialFeedback = []
             for (const question of res.data.data) {
@@ -35,7 +34,6 @@ export default function TrainingFeedback() {
             }
             setFeedback(initialFeedback)
          }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Асуумжуудыг татаж чадсангүй.' })
          })
    }, [])
@@ -52,11 +50,9 @@ export default function TrainingFeedback() {
       axios.post(`trainings/${training.id}/feedbacks`, feedback, {
          params: { registrationId: training.trainingRegistrations[0].id },
       }).then(res => {
-         console.log(res)
          setFeedback(res.data.data)
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын үнэлгээг хүлээж авлаа.' })
       }).catch(err => {
-         console.error(err.response)
          if (err.response.status === 490) {
             setModalOpenFeedbackGiven(true)
             return
@@ -102,7 +98,6 @@ export default function TrainingFeedback() {
       axios.get(`trainings/find-by`, {
          params: { passcode: passcode },
       }).then(res => {
-         console.log(res)
          const training = res.data.data
          if (training === null) {
             setTraining({})
@@ -119,7 +114,6 @@ export default function TrainingFeedback() {
          setModalOpenPass(false)
          setErrorMsg('')
       }).catch(err => {
-         console.error(err.response)
          setTraining({})
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээллийг олж чадсангүй.' })
       })
@@ -189,7 +183,7 @@ export default function TrainingFeedback() {
             <div className="tw-flex tw-items-center tw-py-1">
                <LibrarySVG className="tw-w-5 tw-h-5 tw-text-blue-500 tw-mr-1" />
                <span className="tw-text-gray-600 tw-mr-3">Зохион байгуулагч:</span>
-               <span className="tw-uppercase">{training.organizer}</span>
+               <span className="tw-uppercase">{training.trainerOrganization?.organization_name}</span>
             </div>
             <div className="tw-flex tw-items-center tw-py-1">
                <CalendarSVG className="tw-w-5 tw-h-5 tw-text-blue-500 tw-mr-1" />

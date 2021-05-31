@@ -143,17 +143,13 @@ function UrgudulApplicant({ projects }) {
                     headers: {
                         'Authorization': getLoggedUserToken()
                     }
+                }).then(res => {
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдөл гаргагчийн мэдээлэл хадгалагдлаа.' })
+                    history.push('/urgudul/3')
+                }).catch(err => {
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
-                    .then(res => {
-                        console.log(res.data)
-                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдөл гаргагчийн мэдээлэл хадгалагдлаа.' })
-                        history.push('/urgudul/3')
-                    })
-                    .catch(err => {
-                        console.log(err.response?.data)
-                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                    })
             } else {
                 AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
             }
@@ -184,11 +180,9 @@ function UrgudulApplicant({ projects }) {
     const [sectors, setSectors] = useState([])
 
     useEffect(() => {
-        axios.get('business-sector')
-            .then(res => {
-                console.log(res.data)
-                setSectors(res.data.data)
-            })
+        axios.get('business-sector').then(res => {
+            setSectors(res.data.data)
+        })
     }, [])
 
     const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
@@ -197,12 +191,10 @@ function UrgudulApplicant({ projects }) {
         axios.get(`projects/${id}`, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res)
             const loadCompany = res.data.data?.company ?? {}
             setForm({ ...initialState, ...loadCompany })
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
         }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
         })
     }

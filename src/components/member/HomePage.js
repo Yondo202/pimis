@@ -1,74 +1,74 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-import {ColorRgb,textColor,fontFamily} from '../theme';
+import { ColorRgb, textColor, fontFamily } from '../theme';
 import axios from 'axiosbase';
 import Token from 'context/accessToken';
 import DocumentTitle from 'containers/document/DocumentTitle'
 import { IoMdCheckmarkCircle } from 'react-icons/io'
 
-function HomePage({setNotify}) {
+function HomePage({ setNotify }) {
     DocumentTitle("EDP - Үнэлгээний хорооны гишүүн");
-    const [ cardData, setCardData ] = useState(null);
-    const [ showModal, setShowModal ] = useState(false);
-    const [ parent, setParent ] = useState({});
-    const ClickHandle = e =>{ setParent(e); setShowModal(true);}
+    const [cardData, setCardData] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [parent, setParent] = useState({});
+    const ClickHandle = e => { setParent(e); setShowModal(true); }
 
-    useEffect(async()=>{
-            await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token()}}).then((res)=>{
-                console.log(res, "------------");
-                if(res.data.data[0]){ setCardData(res.data.data); };
-            }).catch((err)=> console.log(err.response.data.error))
-    },[]);
+    useEffect(() => {
+        axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token() } }).then((res) => {
+            console.log(res, "------------");
+            if (res.data.data[0]) { setCardData(res.data.data); };
+        }).catch((err) => console.log(err.response.data.error))
+    }, []);
 
     return (
-        <Memberhome style={{maxWidth:1160}} className="container">
+        <Memberhome style={{ maxWidth: 1160 }} className="container">
             <div className="header">
                 <div className="items">
-                   <span className="text">Байгууллагуудын жагсаалт</span>
-                   <div className="line"></div>
+                    <span className="text">Байгууллагуудын жагсаалт</span>
+                    <div className="line"></div>
                 </div>
             </div>
             <div className="CardParent">
-                  {showModal&&<Modal showModal={showModal} setNotify={setNotify} setShowModal={setShowModal} parent={parent} />} 
-                    {cardData? cardData.map((el,i)=>{
-                        return(
-                            <div onClick={()=>ClickHandle(el)} className="Ghost">
-                                <div className="cardItems">
-                                    <div className="titleBig">{el.company_name}</div>
-                                    <div className="contents">
-                                        <div className="contItem">
-                                                <span className="title">Регистр :</span>
-                                                <span className="desc">{el.company.registration_number}</span>
+                {showModal && <Modal showModal={showModal} setNotify={setNotify} setShowModal={setShowModal} parent={parent} />}
+                {cardData ? cardData.map((el, i) => {
+                    return (
+                        <div onClick={() => ClickHandle(el)} className="Ghost">
+                            <div className="cardItems">
+                                <div className="titleBig">{el.company_name}</div>
+                                <div className="contents">
+                                    <div className="contItem">
+                                        <span className="title">Регистр :</span>
+                                        <span className="desc">{el.company.registration_number}</span>
+                                    </div>
+                                    <div className="contItem">
+                                        <span className="title">Өргөдөлийн маягт :</span>
+                                        <span className="desc">{el.project_name}</span>
+                                    </div>
+                                    <div className="contItem">
+                                        <span className="title">Санхүүжилтийн хэмжээ :</span>
+                                        <span className="desc">{el.budgetCost} $</span>
+                                    </div>
+                                    <div className="mains">
+                                        <div className="buttons Active">
+                                            <Link onClick={() => setNotify(el)} to={el.medegdehHuudas ? el.medegdehHuudas.is_violation === false ? `/notify/${el.projectId}` : `#` : `/notify/${el.projectId}`} >Mэдэгдэх хуудас</Link>
+                                            {el.medegdehHuudas ? el.medegdehHuudas.is_violation !== null ? <IoMdCheckmarkCircle /> : null : null}
                                         </div>
-                                        <div className="contItem">
-                                                <span className="title">Өргөдөлийн маягт :</span>
-                                                <span className="desc">{el.project_name}</span>
-                                        </div>
-                                        <div className="contItem">
-                                                <span className="title">Санхүүжилтийн хэмжээ :</span>
-                                                <span className="desc">{el.budgetCost} $</span>
-                                        </div>
-                                        <div className="mains">
-                                                <div className="buttons Active">
-                                                  <Link onClick={()=>setNotify(el)} to={el.medegdehHuudas?el.medegdehHuudas.is_violation===false?`/notify/${el.projectId}`:`#`:`/notify/${el.projectId}`} >Mэдэгдэх хуудас</Link> 
-                                                     {el.medegdehHuudas? el.medegdehHuudas.is_violation!==null?<IoMdCheckmarkCircle />:null: null}
-                                                </div>
-                                                <div className="buttons Active">
-                                                  <Link onClick={()=>setNotify(el)} to={el.medegdehHuudas?el.medegdehHuudas.is_violation===false?`/memberdecision/${el.projectId}`:`#`:`/memberdecision/${el.projectId}`}>Саналын хуудас</Link> 
-                                                     {el.sanalinnHuudas?el.sanalinnHuudas.approve===null?null:<IoMdCheckmarkCircle />: null} 
-                                                </div>
+                                        <div className="buttons Active">
+                                            <Link onClick={() => setNotify(el)} to={el.medegdehHuudas ? el.medegdehHuudas.is_violation === false ? `/memberdecision/${el.projectId}` : `#` : `/memberdecision/${el.projectId}`}>Саналын хуудас</Link>
+                                            {el.sanalinnHuudas ? el.sanalinnHuudas.approve === null ? null : <IoMdCheckmarkCircle /> : null}
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
-                        )
-                    }): <h2>Мэдээлэл байхгүй байна...</h2>}
+                        </div>
+                    )
+                }) : <h2>Мэдээлэл байхгүй байна...</h2>}
             </div>
         </Memberhome>
     )
 }
- 
+
 export default HomePage
 
 const firstAnitamte = keyframes`
@@ -295,49 +295,46 @@ const Memberhome = styled.div`
     }
 `
 
-
-
-const Modal = ({ setShowModal, parent, setNotify }) =>{
+const Modal = ({ setShowModal, parent, setNotify }) => {
     const ref = useRef();
-    const closeModal = e =>{ if(ref.current === e.target){ setShowModal(false);}}
+    const closeModal = e => { if (ref.current === e.target) { setShowModal(false); } }
 
     console.log(parent, " my parent");
-    return(
+    return (
         <div onClick={closeModal} ref={ref} className="Ghost Fix">
-                <div className="cardItems">
-                    <div className="titleBig">{parent.company_name}</div>
-                    <div className="contents">
-                        <div className="contItem">
-                                <span className="title">Регистр :</span>
-                                <span className="desc">{parent.company.registration_number}</span>
+            <div className="cardItems">
+                <div className="titleBig">{parent.company_name}</div>
+                <div className="contents">
+                    <div className="contItem">
+                        <span className="title">Регистр :</span>
+                        <span className="desc">{parent.company.registration_number}</span>
+                    </div>
+                    <div className="contItem">
+                        <span className="title">ӨМ - дугаар :</span>
+                        <span className="desc">{parent.project_name}</span>
+                    </div>
+                    <div className="contItem">
+                        <span className="title">Санхүүжилтийн хэмжээ :</span>
+                        <span className="desc">{parent.budgetCost}</span>
+                    </div>
+                    <div className="mains">
+                        <div className="buttons Active">
+                            <Link onClick={() => setNotify(parent)} to={parent.medegdehHuudas ? parent.medegdehHuudas.is_violation === false ? `/notify/${parent.projectId}` : `#` : `/notify/${parent.projectId}`}>Mэдэгдэх хуудас</Link>
+
                         </div>
-                        <div className="contItem">
-                                <span className="title">ӨМ - дугаар :</span>
-                                <span className="desc">{parent.project_name}</span>
-                        </div>
-                        <div className="contItem">
-                                <span className="title">Санхүүжилтийн хэмжээ :</span>
-                                <span className="desc">{parent.budgetCost}</span>
-                        </div>
-                        <div className="mains">
-                                <div className="buttons Active">
-                                 <Link onClick={()=>setNotify(parent)} to={parent.medegdehHuudas?parent.medegdehHuudas.is_violation===false?`/notify/${parent.projectId}`:`#`:`/notify/${parent.projectId}`}>Mэдэгдэх хуудас</Link>
-                                 
-                                </div>
-                                <div className="buttons">
-                                 <Link onClick={()=>setNotify(parent)} to={parent.medegdehHuudas?parent.medegdehHuudas.is_violation===false?`/memberdecision/${parent.projectId}`:`#`:`/memberdecision/${parent.projectId}`}>Саналын хуудас</Link> 
-                                </div>
+                        <div className="buttons">
+                            <Link onClick={() => setNotify(parent)} to={parent.medegdehHuudas ? parent.medegdehHuudas.is_violation === false ? `/memberdecision/${parent.projectId}` : `#` : `/memberdecision/${parent.projectId}`}>Саналын хуудас</Link>
                         </div>
                     </div>
-                </div> 
+                </div>
+            </div>
         </div>
     )
 }
 
-
 const CardData = [
-    { company_name: "Эм Си Эс ХХК", registration_number: "15165687", project_name: "85", budgetCost: "99,000.00 "},
-    { company_name: "Гацуурт ХХК", registration_number: "4545445", project_name: "15", budgetCost: "45,000.00 "},
-    { company_name: "Натурал ХХК", registration_number: "55555444", project_name: "55", budgetCost: "33,000.00 "},
-    { company_name: "Ганга өвс ХХК", registration_number: "544554", project_name: "45", budgetCost: "1,000.00 "},
+    { company_name: "Эм Си Эс ХХК", registration_number: "15165687", project_name: "85", budgetCost: "99,000.00 " },
+    { company_name: "Гацуурт ХХК", registration_number: "4545445", project_name: "15", budgetCost: "45,000.00 " },
+    { company_name: "Натурал ХХК", registration_number: "55555444", project_name: "55", budgetCost: "33,000.00 " },
+    { company_name: "Ганга өвс ХХК", registration_number: "544554", project_name: "45", budgetCost: "1,000.00 " },
 ]

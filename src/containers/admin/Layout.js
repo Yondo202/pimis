@@ -118,7 +118,8 @@ const cardAnimate = keyframes`
   0% { transform:translateY(30px);opacity:0; }
   100% { transform:translateY(0px);opacity:1; }
 `
-const AdminApp = styled.div`
+
+export const AdminApp = styled.div`
     .MainParent{
         height:100vh;
         // display:flex;
@@ -280,7 +281,6 @@ const AdminApp = styled.div`
                     }
                   }
               
-                
                 .Profile{
                     cursor:pointer;
                     display:flex;
@@ -301,8 +301,6 @@ const AdminApp = styled.div`
                     }
                 }
             }
-            
-           
         }
         @media (max-width:760px){
             .SwitchPar{

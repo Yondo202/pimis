@@ -1,7 +1,7 @@
 import AnnotationSVG from 'assets/svgComponents/annotationSVG'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import React, { useContext, useEffect, useState } from 'react'
-import { animated, config, Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
@@ -319,51 +319,37 @@ export default function CompilationChecklist() {
             axios.get(`projects/${projectId}/bds-evaluation5b`, {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
-                console.log(res.data)
                 if (res.data.data?.length === initialState.length) {
                     setRows(res.data.data)
                 }
-            }).catch(err => {
-                console.log(err.response?.data)
             })
 
             axios.get('pps-infos/registered-companies', {
                 headers: { Authorization: getLoggedUserToken() },
                 params: { projectId: projectId },
             }).then(res => {
-                console.log(res.data)
                 setCompany(res.data.data[0] ?? {})
-            }).catch(err => {
-                console.log(err.response?.data)
             })
 
             axios.get(`users/${loggedUserId}`, {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
-                console.log(res.data)
                 setEvaluator(res.data.data)
-            }).catch(err => {
-                console.log(err.response?.data)
             })
         } else {
             axios.get('pps-infos/registered-companies', {
                 headers: { Authorization: getLoggedUserToken() },
                 params: { userId: loggedUserId },
             }).then(res => {
-                console.log(res.data)
                 setCompany(res.data.data[0] ?? {})
-
                 res.data.data[0]?.project?.id &&
                     axios.get(`projects/${res.data.data[0].project.id}/bds-evaluation5b`, {
                         headers: { Authorization: getLoggedUserToken() },
                     }).then(res => {
-                        console.log(res.data)
                         if (res.data.data?.length === initialState.length) {
                             setRows(res.data.data)
                         }
                     })
-            }).catch(err => {
-                console.log(err.response?.data)
             })
         }
     }, [])
@@ -378,10 +364,8 @@ export default function CompilationChecklist() {
         axios.post(`projects/${projectId}/bds-evaluation5b`, rows, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Бүрдүүлбэрүүдийг шалгах хуудсыг хадгалагдлаа.' })
         }).catch(err => {
-            console.log(err.response?.data)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
         })
     }

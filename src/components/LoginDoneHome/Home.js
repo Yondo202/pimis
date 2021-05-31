@@ -5,7 +5,7 @@ import axios from '../../axiosbase';
 import AccessToken from '../../context/accessToken'
 import ActiveComp from './ActiveComp'
 import InitialComp from './initialComp'
-import { useQuery } from 'components/utilities/useQueryLocation'
+import useQuery from 'components/utilities/useQueryLocation'
 
 
 function Home() {

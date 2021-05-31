@@ -15,7 +15,6 @@ export default function TrainingRequest() {
 
    useEffect(() => {
       axios.get('business-sector').then(res => {
-         console.log(res.data)
          setSectors(res.data.data)
       })
    }, [])
@@ -36,15 +35,12 @@ export default function TrainingRequest() {
          return
       }
 
-      axios.post('trainings/requests', request)
-         .then(res => {
-            console.log(res)
-            setRequest(res.data.data)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын хүсэлтийг хүлээж авлаа.' })
-         }).catch(err => {
-            console.error(err.response)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хүсэлт илгээж чадсангүй.' })
-         })
+      axios.post('trainings/requests', request).then(res => {
+         setRequest(res.data.data)
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын хүсэлтийг хүлээж авлаа.' })
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хүсэлт илгээж чадсангүй.' })
+      })
    }
 
    const [validate, setValidate] = useState(false)

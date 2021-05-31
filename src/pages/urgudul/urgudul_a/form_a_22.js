@@ -77,11 +77,9 @@ function UrgudulDirectors({ projects }) {
     const [occupations, setOccupations] = useState([])
 
     useEffect(() => {
-        axios.get('occupations')
-            .then(res => {
-                console.log(res.data)
-                setOccupations(res.data.data)
-            })
+        axios.get('occupations').then(res => {
+            setOccupations(res.data.data)
+        })
     }, [])
 
     const AlertCtx = useContext(AlertContext)
@@ -104,17 +102,13 @@ function UrgudulDirectors({ projects }) {
             if (allValid) {
                 axios.put(`projects/${UrgudulCtx.data.id}`, { directors: form }, {
                     headers: { 'Authorization': getLoggedUserToken() },
+                }).then(res => {
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'АНН мэдээлэл хадгалагдлаа.' })
+                    history.push('/urgudul/4')
+                }).catch(err => {
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
-                    .then(res => {
-                        console.log(res.data)
-                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'АНН мэдээлэл хадгалагдлаа.' })
-                        history.push('/urgudul/4')
-                    })
-                    .catch(err => {
-                        console.log(err.response?.data)
-                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                    })
             } else {
                 AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
             }
@@ -146,7 +140,6 @@ function UrgudulDirectors({ projects }) {
         axios.get(`projects/${id}`, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res)
             const loadDirectors = res.data.data?.directors ?? []
             if (loadDirectors.length > 0) {
                 setForm(loadDirectors)
@@ -156,7 +149,6 @@ function UrgudulDirectors({ projects }) {
             }
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
         }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
         })
     }

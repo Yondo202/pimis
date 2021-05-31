@@ -9,7 +9,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { Fragment } from 'react'
-import { animated, config, Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import CloseSVG from 'assets/svgComponents/closeSVG'
 import TreeSelectCompact from 'components/urgudul_components/treeSelectCompact'
 
@@ -120,23 +120,17 @@ function UrgudulCalculations() {
     const [rates, setRates] = useState([])
 
     useEffect(() => {
-        axios.get('countries')
-            .then(res => {
-                console.log(res.data)
-                setCounties(res.data.data)
-            })
+        axios.get('countries').then(res => {
+            setCounties(res.data.data)
+        })
 
-        axios.get('products')
-            .then(res => {
-                console.log(res.data)
-                setProducts(res.data.data.docs)
-            })
+        axios.get('products').then(res => {
+            setProducts(res.data.data.docs)
+        })
 
-        axios.get('currency-rates')
-            .then(res => {
-                console.log(res.data)
-                setRates(res.data.data)
-            })
+        axios.get('currency-rates').then(res => {
+            setRates(res.data.data)
+        })
     }, [])
 
     const datesForm = sortDates(form.sales)
@@ -214,17 +208,13 @@ function UrgudulCalculations() {
             if (allValid) {
                 axios.put(`projects/${UrgudulCtx.data.id}`, { exportDatas: form }, {
                     headers: { 'Authorization': getLoggedUserToken() }
+                }).then(res => {
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Борлуулалт, экспортын тооцоолол хадгалагдлаа.' })
+                    history.push('/urgudul/9')
+                }).catch(err => {
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
-                    .then(res => {
-                        console.log(res.data)
-                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Борлуулалт, экспортын тооцоолол хадгалагдлаа.' })
-                        history.push('/urgudul/9')
-                    })
-                    .catch(err => {
-                        console.log(err.response?.data)
-                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                    })
             } else {
                 AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
             }

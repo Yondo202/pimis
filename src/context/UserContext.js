@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import axios from "../axiosbase";
-import { useHistory } from "react-router-dom"
 
 const UserContext = React.createContext();
 const initialStyle = { tableOne: "0%", tableTwo: "100%", tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%", tableheight: 150 };
 const initialUserInfo = { userId: null, token: null, expireDate: null, name: null, refreshToken: null, role: null, email: null };
-const initialSee = { tableOneData: {}, tableTwoData: {}, tableThree: {}, tableFour: {} };
 
 export const UserStore = (props) => {
-  const history = useHistory();
   const [userInfo, setUserInfo] = useState(initialUserInfo);
   const [alert, setAlert] = useState({ color: 'white', text: '', cond: false });
   const [errMsg, setErrMsg] = useState("");
   const [errMsgSignup, setErrMsgSignUp] = useState({ msg: "", cond: false });
   const [GlobalStyle, setGlobalStyle] = useState(initialStyle);
-  const [tableSee, setTableSee] = useState(initialSee);
   const [reqID, setReqId] = useState(0);
 
   const idPass = (id) => {
@@ -31,6 +27,7 @@ export const UserStore = (props) => {
     localStorage.setItem("role", user.role);
     localStorage.setItem("username", user.name);
     localStorage.setItem("signature", user.signature);
+    localStorage.setItem("trainerOrganizationId", user.trainerOrganizationId);
   };
 
   const loginUser = (email, password) => {
@@ -73,27 +70,20 @@ export const UserStore = (props) => {
       });
   };
 
-  const signUpUser = (userinfos) => {   
+  const signUpUser = (userinfos) => {
     axios.post("users/register", userinfos)
       .then((res) => {
         console.log(res, "^new user");
         setErrMsgSignUp({ msg: `Таны бүртгүүлсэн "${res.data.user.email}" имэйл хаягаар бид имэйл илгээсэн тул та шалгаж БАТАЛГААЖУУЛАЛТ дээр дарна уу.`, cond: true });;
       })
       .catch((e) => {
-          setErrMsgSignUp({ msg: e.response?.data.error.message, cond: false });
-          setUserInfo(initialUserInfo);
+        setErrMsgSignUp({ msg: e.response?.data.error.message, cond: false });
+        setUserInfo(initialUserInfo);
       });
   };
 
   const logout = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("expireDate");
-    localStorage.removeItem("role");
-    localStorage.removeItem("username");
-    localStorage.removeItem("tableId");
-    localStorage.removeItem("signature");
+    localStorage.clear()
     setUserInfo({ userId: undefined });
 
     setTimeout(() => {

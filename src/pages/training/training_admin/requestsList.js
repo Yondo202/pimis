@@ -21,15 +21,12 @@ export default function TrainingRequestsList() {
       axios.get('trainings/requests', {
          headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
-         console.log(res)
          setRequests(res.data.data)
       }).catch(err => {
-         console.log(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Захиалгат сургалтын хүсэлтүүдийг татаж чадсангүй.' })
       })
 
       axios.get('business-sector').then(res => {
-         console.log(res.data)
          setSectors(res.data.data)
       })
    }, [])
@@ -46,7 +43,6 @@ export default function TrainingRequestsList() {
    useEffect(() => {
       const handleResize = () => {
          setWidth(containerRef.current?.clientWidth)
-         console.log(containerRef.current?.clientWidth)
       }
       if (width === undefined) handleResize()
       window.addEventListener('resize', handleResize)
@@ -68,10 +64,8 @@ export default function TrainingRequestsList() {
          headers: { Authorization: getLoggedUserToken() },
          params: params,
       }).then(res => {
-         console.log(res)
          setRequests(res.data.data)
       }).catch(err => {
-         console.error(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Мэдээллийг татаж чадсангүй.' })
       })
    }
@@ -91,7 +85,7 @@ export default function TrainingRequestsList() {
                      <span className="tw-absolute tw-left-1 tw-bg-white tw-py-0.5 tw-pl-2 tw-pr-1 tw-text-gray-500" style={{ width: 102, top: 5 }}>Эхлэх хугацаа:</span>
                   }
                </div>
-               <div className="tw-relative tw-p-0.5 tw-ml-3">
+               <div className="tw-relative tw-p-0.5 tw-ml-2">
                   <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.endDate} onChange={e => handleInputParams('endDate', e.target.value)} />
                   {!params.endDate &&
                      <span className="tw-absolute tw-left-1 tw-bg-white tw-py-0.5 tw-pl-2 tw-pr-1 tw-text-gray-500" style={{ top: 5 }}>Дуусах хугацаа:</span>

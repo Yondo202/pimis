@@ -34,10 +34,7 @@ export default function EvaluatorsMeetingsList(props) {
         axios.get('evaluation-meetings', {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res.data)
             setMeetings(res.data.data)
-        }).catch(err => {
-            console.log(err.response?.data)
         })
     }, [])
 
@@ -214,7 +211,7 @@ export default function EvaluatorsMeetingsList(props) {
                 </div>
 
                 <div className="tw-flex tw-justify-center">
-                    <button className="tw-py-1.5 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-8" onClick={() => history.push('/meetings/id')}>
+                    <button className="tw-py-1.5 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-8 tw-text-13px" onClick={() => history.push('/meetings/id')}>
                         Уулзалт нэмэх
                     </button>
                 </div>

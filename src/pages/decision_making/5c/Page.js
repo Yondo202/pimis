@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import FormRichText from 'components/urgudul_components/formRichText'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import AnnotationSVG from 'assets/svgComponents/annotationSVG'
-import { animated, config, Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
@@ -264,53 +264,39 @@ export default function AnalystReport() {
             axios.get(`projects/${projectId}/bds-evaluation5c`, {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
-                console.log(res.data)
                 if (res.data.data?.rows?.length === initialState.length) {
                     setRows(res.data.data.rows)
                 }
                 setInfo(res.data.data.info)
-            }).catch(err => {
-                console.log(err.response?.data)
             })
 
             axios.get('pps-infos/registered-companies', {
                 headers: { Authorization: getLoggedUserToken() },
                 params: { projectId: projectId },
             }).then(res => {
-                console.log(res.data)
                 setCompany(res.data.data[0] ?? {})
-            }).catch(err => {
-                console.log(err.response?.data)
             })
 
             axios.get(`users/${loggedUserId}`, {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
-                console.log(res.data)
                 setEvaluator(res.data.data)
-            }).catch(err => {
-                console.log(err.response?.data)
             })
         } else {
             axios.get('pps-infos/registered-companies', {
                 headers: { Authorization: getLoggedUserToken() },
                 params: { userId: loggedUserId },
             }).then(res => {
-                console.log(res.data)
                 setCompany(res.data.data[0] ?? {})
-
                 res.data.data[0]?.project?.id &&
                     axios.get(`projects/${res.data.data[0].project.id}/bds-evaluation5c`, {
                         headers: { Authorization: getLoggedUserToken() },
                     }).then(res => {
-                        console.log(res.data)
                         if (res.data.data?.rows?.length === initialState.length) {
                             setRows(res.data.data.rows)
                         }
                         setInfo(res.data.data.info)
                     })
-            }).catch(err => {
-                console.log(err.response?.data)
             })
         }
     }, [])
@@ -326,10 +312,8 @@ export default function AnalystReport() {
             axios.post(`projects/${projectId}/bds-evaluation5c`, { rows: rows, info: info }, {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
-                console.log(res.data)
                 AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Шинжилгээний тайланг хадгалагдлаа.' })
             }).catch(err => {
-                console.log(err.response?.data)
                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
             })
         } else {

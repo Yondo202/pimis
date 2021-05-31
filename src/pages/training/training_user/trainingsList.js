@@ -24,10 +24,8 @@ export default function TrainingsList() {
       axios.get('trainings', {
          params: { status: 'active' },
       }).then(res => {
-         console.log(res)
          setTrainings(res.data.data)
       }).catch(err => {
-         console.error(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтуудыг татаж чадсангүй.' })
       })
    }, [])
@@ -37,11 +35,9 @@ export default function TrainingsList() {
          headers: { Authorization: getLoggedUserToken() },
          responseType: 'blob',
       }).then(res => {
-         console.log(res)
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         console.log(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
       })
    }
@@ -204,7 +200,7 @@ const TrainingCard = ({ training, handleDownloadFile, setModalOpenIsFull }) => {
             {item => item && (anims =>
                <animated.div className="tw-overflow-hidden tw-text-13px tw-font-medium" style={anims}>
                   <div className="tw-pt-1 tw-pl-6">
-                     <button className="focus:tw-outline-none tw-font-medium tw-border-b tw-border-gray-600 tw-transition-colors tw-transition-shadow hover:tw-shadow-md" onClick={handleViewFile}>
+                     <button className="focus:tw-outline-none tw-font-medium tw-border-b tw-border-gray-600 tw-transition-colors tw-transition-shadow hover:tw-shadow-md tw-text-blue-500 active:tw-text-blue-600" onClick={handleViewFile}>
                         Сургалтын агуулгыг харах
                      </button>
                   </div>
@@ -230,7 +226,7 @@ const TrainingCard = ({ training, handleDownloadFile, setModalOpenIsFull }) => {
                   </div>
                   <div className="tw-flex tw-items-center tw-mt-1">
                      <LibrarySVG className="w-5 tw-h-5 tw-mr-1" />
-                     {training.organizer}
+                     {training.trainerOrganization?.organization_name}
                   </div>
                   <div className="tw-flex tw-items-center tw-mt-1">
                      <LocationMarkerSVG className="w-5 tw-h-5 tw-mr-1" />

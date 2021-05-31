@@ -6,11 +6,12 @@ import MembersHome from 'components/member/HomePage';
 import Notify from 'components/member/notify/PageOne';
 import MiddleRoute from "containers/middle/middleRoute"
 
-
 function MemberRoute() {
     const [NotifyData, setNotify] = useState({});
+
     return (
-        <> <Menu />
+        <>
+            <Menu />
             <Switch>
                 <Route path="/" exact >
                     <MembersHome setNotify={setNotify} />

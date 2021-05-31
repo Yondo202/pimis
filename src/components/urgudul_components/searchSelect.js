@@ -15,12 +15,9 @@ function SearchSelect(props) {
             props.api &&
                 axios.get(props.api)
                     .then(res => {
-                        console.log(res.data)
                         const data = props.keys.reduce((a, v) => a[v], res.data)
                         setFetch(data)
                         props.value && setSearch(data.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
-                    }).catch(err => {
-                        console.log(err.response?.data)
                     })
         }
     }, [props.data])

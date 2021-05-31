@@ -30,11 +30,9 @@ export default function TrainingUserRegistration() {
    const [sectors, setSectors] = useState([])
 
    useEffect(() => {
-      axios.get('business-sector')
-         .then(res => {
-            console.log(res.data)
-            setSectors(res.data.data)
-         })
+      axios.get('business-sector').then(res => {
+         setSectors(res.data.data)
+      })
    }, [])
 
    const [tab, setTab] = useState(true)
@@ -49,11 +47,9 @@ export default function TrainingUserRegistration() {
          headers: { Authorization: getLoggedUserToken() },
          responseType: 'blob',
       }).then(res => {
-         console.log(res)
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         console.log(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
       })
    }
@@ -84,10 +80,8 @@ export default function TrainingUserRegistration() {
             'Content-Type': 'multipart/form-data',
          }
       }).then(res => {
-         console.log(res.data)
          setRegistration(prev => ({ ...prev, [editKey]: res.data.data }))
       }).catch(err => {
-         console.log(err.response?.data)
          setRegistration(prev => ({ ...prev, [editKey]: null }))
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг хадгалж чадсангүй.' })
       })
@@ -124,12 +118,10 @@ export default function TrainingUserRegistration() {
       if (trainingId !== undefined && trainingId !== null) {
          axios.post(`trainings/${trainingId}/registrations`, registration)
             .then(res => {
-               console.log(res)
                setRegisterSuccessInfo({ fullname: registration.fullname })
                setModalOpenRegisterSuccess(true)
                setRegistration(initialState)
             }).catch(err => {
-               console.error(err.response)
                if (err.response.status === 490) {
                   setModalOpenIsFull(true)
                   return

@@ -1,4 +1,4 @@
-import { useQuery } from 'components/utilities/useQueryLocation'
+import useQuery from 'components/utilities/useQueryLocation'
 import FileCard from 'pages/attachments/fileCard'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
@@ -29,24 +29,18 @@ export default function LetterUpload() {
             headers: { Authorization: getLoggedUserToken() },
             params: { userId: userId },
          }).then(res => {
-            console.log(res)
             if (res.data.data !== null && res.data.data !== undefined) {
                setForm(res.data.data)
             }
-         }).catch(err => {
-            console.error(err.response)
          })
       } else {
          axios.get('letter-of-interests', {
             headers: { Authorization: getLoggedUserToken() },
             params: { file: true },
          }).then(res => {
-            console.log(res)
             if (res.data.data !== null && res.data.data !== undefined) {
                setForm(res.data.data)
             }
-         }).catch(err => {
-            console.error(err.response)
          })
       }
    }, [])
@@ -73,10 +67,8 @@ export default function LetterUpload() {
             'Content-Type': 'multipart/form-data',
          }
       }).then(res => {
-         console.log(res)
          setForm({ attachedFile: res.data.data })
       }).catch(err => {
-         console.log(err.response)
          setForm({ attachedFile: null })
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
       })
@@ -91,11 +83,9 @@ export default function LetterUpload() {
          headers: { Authorization: getLoggedUserToken() },
          responseType: 'blob',
       }).then(res => {
-         console.log(res)
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         console.log(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
       })
    }
@@ -112,22 +102,18 @@ export default function LetterUpload() {
          axios.put(`letter-of-interests/${form.id}`, form, {
             headers: { Authorization: getLoggedUserToken() },
          }).then(res => {
-            console.log(res)
             setForm(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файлаар хавсаргасныг хадгаллаа.' })
          }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
          })
       } else {
          axios.post(`letter-of-interests`, form, {
             headers: { Authorization: getLoggedUserToken() },
          }).then(res => {
-            console.log(res)
             setForm(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файлаар хавсаргасныг хадгаллаа.' })
          }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
          })
       }

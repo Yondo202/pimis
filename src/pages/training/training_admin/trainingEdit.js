@@ -22,6 +22,7 @@ loadMessages({
 export default function TrainingEdit() {
    const [training, setTraining] = useState(initialState)
    const [organizations, setOrganizations] = useState([])
+   const [trainerOrgId, setTrainerOrgId] = useState(+localStorage.getItem('trainerOrganizationId'))
 
    const handleInput = (key, value) => setTraining(prev => ({ ...prev, [key]: value }))
 
@@ -34,10 +35,8 @@ export default function TrainingEdit() {
          axios.get(`trainings/${trainingId}`, {
             headers: { Authorization: getLoggedUserToken() },
          }).then(res => {
-            console.log(res)
             setTraining(res.data.data)
          }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтыг татаж чадсангүй.' })
          })
       }
@@ -55,11 +54,9 @@ export default function TrainingEdit() {
          axios.put(`trainings/${trainingId}`, training, {
             headers: { Authorization: getLoggedUserToken() },
          }).then(res => {
-            console.log(res)
             setTraining(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллийг шинэчиллээ.' })
          }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээллийг засаж чадсангүй.' })
          })
       }
@@ -67,12 +64,10 @@ export default function TrainingEdit() {
          axios.post('trainings', training, {
             headers: { Authorization: getLoggedUserToken() },
          }).then(res => {
-            console.log(res)
             setTraining(res.data.data)
             setTrainingId(res.data.data.id)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллэл нэмэгдлээ.' })
          }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээл нэмж чадсангүй.' })
          })
       }
@@ -91,11 +86,9 @@ export default function TrainingEdit() {
             'Content-Type': 'multipart/form-data',
          }
       }).then(res => {
-         console.log(res)
          setTraining(prev => ({ ...prev, module_file: res.data.data }))
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файл амжилттай хадгалагдлаа.' })
       }).catch(err => {
-         console.log(err.response)
          setTraining(prev => ({ ...prev, module_file: null }))
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг хадгалж чадсангүй.' })
       })
@@ -120,11 +113,9 @@ export default function TrainingEdit() {
          headers: { Authorization: getLoggedUserToken() },
          responseType: 'blob',
       }).then(res => {
-         console.log(res)
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         console.log(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
       })
    }
@@ -133,8 +124,6 @@ export default function TrainingEdit() {
 
    const handleTimeChange = (key, e) => {
       setTraining(prev => ({ ...prev, [key]: e.value }))
-      console.log(e)
-      console.log(typeof (e.value))
    }
 
    return (
@@ -198,7 +187,7 @@ export default function TrainingEdit() {
                </FormElement>
 
                <FormElement label="Сургалт зохион байгуулах байгууллага">
-                  <SelectIdChild options={organizations} displayName="organization_name" value={training.trainerOrganizationId} keyName="trainerOrganizationId" handleInput={handleInput} />
+                  <SelectIdChild options={trainerOrgId ? organizations.filter(org => org.id === trainerOrgId) : organizations} displayName="organization_name" value={training.trainerOrganizationId} keyName="trainerOrganizationId" handleInput={handleInput} />
                </FormElement>
 
                <FormElement label="Байршил, сургалт зохион байгуулагдах хаяг" value={training.location} keyName="location" onChange={handleInput} />
@@ -211,7 +200,7 @@ export default function TrainingEdit() {
             </div>
 
             <div className="tw-flex tw-justify-center">
-               <button className="tw-rounded tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-py-2 tw-px-6 tw-text-white tw-font-medium tw-my-6 focus:tw-outline-none tw-mr-8" onClick={handleSubmit}>
+               <button className="tw-rounded tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-py-2 tw-px-6 tw-text-white tw-font-medium tw-my-6 focus:tw-outline-none tw-text-13px" onClick={handleSubmit}>
                   Хадгалах
                </button>
             </div>
@@ -289,7 +278,7 @@ const SelectChild = ({ options, value, keyName, handleInput }) => {
    return (
       <div className="tw-relative tw-h-20 tw-w-full">
          <button
-            className="tw-w-52 tw-h-7 tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-border tw-border-gray-400 tw-flex tw-items-center focus:tw-ring-2 tw-ring-blue-400 tw-transition-colors"
+            className="tw-w-52 tw-h-7 tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-border tw-border-gray-400 tw-flex tw-items-center focus:tw-ring-2 tw-ring-blue-400 tw-transition-colors tw-truncate"
             onClick={() => setDropOpen(prev => !prev)}
             ref={buttonRef}>
             <span className="tw-mx-2">
@@ -308,7 +297,7 @@ const SelectChild = ({ options, value, keyName, handleInput }) => {
             from={{ height: 0, opacity: 0 }}
             enter={{ height: 'auto', opacity: 1 }}
             leave={{ height: 0, opacity: 0 }}
-            config={{ tension: 300 }}>
+            config={{ tension: 300, clamp: true }}>
             {item => item && (anims =>
                <animated.div
                   className="tw-absolute tw-top-8 tw-left-0 tw-w-52 tw-rounded tw-shadow-md tw-z-10 tw-border tw-border-gray-400 tw-bg-white tw-overflow-hidden tw-divide-y tw-divide-dashed"
@@ -333,7 +322,7 @@ const SelectChild = ({ options, value, keyName, handleInput }) => {
                   <span className="tw-ml-1 tw-font-medium tw-text-gray-500">
                      Бусад:
                   </span>
-                  <input className="tw-w-full tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none tw-py-1 tw-px-1.5 tw-ml-3 focus:tw-ring-2 tw-ring-blue-500 tw-max-w-sm tw-bg-transparent" type="text" value={value ?? ''} onChange={e => handleInput(keyName, e.target.value)} />
+                  <input className="tw-w-full tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none tw-py-1 tw-px-1.5 tw-ml-3 focus:tw-ring-2 tw-ring-blue-500 tw-max-w-xs tw-bg-transparent" type="text" value={value ?? ''} onChange={e => handleInput(keyName, e.target.value)} />
                </animated.div>
             )}
          </Transition>
@@ -358,17 +347,19 @@ const SelectIdChild = ({ options, displayName, value, keyName, handleInput }) =>
       return () => document.removeEventListener('mousedown', handleClickOutside)
    })
 
+   const handleSelect = (id) => {
+      handleInput(keyName, id)
+      setDropOpen(false)
+   }
+
    return (
       <div className="tw-relative tw-h-20 tw-w-full">
          <button
-            className="tw-w-52 tw-h-7 tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-border tw-border-gray-400 tw-flex tw-items-center focus:tw-ring-2 tw-ring-blue-400 tw-transition-colors"
+            className="tw-w-52 tw-h-7 tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-border tw-border-gray-400 tw-flex tw-items-center focus:tw-ring-2 tw-ring-blue-400 tw-transition-colors tw-truncate"
             onClick={() => setDropOpen(prev => !prev)}
             ref={buttonRef}>
             <span className="tw-mx-2">
-               {options.includes(value)
-                  ? value
-                  : 'Сонгох'
-               }
+               {options.find(option => option.id === value)?.[displayName] ?? 'Сонгох'}
             </span>
             <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-auto tw-mr-1" />
          </button>
@@ -378,17 +369,22 @@ const SelectIdChild = ({ options, displayName, value, keyName, handleInput }) =>
             from={{ height: 0, opacity: 0 }}
             enter={{ height: 'auto', opacity: 1 }}
             leave={{ height: 0, opacity: 0 }}
-            config={{ tension: 300 }}>
+            config={{ tension: 300, clamp: true }}>
             {item => item && (anims =>
                <animated.div
                   className="tw-absolute tw-top-8 tw-left-0 tw-w-52 tw-rounded tw-shadow-md tw-z-10 tw-border tw-border-gray-400 tw-bg-white tw-overflow-hidden tw-divide-y tw-divide-dashed"
                   style={anims}
                   ref={dropDownRef}>
-                  {options.map(option =>
-                     <div className="tw-cursor-pointer tw-py-1 tw-px-1.5 hover:tw-bg-blue-500 hover:tw-text-white tw-transition-colors" key={option} onClick={() => { }}>
-                        {option}
+                  {options.length
+                     ? options.map(option =>
+                        <div className="tw-cursor-pointer tw-py-1 tw-px-1.5 hover:tw-bg-blue-500 hover:tw-text-white tw-transition-colors" key={option.id} onClick={() => handleSelect(option.id)}>
+                           {option[displayName]}
+                        </div>
+                     )
+                     : <div className="tw-text-gray-500 tw-font-medium tw-text-13px tw-italic tw-text-center tw-pb-0.5 tw-pt-4">
+                        Сонголт байхгүй байна.
                      </div>
-                  )}
+                  }
                </animated.div>
             )}
          </Transition>
