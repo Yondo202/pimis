@@ -168,7 +168,6 @@ const ComponentHome = styled.div`
                     margin-top:0rem;
                     .one{
                         display:none;
-                        // transform:scale(0);
                     }
                 }
             }
