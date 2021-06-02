@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "../axiosbase";
+import axios, { edplan } from "../axiosbase";
 
 const UserContext = React.createContext();
 const initialStyle = { tableOne: "0%", tableTwo: "100%", tableThree: "200%", tableFour: "300%", tableFive: "400%", tableSix: "500%", tableheight: 150 };
@@ -34,6 +34,7 @@ export const UserStore = (props) => {
     axios.post("users/login", { email: email, password: password })
       .then((res) => {
         loginUserSuccess(res.data.token, res.data.refreshToken, res.data.expireDate, res.data.user);
+        EdplanApprove(res.data.user.id, res.data.token, true);
       }).catch((err) => {
         console.log(err, "User context deeer aldaa garlaa");
         if (err?.response?.data) {
@@ -44,6 +45,15 @@ export const UserStore = (props) => {
         }
       });
   };
+
+  const EdplanApprove = async (id, token, approves) => {
+    await edplan.get(`approves?idd=${id}`).then(res=>{
+        if(res.data.length){
+          edplan.put(`approves/${res.data[0]?.id}`, { idd: parseInt(id), token: `${token}`, approve: approves });
+        }
+    })
+  } 
+
   const autoRenewTokenAfterMillisec = (milliSec) => {
     axios
       .post("users/token", {
@@ -74,6 +84,7 @@ export const UserStore = (props) => {
     axios.post("users/register", userinfos)
       .then((res) => {
         console.log(res, "^new user");
+        // edplan.post(`approves`, { idd: res.data.user.id, approve: false, seen:false })
         setErrMsgSignUp({ msg: `Таны бүртгүүлсэн "${res.data.user.email}" имэйл хаягаар бид имэйл илгээсэн тул та шалгаж БАТАЛГААЖУУЛАЛТ дээр дарна уу.`, cond: true });;
       })
       .catch((e) => {
@@ -83,7 +94,10 @@ export const UserStore = (props) => {
   };
 
   const logout = () => {
-    localStorage.clear()
+    let id = localStorage.getItem("userId");
+    EdplanApprove(id, `token`, false);
+
+    localStorage.clear();
     setUserInfo({ userId: undefined });
 
     setTimeout(() => {
@@ -95,7 +109,6 @@ export const UserStore = (props) => {
     setAlert({ color: color, text: text, cond: cond });
     setTimeout(() => { setAlert({ cond: false }); }, 4000);
   }
-
 
   return (
     <UserContext.Provider

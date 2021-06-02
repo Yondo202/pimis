@@ -76,7 +76,7 @@ function Signup() {
     });
     let keys = Object.keys(finalOne);
 
-    console.log(finalOne, " final one");
+   
     if (keys.length < 6) {
       setPassText("Гүйцэд бөгөлнө үү"); setScale("1");
     } else if (selectSectors === "- Сонго -") {
