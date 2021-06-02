@@ -47,9 +47,15 @@ export const UserStore = (props) => {
   };
 
   const EdplanApprove = async (id, token, approves) => {
+    console.log(`id`, id);
     await edplan.get(`approves?idd=${id}`).then(res=>{
         if(res.data.length){
           edplan.put(`approves/${res.data[0]?.id}`, { idd: parseInt(id), token: `${token}`, approve: approves });
+          if(approves === false){
+              setTimeout(() => {
+                window.location.reload(false);
+              }, 100);
+          }
         }
     })
   } 
@@ -100,9 +106,7 @@ export const UserStore = (props) => {
     localStorage.clear();
     setUserInfo({ userId: undefined });
 
-    setTimeout(() => {
-      window.location.reload(false);
-    }, 100);
+    
   };
 
   const alertText = (color, text, cond) => {
