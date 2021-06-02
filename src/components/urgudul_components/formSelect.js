@@ -62,13 +62,12 @@ function FormSelect(props) {
             </button>
 
             <div className={`tw-text-sm tw-rounded-md tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto ${open ? 'tw-visible tw-opacity-100 tw-h-48 tw-mt-2' : 'tw-invisible tw-opacity-0 tw-h-0'} tw-transition-all tw-duration-300`} ref={divRef}>
-                {
-                    fetch.map((item, i) =>
-                        <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelectId(item.id)} key={item.id}>
-                            <span className="tw-font-medium tw-pr-2">{i + 1}.</span>
-                            {item[props.displayName]}
-                        </div>)
-                }
+                {fetch.map((item, i) =>
+                    <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelectId(item.id)} key={item.id}>
+                        <span className="tw-font-medium tw-pr-2">{i + 1}.</span>
+                        {item[props.displayName]}
+                    </div>
+                )}
             </div>
         </div>
     )

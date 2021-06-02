@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import axios from 'axiosbase'
-import FormInline from 'components/urgudul_components/formInline'
-import FormOptions from 'components/urgudul_components/formOptions'
-import TreeSelect from 'components/urgudul_components/treeSelect'
-import FormRichText from 'components/urgudul_components/formRichText'
+import FormInline from 'components/training_components/formInline'
+import FormOptions from 'components/training_components/formOptions'
+import TreeSelect from 'components/training_components/treeSelect'
+import FormRichText from 'components/training_components/formRichText'
 import PenSVG from 'assets/svgComponents/penSVG'
 import { animated, Transition } from 'react-spring/renderprops'
 import FileCard from 'pages/attachments/fileCard'
@@ -198,7 +198,7 @@ export default function TrainingUserRegistration() {
 
             <div className="tw-w-full md:tw-col-span-2">
                <div className="tw-flex tw-items-end tw-text-13px tw-mt-5 tw-mb-2">
-                  <span className="tw-border-b tw-border-gray-400 tw-ml-3 tw-pl-1 tw-pr-4 tw-font-medium tw-pb-0.5">
+                  <span className="tw-border-b tw-border-gray-400 tw-ml-3 tw-pl-1 tw-pr-4 tw-font-light tw-pb-0.5">
                      Байгууллагын танилцуулга:
                   </span>
                   <button className={tab ? classActiveTab : classInactiveTab} onClick={() => setTab(true)}>
@@ -328,8 +328,8 @@ const initialState = {
 
 export const FormLabel = ({ label, SVG, classAppend, HelpPopup, invalid }) => (
    <div className={`tw-flex tw-items-center tw-pl-3 tw-pt-4 ${classAppend ?? ''}`}>
-      <SVG className={`tw-w-5 tw-h-5 tw-transition-colors tw-flex-shrink-0 ${invalid ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
-      <span className={`tw-mx-2 tw-text-sm tw-font-medium tw-transition-colors tw-leading-tight ${invalid && 'tw-text-red-500'} tw-transition-colors`}>
+      <SVG className={`tw-w-5 tw-h-5 tw-transition-colors tw-flex-shrink-0 ${invalid ? 'tw-text-red-500' : 'tw-text-gray-500'} tw-transition-colors`} />
+      <span className={`tw-mx-2 tw-text-sm tw-font-light tw-transition-colors tw-leading-tight ${invalid && 'tw-text-red-500'} tw-transition-colors`}>
          {label}
       </span>
       {HelpPopup && HelpPopup}
@@ -342,7 +342,7 @@ const descriptions = {
    register_file: 'Cургалтанд бүртгүүлэгчийн иргэний үнэмлэхний хуулбар.',
 }
 
-const classActiveTab = 'tw-font-medium tw-rounded-t-lg tw-border-l tw-border-t tw-border-r tw-border-gray-400 tw-px-2 tw-pb-0.5 tw-pt-1.5 focus:tw-outline-none'
-const classInactiveTab = 'tw-rounded-t-lg tw-border-b tw-border-gray-400 tw-px-2 tw-pb-0.5 tw-pt-1.5 focus:tw-outline-none tw-bg-gray-100'
+const classActiveTab = 'tw-font-light tw-rounded-t-lg tw-border-l tw-border-t tw-border-r tw-border-gray-400 tw-px-2 tw-pb-0.5 tw-pt-1.5 focus:tw-outline-none'
+const classInactiveTab = 'tw-font-light tw-rounded-t-lg tw-border-b tw-border-gray-400 tw-px-2 tw-pb-0.5 tw-pt-1.5 focus:tw-outline-none tw-bg-gray-100'
 
 const quillTypes = ['training_benefit', 'company_introduction']
