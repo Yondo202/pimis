@@ -107,6 +107,7 @@ export default function TrainingsList() {
          {trainings.map(training =>
             <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
          )}
+         
          {/* {[{ ...trainings[0], training_name: 'Экпортыг дэмжих төслийн ерөнхий сургалт', registeredUserCount: 25 }].map(training =>
             <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
          )} */}

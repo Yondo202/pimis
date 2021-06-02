@@ -5,7 +5,7 @@ import { AiOutlineSend } from 'react-icons/ai'
 import { ImUserCheck } from 'react-icons/im'
 import { fontFamily, Color, NextBtn } from "../theme"
 import { useHistory } from 'react-router-dom'
-import axios from './../../axiosbase'
+import axios, { edplan } from './../../axiosbase'
 
 function EmailAuth() {
     const history = useHistory();
@@ -22,9 +22,11 @@ function EmailAuth() {
                     setSuccess(false); setLoad(true); setErrMsg("Алдаа гарсан");
                 } else if (res.data.confirmed === 1) {
                     //амжилттай...
+                    edplan.post(`approves`, { idd: res.data.user.id, approve: false, seen:false });
                     setLoad(true); setSuccess(true); setErrMsg("Баталгаажуулалт амжилттай");
                 } else if (res.data.confirmed === 2) {
-                    setLoad(true); setSuccess(true); setErrMsg("Аль хэдийн баталгаажсан байна");
+                    setLoad(true); setSuccess(true); setErrMsg("Баталгаажсан байна");
+                    // edplan.post(`approves`, { idd: res.data.user.id, approve: false, seen:false })
                     //Аль хэдийн баталгаажсан байна...
                 }
             }

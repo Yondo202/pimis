@@ -1,5 +1,4 @@
 import React,{useEffect, useState, useContext} from 'react';
-import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import { animateScroll as scroll } from "react-scroll";
 import { fontFamily, textColor, ColorRgb, fontSize, NextBtn,InputStyle} from '../../theme';
@@ -17,7 +16,6 @@ const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0
 
 function TableOne(props) {
     const init = "once"
-    const history = useHistory();
     const [ btnCond, setBtnCond ] = useState(props.initialData?init:'twice');
     const [ secondChance, setSecondChance ] = useState([]);
     const [visible2, setVisible2] = useState(false);
