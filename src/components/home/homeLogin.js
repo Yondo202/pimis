@@ -33,8 +33,6 @@ function HomeLogin() {
 
 export default HomeLogin
 
-
-
 const ComponentHome = styled.div`
         font-family: ${fontFamily};
         // height:100vh;
