@@ -31,7 +31,7 @@ export default function TreeSelect(props) {
 
     return (
         <div className="tw-w-full tw-text-sm tw-text-gray-700">
-            <div className="tw-flex tw-items-center tw-relative tw-pt-8 tw-mr-5">
+            <div className="tw-flex tw-items-center tw-relative tw-pt-8 tw-mr-2">
                 <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-font-medium tw-whitespace-nowrap ${props.classLabel} ${open ? 'tw-text-sm tw-top-2 tw-left-7' : 'tw-text-xs tw-top-6 tw-left-11'} tw-transition-all tw-duration-300`}>
                     {props.label}
                 </label>
@@ -52,7 +52,7 @@ export default function TreeSelect(props) {
                 enter={{ height: 300, opacity: 1 }}
                 leave={{ height: 0, opacity: 0 }}>
                 {item => item && (anims =>
-                    <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-my-2 tw-border tw-border-gray-500 tw-rounded tw-ml-9 tw-mr-5 tw-bg-white" style={anims}>
+                    <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-my-2 tw-border tw-border-gray-500 tw-rounded tw-ml-9 tw-mr-2 tw-bg-white" style={anims}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">
                             <div className={`tw-flex tw-items-center tw-border-b ${search ? 'tw-border-blue-500 tw-text-blue-500' : 'tw-border-gray-600 tw-text-gray-600'} tw-pb-0.5 tw-my-1.5 tw-mr-2 tw-transition-colors`}>
                                 <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
