@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react'
 import PenSVG from 'assets/svgComponents/penSVG'
 import NumberFormat from 'react-number-format'
 
-
 function FormInline(props) {
     const [focused, setFocused] = useState(false)
 
