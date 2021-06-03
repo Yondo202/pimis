@@ -50,7 +50,8 @@ export default function TreeSelect(props) {
                 items={open}
                 from={{ height: 0, opacity: 0 }}
                 enter={{ height: 300, opacity: 1 }}
-                leave={{ height: 0, opacity: 0 }}>
+                leave={{ height: 0, opacity: 0 }}
+                config={{ tension: 300, clamp: true }}>
                 {item => item && (anims =>
                     <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-my-2 tw-border tw-border-gray-400 tw-rounded tw-ml-9 tw-mr-2 tw-bg-white" style={anims}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">
@@ -101,7 +102,7 @@ const Tree = ({ parent, childs, display, handleSelectId, value }) => {
                 from={{ height: 0 }}
                 enter={{ height: 'auto' }}
                 leave={{ height: 0 }}
-                config={{ clamp: true }}>
+                config={{ tension: 300, clamp: true }}>
                 {item1 => item1 && (anims1 =>
                     <div className="tw-overflow-y-hidden tw-divide-y tw-divide-dashed tw-ml-4" style={anims1}>
                         {childs.map(child =>

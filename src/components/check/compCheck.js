@@ -97,8 +97,8 @@ function CompCheck() {
         setVisible2(false);
         axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(res => {
           setUpdateMount(2); ctx.alertText('orange, Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.', true); setBtnSpin(false);
-          setTimeout(() => { history.push('/'); }, 4000);
-        }).catch(err => { setFinalErrorText("Серверт алдаа гарлаа."); setBtnSpin(false); });
+          setTimeout(() => { history.push('/'); }, 5000);
+        }).catch(_=> { setFinalErrorText("Алдаа гарлаа."); setBtnSpin(false); });
       } else if (btn === "once") {
         setVisible2(true);
       }
@@ -109,7 +109,7 @@ function CompCheck() {
       setOpacity2("0");
       axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(res => {
         setUpdateMount(2); ctx.alertText('green, Амжилттай илгээгдлээ', true); setBtnSpin(false); setVisible(true);
-      }).catch(err => { setFinalErrorText("Серверт алдаа гарлаа."); setBtnSpin(false); });
+      }).catch(_=> { setFinalErrorText("Алдаа гарлаа."); setBtnSpin(false); });
     }
   }
 

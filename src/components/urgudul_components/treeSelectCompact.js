@@ -41,7 +41,8 @@ export default function TreeSelectCompact(props) {
                 items={open}
                 from={{ height: 0, opacity: 0 }}
                 enter={{ height: props.selectHeight || 426, opacity: 1 }}
-                leave={{ height: 0, opacity: 0 }}>
+                leave={{ height: 0, opacity: 0 }}
+                config={{tension: 300, clamp: true}}>
                 {item => item && (anims =>
                     <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-fixed tw-z-10 tw-text-13px" style={{ width: props.selectWidth, top: buttonRef.current?.getBoundingClientRect().top + 26, left: buttonRef.current?.getBoundingClientRect().left, ...anims }}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">
@@ -98,7 +99,7 @@ const Tree = ({ parent, childs, display, handleSelectId, value }) => {
                 from={{ height: 0 }}
                 enter={{ height: 'auto' }}
                 leave={{ height: 0 }}
-                config={{ clamp: true }}>
+                config={{ tension: 300, clamp: true }}>
                 {item1 => item1 && (anims1 =>
                     <div className="tw-overflow-y-hidden tw-divide-y tw-divide-dashed tw-ml-4" style={anims1}>
                         {childs.map(child =>
