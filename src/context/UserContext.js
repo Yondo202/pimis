@@ -48,17 +48,17 @@ export const UserStore = (props) => {
 
   const EdplanApprove = async (id, token, approves) => {
     console.log(`id`, id);
-    await edplan.get(`approves?idd=${id}`).then(res=>{
-        if(res.data.length){
-          edplan.put(`approves/${res.data[0]?.id}`, { idd: parseInt(id), token: `${token}`, approve: approves });
-          if(approves === false){
-              setTimeout(() => {
-                window.location.reload(false);
-              }, 100);
-          }
+    await edplan.get(`approves?idd=${id}`).then(res => {
+      if (res.data.length) {
+        edplan.put(`approves/${res.data[0]?.id}`, { idd: parseInt(id), token: `${token}`, approve: approves });
+        if (approves === false) {
+          setTimeout(() => {
+            window.location.reload(false);
+          }, 100);
         }
+      }
     })
-  } 
+  }
 
   const autoRenewTokenAfterMillisec = (milliSec) => {
     axios
@@ -106,7 +106,7 @@ export const UserStore = (props) => {
     localStorage.clear();
     setUserInfo({ userId: undefined });
 
-    
+
   };
 
   const alertText = (color, text, cond) => {

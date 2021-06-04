@@ -1,11 +1,11 @@
-import React,{ useContext, useState, useRef } from 'react'
-import styled, {keyframes} from 'styled-components'
-import {CgProfile} from 'react-icons/cg'
-import {BiLockOpen} from 'react-icons/bi'
-import {AiOutlineSend} from 'react-icons/ai'
-import {FaRegEye,FaRegEyeSlash} from 'react-icons/fa'
+import React, { useContext, useState, useRef } from 'react'
+import styled, { keyframes } from 'styled-components'
+import { CgProfile } from 'react-icons/cg'
+import { BiLockOpen } from 'react-icons/bi'
+import { AiOutlineSend } from 'react-icons/ai'
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa'
 import UserContext from "../../context/UserContext";
-import {fontFamily, Color,ColorRgb,InputStyle, NextBtn, fontFamily2} from "../theme"
+import { fontFamily, Color, ColorRgb, InputStyle, NextBtn, fontFamily2 } from "../theme"
 import Signup from './signup'
 import ForgetPassword from './ForgetPassword'
 import { useHistory } from 'react-router-dom'
@@ -17,66 +17,66 @@ function Login() {
   const userCtx = useContext(UserContext);
   const [Show, setShow] = useState(false);
 
-  const handleClick = (e) =>{
-      let Username = document.querySelectorAll(".LoginInpName");
-      let User = Array.from(Username);
-      const finalOneUser = {}
-      User.map(element=>{
-          let field = element.name;
-          let value = element.value;
-          if(!value){
-            element.classList += " red" 
-          }else{
-            element.classList =- " red"
-            element.classList += " LoginInpName"
-            finalOneUser[field] = value;
-          }
-      });
-      userCtx.loginUser(finalOneUser.name,finalOneUser.password);
-      const UserRole = localStorage.getItem("role", []);
-      if(UserRole==="admin"){ history.push('/')}else{ history.push('/') }
+  const handleClick = (e) => {
+    let Username = document.querySelectorAll(".LoginInpName");
+    let User = Array.from(Username);
+    const finalOneUser = {}
+    User.forEach(element => {
+      let field = element.name;
+      let value = element.value;
+      if (!value) {
+        element.classList += " red"
+      } else {
+        element.classList = - " red"
+        element.classList += " LoginInpName"
+        finalOneUser[field] = value;
+      }
+    });
+    userCtx.loginUser(finalOneUser.name, finalOneUser.password);
+    const UserRole = localStorage.getItem("role", []);
+    if (UserRole === "admin") { history.push('/') } else { history.push('/') }
   }
-    
-    return (
-        <Component>
-                <div className="imgPar">
-                    <img src="/head.jpg" alt="edp_logo" />
-                    <div className="text">Экспортыг дэмжих төсөл</div>
-                </div>
-                <div className="formOneParent">
-                    <div className="inputPar">
-                        <div className="inpChild">
-                            <div className="labels"><span>Нэвтрэх</span> </div>
-                            <div className="name">
-                                <CgProfile />
-                                <InputStyle className="newInp">
-                                    <input ref={refFocus} type="input" className="LoginInpName" placeholder="Еmail хаягаараа нэвтэрнэ үү" name="name"  />
-                                    <div className="line"></div>
-                                </InputStyle>
-                            </div>
-                        </div>
-                        <div className="inpChild">
-                         <div className="labels">
-                             <span> Нууц үг </span>
-                             <ForgetPassword />
-                         </div>
-                            <div className="name">
-                                <BiLockOpen />
-                                <InputStyle className="newInp pass">
-                                    <input type={Show?'text':'password'} className="LoginInpName form__field" placeholder="Нууц үгээ оруулна уу..." name="password" /> {Show?<FaRegEye onClick={()=>setShow(false)} />:<FaRegEyeSlash onClick={()=>setShow(true)} />}   
-                                    <div className="line"></div>
-                                </InputStyle>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="SubmitButtonPar">
-                    {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
-                     <NextBtn onClick={handleClick}  className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
-                </div>
-                <Signup />
-        </Component>
-    )
+
+  return (
+    <Component>
+      <div className="imgPar">
+        <img src="/head.jpg" alt="edp_logo" />
+        <div className="text">Экспортыг дэмжих төсөл</div>
+      </div>
+      <div className="formOneParent">
+        <div className="inputPar">
+          <div className="inpChild">
+            <div className="labels"><span>Нэвтрэх</span> </div>
+            <div className="name">
+              <CgProfile />
+              <InputStyle className="newInp">
+                <input ref={refFocus} type="input" className="LoginInpName" placeholder="Еmail хаягаараа нэвтэрнэ үү" name="name" />
+                <div className="line"></div>
+              </InputStyle>
+            </div>
+          </div>
+          <div className="inpChild">
+            <div className="labels">
+              <span> Нууц үг </span>
+              <ForgetPassword />
+            </div>
+            <div className="name">
+              <BiLockOpen />
+              <InputStyle className="newInp pass">
+                <input type={Show ? 'text' : 'password'} className="LoginInpName form__field" placeholder="Нууц үгээ оруулна уу..." name="password" /> {Show ? <FaRegEye onClick={() => setShow(false)} /> : <FaRegEyeSlash onClick={() => setShow(true)} />}
+                <div className="line"></div>
+              </InputStyle>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="SubmitButtonPar">
+        {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
+        <NextBtn onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend /> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+      </div>
+      <Signup />
+    </Component>
+  )
 }
 
 export default Login

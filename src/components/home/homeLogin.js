@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import styled from 'styled-components'
 import Login from './login'
-import {fontFamily} from "../theme"
+import { fontFamily } from "../theme"
 import DocumentTitle from 'containers/document/DocumentTitle';
 import TrainingsList from 'pages/training/training_user/trainingsList'
 import { RiArrowRightSLine } from "react-icons/ri";
@@ -11,15 +11,15 @@ function HomeLogin() {
     DocumentTitle("EDP - Нэвтрэх болон Бүртгүүлэх");
     return (
         <ComponentHome >
-            <div className="ghost" style={{backgroundImage:`url(/background1.jpg)`}}>
+            <div className="ghost" style={{ backgroundImage: `url(/background1.jpg)` }}>
                 <div className="ghostChild"></div>
             </div>
             <div className="training">
                 <div className="trainingCont">
                     <TrainingsList />
                     <div className="bottomMenu">
-                        <Link to="/trainings/request" className="items">Захиалгат сургалтын хүсэлт <RiArrowRightSLine className="one"/> <RiArrowRightSLine /></Link>
-                        <Link to="/trainings/feedback" className="items">Сургалтын үнэлгээ <RiArrowRightSLine  className="one" /> <RiArrowRightSLine /></Link>
+                        <Link to="/trainings/request" className="items">Захиалгат сургалтын хүсэлт <RiArrowRightSLine className="one" /> <RiArrowRightSLine /></Link>
+                        <Link to="/trainings/feedback" className="items">Сургалтын үнэлгээ <RiArrowRightSLine className="one" /> <RiArrowRightSLine /></Link>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@ const ComponentHome = styled.div`
                     .items{
                         text-decoration:none;
                         transition:all 0.3s ease;
-                        color:rgb(${props=>props.theme.textColor});
+                        color:rgb(${props => props.theme.textColor});
                         display:flex;
                         align-items:center;
                         font-size:14px;
@@ -88,7 +88,7 @@ const ComponentHome = styled.div`
                             transform:scale(0);
                         }
                         &:hoveR{
-                            color:rgba(${props=>props.theme.textColor},0.8);
+                            color:rgba(${props => props.theme.textColor},0.8);
                             .one{
                                 transform:scale(1);
                                 // display:block;
