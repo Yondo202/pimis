@@ -12,5 +12,5 @@ const instance = axios.create({
 export default instance;
 
 export const edplan = axios.create({
-  baseURL: "http://pimis-plan.edp.mn/pimis-edplan/",
+  baseURL: "https://pimis-plan.edp.mn/pimis-edplan/",
 });
