@@ -15,6 +15,4 @@ export const edplan = axios.create({
   baseURL: "https://pimis-plan.edp.mn/pimis-edplan/",
 });
 
-export const edplanFront = axios.create({
-  baseURL: "https://pimis-plan.edp.mn",
-});
+export const edplanFront = "https://pimis-plan.edp.mn";
