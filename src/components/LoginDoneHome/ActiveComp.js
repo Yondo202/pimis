@@ -5,8 +5,6 @@ import { edplanFront } from "axiosbase"
 
 function ActiveComp(props) {
     DocumentTitle("EDP");
-
-    console.log(`propss`, props.data?.userId);
     return (
         <div style={{ paddingTop: 20 }} className="row">
             <div className="col-md-2 col-sm-2 itemsCol">

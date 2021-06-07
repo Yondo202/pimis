@@ -3,7 +3,6 @@ import {Link} from "react-router-dom";
 import { edplanFront } from "axiosbase"
 
 function InitialComp(props) {
-    console.log(`props.prewdd`, props.prew);
     return (
         <div style={{marginTop:25}} className="row">
                 <div className="col-md-2 col-sm-2 itemsCol">
