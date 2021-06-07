@@ -142,11 +142,11 @@ function TableTwo(props) {
 
         if (originalTest.length < 10) {
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү"); setOpacity2("1");
-        } else if (userInp.name === "" || userInp.date === "") {
+        }else if (userInp.name === "" || userInp.date === "") {
             setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү"); setOpacity2("1");
-        } else if (confirm === false) {
+        }else if (confirm === false) {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
-        } else {
+        }else {
             setSpnBtn(true);
             setOpacity2("0");
             if (Dname) {

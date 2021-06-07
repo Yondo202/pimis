@@ -12,5 +12,5 @@ const instance = axios.create({
 export default instance;
 
 export const edplan = axios.create({
-  baseURL: "http://localhost:1337/",
+  baseURL: "http://localhost:1337/pimis-edplan/",
 });
