@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import DocumentTitle from 'containers/document/DocumentTitle';
+import { edplanFront } from "axiosbase"
 
 function ActiveComp(props) {
     DocumentTitle("EDP");
@@ -27,7 +28,7 @@ function ActiveComp(props) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <a href={`http://localhost:3006/${props.data?.userId}`} target="_blank" className={props.data.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
+                        <a href={`${edplanFront}/${props.data?.userId}`} rel="noreferrer" target="_blank" className={props.data.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
                     </div>
                     <div className="lineFull" ></div>
                     <Link to={props.prew ? `/attachments/${props.prew}` : '/attachments'} className={props.data.evidence === true ? `resultActive` : `resultDesable`} >2.Нотлох бичиг баримтууд </Link>

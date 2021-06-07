@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from "react-router-dom";
+import { edplanFront } from "axiosbase"
 
 function InitialComp(props) {
     console.log(`props.prewdd`, props.prew);
@@ -22,7 +23,7 @@ function InitialComp(props) {
                 <div className="col-md-2 col-sm-2 itemsCol">
                     <div className="itemsPar">
                         <div className="mains">
-                            <a href="https://edp-plan.vercel.app/" target="_blank" className="items arrHelp"><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
+                            <a href={`${edplanFront}/${props.data?.userId}`} rel="noreferrer" target="_blank" className="items arrHelp"><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
                         </div>
                         <div className="lineFull" ></div>
                         <Link to="/attachments" className="resultDesable">2.Нотлох бичиг баримтууд </Link>

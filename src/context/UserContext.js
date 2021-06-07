@@ -34,6 +34,9 @@ export const UserStore = (props) => {
     axios.post("users/login", { email: email, password: password })
       .then((res) => {
         loginUserSuccess(res.data.token, res.data.refreshToken, res.data.expireDate, res.data.user);
+
+        console.log(`object`, res.data.user.id);
+
         EdplanApprove(res.data.user.id, res.data.token, true);
       }).catch((err) => {
         console.log(err, "User context deeer aldaa garlaa");
@@ -47,8 +50,9 @@ export const UserStore = (props) => {
   };
 
   const EdplanApprove = async (id, token, approves) => {
-    console.log(`id`, id);
+    console.log("------------------");
     await edplan.get(`approves?idd=${id}`).then(res => {
+      console.log(`+-+-+-res`, res);
       if (res.data.length) {
         edplan.put(`approves/${res.data[0]?.id}`, { idd: parseInt(id), token: `${token}`, approve: approves });
         if (approves === false) {
