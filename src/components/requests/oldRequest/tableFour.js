@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { animateScroll as scroll } from "react-scroll";
 import axios from'../../../axiosbase';
 import {BsArrowRightShort} from 'react-icons/bs'
-import { fontFamily, textColor, ColorRgb, fontSize, PrevBtn, NextBtn, InputStyle, NextBtn2  } from '../../theme';
+import { fontFamily, textColor, ColorRgb, fontSize, PrevBtn, InputStyle, NextBtn2  } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {AiOutlineSend} from 'react-icons/ai'
@@ -20,10 +20,7 @@ function TableFour(props) {
       const [opacity, setOpacity] = useState("0");
       const [opacity2, setOpacity2] = useState("0");
       const [ initialData, setInitialData ] = useState([]);
-      const [ finalText, setFinalText] = useState('');
-      const [ finalTextScale, setFinalTextScale] = useState('0');
       const [procent, setProcent] = useState('0');
-      const [ finalMsg, setFinalMsg ] = useState("0");
       const [FinalErrorText, setFinalErrorText] = useState("");
       const [ Dname, setDname] = useState(null);
       const [Ddate, setDdate] = useState(null);
@@ -108,34 +105,38 @@ function TableFour(props) {
             const Procent = keys.length * 100 / 15;
             const FinalProcent = Math.round(Procent);
 
+            // console.log(`userInp`, finalOne2[2].rowvalue);
+
             if(finalOne2.length < 15){
               setOpacity("1");
               setProcent(FinalProcent);
-              setFinalTextScale("0");
-              setFinalMsg("0");
-            }else if(userInp.name === "" || userInp.date === ""){
-              setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
-              setOpacity("0");
-              setOpacity2("1");
-              setFinalTextScale("0");
-              setFinalMsg("0");
+              setTimeout(() => {
+                setOpacity("0");
+              }, 3000)
             }else if(finalOne2[2].rowvalue  === finalOne2[3].rowvalue){
-              setFinalText("3 болон 4 дүгээр асуулт ижил биш байх ёстой");
-              setFinalTextScale("1");
-              setOpacity2("0");
-              setFinalMsg("0");
-           }else if(confirm === false){
-              setFinalTextScale("0");
+              // setFinalErrorText
+              setFinalErrorText("3 болон 4 дүгээр асуулт ижил биш байх ёстой");
+              setOpacity2("1");
+              setTimeout(() => {
+                setOpacity2("0");
+              }, 3000);
+           }else if(userInp.name === "" || userInp.date === ""){
+              setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү");
+              setOpacity2("1");
+
+              setTimeout(() => {
+                setOpacity2("0");
+              }, 3000);
+
+            }else if(confirm === false){
               setOpacity2("1");
               setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу");
            }else if(finalOne2[0].rowvalue === "true" && finalOne2[1].rowvalue === "true"  && finalOne2[4].rowvalue === "true" && 
                     finalOne2[6].rowvalue === "true" && finalOne2[7].rowvalue === "true" && finalOne2[8].rowvalue === "true" && finalOne2[9].rowvalue === "true" && finalOne2[10].rowvalue === "true" &&
                     finalOne2[12].rowvalue === "true" && finalOne2[13].rowvalue === "true" && finalOne2[14].rowvalue === "true" ){
                     finalEnd.PPS4["esm"] = "A"
-                    setFinalText("(A) Та шалгуур хангахгүй байна");
-                    setFinalTextScale("1");
+                    // ("(A) Та шалгуур хангахгүй байна");
                     setOpacity2("0");
-                    setFinalMsg("0");
                     setSpnBtn(true);
                     if(Dname){
                       axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ setSpnBtn(false); setTimeout(()=>{ history.push("/"); },2000);}).catch((err)=>{setSpnBtn(false); console.log(err, "err");});
@@ -148,10 +149,8 @@ function TableFour(props) {
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
                       // Тэнцсэн гэхдээ 5,6 руу үргэлжилэхгүй 
-                    setFinalText("(C) Та шалгуур хангаж байна.");
-                    setFinalTextScale("1");
+                    // ("(C) Та шалгуур хангаж байна.");
                     setOpacity2("0");
-                    setFinalMsg("0");
                     setSpnBtn(true);
                     finalEnd.PPS4["esm"] = "C"
                     console.log("C Angilal");
@@ -166,15 +165,15 @@ function TableFour(props) {
                     finalOne2[6].rowvalue === "false" && finalOne2[7].rowvalue === "false" && finalOne2[8].rowvalue === "false" && finalOne2[9].rowvalue === "false" && finalOne2[10].rowvalue === "false" &&
                     finalOne2[12].rowvalue === "false" && finalOne2[13].rowvalue === "false" && finalOne2[14].rowvalue === "false" ){
                       // Цааш 5,6 руу үргэлжилнэ
-                    setFinalText("(B) Та шалгуур хангаж байна.");
-                    setFinalTextScale("1");
+                    // ("(B) Та шалгуур хангаж байна.");
                     setOpacity2("0");
                     setSpnBtn(true);
                     finalEnd.PPS4["esm"] = "B"
                     setOpacity("0");
                     if(Dname){
-                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{ helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setSpnBtn(false);helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0); helperContext.reqMountFunc(1); })
-                      .catch((err)=>{ setSpnBtn(false); setFinalText("Алдаа гарлаа"); setFinalTextScale("1"); console.log(err, "err");});
+                      axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}})
+                      .then((res)=>{ helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setSpnBtn(false);helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%");scroll.scrollTo(0); helperContext.reqMountFunc(1); })
+                      .catch((err)=>{ setSpnBtn(false); console.log(err, "err"); })
                     }else{
                          axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{setSpnBtn(false);
                          helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{scroll.scrollTo(0); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%") },3000); helperContext.reqMountFunc(1); })
@@ -183,7 +182,8 @@ function TableFour(props) {
 
             }else{
                    // Тэнцээгүй биш гэхдээ асууна
-                   setFinalMsg("0"); setFinalTextScale("1"); setFinalText("Та шалгуур хангаж байна..."); setOpacity2("0");
+                  //  ("Та шалгуур хангаж байна...");
+                    setOpacity2("0");
                     finalEnd.PPS4["esm"] = "F";
                     setSpnBtn(true);
                     if(Dname){
@@ -220,36 +220,34 @@ function TableFour(props) {
                       <div className="head2 col-md-3 col-sm-3 col-3"> <div style={{padding:"2px 15px"}}>“Тийм” бол шаардлагатай баримт бичгүүд </div> </div>
                     </div>
                 </div>
-                <form>
-                    {props.initialName? (initialData.map((el, i)=>{
-                            return(
-                            <div className="headerParchild" key={i}>
-                                <div className="row" >
-                                {/* <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div> */}
-                                <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">{i + 1}</div><div className="mainText">{el.name}</div> </div></div>
-                                <div className="radios col-md-1 col-sm-1 col-1"> <input className={`inpTest34`} type="radio" name={i + 1} id={el.id} onChange={radioChange} checked={el.rowvalue === "true" ? true: false} value={true}/></div>
-                                <div className="radios col-md-1 col-sm-1 col-1"><input className={`inpTest34`} type="radio" name={i + 1} id={el.id} onChange={radioChange} checked={el.rowvalue === "false" ? true: false} value={false}/></div>
-
-                                <div className="radios col-md-2 col-sm-2 col-2">{el.nameTwo}</div>
-                                <div className="radios col-md-3 col-sm-3 col-3"><div style={{padding:"6px 15px"}}>{el.nameThree}</div></div>
-                                </div>
-                            </div>
-                            )
-                        })):(tableData.map((el, i)=>{
+                  {props.initialName? (initialData.map((el, i)=>{
                           return(
                           <div className="headerParchild" key={i}>
                               <div className="row" >
                               {/* <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div> */}
                               <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">{i + 1}</div><div className="mainText">{el.name}</div> </div></div>
-                              <div className="radios col-md-1 col-sm-1 col-1"> <input className={`inpTest34`} type="radio" name={i + 1} value={true}/></div>
-                              <div className="radios col-md-1 col-sm-1 col-1"><input className={`inpTest34`} type="radio" name={i + 1} value={false}/></div>
+                              <div className="radios col-md-1 col-sm-1 col-1"> <input className={`inpTest34`} type="radio" name={i + 1} id={el.id} onChange={radioChange} checked={el.rowvalue === "true" ? true: false} value={true}/></div>
+                              <div className="radios col-md-1 col-sm-1 col-1"><input className={`inpTest34`} type="radio" name={i + 1} id={el.id} onChange={radioChange} checked={el.rowvalue === "false" ? true: false} value={false}/></div>
+
                               <div className="radios col-md-2 col-sm-2 col-2">{el.nameTwo}</div>
                               <div className="radios col-md-3 col-sm-3 col-3"><div style={{padding:"6px 15px"}}>{el.nameThree}</div></div>
                               </div>
                           </div>
                           )
-                    }))}
-                </form>
+                      })):(tableData.map((el, i)=>{
+                        return(
+                        <div className="headerParchild" key={i}>
+                            <div className="row" >
+                            {/* <div className="number col-md-1 col-sm-1 col-1">{`${i + 1}`}</div> */}
+                            <div className="texts col-md-5 col-sm-5 col-5"><div className="FirstPar"><div className="countPar">{i + 1}</div><div className="mainText">{el.name}</div> </div></div>
+                            <div className="radios col-md-1 col-sm-1 col-1"> <input className={`inpTest34`} type="radio" name={i + 1} value={true}/></div>
+                            <div className="radios col-md-1 col-sm-1 col-1"><input className={`inpTest34`} type="radio" name={i + 1} value={false}/></div>
+                            <div className="radios col-md-2 col-sm-2 col-2">{el.nameTwo}</div>
+                            <div className="radios col-md-3 col-sm-3 col-3"><div style={{padding:"6px 15px"}}>{el.nameThree}</div></div>
+                            </div>
+                        </div>
+                        )
+                  }))}
               <div className="FinalBtn">
                   <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
                   <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
@@ -300,9 +298,13 @@ function TableFour(props) {
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
                             {props.initialName? (<PrevBtn id="myInput" onClick={()=> {helperContext.reqMountFunc(1); scroll.scrollTo(0); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>) : null } 
-                            {/* <NextBtn id="myInput" onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }}  className="SubmitButton" type="button">{spnBtn===false?(<>Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>):<img src="/gif1.gif" alt="spin" />} </NextBtn> */}
+                           
+                            {/* <NextBtn id="myInput" onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }}  className="SubmitButton" type="button">{spnBtn===false?(
+                            <>Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" />
+                             <AiOutlineSend className="hide1" /></div></>):<img src="/gif1.gif" alt="spin" />} </NextBtn> */}
+
                             <NextBtn2>
-                                <button  style={spnBtn===false? { width:"100%" }:{ width:"40%" }} className="SubmitButton" type="submit">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }
+                                <button  style={spnBtn===false? { width:"100%" }:{ width:"40%" }} className="SubmitButton" type="submit">{spnBtn===false?(<> Илгээх <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }
                                 </button>
                             </NextBtn2>
                        </div>
