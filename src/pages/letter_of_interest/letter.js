@@ -367,7 +367,7 @@ export default function LetterOfInterest() {
                         </div>
 
                         {form.director_signature &&
-                            <img src={form.director_signature} className="tw-absolute tw-top-20 tw-z-10" style={{ width: 182, height: 63, left: 280 }} alt="" />
+                            <img src={form.director_signature} className="tw-absolute tw-top-20 tw-z-10 tw-pointer-events-auto" style={{ width: 182, height: 63, left: 280 }} alt="" />
                         }
 
                         <input type="file" accept="image/*" className="tw-invisible tw-absolute tw-h-0" onChange={e => handleInputPicture(e, 'company_stamp')} ref={inputRefStamp} />
