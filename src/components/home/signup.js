@@ -14,7 +14,7 @@ import axios from '../../axiosbase';
 import SEctor from 'containers/users/Sector'
 
 const isNumberRegx = /\d/;
-const specialCharacterRegx = /[ ~@#$%^&*()_+\-=[\]{;':\\|,.<>/?]/;
+const specialCharacterRegx = /[ ~@#$!%^&*()_+\-=[\]{;':\\|,.<>/?]/;
 
 function Signup() {
   const signUpCtx = useContext(UserContext);
