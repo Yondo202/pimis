@@ -5,11 +5,10 @@ import { BiLockOpen } from 'react-icons/bi'
 import { AiOutlineSend } from 'react-icons/ai'
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa'
 import UserContext from "../../context/UserContext";
-import { fontFamily, Color, ColorRgb, InputStyle, NextBtn, fontFamily2 } from "../theme"
+import { fontFamily, Color, ColorRgb, InputStyle, NextBtn } from "../theme"
 import Signup from './signup'
 import ForgetPassword from './ForgetPassword'
 import { useHistory } from 'react-router-dom'
-
 
 function Login() {
   const refFocus = useRef(null);
@@ -26,12 +25,13 @@ function Login() {
       let value = element.value;
       if (!value) {
         element.classList += " red"
-      } else {
+      }else {
         element.classList = - " red"
         element.classList += " LoginInpName"
         finalOneUser[field] = value;
       }
     });
+
     userCtx.loginUser(finalOneUser.name, finalOneUser.password);
     const UserRole = localStorage.getItem("role", []);
     if (UserRole === "admin") { history.push('/') } else { history.push('/') }

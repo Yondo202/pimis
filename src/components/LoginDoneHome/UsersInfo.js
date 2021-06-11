@@ -73,8 +73,8 @@ function UsersInfo() {
             <div className="ContPar">
                 <div className="TitleBig">Хэрэглэгчийн мэдээлэл</div>
                 <div className="userInfoCont">
-                    <div className="smTitle">Овог нэр</div>
-                    <div className="value">{`${userData?.firstname} ${userData?.lastname}`}</div>
+                    {/* <div className="smTitle">Овог нэр</div>
+                    <div className="value">{`${userData?.firstname} ${userData?.lastname}`}</div> */}
                     {/* <InputStyle className="smTitle"> <input  placeholder="Овог..." /> <div className="line"/> </InputStyle> */}
                 </div>
 

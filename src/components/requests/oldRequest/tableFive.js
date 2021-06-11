@@ -3,7 +3,7 @@ import TableFiveDetails from './deitals/tableFiveDetail';
 import TableFiveDetails2 from './deitals/tableFiveDetail2';
 import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components';
-import { fontFamily, textColor, ColorRgb, Color, fontSize, NextBtn } from '../../theme';
+import { fontFamily, textColor, ColorRgb, fontSize, NextBtn } from '../../theme';
 import { FiUserCheck } from 'react-icons/fi';
 import { MdDateRange } from 'react-icons/md';
 import { BiPen } from 'react-icons/bi';

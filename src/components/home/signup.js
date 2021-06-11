@@ -14,7 +14,7 @@ import axios from '../../axiosbase';
 import SEctor from 'containers/users/Sector'
 
 const isNumberRegx = /\d/;
-const specialCharacterRegx = /[ ~@#$%^&*()_+\-=[\]{;':\\|,.<>/?]/;
+const specialCharacterRegx = /[ ~@#$!%^&*()_+\-=[\]{;':\\|,.<>/?]/;
 
 function Signup() {
   const signUpCtx = useContext(UserContext);
@@ -25,6 +25,7 @@ function Signup() {
   const [Show2, setShow2] = useState(false);
   const [sectorData, setSectorData] = useState([]);
   const [PassText, setPassText] = useState("");
+  const [ errTextShow, setErrTextShow ] = useState(false);
   const [scale, setScale] = useState("1");
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
@@ -76,21 +77,20 @@ function Signup() {
     });
     let keys = Object.keys(finalOne);
 
-   
-    if (keys.length < 6) {
-      setPassText("Гүйцэд бөгөлнө үү"); setScale("1");
-    } else if (selectSectors === "- Сонго -") {
-      setPassText("Салбараа сонгоно уу"); setScale("1"); setShowSectors(true);
-      // if(selectSectors!=="- Сонго -"){
-      //   setPassText("");setScale("0");
-      // }
-    } else if (passwordValidity.minChar === false || passwordValidity.number === false || passwordValidity.specialChar === false) {
-      setPassText("Нууц үг хийх хэсэгээ шалгана уу..");
-    } else if (finalOne.password !== finalOne.passwordagain) {
-      setPassText("Нууц үг адил биш байна...");
-    } else {
-      finalOne["business_sectorId"] = sectorId; setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1");
-    }
+      if (keys.length < 6) {
+        setPassText("Гүйцэд бөгөлнө үү"); setScale("1"); setTimeout(() => { setScale("0"); setPassText(null);  }, 3000);
+      }else if (selectSectors === "- Сонго -") {
+        setPassText("Салбараа сонгоно уу"); setScale("1"); setShowSectors(true); setTimeout(() => { setScale("0"); setPassText(null); }, 3000);
+        // if(selectSectors!=="- Сонго -"){
+        //   setPassText("");setScale("0");
+        // }
+      } else if (passwordValidity.minChar === false || passwordValidity.number === false || passwordValidity.specialChar === false) {
+        setPassText("Нууц үг хийх хэсэгээ шалгана уу.."); setScale("1"); setTimeout(() => { setScale("0"); setPassText(null); }, 3000);
+      } else if (finalOne.password !== finalOne.passwordagain) {
+        setPassText("Нууц үг адил биш байна..."); setScale("1"); setTimeout(() => { setScale("0"); setPassText(null); }, 3000);
+      } else {
+        finalOne["business_sectorId"] = sectorId; setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1");
+      }
   }
   const cond = signUpCtx.errMsgSignup.cond;
 
@@ -191,110 +191,113 @@ function Signup() {
       </Modal>
 
       <Modal visible={visible} width="900" height="580" effect="fadeInDown" onClickAway={closeModal}  >
+        <form>
+          <div className="formOneParent">
+            <div className="headPar"><span className="headText">Бүртгүүлэх</span>
+              <a style={{cursor:"pointer"}} onClick={closeModal}>X</a>
+            </div>
 
-        <div className="formOneParent">
-          <div className="headPar"><span className="headText">Бүртгүүлэх</span>
-            <a onClick={closeModal}>X</a>
+            {signUpCtx.errMsgSignup.cond === false ? (<div className="inputPar">
+              <div className="UserSectionMiddle">
+                <div className="inpChild">
+                  <div className="labels"><span>Компаны нэр :</span> </div>
+                  <div className="name">
+                    <InputStyle className="newInp">
+                      <input type="input" className="userInp form__field" placeholder="нэр..." name="companyname" required />
+                      <div className="line"></div>
+                    </InputStyle>
+                    {/* <div className="form__group">
+                                                          <input type="input" className="userInp  form__field" name="companyname" required />
+                                                      </div> */}
+                  </div>
+                </div>
+                <div className="inpChild">
+                  <div className="labels"><span>Регистрийн дугаар :</span> </div>
+                  <div className="name">
+                    <InputStyle className="newInp">
+                      <input type="number" className="userInp  form__field" placeholder="123..." name="companyregister" required />
+                      <div className="line"></div>
+                    </InputStyle>
+                  </div>
+                </div>
+                <div className="inpChild sectorChild">
+                  <div className="labels"><span>Салбарууд : </span> </div>
+                  <div className="name">
+                    <div onClick={() => setShowSectors(prev => !prev)} className="sectors" ><span>{selectSectors} </span>  <MdKeyboardArrowDown /> </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="UserSection">
+                <div className="inpChild">
+                  <div className="labels"><span>Нэр :</span> </div>
+                  <div className="name">
+                    <CgProfile />
+                    <InputStyle className="newInp">
+                      <input type="input" className="userInp form__field" placeholder="нэр..." name="name" required />
+                      <div className="line"></div>
+                    </InputStyle>
+                  </div>
+                </div>
+                <div className="inpChild">
+                  <div className="labels"><span>Email :</span> </div>
+                  <div className="name">
+                    <GoMail />
+
+                    <InputStyle className="newInp">
+                      <input type="email" className="userInp  form__field" placeholder="Цахим шуудан" name="email" required />
+                      <div className="line"></div>
+                    </InputStyle>
+
+                  </div>
+                </div>
+              </div>
+
+              <div className="UserSection">
+                <div className="inpChild">
+                  <div className="labels">
+                    <span> Нууц үг </span>
+                    <span className="forget"> 8-с дээш оронтой байх</span>
+                  </div>
+                  <div className="name">
+                    <BiLockOpen />
+                    <InputStyle className="newInp pass">
+                      <input onFocus={() => setPasswordFocused(true)} onBlur={() => setPasswordFocused(false)} onChange={e => onChangePassword(e.target.value)} value={password} type={Show ? 'text' : 'password'} className="userInp  form__field" placeholder="Нууц үг" name="password" />
+                      {Show ? <FaRegEye onClick={() => setShow(false)} /> : <FaRegEyeSlash onClick={() => setShow(true)} />}
+                      <div className="line"></div>
+                    </InputStyle>
+
+                  </div>
+                  <PasswordInducator validity={passwordValidity} />
+                </div>
+
+                <div className="inpChild">
+                  <div className="labels"> <span> Нууц үг давтах </span> </div>
+                  <div className="name">
+                    <BiLockOpen />
+                    <InputStyle className="newInp pass">
+                      <input type={Show2 ? 'text' : 'password'} className="userInp  form__field" placeholder="Нууц үгээ дахин оруулах" name="passwordagain" />
+                      {Show2 ? <FaRegEye onClick={() => setShow2(false)} /> : <FaRegEyeSlash onClick={() => setShow2(true)} />}
+                      <div className="line"></div>
+                    </InputStyle>
+                  </div>
+                </div>
+              </div>
+
+              <div className="SubmitButtonPar">
+                <NextBtn style={cond ? { width: `20%`, opacity: `0.7` } : { width: `100%`, opacity: `1` }} disabled={true} onClick={handleClick} className="SubmitButton" type="button">{cond ? <img src="/gif1.gif" alt="" /> : `Бүртгүүлэх`}  <div style={cond ? { display: `none` } : { display: `flex` }} className="flexchild"><AiOutlineSend /> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
+                {PassText ?
+                (<span className="colorText" style={{ transform: `scale(${scale})` }}>{PassText}</span>)
+                :(<span className="colorText" style={{ transform: `scale(${scale})` }}>{signUpCtx.errMsgSignup.msg}</span>)}
+              </div>
+            </div>)
+              : (<div className="success">
+                <h3 className="title">Тавтай морил</h3>
+                <span className="desc">{signUpCtx.errMsgSignup.msg}</span>
+              </div>)}
+
           </div>
-
-          {signUpCtx.errMsgSignup.cond === false ? (<div className="inputPar">
-            <div className="UserSectionMiddle">
-              <div className="inpChild">
-                <div className="labels"><span>Компаны нэр :</span> </div>
-                <div className="name">
-                  <InputStyle className="newInp">
-                    <input type="input" className="userInp form__field" placeholder="нэр..." name="companyname" required />
-                    <div className="line"></div>
-                  </InputStyle>
-                  {/* <div className="form__group">
-                                                        <input type="input" className="userInp  form__field" name="companyname" required />
-                                                    </div> */}
-                </div>
-              </div>
-              <div className="inpChild">
-                <div className="labels"><span>Регистрийн дугаар :</span> </div>
-                <div className="name">
-                  <InputStyle className="newInp">
-                    <input type="number" className="userInp  form__field" placeholder="123..." name="companyregister" required />
-                    <div className="line"></div>
-                  </InputStyle>
-                </div>
-              </div>
-              <div className="inpChild sectorChild">
-                <div className="labels"><span>Салбарууд : </span> </div>
-                <div className="name">
-                  <div onClick={() => setShowSectors(prev => !prev)} className="sectors" ><span>{selectSectors} </span>  <MdKeyboardArrowDown /> </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="UserSection">
-              <div className="inpChild">
-                <div className="labels"><span>Нэр :</span> </div>
-                <div className="name">
-                  <CgProfile />
-                  <InputStyle className="newInp">
-                    <input type="input" className="userInp form__field" placeholder="нэр..." name="name" required />
-                    <div className="line"></div>
-                  </InputStyle>
-                </div>
-              </div>
-              <div className="inpChild">
-                <div className="labels"><span>Email :</span> </div>
-                <div className="name">
-                  <GoMail />
-
-                  <InputStyle className="newInp">
-                    <input type="email" className="userInp  form__field" placeholder="Цахим шуудан" name="email" required />
-                    <div className="line"></div>
-                  </InputStyle>
-
-                </div>
-              </div>
-            </div>
-
-            <div className="UserSection">
-              <div className="inpChild">
-                <div className="labels">
-                  <span> Нууц үг </span>
-                  <span className="forget"> 8-с дээш оронтой байх</span>
-                </div>
-                <div className="name">
-                  <BiLockOpen />
-                  <InputStyle className="newInp pass">
-                    <input onFocus={() => setPasswordFocused(true)} onBlur={() => setPasswordFocused(false)} onChange={e => onChangePassword(e.target.value)} value={password} type={Show ? 'text' : 'password'} className="userInp  form__field" placeholder="Нууц үг" name="password" />
-                    {Show ? <FaRegEye onClick={() => setShow(false)} /> : <FaRegEyeSlash onClick={() => setShow(true)} />}
-                    <div className="line"></div>
-                  </InputStyle>
-
-                </div>
-                {passwordFocused && <PasswordInducator validity={passwordValidity} />}
-              </div>
-
-              <div className="inpChild">
-                <div className="labels"> <span> Нууц үг давтах </span> </div>
-                <div className="name">
-                  <BiLockOpen />
-                  <InputStyle className="newInp pass">
-                    <input type={Show2 ? 'text' : 'password'} className="userInp  form__field" placeholder="Нууц үгээ дахин оруулах" name="passwordagain" />
-                    {Show2 ? <FaRegEye onClick={() => setShow2(false)} /> : <FaRegEyeSlash onClick={() => setShow2(true)} />}
-                    <div className="line"></div>
-                  </InputStyle>
-                </div>
-              </div>
-            </div>
-
-            <div className="SubmitButtonPar">
-              <NextBtn style={cond ? { width: `20%`, opacity: `0.7` } : { width: `100%`, opacity: `1` }} disabled={true} onClick={handleClick} className="SubmitButton" type="button">{cond ? <img src="/gif1.gif" alt="" /> : `Бүртгүүлэх`}  <div style={cond ? { display: `none` } : { display: `flex` }} className="flexchild"><AiOutlineSend /> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
-              {PassText ? (<span className="colorText" style={{ transform: `scale(${selectSectors === "- Сонго -" ? scale : "0"})` }}>{PassText}</span>) : (<span className="colorText" style={{ transform: `scale(${scale})` }}>{signUpCtx.errMsgSignup.msg}</span>)}
-            </div>
-          </div>)
-            : (<div className="success">
-              <h3 className="title">Тавтай морил</h3>
-              <span className="desc">{signUpCtx.errMsgSignup.msg}</span>
-            </div>)}
-
-        </div>
+        </form>
       </Modal>
       {/* </form> */}
     </Component>

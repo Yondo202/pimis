@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { animateScroll as scroll } from "react-scroll";
-import { fontFamily, textColor, ColorRgb, fontSize, PrevBtn, NextBtn, InputStyle } from '../../theme';
+import { fontFamily, textColor, ColorRgb, fontSize, PrevBtn, InputStyle, NextBtn2 } from '../../theme';
 import { FiUserCheck } from 'react-icons/fi'
 import { MdDateRange } from 'react-icons/md'
 import { RiUpload2Line } from 'react-icons/ri'
@@ -88,6 +88,7 @@ function TableTwo(props) {
 
 
     const clickHandles = (e) => {
+        e.preventDefault();
         let getFile = document.querySelectorAll(".GetFilesData"); let myArr1 = Array.from(getFile); let condition = []
         myArr1.forEach((el, i) => {
             let value = {}; value = el.files[0];
@@ -165,6 +166,7 @@ function TableTwo(props) {
 
     return (
         <Component2 className="container">
+            <form onSubmit={clickHandles}>
             <div className="shadow" >
                 <div className="rowHeader">
                     <div className="boldTitle">ХАВСРАЛТ 2 B.</div>
@@ -259,7 +261,7 @@ function TableTwo(props) {
                                                 <div className="datePar inpChild"><div className="labels"><span>(Хүлээн авсан) :</span> </div>
                                                     <div className="name">
                                                         <InputStyle className="newInp">
-                                                            <input max={Currentdate} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate" required />
+                                                            <input max={Currentdate} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="getDate"  />
                                                             <div className="line"></div>
                                                         </InputStyle>
 
@@ -269,7 +271,7 @@ function TableTwo(props) {
                                                 <div className="datePar inpChild "><div className="labels"><span>(Шинэчилсэн) :</span> </div>
                                                     <div className="name">
                                                         <InputStyle className="newInp">
-                                                            <input max={Currentdate} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="recentDate" required />
+                                                            <input max={Currentdate} type="date" className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="recentDate"  />
                                                             <div className="line"></div>
                                                         </InputStyle>
                                                     </div> </div>  </div>
@@ -299,8 +301,8 @@ function TableTwo(props) {
                                 <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                 <div className="name"> <FiUserCheck />
                                     <InputStyle className="newInp">
-                                        {Dname !== null ? <input type="input" onChange={changeHandleName} value={Dname} className="getUser2 LoginInpName form__field" placeholder="Бүтэн нэрээ оруулна уу" name="name" required />
-                                            : <input type="input" className="getUser2 LoginInpName form__field" name="name" required />}
+                                        {Dname !== null ? <input type="input" onChange={changeHandleName} value={Dname} className="getUser2 LoginInpName form__field" placeholder="Бүтэн нэрээ оруулна уу" name="name"  />
+                                            : <input type="input" className="getUser2 LoginInpName form__field" name="name"  />}
                                         <div className="line"></div>
                                     </InputStyle>
 
@@ -312,8 +314,8 @@ function TableTwo(props) {
                                     <div className="labels"><span> Огноо :</span></div>
                                     <div className="name"> <MdDateRange />
                                         <InputStyle className="newInp">
-                                            {Dname !== null ? <input max={Currentdate} onChange={changeHandleDate} value={Ddate} type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" name="date" required />
-                                                : <input max={Currentdate} type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" name="date" required />}
+                                            {Dname !== null ? <input max={Currentdate} onChange={changeHandleDate} value={Ddate} type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" name="date"  />
+                                                : <input max={Currentdate} type="date" placeholder="өдөр-сар-жил" className="getUser2 LoginInpName form__field" name="date"  />}
                                             <div className="line"></div>
                                         </InputStyle>
                                     </div>
@@ -335,10 +337,15 @@ function TableTwo(props) {
                     <div style={{ opacity: `${opacity2}` }} className="errtext">{FinalErrorText}</div>
                     <div className="buttonPar">
                         {Dname !== null ? (<PrevBtn id="myInput" onClick={() => { scroll.scrollTo(0); helperContext.StyleComp("0%", "100%", "200%", "300%", "400%", "500%") }} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend /></div>Өмнөх хуудас</PrevBtn>) : null}
-                        <NextBtn onClick={clickHandles} style={spnBtn === false ? { width: "40%" } : { width: "10%" }} className="SubmitButton" type="button">{spnBtn === false ? (<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>) : <img src="/gif1.gif" alt="spin" />}</NextBtn>
+                        {/* <NextBtn onClick={clickHandles} style={spnBtn === false ? { width: "40%" } : { width: "10%" }} className="SubmitButton" type="button">{spnBtn === false ? (<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>) : <img src="/gif1.gif" alt="spin" />}</NextBtn> */}
+                        <NextBtn2>
+                            <button  style={spnBtn===false? { width:"100%" }:{ width:"40%" }} className="SubmitButton" type="submit">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }
+                            </button>
+                        </NextBtn2>
                     </div>
                 </div>
             </div>
+            </form>
         </Component2>
     )
 }
