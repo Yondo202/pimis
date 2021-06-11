@@ -43,6 +43,84 @@ export const PrevBtn = styled.div`
     }
 `
 
+export const NextBtn2 = styled.div`
+    width:40%;
+    button{
+        position:relative;
+        font-family: inherit;       
+        padding:8px 0px;
+        margin:10px 0px;
+        margin-bottom:10px;
+        border-style:none;
+        border-radius:6px;
+        cursor:pointer;
+        padding:5px 0px;
+        color:white;
+        background-color:${Color};
+        font-size:14px;
+        text-align:center;
+        transition:all 0.3s ease;
+        display:flex;
+        align-items:center;
+        justify-content:space-around;
+        border:1px solid rgba(63, 81, 181,0.5);
+        width:100%;
+        border-radius:6px;
+        overflow:hidden;
+        &:after{
+            content: "";
+            background: rgba(255,255,255,.2);
+            display: block;
+            border-radius:50%;
+            position: absolute;
+            transition: all 0.5s ease;
+            opacity: 0;
+            left:0%;
+            top:0%;
+            -webkit-transform: scale(1.5);
+            transform: scale(1.5);
+            height:100%;
+            width:100%;
+          }
+          &:active:after{
+            opacity: 1;
+            transition: 0s;
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        }
+        img{
+            width:30px;
+            height:30px;
+        }
+        .hide{
+            transition:all 0.3s ease;
+            transform:scale(0);
+            font-size:22px;
+        }
+        .hide1{
+            transition:all 0.7s ease;
+            transform:scale(0);
+            font-size:23px;
+        }
+        &:hover{
+            box-shadow:1px 1px 15px -2px black;
+            .hide{
+                transition:all 0.3s ease;
+                transform:scale(1);
+            }
+            .hide1{
+                transition:all 0.7s ease;
+                transform:scale(1);
+            }
+        }
+        .flexchild{
+            display:flex;
+            align-items:center;
+            justify-content:space-around;
+        }
+    }
+`
+
 export const NextBtn = styled.div`
         position:relative;
         font-family: inherit;       
@@ -101,22 +179,21 @@ export const NextBtn = styled.div`
             font-size:23px;
         }
         &:hover{
-        box-shadow:1px 1px 15px -2px black;
-        .hide{
-            transition:all 0.3s ease;
-            transform:scale(1);
-        }
-        .hide1{
-            transition:all 0.7s ease;
-            transform:scale(1);
-        }
+            box-shadow:1px 1px 15px -2px black;
+            .hide{
+                transition:all 0.3s ease;
+                transform:scale(1);
+            }
+            .hide1{
+                transition:all 0.7s ease;
+                transform:scale(1);
+            }
         }
         .flexchild{
-        display:flex;
-        align-items:center;
-        justify-content:space-around;
+            display:flex;
+            align-items:center;
+            justify-content:space-around;
         }
-
 `
 
 export const ButtonStyle = styled.button`

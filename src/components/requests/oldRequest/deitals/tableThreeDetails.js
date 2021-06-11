@@ -92,7 +92,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Огноо :</span> </div>
                                 <div className="name"> <GoCalendar />
                                      <InputStyle className="newInp">
-                                            <input type="date" onChange={changeDateHandle} id={el.id} value={el.pdate} max={Currentdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate" required />
+                                            <input type="date" onChange={changeDateHandle} id={el.id} value={el.pdate} max={Currentdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Аж ахуйн нэр" name="pdate"  />
                                             <div className="line"></div>
                                     </InputStyle>
                                    
@@ -103,7 +103,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Асуудлын мөн чанар :</span> </div>
                                 <div className="name"> <GiScales />
                                      <InputStyle className="newInp">
-                                            <input type="text" onChange={changeDateHandle2} value={el.issue} id={el.id} className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="мөн чанар..." name="issue" required />
+                                            <input type="text" onChange={changeDateHandle2} value={el.issue} id={el.id} className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="мөн чанар..." name="issue"  />
                                             <div className="line"></div>
                                     </InputStyle>
                                 </div>
@@ -114,7 +114,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
                                 <div className="name"> <FiUserCheck />
                                     <InputStyle className="newInp">
-                                            <input type="date" max={Currentdate} id={el.id} onChange={changeDateHandle3} value={el.stepdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="огноо тус бүрээр" name="stepdate" required />
+                                            <input type="date" max={Currentdate} id={el.id} onChange={changeDateHandle3} value={el.stepdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="огноо тус бүрээр" name="stepdate"  />
                                             <div className="line"></div>
                                     </InputStyle>
                                 </div>
@@ -124,7 +124,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Санал :</span> </div>
                                 <div className="name"> <GoMail />
                                     <InputStyle className="newInp">
-                                        <input type="input" id={el.id} value={el.vote} onChange={changeDateHandle4}  className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Санал..." name="vote" required />
+                                        <input type="input" id={el.id} value={el.vote} onChange={changeDateHandle4}  className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Санал..." name="vote"  />
                                         <div className="line"></div>
                                     </InputStyle>
                                 </div>
@@ -150,7 +150,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Огноо :</span> </div>
                                 <div className="name"> <GoCalendar />
                                     <InputStyle className="newInp">
-                                            <input type="date"  max={Currentdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} name="pdate" required />
+                                            <input type="date"  max={Currentdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} name="pdate"  />
                                             <div className="line"></div>
                                     </InputStyle>
 
@@ -161,7 +161,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Асуудлын мөн чанар :</span> </div>
                                 <div className="name"> <GiScales />
                                      <InputStyle className="newInp">
-                                             <input type="input"  className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="мөн чанар..." name="issue" required />
+                                             <input type="input"  className={`PPPS${i + 1}  userInp LoginInpName form__field`} placeholder="мөн чанар..." name="issue"  />
                                             <div className="line"></div>
                                     </InputStyle>
                                 </div>
@@ -172,7 +172,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Авсан ба авах арга хэмжээ (огноо тус бүрээр) :</span> </div>
                                 <div className="name"> <FiUserCheck />
                                     <InputStyle className="newInp">
-                                              <input type="date"  max={Currentdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="огноо тус бүрээр" name="stepdate" required />
+                                              <input type="date"  max={Currentdate} className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="огноо тус бүрээр" name="stepdate"  />
                                             <div className="line"></div>
                                     </InputStyle>
                                 </div>
@@ -182,7 +182,7 @@ function TableThreeDetails(props) {
                                 <div className="labels"><span>Санал :</span> </div>
                                 <div className="name"> <GoMail />
                                     <InputStyle className="newInp">
-                                              <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Санал..." name="vote" required />
+                                              <input type="input" className={`PPPS${i + 1} userInp LoginInpName form__field`} placeholder="Санал..." name="vote"  />
                                             <div className="line"></div>
                                     </InputStyle>
                                 </div>

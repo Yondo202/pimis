@@ -4,12 +4,11 @@ import styled from 'styled-components';
 import { animateScroll as scroll } from "react-scroll";
 import axios from'../../../axiosbase';
 import {BsArrowRightShort} from 'react-icons/bs'
-import { fontFamily, textColor, ColorRgb, fontSize,PrevBtn,NextBtn,InputStyle  } from '../../theme';
+import { fontFamily, textColor, ColorRgb, fontSize, PrevBtn, NextBtn, InputStyle, NextBtn2  } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {AiOutlineSend} from 'react-icons/ai'
 import HelperContext from '../../../context/HelperContext'
-import {RiMailSendLine} from 'react-icons/ri'
 import AccessToken from '../../../context/accessToken'
 
 const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
@@ -68,6 +67,7 @@ function TableFour(props) {
       }
 
       const clickHandles = (e) =>{
+        e.preventDefault();
             let finalOne = {};
             let finalEnd = {};
             let rs2 = document.querySelectorAll(".inpTest34");
@@ -180,6 +180,7 @@ function TableFour(props) {
                          helperContext.alertText('green', "Та шалгуур хангаж байна!", true); setTimeout(()=>{scroll.scrollTo(0); helperContext.StyleComp("-400%", "-300%", "-200%", "-100%", "0%","100%") },3000); helperContext.reqMountFunc(1); })
                         .catch(err=>{setSpnBtn(false); helperContext.alertText('orange', "Алдаа гарлаа", true);});
                     }
+
             }else{
                    // Тэнцээгүй биш гэхдээ асууна
                    setFinalMsg("0"); setFinalTextScale("1"); setFinalText("Та шалгуур хангаж байна..."); setOpacity2("0");
@@ -198,6 +199,7 @@ function TableFour(props) {
 
     return (
         <Component1 className="container" >
+          <form onSubmit={clickHandles}>
             <div className="boxShadow">
               <div className="rowHeader">
                 <div className="boldTitle">ХАВСРАЛТ 2Г.</div>
@@ -262,8 +264,8 @@ function TableFour(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                           <InputStyle className="newInp">
-                                                {props.initialName? <input type="input" onChange={changeHandle} value={Dname} className="getUserInp LoginInpName form__field" placeholder="Бүтэн нэрээ оруулна уу..." name="name" required />
-                                                                    :<input type="input" className="getUserInp LoginInpName form__field" placeholder="Бүтэн нэрээ оруулна уу..." name="name" required /> }
+                                                {props.initialName? <input type="input" onChange={changeHandle} value={Dname} className="getUserInp LoginInpName form__field" placeholder="Бүтэн нэрээ оруулна уу..." name="name" />
+                                                                    :<input type="input" className="getUserInp LoginInpName form__field" placeholder="Бүтэн нэрээ оруулна уу..." name="name" /> }
                                                 <div className="line"></div>
                                           </InputStyle>
                                     </div>
@@ -275,8 +277,8 @@ function TableFour(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <InputStyle className="newInp">
-                                                  {props.initialName?<input max={Currentdate} type="date" onChange={changeHandleDate} value={Ddate} placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
-                                                                     :<input max={Currentdate} type="date" placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required /> }
+                                                  {props.initialName?<input max={Currentdate} type="date" onChange={changeHandleDate} value={Ddate} placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" />
+                                                                     :<input max={Currentdate} type="date" placeholder="өдөр-сар-жил" className="getUserInp LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" /> }
                                                   <div className="line"></div>
                                             </InputStyle>
                                         </div>
@@ -298,13 +300,18 @@ function TableFour(props) {
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
                             {props.initialName? (<PrevBtn id="myInput" onClick={()=> {helperContext.reqMountFunc(1); scroll.scrollTo(0); helperContext.StyleComp("-200%", "-100%", "0%", "100%", "200%","300%");}} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>) : null } 
-                            <NextBtn id="myInput" onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }}  className="SubmitButton" type="button">{spnBtn===false?(<>Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>):<img src="/gif1.gif" alt="spin" />} </NextBtn>
+                            {/* <NextBtn id="myInput" onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }}  className="SubmitButton" type="button">{spnBtn===false?(<>Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>):<img src="/gif1.gif" alt="spin" />} </NextBtn> */}
+                            <NextBtn2>
+                                <button  style={spnBtn===false? { width:"100%" }:{ width:"40%" }} className="SubmitButton" type="submit">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }
+                                </button>
+                            </NextBtn2>
                        </div>
 
                   {/* <div className="resPar" style={{transform:`scale(${finalTextScale})`}} ><RiMailSendLine /> <h6 className="finalText">{finalText}</h6> </div> */}
                 </div>
              </div>
             </div>
+            </form>
         </Component1>
     )
 }
