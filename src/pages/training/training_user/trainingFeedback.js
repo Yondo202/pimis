@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axiosbase'
 import AlertContext from 'components/utilities/alertContext'
-import FormRichText from 'components/training_components/formRichText'
+import FormRichText from 'components/urgudul_components/formRichText'
 import { titleClass, buttonClass } from './trainingsList'
 import CheckCircleSVG from 'assets/svgComponents/checkCircleSVG'
 import ModalWindow from 'components/modal_window/modalWindow'

@@ -13,6 +13,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import LoadFromOtherProject from '../loadFromOtherProject'
+import { todayStr } from './form_a_1'
 
 
 const initialState = [
@@ -160,7 +161,7 @@ function UrgudulDirectors({ projects }) {
                     <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
                     <span className="tw-leading-tight">- Аж ахуйн нэгжийг төлөөлөгчид</span>
 
-                    <HelpPopup classAppend="tw-ml-4 tw-mr-2 sm:tw-ml-12" main="ААН нэгжийг төлөөлүүлж 3-аас түлхүүр албан тушаалтны мэдээллээ оруулна уу." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-4 tw-mr-2" main="ААН нэгжийг төлөөлүүлж 3-аас түлхүүр албан тушаалтны мэдээллээ оруулна уу." position="bottom" />
 
                     <LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectDirectors} />
                 </div>
@@ -185,7 +186,7 @@ function UrgudulDirectors({ projects }) {
 
                             <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.director_email || ''} name="director_email" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.director_email)} />
 
-                            <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" value={item.employed_date || ''} name="employed_date" id={i} onChange={handleInput} classAppend="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.employed_date)} />
+                            <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" formats={{ max: todayStr }} value={item.employed_date || ''} name="employed_date" id={i} onChange={handleInput} classAppend="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.employed_date)} />
                         </div>
 
                         <div className="tw-w-full">
@@ -195,7 +196,7 @@ function UrgudulDirectors({ projects }) {
                                     Энэхүү төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр
                                 </span>
 
-                                <HelpPopup classAppend="tw-ml-auto" main="Тухайлбал ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
+                                <HelpPopup classAppend="tw-ml-2" main="Тухайлбал ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
                             </div>
 
                             <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>

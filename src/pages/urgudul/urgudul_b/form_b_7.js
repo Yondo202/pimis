@@ -95,7 +95,7 @@ function UrgudulBenefits() {
                     <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B7</span>
                     <span className="tw-leading-tight">- Төслийн үр ашгийн талаар</span>
 
-                    <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Экспортын орлогын өсөлт, ашгийн өсөлт, бүтээмжийн өсөлт, ажлын байрны өсөлт бүр дээр ямар үр ашиг хүлээгдэж буйг тоон хэмжээгээр болон тайлбарлан бичнэ үү." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-2 tw-mr-2 sm:tw-ml-12" main="Экспортын орлогын өсөлт, ашгийн өсөлт, бүтээмжийн өсөлт, ажлын байрны өсөлт бүр дээр ямар үр ашиг хүлээгдэж буйг тоон хэмжээгээр болон тайлбарлан бичнэ үү." position="bottom" />
                 </div>
 
                 {UrgudulCtx.data.project_number &&
@@ -135,7 +135,7 @@ function UrgudulBenefits() {
                         Таамаглал
                     </span>
 
-                    <HelpPopup classAppend="tw-ml-auto" main="Дээр дурдсан таамаглалыг тооцоолсон үндэслэл, шалтгааныг энд тайлбарлана уу." position="top-left" />
+                    <HelpPopup classAppend="tw-ml-2" main="Дээр дурдсан таамаглалыг тооцоолсон үндэслэл, шалтгааныг энд тайлбарлана уу." position="top-left" />
                 </div>
 
                 <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>

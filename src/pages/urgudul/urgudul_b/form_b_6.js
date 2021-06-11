@@ -126,9 +126,9 @@ function UrgudulActivities() {
                     </span>
 
                     {isCluster ?
-                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Кластерт нийтэд нь нөлөөлөх үйл ажиллагаа, үр өгөөжийн талаар бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
+                        <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Кластерт нийтэд нь нөлөөлөх үйл ажиллагаа, үр өгөөжийн талаар бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
                         :
-                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Аж ахуйн нэгжийн хийг гүйцэтгэх үйл ажиллагааг бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
+                        <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Аж ахуйн нэгжийн хийг гүйцэтгэх үйл ажиллагааг бичнэ үү. (Хэрэв хэд хэдэн үйл ажиллагаа байгаа бол шинээр мөр нэмж бичнэ үү.)" position="bottom" />
                     }
                 </div>
 
@@ -156,9 +156,9 @@ function UrgudulActivities() {
 
                         <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                             <div className="tw-w-full tw-max-w-lg tw-flex">
-                                <FormInline label="Дээрх үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" invalid={validate && checkInvalid(item.budget_cost)} />
+                                <FormInline label="Дээрх үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" invalid={validate && checkInvalid(item.budget_cost)} />
 
-                                <div className="tw-relative tw-w-2">
+                                <div className="tw-relative tw-w-2 tw-ml-56">
                                     <HelpPopup classAppend="tw-right-5 tw-top-1" main="Энэхүү зардлийн тал хувийг өргөдөл гаргагч өөрийн талаас, тал хувийг экспортыг дэмжих төслийн зүгээс гаргах юм." list={['Үйл ажиллагааны төсөвт дүнг тооцохдоо бодит өртөгөөс 20 хувиас дээш хэлбэлзэлтэй байж болохгүй тул бодитоор өртөгөөр тооцоолно уу.', 'Экспортыг дэмжих төслийн санхүүжилтийн дээд хэмжээ нь $50,000 гэдгийг анхаарна уу.']} position="top-left" />
                                 </div>
                             </div>
@@ -192,7 +192,7 @@ function UrgudulActivities() {
                             ${!isNaN(net) && net / 2}
                         </span>
                         {!isNaN(net) && net / 2 > 50000 &&
-                            <HelpPopup classAppend="tw-ml-4 tw-inline-flex tw-top-1.5" buttonClass="tw-text-red-400 active:tw-text-red-600" main="Экспортыг дэмжих төслөөс олгох санхүүжилт нь $50,000 хэтрэхгүй байна." position="top-left" />
+                            <HelpPopup classAppend="tw-ml-2 tw-inline-flex tw-top-1.5" buttonClass="tw-text-red-400 active:tw-text-red-600" main="Экспортыг дэмжих төслөөс олгох санхүүжилт нь $50,000 хэтрэхгүй байна." position="top-left" />
                         }
                     </span>
                 </div>

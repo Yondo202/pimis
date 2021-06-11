@@ -27,20 +27,21 @@ export default function TreeSelect(props) {
     // })
     const handleSelectId = (value) => {
         props.handleChange(props.name, value, props.index)
+        setOpen(false)
     }
 
     return (
         <div className="tw-w-full tw-text-sm tw-text-gray-700">
-            <div className="tw-flex tw-items-center tw-relative tw-pt-8 tw-mr-2">
+            <div className="tw-flex tw-items-center tw-relative tw-pt-8 tw-mr-3">
                 <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-font-medium tw-whitespace-nowrap ${props.classLabel} ${open ? 'tw-text-sm tw-top-2 tw-left-7' : 'tw-text-xs tw-top-6 tw-left-11'} tw-transition-all tw-duration-300`}>
                     {props.label}
                 </label>
 
                 <SelectorSVG className={`tw-w-5 tw-h-5 tw-ml-2 tw-mr-2 tw-flex-shrink-0 ${props.invalid ? 'tw-text-red-500' : 'tw-text-gray-600'}`} />
 
-                <button className={`tw-h-8.5 tw-flex tw-min-w-0 tw-items-center tw-border  tw-rounded-md tw-px-2 tw-pt-2 tw-pb-1 focus:tw-outline-none  ${props.invalid ? 'tw-text-red-500 tw-border-red-500 active:tw-border-red-600 active:tw-text-red-600' : 'tw-border-gray-500 tw-text-gray-600 active:tw-border-gray-700 active:tw-text-gray-700'} active:tw-shadow-md tw-transition-colors`} onClick={() => setOpen(!open)}>
+                <button className={`tw-h-8.5 tw-flex tw-min-w-0 tw-items-center tw-border  tw-rounded-md tw-px-2 tw-pt-2 tw-pb-1 focus:tw-outline-none  ${props.invalid ? 'tw-text-red-500 tw-border-red-500 active:tw-border-red-600 active:tw-text-red-600' : 'tw-border-gray-500 tw-text-gray-600 active:tw-border-gray-700 active:tw-text-gray-700'} active:tw-shadow-md tw-transition-colors`} onClick={() => setOpen(!open)} title={selectedName}>
                     <div className="tw-mr-2 tw-truncate tw-text-left tw-text-gray-700" style={{ minWidth: 160 }}>
-                        {selectedName}
+                        {selectedName ?? 'Сонгох'}
                     </div>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-auto tw-flex-shrink-0" />
                 </button>

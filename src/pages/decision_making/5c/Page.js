@@ -10,6 +10,7 @@ import SearchSVG from 'assets/svgComponents/searchSVG'
 import DecisionMakingPreviewModal from 'pages/decision_making/5a/previewModal'
 import AnalystReportPreview from './preview'
 import { useParams } from 'react-router'
+import { todayStr } from 'pages/urgudul/urgudul_a/form_a_1'
 
 
 const rowDescriptions = {
@@ -384,8 +385,8 @@ export default function AnalystReport() {
                         Шинжилгээ, дүгнэлт хийсэн хугацаа:
                     </label>
                     <span>
-                        <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_start) && 'tw-border-dashed tw-border-red-500'}`} type="date" value={info.check_start} onChange={e => handleInputEvaluator('check_start', e.target.value)} /> -аас
-                        <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_end) && 'tw-border-dashed tw-border-red-500'}`} type="date" value={info.check_end} onChange={e => handleInputEvaluator('check_end', e.target.value)} /> -ны хооронд.
+                        <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_start) && 'tw-border-dashed tw-border-red-500'}`} type="date" max={todayStr} value={info.check_start} onChange={e => handleInputEvaluator('check_start', e.target.value)} /> -аас
+                        <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_end) && 'tw-border-dashed tw-border-red-500'}`} type="date" max={todayStr} value={info.check_end} onChange={e => handleInputEvaluator('check_end', e.target.value)} /> -ны хооронд.
                     </span>
                 </div>
 

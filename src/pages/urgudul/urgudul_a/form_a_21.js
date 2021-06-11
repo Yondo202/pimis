@@ -18,6 +18,7 @@ import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 import TreeSelect from 'components/urgudul_components/treeSelect'
 import LoadFromOtherProject from '../loadFromOtherProject'
+import { acceptDocTypes } from 'pages/attachments/page'
 
 
 const initialState = [
@@ -231,7 +232,7 @@ function UrgudulClusters({ projects }) {
                     <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
                     <span className="tw-leading-tight">- Кластерын гишүүн байгууллагууд</span>
 
-                    <HelpPopup classAppend="tw-ml-4 tw-mr-2 sm:tw-ml-12" main="Тухайн кластерт оролцогч, бусад аж ахуйн нэгжүүдийг жагсаалт, тэдгээрийн төлөөлөх албан тушаалтан, овог нэрийн хамт." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Тухайн кластерт оролцогч, бусад аж ахуйн нэгжүүдийг жагсаалт, тэдгээрийн төлөөлөх албан тушаалтан, овог нэрийн хамт." position="bottom" />
 
                     <LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectCluster} />
                 </div>
@@ -244,7 +245,7 @@ function UrgudulClusters({ projects }) {
                 }
             </div>
 
-            <input className="tw-absolute tw-invisible" type="file" onChange={handleInputFile} ref={fileInputRef} />
+            <input className="tw-absolute tw-invisible" type="file" accept={acceptDocTypes} onChange={handleInputFile} ref={fileInputRef} />
 
             {form.map((item, i) =>
                 <div className="tw-flex even:tw-bg-gray-50" key={i}>
@@ -261,9 +262,9 @@ function UrgudulClusters({ projects }) {
                             <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={item.business_sectorId} name="business_sectorId" index={i} handleChange={handleSetForm} invalid={validate && checkInvalid(item.business_sectorId)} />
 
                             <div className="tw-w-full tw-max-w-lg tw-flex">
-                                <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classAppend="tw-flex-grow" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.company_size)} />
+                                <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.company_size)} />
 
-                                <div className="tw-relative tw-w-2 tw-ml-auto">
+                                <div className="tw-relative tw-w-2">
                                     <HelpPopup classAppend="tw-right-5 tw-top-1" main="Аж ахуйн нэгжийн хэмжээ нь борлуулалт эсвэл бүтэн цагийн ажилтнуудын аль өндрөөр тогтоосноор ангилал нь тогтоно. Жишээ нь:" list={["$30M борлуулалттай 30 хүнтэй аж ахуйн нэгжийн хувьд Дунд ангиллын аж ахуйн нэгжид хамаарна."]} position="top-left" />
                                 </div>
                             </div>
@@ -307,7 +308,7 @@ function UrgudulClusters({ projects }) {
                                     Төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр
                                 </span>
 
-                                <HelpPopup classAppend="tw-ml-auto" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
+                                <HelpPopup classAppend="tw-ml-2" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
                             </div>
 
                             <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
@@ -322,7 +323,7 @@ function UrgudulClusters({ projects }) {
                                     Кластерийн хамтын ажиллагааны гэрээ
                                 </span>
 
-                                <HelpPopup classAppend="tw-ml-auto" main="Кластерийн тэргүүлэгч ААН болоод гишүүн ААН талуудын хийсэн хамтын ажиллагааны гэрээгээ файлаар хавсаргана уу." position="top-left" />
+                                <HelpPopup classAppend="tw-ml-2" main="Кластерийн тэргүүлэгч ААН болоод гишүүн ААН талуудын хийсэн хамтын ажиллагааны гэрээгээ файлаар хавсаргана уу." position="top-left" />
                             </div>
 
                             {item.attachedFiles ?

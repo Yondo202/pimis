@@ -73,15 +73,14 @@ function Menu() {
             </label>
             <div className="menus">
               <div className="items">
-                <Link to="/">Нүүр хуудас</Link>
-                {/* <div style={{transform:`${activeMenu.Home}`}} className={`line ${activeMenu.Home}`}></div> */}
+                <Link to="/">Экспортыг дэмжих төсөл</Link>
+                {/* <div style={{ transform: `${activeMenu.Home}` }} className={`line ${activeMenu.Home}`}></div> */}
               </div>
-
-              {/* <div className="items">
-                                <Link to="/comp-check">Шалгах</Link>
-                                <div  className={`line ${activeMenu.Check}`}></div>
-                              </div> */}
+              <div className="items">
+                <Link to="/trainings">Сургалтын хөтөлбөр</Link>
+              </div>
             </div>
+
             <div className="userMenuPar">
               {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
               <div className="Notification"><div className="notf" to="#" content="2" ><IoNotificationsOutline /></div> </div>

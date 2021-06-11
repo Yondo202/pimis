@@ -29,7 +29,7 @@ function ActiveComp(props) {
                         <a href={`${edplanFront}/${props.data?.userId}`} rel="noreferrer" target="_blank" className={props.data.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
                     </div>
                     <div className="lineFull" ></div>
-                    <Link to={props.prew ? `/attachments/${props.prew}` : '/attachments'} className={props.data.evidence === true ? `resultActive` : `resultDesable`} >2.Нотлох бичиг баримтууд </Link>
+                    <Link to={props.prew ? `/attachments/${props.prew}` : '/attachments'} className={props.data.evidence === true ? `resultActive` : `resultDesable`}>2.Нотлох бичиг баримтууд</Link>
                 </div>
             </div>
 
@@ -41,20 +41,20 @@ function ActiveComp(props) {
                                 1. Анхан шатны үнэлгээ
                             </Link>
                         <div className="line" />
-                        <Link to={props.prew ? `/5b/${props.data.project?.id}` : '/5b'} className={props.data.evaluation5b ? `itemsActive` : `items`}><div className="helpArr"></div> 2. Баримтжуулах бүрдүүлбэрийн шалгах хуудас </Link>
+                        <Link to={props.prew ? `/5b/${props.data.project?.id}` : '#'} className={props.data.evaluation5b ? `itemsActive` : `items`}><div className="helpArr"></div> 2. Баримтжуулах бүрдүүлбэрийн шалгах хуудас </Link>
                     </div>
                     <div className="lineFull" ></div>
-                    <Link to={props.prew ? `/5c/${props.data.project?.id}` : '/5c'} className={props.data.evaluation5c ? `items resultActive` : `items resultDesable`}>3. Бизнес шинжээчийн шинжилгээний тайлан </Link>
+                    <Link to={props.prew ? `/5c/${props.data.project?.id}` : '#'} className={props.data.evaluation5c ? `items resultActive` : `items resultDesable`}>3. Бизнес шинжээчийн шинжилгээний тайлан </Link>
                 </div>
             </div>
 
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <Link to="#" className={props.data.lastEvalution.value === 0 ? `items arrHelp` : props.data.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} ><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
+                        <Link to="#" className={props.data.lastEvalution.value === 0 ? `items arrHelp` : props.data.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} ><div className="helpArr"></div>1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
                     </div>
                     <div className="lineFull" ></div>
-                    <Link to={props.prew ? `/maindecision/${props.data.project?.id}` : `#`} className={props.data.lastEvalution.value === 0 ? `resultDesable` : props.data.lastEvalution.value === 1 ? `resultWaiting` : `resultActive`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
+                    <Link to={props.prew ? `/maindecision/${props.data.project?.id}` : `#`} className={props.data.lastEvalution.value === 0 ? `resultDesable` : props.data.lastEvalution.value === 1 ? `resultWaiting` : `resultActive`}>2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
                 </div>
             </div>
 
@@ -62,10 +62,10 @@ function ActiveComp(props) {
                 <div className="itemsPar">
                     <div className="mains">
                         <div className="items arrHelp"><div className="helpArr"></div>1. Түншлэлийн гэрээ байгуулах </div>
-                        <div className="line" ></div>
-                        <Link to="#" className="items "><div className="helpArr"></div> 2. Түншлэлийн гэрээний гүйцэтгэлийн тайлан  </Link>
+                        <div className="line"></div>
+                        <Link to="#" className="items"><div className="helpArr"></div>2. Түншлэлийн гэрээний гүйцэтгэлийн тайлан</Link>
                     </div>
-                    <div className="lineFull" ></div>
+                    <div className="lineFull"></div>
                     <div className="resultDesable">3. Гүйцэтгэлийг нотлох баримтууд (гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан)</div>
                 </div>
             </div>

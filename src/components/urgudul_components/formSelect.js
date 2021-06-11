@@ -55,7 +55,7 @@ function FormSelect(props) {
 
             <button className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border tw-rounded-md tw-pt-2 tw-pb-1 tw-px-2 focus:tw-outline-none ${props.invalid ? 'tw-border-red-500' : 'tw-border-gray-500'} tw-transition-colors`} onClick={handleClickButton} ref={buttonRef}>
                 <span className="tw-h-5">
-                    {fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName]}
+                    {fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] ?? 'Сонгох'}
                 </span>
 
                 <ChevronDownSVG className={`tw-w-4 tw-h-4 tw-ml-auto ${props.invalid ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />

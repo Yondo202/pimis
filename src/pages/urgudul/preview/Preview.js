@@ -235,7 +235,7 @@ export default function UrgudulPreview(props) {
             <div className="tw-text-sm tw-text-gray-700 tw-text-13px tw-bg-white tw-rounded tw-p-4" id="urgudul-preview-page">
                 <div className="tw-flex tw-justify-between tw-items-center">
                     <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-text-15px tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handlePrint}>
-                        <span className="tw-text-sm">Хэвлэх болон PDF-ээр татах</span>
+                        <span className="tw-text-sm">Хэвлэх болон хадгалах</span>
                         <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
                     </button>
 

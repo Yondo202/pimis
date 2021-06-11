@@ -151,7 +151,7 @@ function UrgudulNavigator(props) {
                 </button>
                 {
                     [...Array(5)].map((item, i) =>
-                        <button className={`tw-mx-2 tw-px-2 tw-py-0.5 tw-rounded-md hover:tw-shadow-md focus:tw-outline-none tw-text-sm active:tw-text-indigo-500 ${page === startPage + i && 'tw-bg-indigo-500 tw-text-white'} tw-transition-colors tw-duration-300`} key={i} onClick={() => handleJump(startPage + i)}>
+                        <button className={`tw-mx-2 tw-px-2 tw-py-0.5 tw-rounded-md hover:tw-shadow-md focus:tw-outline-none tw-text-sm active:tw-text-indigo-500 ${page === startPage + i && 'tw-bg-indigo-500 tw-text-white'} tw-transition-colors`} key={i} onClick={() => handleJump(startPage + i)}>
                             {startPage + i}
                         </button>
                     )

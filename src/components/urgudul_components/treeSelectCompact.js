@@ -26,7 +26,10 @@ export default function TreeSelectCompact(props) {
     // })
     const handleSelectId = (value) => {
         props.handleChange(props.name, value, props.index, props.index1)
+        setOpen(false)
     }
+
+    // const containerHeight = Math.min(window.innerHeight - buttonRef.current?.getBoundingClientRect().bottom - 10, 360)
 
     return (
         <div className={`tw-relative ${props.classAppend}`}>
@@ -40,9 +43,9 @@ export default function TreeSelectCompact(props) {
             <Transition
                 items={open}
                 from={{ height: 0, opacity: 0 }}
-                enter={{ height: props.selectHeight || 426, opacity: 1 }}
+                enter={{ height: 240, opacity: 1 }}
                 leave={{ height: 0, opacity: 0 }}
-                config={{tension: 300, clamp: true}}>
+                config={{ tension: 300, clamp: true }}>
                 {item => item && (anims =>
                     <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-fixed tw-z-10 tw-text-13px" style={{ width: props.selectWidth, top: buttonRef.current?.getBoundingClientRect().top + 26, left: buttonRef.current?.getBoundingClientRect().left, ...anims }}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">

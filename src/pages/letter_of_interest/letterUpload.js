@@ -14,6 +14,7 @@ import HelpPopup from 'components/help_popup/helpPopup'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import PenAltSVG from 'assets/svgComponents/penAltSVG'
 import LetterPreview from './preview'
+import { acceptDocTypes } from 'pages/attachments/page'
 
 
 export default function LetterUpload() {
@@ -94,8 +95,8 @@ export default function LetterUpload() {
 
    const handleNavLetterOIWeb = () => history.push('/letter-of-interest/web')
 
-   const AnimatedFileCard = animated(FileCard)
-   const AnimatedFileCardAdd = animated(FileCardAdd)
+   // const AnimatedFileCard = animated(FileCard)
+   // const AnimatedFileCardAdd = animated(FileCardAdd)
 
    const handleSubmitFile = () => {
       if (form.id) {
@@ -149,12 +150,12 @@ export default function LetterUpload() {
                      leave={{ display: 'none' }}>
                      {item => item
                         ? anims =>
-                           <AnimatedFileCard name={item?.name} type={item?.mimetype} size={item?.size} classAppend="tw-my-1 tw-mx-1.5" uploading={item === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
+                           <FileCard name={item?.name} type={item?.mimetype} size={item?.size} classAppend="tw-my-1 tw-mx-1.5" uploading={item === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
                         : anims => (userId
                            ? <div className="tw-pt-4 tw-pb-2 tw-font-medium tw-italic tw-text-gray-500">
                               Файлаар иpүүлээгүй байна.
                            </div>
-                           : <AnimatedFileCardAdd classAppend="tw-my-1 tw-mx-1.5" onClick={handleAddFileClick} style={anims} />
+                           : <FileCardAdd classAppend="tw-my-1 tw-mx-1.5" onClick={handleAddFileClick} style={anims} />
                         )
                      }
                   </Transition>
@@ -168,7 +169,7 @@ export default function LetterUpload() {
                   </div>
                }
 
-               <input className="tw-absolute tw-invisible" type="file" onChange={handleInputFile} ref={fileInputRef} />
+               <input className="tw-absolute tw-invisible" type="file" accept={acceptDocTypes} onChange={handleInputFile} ref={fileInputRef} />
             </div>
 
             <div className="tw-p-2 tw-pl-4">

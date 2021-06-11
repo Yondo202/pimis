@@ -176,7 +176,7 @@ export default function AttachmentUploads() {
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
             </div>
 
-            <input className="tw-invisible tw-absolute" type="file" onChange={handleFileInput} ref={inputRef} />
+            <input className="tw-invisible tw-absolute" type="file" accept={acceptDocTypes} onChange={handleFileInput} ref={inputRef} />
 
             <ol className="tw-list-decimal tw-list-inside tw-m-2 tw-rounded-sm tw-shadow-md tw-divide-y tw-divide-dashed">
                 {form.map(item =>
@@ -204,3 +204,5 @@ export default function AttachmentUploads() {
         </div>
     )
 }
+
+export const acceptDocTypes = '.pdf, image/*, .doc, .docx, .txt, .xml, .csv, .xls, .xlsx, .ppt, .pptx'

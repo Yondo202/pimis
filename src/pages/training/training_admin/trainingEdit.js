@@ -94,8 +94,8 @@ export default function TrainingEdit() {
       })
    }
 
-   const AnimatedFileCard = animated(FileCard)
-   const AnimatedFileCardAdd = animated(FileCardAdd)
+   // const AnimatedFileCard = animated(FileCard)
+   // const AnimatedFileCardAdd = animated(FileCardAdd)
 
    const fileInputRef = useRef()
 
@@ -149,13 +149,13 @@ export default function TrainingEdit() {
                      leave={{ display: 'none' }}>
                      {item => item
                         ? anims =>
-                           <AnimatedFileCard name={item?.name} type={item?.mimetype} size={item?.size} uploading={item === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
+                           <FileCard name={item?.name} type={item?.mimetype} size={item?.size} uploading={item === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
                         : anims =>
-                           <AnimatedFileCardAdd onClick={handleAddFileClick} style={anims} />
+                           <FileCardAdd onClick={handleAddFileClick} style={anims} />
                      }
                   </Transition>
 
-                  <input className="tw-invisible tw-absolute tw-bottom-0 tw-w-0" type="file" onChange={handleFileInput} ref={fileInputRef} />
+                  <input className="tw-invisible tw-absolute tw-bottom-0 tw-w-0" type="file" accept=".pdf, image/*" onChange={handleFileInput} ref={fileInputRef} />
                </FormElement>
 
                <FormElement label="Сургалтын төрөл" height={104}>

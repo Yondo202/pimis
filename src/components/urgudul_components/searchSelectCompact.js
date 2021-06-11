@@ -69,8 +69,9 @@ function SearchSelectCompact(props) {
     }
 
     const inputRef = useRef(null)
-
     const searchBarRef = useRef(null)
+
+    // const containerHeight = Math.min(window.innerHeight - searchBarRef.current?.getBoundingClientRect().bottom - 10, 360)
 
     return (
         <div className={`tw-relative ${props.classAppend}`}>
@@ -82,11 +83,12 @@ function SearchSelectCompact(props) {
 
             <Transition
                 items={focused}
-                from={{ opacity: 0 }}
-                enter={{ opacity: 1 }}
-                leave={{ opacity: 0 }}>
+                from={{ height: 0, opacity: 0 }}
+                enter={{ height: 240, opacity: 1 }}
+                leave={{ height: 0, opacity: 0 }}
+                config={{ tension: 300, clamp: true }}>
                 {item => item && (anims =>
-                    <animated.div className={`tw-fixed ${!props.selectWidth && 'tw-w-full'} tw-bg-white tw-z-10 tw-text-13px tw-rounded tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto`} style={{ height: props.selectHeight || 426, width: props.selectWidth, top: searchBarRef.current?.getBoundingClientRect().top + 26, left: searchBarRef.current?.getBoundingClientRect().left, ...anims }}>
+                    <animated.div className="tw-fixed tw-bg-white tw-z-10 tw-text-13px tw-rounded tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto" style={{ width: props.selectWidth ?? '100%', top: searchBarRef.current?.getBoundingClientRect().top + 26, left: searchBarRef.current?.getBoundingClientRect().left, ...anims }}>
                         {fetch.filter(obj => filter(obj, search)).length ?
                             fetch.filter(obj => filter(obj, search)).sort(compare).map((item, i) =>
                                 <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-white tw-cursor-pointer' onMouseDown={() => handleSelect(item.id, item[props.displayName])} key={item.id}>

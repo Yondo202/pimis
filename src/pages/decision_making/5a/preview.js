@@ -25,7 +25,7 @@ export default function FirstEvaluationPreview(props) {
     return (
         <div className="tw-text-gray-700 text-sm">
             <button className="tw-mb-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-text-15px" onClick={handlePrint}>
-                <span className="tw-text-sm">Хэвлэх болон PDF-ээр татах</span>
+                <span className="tw-text-sm">Хэвлэх болон хадгалах</span>
                 <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
             </button>
 

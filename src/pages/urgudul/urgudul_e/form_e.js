@@ -89,7 +89,7 @@ function UrgudulChecklist() {
                         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">E</span>
                         <span className="tw-leading-tight">- Шалгах хуудас</span>
 
-                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
+                        <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="/.../" position="bottom" />
                     </div>
 
                     {UrgudulCtx.data.project_number &&

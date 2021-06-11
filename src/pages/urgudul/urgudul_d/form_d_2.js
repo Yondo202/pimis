@@ -182,7 +182,7 @@ function UrgudulNoticeCompany({ projects }) {
                         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">D</span>
                         <span className="tw-leading-tight">- Мэдэгдэл</span>
 
-                        <HelpPopup classAppend="tw-ml-4 tw-mr-2 sm:tw-ml-12" main="ААН өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." position="bottom" />
+                        <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="ААН өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." position="bottom" />
 
                         <LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectNoticeCompany} />
                     </div>
