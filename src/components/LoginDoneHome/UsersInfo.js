@@ -88,7 +88,6 @@ function UsersInfo() {
             {emailShow.email || emailShow.companyname ? <div ref={ref} onClick={clickHandleEdit} className="ghost"></div> : null}
             <div className="ContPar">
                 <div className="TitleBig">Хэрэглэгчийн мэдээлэл</div>
-<<<<<<< HEAD
                 {/* <div className="userInfoCont">
                    <div className="smTitle">Овог нэр</div>
                    <div className="value">{`${userData?.firstname} ${userData?.lastname}`}</div>
@@ -96,13 +95,6 @@ function UsersInfo() {
 
                 {/* <InputStyle className="smTitle"> <input  placeholder="Овог..." /> <div className="line"/> </InputStyle> */}
 
-=======
-                <div className="userInfoCont">
-                    {/* <div className="smTitle">Овог нэр</div>
-                    <div className="value">{`${userData?.firstname} ${userData?.lastname}`}</div> */}
-                    {/* <InputStyle className="smTitle"> <input  placeholder="Овог..." /> <div className="line"/> </InputStyle> */}
-                </div>
->>>>>>> 1eee0aed0aa4f77287d4d0eaca11f4d734f6c778
 
                 <div onClick={() => clickHandleEdit("email")} className={emailShow.email ? `userInfoCont A1` : `userInfoCont`}>
                     <div className="smTitle">Цахим хаяг</div>
