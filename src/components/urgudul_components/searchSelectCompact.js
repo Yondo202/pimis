@@ -76,7 +76,7 @@ function SearchSelectCompact(props) {
     return (
         <div className={`tw-relative ${props.classAppend}`}>
             <div className={`tw-flex tw-items-center tw-text-sm ${props.classDiv || `tw-border tw-border-gray-400`} tw-rounded tw-py-0.5 tw-px-1.5 tw-transition-colors`} ref={searchBarRef}>
-                <input className={`tw-flex-grow tw-mr-1 tw-bg-transparent tw-outline-none tw-placeholder-gray-500 ${props.classInput || 'tw-flex-grow'}`} type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} placeholder={props.placeholder} ref={inputRef} />
+                <input className={`tw-text-13px tw-flex-grow tw-mr-1 tw-bg-transparent tw-outline-none tw-placeholder-gray-600 ${props.classInput || 'tw-flex-grow'}`} type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} placeholder={props.placeholder} ref={inputRef} />
 
                 <SearchSVG className="tw-w-4 tw-h-4 tw-flex-shrink-0 tw-text-gray-600 tw-cursor-pointer" onClick={() => inputRef.current?.focus()} />
             </div>
@@ -92,7 +92,7 @@ function SearchSelectCompact(props) {
                         {fetch.filter(obj => filter(obj, search)).length ?
                             fetch.filter(obj => filter(obj, search)).sort(compare).map((item, i) =>
                                 <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-white tw-cursor-pointer' onMouseDown={() => handleSelect(item.id, item[props.displayName])} key={item.id}>
-                                    <span className="tw-font-medium tw-pr-2">{i + 1}.</span>
+                                    <span className="tw-pr-2">{i + 1}.</span>
                                     {item[props.displayName]}
                                 </div>)
                             :

@@ -138,7 +138,7 @@ function UrgudulNavigator(props) {
     return (
         <div className="tw-relative tw-w-full tw-text-gray-700 tw-text-13px">
             <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-flex tw-justify-start tw-py-2 tw-my-4">
-                <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-3 tw-pr-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={() => setPreviewModalOpen(true)}>
+                <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-font-light tw-py-1 tw-pl-3 tw-pr-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={() => setPreviewModalOpen(true)}>
                     <SearchSVG className="tw-w-4 tw-h-4" />
                     <span className="tw-text-sm tw-ml-2">Урьдчилж харах</span>
                 </button>
@@ -229,12 +229,12 @@ function UrgudulNavigator(props) {
                                     {
                                         projects.map((item, i) =>
                                             <button className="tw-w-32 tw-h-40 tw-rounded-md tw-shadow-md tw-border tw-m-3 tw-transform-gpu hover:tw-scale-110 tw-transition-all tw-duration-300 focus:tw-outline-none tw-inline-flex tw-flex-col" key={item.id} onClick={() => loadProject(item.id)}>
-                                                <div className={`tw-relative tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-white tw-font-medium ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
-                                                    <span className="tw-text-sm">{item.project_number}</span>
-                                                    <span className="tw-text-sm">{statusNames[item.status]}</span>
-                                                    <span className="tw-text-xs tw-absolute tw-bottom-1 tw-right-2">{new Date(item.createdAt).toLocaleDateString()}</span>
+                                                <div className={`tw-relative tw-w-32 tw-h-24 tw-rounded-t-md tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-white ${item.project_type === 1 ? 'tw-bg-green-400' : (item.project_type === 0 ? 'tw-bg-blue-400' : 'tw-bg-gray-400')}`}>
+                                                    <span className="tw-text-13px">{item.project_number}</span>
+                                                    <span className="tw-text-13px tw-mt-1">{statusNames[item.status]}</span>
+                                                    <span className="tw-text-xs tw-mt-1">{new Date(item.createdAt).toLocaleDateString()}</span>
                                                 </div>
-                                                <div className="tw-pl-2 tw-mt-1 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
+                                                <div className="tw-pl-2 tw-mt-1 tw-truncate tw-text-xs tw-w-full tw-text-left">
                                                     {
                                                         {
                                                             1: 'Кластер',
@@ -242,10 +242,10 @@ function UrgudulNavigator(props) {
                                                         }[item.project_type] || '--/--'
                                                     }
                                                 </div>
-                                                <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
+                                                <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-w-full tw-text-left">
                                                     {item.company_name}
                                                 </div>
-                                                <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-font-medium tw-w-full tw-text-left">
+                                                <div className="tw-pl-2 tw-mt-0.5 tw-truncate tw-text-xs tw-w-full tw-text-left">
                                                     {item.project_name}
                                                 </div>
                                             </button>
@@ -258,7 +258,7 @@ function UrgudulNavigator(props) {
                                         </div>
                                         <div className="tw-px-2 tw-w-full tw-text-center tw-mt-2 tw-text-xs tw-font-medium">
                                             Шинээр маягт бөглөх
-                                            </div>
+                                        </div>
                                     </button>
                                 </div>
                             </animated.div>

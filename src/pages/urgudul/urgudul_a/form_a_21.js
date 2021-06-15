@@ -5,21 +5,20 @@ import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import FormOptions from 'components/urgudul_components/formOptions'
-import PenSVG from 'assets/svgComponents/penSVG'
 import FormRichText from 'components/urgudul_components/formRichText'
 import axios from 'axiosbase'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
-import UploadSVG from 'assets/svgComponents/uploadSVG'
 import FileCard from 'pages/attachments/fileCard'
-import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 import TreeSelect from 'components/urgudul_components/treeSelect'
 import LoadFromOtherProject from '../loadFromOtherProject'
 import { acceptDocTypes } from 'pages/attachments/page'
-
+import { helperTable } from './form_a_1'
+import FileCardAdd from 'pages/attachments/fileCardAdd'
+import { Transition, animated } from 'react-spring/renderprops'
 
 const initialState = [
     {
@@ -228,9 +227,8 @@ function UrgudulClusters({ projects }) {
     return (
         <div className="tw-relative tw-mt-8 tw-py-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <div className="">
-                <div className="tw-font-medium tw-p-3 tw-flex tw-items-center tw-text-15px tw-relative">
-                    <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
-                    <span className="tw-leading-tight">- Кластерын гишүүн байгууллагууд</span>
+                <div className="tw-p-3 tw-flex tw-items-center tw-relative">
+                    <span className="tw-pl-2 tw-font-medium tw-text-base tw-text-blue-500">Кластерын гишүүн байгууллагууд</span>
 
                     <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Тухайн кластерт оролцогч, бусад аж ахуйн нэгжүүдийг жагсаалт, тэдгээрийн төлөөлөх албан тушаалтан, овог нэрийн хамт." position="bottom" />
 
@@ -238,9 +236,9 @@ function UrgudulClusters({ projects }) {
                 </div>
 
                 {UrgudulCtx.data.project_number &&
-                    <div className="tw-ml-5 tw-mb-2 tw-font-medium tw-text-13px">
+                    <div className="tw-ml-5 tw-mb-2 tw-text-13px">
                         Өргөдлийн дугаар:
-                        <span className="tw-text-blue-500 tw-ml-2">{UrgudulCtx.data.project_number}</span>
+                        <span className="tw-text-blue-500 tw-ml-2 tw-font-medium">{UrgudulCtx.data.project_number}</span>
                     </div>
                 }
             </div>
@@ -250,61 +248,35 @@ function UrgudulClusters({ projects }) {
             {form.map((item, i) =>
                 <div className="tw-flex even:tw-bg-gray-50" key={i}>
                     <div className="tw-flex-grow">
-                        <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                            <FormInline label="Кластерын гишүүн аж ахуйн нэгж" type="text" value={item.company_name || ''} name="company_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.company_name)} />
+                        <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-3">
+                            <FormInline label="Кластерын гишүүн аж ахуйн нэгж" type="text" value={item.company_name || ''} name="company_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.company_name)} />
 
-                            <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.representative_name)} />
+                            <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.representative_name)} />
 
-                            <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.representative_phone || ''} name="representative_phone" id={i} onChange={handleInputFormatted} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.representative_phone)} />
+                            <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.representative_phone || ''} name="representative_phone" id={i} onChange={handleInputFormatted} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.representative_phone)} />
 
-                            <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.representative_email || ''} name="representative_email" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.representative_email)} />
+                            <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.representative_email || ''} name="representative_email" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.representative_email)} />
 
                             <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={item.business_sectorId} name="business_sectorId" index={i} handleChange={handleSetForm} invalid={validate && checkInvalid(item.business_sectorId)} />
 
-                            <div className="tw-w-full tw-max-w-lg tw-flex">
+                            <div className="tw-w-full tw-max-w-md tw-flex">
                                 <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.company_size)} />
 
                                 <div className="tw-relative tw-w-2">
-                                    <HelpPopup classAppend="tw-right-5 tw-top-1" main="Аж ахуйн нэгжийн хэмжээ нь борлуулалт эсвэл бүтэн цагийн ажилтнуудын аль өндрөөр тогтоосноор ангилал нь тогтоно. Жишээ нь:" list={["$30M борлуулалттай 30 хүнтэй аж ахуйн нэгжийн хувьд Дунд ангиллын аж ахуйн нэгжид хамаарна."]} position="top-left" />
+                                    <HelpPopup classAppend="tw-right-5 tw-top-1" main="Аж ахуйн нэгжийн хэмжээ нь борлуулалт эсвэл бүтэн цагийн ажилтнуудын аль өндрөөр тогтоосноор ангилал нь тогтоно. Жишээ нь:" list={["$30M борлуулалттай 30 хүнтэй аж ахуйн нэгжийн хувьд Дунд ангиллын аж ахуйн нэгжид хамаарна."]} position="top" />
                                 </div>
                             </div>
 
-                            <div className="tw-p-2 tw-max-w-lg">
-                                <table className="tw-text-sm tw-w-full">
-                                    <thead>
-                                        <tr className="tw-h-8">
-                                            <th className="tw-font-medium tw-text-center">Аж ахуйн нэгжийн хэмжээ</th>
-                                            <th className="tw-font-medium tw-text-center">Жилийн борлуулалт (ам.дол)</th>
-                                            <th className="tw-font-medium tw-text-center">Бүтэн цагийн ажилтны тоо</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr className="tw-h-8 tw-bg-blue-100">
-                                            <td className="tw-pl-2">Бичил</td>
-                                            <td className="tw-pl-2">{'< $50 мян'}</td>
-                                            <td className="tw-pl-2">{'< 10'}</td>
-                                        </tr>
-                                        <tr className="tw-h-8">
-                                            <td className="tw-pl-2">Жижиг</td>
-                                            <td className="tw-pl-2">{'> $50 мян ≤ $10 сая'}</td>
-                                            <td className="tw-pl-2">{'>=10, <50'}</td>
-                                        </tr>
-                                        <tr className="tw-h-8 tw-bg-blue-100">
-                                            <td className="tw-pl-2">Дунд</td>
-                                            <td className="tw-pl-2">{'> $10 сая ≤ $50 сая'}</td>
-                                            <td className="tw-pl-2">{'>=50, <250'}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div className="tw-p-2 tw-max-w-md">
+                                {helperTable}
                             </div>
 
-                            <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх" options={['Тийм', 'Үгүй']} values={[true, false]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.support_recipient)} />
+                            <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх" options={['Тийм', 'Үгүй']} values={[true, false]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.support_recipient)} />
                         </div>
 
                         <div className="tw-w-full">
-                            <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                                <PenSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(item.project_contribution, 'quill') ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
-                                <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(item.project_contribution, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
+                            <div className="tw-flex tw-items-center tw-px-2 tw-mt-3">
+                                <span className={`tw-ml-2 tw-text-sm ${validate && checkInvalid(item.project_contribution, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
                                     Төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр
                                 </span>
 
@@ -317,23 +289,27 @@ function UrgudulClusters({ projects }) {
                         </div>
 
                         <div className="tw-w-full">
-                            <div className="tw-flex tw-items-center tw-p-2 tw-mt-1">
-                                <UploadSVG className={`tw-w-5 tw-h-5 ${validate && checkInvalid(item.attachedFiles) ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
-                                <span className={`tw-ml-2 tw-text-sm tw-font-medium ${validate && checkInvalid(item.attachedFiles) && 'tw-text-red-500'} tw-transition-colors`}>
+                            <div className="tw-flex tw-items-center tw-px-2 tw-pb-2 tw-mt-3">
+                                <span className={`tw-ml-2 tw-text-sm ${validate && checkInvalid(item.attachedFiles) && 'tw-text-red-500'} tw-transition-colors`}>
                                     Кластерийн хамтын ажиллагааны гэрээ
                                 </span>
 
                                 <HelpPopup classAppend="tw-ml-2" main="Кластерийн тэргүүлэгч ААН болоод гишүүн ААН талуудын хийсэн хамтын ажиллагааны гэрээгээ файлаар хавсаргана уу." position="top-left" />
                             </div>
 
-                            {item.attachedFiles ?
-                                <FileCard name={item.attachedFiles[0]?.name} type={item.attachedFiles[0]?.mimetype} size={item.attachedFiles[0]?.size} classAppend="tw-ml-6 tw-mb-4" uploading={item.attachedFiles === 'loading' && true} removeFile={() => handleRemoveFile(i)} downloadFile={() => handleDownloadFile(i)} />
-                                :
-                                <button className="tw-ml-6 tw-mb-4 tw-py-1.5 tw-px-6 tw-text-sm tw-border tw-border-gray-500 tw-font-medium tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-inline-flex tw-items-center tw-transition-colors active:tw-bg-gray-200" onClick={() => handleFileInputClick(i)}>
-                                    <span className="">Файл оруулах</span>
-                                    <PaperClipSVG className="tw-w-4 tw-h-4 tw-ml-0.5" />
-                                </button>
-                            }
+                            <Transition
+                                items={item.attachedFiles}
+                                from={{ transform: 'scale(0)' }}
+                                enter={{ transform: 'scale(1)' }}
+                                leave={{ display: 'none' }}>
+                                {item1 => item1
+                                    ? anims => {
+                                        const file = item.attachedFiles || []
+                                        return <FileCard name={file[0]?.name} type={file[0]?.mimetype} size={file[0]?.size} classAppend="tw-ml-6 tw-mb-5" uploading={item.attachedFiles === 'loading' && true} removeFile={() => handleRemoveFile(i)} downloadFile={() => handleDownloadFile(i)} style={anims} />
+                                    }
+                                    : anims => <FileCardAdd classAppend="tw-ml-6 tw-mb-5" onClick={() => handleFileInputClick(i)} style={anims} />
+                                }
+                            </Transition>
                         </div>
                     </div>
 
@@ -348,11 +324,11 @@ function UrgudulClusters({ projects }) {
                     Кластерийн гишүүн байгууллагууд
                 </div>
 
-                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classButton={`tw-text-green-500 active:tw-text-green-600 tw-mr-2 ${validate && form.length < 1 && 'tw-border tw-border-red-500 tw-border-dashed'}`} />
+                <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classButton={`tw-text-green-500 active:tw-text-green-600 tw-mr-2 ${validate && form.length < 1 && 'tw-border tw-border-red-500'}`} />
             </div>
 
             <div className="tw-flex tw-justify-end">
-                <ButtonTooltip classAppend="tw-mt-6 tw-mb-4 tw-mr-4" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
+                <ButtonTooltip classAppend="tw-mt-6 tw-mb-4 tw-mr-4" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px tw-font-light" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
             </div>
         </div>
     )

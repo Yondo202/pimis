@@ -24,7 +24,7 @@ export default function FirstEvaluationPreview(props) {
 
     return (
         <div className="tw-text-gray-700 text-sm">
-            <button className="tw-mb-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-text-15px" onClick={handlePrint}>
+            <button className="tw-mb-4 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-font-light" onClick={handlePrint}>
                 <span className="tw-text-sm">Хэвлэх болон хадгалах</span>
                 <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
             </button>
@@ -64,7 +64,7 @@ export default function FirstEvaluationPreview(props) {
 
                 {rows.map(row => ({
                     'z': <Fragment key={row.rowcode}>
-                        <div className="tw-bg-blue-900 tw-text-white tw-flex tw-border tw-border-gray-400 tw-font-medium" id="no-break">
+                        <div className="tw-bg-blue-900 tw-text-white tw-flex tw-border tw-border-gray-400" id="no-break">
                             <div className="tw-flex-grow tw-p-2 tw-pl-3 tw-border-r tw-border-gray-400">
                                 {row.description}
                             </div>

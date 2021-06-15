@@ -194,7 +194,7 @@ export default function TrainingFeedback() {
             </div>
          </div>
 
-         <div className="tw-rounded-md tw-shadow-md tw-py-2 tw-px-4 tw-font-medium tw-text-13px tw-mb-4 tw-text-gray-600" style={{ textIndent: 16 }}>
+         <div className="tw-rounded-md tw-shadow-md tw-py-2 tw-px-4 tw-text-13px tw-mb-4 tw-text-gray-600" style={{ textIndent: 16 }}>
             Мэдэгдэл тус бүрт санал нийлж байгаа, эсвэл санал нийлэхгүй байгаагаа “1”-ээс “5” хүртэлх оноогоор үнэлнэ. Үнэлгээ “1” нь огт санал нийлэхгүй байгааг, “5” нь бүрэн санал нийлж буйг, харин “3” нь санал нийлэх, нийлэхгүй байгаагийн аль нь ч биш гэдгийг илэрхийлнэ.
          </div>
 
@@ -261,7 +261,7 @@ export default function TrainingFeedback() {
                className={`${buttonClass} tw-text-sm tw-px-4 tw-m-4`}
                onClick={handleSubmit}>
                Үнэлгээ өгөх
-               </button>
+            </button>
          </div>
 
          <ModalWindow modalOpen={modalOpenFeedbackGiven} setModalOpen={setModalOpenFeedbackGiven} modalAppend="tw-p-5">
@@ -311,7 +311,7 @@ const FormCategory = ({ category, feedback, setFeedback, index }) => {
    return (
       <div className="tw-mt-5">
          {category !== 'Бичвэр' &&
-            <div className="tw-text-15px tw-font-medium tw-text-blue-500 tw-pl-2 tw-tracking-wide">
+            <div className="tw-text-sm tw-font-medium tw-text-blue-500 tw-pl-2 tw-tracking-wide">
                {index + 1}. {category}
             </div>
          }
@@ -320,7 +320,7 @@ const FormCategory = ({ category, feedback, setFeedback, index }) => {
             const rowIndex = feedback.findIndex(item => item.category === category && item.description === question.description)
 
             return <div className="tw-rounded-md tw-shadow-md tw-py-2 tw-px-4 tw-mt-2 tw-mb-6" key={question.description}>
-               <div className="tw-font-medium tw-mt-2 tw-flex tw-items-center">
+               <div className="tw-mt-2 tw-flex tw-items-center">
                   <CheckCircleSVG className="tw-w-5 tw-h-5 tw-mr-1 tw-text-green-500 tw-flex-grow-0" />
                   {question.description}
                </div>
@@ -330,7 +330,7 @@ const FormCategory = ({ category, feedback, setFeedback, index }) => {
                      <FormRichText modules="small" value={feedback[rowIndex].comment} name="comment" id={rowIndex} setForm={handleInput} />
                   </div>
 
-                  : <div className="tw-flex tw-flex-col tw-items-center tw-font-medium tw-mt-2 tw-mb-2 tw-text-13px tw-tracking-wide tw-text-gray-600 tw-px-4">
+                  : <div className="tw-flex tw-flex-col tw-items-center tw-mt-2 tw-mb-2 tw-text-13px tw-tracking-wide tw-text-gray-600 tw-px-4">
                      <div className="tw-max-w-sm tw-flex tw-justify-between tw-w-full">
                         <span className="tw-mr-1 tw-whitespace-nowrap">Огт санал нийлэхгүй</span>
                         <span className="tw-ml-1 tw-whitespace-nowrap">Бүрэн санал нийлнэ</span>
@@ -339,7 +339,7 @@ const FormCategory = ({ category, feedback, setFeedback, index }) => {
                      <div className="tw-flex tw-justify-around tw-w-full tw-max-w-xs tw-mt-2">
                         {[...Array(5).keys()].map(i =>
                            <button
-                              className={`focus:tw-outline-none tw-flex-shrink-0 tw-mx-3 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-w-6 tw-h-6 ${question.evaluation === i + 1 ? 'tw-bg-blue-500 tw-text-white' : 'tw-shadow-inner tw-border-b'} tw-font-medium tw-transition-colors`}
+                              className={`focus:tw-outline-none tw-flex-shrink-0 tw-mx-3 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-w-6 tw-h-6 ${question.evaluation === i + 1 ? 'tw-bg-blue-500 tw-text-white tw-border-b tw-border-blue-800' : 'tw-shadow-inner tw-border-b tw-border-gray-400'} tw-font-medium tw-transition-colors tw-transition-transform tw-transform-gpu hover:tw-scale-125 tw-duration-150`}
                               onClick={() => handleInput('evaluation', i + 1, rowIndex)}
                               key={i}>
                               <span style={{ paddingTop: 1, paddingRight: 1 }}>{i + 1}</span>

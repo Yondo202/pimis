@@ -22,7 +22,7 @@ function ButtonTooltip(props) {
                 {props.beforeSVG}
 
                 {props.label &&
-                    <span className={`tw-mx-1 tw-font-medium ${props.classLabel}`}>{props.label}</span>
+                    <span className={`tw-mx-1 ${props.classLabel}`}>{props.label}</span>
                 }
 
                 {props.afterSVG}

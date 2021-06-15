@@ -1,6 +1,6 @@
 import PlusSVG from 'assets/svgComponents/plusSVG'
 import React, { useEffect, useRef, useState } from 'react'
-import { animated, config, Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 
 
 export default function LoadFromOtherProject(props) {
@@ -56,7 +56,7 @@ export default function LoadFromOtherProject(props) {
                     enter={{ width: 'auto', marginRight: 4, marginLeft: 4, opacity: 1 }}
                     leave={{ width: 0, marginRight: 0, marginLeft: 0, opacity: 0 }}>
                     {item => item && (anims =>
-                        <animated.span className="tw-text-13px tw-whitespace-nowrap tw-overflow-clip tw-overflow-hidden" style={anims}>
+                        <animated.span className="tw-text-13px tw-whitespace-nowrap tw-overflow-clip tw-overflow-hidden tw-font-light" style={anims}>
                             Бусад өргөдлөөс мэдээлэл оруулах
                         </animated.span>
                     )}
@@ -71,9 +71,9 @@ export default function LoadFromOtherProject(props) {
                     enter={{ height: 'auto', opacity: 1 }}
                     leave={{ height: 0, opacity: 0 }}>
                     {item => item && (anims =>
-                        <animated.div className="tw-absolute tw-right-0 tw-top-1 tw-z-10 tw-rounded tw-overflow-hidden tw-divide-y tw-divide-dashed tw-text-xs tw-font-medium tw-w-40 tw-bg-blue-700 tw-text-white tw-overflow-y-auto tw-overflow-x-hidden" style={{ ...anims, maxHeight: 500 }} ref={dropdownRef}>
+                        <animated.div className="tw-absolute tw-right-0 tw-top-1 tw-z-10 tw-rounded tw-overflow-hidden tw-divide-y tw-divide-dashed tw-text-xs tw-w-40 tw-bg-blue-700 tw-text-white tw-overflow-y-auto tw-overflow-x-hidden" style={{ ...anims, maxHeight: 500 }} ref={dropdownRef}>
                             {props.otherProjects.map(project =>
-                                <div className="tw-cursor-pointer tw-py-2 tw-font-medium tw-px-2 hover:tw-bg-blue-600 tw-transition-colors" onClick={() => setLoadModal({ open: true, id: project.id })} key={project.id}>
+                                <div className="tw-cursor-pointer tw-py-2 tw-px-2 hover:tw-bg-blue-500 tw-transition-colors" onClick={() => setLoadModal({ open: true, id: project.id })} key={project.id}>
                                     {project.project_number}
                                 </div>
                             )}

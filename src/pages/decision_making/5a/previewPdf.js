@@ -102,7 +102,7 @@ export default function FirstEvaluationPreviewPdf(props) {
                 {rows.map(row => ({
                     'z':
                         <View key={row.rowcode} style={{ marginTop: 8 }} wrap={false}>
-                            <View style={[styles.row, styles.headRow, { fontWeight: 500 }]}>
+                            <View style={[styles.row, styles.headRow]}>
                                 <View style={[styles.column1, { paddingLeft: 6, paddingVertical: 6 }]}>
                                     <Text>
                                         {row.description}
@@ -146,7 +146,7 @@ export default function FirstEvaluationPreviewPdf(props) {
                             <View style={styles.row}>
                                 <Text style={styles.commentText}>
                                     ({row.comment})
-                                    </Text>
+                                </Text>
                             </View>
                             :
                             null

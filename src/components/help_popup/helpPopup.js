@@ -57,7 +57,7 @@ function HelpPopup(props) {
     return (
         <div className={`tw-relative tw-flex ${props.classAppend}`}>
             <button className={`tw-rounded-full focus:tw-outline-none hover:tw-shadow-md ${props.buttonClass ? props.buttonClass : 'tw-text-gray-600 active:tw-text-gray-800'} tw-transition-colors tw-duration-300`} onClick={() => { setOpen(!open) }} ref={buttonRef}>
-                <QuestionMarkSVG className="tw-w-6 tw-h-6" />
+                <QuestionMarkSVG style={{ width: 22, height: 22 }} />
             </button>
 
             <div className={`tw-absolute ${props.popupClass || 'tw-w-72'} tw-bg-indigo-600 tw-bg-opacity-90 tw-text-white tw-font-normal tw-rounded-lg tw-shadow-md tw-p-2 tw-z-10 ${open ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} style={{ ...positionStyle, fontSize: '13px' }} ref={divRef}>

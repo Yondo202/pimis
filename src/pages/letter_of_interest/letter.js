@@ -69,6 +69,11 @@ const helperTexts = {
     },
 }
 
+const descriptions = {
+    logo: 'Сонирхол илэрхийлэх албан тоот компаний лого.',
+    stamp: 'Сонирхол илэрхийлэх албан тоот компаний тамга.',
+}
+
 export default function LetterOfInterest() {
     const [form, setForm] = useState(initialState)
 
@@ -76,19 +81,67 @@ export default function LetterOfInterest() {
         setForm(prev => ({ ...prev, [key]: value }))
     }
 
-    const inputRefLogo = useRef(null)
-    const inputRefStamp = useRef(null)
+    const [editKey, setEditKey] = useState()
 
-    const handleInputPicture = (e, key) => {
-        e.preventDefault()
-        const reader = new FileReader()
-        if (!e.target.files[0]) return
-        const file = e.target.files[0]
-        reader.onloadend = () => {
-            handleInput(key, reader.result)
-        }
-        reader.readAsDataURL(file)
+    const fileInputRef = useRef()
+
+    const handleFileClick = (key) => {
+        setEditKey(key)
+        fileInputRef.current.value = null
+        fileInputRef.current.click()
     }
+
+    const handleFileInput = (e) => {
+        const formData = new FormData()
+        if (!e.target.files[0]) return
+        formData.append('file', e.target.files[0])
+        formData.append('description', descriptions[editKey])
+        setForm(prev => ({ ...prev, [editKey]: 'loading' }))
+        let setFn = setCompanyLogo
+        if (editKey === 'company_stamp') setFn = setCompanyStamp
+        setFn('loading')
+
+        axios.post('attach-files', formData, {
+            headers: {
+                'Authorization': getLoggedUserToken(),
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then(res => {
+            setForm(prev => ({ ...prev, [editKey]: res.data.data }))
+        }).catch(err => {
+            setFn(null)
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг хадгалж чадсангүй.' })
+        })
+    }
+
+    const [companyLogo, setCompanyLogo] = useState(null)
+    const [companyStamp, setCompanyStamp] = useState(null)
+
+    useEffect(() => {
+        const id = form.company_logo?.id
+        id && axios.get(`attach-files/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+            responseType: 'blob',
+        }).then(res => {
+            const url = window.URL.createObjectURL(res.data)
+            setCompanyLogo(url)
+        }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+        })
+    }, [form.company_logo?.id])
+
+    useEffect(() => {
+        const id = form.company_stamp?.id
+        id && axios.get(`attach-files/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+            responseType: 'blob',
+        }).then(res => {
+            const url = window.URL.createObjectURL(res.data)
+            setCompanyStamp(url)
+        }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+        })
+    }, [form.company_stamp?.id])
 
     const sigCanvasRef = useRef()
 
@@ -216,16 +269,26 @@ export default function LetterOfInterest() {
 
     const handleNavLetterIO = () => history.push('/letter-of-interest')
 
+    const clearCompanyLogo = () => {
+        handleInput('company_logo', null)
+        setCompanyLogo(null)
+    }
+
+    const clearCompanyStamp = () => {
+        handleInput('company_stamp', null)
+        setCompanyStamp(null)
+    }
+
     return (
         <div className="tw-text-gray-700 tw-text-sm tw-absolute tw-top-0 tw-w-full tw-flex tw-justify-center tw-pt-6 tw-pb-20">
             <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-py-2 tw-px-4 tw-w-full tw-overflow-x-auto tw-overflow-y-hidden" style={{ maxWidth: 1040 }}>
                 <div className="tw-flex tw-justify-between tw-mt-2 tw-mb-8">
-                    <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-3 tw-pr-5 tw-text-sm tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleNavLetterIO}>
+                    <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-font-light tw-py-1 tw-pl-3 tw-pr-5 tw-text-sm tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleNavLetterIO}>
                         <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform-gpu tw-rotate-90 tw-mr-1" />
                         Буцах
                     </button>
 
-                    <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-pl-3 tw-pr-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={() => setPreviewModal(true)}>
+                    <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-font-light tw-py-1 tw-pl-3 tw-pr-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={() => setPreviewModal(true)}>
                         <SearchSVG className="tw-w-4 tw-h-4" />
                         <span className="tw-text-sm tw-ml-2">Урьдчилж харах</span>
                     </button>
@@ -258,20 +321,19 @@ export default function LetterOfInterest() {
                 <div className="letter-container" style={{ border: '1px solid rgba(0,0,0,0.3)', padding: '12px', boxSizing: 'content-box' }}>
                     <div className="tw-grid tw-grid-cols-2 tw-grid-rows-1 tw-mt-20 tw-mx-24 tw-text-13px">
                         <div className="tw-relative tw-grid tw-grid-cols-1 tw-mr-8 tw-text-blue-600">
-                            {form.company_logo ?
+                            {(companyLogo !== null && companyLogo !== 'loading') ?
                                 <div className="tw-w-w-full tw-h-36 tw-justify-self-center">
-                                    <img src={form.company_logo} alt="Байгууллагын лого" className="tw-w-full tw-h-full tw-object-scale-down tw-shadow-md tw-cursor-pointer" onClick={() => inputRefLogo.current.click()} />
+                                    <img src={companyLogo} alt="Байгууллагын лого" className="tw-w-full tw-h-full tw-object-scale-down tw-shadow-md tw-cursor-pointer" onClick={() => handleFileClick('company_logo')} />
                                     <button className="tw-absolute tw-top-0 tw-right-0 tw-text-red-500 active:tw-text-red-600 focus:tw-outline-none">
-                                        <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" onClick={() => handleInput('company_logo', null)} />
+                                        <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" onClick={clearCompanyLogo} />
                                     </button>
                                 </div>
                                 :
-                                <button className={`tw-w-full tw-h-36 tw-justify-self-center tw-shadow-inner tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-blue-500 tw-text-sm focus:tw-outline-none active:tw-text-blue-400 tw-transition-colors ${validate && checkInvalid(form.company_logo) && 'tw-border tw-border-red-500 tw-border-dashed'}`} onClick={() => inputRefLogo.current.click()} title="Компаний лого оруулах">
+                                <button className={`tw-w-full tw-h-36 tw-justify-self-center tw-shadow-inner tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-blue-500 tw-text-sm focus:tw-outline-none active:tw-text-blue-400 tw-transition-colors ${validate && checkInvalid(form.company_logo) && 'tw-border tw-border-red-500 tw-border-dashed'} ${companyLogo === 'loading' && 'tw-animate-pulse'}`} onClick={() => handleFileClick('company_logo')} title="Компаний лого оруулах">
                                     <UploadSVG className="tw-w-8 tw-h-8" />
                                     <span className="tw-font-medium tw-mt-1">Компаний лого</span>
                                 </button>
                             }
-                            <input type="file" accept="image/*" className="tw-invisible tw-absolute tw-h-0" onChange={e => handleInputPicture(e, 'company_logo')} ref={inputRefLogo} />
 
                             <input className={`tw-mt-1.5 tw-px-1 tw-text-center tw-text-sm tw-shadow-inner tw-rounded focus:tw-outline-none tw-leading-tight ${validate && checkInvalid(form.company_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_name || ''} onChange={e => handleInput('company_name', e.target.value)} placeholder="ААН албан ёсны нэр" title="ААН албан ёсны нэр" />
 
@@ -341,15 +403,15 @@ export default function LetterOfInterest() {
                         <div className="tw-absolute tw-top-6 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2 tw-w-full tw-flex tw-justify-center tw-items-center tw-z-10">
                             <input className={`tw-w-48 tw-text-center tw-font-medium tw-mr-2 tw-py-1 tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.director_position) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.director_position || ''} onChange={e => handleInput('director_position', e.target.value)} placeholder="Албан тушаал" title="Албан тушаал" />
 
-                            {form.company_stamp ?
+                            {(companyStamp !== null && companyStamp !== 'loading') ?
                                 <div className="tw-w-44 tw-h-44 tw-mx-2 tw-relative">
-                                    <img src={form.company_stamp} alt="Байгууллагын тамга тэмдэг" className="tw-w-full tw-h-full tw-object-scale-down tw-shadow-md tw-cursor-pointer" onClick={() => inputRefStamp.current.click()} />
+                                    <img src={companyStamp} alt="Байгууллагын тамга тэмдэг" className="tw-w-full tw-h-full tw-object-scale-down tw-shadow-md tw-cursor-pointer" onClick={() => handleFileClick('company_stamp')} />
                                     <button className="tw-absolute tw-top-0 tw-right-0 tw-text-red-500 active:tw-text-red-600 focus:tw-outline-none">
-                                        <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" onClick={() => handleInput('company_stamp', null)} />
+                                        <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" onClick={clearCompanyStamp} />
                                     </button>
                                 </div>
                                 :
-                                <button className={`tw-w-44 tw-h-44 tw-mx-2 tw-shadow-inner tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-blue-500 focus:tw-outline-none active:tw-text-blue-400 tw-transition-colors ${validate && checkInvalid(form.company_stamp) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} onClick={() => inputRefStamp.current.click()} title="Байгууллагын тамга тэмдэг оруулах">
+                                <button className={`tw-w-44 tw-h-44 tw-mx-2 tw-shadow-inner tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-blue-500 focus:tw-outline-none active:tw-text-blue-400 tw-transition-colors ${validate && checkInvalid(form.company_stamp) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors ${companyStamp === 'loading' && 'tw-animate-pulse'}`} onClick={() => handleFileClick('company_stamp')} title="Байгууллагын тамга тэмдэг оруулах">
                                     <UploadSVG className="tw-w-8 tw-h-8" />
                                     <span className="tw-font-medium tw-mt-1 tw-text-sm">Тамга</span>
                                 </button>
@@ -369,9 +431,9 @@ export default function LetterOfInterest() {
                         {form.director_signature &&
                             <img src={form.director_signature} className="tw-absolute tw-top-20 tw-z-10 tw-pointer-events-auto" style={{ width: 182, height: 63, left: 280 }} alt="" />
                         }
-
-                        <input type="file" accept="image/*" className="tw-invisible tw-absolute tw-h-0" onChange={e => handleInputPicture(e, 'company_stamp')} ref={inputRefStamp} />
                     </div>
+
+                    <input type="file" accept="image/*" className="tw-invisible tw-absolute tw-h-0" onChange={handleFileInput} ref={fileInputRef} />
                 </div>
 
                 <Transition
@@ -389,10 +451,10 @@ export default function LetterOfInterest() {
                                 <SignaturePad canvasProps={{ className: 'tw-rounded tw-border tw-border-gray-400', width: 520, height: 180 }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
 
                                 <div className="tw-flex tw-justify-center tw-mt-4">
-                                    <button className="tw-rounded tw-text-white tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-w-32 tw-py-1 focus:tw-outline-none" onClick={handleClearSignature}>
+                                    <button className="tw-rounded tw-text-white tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-w-32 tw-py-1 focus:tw-outline-none tw-font-light" onClick={handleClearSignature}>
                                         Арилгах
                                     </button>
-                                    <button className="tw-rounded tw-text-white tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-w-32 tw-py-1 tw-ml-3 focus:tw-outline-none" onClick={() => setSignatureModalOpen(false)}>
+                                    <button className="tw-rounded tw-text-white tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-w-32 tw-py-1 tw-ml-3 focus:tw-outline-none tw-font-light" onClick={() => setSignatureModalOpen(false)}>
                                         Болсон
                                     </button>
                                 </div>
@@ -402,7 +464,7 @@ export default function LetterOfInterest() {
                 </Transition>
 
                 <div className="tw-flex tw-justify-center">
-                    <button className="tw-mt-10 tw-mb-8 tw-bg-blue-800 tw-text-white tw-text-15px tw-rounded tw-py-2 tw-px-8 tw-font-medium hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSubmit}>
+                    <button className="tw-mt-10 tw-mb-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSubmit}>
                         Хадгалах
                     </button>
                 </div>

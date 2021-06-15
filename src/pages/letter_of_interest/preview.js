@@ -54,9 +54,34 @@ export default function LetterPreview(props) {
         }
     }, [])
 
+    const [companyLogo, setCompanyLogo] = useState(null)
+    const [companyStamp, setCompanyStamp] = useState(null)
+
+    useEffect(() => {
+        const id = form.company_logo?.id
+        id && axios.get(`attach-files/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+            responseType: 'blob',
+        }).then(res => {
+            const url = window.URL.createObjectURL(res.data)
+            setCompanyLogo(url)
+        })
+    }, [form.company_logo?.id])
+
+    useEffect(() => {
+        const id = form.company_stamp?.id
+        id && axios.get(`attach-files/${id}`, {
+            headers: { Authorization: getLoggedUserToken() },
+            responseType: 'blob',
+        }).then(res => {
+            const url = window.URL.createObjectURL(res.data)
+            setCompanyStamp(url)
+        })
+    }, [form.company_stamp?.id])
+
     return (
         <div className="tw-relative tw-text-gray-700 tw-text-sm tw-mb-12">
-            <button className="tw-mb-6 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-text-15px" onClick={handlePrint}>
+            <button className="tw-mb-6 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-text-15px tw-font-light" onClick={handlePrint}>
                 <span className="tw-text-sm">Хэвлэх болон хадгалах</span>
                 <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
             </button>
@@ -64,9 +89,9 @@ export default function LetterPreview(props) {
             <div className="letter-container" ref={componentRef}>
                 <div className="tw-grid tw-grid-cols-2 tw-grid-rows-1 tw-mt-20 tw-mx-24 tw-text-13px">
                     <div className="tw-relative tw-grid tw-grid-cols-1 tw-mr-8 tw-text-blue-600">
-                        {form.company_logo ?
+                        {companyLogo ?
                             <div className="tw-w-w-full tw-h-36 tw-justify-self-center">
-                                <img src={form.company_logo} alt="Байгууллагын лого" className="tw-w-full tw-h-full tw-object-scale-down" />
+                                <img src={companyLogo} alt="Байгууллагын лого" className="tw-w-full tw-h-full tw-object-scale-down" />
                             </div>
                             :
                             <div className="tw-w-full tw-h-36 tw-bg-transparent" />
@@ -93,7 +118,7 @@ export default function LetterPreview(props) {
                             <div className="tw-flex tw-items-center tw-leading-tight">
                                 <span className="tw-mr-1">
                                     Факс:
-                                    </span>
+                                </span>
                                 <span className="tw-px-0.5" type="text" style={{ minWidth: 96 }}>
                                     {form.company_fax}
                                 </span>
@@ -112,7 +137,7 @@ export default function LetterPreview(props) {
                         <div className="tw-mt-1 tw-flex tw-justify-center tw-items-center tw-leading-tight">
                             <span className="tw-mr-1">
                                 Улсын бүртгэлийн дугаар:
-                                </span>
+                            </span>
                             <span className="tw-px-0.5" style={{ minWidth: 96 }}>
                                 {form.company_register}
                             </span>
@@ -164,9 +189,9 @@ export default function LetterPreview(props) {
                         </span>
                     </div>
 
-                    {form.company_stamp ?
+                    {companyStamp ?
                         <div className="tw-w-44 tw-h-44 tw-absolute tw--top-4 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2">
-                            <img src={form.company_stamp} alt="Байгууллагын тамга тэмдэг" className="tw-w-full tw-h-full tw-object-scale-down" />
+                            <img src={companyStamp} alt="Байгууллагын тамга тэмдэг" className="tw-w-full tw-h-full tw-object-scale-down" />
                         </div>
                         :
                         <div className="tw-w-44 tw-h-44 tw-absolute tw--top-4 tw-left-1/2 tw-transform-gpu tw--translate-x-1/2" />

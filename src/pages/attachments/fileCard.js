@@ -32,22 +32,22 @@ export default function FileCard(props) {
                     </defs>
                 </svg>
 
-                <span className="tw-absolute tw-top-1/2 tw-transform tw--translate-y-1/2 tw-left-1/2 tw--translate-x-1/2 tw-text-sm tw-font-medium tw-w-14 tw-text-center tw-truncate tw-uppercase">
+                <span className="tw-absolute tw-top-1/2 tw-transform tw--translate-y-1/2 tw-left-1/2 tw--translate-x-1/2 tw-text-13px tw-w-14 tw-text-center tw-truncate tw-uppercase">
                     {props.name?.split('.').pop()}
                 </span>
-                <span className="tw-absolute tw-bottom-1 tw-left-1/2 tw-transform tw--translate-x-1/2 tw-whitespace-nowrap tw-text-xs tw-font-medium">
+                <span className="tw-absolute tw-bottom-1 tw-left-1/2 tw-transform tw--translate-x-1/2 tw-whitespace-nowrap tw-text-xs">
                     ({bytesFormat(props.size)})
                 </span>
             </div>
 
-            <div className="tw-px-2 tw-py-1 tw-pr-0 tw-text-xs tw-font-medium tw-w-28 tw-h-20 tw-break-words tw-overflow-ellipsis tw-overflow-hidden tw-leading-tight">
+            <div className="tw-px-2 tw-py-1 tw-pr-0 tw-text-xs tw-w-28 tw-h-20 tw-break-words tw-overflow-ellipsis tw-overflow-hidden tw-leading-tight">
                 {props.name}
             </div>
 
             <div className={`tw-h-20 tw-flex tw-flex-col tw-justify-between tw-items-center ${props.uploading && 'tw-invisible'}`}>
-                <ButtonTooltip tooltip="Устгах" beforeSVG={<CloseSVG className="tw-w-5 tw-h-5" />} onClick={props.removeFile} classAppend={`tw-m-0.5 ${!props.removeFile && 'tw-invisible'}`} classButton="tw-text-red-400 active:tw-text-red-500" />
+                <ButtonTooltip tooltip="Устгах" beforeSVG={<CloseSVG className="tw-w-5 tw-h-5" />} onClick={props.removeFile} classAppend={`tw-m-0.5 ${!props.removeFile && 'tw-invisible'}`} classButton="tw-text-red-500 active:tw-text-red-600" />
 
-                <ButtonTooltip tooltip="Нээх" beforeSVG={<DownloadSVG className="tw-w-5 tw-h-5" />} onClick={props.downloadFile} classAppend={`tw-m-0.5 tw-mb-1 ${!props.downloadFile && 'tw-invisible'}`} classButton="tw-text-blue-400 active:tw-text-blue-500" />
+                <ButtonTooltip tooltip="Нээх" beforeSVG={<DownloadSVG className="tw-w-5 tw-h-5" />} onClick={props.downloadFile} classAppend={`tw-m-0.5 tw-mb-1 ${!props.downloadFile && 'tw-invisible'}`} classButton="tw-text-blue-500 active:tw-text-blue-600" />
             </div>
         </div>
     )
