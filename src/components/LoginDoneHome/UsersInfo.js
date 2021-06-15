@@ -25,7 +25,6 @@ function UsersInfo() {
     
     useEffect(async()=>{
        await axios.get(`users/${ctx.userInfo.userId}`).then(res=>{
-           console.log(`res`, res);
             if(Object.keys(res.data.data).length > 0){
                 setUserData(res.data.data);
                 if(res.data.data.signature){
@@ -73,11 +72,13 @@ function UsersInfo() {
             {emailShow.email || emailShow.companyname?<div ref={ref} onClick={clickHandleEdit} className="ghost"></div>: null} 
             <div className="ContPar">
                 <div className="TitleBig">Хэрэглэгчийн мэдээлэл</div>
-                <div className="userInfoCont">
+                {/* <div className="userInfoCont">
                    <div className="smTitle">Овог нэр</div>
                    <div className="value">{`${userData?.firstname} ${userData?.lastname}`}</div>
-                   {/* <InputStyle className="smTitle"> <input  placeholder="Овог..." /> <div className="line"/> </InputStyle> */}
-                </div>
+                </div> */}
+
+                {/* <InputStyle className="smTitle"> <input  placeholder="Овог..." /> <div className="line"/> </InputStyle> */}
+
 
                 <div onClick={()=>clickHandleEdit("email")} className={emailShow.email? `userInfoCont A1`: `userInfoCont`}>
                    <div className="smTitle">Цахим хаяг</div>

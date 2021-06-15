@@ -83,7 +83,9 @@ function Menu() {
                         </div>
                         <div className="userMenuPar">
                           {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
-                          <div className="Notification"><div className="notf" to="#" content="2" ><IoNotificationsOutline /></div> </div>
+                          <div className="Notification"><div className="notf" to="#" content="0" >
+                            <IoNotificationsOutline />
+                            </div> </div>
                           <div className="UserNameMenu" >
                             <div style={proHover?{backgroundColor:`rgba(255,255,255,0.4)`}:{backgroundColor:`rgba(255,255,255,0.2)`}} onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="par"><IoCaretDownOutline /></div> 
 
@@ -212,7 +214,7 @@ const Componentss = styled.div`
                 display:flex;
                 flex-direction:row;
                 align-items:center;
-                &::before{
+                /* &::before{
                   font-size:11px;
                   font-weight:600;
                   display:flex;
@@ -227,7 +229,7 @@ const Componentss = styled.div`
                   color:white;
                   border-radius:50%;
                   background-color:#ff0000;
-                }
+                } */
                 svg{
                   margin-left:8px;
                   font-size:24px;

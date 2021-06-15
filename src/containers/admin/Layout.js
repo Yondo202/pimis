@@ -32,13 +32,9 @@ import CurrencyRateHandle from 'components/admin/contents/currency_rate/currency
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import { UrgudulPreviewForAdmin } from 'pages/urgudul/preview/previewPages'
 import Holidays from "components/holidays/Holidays"
-<<<<<<< HEAD
-import Financing from "components/admin/contents/financing/MainPage"
-=======
 import TrainingNavigatorAdmin from 'pages/training/training_admin/TrainingNavigator';
 import TrainingRequestsList from 'pages/training/training_admin/requestsList';
 import FeedbackQuestionnaireHandle from 'components/admin/contents/feedback_questionnaire/feedbackQuestionnaireHandle';
->>>>>>> e922941075de5f03b45f1661f79e4698f1cbc8a4
 
 
 function Layout({ setLocale }) {
@@ -75,13 +71,7 @@ function Layout({ setLocale }) {
               <Route path="/projects" component={ProjectHandle} />
               <Route path="/report/" component={ReportLayout} />
               <Route path="/holidays" component={Holidays} />
-<<<<<<< HEAD
-              <Route path="/financing" component={Financing} />
-
-              <Route path="/urgudul/:page">
-=======
               {/* <Route path="/urgudul/:page">
->>>>>>> e922941075de5f03b45f1661f79e4698f1cbc8a4
                 <UrgudulNavigator preloaded={true} />
               </Route> */}
               <Route path="/meetings" component={EvaluatorsMeetingsNavigator} />
