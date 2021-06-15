@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components'
 export const Color = "#036";
 export const ColorRgb = "0, 51, 102";
 export const textColor = "0, 18, 41";
+export const textColorHex = "#001229";
 export const fontSize = '13px'
 export const fontSize2 = '15px'
 export const fontSizeMobile = '13px'

@@ -31,6 +31,13 @@ function Signup() {
   const [visible2, setVisible2] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [color1, setColor1] = useState("rgba(0,0,0,0.7)");
+  const [reg, setReg] = useState('');
+
+  const registerHandle = (e) =>{
+    if(e.target.value.length < 8){
+      setReg(e.target.value);
+    }
+  }
 
   const [password, setPassword] = useState("");
   const [passwordValidity, setPasswordValidity] = useState({
@@ -79,6 +86,8 @@ function Signup() {
 
       if (keys.length < 6) {
         setPassText("Гүйцэд бөгөлнө үү"); setScale("1"); setTimeout(() => { setScale("0"); setPassText(null);  }, 3000);
+      }else if(reg !== 7){
+        setPassText("Регистрийн дугаараа дахин шалгана уу"); setScale("1"); setTimeout(() => { setScale("0"); setPassText(null);  }, 3000);
       }else if (selectSectors === "- Сонго -") {
         setPassText("Салбараа сонгоно уу"); setScale("1"); setShowSectors(true); setTimeout(() => { setScale("0"); setPassText(null); }, 3000);
         // if(selectSectors!=="- Сонго -"){
@@ -215,7 +224,7 @@ function Signup() {
                   <div className="labels"><span>Регистрийн дугаар :</span> </div>
                   <div className="name">
                     <InputStyle className="newInp">
-                      <input type="number" className="userInp  form__field" placeholder="123..." name="companyregister" required />
+                      <input type="number" value={reg} onChange={registerHandle} className="userInp form__field" placeholder="123..." name="companyregister" required />
                       <div className="line"></div>
                     </InputStyle>
                   </div>
