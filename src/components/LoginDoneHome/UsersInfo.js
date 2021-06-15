@@ -13,7 +13,6 @@ import SEctor from 'containers/users/Sector'
 function UsersInfo() {
     const ref = useRef(null);
     const ctx = useContext(UserContext);
-<<<<<<< HEAD
     const [ userData, setUserData ] = useState(null);
     const [ imgData, setImgData ] = useState(null);
     const [ spnBtn, setSpnBtn ] = useState(false);
@@ -27,22 +26,6 @@ function UsersInfo() {
     useEffect(async()=>{
        await axios.get(`users/${ctx.userInfo.userId}`).then(res=>{
             if(Object.keys(res.data.data).length > 0){
-=======
-    const [userData, setUserData] = useState(null);
-    const [imgData, setImgData] = useState(null);
-    const [spnBtn, setSpnBtn] = useState(false);
-    const [opacity2, setOpacity2] = useState("0");
-    const [emailShow, setEmailShow] = useState({ email: false, companyname: false });
-    const [sectorData, setSectorData] = useState([]);
-    const [showSectors, setShowSectors] = useState(false);
-    const [selectSectors, setSelectSectors] = useState("- Сонго -");
-    const [sectorId, setSectorId] = useState(null);
-
-    useEffect(() => {
-        axios.get(`users/${ctx.userInfo.userId}`).then(res => {
-            console.log(`res`, res);
-            if (Object.keys(res.data.data).length > 0) {
->>>>>>> 1eee0aed0aa4f77287d4d0eaca11f4d734f6c778
                 setUserData(res.data.data);
                 if (res.data.data.signature) {
                     setImgData(res.data.data.signature);

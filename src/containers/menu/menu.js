@@ -52,45 +52,6 @@ function Menu() {
 
   return (
     <Componentss>
-<<<<<<< HEAD
-      <div style={{height:headerHeight,display:diplayFlex}} className="MainMenus">
-            <div style={currPath === "/"? {maxWidth:`1160px`}:{maxWidth:1000}} className="container">
-               <input type="checkbox" id="check" name="check" />
-                <span className="menuPar">
-                      <div className="backgroundGhost"></div>
-                      <label htmlFor="check" className="checkBtn">
-                          <HamburgerMenu
-                              isOpen={open}
-                              menuClicked={handleClick}
-                              width={32}
-                              height={15}
-                              strokeWidth={2}
-                              rotate={0}
-                              // color={this.state.color}
-                              color="black"
-                              borderRadius={0}
-                              animationDuration={0.5}
-                          />
-                      </label>
-                        <div className="menus">
-                              <div className="items">
-                                  <Link to="/">Нүүр хуудас</Link>
-                                  {/* <div style={{transform:`${activeMenu.Home}`}} className={`line ${activeMenu.Home}`}></div> */}
-                              </div>
-                            
-                              {/* <div className="items">
-                                <Link to="/comp-check">Шалгах</Link>
-                                <div  className={`line ${activeMenu.Check}`}></div>
-                              </div> */}
-                        </div>
-                        <div className="userMenuPar">
-                          {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
-                          <div className="Notification"><div className="notf" to="#" content="0" >
-                            <IoNotificationsOutline />
-                            </div> </div>
-                          <div className="UserNameMenu" >
-                            <div style={proHover?{backgroundColor:`rgba(255,255,255,0.4)`}:{backgroundColor:`rgba(255,255,255,0.2)`}} onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="par"><IoCaretDownOutline /></div> 
-=======
       <div style={{ height: headerHeight, display: diplayFlex }} className="MainMenus">
         <div style={currPath === "/" ? { maxWidth: `1160px` } : { maxWidth: 1000 }} className="container">
           <input type="checkbox" id="check" name="check" />
@@ -119,7 +80,6 @@ function Menu() {
                 <Link to="/trainings">Сургалтын хөтөлбөр</Link>
               </div>
             </div>
->>>>>>> 1eee0aed0aa4f77287d4d0eaca11f4d734f6c778
 
             <div className="userMenuPar">
               {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
