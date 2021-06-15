@@ -28,10 +28,10 @@ const Aside = ({ handleToggleSidebar, data, setSelectSectors, setShowSectors,set
           })} */}
           {datas?.map((el,i)=>{
             return(
-              <SubMenu title={el.bdescription_mon} icon={<BsArrowsAngleExpand />}>
+              <SubMenu key={i} title={el.bdescription_mon} icon={<BsArrowsAngleExpand />}>
                { el.child.map((elem,ind)=>{
                  return(
-                  <MenuItem onClick={()=>clickHandle(elem.bdescription_mon, elem.id )} styled={{paddingLeft:30}}>{elem.bdescription_mon}</MenuItem>
+                  <MenuItem key={ind} onClick={()=>clickHandle(elem.bdescription_mon, elem.id )} styled={{paddingLeft:30}}>{elem.bdescription_mon}</MenuItem>
                  )
                })}
               </SubMenu>

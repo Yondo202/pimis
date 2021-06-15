@@ -15,12 +15,9 @@ function SearchSelect(props) {
             props.api &&
                 axios.get(props.api)
                     .then(res => {
-                        console.log(res.data)
                         const data = props.keys.reduce((a, v) => a[v], res.data)
                         setFetch(data)
                         props.value && setSearch(data.filter(obj => obj.id === props.value)[0]?.[props.displayName] || '')
-                    }).catch(err => {
-                        console.log(err.response?.data)
                     })
         }
     }, [props.data])
@@ -88,15 +85,14 @@ function SearchSelect(props) {
             </div>
 
             <div className={`tw-text-sm tw-rounded-md tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto ${focused ? 'tw-visible tw-opacity-100 tw-h-48 tw-mt-2' : 'tw-invisible tw-opacity-0 tw-h-0'} tw-transition-all tw-duration-300`}>
-                {
-                    fetch.filter(obj => filter(obj, search)).length ?
-                        fetch.filter(obj => filter(obj, search)).sort(compare).map((item, i) =>
-                            <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelect(item.id, item[props.displayName])} key={item.id}>
-                                <span className="tw-font-medium tw-pr-2">{i + 1}.</span>
-                                {item[props.displayName]}
-                            </div>)
-                        :
-                        <p className="tw-p-1 tw-text-xs tw-text-center tw-mt-4 tw-italic tw-opacity-80">Хайлт олдсонгүй.</p>
+                {fetch.filter(obj => filter(obj, search)).length ?
+                    fetch.filter(obj => filter(obj, search)).sort(compare).map((item, i) =>
+                        <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelect(item.id, item[props.displayName])} key={item.id}>
+                            <span className="tw-font-medium tw-pr-2">{i + 1}.</span>
+                            {item[props.displayName]}
+                        </div>)
+                    :
+                    <p className="tw-p-1 tw-text-xs tw-text-center tw-mt-4 tw-italic tw-opacity-80">Хайлт олдсонгүй.</p>
                 }
             </div>
         </div>

@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { useParams,useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { animateScroll as scroll } from "react-scroll";
-import {IoMdCheckmarkCircle  } from 'react-icons/io';
-import {RiArrowGoBackFill  } from 'react-icons/ri';
+import { IoMdCheckmarkCircle } from 'react-icons/io';
+import { RiArrowGoBackFill } from 'react-icons/ri';
 import { CgDanger } from 'react-icons/cg';
-import {VscOpenPreview} from 'react-icons/vsc'
+import { VscOpenPreview } from 'react-icons/vsc'
 import TableOne from '../../components/requests/oldRequest/tableOne';
 import TableTwo from '../../components/requests/oldRequest/tableTwo';
 import TableThree from "../../components/requests/oldRequest/tableThree";
@@ -14,9 +14,9 @@ import TableSix from '../../components/requests/oldRequest/tableSix';
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import HelpContext from '../../context/HelperContext'
-import {Modal} from '../../components/requests/MainModal/Modal'
+import { Modal } from '../../components/requests/MainModal/Modal'
 import axios from '../../axiosbase'
-import {ColorRgb, textColor} from '../../components/theme'
+import { ColorRgb, textColor } from '../../components/theme'
 import AccessToken from '../../context/accessToken'
 import DocumentTitle from 'containers/document/DocumentTitle'
 
@@ -24,96 +24,103 @@ function MainRequest() {
     DocumentTitle("Байгаль орчны үнэлгээний асуумж");
     const history = useHistory();
     const param = useParams().url;
-    const [ showModal, setShowModal ] = useState(false);
-    const ModalOpen = () => {  setShowModal(prev => !prev); }
-    const helpCtx = useContext(HelpContext);
-    const [ initialData, setInitialData ] = useState(null);
-    const [ ScrollClass, setScrollClass ] = useState("");
-    const [ tokens, setTokens ] = useState("");
-    const [ userID, setUserId ] = useState();
-    const [ na3, setNa3 ] = useState(0);
+    const [showModal, setShowModal] = useState(false);
+    const ModalOpen = () => { setShowModal(prev => !prev); }
+    const helpCtx = useContext(HelpContext) ?? {};
+    const [initialData, setInitialData] = useState(null);
+    const [ScrollClass, setScrollClass] = useState("");
+    const [tokens, setTokens] = useState("");
+    const [userID, setUserId] = useState();
+    const [na3, setNa3] = useState(0);
 
-    useEffect( async()=>{
-        if(param==="user"){ 
+    const effectDep = param === "user" ? helpCtx.reqMount : 0
+
+    useEffect(() => {
+        if (param === "user") {
             // helpCtx.StyleComp("0%", "100%", "200%", "300%", "400%","500%"); scroll.scrollTo(0);
-            let storageToken = AccessToken(); setTokens(storageToken); 
+            let storageToken = AccessToken(); setTokens(storageToken);
             let LocalId = localStorage.getItem("userId");
             window.addEventListener("scroll", handleScroll);
-            let resData = await axios.get(`pps-request?userId=${LocalId}`, {headers: {Authorization:AccessToken()}});
-            if(resData.data.data.id){ setUserId(resData.data.data.id); setInitialData(resData.data.data);
-                helpCtx.TableIdControl(resData.data.data.id);
-                setNa3(resData.data.data.na3);
-            }
-        }else{
+            void async function fetch() {
+                let resData = await axios.get(`pps-request?userId=${LocalId}`, { headers: { Authorization: AccessToken() } });
+                if (resData.data.data.id) {
+                    setUserId(resData.data.data.id); setInitialData(resData.data.data);
+                    helpCtx.TableIdControl(resData.data.data.id);
+                    setNa3(resData.data.data.na3);
+                }
+            }()
+        } else {
             let storageToken = AccessToken(); setTokens(storageToken);
             window.addEventListener("scroll", handleScroll);
-            let resData = await axios.get(`pps-request?userId=${param}`, {headers: {Authorization:AccessToken()}});
-            if(resData.data.data.id){ setNa3(resData.data.data.na3); setInitialData(resData.data.data); ModalOpen(true); }
+            void async function fetch() {
+                let resData = await axios.get(`pps-request?userId=${param}`, { headers: { Authorization: AccessToken() } });
+                if (resData.data.data.id) { setNa3(resData.data.data.na3); setInitialData(resData.data.data); ModalOpen(true); }
+            }()
         }
-    },[param === "user"?helpCtx.reqMount:0]);
+    }, [effectDep]);
 
-    const handleScroll = () => {  if(window.pageYOffset > 50){setScrollClass("modalBtn2");  }else{  setScrollClass(""); } }
-    const backHanlde = () =>{ history.goBack(); }
+    const handleScroll = () => { if (window.pageYOffset > 50) { setScrollClass("modalBtn2"); } else { setScrollClass(""); } }
+    const backHanlde = () => { history.goBack(); }
 
-    const func = param === "user"&&helpCtx.StyleComp;
-    const One = param === "user"&&helpCtx.GlobalStyle.tableOne;
-    const Two = param === "user"&&helpCtx.GlobalStyle.tableTwo;
-    const Three = param === "user"&&helpCtx.GlobalStyle.tableThree;
-    const Four = param === "user"&&helpCtx.GlobalStyle.tableFour;
-    const Five = param === "user"&&helpCtx.GlobalStyle.tableFive;
-    const Six = param === "user"&&helpCtx.GlobalStyle.tableSix;
-    const errMsg = () =>{ console.log("+*+*+* err Msg");};
+    const func = param === "user" && helpCtx.StyleComp;
+    const One = param === "user" && helpCtx.GlobalStyle?.tableOne;
+    const Two = param === "user" && helpCtx.GlobalStyle?.tableTwo;
+    const Three = param === "user" && helpCtx.GlobalStyle?.tableThree;
+    const Four = param === "user" && helpCtx.GlobalStyle?.tableFour;
+    const Five = param === "user" && helpCtx.GlobalStyle?.tableFive;
+    const Six = param === "user" && helpCtx.GlobalStyle?.tableSix;
+    const errMsg = () => { console.log("+*+*+* err Msg"); };
 
     return (
         <>
-            {param !== "user"? (initialData?<Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} />:<NullParent className="BtnPar"><button onClick={backHanlde} ><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> )
-            :( <>
+            {param !== "user" ? (initialData ? <Modal initialData={initialData} showModal={showModal} setShowModal={setShowModal} param={param} /> : <NullParent className="BtnPar"><button onClick={backHanlde} ><RiArrowGoBackFill /> Буцах</button> <h2 style={{ textAlign: "center" }}>Мэдээлэл оруулаагүй байна</h2> </NullParent>)
+                : (<>
                     <>
-                    <PreviewBtn >
+                        <PreviewBtn >
                             <div className={`modalBtn ${ScrollClass}`}>
                                 <button className="preview" onClick={ModalOpen} ><VscOpenPreview />Бүгдийг харах</button>
                                 <div className="countPar container">
                                     <div className="itemsPar">
-                                        <div className={`${initialData&&initialData.name1!==null? One==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : One==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name1!==null?(()=>(func("0%", "100%", "200%","300%","400%","500%"),scroll.scrollTo(0) )): (()=>errMsg())} ><span className="items">1</span></div><div className={`${One==="0%" || Two==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${initialData&&initialData.name2!==null? Two==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Two==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name2!==null?(()=>(func("-100%", "0%", "100%","200%","300%","400%"),scroll.scrollTo(0),helpCtx.reqMountFunc(1) )): (()=>errMsg())}><span className="items">2</span></div><div className={`${Three==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${initialData&&initialData.name3!==null? Three==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Three==="0%"? `borderPar2`: `borderPar` }`} onClick={initialData&&initialData.name3!==null?(()=>(func("-200%", "-100%", "0%","100%","200%","300%"),scroll.scrollTo(0),helpCtx.reqMountFunc(1) )): (()=>errMsg())}><span className="items">3</span></div><div className={`${Four==="0%"? `line2`: `line`}`}></div>
-                                        <div className={`${initialData&&initialData.name4!==null? Four==="0%"? `borderPar2 borderGreen`: `borderPar borderGreen` : Four==="0%"? `borderPar2`: `borderPar` }`}  onClick={initialData&&initialData.name4!==null?(()=>(func("-300%", "-200%", "-100%","0%","100%","200%"),scroll.scrollTo(0) )): (()=>errMsg())}><span className="items">4</span></div> 
+                                        <div className={`${initialData && initialData.name1 !== null ? One === "0%" ? `borderPar2 borderGreen` : `borderPar borderGreen` : One === "0%" ? `borderPar2` : `borderPar`}`} onClick={initialData && initialData.name1 !== null ? (() => (func("0%", "100%", "200%", "300%", "400%", "500%"), scroll.scrollTo(0))) : (() => errMsg())} ><span className="items">1</span></div><div className={`${One === "0%" || Two === "0%" ? `line2` : `line`}`}></div>
+                                        <div className={`${initialData && initialData.name2 !== null ? Two === "0%" ? `borderPar2 borderGreen` : `borderPar borderGreen` : Two === "0%" ? `borderPar2` : `borderPar`}`} onClick={initialData && initialData.name2 !== null ? (() => (func("-100%", "0%", "100%", "200%", "300%", "400%"), scroll.scrollTo(0), helpCtx.reqMountFunc(1))) : (() => errMsg())}><span className="items">2</span></div><div className={`${Three === "0%" ? `line2` : `line`}`}></div>
+                                        <div className={`${initialData && initialData.name3 !== null ? Three === "0%" ? `borderPar2 borderGreen` : `borderPar borderGreen` : Three === "0%" ? `borderPar2` : `borderPar`}`} onClick={initialData && initialData.name3 !== null ? (() => (func("-200%", "-100%", "0%", "100%", "200%", "300%"), scroll.scrollTo(0), helpCtx.reqMountFunc(1))) : (() => errMsg())}><span className="items">3</span></div><div className={`${Four === "0%" ? `line2` : `line`}`}></div>
+                                        <div className={`${initialData && initialData.name4 !== null ? Four === "0%" ? `borderPar2 borderGreen` : `borderPar borderGreen` : Four === "0%" ? `borderPar2` : `borderPar`}`} onClick={initialData && initialData.name4 !== null ? (() => (func("-300%", "-200%", "-100%", "0%", "100%", "200%"), scroll.scrollTo(0))) : (() => errMsg())}><span className="items">4</span></div>
                                     </div>
                                 </div>
                             </div>
-                    </PreviewBtn>
+                        </PreviewBtn>
 
-                    <Modal initialData={initialData&&initialData} showModal={showModal} setShowModal={setShowModal} param={param} na3={na3} />
-                    <ParentComp style={{height:`${helpCtx.GlobalStyle.tableheight}vh`}} className="container">
-                        <div style={{left:`${One}`, opacity:`${One === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-                                <TableOne  initialData={initialData&&initialData.ppsRequest1Details} initialName={initialData&&initialData.name1} initialDate={initialData&&initialData.date1} id={userID} token={tokens} />
-                            </motion.div>
-                        </div>
-                        <div style={{left:`${Two}`, opacity:`${Two === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableTwo initialData={initialData&&initialData.ppsRequest2Details}  initialName={initialData&&initialData.name2}  initialDate={initialData&&initialData.date2} id={userID} token={tokens} />
-                        </div>
-                        <div style={{left:`${Three}`, opacity:`${Three === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableThree  initialData={initialData&&initialData.ppsRequest3Details}  initialName={initialData&&initialData.name3}  initialDate={initialData&&initialData.date3} id={userID} token={tokens} na3={na3} />
-                        </div>
-                        <div style={{left:`${Four}`, opacity:`${Four === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableFour initialData={initialData&&initialData.ppsRequest4Details}  initialName={initialData&&initialData.name4}  initialDate={initialData&&initialData.date4} id={userID} token={tokens} />
-                        </div>
-                        <div style={{left:`${Five}`, opacity:`${Five === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableFive initialData={initialData&&initialData.ppsRequest5Detail}  initialName={initialData&&initialData.name5}  initialDate={initialData&&initialData.date5} id={userID} token={tokens}  />
-                        </div>
-                        <div style={{left:`${Six}`, opacity:`${Six === "0%" ? `1` : `0`}`}} className="handleSlidePAr1">
-                            <TableSix initialData={initialData&&initialData.ppsRequest6Detail}  initialName={initialData&&initialData.name6}  initialDate={initialData&&initialData.date6} id={userID} token={tokens} />
-                        </div> 
-                    </ParentComp>
+                        <Modal initialData={initialData && initialData} showModal={showModal} setShowModal={setShowModal} param={param} na3={na3} />
+                        <ParentComp style={{ height: `${helpCtx.GlobalStyle.tableheight}vh` }} className="container">
+                            <div style={{ left: `${One}`, opacity: `${One === "0%" ? `1` : `0`}` }} className="handleSlidePAr1">
+                                <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
+                                    <TableOne initialData={initialData && initialData.ppsRequest1Details} initialName={initialData && initialData.name1} initialDate={initialData && initialData.date1} id={userID} token={tokens} />
+                                </motion.div>
+                            </div>
+                            <div style={{ left: `${Two}`, opacity: `${Two === "0%" ? `1` : `0`}` }} className="handleSlidePAr1">
+                                <TableTwo initialData={initialData && initialData.ppsRequest2Details} initialName={initialData && initialData.name2} initialDate={initialData && initialData.date2} id={userID} token={tokens} />
+                            </div>
+                            <div style={{ left: `${Three}`, opacity: `${Three === "0%" ? `1` : `0`}` }} className="handleSlidePAr1">
+                                <TableThree initialData={initialData && initialData.ppsRequest3Details} initialName={initialData && initialData.name3} initialDate={initialData && initialData.date3} id={userID} token={tokens} na3={na3} />
+                            </div>
+                            <div style={{ left: `${Four}`, opacity: `${Four === "0%" ? `1` : `0`}` }} className="handleSlidePAr1">
+                                <TableFour initialData={initialData && initialData.ppsRequest4Details} initialName={initialData && initialData.name4} initialDate={initialData && initialData.date4} id={userID} token={tokens} />
+                            </div>
+                            <div style={{ left: `${Five}`, opacity: `${Five === "0%" ? `1` : `0`}` }} className="handleSlidePAr1">
+                                <TableFive initialData={initialData && initialData.ppsRequest5Detail} initialName={initialData && initialData.name5} initialDate={initialData && initialData.date5} id={userID} token={tokens} />
+                            </div>
+                            <div style={{ left: `${Six}`, opacity: `${Six === "0%" ? `1` : `0`}` }} className="handleSlidePAr1">
+                                <TableSix initialData={initialData && initialData.ppsRequest6Detail} initialName={initialData && initialData.name6} initialDate={initialData && initialData.date6} id={userID} token={tokens} />
+                            </div>
+                        </ParentComp>
                     </>
 
-                <AlertStyle style={helpCtx.alert.cond === true ? {bottom:`100px`, opacity:`1`, borderLeft:`4px solid ${helpCtx.alert.color}`} : {bottom:`50px`, opacity:`0`}} >
-                    {helpCtx.alert.color=== "green"?<IoMdCheckmarkCircle style={{color:`${helpCtx.alert.color}`}} className="true" /> : <CgDanger style={{color:`${helpCtx.alert.color}`}} className="true" /> }
-                    <span>{helpCtx.alert.text}</span>
-                </AlertStyle>
-            </>
-            )}
+                    <AlertStyle style={helpCtx.alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${helpCtx.alert.color}` } : { bottom: `50px`, opacity: `0` }} >
+                        {helpCtx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${helpCtx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${helpCtx.alert.color}` }} className="true" />}
+                        <span>{helpCtx.alert.text}</span>
+                    </AlertStyle>
+                </>
+                )}
         </>
     )
 }
@@ -121,9 +128,10 @@ function MainRequest() {
 export default MainRequest
 
 let easing = [0, 0, 0.56, 0.95];
-const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
-    enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
-
+const textVariants2 = {
+    exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
+    enter: { y: 0, opacity: 1, transition: { delay: 0.2, duration: 0.6, ease: easing } }
+};
 
 const NotApprovedComp = styled.div`
     background-color:white;
@@ -142,7 +150,6 @@ const NotApprovedComp = styled.div`
     }
 `
 
-
 const NullParent = styled.div`
     dispaly:flex;
     flex-direction:row;
@@ -157,6 +164,7 @@ const NullParent = styled.div`
         }
     }
 `
+
 const PreviewBtn = styled.div`
     .modalBtn{
         // background-color:rgba(0,0,0,0.1);
@@ -300,9 +308,8 @@ const PreviewBtn = styled.div`
             }
         }
     }
-   
-    
 `
+
 const AlertStyle = styled.div`
     z-index:1010;  
     transition:all 0.5s ease;

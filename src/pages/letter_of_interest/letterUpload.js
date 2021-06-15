@@ -1,4 +1,4 @@
-import { useQuery } from 'components/utilities/useQueryLocation'
+import useQuery from 'components/utilities/useQueryLocation'
 import FileCard from 'pages/attachments/fileCard'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
@@ -14,6 +14,7 @@ import HelpPopup from 'components/help_popup/helpPopup'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import PenAltSVG from 'assets/svgComponents/penAltSVG'
 import LetterPreview from './preview'
+import { acceptDocTypes } from 'pages/attachments/page'
 
 
 export default function LetterUpload() {
@@ -29,20 +30,18 @@ export default function LetterUpload() {
             headers: { Authorization: getLoggedUserToken() },
             params: { userId: userId },
          }).then(res => {
-            console.log(res)
-            setForm(res.data.data)
-         }).catch(err => {
-            console.error(err.response)
+            if (res.data.data !== null && res.data.data !== undefined) {
+               setForm(res.data.data)
+            }
          })
       } else {
          axios.get('letter-of-interests', {
             headers: { Authorization: getLoggedUserToken() },
             params: { file: true },
          }).then(res => {
-            console.log(res)
-            setForm(res.data.data)
-         }).catch(err => {
-            console.error(err.response)
+            if (res.data.data !== null && res.data.data !== undefined) {
+               setForm(res.data.data)
+            }
          })
       }
    }, [])
@@ -69,10 +68,8 @@ export default function LetterUpload() {
             'Content-Type': 'multipart/form-data',
          }
       }).then(res => {
-         console.log(res)
          setForm({ attachedFile: res.data.data })
       }).catch(err => {
-         console.log(err.response)
          setForm({ attachedFile: null })
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
       })
@@ -87,11 +84,9 @@ export default function LetterUpload() {
          headers: { Authorization: getLoggedUserToken() },
          responseType: 'blob',
       }).then(res => {
-         console.log(res)
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         console.log(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
       })
    }
@@ -100,30 +95,26 @@ export default function LetterUpload() {
 
    const handleNavLetterOIWeb = () => history.push('/letter-of-interest/web')
 
-   const AnimatedFileCard = animated(FileCard)
-   const AnimatedFileCardAdd = animated(FileCardAdd)
+   // const AnimatedFileCard = animated(FileCard)
+   // const AnimatedFileCardAdd = animated(FileCardAdd)
 
    const handleSubmitFile = () => {
       if (form.id) {
          axios.put(`letter-of-interests/${form.id}`, form, {
             headers: { Authorization: getLoggedUserToken() },
          }).then(res => {
-            console.log(res)
             setForm(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файлаар хавсаргасныг хадгаллаа.' })
          }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
          })
       } else {
          axios.post(`letter-of-interests`, form, {
             headers: { Authorization: getLoggedUserToken() },
          }).then(res => {
-            console.log(res)
             setForm(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файлаар хавсаргасныг хадгаллаа.' })
          }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
          })
       }
@@ -159,12 +150,12 @@ export default function LetterUpload() {
                      leave={{ display: 'none' }}>
                      {item => item
                         ? anims =>
-                           <AnimatedFileCard name={item?.name} type={item?.mimetype} size={item?.size} classAppend="tw-my-1 tw-mx-1.5" uploading={item === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
+                           <FileCard name={item?.name} type={item?.mimetype} size={item?.size} classAppend="tw-my-1 tw-mx-1.5" uploading={item === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
                         : anims => (userId
                            ? <div className="tw-pt-4 tw-pb-2 tw-font-medium tw-italic tw-text-gray-500">
                               Файлаар иpүүлээгүй байна.
                            </div>
-                           : <AnimatedFileCardAdd classAppend="tw-my-1 tw-mx-1.5" onClick={handleAddFileClick} style={anims} />
+                           : <FileCardAdd classAppend="tw-my-1 tw-mx-1.5" onClick={handleAddFileClick} style={anims} />
                         )
                      }
                   </Transition>
@@ -178,7 +169,7 @@ export default function LetterUpload() {
                   </div>
                }
 
-               <input className="tw-absolute tw-invisible" type="file" onChange={handleInputFile} ref={fileInputRef} />
+               <input className="tw-absolute tw-invisible" type="file" accept={acceptDocTypes} onChange={handleInputFile} ref={fileInputRef} />
             </div>
 
             <div className="tw-p-2 tw-pl-4">

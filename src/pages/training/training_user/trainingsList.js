@@ -4,7 +4,7 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 import { useHistory } from 'react-router'
-import { Transition, animated, Spring } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops'
 import CalendarSVG from 'assets/svgComponents/calendarSVG'
 import ClockSVG from 'assets/svgComponents/clockSVG'
 import LocationMarkerSVG from 'assets/svgComponents/locationMarker'
@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom'
 import ModalWindow from 'components/modal_window/modalWindow'
 import ExclamationSVG from 'assets/svgComponents/exclamationSVG'
 
-export default function TrainingList() {
+export default function TrainingsList() {
    const [trainings, setTrainings] = useState([])
 
    const AlertCtx = useContext(AlertContext)
@@ -22,12 +22,10 @@ export default function TrainingList() {
 
    useEffect(() => {
       axios.get('trainings', {
-         params: { user: true }
+         params: { status: 'active' },
       }).then(res => {
-         console.log(res)
          setTrainings(res.data.data)
       }).catch(err => {
-         console.error(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтуудыг татаж чадсангүй.' })
       })
    }, [])
@@ -37,11 +35,9 @@ export default function TrainingList() {
          headers: { Authorization: getLoggedUserToken() },
          responseType: 'blob',
       }).then(res => {
-         console.log(res)
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         console.log(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
       })
    }
@@ -111,6 +107,7 @@ export default function TrainingList() {
          {trainings.map(training =>
             <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
          )}
+         
          {/* {[{ ...trainings[0], training_name: 'Экпортыг дэмжих төслийн ерөнхий сургалт', registeredUserCount: 25 }].map(training =>
             <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
          )} */}
@@ -183,7 +180,7 @@ const TrainingCard = ({ training, handleDownloadFile, setModalOpenIsFull }) => {
       <div className="tw-cursor-pointer tw-mt-4 tw-rounded-md tw-shadow-md tw-p-4" onClick={() => setExpanded(prev => !prev)}>
          <div className="tw-flex">
             <div className="tw-flex-grow">
-               <div className="tw-flex tw-items-center tw-text-blue-500 tw-font-semibold tw-text-15px">
+               <div className="tw-flex tw-items-center tw-text-blue-500 tw-font-medium tw-text-15px">
                   {training.training_name}
                </div>
                <div className="tw-flex tw-items-center tw-font-medium tw-mt-1">
@@ -204,7 +201,7 @@ const TrainingCard = ({ training, handleDownloadFile, setModalOpenIsFull }) => {
             {item => item && (anims =>
                <animated.div className="tw-overflow-hidden tw-text-13px tw-font-medium" style={anims}>
                   <div className="tw-pt-1 tw-pl-6">
-                     <button className="focus:tw-outline-none tw-font-medium tw-border-b tw-border-gray-600 tw-transition-colors tw-transition-shadow hover:tw-shadow-md" onClick={handleViewFile}>
+                     <button className="focus:tw-outline-none tw-font-medium tw-border-b tw-border-gray-600 tw-transition-colors tw-transition-shadow hover:tw-shadow-md tw-text-blue-500 active:tw-text-blue-600" onClick={handleViewFile}>
                         Сургалтын агуулгыг харах
                      </button>
                   </div>
@@ -230,7 +227,7 @@ const TrainingCard = ({ training, handleDownloadFile, setModalOpenIsFull }) => {
                   </div>
                   <div className="tw-flex tw-items-center tw-mt-1">
                      <LibrarySVG className="w-5 tw-h-5 tw-mr-1" />
-                     {training.organizer}
+                     {training.trainerOrganization?.organization_name}
                   </div>
                   <div className="tw-flex tw-items-center tw-mt-1">
                      <LocationMarkerSVG className="w-5 tw-h-5 tw-mr-1" />

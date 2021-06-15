@@ -1,8 +1,7 @@
 import React,{useEffect, useState, useContext} from 'react';
-import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import { animateScroll as scroll } from "react-scroll";
-import { fontFamily, textColor, ColorRgb, fontSize, NextBtn,InputStyle} from '../../theme';
+import { fontFamily, textColor, ColorRgb, fontSize, InputStyle, NextBtn2} from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BsArrowRightShort} from 'react-icons/bs'
@@ -17,7 +16,6 @@ const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0
 
 function TableOne(props) {
     const init = "once"
-    const history = useHistory();
     const [ btnCond, setBtnCond ] = useState(props.initialData?init:'twice');
     const [ secondChance, setSecondChance ] = useState([]);
     const [visible2, setVisible2] = useState(false);
@@ -45,7 +43,10 @@ function TableOne(props) {
     const changeHandle = (e) =>{ setDname(e.target.value); }
     const changeHandleDate = (e)=>{ setDdate(e.target.value);}
 
-    const clickHandles = async (btn) =>{
+    const clickHandles = async (e) =>{
+              e.preventDefault();
+              let btn = "twice";
+              e.preventDefault();
               let finalOne = {};  let finalEnd = {};  let rs2 = document.querySelectorAll(".inpTest3"); let arr2 = Array.from(rs2);  let finalOne2 = []; let cond = [];
               arr2.map(element=>{
                   if(element.checked === true){
@@ -123,6 +124,7 @@ function TableOne(props) {
 
     return (
         <Component1 className="container" >
+          <form onSubmit={clickHandles}>
           <div className="boxShadow">
               <Modal visible={visible2} width="800" effect="fadeInDown" >
                   <div className="Modaltest">
@@ -140,8 +142,8 @@ function TableOne(props) {
                             </ul>
                         </div>
                         <div className="btnPar">
-                            <button onClick={()=>{clickHandles("twice"); closeModal()}} class="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
-                            <button onClick={closeModal} class="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
+                            <button onClick={()=>{clickHandles("twice"); closeModal()}} className="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
+                            <button onClick={closeModal} className="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
                         </div>
                       </div>
                   </div>
@@ -209,8 +211,8 @@ function TableOne(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                         <InputStyle className="newInp">
-                                            {props.initialData? <input type="date" value={Ddate} onChange={changeHandleDate} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
-                                                              : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date" required />
+                                            {props.initialData? <input type="date" value={Ddate} onChange={changeHandleDate} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date"  />
+                                                              : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp1 LoginInpName form__field" placeholder="Өдөр-Сар-Он " name="date"  />
                                             }
                                                 <div className="line"></div>
                                         </InputStyle>
@@ -231,11 +233,17 @@ function TableOne(props) {
 
                         <div className="buttonPar">
                             <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                            <NextBtn onClick={()=>clickHandles(btnCond)} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
+                            {/* <NextBtn onClick={()=>clickHandles(btnCond)} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }
+                            </NextBtn> */}
+                            <NextBtn2>
+                              <button  style={spnBtn===false? { width:"100%" }:{ width:"40%" }} className="SubmitButton" type="submit">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }
+                              </button>
+                            </NextBtn2>
                         </div>
               </div>
              </div>
             </div>
+          </form>
         </Component1>
     )
 }

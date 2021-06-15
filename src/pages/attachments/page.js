@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import FileCard from './fileCard'
-import PlusSVG from 'assets/svgComponents/plusSVG'
-import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import AlertContext from 'components/utilities/alertContext'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
 import HelpPopup from 'components/help_popup/helpPopup'
@@ -107,14 +105,12 @@ export default function AttachmentUploads() {
                 'Content-Type': 'multipart/form-data',
             }
         }).then(res => {
-            console.log(res.data)
             const newForm1 = form
             let newFiles = newForm1[index].files
             newFiles = newFiles.filter(item => item !== 'loading')
             newForm1[index].files = [...newFiles, res.data.data]
             setForm([...newForm1])
         }).catch(err => {
-            console.log(err.response?.data)
             const newForm2 = form
             newForm2[index].files = newForm[index].files.filter(item => item !== 'loading')
             setForm([...newForm2])
@@ -135,25 +131,19 @@ export default function AttachmentUploads() {
             headers: { 'Authorization': getLoggedUserToken() },
             responseType: 'blob',
         }).then(res => {
-            console.log(res)
             const URL = window.URL.createObjectURL(res.data)
             FilePreviewCtx.setFile({ open: true, src: URL })
         }).catch(err => {
-            console.log(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг татаж чадсангүй.' })
         })
     }
 
     const handleSubmit = () => {
-        console.log(getLoggedUserToken())
-        console.log(form)
         axios.post('evidences', form, {
             headers: { 'Authorization': getLoggedUserToken() },
         }).then(res => {
-            console.log(res.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт файлуудыг амжилттай хадгаллаа.' })
         }).catch(err => {
-            console.log(err.response?.data)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсралт файлуудыг хадгалж чадсангүй.' })
         })
     }
@@ -165,19 +155,13 @@ export default function AttachmentUploads() {
             axios.get(`evidences/${projectId}`, {
                 headers: { 'Authorization': getLoggedUserToken() },
             }).then(res => {
-                console.log(res.data)
                 setForm(res.data.data)
-            }).catch(err => {
-                console.log(err.response?.data)
             })
         } else {
             axios.get('evidences', {
                 headers: { 'Authorization': getLoggedUserToken() },
             }).then(res => {
-                console.log(res.data)
                 setForm(res.data.data)
-            }).catch(err => {
-                console.log(err.response?.data)
             })
         }
     }, [])
@@ -192,7 +176,7 @@ export default function AttachmentUploads() {
                 <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
             </div>
 
-            <input className="tw-invisible tw-absolute" type="file" onChange={handleFileInput} ref={inputRef} />
+            <input className="tw-invisible tw-absolute" type="file" accept={acceptDocTypes} onChange={handleFileInput} ref={inputRef} />
 
             <ol className="tw-list-decimal tw-list-inside tw-m-2 tw-rounded-sm tw-shadow-md tw-divide-y tw-divide-dashed">
                 {form.map(item =>
@@ -220,3 +204,5 @@ export default function AttachmentUploads() {
         </div>
     )
 }
+
+export const acceptDocTypes = '.pdf, image/*, .doc, .docx, .txt, .xml, .csv, .xls, .xlsx, .ppt, .pptx'

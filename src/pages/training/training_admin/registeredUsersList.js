@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axiosbase'
 import { DataGrid, TabPanel } from 'devextreme-react'
-import { useQuery } from 'components/utilities/useQueryLocation'
+import useQuery from 'components/utilities/useQueryLocation'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import { Column, FilterRow, HeaderFilter, MasterDetail, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
@@ -28,10 +28,8 @@ export default function TrainingRegisteredUsersList() {
          axios.get(`trainings/${trainingId}/registrations`, {
             headers: { Authorization: getLoggedUserToken() },
          }).then(res => {
-            console.log(res)
             setRegisteredUsers(res.data.data)
          }).catch(err => {
-            console.error(err)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Бүртгүүлсэн хэрэглэгчдийг татаж чадсангүй.' })
          })
       } else {
@@ -39,7 +37,6 @@ export default function TrainingRegisteredUsersList() {
       }
 
       axios.get('business-sector').then(res => {
-         console.log(res.data)
          setSectors(res.data.data)
       })
    }, [])
@@ -59,7 +56,7 @@ export default function TrainingRegisteredUsersList() {
          </button>
 
          <div className="tw-rounded tw-shadow-md tw-bg-white tw-w-full tw-p-2 tw-mt-6 tw-pb-14">
-            <div className="tw-text-center tw-p-2 tw-mt-6 tw-text-lg tw-font-semibold">
+            <div className="tw-text-center tw-p-2 tw-mt-6 tw-text-lg tw-font-medium">
                <span className="tw-italic tw-mr-2">"{trainingName}"</span>
                cургалтанд бүртгүүлсэн хэрэглэгчид
             </div>
@@ -139,11 +136,9 @@ const FileCardContainer = ({ label, file }) => {
          headers: { Authorization: getLoggedUserToken() },
          responseType: 'blob',
       }).then(res => {
-         console.log(res)
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         console.log(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
       })
    }

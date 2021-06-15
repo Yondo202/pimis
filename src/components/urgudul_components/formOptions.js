@@ -22,19 +22,17 @@ function FormOptions(props) {
             <PenAltSVG className={`tw-relative tw-top-1 tw-w-5 tw-h-5 tw-flex-shrink-0 ${props.invalid ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
 
             <div className="tw-ml-2 tw-text-sm tw-pt-3 tw-pb-1 tw-px-2 focus:tw-outline-none tw-flex tw-flex-wrap tw-items-center" tabIndex="0" onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}>
-                {
-                    props.options?.map((item, i) =>
-                        <button className="tw-inline-flex tw-items-center tw-bg-transparent focus:tw-outline-none hover:tw-shadow-md tw-rounded-lg tw-px-1 tw-mr-1" key={i} onClick={() => handleSelect(props.name, props.values[i], props.id)}>
-                            <div className={`tw-mr-1 tw-w-4 tw-h-4 tw-rounded-full tw-border-2 ${checked(i) ? 'tw-border-blue-500' : 'tw-border-gray-600'} tw-transition-colors tw-flex tw-justify-center tw-items-center`}>
-                                {checked(i) &&
-                                    <span className="tw-w-2 tw-h-2 tw-rounded-full tw-bg-blue-500 tw-transition-colors" />
-                                }
-                            </div>
+                {props.options?.map((item, i) =>
+                    <button className="tw-inline-flex tw-items-center tw-bg-transparent focus:tw-outline-none hover:tw-shadow-md tw-rounded-lg tw-px-1 tw-mr-1" key={i} onClick={() => handleSelect(props.name, props.values[i], props.id)}>
+                        <div className={`tw-mr-1 tw-w-4 tw-h-4 tw-rounded-full tw-border-2 ${checked(i) ? 'tw-border-blue-500' : 'tw-border-gray-600'} tw-transition-colors tw-flex tw-justify-center tw-items-center`}>
+                            {checked(i) &&
+                                <span className="tw-w-2 tw-h-2 tw-rounded-full tw-bg-blue-500 tw-transition-colors" />
+                            }
+                        </div>
 
-                            <span className="">{item}</span>
-                        </button>
-                    )
-                }
+                        <span className="">{item}</span>
+                    </button>
+                )}
             </div>
         </div>
     )

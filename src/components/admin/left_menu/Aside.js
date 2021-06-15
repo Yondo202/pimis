@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { MenuColor, MainFontSize, fontFamily } from "../ThemeAdmin";
@@ -8,18 +8,10 @@ import { FaChalkboardTeacher } from "react-icons/fa";
 import { MdSettings } from "react-icons/md";
 import { GiProgression } from "react-icons/gi";
 import sidebarBg from "./bg_image/bg1.jpg";
-import UserContext from '../../../context/UserContext'
-
 
 const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
-  const ctxUser = useContext(UserContext);
-
-  useEffect(() => {
-    let role = localStorage.getItem("role");
-    console.log(role);
-  }, [ctxUser.userInfo.id]);
-
   const intl = useIntl();
+
   return (
     <ProSidebar image={image ? sidebarBg : false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
       <SidebarHeader>
@@ -59,11 +51,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             <MenuItem>
               <Link to="/training-requests">Захиалгат сургалтын хүсэлтүүд</Link>
             </MenuItem>
-            <SubMenu title="Тайлангууд">
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.1 </MenuItem>
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.2 </MenuItem>
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.3.3 </MenuItem>
-            </SubMenu>
+            <MenuItem>
+              <Link to="/training-report">Тайлан</Link>
+            </MenuItem>
           </SubMenu>
 
           <SubMenu title="Тохиргоо" icon={<MdSettings />}>
@@ -78,6 +68,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.2 </MenuItem>
             </SubMenu>
             <SubMenu title="Сургалт">
+              <MenuItem>
+                <Link to="/trainer-organizations">Сургалт зохион байгуулагч байгууллагууд</Link>
+              </MenuItem>
               <MenuItem>
                 <Link to="/training-questionnaire">Сургалтын үнэлгээний асуумжууд</Link>
               </MenuItem>

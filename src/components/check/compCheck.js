@@ -1,290 +1,294 @@
-import React,{useState, useContext,useEffect} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { useHistory } from 'react-router-dom'
-import {IoMdCheckmarkCircle,IoIosArrowBack  } from 'react-icons/io';
-import { fontFamily, textColor, Color,fontSize,NextBtn } from '../theme';
-import {AiOutlineSend, AiOutlineCheckCircle} from 'react-icons/ai'
-import {CgDanger} from 'react-icons/cg'
+import { IoMdCheckmarkCircle, IoIosArrowBack } from 'react-icons/io';
+import { fontFamily, textColor, Color, fontSize, NextBtn } from '../theme';
+import { AiOutlineSend, AiOutlineCheckCircle } from 'react-icons/ai'
+import { CgDanger } from 'react-icons/cg'
 import UserContext from '../../context/UserContext'
 import AccessToken from '../../context/accessToken'
 import axios from '../../axiosbase'
-import {RiArrowGoBackFill  } from 'react-icons/ri';
+import { RiArrowGoBackFill } from 'react-icons/ri';
 import Modal from 'react-awesome-modal';
 import { motion } from 'framer-motion';
 import DocumentTitle from 'containers/document/DocumentTitle';
 
 function CompCheck() {
-    DocumentTitle("Шалгуур хангалтыг тулгах хуудас");
-    const init = "once";
-    const param = useParams().url;
-    const ctx = useContext(UserContext);
-    const history = useHistory();
-    const [ showFinal, setShowFinal ] = useState(false);
-    const [ count, setCount ] = useState(0);
-    const [ success, setSuccess ] = useState(0);
-    const [ btnCond, setBtnCond ] = useState(init);
-    const [ secondChance, setSecondChance ] = useState({});
-    const [ visible, setVisible] = useState(false);
-    const [ visible2, setVisible2] = useState(false);
-    const [ BtnSpin, setBtnSpin ] = useState(false);
-    const [ updateMount, setUpdateMount ] = useState(0);
-    const [ initialData, setInitialData ] = useState(allData);
-    const [opacity, setOpacity] = useState("0");
-    const [opacity2, setOpacity2] = useState("0");
-    const [procent, setProcent] = useState('0');
-    const [FinalErrorText, setFinalErrorText] = useState("");
+  DocumentTitle("Шалгуур хангалтыг тулгах хуудас");
+  const init = "once";
+  const param = useParams().url;
+  const ctx = useContext(UserContext);
+  const history = useHistory();
+  const [showFinal, setShowFinal] = useState(false);
+  const [count, setCount] = useState(0);
+  const [success, setSuccess] = useState(0);
+  const [btnCond, setBtnCond] = useState(init);
+  const [secondChance, setSecondChance] = useState({});
+  const [visible, setVisible] = useState(false);
+  const [visible2, setVisible2] = useState(false);
+  const [BtnSpin, setBtnSpin] = useState(false);
+  const [updateMount, setUpdateMount] = useState(0);
+  const [initialData, setInitialData] = useState(allData);
+  const [opacity, setOpacity] = useState("0");
+  const [opacity2, setOpacity2] = useState("0");
+  const [procent, setProcent] = useState('0');
+  const [FinalErrorText, setFinalErrorText] = useState("");
 
-    useEffect(async()=>{
-        const localId = localStorage.getItem("userId");
-        const data =  await axios.get(`criterias${param!=="user"?`?userId=${param}`:`?userId=${localId}`}`,{ headers: { Authorization:AccessToken() } });
-        let keys = Object.keys(data.data.data);
-        if(keys.length > 1){
-          setSuccess(data.data.data.approved);
-          let filterArr = []; let value = Object.values(data.data.data);
-          keys.map((el,i)=>{ let obj1 = {}; value.map((elem,ind)=>{  if(i===ind){ obj1["keys"] = el;  obj1["values"] = elem; }}); filterArr.push(obj1); });
-          allData.map(el=>{ el.items.map((elem,ind)=>{filterArr.map(element=>{ if(el.group + (ind + 1) === element.keys){ elem["value"] = element.values };}); });});
-          setInitialData(allData); setUpdateMount(1);
-        }else{ console.log("^^data alga") }
-    },[updateMount]);
-    const NextPageHandle = (el) =>{ history.push(el); };
+  useEffect(() => {
+    const localId = localStorage.getItem("userId");
+    void async function fetch() {
+      const data = await axios.get(`criterias${param !== "user" ? `?userId=${param}` : `?userId=${localId}`}`, { headers: { Authorization: AccessToken() } });
+      let keys = Object.keys(data.data.data);
+      if (keys.length > 1) {
+        setSuccess(data.data.data.approved);
+        let filterArr = []; let value = Object.values(data.data.data);
+        keys.forEach((el, i) => { let obj1 = {}; value.forEach((elem, ind) => { if (i === ind) { obj1["keys"] = el; obj1["values"] = elem; } }); filterArr.push(obj1); });
+        allData.forEach(el => { el.items.forEach((elem, ind) => { filterArr.forEach(element => { if (el.group + (ind + 1) === element.keys) { elem["value"] = element.values }; }); }); });
+        setInitialData(allData); setUpdateMount(1);
+      } else { console.log("^^data alga") }
+    }()
+  }, [updateMount]);
+  const NextPageHandle = (el) => { history.push(el); };
 
-    const OneBack = () =>{
-      history.goBack();
-    }
+  const OneBack = () => {
+    history.goBack();
+  }
 
-    const FinalClick = el =>{
-      if(el){
-        setShowFinal(true);
-        setTimeout(()=>{
-          setVisible(false);
-        },10000)
-      }else{
+  const FinalClick = el => {
+    if (el) {
+      setShowFinal(true);
+      setTimeout(() => {
         setVisible(false);
+      }, 10000)
+    } else {
+      setVisible(false);
+    }
+  }
+
+  const clickHandles = (btn) => {
+    let rs2 = document.querySelectorAll(".inpTest333"); let arr2 = Array.from(rs2); let soloObject2 = {}; const cond = {};
+    arr2.forEach((element, i) => {
+      if (element.checked === true) {
+        let field = element.name; let value = element.value; let id = element.id; soloObject2[id + field] = value;
+      }
+      if (element.checked === true && element.id + element.name !== "a6" && element.id + element.name !== "a7" && element.value === "false") {
+        let field = element.name; let value = element.value; let id = element.id; cond[id + field] = value;
+      }
+    });
+    let finalCond = Object.keys(cond);
+    let keys = Object.keys(soloObject2);
+    const Procent = keys.length * 100 / 25;
+    const FinalProcent = Math.round(Procent);
+
+    console.log(`soloObject2`, soloObject2);
+
+    if (keys.length < 25) {
+      setOpacity("1");
+      setProcent(FinalProcent);
+    } else if (finalCond.length > 0) {
+      setOpacity("0");
+      setSecondChance(cond);
+      if (btn === "twice") {
+        soloObject2["approved"] = 1;
+        setBtnSpin(true);
+        setOpacity("0");
+        setOpacity2("0");
+        setVisible2(false);
+        axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(res => {
+          setUpdateMount(2); ctx.alertText('orange, Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.', true); setBtnSpin(false);
+          setTimeout(() => { history.push('/'); }, 5000);
+        }).catch(_=> { setFinalErrorText("Алдаа гарлаа."); setBtnSpin(false); });
+      } else if (btn === "once") {
+        setVisible2(true);
+      }
+    } else {
+      soloObject2["approved"] = 2;
+      setBtnSpin(true);
+      setOpacity("0");
+      setOpacity2("0");
+      axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(res => {
+        setUpdateMount(2); ctx.alertText('green, Амжилттай илгээгдлээ', true); setBtnSpin(false); setVisible(true);
+      }).catch(_=> { setFinalErrorText("Алдаа гарлаа."); setBtnSpin(false); });
+    }
+  }
+
+  const closeMModalX = () => { setVisible2(false); }
+  const closeModal = (el) => {
+    if (el === "shuud") {
+      setBtnCond("twice"); setVisible2(false);
+    } else {
+      setCount(prev => prev + el);
+      if (count < 2) {
+        setBtnCond("once"); setVisible2(false);
+      } else {
+        setBtnCond("twice"); setVisible2(false);
       }
     }
+  }
 
-    const clickHandles = (btn) =>{
-              let rs2 = document.querySelectorAll(".inpTest333"); let arr2 = Array.from(rs2); let soloObject2 = {};  const cond = {};
-              arr2.map((element,i)=>{
-                  if(element.checked === true){
-                    let field = element.name; let value = element.value;  let id = element.id; soloObject2[id + field] = value;
-                  }
-                  if( element.checked === true && element.id + element.name !== "a6" && element.id + element.name !== "a7" && element.value === "false"){
-                    let field = element.name; let value = element.value;  let id = element.id; cond[id + field] = value; 
-                  }
-              });
-              let finalCond = Object.keys(cond);
-              let keys = Object.keys(soloObject2);
-              const Procent = keys.length * 100 / 25;
-              const FinalProcent = Math.round(Procent);
-
-              console.log(`soloObject2`, soloObject2);
-
-              if(keys.length < 25){
-                setOpacity("1");
-                setProcent(FinalProcent);
-              }else if(finalCond.length > 0){
-                setOpacity("0");
-                setSecondChance(cond);
-                if(btn==="twice"){
-                  soloObject2["approved"] = 1;
-                  setBtnSpin(true);
-                  setOpacity("0");
-                  setOpacity2("0");
-                  setVisible2(false);
-                  axios.post(`criterias`, soloObject2, {headers:{ Authorization:AccessToken() } }).then(res=>{
-                    setUpdateMount(2); ctx.alertText('orange, Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.', true); setBtnSpin(false);
-                    setTimeout(()=>{history.push('/');},4000);
-                  }).catch(err=>{setFinalErrorText("Серверт алдаа гарлаа."); setBtnSpin(false);});
-                }else if(btn==="once"){
-                  setVisible2(true);
-                }
-              }else{
-                soloObject2["approved"] = 2;
-                setBtnSpin(true);
-                setOpacity("0");
-                setOpacity2("0");
-                axios.post(`criterias`, soloObject2, {headers:{ Authorization:AccessToken() } }).then(res=>{
-                  setUpdateMount(2); ctx.alertText('green, Амжилттай илгээгдлээ', true); setBtnSpin(false); setVisible(true);
-                }).catch(err=>{setFinalErrorText("Серверт алдаа гарлаа."); setBtnSpin(false);});
-              }
-    }
-
-    const closeMModalX=()=>{ setVisible2(false);}
-    const closeModal=(el)=>{
-        if(el==="shuud"){
-          setBtnCond("twice");  setVisible2(false);
-        }else{
-          setCount(prev=> prev + el);
-          if(count < 2){
-            setBtnCond("once");  setVisible2(false);
-          }else{
-            setBtnCond("twice");  setVisible2(false);
-          }
-        }
-    }
-
-    return (
-      <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
-           <Component1 className="container" >
-              {param!=="user"? ( updateMount===1? <div className="boxShadow">
-                    <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
-                    {initialData.map((el,i)=>{
-                        return(
-                            <div key={i} className="formTwoParent ">
-                              <div className="headerPar">
-                                  <div className="row" >
-                                  <div className="head1 col-md-10 col-sm-8 col-8">{el.title}</div>
-                                  <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
-                                  <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
-                                  </div>
-                              </div>
-                              {el.items.map((elem, ind)=>{
-                                  return(
-                                  <div className="headerParchild" key={ind}>
-                                    <div className="row" >
-                                        <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
-                                        <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
-                                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
-                                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
-                                    </div>
-                                  </div>
-                                  )
-                              })}
-                        </div>)})}
-
-                        <div className="FinalBtn">
-                            <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
-                            <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
-                        </div>
-                        <div className="Success">
-                            <NextBtn onClick={()=>OneBack()} className="NextPageBtn" type="button"><div className="flexchild"><IoIosArrowBack/><IoIosArrowBack className="hide" /> <IoIosArrowBack className="hide1" /></div>Буцах</NextBtn>
-                            {success === 1? <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> : success=== 2? <div className="item"><IoMdCheckmarkCircle />Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна.</div> :null }
-                        </div> 
-                </div> : ( <NullParent className="BtnPar"><button onClick={()=>OneBack()}><RiArrowGoBackFill /> Буцах</button> <h2 style={{textAlign:"center"}}>Мэдээлэл оруулаагүй байна</h2> </NullParent> ) )
-                :  (  <div className="boxShadow">
-                    <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
-                    {initialData.map((el,i)=>{
-                        return(
-                            <div key={i} className="formTwoParent ">
-                              <div className="headerPar">
-                                  <div className="row" >
-                                    <div className="head1 col-md-10 col-sm-8 col-8">{el.title}</div>
-                                    <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
-                                    <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
-                                  </div>
-                              </div>
-                              {el.items.map((elem, ind)=>{
-                                  return(
-                                  <div className="headerParchild" key={ind}>
-                                    <div className="row" >
-                                        <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
-                                        <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
-                                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === true? true: false : null } className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true"/></div>
-                                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={ updateMount===1? elem.value === false? true: false : null }  className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false"/></div>
-                                    </div>
-                                  </div>
-                                  )
-                              })}
-                        </div>)})}
-
-                      <Modal visible={visible2} width="800" effect="fadeInDown" >
-                              <div className="Modaltest">
-                                <div onClick={closeMModalX} className="headPar"><span >x</span></div>
-                                  <div className="ModalTextPar">
-                                    <div className="redPAr">
-                                        <div className="redDesc">Таныг бөгөлсөн мэдээллээ дахин нэг шалгахыг хүсэж байна:</div>
-                                    </div>
-                                    <div className="mainText">
-                                        <div className="title">Доорх асуултуудад "ҮГҮЙ" гэж хариулсандаа итгэлтэй байна уу?:</div>
-                                        <ul className="desc">
-                                          {secondChance.a1&&<li>100 хувь хувийн ААН мөн эсэх</li>}
-                                          {secondChance.a2&&<li>2 жилийн турш тогтмол үйл ажиллагаа явуулсныг батлах санхүүгийн тайлантай эсэх</li>}
-                                          {secondChance.a3&&<li>Уул уурхайн салбарт ажилладаггүй эсэх</li>}
-                                          {secondChance.a4&&<li>Ре-экспортын худалдаа эрхэлдэггүй эсэх</li>}
-                                          {secondChance.a5&&<li>Түүхий эд экспортлогч бус эсэх /хэрэв жилийн 100 мянган ам.доллараас дээш экспорт хийдэг бөгөөд энэ ойрын хугацаанд боловсруулсан бүтээгдэхүүний экспорт хийхээр зорьж буй бол тийм гэж дугуйлна уу</li>}
-                                          {secondChance.b1&&<li>12 сараас дээш хугацааны нийгмийн даатгалын өргүй бөгөөд нотлох тодорхойлолттой эсэх</li>}
-                                          {secondChance.b2&&<li>12 сараас дээш хугацааны татварын өргүй бөгөөд нотлох тодорхойлолттой эсэх</li>}
-                                          {secondChance.b3&&<li>Монголбанкны муу ангиллын зээлгүй бөгөөд нотлох тодорхойлолттой эсэх</li>}
-                                          {secondChance.c1&&<li>Ерөнхийлөгчтэй холбоогүй</li>}
-                                          {secondChance.c2&&<li>Ерөнхий сайдтай холбоогүй</li>}
-                                          {secondChance.c3&&<li>УИХ-н гишүүнтэй холбоогүй</li>}
-                                          {secondChance.c4&&<li>Үндсэн хуулийн цэцийн гишүүдтэй холбоогүй</li>}
-                                          {secondChance.c5&&<li>Дээд шүүхийн шүүгчидтэй холбоогүй</li>}
-                                          {secondChance.c6&&<li>Улсын прокурортой холбоогүй</li>}
-                                          {secondChance.c7&&<li>Аймаг, нийслэлийн засаг даргатай холбоогүй</li>}
-                                          {secondChance.c8&&<li>Сайд, Төрийн нарийн бичгийн даргатай холбоогүй</li>}
-                                          {secondChance.c9&&<li>Яам, хэрэгжүүлэгч агентлагуудын захирал, дарга нартай холбоогүй</li>}
-                                          {secondChance.c10&&<li>Төрийн өмчит компаниудын захирал, дарга нартай холбоогүй</li>}
-                                          {secondChance.d1&&<li>Экспортын чиглэлээр санхүүжилт хүсч, хийхээр төлөвлөсөн ажил нь гэрээ шалгаруулалт хийгдэж, гэрээ зурагдсанаас хойш 9 сарын дотор хэрэгжиж дуусах боломжтой эсэх</li>}
-                                          {secondChance.d2&&<li>Экспортыг дэмжих төслөөс хүсч буй дэмжлэгтэй тэнцүү дүнгээр санхүүжилт гаргах боломжтой бөгөөд бэлэн эсэх</li>}
-                                          {secondChance.d3&&<li>Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр өмнө гарсан зардлыг санхүүжүүлэхгүй эсэх</li>}
-                                          {secondChance.d4&&<li>Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр зөвхөн зөвшөөрөгдсөн үйл ажиллагааг санхүүжүүлэх эсэх</li>}
-                                          {secondChance.f1&&<li>Ирэх нэг жилийн хугацаанд Экспортыг дэмжих төслөөс зохион байгуулах арга хэмжээнд хамтарч, бусад экспортлогчид болон шинээр экспортлохоор зорьж буй аж ахуйн нэгжүүдийг бэлтгэх сургалт, мэдээлэл хуваалцах ажлилд өөрийн байгууллагын туршлага, мэдлэгээ хуваалцаж, идэвхитэй оролцох эсэх</li>}
-                                        </ul>
-                                    </div>
-                                    <div className="btnPar">
-                                        <button onClick={()=>{clickHandles("twice"); closeModal("shuud")}} class="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
-                                        <button onClick={()=>closeModal(1)} class="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
-                                    </div>
-                                  </div>
-                              </div>
-                      </Modal>
-
-                      <Modal visible={visible} width="800" effect="fadeInDown" >
-                              <div  className="Modaltest Modaltest22">
-                               {showFinal&&<div onClick={()=>setVisible(false)} className="headPar"><span >x</span></div>} 
-                                  <div style={showFinal?{opacity:0.4}:{opacity:1}} className="ModalTextPar">
-                                    <div className="redPAr">
-                                        <div className="redDesc"> Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна.</div>
-                                    </div>
-                                    <div className="mainText">
-                                        <div className="title">Жилийн борлуулалтын орлого нь 100 мянган ам.доллароос их бол  <span style={{fontWeight:"400"}}> ( тийм ) </span>
-                                         гэсэн хариултыг сонгоно уу? 
-                                        </div>
-                                        <span className="Nemelts"> ( Хэрэв цар тахлын үед борлуулалт огцом буурсан бол 2018, 2019 оны борлуулалтын орлогыг мэдээлэлд орлуулж болно )</span> 
-
-                                    </div>
-                                    <div className="btnPar">
-                                        <button class="btn btn-primary" onClick={()=>FinalClick(true)}>Тийм </button>
-                                        <button class="btn btn-primary" onClick={()=>FinalClick(false)}>Үгүй </button>
-                                    </div>
-                                  </div>
-                                  
-                                  {showFinal&&<div className="correctPar">
-                                        <AiOutlineCheckCircle />
-                                      <span>
-                                        Таны асуулгаас харахад танай байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт ААН-ээр тэнцэхээс
-                                        гадна кластерын толгой компаниар тэнцэх боломжтой байна.
-                                      </span>
-                                  </div>} 
-                                  
-                              </div>
-                      </Modal>
-
-
-
-                      <div className="FinalBtn">
-                          <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
-                          <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
-                      </div>
-
-                      {updateMount===1?success===1? <div className="Success"> <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> </div> 
-                      : <div className="Success">
-                          <div className="item"><IoMdCheckmarkCircle />Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна. </div>
-                          <NextBtn onClick={()=>NextPageHandle('/request/user')} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
-                        </div> 
-                      :( <div className="buttonPar">
-                          <div style={{opacity:`${opacity2}`}} className="errtext"><CgDanger /> {FinalErrorText}</div>
-                          <NextBtn onClick={()=>clickHandles(btnCond)} style={BtnSpin===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button"> {BtnSpin===false? <>Цааш <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div> </> : <img src="/gifff.gif" /> } </NextBtn>
-                        </div> )}
+  return (
+    <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
+      <Component1 className="container" >
+        {param !== "user" ? (updateMount === 1 ? <div className="boxShadow">
+          <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
+          {initialData.map((el, i) => {
+            return (
+              <div key={i} className="formTwoParent ">
+                <div className="headerPar">
+                  <div className="row" >
+                    <div className="head1 col-md-10 col-sm-8 col-8">{el.title}</div>
+                    <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
+                    <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
                   </div>
-                ) }
-            </Component1>
-      </motion.div>
-        
-    )
+                </div>
+                {el.items.map((elem, ind) => {
+                  return (
+                    <div className="headerParchild" key={ind}>
+                      <div className="row" >
+                        <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
+                        <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
+                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === true ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true" /></div>
+                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === false ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false" /></div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>)
+          })}
+
+          <div className="FinalBtn">
+            <div style={{ opacity: `${opacity}` }} className="errtext">Таны асуулга {procent}% байна..</div>
+            <div style={{ opacity: `${opacity}` }} className="errtext">Та гүйцэд бөгөлнө үү...</div>
+          </div>
+          <div className="Success">
+            <NextBtn onClick={() => OneBack()} className="NextPageBtn" type="button"><div className="flexchild"><IoIosArrowBack /><IoIosArrowBack className="hide" /> <IoIosArrowBack className="hide1" /></div>Буцах</NextBtn>
+            {success === 1 ? <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> : success === 2 ? <div className="item"><IoMdCheckmarkCircle />Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна.</div> : null}
+          </div>
+        </div> : (<NullParent className="BtnPar"><button onClick={() => OneBack()}><RiArrowGoBackFill /> Буцах</button> <h2 style={{ textAlign: "center" }}>Мэдээлэл оруулаагүй байна</h2> </NullParent>))
+          : (<div className="boxShadow">
+            <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
+            {initialData.map((el, i) => {
+              return (
+                <div key={i} className="formTwoParent ">
+                  <div className="headerPar">
+                    <div className="row" >
+                      <div className="head1 col-md-10 col-sm-8 col-8">{el.title}</div>
+                      <div className="head2 col-md-1 col-sm-2 col-2">Тийм</div>
+                      <div className="head2 col-md-1 col-sm-2 col-2">Үгүй</div>
+                    </div>
+                  </div>
+                  {el.items.map((elem, ind) => {
+                    return (
+                      <div className="headerParchild" key={ind}>
+                        <div className="row" >
+                          <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
+                          <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === true ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true" /></div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === false ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false" /></div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>)
+            })}
+
+            <Modal visible={visible2} width="800" effect="fadeInDown" >
+              <div className="Modaltest">
+                <div onClick={closeMModalX} className="headPar"><span >x</span></div>
+                <div className="ModalTextPar">
+                  <div className="redPAr">
+                    <div className="redDesc">Таныг бөгөлсөн мэдээллээ дахин нэг шалгахыг хүсэж байна:</div>
+                  </div>
+                  <div className="mainText">
+                    <div className="title">Доорх асуултуудад "ҮГҮЙ" гэж хариулсандаа итгэлтэй байна уу?:</div>
+                    <ul className="desc">
+                      {secondChance.a1 && <li>100 хувь хувийн ААН мөн эсэх</li>}
+                      {secondChance.a2 && <li>2 жилийн турш тогтмол үйл ажиллагаа явуулсныг батлах санхүүгийн тайлантай эсэх</li>}
+                      {secondChance.a3 && <li>Уул уурхайн салбарт ажилладаггүй эсэх</li>}
+                      {secondChance.a4 && <li>Ре-экспортын худалдаа эрхэлдэггүй эсэх</li>}
+                      {secondChance.a5 && <li>Түүхий эд экспортлогч бус эсэх /хэрэв жилийн 100 мянган ам.доллараас дээш экспорт хийдэг бөгөөд энэ ойрын хугацаанд боловсруулсан бүтээгдэхүүний экспорт хийхээр зорьж буй бол тийм гэж дугуйлна уу</li>}
+                      {secondChance.b1 && <li>12 сараас дээш хугацааны нийгмийн даатгалын өргүй бөгөөд нотлох тодорхойлолттой эсэх</li>}
+                      {secondChance.b2 && <li>12 сараас дээш хугацааны татварын өргүй бөгөөд нотлох тодорхойлолттой эсэх</li>}
+                      {secondChance.b3 && <li>Монголбанкны муу ангиллын зээлгүй бөгөөд нотлох тодорхойлолттой эсэх</li>}
+                      {secondChance.c1 && <li>Ерөнхийлөгчтэй холбоогүй</li>}
+                      {secondChance.c2 && <li>Ерөнхий сайдтай холбоогүй</li>}
+                      {secondChance.c3 && <li>УИХ-н гишүүнтэй холбоогүй</li>}
+                      {secondChance.c4 && <li>Үндсэн хуулийн цэцийн гишүүдтэй холбоогүй</li>}
+                      {secondChance.c5 && <li>Дээд шүүхийн шүүгчидтэй холбоогүй</li>}
+                      {secondChance.c6 && <li>Улсын прокурортой холбоогүй</li>}
+                      {secondChance.c7 && <li>Аймаг, нийслэлийн засаг даргатай холбоогүй</li>}
+                      {secondChance.c8 && <li>Сайд, Төрийн нарийн бичгийн даргатай холбоогүй</li>}
+                      {secondChance.c9 && <li>Яам, хэрэгжүүлэгч агентлагуудын захирал, дарга нартай холбоогүй</li>}
+                      {secondChance.c10 && <li>Төрийн өмчит компаниудын захирал, дарга нартай холбоогүй</li>}
+                      {secondChance.d1 && <li>Экспортын чиглэлээр санхүүжилт хүсч, хийхээр төлөвлөсөн ажил нь гэрээ шалгаруулалт хийгдэж, гэрээ зурагдсанаас хойш 9 сарын дотор хэрэгжиж дуусах боломжтой эсэх</li>}
+                      {secondChance.d2 && <li>Экспортыг дэмжих төслөөс хүсч буй дэмжлэгтэй тэнцүү дүнгээр санхүүжилт гаргах боломжтой бөгөөд бэлэн эсэх</li>}
+                      {secondChance.d3 && <li>Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр өмнө гарсан зардлыг санхүүжүүлэхгүй эсэх</li>}
+                      {secondChance.d4 && <li>Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр зөвхөн зөвшөөрөгдсөн үйл ажиллагааг санхүүжүүлэх эсэх</li>}
+                      {secondChance.f1 && <li>Ирэх нэг жилийн хугацаанд Экспортыг дэмжих төслөөс зохион байгуулах арга хэмжээнд хамтарч, бусад экспортлогчид болон шинээр экспортлохоор зорьж буй аж ахуйн нэгжүүдийг бэлтгэх сургалт, мэдээлэл хуваалцах ажлилд өөрийн байгууллагын туршлага, мэдлэгээ хуваалцаж, идэвхитэй оролцох эсэх</li>}
+                    </ul>
+                  </div>
+                  <div className="btnPar">
+                    <button onClick={() => { clickHandles("twice"); closeModal("shuud") }} className="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
+                    <button onClick={() => closeModal(1)} className="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
+                  </div>
+                </div>
+              </div>
+            </Modal>
+
+            <Modal visible={visible} width="800" effect="fadeInDown" >
+              <div className="Modaltest Modaltest22">
+                {showFinal && <div onClick={() => setVisible(false)} className="headPar"><span >x</span></div>}
+                <div style={showFinal ? { opacity: 0.4 } : { opacity: 1 }} className="ModalTextPar">
+                  <div className="redPAr">
+                    <div className="redDesc"> Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна.</div>
+                  </div>
+                  <div className="mainText">
+                    <div className="title">Жилийн борлуулалтын орлого нь 100 мянган ам.доллароос их бол  <span style={{ fontWeight: "400" }}> ( тийм ) </span>
+                                         гэсэн хариултыг сонгоно уу?
+                                        </div>
+                    <span className="Nemelts"> ( Хэрэв цар тахлын үед борлуулалт огцом буурсан бол 2018, 2019 оны борлуулалтын орлогыг мэдээлэлд орлуулж болно )</span>
+
+                  </div>
+                  <div className="btnPar">
+                    <button className="btn btn-primary" onClick={() => FinalClick(true)}>Тийм </button>
+                    <button className="btn btn-primary" onClick={() => FinalClick(false)}>Үгүй </button>
+                  </div>
+                </div>
+
+                {showFinal && <div className="correctPar">
+                  <AiOutlineCheckCircle />
+                  <span>
+                    Таны асуулгаас харахад танай байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт ААН-ээр тэнцэхээс
+                    гадна кластерын толгой компаниар тэнцэх боломжтой байна.
+                                      </span>
+                </div>}
+
+              </div>
+            </Modal>
+
+
+
+            <div className="FinalBtn">
+              <div style={{ opacity: `${opacity}` }} className="errtext">Таны асуулга {procent}% байна..</div>
+              <div style={{ opacity: `${opacity}` }} className="errtext">Та гүйцэд бөгөлнө үү...</div>
+            </div>
+
+            {updateMount === 1 ? success === 1 ? <div className="Success"> <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> </div>
+              : <div className="Success">
+                <div className="item"><IoMdCheckmarkCircle />Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна. </div>
+                <NextBtn onClick={() => NextPageHandle('/request/user')} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+              </div>
+              : (<div className="buttonPar">
+                <div style={{ opacity: `${opacity2}` }} className="errtext"><CgDanger /> {FinalErrorText}</div>
+                <NextBtn onClick={() => clickHandles(btnCond)} style={BtnSpin === false ? { width: "40%" } : { width: "10%" }} className="SubmitButton" type="button"> {BtnSpin === false ? <>Цааш <div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div> </> : <img src="/gifff.gif" alt="" />} </NextBtn>
+              </div>)}
+          </div>
+          )}
+      </Component1>
+    </motion.div>
+
+  )
 }
 
 export default CompCheck
@@ -306,8 +310,10 @@ const NullParent = styled.div`
 `
 
 let easing = [0, 0, 0.56, 0.95];
-const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
-    enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
+const textVariants2 = {
+  exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
+  enter: { y: 0, opacity: 1, transition: { delay: 0.2, duration: 0.6, ease: easing } }
+};
 
 const animate = keyframes`
   0% { transform:translateX(100px); opacity:0; }
@@ -738,61 +744,61 @@ const Component1 = styled.div`
 `
 
 const allData = [
-    { 
-       group: "a",
-       title: "ҮНДСЭН ШАЛГУУР ХАНГАЛТ",
-       items: [
-           {  name: "100 хувь хувийн ААН мөн эсэх"},
-           {  name: "2 жилийн турш тогтмол үйл ажиллагаа явуулсныг батлах санхүүгийн тайлантай эсэх"},
-           {  name: "Уул уурхайн салбарт ажилладаггүй эсэх"},
-           {  name: "Ре-экспортын худалдаа эрхэлдэггүй эсэх"},
-           {  name: "Түүхий эд экспортлогч бус эсэх /хэрэв жилийн 100 мянган ам.доллараас дээш экспорт хийдэг бөгөөд энэ ойрын хугацаанд боловсруулсан бүтээгдэхүүний экспорт хийхээр зорьж буй бол тийм гэж дугуйлна уу"},
-           {  name: "*Сүүлийн хоёр жил тус бүр 50 мянгаас 50 сая ам.доллартай тэнцэх нийт борлуулалтын орлоготой ажилласан эсэх "},
-           {  name: "*Сүүлийн 2 жил тус бүр НДШ төлдөг бүтэн цагийн ажилчдын тоо 10-250 хооронд байсан эсэх"},
-       ]
-   }, 
-   {
-       group: "b",
-       title: "ӨР ТӨЛБӨРИЙН ШАЛГУУР ХАНГАЛТ",
-       items: [
-           {  name: "12 сараас дээш хугацааны нийгмийн даатгалын өргүй бөгөөд нотлох тодорхойлолттой эсэх"},
-           {  name: "12 сараас дээш хугацааны татварын өргүй бөгөөд нотлох тодорхойлолттой эсэх"},
-           {  name: "Монголбанкны муу ангиллын зээлгүй бөгөөд нотлох тодорхойлолттой эсэх"},
-       ]
-   }, 
-   { 
-       group: "c",
-       title: "АЖ АХУЙН НЭГЖИЙН ХУВЬ ЭЗЭМШИГЧ НЬ ДАРААХ УЛС ТӨРИЙН НӨЛӨӨ БҮХИЙ ЭТГЭЭДҮҮД БОЛОН ТЭДНИЙ ГЭР БҮЛИЙН ГИШҮҮНТЭЙ ХОЛБООТОЙ БАЙЖ БОЛОХГҮЙ",
-       items: [
-           {  name: "Ерөнхийлөгчтэй холбоогүй"},
-           {  name: "Ерөнхий сайдтай холбоогүй"},
-           {  name: "УИХ-н гишүүнтэй холбоогүй"},
-           {  name: "Үндсэн хуулийн цэцийн гишүүдтэй холбоогүй"},
-           {  name: "Дээд шүүхийн шүүгчидтэй холбоогүй"},
-           {  name: "Улсын прокурортой холбоогүй"},
-           {  name: "Аймаг, нийслэлийн засаг даргатай холбоогүй"},
-           {  name: "Сайд, Төрийн нарийн бичгийн даргатай холбоогүй"},
-           {  name: "Яам, хэрэгжүүлэгч агентлагуудын захирал, дарга нартай холбоогүй"},
-           {  name: "Төрийн өмчит компаниудын захирал, дарга нартай холбоогүй"},
-       ]
-   }, 
-   { 
-       group: "d",
-       title: "ЭКСПОРТ ХӨГЖЛИЙН ТӨЛӨВЛӨГӨӨГӨӨ БЭЛТГЭСЭН ЭСЭХ",
-       items: [
-           {  name: "Экспортын чиглэлээр санхүүжилт хүсч, хийхээр төлөвлөсөн ажил нь гэрээ шалгаруулалт хийгдэж, гэрээ зурагдсанаас хойш 9 сарын дотор хэрэгжиж дуусах боломжтой эсэх"},
-           {  name: "Экспортыг дэмжих төслөөс хүсч буй дэмжлэгтэй тэнцүү дүнгээр санхүүжилт гаргах боломжтой бөгөөд бэлэн эсэх"},
-           {  name: "Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр өмнө гарсан зардлыг санхүүжүүлэхгүй эсэх"},
-           {  name: "Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр зөвхөн зөвшөөрөгдсөн үйл ажиллагааг санхүүжүүлэх эсэх"},
-       ]
-   }, 
-   { 
-       group: "f",
-       title: "БУСАДТАЙ ТУРШЛАГА, МЭДЭЭЛЛЭЭ ХУВААЛЦАХ БОЛОМЖТОЙ ЭСЭХ",
-       items: [
-           {  name: "Ирэх нэг жилийн хугацаанд Экспортыг дэмжих төслөөс зохион байгуулах арга хэмжээнд хамтарч, бусад экспортлогчид болон шинээр экспортлохоор зорьж буй аж ахуйн нэгжүүдийг бэлтгэх сургалт, мэдээлэл хуваалцах ажлилд өөрийн байгууллагын туршлага, мэдлэгээ хуваалцаж, идэвхитэй оролцох эсэх"},
-       ]
-   }, 
+  {
+    group: "a",
+    title: "ҮНДСЭН ШАЛГУУР ХАНГАЛТ",
+    items: [
+      { name: "100 хувь хувийн ААН мөн эсэх" },
+      { name: "2 жилийн турш тогтмол үйл ажиллагаа явуулсныг батлах санхүүгийн тайлантай эсэх" },
+      { name: "Уул уурхайн салбарт ажилладаггүй эсэх" },
+      { name: "Ре-экспортын худалдаа эрхэлдэггүй эсэх" },
+      { name: "Түүхий эд экспортлогч бус эсэх /хэрэв жилийн 100 мянган ам.доллараас дээш экспорт хийдэг бөгөөд энэ ойрын хугацаанд боловсруулсан бүтээгдэхүүний экспорт хийхээр зорьж буй бол тийм гэж дугуйлна уу" },
+      { name: "*Сүүлийн хоёр жил тус бүр 50 мянгаас 50 сая ам.доллартай тэнцэх нийт борлуулалтын орлоготой ажилласан эсэх " },
+      { name: "*Сүүлийн 2 жил тус бүр НДШ төлдөг бүтэн цагийн ажилчдын тоо 10-250 хооронд байсан эсэх" },
+    ]
+  },
+  {
+    group: "b",
+    title: "ӨР ТӨЛБӨРИЙН ШАЛГУУР ХАНГАЛТ",
+    items: [
+      { name: "12 сараас дээш хугацааны нийгмийн даатгалын өргүй бөгөөд нотлох тодорхойлолттой эсэх" },
+      { name: "12 сараас дээш хугацааны татварын өргүй бөгөөд нотлох тодорхойлолттой эсэх" },
+      { name: "Монголбанкны муу ангиллын зээлгүй бөгөөд нотлох тодорхойлолттой эсэх" },
+    ]
+  },
+  {
+    group: "c",
+    title: "АЖ АХУЙН НЭГЖИЙН ХУВЬ ЭЗЭМШИГЧ НЬ ДАРААХ УЛС ТӨРИЙН НӨЛӨӨ БҮХИЙ ЭТГЭЭДҮҮД БОЛОН ТЭДНИЙ ГЭР БҮЛИЙН ГИШҮҮНТЭЙ ХОЛБООТОЙ БАЙЖ БОЛОХГҮЙ",
+    items: [
+      { name: "Ерөнхийлөгчтэй холбоогүй" },
+      { name: "Ерөнхий сайдтай холбоогүй" },
+      { name: "УИХ-н гишүүнтэй холбоогүй" },
+      { name: "Үндсэн хуулийн цэцийн гишүүдтэй холбоогүй" },
+      { name: "Дээд шүүхийн шүүгчидтэй холбоогүй" },
+      { name: "Улсын прокурортой холбоогүй" },
+      { name: "Аймаг, нийслэлийн засаг даргатай холбоогүй" },
+      { name: "Сайд, Төрийн нарийн бичгийн даргатай холбоогүй" },
+      { name: "Яам, хэрэгжүүлэгч агентлагуудын захирал, дарга нартай холбоогүй" },
+      { name: "Төрийн өмчит компаниудын захирал, дарга нартай холбоогүй" },
+    ]
+  },
+  {
+    group: "d",
+    title: "ЭКСПОРТ ХӨГЖЛИЙН ТӨЛӨВЛӨГӨӨГӨӨ БЭЛТГЭСЭН ЭСЭХ",
+    items: [
+      { name: "Экспортын чиглэлээр санхүүжилт хүсч, хийхээр төлөвлөсөн ажил нь гэрээ шалгаруулалт хийгдэж, гэрээ зурагдсанаас хойш 9 сарын дотор хэрэгжиж дуусах боломжтой эсэх" },
+      { name: "Экспортыг дэмжих төслөөс хүсч буй дэмжлэгтэй тэнцүү дүнгээр санхүүжилт гаргах боломжтой бөгөөд бэлэн эсэх" },
+      { name: "Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр өмнө гарсан зардлыг санхүүжүүлэхгүй эсэх" },
+      { name: "Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр зөвхөн зөвшөөрөгдсөн үйл ажиллагааг санхүүжүүлэх эсэх" },
+    ]
+  },
+  {
+    group: "f",
+    title: "БУСАДТАЙ ТУРШЛАГА, МЭДЭЭЛЛЭЭ ХУВААЛЦАХ БОЛОМЖТОЙ ЭСЭХ",
+    items: [
+      { name: "Ирэх нэг жилийн хугацаанд Экспортыг дэмжих төслөөс зохион байгуулах арга хэмжээнд хамтарч, бусад экспортлогчид болон шинээр экспортлохоор зорьж буй аж ахуйн нэгжүүдийг бэлтгэх сургалт, мэдээлэл хуваалцах ажлилд өөрийн байгууллагын туршлага, мэдлэгээ хуваалцаж, идэвхитэй оролцох эсэх" },
+    ]
+  },
 ]
 
 

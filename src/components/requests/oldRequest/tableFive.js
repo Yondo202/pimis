@@ -1,48 +1,48 @@
-import React, {useState,useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import TableFiveDetails from './deitals/tableFiveDetail';
 import TableFiveDetails2 from './deitals/tableFiveDetail2';
 import { Link, animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components';
-import { fontFamily, textColor, ColorRgb, Color,fontSize,NextBtn } from '../../theme';
-import {FiUserCheck} from 'react-icons/fi';
-import {MdDateRange} from 'react-icons/md';
-import {BiPen} from 'react-icons/bi';
-import {AiOutlineSend} from 'react-icons/ai';
+import { fontFamily, textColor, ColorRgb, fontSize, NextBtn } from '../../theme';
+import { FiUserCheck } from 'react-icons/fi';
+import { MdDateRange } from 'react-icons/md';
+import { BiPen } from 'react-icons/bi';
+import { AiOutlineSend } from 'react-icons/ai';
 import HelperContext from '../../../context/HelperContext';
 import axios from '../../../axiosbase';
 import AccessToken from '../../../context/accessToken';
 
-const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
-const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
+const today = new Date(); const month = (today.getMonth() + 1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length === 1 ? '0' + month : month) + '-' + (day.toString().length === 1 ? '0' + day : day);
 
 function TableFive(props) {
     const helperContext = useContext(HelperContext);
-    const [ spnBtn, setSpnBtn ] = useState(false);
+    const [spnBtn, setSpnBtn] = useState(false);
     const [opacity2, setOpacity2] = useState("0");
     const [FinalErrorText, setFinalErrorText] = useState("");
-    const [ Dname, setDname ] = useState(null);
+    const [Dname, setDname] = useState(null);
     const [Ddate, setDdate] = useState(null);
-    const changeNameHandle = (event) =>{ setDname(event.target.value); };
-    const changeDateHandle = (event) =>{ setDdate(event.target.value); };
+    const changeNameHandle = (event) => { setDname(event.target.value); };
+    const changeDateHandle = (event) => { setDdate(event.target.value); };
 
 
-    useEffect(()=>{
-        if(props.initialName){
+    useEffect(() => {
+        if (props.initialName) {
             setDname(props.initialName);
             setDdate(props.initialDate);
         }
-    },[props.initialName]);
+    }, [props.initialName]);
 
     const clickHandles = () => {
         let finalOne = {}; let finalEnd = {}; let rs2 = document.querySelectorAll(".GetItemAdd55"); let arr2 = Array.from(rs2); let finalOne2 = []; let tableCondition1 = [];
-        arr2.map((el,i)=>{
+        arr2.forEach((el, i) => {
             const Lala = {}
             let rs2 = document.querySelectorAll(`.PASS${i + 1}`);
             let arr23 = Array.from(rs2);
-            arr23.map((el,i)=>{
-                if(el.value !== ""){
-                     let field = el.name; let value = el.value; Lala["id"] = el.id; Lala[field] = value;
-                }else{
+            arr23.forEach((el, i) => {
+                if (el.value !== "") {
+                    let field = el.name; let value = el.value; Lala["id"] = el.id; Lala[field] = value;
+                } else {
                     let field = el.name; Lala["id"] = el.id; Lala[field] = null;
                 }
             }); tableCondition1.push(Lala); finalOne2.push(Lala);
@@ -51,108 +51,108 @@ function TableFive(props) {
 
         let tableCondition2 = []; let rs22 = document.querySelectorAll(".GetItemAdd555"); let arr22 = Array.from(rs22); let finalOne22 = [];
 
-        arr22.map((el,i)=>{
+        arr22.forEach((el, i) => {
             const Lala = {}
             let rs2 = document.querySelectorAll(`.passa${i + 1}`);
             let arr23 = Array.from(rs2);
-            arr23.map((el,i)=>{ if(el.value !== ""){
-                let field = el.name; let value = el.value; Lala["id"] = el.id; Lala[field] = value;
-             }else{
-                let field = el.name; Lala["id"] = el.id; Lala[field] = null;
-             }
+            arr23.forEach((el, i) => {
+                if (el.value !== "") {
+                    let field = el.name; let value = el.value; Lala["id"] = el.id; Lala[field] = value;
+                } else {
+                    let field = el.name; Lala["id"] = el.id; Lala[field] = null;
+                }
             });
             tableCondition2.push(Lala); finalOne22.push(Lala);
         });
 
-
         let keys2 = Object.keys(tableCondition2[0]);
-        // console.log(keys2.length , "keys2");
         let rs4 = document.querySelectorAll(".getUserInp222"); let arr4 = Array.from(rs4); let userInp = {};
-        arr4.map(el=>{let field = el.name; let value = el.value; userInp[field] = value; });
+        arr4.forEach(el => { let field = el.name; let value = el.value; userInp[field] = value; });
         let confirm = document.getElementById("GetcheckBtn5").checked; console.log(confirm, "my confirm");
 
         finalOne["requestOne"] = finalOne2; finalOne["requestTwo"] = finalOne22; finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS5"] = finalOne;
 
         console.log(finalEnd, "^^^final");
-        
-        if(keys1.length < 8 || keys2.length < 8){
+
+        if (keys1.length < 8 || keys2.length < 8) {
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү"); setOpacity2("1");
-        }else if(userInp.name === "" || userInp.date === ""){
+        } else if (userInp.name === "" || userInp.date === "") {
             setFinalErrorText("Хүсэлт гаргагчийн мэдүүлэг хэсэгийг бөгөлнө үү"); setOpacity2("1");
-        }else if(confirm === false){
+        } else if (confirm === false) {
             setFinalErrorText("Та үнэн зөв бөгөлсөн бол CHECK дарна уу"); setOpacity2("1");
-        }else{
+        } else {
             setOpacity2("0");
             setSpnBtn(true);
-            if(Dname){
-                axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization:props.token}}).then((res)=>{setSpnBtn(false);scroll.scrollTo(0);helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%");})
-                .catch((err)=>{setSpnBtn(false);helperContext.alertText('orange', 'Алдаа гарлаа', true);});
-                
-            }else{
-                axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{setSpnBtn(false);
-                    helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%","0%"); scroll.scrollTo(0);
-                }).catch((err)=>{setSpnBtn(false);helperContext.alertText('orange', 'Алдаа гарлаа', true);});
+            if (Dname) {
+                axios.put(`pps-request/${props.id}`, finalEnd, { headers: { Authorization: props.token } }).then((res) => { setSpnBtn(false); scroll.scrollTo(0); helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%", "0%"); })
+                    .catch((err) => { setSpnBtn(false); helperContext.alertText('orange', 'Алдаа гарлаа', true); });
+
+            } else {
+                axios.put(`pps-request/${helperContext.tableId}`, finalEnd, { headers: { Authorization: AccessToken() } }).then((res) => {
+                    setSpnBtn(false);
+                    helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); helperContext.StyleComp("-500%", "-400%", "-300%", "-200%", "-100%", "0%"); scroll.scrollTo(0);
+                }).catch((err) => { setSpnBtn(false); helperContext.alertText('orange', 'Алдаа гарлаа', true); });
             }
-            
+
         }
     }
 
     return (
         <Component3 className="container">
-            {Dname? (
-            <><TableFiveDetails initialData={props.initialData.requestOne} />
-              <TableFiveDetails2 initialData={props.initialData.requestTwo} /></>
-            ) :  <><TableFiveDetails initialData={null} />
-                   <TableFiveDetails2 initialData={null} /></> }
-            
+            {Dname ? (
+                <><TableFiveDetails initialData={props.initialData.requestOne} />
+                    <TableFiveDetails2 initialData={props.initialData.requestTwo} /></>
+            ) : <><TableFiveDetails initialData={null} />
+                <TableFiveDetails2 initialData={null} /></>}
+
             <div className="UserRequestPar">
-                        <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
-                        <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
-                        <div className="formOneParent">
-                            <div className="inputPar">
-                                <div className="inpChild">
-                                    <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
-                                    <div className="name"> <FiUserCheck />
-                                        <div className="form__group">
-                                            {Dname? <input type="input" value={Dname} onChange={changeNameHandle} className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                                    :<input type="input" className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
-                                            }
-                                            
-                                            <label htmlFor="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
-                                        </div>
-                                    </div>
+                <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
+                <div className="description">Би/Бид энэхүү маягтад өгсөн мэдээлэл нь үнэн зөв гэдгийг баталж байгаа бөгөөд худал, буруу мэдээлэл өгсөн нь санхүүгийн дэмжлэгийн шийдвэрт нөлөөлнө эсвэл санхүүгийн дэмжлэгийн шийдвэр, гэрээг цуцлах үндэслэл болно гэдгийг хүлээн зөвшөөрч байна. </div>
+                <div className="formOneParent">
+                    <div className="inputPar">
+                        <div className="inpChild">
+                            <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
+                            <div className="name"> <FiUserCheck />
+                                <div className="form__group">
+                                    {Dname ? <input type="input" value={Dname} onChange={changeNameHandle} className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                        : <input type="input" className="getUserInp222 LoginInpName form__field" placeholder="Аж ахуйн нэр" name="name" required />
+                                    }
+
+                                    <label htmlFor="name" className=" form__label">Бүтэн нэрээ оруулна уу</label>
                                 </div>
-                                
-                                <div className="NextChild">
-                                    <div className="inpChild next">
-                                        <div className="labels"><span> Огноо :</span></div>
-                                        <div className="name"> <MdDateRange />
-                                            <div className="form__group">
-                                                {Dname?<input type="date" value={Ddate} onChange={changeDateHandle} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" name="date" required />
-                                                        : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" name="date" required />
-                                                }
-                                                
-                                                <label htmlFor="password" className="form__label">Өдөр-Сар-Он </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="inpChild next">
-                                        <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
-                                            <div className="name"> <BiPen />
-                                                <div className="form__group">
-                                                    {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
-                                                    <input id="GetcheckBtn5" checked={Dname?true:null} className="checkBtn" type="checkbox" name="check" />
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>
-                                
                             </div>
                         </div>
-                        <div className="buttonPar">
-                            <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
-                            <NextBtn id="myInput" onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }}  className="SubmitButton" type="button">{spnBtn===false?(<>Илгээх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>):<img src="/gif1.gif" alt="spin" />} </NextBtn>
+
+                        <div className="NextChild">
+                            <div className="inpChild next">
+                                <div className="labels"><span> Огноо :</span></div>
+                                <div className="name"> <MdDateRange />
+                                    <div className="form__group">
+                                        {Dname ? <input type="date" value={Ddate} onChange={changeDateHandle} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" name="date" required />
+                                            : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp222 LoginInpName form__field" name="date" required />
+                                        }
+
+                                        <label htmlFor="password" className="form__label">Өдөр-Сар-Он </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="inpChild next">
+                                <div className="labels"><span> Та үнэн зөв бөгөлсөн эсэхээ баталгаажуулна уу : </span></div>
+                                <div className="name"> <BiPen />
+                                    <div className="form__group">
+                                        {/* <div className="SignBtn" onClick={openModal} > Зурах </div> */}
+                                        <input id="GetcheckBtn5" checked={Dname ? true : null} className="checkBtn" type="checkbox" name="check" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                    </div>
+                </div>
+                <div className="buttonPar">
+                    <div style={{ opacity: `${opacity2}` }} className="errtext">{FinalErrorText}</div>
+                    <NextBtn id="myInput" onClick={clickHandles} style={spnBtn === false ? { width: "40%" } : { width: "10%" }} className="SubmitButton" type="button">{spnBtn === false ? (<>Илгээх<div className="flexchild"><AiOutlineSend /> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>) : <img src="/gif1.gif" alt="spin" />} </NextBtn>
+                </div>
             </div>
         </Component3>
     )

@@ -5,8 +5,7 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import { Link, useHistory } from 'react-router-dom'
-import { animated, config, Transition } from 'react-spring/renderprops'
-
+import { animated, Transition } from 'react-spring/renderprops'
 
 const initialState = {
     format: false,
@@ -46,12 +45,10 @@ function UrgudulChecklist() {
             axios.put(`projects/${UrgudulCtx.data.id}`, { confirmed: Object.values(form).every(bool => bool) ? 1 : 0 }, {
                 headers: { 'Authorization': getLoggedUserToken() },
             }).then(res => {
-                console.log(res.data)
                 UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                 AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийг баталгаажууллаа.' })
                 setModalOpen(false)
             }).catch(err => {
-                console.log(err.response?.data)
                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Өргөдлийг баталгаажуулж чадсангүй.' })
                 setModalOpen(false)
             })
@@ -92,7 +89,7 @@ function UrgudulChecklist() {
                         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">E</span>
                         <span className="tw-leading-tight">- Шалгах хуудас</span>
 
-                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
+                        <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="/.../" position="bottom" />
                     </div>
 
                     {UrgudulCtx.data.project_number &&

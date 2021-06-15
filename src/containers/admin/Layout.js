@@ -22,7 +22,7 @@ import CompilationChecklist from 'pages/decision_making/5b/Page';
 import AnalystReport from 'pages/decision_making/5c/Page';
 import MainDecision from '../../components/admin/contents/main_decision/Main_decision';
 import NotifyPage1 from '../../components/admin/contents/notifyPage/MainPage';
-import EvaluatorsMeetingsNavigator from 'components/admin/contents/evaluators_meeting/MeetingsNavigator'
+import EvaluatorsMeetingNavigator from 'components/admin/contents/evaluators_meeting/MeetingNavigator'
 import EdpInformationHome from 'components/admin/contents/edpInformation/EdpInformation';
 import FirstEvaluationSendNotice from 'pages/decision_making/5a/sendNotice'
 import AcceptPeriodHandle from 'components/admin/contents/accept_period/acceptPeriodHandle'
@@ -35,7 +35,8 @@ import Holidays from "components/holidays/Holidays"
 import TrainingNavigatorAdmin from 'pages/training/training_admin/TrainingNavigator';
 import TrainingRequestsList from 'pages/training/training_admin/requestsList';
 import FeedbackQuestionnaireHandle from 'components/admin/contents/feedback_questionnaire/feedbackQuestionnaireHandle';
-
+import TrainingsReport from 'pages/training/training_admin/trainingReport';
+import TrainerOrganizationNavigator from 'components/admin/contents/trainer_organization/organizationNavigator';
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -74,7 +75,7 @@ function Layout({ setLocale }) {
               {/* <Route path="/urgudul/:page">
                 <UrgudulNavigator preloaded={true} />
               </Route> */}
-              <Route path="/meetings" component={EvaluatorsMeetingsNavigator} />
+              <Route path="/meetings" component={EvaluatorsMeetingNavigator} />
               <Route path="/accept-periods" component={AcceptPeriodHandle} />
               <Route path="/epd-information" component={EdpInformationHome} />
               <Route path="/project-status" component={ProjectStatusHandle} />
@@ -95,6 +96,8 @@ function Layout({ setLocale }) {
               <Route path="/trainings" component={TrainingNavigatorAdmin} />
               <Route path="/training-requests" component={TrainingRequestsList} />
               <Route path="/training-questionnaire" component={FeedbackQuestionnaireHandle} />
+              <Route path="/training-report" component={TrainingsReport} />
+              <Route path="/trainer-organizations" component={TrainerOrganizationNavigator} />
               <MiddleRoute />
             </Switch>
           </UrgudulStore>
@@ -115,7 +118,8 @@ const cardAnimate = keyframes`
   0% { transform:translateY(30px);opacity:0; }
   100% { transform:translateY(0px);opacity:1; }
 `
-const AdminApp = styled.div`
+
+export const AdminApp = styled.div`
     .MainParent{
         height:100vh;
         // display:flex;
@@ -277,7 +281,6 @@ const AdminApp = styled.div`
                     }
                   }
               
-                
                 .Profile{
                     cursor:pointer;
                     display:flex;
@@ -298,8 +301,6 @@ const AdminApp = styled.div`
                     }
                 }
             }
-            
-           
         }
         @media (max-width:760px){
             .SwitchPar{

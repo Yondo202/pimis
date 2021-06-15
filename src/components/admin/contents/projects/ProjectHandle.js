@@ -35,20 +35,14 @@ export default function ProjectHandle() {
         axios.get('pps-infos/registered-companies', {
             headers: { 'Authorization': getLoggedUserToken() }
         }).then(res => {
-            console.log(res.data)
             setData(res.data.data)
-        }).catch(err => {
-            console.log(err.response?.data)
         })
 
         axios.get('users', {
             headers: { Authorization: getLoggedUserToken() },
             params: { role: 'bh_zovloh' }
         }).then(res => {
-            console.log(res.data)
             setConsultants(res.data.data)
-        }).catch(err => {
-            console.log(err.response?.data)
         })
     }, [])
 
@@ -59,7 +53,6 @@ export default function ProjectHandle() {
     useEffect(() => {
         const handleResize = () => {
             setWidth(containerRef.current?.clientWidth)
-            console.log(containerRef.current?.clientWidth)
         }
         if (width === undefined) handleResize()
         window.addEventListener('resize', handleResize)

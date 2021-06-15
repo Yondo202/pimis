@@ -16,11 +16,8 @@ function FormSelect(props) {
             props.api &&
                 axios.get(props.api)
                     .then(res => {
-                        console.log(res.data)
                         const data = props.keys.reduce((a, v) => a[v], res.data)
                         setFetch(data)
-                    }).catch(err => {
-                        console.log(err.response?.data)
                     })
         }
     }, [props.data])
@@ -58,20 +55,19 @@ function FormSelect(props) {
 
             <button className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border tw-rounded-md tw-pt-2 tw-pb-1 tw-px-2 focus:tw-outline-none ${props.invalid ? 'tw-border-red-500' : 'tw-border-gray-500'} tw-transition-colors`} onClick={handleClickButton} ref={buttonRef}>
                 <span className="tw-h-5">
-                    {fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName]}
+                    {fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] ?? 'Сонгох'}
                 </span>
 
                 <ChevronDownSVG className={`tw-w-4 tw-h-4 tw-ml-auto ${props.invalid ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
             </button>
 
             <div className={`tw-text-sm tw-rounded-md tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto ${open ? 'tw-visible tw-opacity-100 tw-h-48 tw-mt-2' : 'tw-invisible tw-opacity-0 tw-h-0'} tw-transition-all tw-duration-300`} ref={divRef}>
-                {
-                    fetch.map((item, i) =>
-                        <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelectId(item.id)} key={item.id}>
-                            <span className="tw-font-medium tw-pr-2">{i + 1}.</span>
-                            {item[props.displayName]}
-                        </div>)
-                }
+                {fetch.map((item, i) =>
+                    <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelectId(item.id)} key={item.id}>
+                        <span className="tw-font-medium tw-pr-2">{i + 1}.</span>
+                        {item[props.displayName]}
+                    </div>
+                )}
             </div>
         </div>
     )

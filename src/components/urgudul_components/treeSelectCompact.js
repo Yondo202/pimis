@@ -4,7 +4,7 @@ import MinusSVG from 'assets/svgComponents/minusSVG'
 import PlusSVG from 'assets/svgComponents/plusSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
 import React, { useRef, useState } from 'react'
-import { Transition, config, animated } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops'
 
 
 export default function TreeSelectCompact(props) {
@@ -26,7 +26,10 @@ export default function TreeSelectCompact(props) {
     // })
     const handleSelectId = (value) => {
         props.handleChange(props.name, value, props.index, props.index1)
+        setOpen(false)
     }
+
+    // const containerHeight = Math.min(window.innerHeight - buttonRef.current?.getBoundingClientRect().bottom - 10, 360)
 
     return (
         <div className={`tw-relative ${props.classAppend}`}>
@@ -40,8 +43,9 @@ export default function TreeSelectCompact(props) {
             <Transition
                 items={open}
                 from={{ height: 0, opacity: 0 }}
-                enter={{ height: props.selectHeight || 426, opacity: 1 }}
-                leave={{ height: 0, opacity: 0 }}>
+                enter={{ height: 240, opacity: 1 }}
+                leave={{ height: 0, opacity: 0 }}
+                config={{ tension: 300, clamp: true }}>
                 {item => item && (anims =>
                     <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-fixed tw-z-10 tw-text-13px" style={{ width: props.selectWidth, top: buttonRef.current?.getBoundingClientRect().top + 26, left: buttonRef.current?.getBoundingClientRect().left, ...anims }}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">
@@ -86,7 +90,6 @@ const Tree = ({ parent, childs, display, handleSelectId, value }) => {
                             }
                         </Transition>
                     </div>
-
                     {parent[display]}
                     <span className="tw-text-blue-500 tw-font-medium tw-mx-2">
                         ({childs.length})
@@ -96,11 +99,12 @@ const Tree = ({ parent, childs, display, handleSelectId, value }) => {
 
             <Transition
                 items={open}
-                from={{ height: 0, opacity: 0 }}
-                enter={{ height: 'auto', opacity: 1 }}
-                leave={{ height: 0, opacity: 0 }}>
+                from={{ height: 0 }}
+                enter={{ height: 'auto' }}
+                leave={{ height: 0 }}
+                config={{ tension: 300, clamp: true }}>
                 {item1 => item1 && (anims1 =>
-                    <div className="tw-overflow-hidden tw-divide-y tw-divide-dashed tw-ml-4" style={anims1}>
+                    <div className="tw-overflow-y-hidden tw-divide-y tw-divide-dashed tw-ml-4" style={anims1}>
                         {childs.map(child =>
                             <div className="tw-p-1 tw-pl-1.5 tw-cursor-pointer tw-flex tw-items-center" onClick={() => handleSelectId(child.id)}>
                                 <div className="tw-border tw-border-blue-500 tw-rounded-sm tw-flex tw-items-center tw-justify-center tw-w-4 tw-h-4 tw-ml-1 tw-mr-2 tw-flex-shrink-0">

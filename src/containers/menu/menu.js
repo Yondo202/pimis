@@ -1,56 +1,58 @@
-import React,{useEffect, useState,useContext} from "react";
-import styled,{keyframes} from "styled-components";
+import React, { useEffect, useState, useContext } from "react";
+import styled, { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import {IoNotificationsOutline,IoLockClosed,IoCaretDownOutline} from 'react-icons/io5';
-import {IoIosArrowForward} from 'react-icons/io';
-import {FaPenNib} from 'react-icons/fa';
-import {GiEntryDoor} from 'react-icons/gi';
+import { IoNotificationsOutline, IoLockClosed, IoCaretDownOutline } from 'react-icons/io5';
+import { IoIosArrowForward } from 'react-icons/io';
+import { FaPenNib } from 'react-icons/fa';
+import { GiEntryDoor } from 'react-icons/gi';
 import { useLocation } from 'react-router-dom';
 import HamburgerMenu from 'react-hamburger-menu';
 
 
 function Menu() {
-    const location = useLocation();
-    const userCtx = useContext(UserContext);
-    const [ showProfile, setShowProfile ] = useState(false);
-    const [ proHover, setProHover ] = useState(false);
-    const [userName, setUserName] = useState();
-    const [ currPath, setCurrPath ] = useState();
-    const [ diplayFlex, setDisplayNone ] = useState("flex");
-    const [ headerHeight, setheaderHeight ] = useState("45px");
-    const [open, close] = useState('');
-    const [ activeMenu, setActiveMenu ]=useState({
-      Home: '',
-      Req: '',
-      Check: ''
-    })
+  const location = useLocation();
+  const userCtx = useContext(UserContext);
+  const [showProfile, setShowProfile] = useState(false);
+  const [proHover, setProHover] = useState(false);
+  const [userName, setUserName] = useState();
+  const [currPath, setCurrPath] = useState();
+  const [diplayFlex, setDisplayNone] = useState("flex");
+  const [headerHeight, setheaderHeight] = useState("45px");
+  const [open, close] = useState('');
+  const [activeMenu, setActiveMenu] = useState({
+    Home: '',
+    Req: '',
+    Check: ''
+  })
 
-    const closeHandle = () =>{ setShowProfile(false); setProHover(false); } 
-    
-    useEffect(() => {
-      const userName = localStorage.getItem("username");
-      setUserName(userName); 
-      return console.log("sey good bay");
-    },[]);
+  const closeHandle = () => { setShowProfile(false); setProHover(false); }
 
-    const handleClick = () => {
-      close(!open);
-    }
+  useEffect(() => {
+    const userName = localStorage.getItem("username");
+    setUserName(userName);
+    return console.log("sey good bay");
+  }, []);
 
-    useEffect(() => {
-      const currentPath = location.pathname;
-      setCurrPath(currentPath);
-      if(currentPath !== "/" && currentPath !== "/comp-request"){  setheaderHeight("45px");
-      }else{ setheaderHeight("45px");}
-      if(currentPath === "/"){setActiveMenu({Home:'line2',Req:'',Check:'',Maygt:''})}
-      if(currentPath === "/request/user"){setActiveMenu({Home: '',Req:'line2',Check: '',Maygt:''})}
-      if(currentPath === "/check/user"){setActiveMenu({Home: '',Req:'',Check:'line2',Maygt: ''})}
-      if(currentPath === "/urgudul/1"){setActiveMenu({Home: '',Req: '',Check:'',Maygt:'line2'}) }
-    }, [location]);
-   
+  const handleClick = () => {
+    close(!open);
+  }
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    setCurrPath(currentPath);
+    if (currentPath !== "/" && currentPath !== "/comp-request") {
+      setheaderHeight("45px");
+    } else { setheaderHeight("45px"); }
+    if (currentPath === "/") { setActiveMenu({ Home: 'line2', Req: '', Check: '', Maygt: '' }) }
+    if (currentPath === "/request/user") { setActiveMenu({ Home: '', Req: 'line2', Check: '', Maygt: '' }) }
+    if (currentPath === "/check/user") { setActiveMenu({ Home: '', Req: '', Check: 'line2', Maygt: '' }) }
+    if (currentPath === "/urgudul/1") { setActiveMenu({ Home: '', Req: '', Check: '', Maygt: 'line2' }) }
+  }, [location]);
+
   return (
     <Componentss>
+<<<<<<< HEAD
       <div style={{height:headerHeight,display:diplayFlex}} className="MainMenus">
             <div style={currPath === "/"? {maxWidth:`1160px`}:{maxWidth:1000}} className="container">
                <input type="checkbox" id="check" name="check" />
@@ -88,48 +90,84 @@ function Menu() {
                             </div> </div>
                           <div className="UserNameMenu" >
                             <div style={proHover?{backgroundColor:`rgba(255,255,255,0.4)`}:{backgroundColor:`rgba(255,255,255,0.2)`}} onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="par"><IoCaretDownOutline /></div> 
-
-                             {showProfile&&<div onMouseEnter={()=>{setShowProfile(true);setProHover(true)}} onMouseLeave={()=>{setShowProfile(false);setProHover(false)}} className="ghost"> 
-                             <div className="HoverContent">  
-                                  <div className="UserInfo"> <img src="/user1.svg" alt="src" /> <span className="name">{userCtx.userInfo.name}</span> </div>
-                                  <Link onClick={closeHandle} to="/signature" className="resPass">
-                                        <div className="initList"><div className="svg"><FaPenNib /></div><span>Хэрэглэгчийн мэдээлэл</span></div>
-                                        <div className="svgOther"><IoIosArrowForward /> </div>                               
-                                  </Link>
-                                  <Link onClick={closeHandle} to="/changepass" className="resPass">
-                                        <div className="initList"><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
-                                        <div className="svgOther"><IoIosArrowForward /> </div>                               
-                                  </Link>
-                                  <Link to="/" onClick={()=>{closeHandle();userCtx.logout()}}  className="resPass">
-                                        <div className="initList"><div className="svg"><GiEntryDoor /></div>  <span>Гарах</span></div>
-                                        <div className="svgOther"><IoIosArrowForward /> </div>                               
-                                  </Link>
-                              </div></div>} 
-
-                          </div>
-                          {/* <span className="Logout"><Link  to="/" onClick={()=>userCtx.logout()}><span>Гарах</span><IoIosLogOut /></Link></span> */}
-                        </div>
-                </span>
-
-                <div className="MobileMenu">
-                    <label htmlFor="check" className="checkBtnHome">
-                            <HamburgerMenu
-                                isOpen={open}
-                                menuClicked={handleClick}
-                                width={32}
-                                height={15}
-                                strokeWidth={2}
-                                rotate={0}
-                                // color={this.state.color}
-                                color="white"
-                                borderRadius={0}
-                                animationDuration={0.5}
-                            />
-                    </label>
-                    <div className="headLogoPar"><img src="/edp_logo.png" alt="edp-logo" /></div>
-                    <div></div>
-                </div>
+=======
+      <div style={{ height: headerHeight, display: diplayFlex }} className="MainMenus">
+        <div style={currPath === "/" ? { maxWidth: `1160px` } : { maxWidth: 1000 }} className="container">
+          <input type="checkbox" id="check" name="check" />
+          <span className="menuPar">
+            <div className="backgroundGhost"></div>
+            <label htmlFor="check" className="checkBtn">
+              <HamburgerMenu
+                isOpen={open}
+                menuClicked={handleClick}
+                width={32}
+                height={15}
+                strokeWidth={2}
+                rotate={0}
+                // color={this.state.color}
+                color="black"
+                borderRadius={0}
+                animationDuration={0.5}
+              />
+            </label>
+            <div className="menus">
+              <div className="items">
+                <Link to="/">Экспортыг дэмжих төсөл</Link>
+                {/* <div style={{ transform: `${activeMenu.Home}` }} className={`line ${activeMenu.Home}`}></div> */}
+              </div>
+              <div className="items">
+                <Link to="/trainings">Сургалтын хөтөлбөр</Link>
+              </div>
             </div>
+>>>>>>> 1eee0aed0aa4f77287d4d0eaca11f4d734f6c778
+
+            <div className="userMenuPar">
+              {/* <span className="UserNameMenu"><Link to="/">{userName}</Link> </span> */}
+              <div className="Notification"><div className="notf" to="#" content="2" ><IoNotificationsOutline /></div> </div>
+              <div className="UserNameMenu" >
+                <div style={proHover ? { backgroundColor: `rgba(255,255,255,0.4)` } : { backgroundColor: `rgba(255,255,255,0.2)` }} onMouseEnter={() => { setShowProfile(true); setProHover(true) }} onMouseLeave={() => { setShowProfile(false); setProHover(false) }} className="par"><IoCaretDownOutline /></div>
+
+                {showProfile && <div onMouseEnter={() => { setShowProfile(true); setProHover(true) }} onMouseLeave={() => { setShowProfile(false); setProHover(false) }} className="ghost">
+                  <div className="HoverContent">
+                    <div className="UserInfo"> <img src="/user1.svg" alt="src" /> <span className="name">{userCtx.userInfo.name}</span> </div>
+                    <Link onClick={closeHandle} to="/signature" className="resPass">
+                      <div className="initList"><div className="svg"><FaPenNib /></div><span>Хэрэглэгчийн мэдээлэл</span></div>
+                      <div className="svgOther"><IoIosArrowForward /> </div>
+                    </Link>
+                    <Link onClick={closeHandle} to="/changepass" className="resPass">
+                      <div className="initList"><div className="svg"><IoLockClosed /></div>  <span>Нууц үг солих</span></div>
+                      <div className="svgOther"><IoIosArrowForward /> </div>
+                    </Link>
+                    <Link to="/" onClick={() => { closeHandle(); userCtx.logout() }} className="resPass">
+                      <div className="initList"><div className="svg"><GiEntryDoor /></div>  <span>Гарах</span></div>
+                      <div className="svgOther"><IoIosArrowForward /> </div>
+                    </Link>
+                  </div></div>}
+
+              </div>
+              {/* <span className="Logout"><Link  to="/" onClick={()=>userCtx.logout()}><span>Гарах</span><IoIosLogOut /></Link></span> */}
+            </div>
+          </span>
+
+          <div className="MobileMenu">
+            <label htmlFor="check" className="checkBtnHome">
+              <HamburgerMenu
+                isOpen={open}
+                menuClicked={handleClick}
+                width={32}
+                height={15}
+                strokeWidth={2}
+                rotate={0}
+                // color={this.state.color}
+                color="white"
+                borderRadius={0}
+                animationDuration={0.5}
+              />
+            </label>
+            <div className="headLogoPar"><img src="/edp_logo.png" alt="edp-logo" /></div>
+            <div></div>
+          </div>
+        </div>
       </div>
     </Componentss>
   );

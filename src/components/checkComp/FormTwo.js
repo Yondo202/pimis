@@ -1,90 +1,91 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components'
 import FormThree from './FormThree';
 import { Link, animateScroll as scroll } from "react-scroll";
-import axios from'axios';
+import axios from 'axios';
 
 function FormTwo(props) {
-    const [opacity, setOpacity] = React.useState("0");
-    const [childStyle, setChildStyle] = React.useState('0');
-    const [procent, setProcent] = React.useState('0');
+  const [opacity, setOpacity] = React.useState("0");
+  const [childStyle, setChildStyle] = React.useState('0');
+  const [procent, setProcent] = React.useState('0');
 
-    const [dataFinal, setData] = React.useState({});
-    const [dataDetail, setDataDetal] = React.useState([]);
-    
-    useEffect(async () => {
-      const result = await axios.get( 'http://192.168.88.78:3000/api/questions?page=1&pageSize=3' );
-   
+  const [dataFinal, setData] = React.useState({});
+  const [dataDetail, setDataDetal] = React.useState([]);
+
+  useEffect(() => {
+    void async function fetch() {
+      const result = await axios.get('http://192.168.88.78:3000/api/questions?page=1&pageSize=3');
+
       const Data1 = result.data.data.docs[1]
       setData(Data1);
       setDataDetal(Data1.questiondetails)
-    },[]);
+    }()
+  }, []);
 
-  const clickHandles = (e) =>{
+  const clickHandles = (e) => {
     // e.preventDefault();
-                let rs = document.querySelectorAll(".inpTest3");
-                // console.log(rs, "dada"); 
-                let arr = Array.from(rs);
-                let finalOne = {};
-                arr.map((element,i)=>{
-                  if(element.checked === true){
-                    let field = element.tabIndex;
-                    let value = element.value;
-                    finalOne[field] = value
-                  }
-            });
-            let keys = Object.keys(finalOne);
-            const Procent = keys.length * 100 / 13;
-            const FinalProcent = Math.round(Procent);
+    let rs = document.querySelectorAll(".inpTest3");
+    let arr = Array.from(rs);
+    let finalOne = {};
+    arr.forEach((element, i) => {
+      if (element.checked === true) {
+        let field = element.tabIndex;
+        let value = element.value;
+        finalOne[field] = value
+      }
+    });
+    let keys = Object.keys(finalOne);
+    const Procent = keys.length * 100 / 13;
+    const FinalProcent = Math.round(Procent);
 
-            if(keys.length < 13){
-              setOpacity("1");
-              setChildStyle("0");
-              setProcent(FinalProcent);
-              scroll.scrollTo(610);
-            } else{
-              setOpacity("0");
-              setChildStyle("1");
-              scroll.scrollTo(1350);
-            }
-      
+    if (keys.length < 13) {
+      setOpacity("1");
+      setChildStyle("0");
+      setProcent(FinalProcent);
+      scroll.scrollTo(610);
+    } else {
+      setOpacity("0");
+      setChildStyle("1");
+      scroll.scrollTo(1350);
+    }
+
   }
 
-    return (
-        <Component2 style={{transform:`scale(${props.SoloStyle})`}}>
-        {/* <Components > */}
-            <div className="rowHeader">2. {dataFinal.description}<span className="tseg">*</span></div>
-            <div className="formTwoParent ">
-              <div className="headerPar">
-                <div className="row" >
-                  <div className="col-md-8 col-sm-8 col-6"> Шалгуур </div>
-                  <div className="col-md-2 col-sm-2 col-3"> Тийм </div>
-                  <div className="col-md-2 col-sm-2 col-3">Үгүй </div>
-                </div>
-              </div>
-              {dataDetail.map((el, i)=>{
-                return(
-                  <div className="headerParchild" key={i}>
-                    <div className="row" >
-                      <div className="col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
-                      <div className="col-md-7 col-sm-7 col-5">{el.description}</div>
-                      <div className="col-md-2 col-sm-2 col-3"><input className={`d${i} getinput22 inpTest3`} tabIndex={`${i + 1}`} type="radio" name={el.id} value="1"/></div>
-                      <div className="col-md-2 col-sm-2 col-3"><input className={`d${i} getinput22 inpTest3`} tabIndex={`${i + 1}`} type="radio" name={el.id} value="0"/></div>
-                    </div>
-                </div>
-                )
-              })}
-              <div className="buttonPar">
-              <div style={{opacity:`${opacity}`}} className="errtext">Таны асуулга {procent}% байна..</div>
-               <div style={{opacity:`${opacity}`}} className="errtext">Та гүйцэд бөгөлнө үү...</div>
-               <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>clickHandles()}>
-                 <span onClick={clickHandles} className="TestButton">NEXT</span>
-              </Link>
+  return (
+    <Component2 style={{ transform: `scale(${props.SoloStyle})` }}>
+      {/* <Components > */}
+      <div className="rowHeader">2. {dataFinal.description}<span className="tseg">*</span></div>
+      <div className="formTwoParent ">
+        <div className="headerPar">
+          <div className="row" >
+            <div className="col-md-8 col-sm-8 col-6"> Шалгуур </div>
+            <div className="col-md-2 col-sm-2 col-3"> Тийм </div>
+            <div className="col-md-2 col-sm-2 col-3">Үгүй </div>
+          </div>
+        </div>
+        {dataDetail.map((el, i) => {
+          return (
+            <div className="headerParchild" key={i}>
+              <div className="row" >
+                <div className="col-md-1 col-sm-1 col-1">{`${i + 1}`}</div>
+                <div className="col-md-7 col-sm-7 col-5">{el.description}</div>
+                <div className="col-md-2 col-sm-2 col-3"><input className={`d${i} getinput22 inpTest3`} tabIndex={`${i + 1}`} type="radio" name={el.id} value="1" /></div>
+                <div className="col-md-2 col-sm-2 col-3"><input className={`d${i} getinput22 inpTest3`} tabIndex={`${i + 1}`} type="radio" name={el.id} value="0" /></div>
               </div>
             </div>
-            <FormThree childStyle={childStyle} />
-        </Component2>
-    )
+          )
+        })}
+        <div className="buttonPar">
+          <div style={{ opacity: `${opacity}` }} className="errtext">Таны асуулга {procent}% байна..</div>
+          <div style={{ opacity: `${opacity}` }} className="errtext">Та гүйцэд бөгөлнө үү...</div>
+          <Link activeClass="active" to="section1" spy={true} smooth={true} offset={-70} duration={0} onClick={() => clickHandles()}>
+            <span onClick={clickHandles} className="TestButton">NEXT</span>
+          </Link>
+        </div>
+      </div>
+      <FormThree childStyle={childStyle} />
+    </Component2>
+  )
 }
 
 export default FormTwo

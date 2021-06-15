@@ -12,6 +12,7 @@ import 'devextreme/dist/css/dx.common.css'
 // import 'devextreme/dist/css/dx.light-compact.css'
 import 'assets/devExtremeTheme/dx.material.blue-light-compact.css'
 import MemberRoute from 'containers/member/MemberRoute'
+import TrainerPanel from "containers/trainer/TrainerPanel"
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -25,7 +26,6 @@ function App() {
       if (expireDate > new Date()) {
         console.log(expireDate);
         // Hugatsaa n duusaaagui token baina, automat login hiine
-
         ctxUser.autoRenewTokenAfterMillisec(expireDate.getTime() - new Date().getTime());
       } else {
         //Хугацаа дууссан байсанч токен байвал логин хийнэ
@@ -40,14 +40,14 @@ function App() {
       <AlertStore>
         <FilePreviewStore>
           <Router>
-            {
-              ctxUser.userInfo.userId
-                ? ctxUser.userInfo.role !== "user"
-                  ? ctxUser.userInfo.role === "member"
-                    ? (<MemberRoute />)
-                    : (<Admin />)
-                  : (<UsersRoute />)
-                : (<UnAuthContent />)
+            {ctxUser.userInfo.userId
+              ? ctxUser.userInfo.role !== "user"
+                ? {
+                  'member': <MemberRoute />,
+                  'trainer': <TrainerPanel />,
+                }[ctxUser.userInfo.role] || <Admin />
+                : (<UsersRoute />)
+              : (<UnAuthContent />)
             }
           </Router>
           <FilePreviewModal />

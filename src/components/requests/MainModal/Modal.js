@@ -1,64 +1,64 @@
-import React, {useRef, useEffect, useCallback, useState } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { useHistory } from "react-router-dom"
-import {useSpring, animated} from 'react-spring';
-import {VscFilePdf} from 'react-icons/vsc';
+import { useSpring, animated } from 'react-spring';
+import { VscFilePdf } from 'react-icons/vsc';
 import styled from 'styled-components'
 import ModalFour from '../modals/modalFour';
 import ModalOne from '../modals/modalOne'
 import ModalThree from '../modals/modalThree';
 import ModalTwo from '../modals/modalTwo';
-import {ColorRgb,textColor} from '../../theme'
+import { ColorRgb, textColor } from '../../theme'
 import { useReactToPrint } from "react-to-print";
 
-export const Modal = ({ showModal,setShowModal, initialData, param, na3 }) => {
+export const Modal = ({ showModal, setShowModal, initialData, param, na3 }) => {
     const history = useHistory();
-    const [ DataOne, setDataOne ] = useState([]);
+    const [DataOne, setDataOne] = useState([]);
     const modalRef = useRef();
     const animation = useSpring({
-        config:{ duration:250 },
+        config: { duration: 250 },
         opacity: showModal ? 1 : 0,
         transform: showModal ? `translateX(0%)` : `translateX(-100%)`
     });
-    const closeModal = e =>{ if(modalRef.current === e.target){ setShowModal(false);}}
-    
-    const keyPress = useCallback(e=>{
-        if(e.key === 'Escape' && showModal){ setShowModal(false); }else if(e.key=== 'F4'){ setShowModal(true); }
-    },[setShowModal, showModal]);
-    
-    useEffect( async ()=>{
+    const closeModal = e => { if (modalRef.current === e.target) { setShowModal(false); } }
+
+    const keyPress = useCallback(e => {
+        if (e.key === 'Escape' && showModal) { setShowModal(false); } else if (e.key === 'F4') { setShowModal(true); }
+    }, [setShowModal, showModal]);
+
+    useEffect(() => {
         document.addEventListener('keydown', keyPress);
-        await setDataOne(initialData);
+        setDataOne(initialData);
         return () => document.removeEventListener('keydown', keyPress);
-    },[keyPress]);
+    }, [keyPress]);
 
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
-      content: () => componentRef.current,
+        content: () => componentRef.current,
     });
-    const backHanlde = () =>{ history.goBack(); };
+    const backHanlde = () => { history.goBack(); };
 
-    return(
+    return (
         <>
             {showModal ?
-              (<Background style={param!=="user"?{left:"270px",paddingRight:"160px",justifyContent:"center"} :{left:"0"} } ref={modalRef} onClick={param!=="user"?backHanlde:closeModal}>
-                  <animated.div style={animation} >
-                      <div className="modalPar container">
-                          <div className="closeParent">
-                              {param!=="user"? <button className="esc" onClick={backHanlde} > Буцах </button> :<button className="esc" onClick={()=> setShowModal(prev => !prev)} > X </button> }
-                              <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
-                          </div>
-                          {initialData? (
-                            <div ref={componentRef}>
-                            {initialData.name1&&<ModalOne DataOne={initialData.ppsRequest1Details} />} 
-                            {initialData.name2&&<ModalTwo Data2={initialData.ppsRequest2Details} />} 
-                            {initialData.name3&&<ModalThree Data2={initialData.ppsRequest3Details} na3={na3} />} 
-                            {initialData.name4&&<ModalFour Data2={initialData.ppsRequest4Details} />} 
-                          </div>
-                          ): <h2>Мэдээлэл ороогүй байна</h2>}
-                      </div>
-                  </animated.div>
-              </Background>)
-             : null}
+                (<Background style={param !== "user" ? { left: "270px", paddingRight: "160px", justifyContent: "center" } : { left: "0" }} ref={modalRef} onClick={param !== "user" ? backHanlde : closeModal}>
+                    <animated.div style={animation} >
+                        <div className="modalPar container">
+                            <div className="closeParent">
+                                {param !== "user" ? <button className="esc" onClick={backHanlde} > Буцах </button> : <button className="esc" onClick={() => setShowModal(prev => !prev)} > X </button>}
+                                <button className="print" onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
+                            </div>
+                            {initialData ? (
+                                <div ref={componentRef}>
+                                    {initialData.name1 && <ModalOne DataOne={initialData.ppsRequest1Details} />}
+                                    {initialData.name2 && <ModalTwo Data2={initialData.ppsRequest2Details} />}
+                                    {initialData.name3 && <ModalThree Data2={initialData.ppsRequest3Details} na3={na3} />}
+                                    {initialData.name4 && <ModalFour Data2={initialData.ppsRequest4Details} />}
+                                </div>
+                            ) : <h2>Мэдээлэл ороогүй байна</h2>}
+                        </div>
+                    </animated.div>
+                </Background>)
+                : null}
         </>
     )
 }

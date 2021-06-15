@@ -14,6 +14,7 @@ import QuestionMarkSVG from 'assets/svgComponents/questionMarkSVG'
 import PenAltSVG from 'assets/svgComponents/penAltSVG'
 import { useHistory } from 'react-router'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
+import NumberFormat from 'react-number-format'
 
 
 const initialState = {
@@ -78,26 +79,13 @@ export default function LetterOfInterest() {
     const inputRefLogo = useRef(null)
     const inputRefStamp = useRef(null)
 
-    const handleUploadLogo = (e) => {
+    const handleInputPicture = (e, key) => {
         e.preventDefault()
-
         const reader = new FileReader()
         if (!e.target.files[0]) return
         const file = e.target.files[0]
         reader.onloadend = () => {
-            handleInput('company_logo', reader.result)
-        }
-        reader.readAsDataURL(file)
-    }
-
-    const handleUploadStamp = (e) => {
-        e.preventDefault()
-
-        const reader = new FileReader()
-        if (!e.target.files[0]) return
-        const file = e.target.files[0]
-        reader.onloadend = () => {
-            handleInput('company_stamp', reader.result)
+            handleInput(key, reader.result)
         }
         reader.readAsDataURL(file)
     }
@@ -127,10 +115,12 @@ export default function LetterOfInterest() {
                         'Authorization': getLoggedUserToken(),
                     },
                 }).then(res => {
-                    console.log(res.data)
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
                 }).catch(err => {
-                    console.log(err.response?.data)
+                    if (err.response.data?.error?.type === "entity.too.large") {
+                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хадгалж чадсангүй. Зургийн хэмжээ том байна.' })
+                        return
+                    }
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хадгалж чадсангүй.' })
                 })
             } else {
@@ -139,11 +129,13 @@ export default function LetterOfInterest() {
                         'Authorization': getLoggedUserToken(),
                     },
                 }).then(res => {
-                    console.log(res.data)
                     setForm({ ...form, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
                 }).catch(err => {
-                    console.log(err.response?.data)
+                    if (err.response.data?.error?.type === "entity.too.large") {
+                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хадгалж чадсангүй. Зургийн хэмжээ том байна.' })
+                        return
+                    }
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хадгалж чадсангүй.' })
                 })
             }
@@ -158,10 +150,7 @@ export default function LetterOfInterest() {
                 'Authorization': getLoggedUserToken(),
             },
         }).then(res => {
-            console.log(res.data)
             setForm({ ...form, ...res.data.data })
-        }).catch(err => {
-            console.log(err.response?.data)
         })
     }, [])
 
@@ -183,7 +172,7 @@ export default function LetterOfInterest() {
                 return true
             case '<p><br></p>':
                 if (type === 'quill') return true
-                break
+                else return false
             default:
                 return false
         }
@@ -257,7 +246,7 @@ export default function LetterOfInterest() {
 
                             <ul className="tw-text-13px tw-list-disc tw-list-outside tw-leading-snug tw-mt-2 tw-ml-5">
                                 {Object.keys(helperTexts).map(key =>
-                                    <li className="tw-mt-1">
+                                    <li className="tw-mt-1" key={key}>
                                         {helperTexts[key].title} - {helperTexts[key].text}
                                     </li>
                                 )}
@@ -267,8 +256,8 @@ export default function LetterOfInterest() {
                 </Transition>
 
                 <div className="letter-container" style={{ border: '1px solid rgba(0,0,0,0.3)', padding: '12px', boxSizing: 'content-box' }}>
-                    <div className="tw-grid tw-grid-cols-2 tw-grid-rows-1 tw-mt-20 tw-mx-24 tw-text-13px tw-text-blue-600">
-                        <div className="tw-relative tw-grid tw-grid-cols-1 tw-mr-8">
+                    <div className="tw-grid tw-grid-cols-2 tw-grid-rows-1 tw-mt-20 tw-mx-24 tw-text-13px">
+                        <div className="tw-relative tw-grid tw-grid-cols-1 tw-mr-8 tw-text-blue-600">
                             {form.company_logo ?
                                 <div className="tw-w-w-full tw-h-36 tw-justify-self-center">
                                     <img src={form.company_logo} alt="Байгууллагын лого" className="tw-w-full tw-h-full tw-object-scale-down tw-shadow-md tw-cursor-pointer" onClick={() => inputRefLogo.current.click()} />
@@ -282,25 +271,25 @@ export default function LetterOfInterest() {
                                     <span className="tw-font-medium tw-mt-1">Компаний лого</span>
                                 </button>
                             }
-                            <input type="file" className="tw-invisible tw-absolute tw-h-0" onChange={handleUploadLogo} ref={inputRefLogo} />
+                            <input type="file" accept="image/*" className="tw-invisible tw-absolute tw-h-0" onChange={e => handleInputPicture(e, 'company_logo')} ref={inputRefLogo} />
 
-                            <input className={`tw-mt-1 tw-px-0.5 tw-text-center tw-text-sm tw-shadow-inner tw-rounded focus:tw-outline-none tw-leading-tight ${validate && checkInvalid(form.company_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_name || ''} onChange={e => handleInput('company_name', e.target.value)} placeholder="ААН албан ёсны нэр" title="ААН албан ёсны нэр" />
+                            <input className={`tw-mt-1.5 tw-px-1 tw-text-center tw-text-sm tw-shadow-inner tw-rounded focus:tw-outline-none tw-leading-tight ${validate && checkInvalid(form.company_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_name || ''} onChange={e => handleInput('company_name', e.target.value)} placeholder="ААН албан ёсны нэр" title="ААН албан ёсны нэр" />
 
-                            <textarea className={`tw-mt-1 tw-px-0.5 tw-shadow-inner tw-rounded focus:tw-outline-none tw-leading-tight tw-text-center tw-overflow-y-hidden tw-resize-y ${validate && checkInvalid(form.company_address) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ minHeight: 32, height: locationTextareaRef.current?.scrollHeight }} value={form.company_address || ''} onChange={e => handleInput('company_address', e.target.value)} placeholder="ААН хаяг бүтнээр" title="ААН хаяг бүтнээр" ref={locationTextareaRef} />
+                            <textarea className={`tw-mt-1 tw-px-1 tw-shadow-inner tw-rounded focus:tw-outline-none tw-leading-tight tw-text-center tw-overflow-y-hidden tw-resize-y ${validate && checkInvalid(form.company_address) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ minHeight: 32, height: locationTextareaRef.current?.scrollHeight, maxHeight: 60 }} value={form.company_address || ''} onChange={e => handleInput('company_address', e.target.value)} placeholder="ААН хаяг бүтнээр" title="ААН хаяг бүтнээр" ref={locationTextareaRef} />
 
                             <div className="tw-mt-1 tw-flex tw-justify-center">
                                 <div className="tw-flex tw-items-center tw-mr-2 tw-leading-tight ">
                                     <span className="tw-mr-1">
                                         Утас:
                                     </span>
-                                    <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-20 ${validate && checkInvalid(form.company_phone) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_phone || ''} onChange={e => handleInput('company_phone', e.target.value)} title="Утас" />
+                                    <NumberFormat className={`tw-px-1 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-28 ${validate && checkInvalid(form.company_phone) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} format='(+976) #### ####' value={form.company_phone || ''} onValueChange={values => handleInput('company_phone', values.formattedValue)} title="Утас" />
                                 </div>
 
                                 <div className="tw-flex tw-items-center tw-leading-tight">
                                     <span className="tw-mr-1">
                                         Факс:
                                     </span>
-                                    <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-20 ${validate && checkInvalid(form.company_fax) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_fax || ''} onChange={e => handleInput('company_fax', e.target.value)} title="Факс" />
+                                    <input className={`tw-px-1 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-28 ${validate && checkInvalid(form.company_fax) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="number" value={form.company_fax || ''} onChange={e => handleInput('company_fax', e.target.value)} title="Факс" />
                                 </div>
                             </div>
 
@@ -308,35 +297,35 @@ export default function LetterOfInterest() {
                                 <span className="tw-mr-1">
                                     Имэйл:
                                 </span>
-                                <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.company_email) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_email || ''} onChange={e => handleInput('company_email', e.target.value)} title="Имэйл" />
+                                <input className={`tw-px-1 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.company_email) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_email || ''} onChange={e => handleInput('company_email', e.target.value)} title="Имэйл" />
                             </div>
 
                             <div className="tw-mt-1 tw-flex tw-justify-center tw-items-center tw-leading-tight">
                                 <span className="tw-mr-1">
-                                    УБД:
+                                    Улсын бүртгэлийн дугаар:
                                 </span>
-                                <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.company_register) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_register || ''} onChange={e => handleInput('company_register', e.target.value)} title="Улсын бүртгэлийн дугаар" />
+                                <input className={`tw-w-28 tw-px-1 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.company_register) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.company_register || ''} onChange={e => handleInput('company_register', e.target.value)} title="Улсын бүртгэлийн дугаар" />
                             </div>
 
                             <div className="tw-mt-1 tw-flex tw-justify-center tw-items-center tw-leading-tight">
-                                <input className={`tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.submit_date) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ width: 136 }} type="date" value={form.submit_date || ''} onChange={e => handleInput('submit_date', e.target.value)} title="Он сар өдөр" />
+                                <input className={`tw-px-1 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.submit_date) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} style={{ width: 136 }} type="date" value={form.submit_date || ''} onChange={e => handleInput('submit_date', e.target.value)} title="Он сар өдөр" />
 
                                 <span className="tw-ml-2">
                                     №:
                                 </span>
-                                <input className={`tw-px-0.5 tw-ml-1 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-24 ${validate && checkInvalid(form.snumber) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.snumber || ''} onChange={e => handleInput('snumber', e.target.value)} title="Дугаар" />
+                                <input className={`tw-px-1 tw-ml-1 tw-shadow-inner focus:tw-outline-none tw-rounded tw-w-28 ${validate && checkInvalid(form.snumber) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="number" value={form.snumber || ''} onChange={e => handleInput('snumber', e.target.value)} title="Дугаар" />
                             </div>
                         </div>
 
-                        <div className="tw-uppercase tw-text-center tw-font-medium tw-text-2xl tw-px-8 tw-pt-8 tw-ml-8">
+                        <div className="tw-uppercase tw-text-center tw-font-medium tw-text-2xl tw-px-8 tw-pt-20 tw-ml-8 tw-text-blue-500">
                             "Экспортыг дэмжих төсөл"-д
                         </div>
                     </div>
 
-                    <div className="tw-text-2xl tw-mt-8 tw-flex tw-items-center" style={{ marginLeft: '18%' }}>
+                    <div className="tw-text-lg tw-mt-8 tw-flex tw-items-center" style={{ marginLeft: '14%' }}>
                         Төсөлд хамрагдах тухай
-                        <button className="tw-ml-auto tw-mr-20 focus:tw-outline-none tw-text-indigo-500 active:tw-text-indigo-700" onClick={() => setHelpOpen(true)} ref={helpButtonRef}>
-                            <QuestionMarkSVG className="tw-w-6 tw-h-6 tw-transition-colors" />
+                        <button className="tw-ml-auto tw-mr-20 focus:tw-outline-none tw-text-gray-600 active:tw-text-gray-800 tw-transition-colors" onClick={() => setHelpOpen(prev => !prev)} ref={helpButtonRef}>
+                            <QuestionMarkSVG className="tw-w-6 tw-h-6" />
                         </button>
                     </div>
 
@@ -345,7 +334,7 @@ export default function LetterOfInterest() {
                     </div>
 
                     <div className="tw-relative tw-h-40 tw-mt-10 tw-mx-24">
-                        <div className="tw-absolute tw-top-4 tw-left-2 tw-font-medium tw-text-base tw-uppercase">
+                        <div className="tw-absolute tw-top-6 tw-left-2 tw-font-medium tw-text-sm tw-uppercase">
                             Хүндэтгэсэн:
                         </div>
 
@@ -378,10 +367,10 @@ export default function LetterOfInterest() {
                         </div>
 
                         {form.director_signature &&
-                            <img src={form.director_signature} className="tw-absolute tw-top-20 tw-z-10" style={{ width: 182, height: 63, left: 280 }} alt="" />
+                            <img src={form.director_signature} className="tw-absolute tw-top-20 tw-z-10 tw-pointer-events-auto" style={{ width: 182, height: 63, left: 280 }} alt="" />
                         }
 
-                        <input type="file" name="" id="" className="tw-invisible tw-absolute tw-h-0" onChange={handleUploadStamp} ref={inputRefStamp} />
+                        <input type="file" accept="image/*" className="tw-invisible tw-absolute tw-h-0" onChange={e => handleInputPicture(e, 'company_stamp')} ref={inputRefStamp} />
                     </div>
                 </div>
 
@@ -393,21 +382,18 @@ export default function LetterOfInterest() {
                     {item => item && (anims =>
                         <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
                             <div className="tw-bg-white tw-rounded tw-p-4 tw-relative tw-flex tw-flex-col" ref={signatureModalRef}>
-                                <button className="tw-absolute tw-top-1.5 tw-right-1.5 tw-text-red-500 active:tw-text-red-600 tw-transition-colors focus:tw-outline-none tw-border tw-border-red-500 tw-rounded active:tw-border-red-600" onClick={() => setSignatureModalOpen(false)}>
-                                    <CloseSVG className="tw-w-5 tw-h-5" />
-                                </button>
-                                <div className="tw-p-2 tw-text-sm tw-font-medium">
+                                <div className="tw-text-sm tw-font-medium tw-mb-2">
                                     Гарын үсэг зурах:
                                 </div>
 
                                 <SignaturePad canvasProps={{ className: 'tw-rounded tw-border tw-border-gray-400', width: 520, height: 180 }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
 
                                 <div className="tw-flex tw-justify-center tw-mt-4">
-                                    <button className="tw-rounded tw-text-white tw-bg-gray-700 active:tw-bg-gray-600 tw-transition-colors tw-w-32 tw-py-1 focus:tw-outline-none" onClick={handleClearSignature}>
+                                    <button className="tw-rounded tw-text-white tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-w-32 tw-py-1 focus:tw-outline-none" onClick={handleClearSignature}>
                                         Арилгах
                                     </button>
-                                    <button className="tw-rounded tw-text-white tw-bg-gray-700 active:tw-bg-gray-600 tw-transition-colors tw-w-32 tw-py-1 tw-ml-3 focus:tw-outline-none" onClick={() => setSignatureModalOpen(false)}>
-                                        Буцах
+                                    <button className="tw-rounded tw-text-white tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-w-32 tw-py-1 tw-ml-3 focus:tw-outline-none" onClick={() => setSignatureModalOpen(false)}>
+                                        Болсон
                                     </button>
                                 </div>
                             </div>

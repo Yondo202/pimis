@@ -21,7 +21,7 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import DocAddSVG from 'assets/svgComponents/docAddSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
-import { config, Transition } from 'react-spring/renderprops'
+import { Transition } from 'react-spring/renderprops'
 import UrgudulPreview from './preview/Preview'
 import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
 
@@ -63,6 +63,7 @@ function UrgudulNavigator(props) {
         from: { opacity: 0 },
         enter: { opacity: 1 },
         leave: { display: 'none' },
+        config: { tension: 300, clamp: true },
     })
 
     const [modalOpen, setModalOpen] = useState(props.preloaded ? false : true)
@@ -75,13 +76,10 @@ function UrgudulNavigator(props) {
         if (modalOpen) {
             axios.get('projects', {
                 headers: {
-                    'Authorization': getLoggedUserToken()
+                    'Authorization': getLoggedUserToken(),
                 }
             }).then(res => {
-                console.log(res.data)
                 setProjects(res.data.data)
-            }).catch(err => {
-                console.log(err.response?.data)
             })
         }
     }, [modalOpen])
@@ -90,7 +88,6 @@ function UrgudulNavigator(props) {
         axios.get(`projects/${id}`, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res.data)
             const project = res.data.data
             if (project.status === 'editable') {
                 UrgudulCtx.setData(res.data.data)
@@ -101,7 +98,6 @@ function UrgudulNavigator(props) {
                 AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягтыг нээлээ. Засвар оруулах боломжгүй өргөдөл байна.' })
             }
         }).catch(err => {
-            console.log(err.response?.data)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Өргөдлийн маягтыг нээж чадсангүй.' })
         })
     }
@@ -155,7 +151,7 @@ function UrgudulNavigator(props) {
                 </button>
                 {
                     [...Array(5)].map((item, i) =>
-                        <button className={`tw-mx-2 tw-px-2 tw-py-0.5 tw-rounded-md hover:tw-shadow-md focus:tw-outline-none tw-text-sm active:tw-text-indigo-500 ${page === startPage + i && 'tw-bg-indigo-500 tw-text-white'} tw-transition-colors tw-duration-300`} key={i} onClick={() => handleJump(startPage + i)}>
+                        <button className={`tw-mx-2 tw-px-2 tw-py-0.5 tw-rounded-md hover:tw-shadow-md focus:tw-outline-none tw-text-sm active:tw-text-indigo-500 ${page === startPage + i && 'tw-bg-indigo-500 tw-text-white'} tw-transition-colors`} key={i} onClick={() => handleJump(startPage + i)}>
                             {startPage + i}
                         </button>
                     )

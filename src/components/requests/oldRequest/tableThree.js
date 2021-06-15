@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect} from 'react'
 import TableThreeDetails from './deitals/tableThreeDetails'
 import { animateScroll as scroll } from "react-scroll";
 import styled from 'styled-components'
-import { fontFamily, textColor, ColorRgb,fontSize,PrevBtn,NextBtn,InputStyle } from '../../theme';
+import { fontFamily, textColor, ColorRgb,fontSize,PrevBtn,InputStyle, NextBtn2 } from '../../theme';
 import {FiUserCheck} from 'react-icons/fi'
 import {MdDateRange} from 'react-icons/md'
 import {BsArrowRightShort} from 'react-icons/bs'
@@ -36,7 +36,8 @@ function TableThree(props) {
         setDdate(event.target.value);
     }
 
-    const clickHandles = () => {
+    const clickHandles = (e) => {
+        e.preventDefault();
         let finalOne = {};
         let finalEnd = {};
         let rs2 = document.querySelectorAll(".GetItemAdd33");
@@ -109,6 +110,7 @@ function TableThree(props) {
 
     return (
         <Component3 className="container">
+            <form onSubmit={clickHandles}>
             {props.initialName? <TableThreeDetails na3={props.na3} initialData={props.initialData} />: <TableThreeDetails na3={props.na3} initialData={null} />} 
             <div className="UserRequestPar">
                         <div className="Title">Хүсэлт гаргагчийн мэдүүлэг :</div>
@@ -119,8 +121,8 @@ function TableThree(props) {
                                     <div className="labels"><span>Мэдүүлэг бөглөгчийн нэр :</span> </div>
                                     <div className="name"> <FiUserCheck />
                                         <InputStyle className="newInp">
-                                            {Dname? <input type="input" onChange={changeNameHandle} value={Dname} className="getUserInp3 LoginInpName form__field" placeholder="нэр..." name="name" required />
-                                            :<input type="input" className="getUserInp3 LoginInpName form__field" placeholder="нэр..." name="name" required />  }
+                                            {Dname? <input type="input" onChange={changeNameHandle} value={Dname} className="getUserInp3 LoginInpName form__field" placeholder="нэр..." name="name" />
+                                            :<input type="input" className="getUserInp3 LoginInpName form__field" placeholder="нэр..." name="name" />  }
                                             <div className="line"></div>
                                         </InputStyle>
                                     </div>
@@ -131,8 +133,8 @@ function TableThree(props) {
                                         <div className="labels"><span> Огноо :</span></div>
                                         <div className="name"> <MdDateRange />
                                             <InputStyle className="newInp">
-                                                {Dname ?  <input type="date" onChange={changeDateHandle} value={Ddate} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" name="date" required />
-                                                        : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" name="date" required /> }
+                                                {Dname ?  <input type="date" onChange={changeDateHandle} value={Ddate} max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" name="date" />
+                                                        : <input type="date" max={Currentdate} placeholder="өдөр-сар-жил" className="getUserInp3 LoginInpName form__field" name="date" /> }
                                                 <div className="line"></div>
                                             </InputStyle>
                                         </div>
@@ -154,9 +156,14 @@ function TableThree(props) {
                         <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div>
                         <div className="buttonPar">
                            {props.initialName? (<PrevBtn id="myInput" onClick={()=> {helperContext.reqMountFunc(1); scroll.scrollTo(0); helperContext.StyleComp("-100%", "0%", "100%", "200%", "300%","400%"); }} className="SubmitButton" type="button"><div className="flexchild"><AiOutlineSend/></div>Өмнөх хуудас</PrevBtn>) : null } 
-                            <NextBtn onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
+                            {/* <NextBtn onClick={clickHandles} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn> */}
+                            <NextBtn2>
+                                <button  style={spnBtn===false? { width:"100%" }:{ width:"40%" }} className="SubmitButton" type="submit">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }
+                                </button>
+                            </NextBtn2>
                         </div>
             </div>
+            </form>
         </Component3>
     )
 }

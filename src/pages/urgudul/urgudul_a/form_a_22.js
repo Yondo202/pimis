@@ -13,6 +13,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import LoadFromOtherProject from '../loadFromOtherProject'
+import { todayStr } from './form_a_1'
 
 
 const initialState = [
@@ -77,11 +78,9 @@ function UrgudulDirectors({ projects }) {
     const [occupations, setOccupations] = useState([])
 
     useEffect(() => {
-        axios.get('occupations')
-            .then(res => {
-                console.log(res.data)
-                setOccupations(res.data.data)
-            })
+        axios.get('occupations').then(res => {
+            setOccupations(res.data.data)
+        })
     }, [])
 
     const AlertCtx = useContext(AlertContext)
@@ -104,17 +103,13 @@ function UrgudulDirectors({ projects }) {
             if (allValid) {
                 axios.put(`projects/${UrgudulCtx.data.id}`, { directors: form }, {
                     headers: { 'Authorization': getLoggedUserToken() },
+                }).then(res => {
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'АНН мэдээлэл хадгалагдлаа.' })
+                    history.push('/urgudul/4')
+                }).catch(err => {
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
-                    .then(res => {
-                        console.log(res.data)
-                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'АНН мэдээлэл хадгалагдлаа.' })
-                        history.push('/urgudul/4')
-                    })
-                    .catch(err => {
-                        console.log(err.response?.data)
-                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                    })
             } else {
                 AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
             }
@@ -134,7 +129,7 @@ function UrgudulDirectors({ projects }) {
                 return true
             case '<p><br></p>':
                 if (type === 'quill') return true
-                break
+                else return false
             default:
                 return false
         }
@@ -146,7 +141,6 @@ function UrgudulDirectors({ projects }) {
         axios.get(`projects/${id}`, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res)
             const loadDirectors = res.data.data?.directors ?? []
             if (loadDirectors.length > 0) {
                 setForm(loadDirectors)
@@ -156,7 +150,6 @@ function UrgudulDirectors({ projects }) {
             }
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
         }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
         })
     }
@@ -168,7 +161,7 @@ function UrgudulDirectors({ projects }) {
                     <span className="tw-text-blue-500 tw-text-xl tw-mx-2">A2</span>
                     <span className="tw-leading-tight">- Аж ахуйн нэгжийг төлөөлөгчид</span>
 
-                    <HelpPopup classAppend="tw-ml-4 tw-mr-2 sm:tw-ml-12" main="ААН нэгжийг төлөөлүүлж 3-аас түлхүүр албан тушаалтны мэдээллээ оруулна уу." position="bottom" />
+                    <HelpPopup classAppend="tw-ml-4 tw-mr-2" main="ААН нэгжийг төлөөлүүлж 3-аас түлхүүр албан тушаалтны мэдээллээ оруулна уу." position="bottom" />
 
                     <LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectDirectors} />
                 </div>
@@ -193,7 +186,7 @@ function UrgudulDirectors({ projects }) {
 
                             <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.director_email || ''} name="director_email" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.director_email)} />
 
-                            <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" value={item.employed_date || ''} name="employed_date" id={i} onChange={handleInput} classAppend="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.employed_date)} />
+                            <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" formats={{ max: todayStr }} value={item.employed_date || ''} name="employed_date" id={i} onChange={handleInput} classAppend="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.employed_date)} />
                         </div>
 
                         <div className="tw-w-full">
@@ -203,7 +196,7 @@ function UrgudulDirectors({ projects }) {
                                     Энэхүү төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр
                                 </span>
 
-                                <HelpPopup classAppend="tw-ml-auto" main="Тухайлбал ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
+                                <HelpPopup classAppend="tw-ml-2" main="Тухайлбал ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
                             </div>
 
                             <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>

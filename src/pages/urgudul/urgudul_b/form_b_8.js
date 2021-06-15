@@ -9,7 +9,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { Fragment } from 'react'
-import { animated, config, Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import CloseSVG from 'assets/svgComponents/closeSVG'
 import TreeSelectCompact from 'components/urgudul_components/treeSelectCompact'
 
@@ -120,23 +120,17 @@ function UrgudulCalculations() {
     const [rates, setRates] = useState([])
 
     useEffect(() => {
-        axios.get('countries')
-            .then(res => {
-                console.log(res.data)
-                setCounties(res.data.data)
-            })
+        axios.get('countries').then(res => {
+            setCounties(res.data.data)
+        })
 
-        axios.get('products')
-            .then(res => {
-                console.log(res.data)
-                setProducts(res.data.data.docs)
-            })
+        axios.get('products').then(res => {
+            setProducts(res.data.data.docs)
+        })
 
-        axios.get('currency-rates')
-            .then(res => {
-                console.log(res.data)
-                setRates(res.data.data)
-            })
+        axios.get('currency-rates').then(res => {
+            setRates(res.data.data)
+        })
     }, [])
 
     const datesForm = sortDates(form.sales)
@@ -214,17 +208,13 @@ function UrgudulCalculations() {
             if (allValid) {
                 axios.put(`projects/${UrgudulCtx.data.id}`, { exportDatas: form }, {
                     headers: { 'Authorization': getLoggedUserToken() }
+                }).then(res => {
+                    UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Борлуулалт, экспортын тооцоолол хадгалагдлаа.' })
+                    history.push('/urgudul/9')
+                }).catch(err => {
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
-                    .then(res => {
-                        console.log(res.data)
-                        UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Борлуулалт, экспортын тооцоолол хадгалагдлаа.' })
-                        history.push('/urgudul/9')
-                    })
-                    .catch(err => {
-                        console.log(err.response?.data)
-                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
-                    })
             } else {
                 AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
             }
@@ -278,7 +268,7 @@ function UrgudulCalculations() {
                         <span className="tw-text-blue-500 tw-text-xl tw-mx-2">B8</span>
                         <span className="tw-leading-tight">- Өөрийн төслийн хувьд дараах тооцооллыг хийнэ үү</span>
 
-                        <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="Мөнгөн дүн бүхий тооцооллуудыг тухайн жилийн доор харуулсан тэр оны долларын ханшийг ашиглан доллар руу хөрвүүлж хийнэ үү." position="bottom" />
+                        <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Мөнгөн дүн бүхий тооцооллуудыг тухайн жилийн доор харуулсан тэр оны долларын ханшийг ашиглан доллар руу хөрвүүлж хийнэ үү." position="bottom" />
                     </div>
 
                     {UrgudulCtx.data.project_number &&
@@ -341,7 +331,7 @@ function UrgudulCalculations() {
                                 {datesForm.map((item, i) =>
                                     <td className="tw-border tw-border-gray-300 tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.sales[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.sales[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.floatValue, 'sales')} onFocus={handleFocusCheck} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.sales[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.sales[item]} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.floatValue, 'sales')} onFocus={handleFocusCheck} />
                                         </div>
                                     </td>
                                 )}
@@ -358,7 +348,7 @@ function UrgudulCalculations() {
                                 {datesForm.map((item, i) =>
                                     <td className="tw-border tw-border-gray-300 tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.fullTime_workplace[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.fullTime_workplace[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.floatValue, 'fullTime_workplace')} onFocus={handleFocusCheck} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.fullTime_workplace[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.fullTime_workplace[item]} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.floatValue, 'fullTime_workplace')} onFocus={handleFocusCheck} />
                                         </div>
                                     </td>
                                 )}
@@ -375,7 +365,7 @@ function UrgudulCalculations() {
                                 {datesForm.map((item, i) =>
                                     <td className="tw-border tw-border-gray-300 tw-px-1" key={i}>
                                         <div className="tw-flex tw-justify-center">
-                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.productivity[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.productivity[item] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.floatValue, 'productivity')} onFocus={handleFocusCheck} />
+                                            <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.productivity[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.productivity[item]} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleInput(item, values.floatValue, 'productivity')} onFocus={handleFocusCheck} />
                                         </div>
                                     </td>
                                 )}
@@ -392,7 +382,7 @@ function UrgudulCalculations() {
                                 {datesForm.map((item, i) =>
                                     <td className="tw-border tw-border-gray-300 tw-px-1" key={i}>
                                         <div className={`tw-text-right tw-font-medium tw-truncate tw-w-20 tw-px-1 tw-py-0.5 tw-rounded ${validate && isNaN(exportSums[item]) && 'tw-bg-red-100'}`}>
-                                            {exportSums[item] !== 0 && exportSums[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                            {exportSums[item] !== 0 && !isNaN(exportSums[item]) && exportSums[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                         </div>
                                     </td>
                                 )}
@@ -428,7 +418,7 @@ function UrgudulCalculations() {
                                                 <tr className="tw-h-9">
                                                     <td className="tw-border tw-border-gray-300 tw-px-1">
                                                         <div className="tw-flex tw-items-center">
-                                                            <input className={`tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-0.5 tw-ml-3 tw-rounded ${validate && checkInvalid(product.product_name) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-font-medium tw-placeholder-gray-500`} type="text" value={product.product_name || ''} onChange={e => handleSetFormProduct('product_name', e.target.value, j, i)} placeholder="Бүтээгдэхүүний код" title={product.product_name} />
+                                                            <input className={`tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-0.5 tw-ml-3 tw-rounded ${validate && checkInvalid(product.product_name) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-font-medium tw-placeholder-gray-500`} type="number" value={product.product_name || ''} onChange={e => handleSetFormProduct('product_name', e.target.value, j, i)} placeholder="Бүтээгдэхүүний код" title={product.product_name} />
                                                             <HelpPopup classAppend="tw-ml-1" main="Гаалийн бараа, бүтээгдэхүүний кодыг бичнэ үү." position="bottom" />
                                                         </div>
                                                     </td>
@@ -436,7 +426,7 @@ function UrgudulCalculations() {
                                                         datesForm.map((key, k) =>
                                                             <td className="tw-border tw-border-gray-300 tw-px-1" key={k}>
                                                                 <div className="tw-flex tw-justify-center">
-                                                                    <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(product[key]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={product[key] || ''} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleSetFormProduct(key, values.floatValue, j, i)} onFocus={handleFocusCheck} />
+                                                                    <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(product[key]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={product[key]} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true} onValueChange={values => handleSetFormProduct(key, values.floatValue, j, i)} onFocus={handleFocusCheck} />
                                                                 </div>
                                                             </td>
                                                         )

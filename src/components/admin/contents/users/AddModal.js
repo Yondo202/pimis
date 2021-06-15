@@ -1,143 +1,148 @@
-import React,{useRef, useState, useContext }  from 'react'
+import React, { useRef, useState, useContext } from 'react'
 import styled from 'styled-components'
-import {textColor, ButtonStyle} from '../../../theme'
-import {useSpring, animated} from 'react-spring';
+import { textColor, ButtonStyle } from '../../../theme'
+import { useSpring, animated } from 'react-spring';
 import axios from '../../../../axiosbase'
 import UserContext from '../../../../context/UserContext'
 
-export const AddModal = ({ showModal,setShowModal,setUpdate }) => {
+export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
     const modalRef = useRef();
     const ctx = useContext(UserContext);
-    const [ per, setPer ] = useState("");
-    const [ errText, setErrText ] = useState("0");
-    const [ btnSpin, seBtnSpin  ] = useState(false);
-    
+    const [per, setPer] = useState("");
+    const [errText, setErrText] = useState("0");
+    const [btnSpin, seBtnSpin] = useState(false);
+    const [trainerId, setTrainerId] = useState(null)
+
     const animation = useSpring({
-        config:{duration:330  },
+        config: { duration: 330 },
         opacity: showModal ? 1 : 0,
-        transform: showModal ? `translateY(10%)` : `translateY(30%)`  
+        transform: showModal ? `translateY(10%)` : `translateY(30%)`
     });
 
-    const closeModal = e =>{ if(modalRef.current === e.target){ setShowModal(false); } }
+    const closeModal = e => { if (modalRef.current === e.target) { setShowModal(false); } }
 
-    const clickHandle = (e) =>{
+    const clickHandle = (e) => {
         seBtnSpin(true);
         e.preventDefault();
         let getInp = document.querySelectorAll('.getMainInp22'); let cond = [];
-        let arr = Array.from(getInp); const final = {}; arr.map(el => {  final[el.name] = el.value;  if(el.value!==""){ cond.push(el.name); } } );
+        let arr = Array.from(getInp); const final = {}; arr.map(el => { final[el.name] = el.value; if (el.value !== "") { cond.push(el.name); } });
         let getInp2 = document.querySelectorAll('.getRoles');
-        let arr2 = Array.from(getInp2); arr2.map(el => {  if(el.checked === true){ final[el.name] = el.value; cond.push(el.name);  } });
-;
-        if(per==="edpuser"){
+        let arr2 = Array.from(getInp2); arr2.map(el => { if (el.checked === true) { final[el.name] = el.value; cond.push(el.name); } });
+        ;
+        if (per === "edpuser") {
             let permission = []; let smObj = {};
-            let getInp3 = document.querySelectorAll('.getPermission'); 
-            let arr3 = Array.from(getInp3); arr3.map(el => {  if(el.checked === true){   smObj[el.value] = true }else{   smObj[el.value] = false }
-         });
-         permission.push(smObj); final["permission"] = permission
-        }else { final["permission"] = null }
-
-        console.log(final , "^final");
+            let getInp3 = document.querySelectorAll('.getPermission');
+            let arr3 = Array.from(getInp3); arr3.map(el => {
+                if (el.checked === true) { smObj[el.value] = true } else { smObj[el.value] = false }
+            });
+            permission.push(smObj); final["permission"] = permission
+        } else { final["permission"] = null }
+        if (per === 'trainer') {
+            final.trainerOrganizationId = trainerId ?? null
+        }
+        console.log(final, "^final");
         console.log(cond.length, " my cond");
-        if(cond.length < 6){
+        if (cond.length < 6) {
             seBtnSpin(false);
             setErrText("1");
-        }else{
+        } else if (per === 'trainer' && final.trainerOrganizationId === null) {
+            seBtnSpin(false);
+            setErrText("1");
+        } else {
             setErrText("0");
-            axios.post(`users`,final).then(res=>{
-                console.log(res, "^ ress"); setUpdate(prev=>!prev); ctx.alertText("green", "Амжилттай", true ); seBtnSpin(false); setShowModal(prev=>!prev); 
-            }).catch(error=>{ctx.alertText("orange", "Алдаа гарлаа", true ); seBtnSpin(false);});
+            axios.post(`users`, final).then(res => {
+                console.log(res, "^ ress"); setUpdate(prev => !prev); ctx.alertText("green", "Амжилттай", true); seBtnSpin(false); setShowModal(prev => !prev);
+            }).catch(error => { ctx.alertText("orange", "Алдаа гарлаа", true); seBtnSpin(false); });
         }
     }
-    const roleHandle = (event)=>{setPer(event.target.value) }
+    const roleHandle = (event) => { setPer(event.target.value) }
 
-    
-   
-    return(
+    return (
         <>
             {/* ref={modalRef} onClick={closeModal} */}
             {showModal ? <Background  >
-                <animated.div  style={animation} >
+                <animated.div style={animation} >
                     <div className="modalPar container">
                         <div className="closeParent">
                             <div className="title">Хэрэглэгч үүсгэх</div>
-                            <button className="esc" onClick={()=> setShowModal(prev => !prev)} > X </button>
+                            <button className="esc" onClick={() => setShowModal(prev => !prev)} > X </button>
                         </div>
                         <form onSubmit={clickHandle}>
-                                <div className="InputPar">
-                                    <div className="rowss">
-                                        <div className="inputItem">
-                                                <span className="title">Овог:</span>
-                                                <input name="firstname" className="getMainInp22 form-control" type="text" />
-                                        </div>
-                                        <div className="inputItem">
-                                                <span className="title">Нэр :</span>
-                                                <input name="lastname" className="getMainInp22 form-control" type="text" />
-                                        </div>
+                            <div className="InputPar">
+                                <div className="rowss">
+                                    <div className="inputItem">
+                                        <span className="title">Овог :</span>
+                                        <input name="firstname" className="getMainInp22 form-control" type="text" />
                                     </div>
-                                    <div className="rowss">
-                                        <div className="inputItem">
-                                                <span className="title">Email :</span>
-                                                <input name="email" className="getMainInp22 form-control" type="email" />
-                                        </div>
-                                        <div className="inputItem">
-                                                <span className="title">Утасны дугаар :</span>
-                                                <input name="phone" className="getMainInp22 form-control" type="number" />
-                                        </div>
-                                    </div>
-                                    <div style={{ paddingBottom:20, borderBottom:`1px solid rgba(0,0,0,0.08)`}} className="rowss">
-                                        <div className="inputItem">
-                                                <span className="title">Нэвтрэх нэр :</span>
-                                                <input name="name" className="getMainInp22 form-control" type="text" />
-                                        </div>
+                                    <div className="inputItem">
+                                        <span className="title">Нэр :</span>
+                                        <input name="lastname" className="getMainInp22 form-control" type="text" />
                                     </div>
                                 </div>
-
-
-                            <div className="otherPar">
-                                    <div className="HeadCheck"> 
-                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="holbootoi_yamd" /> <span>Холбоотой Яамд</span></div>  
-                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="tosliin_zahiral" /> <span>Төслийн Захирал</span></div>  
-                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="tosliin_zohitsuulagch" /> <span>Төслийн зохицуулагч</span></div>  
-                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="ahlah_bhsh" /> <span>Ахлах БХШ</span></div>  
-                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="bh_zovloh" /> <span>БХЗ</span></div>  
-                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="vdd_zovloh" /> <span>ҮДД-ын зөвлөх</span></div>  
-                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="huuliin_zowloh" /> <span>Хуулийн зөвлөх</span></div>  
-                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="sanhuu" /> <span>Санхүү</span></div>  
-                                            <div className="title"> <input className="getRoles" name="role" type="radio" value="hudaldanavah_ajillagaa" /> <span>Худалдаан авах ажиллагаа</span></div>  
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" value="trainer" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="member" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="monitoring" name="role" type="radio" /> <span>Мониторинг</span></div> 
-                                            <div className="title"> <input onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div>  
+                                <div className="rowss">
+                                    <div className="inputItem">
+                                        <span className="title">Email :</span>
+                                        <input name="email" className="getMainInp22 form-control" type="email" />
                                     </div>
-                                    
-                                        {per==="edpuser"&&(<div className="edpUsers">
-                                            <div className="items"><input value="pps" name="permission" className="getPermission" type="checkbox" /> <span>Түншлэлийн хөтөлбөр</span></div>
-                                            <div className="items"><input value="training" name="permission" className="getPermission" type="checkbox" /> <span>Сургалт</span></div>
-                                            <div className="items"><input value="insurance" name="permission" className="getPermission" type="checkbox" /> <span>Даатгал</span></div>
-                                        </div>)}
-                                        
-                                        {per==="trainer"&&(<div className="edpUsers">
-                                            <select className="trainer">
-                                                <option selected disabled>- Сонго -</option>
-                                                <option>Сургалт 2</option>
-                                                <option>Сургалт 3</option>
-                                                <option>Сургалт 4</option>
-                                            </select>
-                                        </div>)}
+                                    <div className="inputItem">
+                                        <span className="title">Утасны дугаар :</span>
+                                        <input name="phone" className="getMainInp22 form-control" type="number" />
+                                    </div>
+                                </div>
+                                <div style={{ paddingBottom: 20, borderBottom: `1px solid rgba(0,0,0,0.08)` }} className="rowss">
+                                    <div className="inputItem">
+                                        <span className="title">Нэвтрэх нэр :</span>
+                                        <input name="name" className="getMainInp22 form-control" type="text" />
+                                    </div>
+                                </div>
                             </div>
 
-                                        
-
-                                <div className="BtnPar">
-                                    <span style={{opacity:errText}} className="errTxt">Гүйцэд бөгөлнө үү...</span>
-                                    <ButtonStyle type="submit" style={!btnSpin? {}: {padding:`0px 15px`}} className="finalBtn"> {!btnSpin? 'Хадгалах' : <img src="/gif1.gif" alt="gif" />} </ButtonStyle>
+                            <div className="otherPar">
+                                <div className="HeadCheck">
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="holbootoi_yamd" /> <span>Холбоотой Яамд</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="tosliin_zahiral" /> <span>Төслийн Захирал</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="tosliin_zohitsuulagch" /> <span>Төслийн зохицуулагч</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="ahlah_bhsh" /> <span>Ахлах БХШ</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="bh_zovloh" /> <span>БХЗ</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="vdd_zovloh" /> <span>ҮДД-ын зөвлөх</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="huuliin_zowloh" /> <span>Хуулийн зөвлөх</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="sanhuu" /> <span>Санхүү</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="hudaldanavah_ajillagaa" /> <span>Худалдаан авах ажиллагаа</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" value="trainer" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" value="member" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" value="monitoring" name="role" type="radio" /> <span>Мониторинг</span></div>
+                                    <div className="title"> <input onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div>
                                 </div>
+
+                                {per === "edpuser" && (<div className="edpUsers">
+                                    <div className="items"><input value="pps" name="permission" className="getPermission" type="checkbox" /> <span>Түншлэлийн хөтөлбөр</span></div>
+                                    <div className="items"><input value="training" name="permission" className="getPermission" type="checkbox" /> <span>Сургалт</span></div>
+                                    <div className="items"><input value="insurance" name="permission" className="getPermission" type="checkbox" /> <span>Даатгал</span></div>
+                                </div>)}
+
+                                {per === "trainer" && (<div className="edpUsers">
+                                    <div className="title">
+                                        Сургалт зохион байгуулагч байгууллагууд:
+                                    </div>
+                                    <select className="trainer form-control form-control-sm" value={trainerId ?? 'none'} onChange={e => setTrainerId(+e.target.value)}>
+                                        <option value="none" disabled>- Сонгох -</option>
+                                        {trainers.map(trainer =>
+                                            <option value={trainer.id} key={trainer.id}>
+                                                {trainer.organization_name}
+                                            </option>
+                                        )}
+                                    </select>
+                                </div>)}
+                            </div>
+
+                            <div className="BtnPar">
+                                <span style={{ opacity: errText }} className="errTxt">Гүйцэд бөгөлнө үү...</span>
+                                <ButtonStyle type="submit" style={!btnSpin ? {} : { padding: `0px 15px` }} className="finalBtn"> {!btnSpin ? 'Хадгалах' : <img src="/gif1.gif" alt="gif" />} </ButtonStyle>
+                            </div>
                         </form>
-
-
                     </div>
                 </animated.div>
-            </Background>: null}
+            </Background> : null}
         </>
     )
 }
@@ -203,13 +208,18 @@ const Background = styled.div`
             .edpUsers{
                 width:50%;
                 padding:10px 15px;
-                border:1px solid rgba(0,0,0,0.15);
                 margin-bottom:10px;
                 margin-left:10px;
+                .title{
+                    font-size:12.5px;
+                    opacity:0.9;
+                    font-weight:500;
+                }
                 .trainer{
-                    padding:4px 20px;
+                    padding:5px 8px;
                     border:1px solid rgba(0,0,0,0.3);
                     border-radius:4px;
+                    margin-top: 8px;
                 }
                 .items{
                     display:flex;
@@ -232,7 +242,6 @@ const Background = styled.div`
                
             }
         }
-        
         
         .BtnPar{
                 display:flex;

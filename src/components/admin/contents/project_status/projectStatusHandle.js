@@ -1,4 +1,4 @@
-import { useQuery } from 'components/utilities/useQueryLocation'
+import useQuery from 'components/utilities/useQueryLocation'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
@@ -22,10 +22,7 @@ export default function ProjectStatusHandle() {
         axios.get(`projects/${projectId}/status`, {
             headers: { Authorization: getLoggedUserToken() }
         }).then(res => {
-            console.log(res)
             setStatus(prev => ({ ...prev, ...res.data.data }))
-        }).catch(err => {
-            console.error(err.response)
         })
     }, [])
 
@@ -39,11 +36,9 @@ export default function ProjectStatusHandle() {
         axios.put(`projects/${projectId}/status`, { status: status.status, comment: status.comment }, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res)
             setStatus(prev => ({ ...prev, ...res.data.data }))
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Төслийн төлвийг өөрчиллөө.' })
         }).catch(err => {
-            console.error(err.response)
             if (err.response.status === 490) {
                 AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Төлөв өөрчлөх эрх таньд олгогдоогүй байна.' })
             } else {
@@ -80,11 +75,9 @@ export default function ProjectStatusHandle() {
         axios.get(`projects/${projectId}/status-history`, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            console.log(res)
             setHistories(res.data.data || [])
             setHistoriesOpen(true)
         }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Өөрчлөлтүүдийг татаж чадсангүй.' })
         })
     }
@@ -179,14 +172,14 @@ export default function ProjectStatusHandle() {
                 </div>
 
                 <div className="tw-flex tw-justify-center">
-                    <button className="tw-py-1.5 tw-px-8 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-4" onClick={handleSubmit}>
+                    <button className="tw-py-1.5 tw-px-8 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-4 tw-text-13px" onClick={handleSubmit}>
                         Хадгалах
                     </button>
                 </div>
             </div>
 
             <div className="tw-p-2 tw-pb-4 tw-mb-20 tw-mt-8 tw-bg-white tw-rounded tw-shadow-md tw-max-w-4xl tw-flex tw-flex-col tw-items-start tw-overflow-x-auto tw-overflow-y-hidden">
-                <button className="tw-m-2 tw-py-1.5 tw-px-4 tw-text-sm tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md" onClick={handleGetHistory}>
+                <button className="tw-m-2 tw-py-1.5 tw-px-4 tw-text-sm tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-text-13px" onClick={handleGetHistory}>
                     Өөрчлөлтүүдийг харах
                 </button>
 

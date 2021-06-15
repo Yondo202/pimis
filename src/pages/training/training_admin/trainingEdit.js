@@ -21,6 +21,8 @@ loadMessages({
 
 export default function TrainingEdit() {
    const [training, setTraining] = useState(initialState)
+   const [organizations, setOrganizations] = useState([])
+   const [trainerOrgId, setTrainerOrgId] = useState(+localStorage.getItem('trainerOrganizationId'))
 
    const handleInput = (key, value) => setTraining(prev => ({ ...prev, [key]: value }))
 
@@ -33,13 +35,18 @@ export default function TrainingEdit() {
          axios.get(`trainings/${trainingId}`, {
             headers: { Authorization: getLoggedUserToken() },
          }).then(res => {
-            console.log(res)
             setTraining(res.data.data)
          }).catch(err => {
-            console.error(err.response)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтыг татаж чадсангүй.' })
          })
       }
+      axios.get('trainings/organizations', {
+         headers: { Authorization: getLoggedUserToken() },
+      }).then(res => {
+         setOrganizations(res.data.data)
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын байгууллагуудыг татаж чадсангүй.' })
+      })
    }, [])
 
    const handleSubmit = () => {
@@ -47,25 +54,21 @@ export default function TrainingEdit() {
          axios.put(`trainings/${trainingId}`, training, {
             headers: { Authorization: getLoggedUserToken() },
          }).then(res => {
-            console.log(res)
             setTraining(res.data.data)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллэл нэмэгдлээ' })
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллийг шинэчиллээ.' })
          }).catch(err => {
-            console.error(err.response)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалт үүсгэж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээллийг засаж чадсангүй.' })
          })
       }
       else {
          axios.post('trainings', training, {
             headers: { Authorization: getLoggedUserToken() },
          }).then(res => {
-            console.log(res)
             setTraining(res.data.data)
             setTrainingId(res.data.data.id)
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллэл нэмэгдлээ' })
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллэл нэмэгдлээ.' })
          }).catch(err => {
-            console.error(err.response)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалт засаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээл нэмж чадсангүй.' })
          })
       }
    }
@@ -83,18 +86,16 @@ export default function TrainingEdit() {
             'Content-Type': 'multipart/form-data',
          }
       }).then(res => {
-         console.log(res)
          setTraining(prev => ({ ...prev, module_file: res.data.data }))
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файл амжилттай хадгалагдлаа.' })
       }).catch(err => {
-         console.log(err.response)
          setTraining(prev => ({ ...prev, module_file: null }))
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг хадгалж чадсангүй.' })
       })
    }
 
-   const AnimatedFileCard = animated(FileCard)
-   const AnimatedFileCardAdd = animated(FileCardAdd)
+   // const AnimatedFileCard = animated(FileCard)
+   // const AnimatedFileCardAdd = animated(FileCardAdd)
 
    const fileInputRef = useRef()
 
@@ -112,11 +113,9 @@ export default function TrainingEdit() {
          headers: { Authorization: getLoggedUserToken() },
          responseType: 'blob',
       }).then(res => {
-         console.log(res)
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         console.log(err.response)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
       })
    }
@@ -125,8 +124,6 @@ export default function TrainingEdit() {
 
    const handleTimeChange = (key, e) => {
       setTraining(prev => ({ ...prev, [key]: e.value }))
-      console.log(e)
-      console.log(typeof (e.value))
    }
 
    return (
@@ -137,7 +134,7 @@ export default function TrainingEdit() {
          </button>
 
          <div className="tw-rounded tw-shadow-md tw-bg-white tw-max-w-5xl tw-w-full tw-pt-8 tw-mt-6">
-            <div className="tw-text-center tw-p-2 tw-mb-8 tw-text-lg tw-font-semibold">
+            <div className="tw-text-center tw-p-2 tw-mb-8 tw-text-lg tw-font-medium">
                Сургалтын мэдээлэл оруулах
             </div>
 
@@ -152,13 +149,13 @@ export default function TrainingEdit() {
                      leave={{ display: 'none' }}>
                      {item => item
                         ? anims =>
-                           <AnimatedFileCard name={item?.name} type={item?.mimetype} size={item?.size} uploading={item === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
+                           <FileCard name={item?.name} type={item?.mimetype} size={item?.size} uploading={item === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
                         : anims =>
-                           <AnimatedFileCardAdd onClick={handleAddFileClick} style={anims} />
+                           <FileCardAdd onClick={handleAddFileClick} style={anims} />
                      }
                   </Transition>
 
-                  <input className="tw-invisible tw-absolute tw-bottom-0 tw-w-0" type="file" onChange={handleFileInput} ref={fileInputRef} />
+                  <input className="tw-invisible tw-absolute tw-bottom-0 tw-w-0" type="file" accept=".pdf, image/*" onChange={handleFileInput} ref={fileInputRef} />
                </FormElement>
 
                <FormElement label="Сургалтын төрөл" height={104}>
@@ -170,11 +167,11 @@ export default function TrainingEdit() {
                </FormElement>
 
                <FormElement label="Сургалт эхлэх өдөр">
-                  <input className="tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-500 tw-px-1.5 tw-bg-transparent" type="date" style={{ width: 146, paddingTop: 3, paddingBottom: 3 }} value={training.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value)} />
+                  <input className="tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-400 tw-px-1.5 tw-bg-transparent" type="date" style={{ width: 146, paddingTop: 3, paddingBottom: 3 }} value={training.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value)} />
                </FormElement>
 
                <FormElement label="Сургалт дуусах өдөр">
-                  <input className="tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-500 tw-px-1.5 tw-bg-transparent" type="date" style={{ width: 146, paddingTop: 3, paddingBottom: 3 }} value={training.end_date ?? ''} onChange={e => handleInput('end_date', e.target.value)} />
+                  <input className="tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-400 tw-px-1.5 tw-bg-transparent" type="date" style={{ width: 146, paddingTop: 3, paddingBottom: 3 }} value={training.end_date ?? ''} onChange={e => handleInput('end_date', e.target.value)} />
                </FormElement>
 
                <FormElement label="Сургалтын цаг" childrenAppend="tw--mt-3" height={72}>
@@ -189,7 +186,9 @@ export default function TrainingEdit() {
                   </div>
                </FormElement>
 
-               <FormElement label="Сургалт зохион байгуулах байгууллага" value={training.organizer} keyName="organizer" onChange={handleInput} />
+               <FormElement label="Сургалт зохион байгуулах байгууллага">
+                  <SelectIdChild options={trainerOrgId ? organizations.filter(org => org.id === trainerOrgId) : organizations} displayName="organization_name" value={training.trainerOrganizationId} keyName="trainerOrganizationId" handleInput={handleInput} />
+               </FormElement>
 
                <FormElement label="Байршил, сургалт зохион байгуулагдах хаяг" value={training.location} keyName="location" onChange={handleInput} />
 
@@ -201,7 +200,7 @@ export default function TrainingEdit() {
             </div>
 
             <div className="tw-flex tw-justify-center">
-               <button className="tw-rounded tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-py-2 tw-px-6 tw-text-white tw-font-medium tw-my-6 focus:tw-outline-none tw-mr-8" onClick={handleSubmit}>
+               <button className="tw-rounded tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-py-2 tw-px-6 tw-text-white tw-font-medium tw-my-6 focus:tw-outline-none tw-text-13px" onClick={handleSubmit}>
                   Хадгалах
                </button>
             </div>
@@ -219,13 +218,13 @@ const initialState = {
    end_date: null,
    start_time: null,
    end_time: null,
-   organizer: null,
+   trainerOrganizationId: null,
    location: null,
    participant_number: null,
    scope: null,
 }
 
-const FormElement = ({ label, children, type, width, value, keyName, onChange, height, childrenAppend }) => (
+export const FormElement = ({ label, children, type, width, value, keyName, onChange, height, childrenAppend }) => (
    <div className="tw-relative tw-pt-4 tw-pl-4 tw-pr-6 tw-pb-2 tw-w-full tw-flex tw-flex-wrap sm:tw-flex-nowrap odd:tw-bg-gray-50">
       <div className="tw-font-medium tw-w-full sm:tw-w-2/5 tw-mb-2 tw-text-gray-600">
          {label}:
@@ -235,7 +234,7 @@ const FormElement = ({ label, children, type, width, value, keyName, onChange, h
          {children
             ? children
             : <input
-               className="focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-500 tw-border tw-border-gray-400 tw-rounded tw-px-2 tw-py-1 tw-transition-colors tw-bg-transparent tw-max-w-sm"
+               className="focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-400 tw-border tw-border-gray-400 tw-rounded tw-px-2 tw-py-1 tw-transition-colors tw-bg-transparent tw-max-w-sm"
                type={type ?? 'text'}
                style={{ width: width ?? '100%' }}
                value={value ?? ''}
@@ -279,7 +278,7 @@ const SelectChild = ({ options, value, keyName, handleInput }) => {
    return (
       <div className="tw-relative tw-h-20 tw-w-full">
          <button
-            className="tw-w-52 tw-h-7 tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-border tw-border-gray-400 tw-flex tw-items-center focus:tw-ring-2 tw-ring-blue-500 tw-transition-colors"
+            className="tw-w-52 tw-h-7 tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-border tw-border-gray-400 tw-flex tw-items-center focus:tw-ring-2 tw-ring-blue-400 tw-transition-colors tw-truncate"
             onClick={() => setDropOpen(prev => !prev)}
             ref={buttonRef}>
             <span className="tw-mx-2">
@@ -298,7 +297,7 @@ const SelectChild = ({ options, value, keyName, handleInput }) => {
             from={{ height: 0, opacity: 0 }}
             enter={{ height: 'auto', opacity: 1 }}
             leave={{ height: 0, opacity: 0 }}
-            config={{ tension: 300 }}>
+            config={{ tension: 300, clamp: true }}>
             {item => item && (anims =>
                <animated.div
                   className="tw-absolute tw-top-8 tw-left-0 tw-w-52 tw-rounded tw-shadow-md tw-z-10 tw-border tw-border-gray-400 tw-bg-white tw-overflow-hidden tw-divide-y tw-divide-dashed"
@@ -323,7 +322,69 @@ const SelectChild = ({ options, value, keyName, handleInput }) => {
                   <span className="tw-ml-1 tw-font-medium tw-text-gray-500">
                      Бусад:
                   </span>
-                  <input className="tw-w-full tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none tw-py-1 tw-px-1.5 tw-ml-3 focus:tw-ring-2 tw-ring-blue-500 tw-max-w-sm tw-bg-transparent" type="text" value={value ?? ''} onChange={e => handleInput(keyName, e.target.value)} />
+                  <input className="tw-w-full tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none tw-py-1 tw-px-1.5 tw-ml-3 focus:tw-ring-2 tw-ring-blue-500 tw-max-w-xs tw-bg-transparent" type="text" value={value ?? ''} onChange={e => handleInput(keyName, e.target.value)} />
+               </animated.div>
+            )}
+         </Transition>
+      </div>
+   )
+}
+
+const SelectIdChild = ({ options, displayName, value, keyName, handleInput }) => {
+   const [dropOpen, setDropOpen] = useState(false)
+
+   const buttonRef = useRef()
+   const dropDownRef = useRef()
+
+   const handleClickOutside = (e) => {
+      if (!buttonRef.current?.contains(e.target) && !dropDownRef.current?.contains(e.target)) {
+         setDropOpen(false)
+      }
+   }
+
+   useEffect(() => {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+   })
+
+   const handleSelect = (id) => {
+      handleInput(keyName, id)
+      setDropOpen(false)
+   }
+
+   return (
+      <div className="tw-relative tw-h-20 tw-w-full">
+         <button
+            className="tw-w-52 tw-h-7 tw-rounded focus:tw-outline-none hover:tw-shadow-md tw-border tw-border-gray-400 tw-flex tw-items-center focus:tw-ring-2 tw-ring-blue-400 tw-transition-colors tw-truncate"
+            onClick={() => setDropOpen(prev => !prev)}
+            ref={buttonRef}>
+            <span className="tw-mx-2">
+               {options.find(option => option.id === value)?.[displayName] ?? 'Сонгох'}
+            </span>
+            <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-auto tw-mr-1" />
+         </button>
+
+         <Transition
+            items={dropOpen}
+            from={{ height: 0, opacity: 0 }}
+            enter={{ height: 'auto', opacity: 1 }}
+            leave={{ height: 0, opacity: 0 }}
+            config={{ tension: 300, clamp: true }}>
+            {item => item && (anims =>
+               <animated.div
+                  className="tw-absolute tw-top-8 tw-left-0 tw-w-52 tw-rounded tw-shadow-md tw-z-10 tw-border tw-border-gray-400 tw-bg-white tw-overflow-hidden tw-divide-y tw-divide-dashed"
+                  style={anims}
+                  ref={dropDownRef}>
+                  {options.length
+                     ? options.map(option =>
+                        <div className="tw-cursor-pointer tw-py-1 tw-px-1.5 hover:tw-bg-blue-500 hover:tw-text-white tw-transition-colors" key={option.id} onClick={() => handleSelect(option.id)}>
+                           {option[displayName]}
+                        </div>
+                     )
+                     : <div className="tw-text-gray-500 tw-font-medium tw-text-13px tw-italic tw-text-center tw-pb-0.5 tw-pt-4">
+                        Сонголт байхгүй байна.
+                     </div>
+                  }
                </animated.div>
             )}
          </Transition>

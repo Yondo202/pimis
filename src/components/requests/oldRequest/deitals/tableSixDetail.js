@@ -29,46 +29,44 @@ function TableSixDetails(props) {
 
     const changeHandle1 = (event) =>{
         const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["messure"] = event.target.value };finalData.push(el) })
+        props.initialData.forEach((el,i)=>{ if(el.id.toString() === event.target.id){  el["messure"] = event.target.value };finalData.push(el) })
         setInitialData(finalData);
     }
     const changeHandle2 = (event) =>{
         const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["where_messure"] = event.target.value };finalData.push(el) })
+        props.initialData.forEach((el,i)=>{ if(el.id.toString() === event.target.id){  el["where_messure"] = event.target.value };finalData.push(el) })
         setInitialData(finalData);
     }
     const changeHandle3 = (event) =>{
         const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["monitoring"] = event.target.value };finalData.push(el) })
+        props.initialData.forEach((el,i)=>{ if(el.id.toString() === event.target.id){  el["monitoring"] = event.target.value };finalData.push(el) })
         setInitialData(finalData);
     }
     const changeHandle4 = (event) =>{
         const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["monitor_duration"] = event.target.value };finalData.push(el) })
+        props.initialData.forEach((el,i)=>{ if(el.id.toString() === event.target.id){  el["monitor_duration"] = event.target.value };finalData.push(el) })
         setInitialData(finalData);
     }
     const changeHandle5 = (event) =>{
         const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["cost"] = event.target.value };finalData.push(el) })
+        props.initialData.forEach((el,i)=>{ if(el.id.toString() === event.target.id){  el["cost"] = event.target.value };finalData.push(el) })
         setInitialData(finalData);
     }
     const changeHandle6 = (event) =>{
         const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["hostname"] = event.target.value };finalData.push(el) })
+        props.initialData.forEach((el,i)=>{ if(el.id.toString() === event.target.id){  el["hostname"] = event.target.value };finalData.push(el) })
         setInitialData(finalData);
     }
     const changeHandle7 = (event) =>{
         const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["startdate"] = event.target.value };finalData.push(el) })
+        props.initialData.forEach((el,i)=>{ if(el.id.toString() === event.target.id){  el["startdate"] = event.target.value };finalData.push(el) })
         setInitialData(finalData);
     }
     const changeHandle8 = (event) =>{
         const finalData = []
-        props.initialData.map((el,i)=>{ if(el.id.toString() === event.target.id){  el["enddate"] = event.target.value };finalData.push(el) })
+        props.initialData.forEach((el,i)=>{ if(el.id.toString() === event.target.id){  el["enddate"] = event.target.value };finalData.push(el) })
         setInitialData(finalData);
     }
-
-    // console.log(initialData, "666");
 
     return (
         <Component3Detail>

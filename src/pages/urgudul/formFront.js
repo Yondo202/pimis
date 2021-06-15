@@ -36,10 +36,7 @@ function UrgudulFront() {
             headers: { Authorization: getLoggedUserToken() },
             params: { checkOpen: true }
         }).then(res => {
-            console.log(res)
             setPeriod(res.data.data)
-        }).catch(err => {
-            console.error(err.response)
         })
     }, [UrgudulCtx.data.id])
 
@@ -66,12 +63,10 @@ function UrgudulFront() {
                         'Authorization': getLoggedUserToken()
                     }
                 }).then(res => {
-                    console.log(res.data)
                     UrgudulCtx.setData(res.data.data)
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
                     history.push('/urgudul/2')
                 }).catch(err => {
-                    console.log(err.response?.data)
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
                 })
             } else {
@@ -92,12 +87,10 @@ function UrgudulFront() {
                     'Authorization': getLoggedUserToken()
                 }
             }).then(res => {
-                console.log(res.data)
                 UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                 AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээлэл хадгалагдлаа.' })
                 history.push('/urgudul/2')
             }).catch(err => {
-                console.log(err.response?.data)
                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
             })
         } else {

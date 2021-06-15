@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components'
 import FromFive from './FormFive'
 import { Link, animateScroll as scroll } from "react-scroll";
-import axios from'axios';
+import axios from 'axios';
 
 function FormThree(props) {
   const [childStyle, setChildStyle] = React.useState('0');
@@ -19,91 +19,90 @@ function FormThree(props) {
   const [dataFinal2, setData2] = React.useState({});
   const [dataDetal2, setDataDetal2] = React.useState([]);
 
-  useEffect(async () => {
-    const result = await axios.get( 'http://192.168.88.78:3000/api/questions' );
- 
-    const Data1 = result.data.data.docs[2]
-    const Data2 = result.data.data.docs[3]
-    // console.log(Data1, "data 1");
-    setData(Data1);
-    setDataDetal(Data1.questiondetails);
+  useEffect(() => {
+    void async function fetch() {
+      const result = await axios.get('http://192.168.88.78:3000/api/questions');
 
-    setData2(Data2);
-    setDataDetal2(Data2.questiondetails);
-  },[]);
+      const Data1 = result.data.data.docs[2]
+      const Data2 = result.data.data.docs[3]
+      setData(Data1);
+      setDataDetal(Data1.questiondetails);
 
-  const clickHandle = (e) =>{
+      setData2(Data2);
+      setDataDetal2(Data2.questiondetails);
+    }()
+  }, []);
+
+  const clickHandle = (e) => {
     // e.preventDefault();
-                let rs = document.querySelectorAll(".inpTest2");
-                let arr = Array.from(rs);
-                let finalOne = {};
-                arr.map(element=>{
-                if(element.checked === true){
-                    // console.log(element, "my checked element");
-                    let field = element.name;
-                    let value = element.value;
-                    finalOne[field] = value
-                }
-            });
-            // console.log(finalOne.four, "its my final2 2 2 ");
-          if(finalOne.t3hree === undefined){
-                setChildStyle("0");
-                setResponseText("Та хариултаас сонголтоо хийнэ үү...")
-                setResponseTextscale("1");
-                setResTextstyle("red");
-                scroll.scrollTo(1300);
-            }else if(finalOne.f4our === undefined ){
-                setChildStyle("0");
-                setResponseText2("Та хариултаас сонголтоо хийнэ үү...")
-                setResponseTextscale2("1");
-                setResTextstyle2("red");
-                scroll.scrollTo(1300);
-            }
-             else{
-                setChildStyle("1");
-                setResponseText("d");
-                setResponseTextscale("0");
-                setResTextstyle("black");
-                setResponseText2("d");
-                setResponseTextscale2("0");
-                setResTextstyle2("black");
-                scroll.scrollTo(2200);
-            }
+    let rs = document.querySelectorAll(".inpTest2");
+    let arr = Array.from(rs);
+    let finalOne = {};
+    arr.forEach(element => {
+      if (element.checked === true) {
+        let field = element.name;
+        let value = element.value;
+        finalOne[field] = value
+      }
+    });
+    if (finalOne.t3hree === undefined) {
+      setChildStyle("0");
+      setResponseText("Та хариултаас сонголтоо хийнэ үү...")
+      setResponseTextscale("1");
+      setResTextstyle("red");
+      scroll.scrollTo(1300);
+    } else if (finalOne.f4our === undefined) {
+      setChildStyle("0");
+      setResponseText2("Та хариултаас сонголтоо хийнэ үү...")
+      setResponseTextscale2("1");
+      setResTextstyle2("red");
+      scroll.scrollTo(1300);
+    }
+    else {
+      setChildStyle("1");
+      setResponseText("d");
+      setResponseTextscale("0");
+      setResTextstyle("black");
+      setResponseText2("d");
+      setResponseTextscale2("0");
+      setResTextstyle2("black");
+      scroll.scrollTo(2200);
+    }
   }
 
-    return (
-        <Component3 style={{transform:`scale(${props.childStyle})`}} >
-          <div className="formOneParent">
-            <div className="headerPar"  style={{color:`${resTextstyle}`}}>3. {dataFinal.description}<span className="tseg">*</span></div>
-            {dataDetal.map((el,i)=>{
-              return(
-                  <div className="radioPar">
-                      <input className="getinput inpTest2" tabIndex={dataFinal.code} type="radio" name="t3hree" value={el.id}/>
-                     <label >{el.description}</label>
-                  </div>
-              )
-            })}
-              <div className="errText" style={{transform:`scale(${responseTextscale})`, color:`red` }} >{responseText}</div>
-          </div>
-          <div className="formOneParent" >
-            <div className="headerPar"  style={{color:`${resTextstyle2}`}} >4. {dataFinal2.description}<span className="tseg">*</span></div>
+  return (
+    <Component3 style={{ transform: `scale(${props.childStyle})` }} >
+      <div className="formOneParent">
+        <div className="headerPar" style={{ color: `${resTextstyle}` }}>3. {dataFinal.description}<span className="tseg">*</span></div>
+        {dataDetal.map((el, i) => {
+          return (
+            <div className="radioPar">
+              <input className="getinput inpTest2" tabIndex={dataFinal.code} type="radio" name="t3hree" value={el.id} />
+              <label >{el.description}</label>
+            </div>
+          )
+        })}
+        <div className="errText" style={{ transform: `scale(${responseTextscale})`, color: `red` }} >{responseText}</div>
+      </div>
+      <div className="formOneParent" >
+        <div className="headerPar" style={{ color: `${resTextstyle2}` }} >4. {dataFinal2.description}<span className="tseg">*</span></div>
 
-               {dataDetal2.map((el,i)=>{
-                    return(
-                        <div className="radioPar">
-                            <input className="getinput inpTest2" tabIndex={dataFinal2.code} type="radio" name="f4our" value={el.id}/>
-                          <label >{el.description}</label>
-                        </div>
-                    )
-                  })}
-              <div className="errText" style={{transform:`scale(${responseTextscale2})`, color:`red` }} >{responseText2}</div>
-              <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>clickHandle()}>
-                 <button onClick={clickHandle} className="TestButton">NEXT</button>
-              </Link>
-          </div>
-          <FromFive SoloStyle={childStyle} />
-        </Component3>
-    )
+        {dataDetal2.map((el, i) => {
+          return (
+            <div className="radioPar">
+              <input className="getinput inpTest2" tabIndex={dataFinal2.code} type="radio" name="f4our" value={el.id} />
+              <label >{el.description}</label>
+            </div>
+          )
+        })}
+        <div className="errText" style={{ transform: `scale(${responseTextscale2})`, color: `red` }} >{responseText2}</div>
+        <Link activeClass="active" to="section1" spy={true} smooth={true} offset={-70} duration={0} onClick={() => clickHandle()}>
+          <button onClick={clickHandle} className="TestButton">NEXT</button>
+        </Link>
+      </div>
+      <FromFive SoloStyle={childStyle} />
+    </Component3>
+  )
 }
 
 export default FormThree

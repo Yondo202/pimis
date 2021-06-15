@@ -1,52 +1,54 @@
-import React,{ useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import {AiOutlineSend} from 'react-icons/ai'
-import {ImUserCheck} from 'react-icons/im'
-import {fontFamily, Color, NextBtn} from "../theme"
+import { AiOutlineSend } from 'react-icons/ai'
+import { ImUserCheck } from 'react-icons/im'
+import { fontFamily, Color, NextBtn } from "../theme"
 import { useHistory } from 'react-router-dom'
-import axios from './../../axiosbase'
+import axios, { edplan } from './../../axiosbase'
 
 function EmailAuth() {
-  const history = useHistory();
-  const param = useParams().id;
-  const [Load, setLoad] = useState(false);
-  const [ success, setSuccess ] = useState(false);
-  const [ ErrMsg, setErrMsg ] = useState();
+    const history = useHistory();
+    const param = useParams().id;
+    const [Load, setLoad] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [ErrMsg, setErrMsg] = useState();
 
-  useEffect(async ()=>{
-       await axios.post(`users/confirm`, { idToken: param } ).then((res)=>{
-            if(res.data.success===true){
-                if(res.data.confirmed===0){
+    useEffect(() => {
+        axios.post(`users/confirm`, { idToken: param }).then((res) => {
+            if (res.data.success === true) {
+                if (res.data.confirmed === 0) {
                     //ямар нэг алдаа гарсан
-                    setSuccess(false); setLoad(true); setErrMsg("Алдаа гарсан"); 
-                }else if(res.data.confirmed===1){
+                    setSuccess(false); setLoad(true); setErrMsg("Алдаа гарсан");
+                } else if (res.data.confirmed === 1) {
                     //амжилттай...
+                    edplan.post(`approves`, { idd: res.data.user.id, approve: false, seen:false });
                     setLoad(true); setSuccess(true); setErrMsg("Баталгаажуулалт амжилттай");
-                }else if(res.data.confirmed===2){
-                    setLoad(true); setSuccess(true); setErrMsg("Аль хэдийн баталгаажсан байна");
+                } else if (res.data.confirmed === 2) {
+                    setLoad(true); setSuccess(true); setErrMsg("Баталгаажсан байна");
+                    // edplan.post(`approves`, { idd: res.data.user.id, approve: false, seen:false })
                     //Аль хэдийн баталгаажсан байна...
                 }
             }
-        }).catch((err)=>{ setSuccess(false); setLoad(true); setErrMsg("Алдаа гарсан");  })
-  },[]);
+        }).catch((err) => { setSuccess(false); setLoad(true); setErrMsg("Алдаа гарсан"); })
+    }, []);
 
-    const handleClick = () =>{
+    const handleClick = () => {
         history.push("/");
     }
 
     return (
         <Component>
-                <div className="imgPar">
-                    <img src="/head.jpg" alt="edp_logo" />
-                    <div className="text">Экспортыг дэмжих төсөл</div>
-                </div>
-                <div style={Load?success?{borderTop:`3px solid green`}: {borderTop:`3px solid orange`}:{borderTop:`3px solid ${Color}`}}  className="formOneParent">
-                    {Load?success?<div className="Success"><ImUserCheck /> <h4>{ErrMsg}</h4> </div> :<div className="notSuccess"><ImUserCheck /> <h4>{ErrMsg}</h4> </div>: <div className="imga"><img  src="/gifff.gif" alt="gif" /></div> }
-                </div>
-                <div className="SubmitButtonPar">
-                {Load&&success?<NextBtn onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>:null}
-                </div>
+            <div className="imgPar">
+                <img src="/head.jpg" alt="edp_logo" />
+                <div className="text">Экспортыг дэмжих төсөл</div>
+            </div>
+            <div style={Load ? success ? { borderTop: `3px solid green` } : { borderTop: `3px solid orange` } : { borderTop: `3px solid ${Color}` }} className="formOneParent">
+                {Load ? success ? <div className="Success"><ImUserCheck /> <h4>{ErrMsg}</h4> </div> : <div className="notSuccess"><ImUserCheck /> <h4>{ErrMsg}</h4> </div> : <div className="imga"><img src="/gifff.gif" alt="gif" /></div>}
+            </div>
+            <div className="SubmitButtonPar">
+                {Load && success ? <NextBtn onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend /> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn> : null}
+            </div>
         </Component>
     )
 }
@@ -228,4 +230,3 @@ const Component = styled.div`
   }
 
 `
-

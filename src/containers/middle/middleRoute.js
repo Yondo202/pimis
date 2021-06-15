@@ -3,7 +3,7 @@ import { Route } from "react-router-dom"
 import { ChangePassword } from 'components/LoginDoneHome/ChangePassword';
 import SignatureDraw from 'components/LoginDoneHome/UsersInfo';
 
-function middleRoute() {
+function MiddleRoute() {
     return (
         <>
             <Route path="/changepass" component={ChangePassword} />
@@ -12,4 +12,4 @@ function middleRoute() {
     )
 }
 
-export default middleRoute
+export default MiddleRoute
