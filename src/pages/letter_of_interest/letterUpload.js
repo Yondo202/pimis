@@ -71,7 +71,7 @@ export default function LetterUpload() {
          setForm({ attachedFile: res.data.data })
       }).catch(err => {
          setForm({ attachedFile: null })
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсаргасан файлыг хадгалж чадсангүй.' })
       })
    }
 
@@ -87,7 +87,7 @@ export default function LetterUpload() {
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татаж чадсангүй.' })
       })
    }
 
@@ -106,7 +106,7 @@ export default function LetterUpload() {
             setForm(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файлаар хавсаргасныг хадгаллаа.' })
          }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсаргасан файлыг хадгалж чадсангүй.' })
          })
       } else {
          axios.post(`letter-of-interests`, form, {
@@ -115,7 +115,7 @@ export default function LetterUpload() {
             setForm(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файлаар хавсаргасныг хадгаллаа.' })
          }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсаргасан файлыг хадгалж чадсангүй.' })
          })
       }
    }

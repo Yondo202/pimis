@@ -39,7 +39,7 @@ export default function TrainingRequest() {
          setRequest(res.data.data)
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын хүсэлтийг хүлээж авлаа.' })
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хүсэлт илгээж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хүсэлт илгээж чадсангүй.' })
       })
    }
 

@@ -34,7 +34,7 @@ export default function TrainingFeedback() {
             }
             setFeedback(initialFeedback)
          }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Асуумжуудыг татаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Асуумжуудыг татаж чадсангүй.' })
          })
    }, [])
 
@@ -57,7 +57,7 @@ export default function TrainingFeedback() {
             setModalOpenFeedbackGiven(true)
             return
          }
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын үнэлгээг хадгалж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалтын үнэлгээг хадгалж чадсангүй.' })
       })
    }
 
@@ -115,7 +115,7 @@ export default function TrainingFeedback() {
          setErrorMsg('')
       }).catch(err => {
          setTraining({})
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээллийг олж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалтын мэдээллийг олж чадсангүй.' })
       })
    }
 

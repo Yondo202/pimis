@@ -27,7 +27,7 @@ export default function CurrencyRateHandle() {
             setRates(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Ханшийн мэдээллийг хадгаллаа.' })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Ханшийн мэдээллийг нэмж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Ханшийн мэдээллийг нэмж чадсангүй.' })
             axios.get('currency-rates').then(res => {
                 setRates(res.data.data)
             })
@@ -41,7 +41,7 @@ export default function CurrencyRateHandle() {
             setRates(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Ханшийн мэдээллийг өөрчиллөө.' })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Ханшийн мэдээллийг өөрчилж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Ханшийн мэдээллийг өөрчилж чадсангүй.' })
             axios.get('currency-rates').then(res => {
                 setRates(res.data.data)
             })
@@ -56,7 +56,7 @@ export default function CurrencyRateHandle() {
             setRates(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Ханшийн мэдээллийг устгалаа.' })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Ханшийн мэдээллийг устгаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Ханшийн мэдээллийг устгаж чадсангүй.' })
             axios.get('currency-rates').then(res => {
                 setRates(res.data.data)
             })

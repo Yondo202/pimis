@@ -23,7 +23,7 @@ export default function TrainingRequestsList() {
       }).then(res => {
          setRequests(res.data.data)
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Захиалгат сургалтын хүсэлтүүдийг татаж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Захиалгат сургалтын хүсэлтүүдийг татаж чадсангүй.' })
       })
 
       axios.get('business-sector').then(res => {
@@ -66,7 +66,7 @@ export default function TrainingRequestsList() {
       }).then(res => {
          setRequests(res.data.data)
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Мэдээллийг татаж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалтын хүсэлтийн мэдээллийг татаж чадсангүй.' })
       })
    }
 

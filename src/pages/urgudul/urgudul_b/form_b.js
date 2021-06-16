@@ -81,13 +81,13 @@ function UrgudulBreakdown() {
                     }
                 }).then(res => {
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Төслийн задаргаа хадгалагдлаа.' })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Төслийн задаргааг хадгаллаа.' })
                     history.push('/urgudul/6')
                 }).catch(err => {
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
             } else {
-                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
             }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })

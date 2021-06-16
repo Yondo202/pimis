@@ -42,7 +42,7 @@ export default function ProjectStatusHandle() {
             if (err.response.status === 490) {
                 AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Төлөв өөрчлөх эрх таньд олгогдоогүй байна.' })
             } else {
-                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Төлөв өөрчилж чадсангүй.' })
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Төлвийг өөрчилж чадсангүй.' })
             }
         })
     }
@@ -78,7 +78,7 @@ export default function ProjectStatusHandle() {
             setHistories(res.data.data || [])
             setHistoriesOpen(true)
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Өөрчлөлтүүдийг татаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Өөрчлөлтийн түүхийг татаж чадсангүй.' })
         })
     }
 

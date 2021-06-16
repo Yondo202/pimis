@@ -110,7 +110,7 @@ export default function LetterOfInterest() {
             setForm(prev => ({ ...prev, [editKey]: res.data.data }))
         }).catch(err => {
             setFn(null)
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг хадгалж чадсангүй.' })
         })
     }
 
@@ -126,7 +126,7 @@ export default function LetterOfInterest() {
             const url = window.URL.createObjectURL(res.data)
             setCompanyLogo(url)
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Зургийг татахад алдаа гарлаа.' })
         })
     }, [form.company_logo?.id])
 
@@ -139,7 +139,7 @@ export default function LetterOfInterest() {
             const url = window.URL.createObjectURL(res.data)
             setCompanyStamp(url)
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Зургийг татахад алдаа гарлаа.' })
         })
     }, [form.company_stamp?.id])
 
@@ -168,13 +168,9 @@ export default function LetterOfInterest() {
                         'Authorization': getLoggedUserToken(),
                     },
                 }).then(res => {
-                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоотыг хадгаллаа.' })
                 }).catch(err => {
-                    if (err.response.data?.error?.type === "entity.too.large") {
-                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хадгалж чадсангүй. Зургийн хэмжээ том байна.' })
-                        return
-                    }
-                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хадгалж чадсангүй.' })
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хадгалж чадсангүй.' })
                 })
             } else {
                 axios.post('letter-of-interests', form, {
@@ -183,17 +179,13 @@ export default function LetterOfInterest() {
                     },
                 }).then(res => {
                     setForm({ ...form, ...res.data.data })
-                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоот хадгалагдлаа.' })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоотыг хадгаллаа.' })
                 }).catch(err => {
-                    if (err.response.data?.error?.type === "entity.too.large") {
-                        AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хадгалж чадсангүй. Зургийн хэмжээ том байна.' })
-                        return
-                    }
-                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хадгалж чадсангүй.' })
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хадгалж чадсангүй.' })
                 })
             }
         } else {
-            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
         }
     }
 

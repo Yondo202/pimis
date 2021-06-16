@@ -313,7 +313,7 @@ export default function AnalystReport() {
             axios.post(`projects/${projectId}/bds-evaluation5c`, { rows: rows, info: info }, {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
-                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Шинжилгээний тайланг хадгалагдлаа.' })
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Шинжээчийн тайланг хадгаллаа.' })
             }).catch(err => {
                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
             })

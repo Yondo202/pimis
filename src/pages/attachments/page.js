@@ -114,7 +114,7 @@ export default function AttachmentUploads() {
             const newForm2 = form
             newForm2[index].files = newForm[index].files.filter(item => item !== 'loading')
             setForm([...newForm2])
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Гэрээний файлыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээний файлыг хадгалж чадсангүй.' })
         })
     }
 
@@ -134,7 +134,7 @@ export default function AttachmentUploads() {
             const URL = window.URL.createObjectURL(res.data)
             FilePreviewCtx.setFile({ open: true, src: URL })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг татаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татаж чадсангүй.' })
         })
     }
 
@@ -144,7 +144,7 @@ export default function AttachmentUploads() {
         }).then(res => {
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт файлуудыг амжилттай хадгаллаа.' })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсралт файлуудыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсралт файлуудыг хадгалж чадсангүй.' })
         })
     }
 

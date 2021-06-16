@@ -95,10 +95,10 @@ function UrgudulNavigator(props) {
                 setModalOpen(false)
             } else {
                 history.push(`/urgudul-preview/${project.id}`)
-                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягтыг нээлээ. Засвар оруулах боломжгүй өргөдөл байна.' })
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягтыг нээлээ.' })
             }
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Өргөдлийн маягтыг нээж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Өргөдлийн маягтыг нээж чадсангүй.' })
         })
     }
 

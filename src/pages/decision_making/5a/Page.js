@@ -86,7 +86,7 @@ const FirstEvaluation = () => {
     axios.post(`projects/${projectId}/first-evalutions`, rows, {
       headers: { Authorization: getLoggedUserToken() },
     }).then(res => {
-      AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Анхан шатны үнэлгээ хадгалагдлаа.' })
+      AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Анхан шатны үнэлгээ хийгдлээ.' })
       setSaved(true)
     }).catch(err => {
       AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })

@@ -26,7 +26,7 @@ export default function TrainingsList() {
       }).then(res => {
          setTrainings(res.data.data)
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтуудыг татаж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалтуудыг татаж чадсангүй.' })
       })
    }, [])
 
@@ -38,7 +38,7 @@ export default function TrainingsList() {
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татаж чадсангүй.' })
       })
    }
 

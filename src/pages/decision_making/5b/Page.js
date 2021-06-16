@@ -363,7 +363,7 @@ export default function CompilationChecklist() {
         axios.post(`projects/${projectId}/bds-evaluation5b`, rows, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Бүрдүүлбэрүүдийг шалгах хуудсыг хадгалагдлаа.' })
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Бүрдүүлбэрүүдийг шалгах хуудсыг хадгаллаа.' })
         }).catch(err => {
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
         })

@@ -52,14 +52,14 @@ function UrgudulOverview({ projects }) {
                 })
                     .then(res => {
                         UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Танилцуулга мэдээлэл хадгалагдлаа.' })
+                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Танилцуулга мэдээллийг хадгаллаа.' })
                         history.push('/urgudul/5')
                     })
                     .catch(err => {
                         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                     })
             } else {
-                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
             }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
@@ -97,7 +97,7 @@ function UrgudulOverview({ projects }) {
             })
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
         })
     }
 
@@ -123,7 +123,7 @@ function UrgudulOverview({ projects }) {
                     {isCluster ?
                         <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Кластерын тэргүүлэгч аж ахуйн нэгж болон бусад гишүүдийн хооронд кластерын хамтын ажиллагаа хэрхэн эхэлж, ямар хугацаанд, ямар хэмжээнд явагдаж буй талаар товч мэдээлэл. Үүнд:" list={['Кластераар хамтарч хийж буй эсвэл кластер дотор солилцож буй гол бүтээгдэхүүн, үйлчилгээг үнийн дүнгийн хамт оруулна уу.', 'Мөн хамааралтай холбоод, судалгааны хүрээлэнгүүдтэй ямар хэмжээний хамааралтай ажилладаг талаарх мэдээлэл оруулна уу.']} position="bottom" />
                         :
-                        <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="ААН-ийн хувьд экспортын бүтээгдэхүүний гол орцыг борлуулалтанд эзлэх үнийн дүнгээр оруулах бөгөөд үүнийг хаана хаанаас авч буй талаар мэдээлэлийг оруулна уу." position="bottom" />
+                        <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="ААН-ийн хувьд экспортын бүтээгдэхүүний гол орцыг борлуулалтанд эзлэх үнийн дүнгээр оруулах бөгөөд үүнийг хаана хаанаас авч буй талаар мэдээллийг оруулна уу." position="bottom" />
                     }
                 </div>
 

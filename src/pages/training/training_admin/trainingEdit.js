@@ -37,7 +37,7 @@ export default function TrainingEdit() {
          }).then(res => {
             setTraining(res.data.data)
          }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтыг татаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалтын мэдээллийг татаж чадсангүй.' })
          })
       }
       axios.get('trainings/organizations', {
@@ -45,7 +45,7 @@ export default function TrainingEdit() {
       }).then(res => {
          setOrganizations(res.data.data)
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын байгууллагуудыг татаж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалтын байгууллагуудыг татаж чадсангүй.' })
       })
    }, [])
 
@@ -57,7 +57,7 @@ export default function TrainingEdit() {
             setTraining(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллийг шинэчиллээ.' })
          }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээллийг засаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалтын мэдээллийг засаж чадсангүй.' })
          })
       }
       else {
@@ -68,7 +68,7 @@ export default function TrainingEdit() {
             setTrainingId(res.data.data.id)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын мэдээллэл нэмэгдлээ.' })
          }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтын мэдээл нэмж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалтын мэдээллийг нэмж чадсангүй.' })
          })
       }
    }
@@ -87,10 +87,10 @@ export default function TrainingEdit() {
          }
       }).then(res => {
          setTraining(prev => ({ ...prev, module_file: res.data.data }))
-         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файл амжилттай хадгалагдлаа.' })
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файлыг хадгаллаа.' })
       }).catch(err => {
          setTraining(prev => ({ ...prev, module_file: null }))
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг хадгалж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг хадгалж чадсангүй.' })
       })
    }
 
@@ -116,7 +116,7 @@ export default function TrainingEdit() {
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татаж чадсангүй.' })
       })
    }
 

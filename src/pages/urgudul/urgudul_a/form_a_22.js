@@ -105,13 +105,13 @@ function UrgudulDirectors({ projects }) {
                     headers: { 'Authorization': getLoggedUserToken() },
                 }).then(res => {
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'АНН мэдээлэл хадгалагдлаа.' })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'АНН мэдээллийг хадгаллаа.' })
                     history.push('/urgudul/4')
                 }).catch(err => {
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
             } else {
-                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
             }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
@@ -150,7 +150,7 @@ function UrgudulDirectors({ projects }) {
             }
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
         })
     }
 

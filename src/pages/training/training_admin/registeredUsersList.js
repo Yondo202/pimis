@@ -30,7 +30,7 @@ export default function TrainingRegisteredUsersList() {
          }).then(res => {
             setRegisteredUsers(res.data.data)
          }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Бүртгүүлсэн хэрэглэгчдийг татаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Бүртгүүлсэн хэрэглэгчдийг татаж чадсангүй.' })
          })
       } else {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Бүртгүүлсэн хэрэглэгчдийг харах сургалтаа сонгоно уу.' })
@@ -139,7 +139,7 @@ const FileCardContainer = ({ label, file }) => {
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татаж чадсангүй.' })
       })
    }
 

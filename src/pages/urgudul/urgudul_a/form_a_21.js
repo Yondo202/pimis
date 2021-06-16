@@ -89,7 +89,7 @@ function UrgudulClusters({ projects }) {
             const newForm = form
             newForm[editIndex].attachedFiles = null
             setForm([...newForm])
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Гэрээний файлыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээний файлыг хадгалж чадсангүй.' })
         })
     }
 
@@ -111,7 +111,7 @@ function UrgudulClusters({ projects }) {
             const URL = window.URL.createObjectURL(res.data)
             FilePreviewCtx.setFile({ open: true, src: URL })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг татаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татаж чадсангүй.' })
         })
     }
 
@@ -167,13 +167,13 @@ function UrgudulClusters({ projects }) {
                     }
                 }).then(res => {
                     UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Кластерийн мэдээлэл хадгалагдлаа.' })
+                    AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Кластерийн мэдээллийг хадгаллаа.' })
                     history.push('/urgudul/4')
                 }).catch(err => {
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
             } else {
-                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
             }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
@@ -220,7 +220,7 @@ function UrgudulClusters({ projects }) {
             }
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
         })
     }
 

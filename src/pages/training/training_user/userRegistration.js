@@ -48,7 +48,7 @@ export default function TrainingUserRegistration() {
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад чадсангүй.' })
       })
    }
 
@@ -81,7 +81,7 @@ export default function TrainingUserRegistration() {
          setRegistration(prev => ({ ...prev, [editKey]: res.data.data }))
       }).catch(err => {
          setRegistration(prev => ({ ...prev, [editKey]: null }))
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг хадгалж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг хадгалж чадсангүй.' })
       })
    }
 
@@ -125,7 +125,7 @@ export default function TrainingUserRegistration() {
                   setModalOpenIsFull(true)
                   return
                }
-               AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Танийг сургалтанд бүртгэж чадсангүй.' })
+               AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Танийг сургалтанд бүртгэж чадсангүй.' })
             })
       } else {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Бүртгүүлэх сургалтаа сонгоно уу.' })

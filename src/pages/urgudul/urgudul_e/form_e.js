@@ -49,7 +49,7 @@ function UrgudulChecklist() {
                 AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийг баталгаажууллаа.' })
                 setModalOpen(false)
             }).catch(err => {
-                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Өргөдлийг баталгаажуулж чадсангүй.' })
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Өргөдлийг баталгаажуулж чадсангүй.' })
                 setModalOpen(false)
             })
         } else {
@@ -77,7 +77,7 @@ function UrgudulChecklist() {
         if (Object.values(form).every(bool => bool)) {
             setModalOpen(true)
         } else {
-            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Шалгах хуудастай танилцаж бүгдийг нь зөвлөнө үү.' })
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Шалгах хуудастай танилцаж зөвлөнө үү.' })
         }
     }
 

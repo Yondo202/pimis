@@ -81,7 +81,7 @@ function UrgudulActivities() {
                         }
                     }).then(res => {
                         UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагааны талаарх мэдээлэл хадгалагдлаа.' })
+                        AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагааны мэдээллийг хадгаллаа.' })
                         history.push('/urgudul/7')
                     }).catch(err => {
                         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
@@ -90,7 +90,7 @@ function UrgudulActivities() {
                     AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Экспортыг дэмжих төслөөс хүссэн санхүүжилт $50,000 -оос хэтэрсэн байна.' })
                 }
             } else {
-                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
             }
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })

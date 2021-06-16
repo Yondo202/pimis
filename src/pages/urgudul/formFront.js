@@ -67,10 +67,10 @@ function UrgudulFront() {
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийн маягт үүслээ.' })
                     history.push('/urgudul/2')
                 }).catch(err => {
-                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Маягт үүсгэж чадсангүй.' })
+                    AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Маягт үүсгэж чадсангүй.' })
                 })
             } else {
-                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+                AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
             }
         } else {
             setModalOpen(true)
@@ -88,13 +88,13 @@ function UrgudulFront() {
                 }
             }).then(res => {
                 UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээлэл хадгалагдлаа.' })
+                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Маягтын мэдээллийг хадгаллаа.' })
                 history.push('/urgudul/2')
             }).catch(err => {
                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
             })
         } else {
-            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбар бөглөгдөөгүй байна. Та гүйцэт бөглөнө үү.' })
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
         }
     }
 
