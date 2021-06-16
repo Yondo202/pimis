@@ -121,7 +121,7 @@ function UrgudulActivities() {
             <div className="">
                 <div className="tw-p-3 tw-flex tw-items-center">
                     <span className="tw-pl-2 tw-font-medium tw-text-base tw-text-blue-500">
-                        {isCluster ? 'Кластераар хийх үйл ажиллагаа' : '- Аж ахуйн нэгжээр хийх үйл ажиллагаа'}
+                        {isCluster ? 'Кластераар хийх үйл ажиллагаа' : 'Аж ахуйн нэгжээр хийх үйл ажиллагаа'}
                     </span>
 
                     {isCluster ?
