@@ -73,8 +73,6 @@ function Signup() {
     });
   }
 
-  console.log(`reg`, reg);
-
   const handleClick = () => {
       let rs = document.querySelectorAll(".userInp"); let arr = Array.from(rs); let finalOne = {};
       arr.forEach(element => {
