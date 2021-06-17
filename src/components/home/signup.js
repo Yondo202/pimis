@@ -74,16 +74,15 @@ function Signup() {
   }
 
   const handleClick = () => {
-    let rs = document.querySelectorAll(".userInp"); let arr = Array.from(rs); let finalOne = {};
-    arr.forEach(element => {
-      if (element.value !== "") {
-        element.classList = - " red"
-        element.classList += " userInp"
-        let field = element.name; let value = element.value; finalOne[field] = value;
-      } else { element.classList += " red" }
-    });
-    let keys = Object.keys(finalOne);
-
+      let rs = document.querySelectorAll(".userInp"); let arr = Array.from(rs); let finalOne = {};
+      arr.forEach(element => {
+        if (element.value !== "") {
+          element.classList = - " red"
+          element.classList += " userInp"
+          let field = element.name; let value = element.value; finalOne[field] = value;
+        } else { element.classList += " red" }
+      });
+      let keys = Object.keys(finalOne);
       if (keys.length < 6) {
         setPassText("Гүйцэд бөгөлнө үү"); setScale("1"); setTimeout(() => { setScale("0"); setPassText(null);  }, 3000);
       }else if(reg !== 7){
