@@ -235,11 +235,11 @@ export default function UrgudulPreview(props) {
             <div className="tw-text-sm tw-text-gray-700 tw-text-13px tw-bg-white tw-rounded tw-p-4" id="urgudul-preview-page">
                 <div className="tw-flex tw-justify-between tw-items-center">
                     <button className="tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-text-15px tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handlePrint}>
-                        <span className="tw-text-sm">Хэвлэх болон хадгалах</span>
+                        <span className="tw-text-sm tw-font-light">Хэвлэх болон хадгалах</span>
                         <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
                     </button>
 
-                    <div className="tw-text-15px tw-font-medium tw-pr-2 tw-flex tw-items-center">
+                    <div className="tw-text-sm tw-font-medium tw-pr-2 tw-flex tw-items-center">
                         Статус:
                         <span className="tw-text-indigo-600 tw-ml-1 tw-bg-indigo-50 tw-rounded tw-px-1.5 tw-py-0.5">
                             {statusNames[project.status]}
@@ -248,14 +248,14 @@ export default function UrgudulPreview(props) {
                 </div>
 
                 <div className="preview-container" ref={componentRef}>
-                    <div className="tw-text-xl text-center tw-font-medium tw-p-4 tw-mt-3 tw-mb-3">
+                    <div className="tw-text-lg text-center tw-font-medium tw-p-4 tw-mt-3 tw-mb-3">
                         Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт
                     </div>
 
                     <div className="no-break">
-                        <div className="tw-px-2 tw-pt-2 tw-pb-1.5 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800">
+                        <div className="tw-px-3 tw-pt-2 tw-pb-1.5 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800">
                             Өргөдлийн дугаар:
-                            <span className="tw-ml-2 tw-text-sm tw-tracking-wide">{project.project_number}</span>
+                            <span className="tw-ml-2 tw-tracking-wide tw-font-medium">{project.project_number}</span>
                         </div>
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
                             <Row label={labels.front.project_type} value={project.project_type === 1 ? 'Кластер' : (project.project_type === 0 && 'Аж ахуйн нэгж')} />
@@ -265,8 +265,8 @@ export default function UrgudulPreview(props) {
                     </div>
 
                     <div className="no-break">
-                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            A1 - Өргөдөл гаргагч
+                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            Өргөдөл гаргагч
                         </div>
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
                             <Row label={labels.company.company_name} value={project.company?.company_name} />
@@ -298,8 +298,8 @@ export default function UrgudulPreview(props) {
                     </div>
 
                     <div className="no-break">
-                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            A2 - {isCluster ? 'Кластерын гишүүн байгууллагууд' : 'Аж ахуйн нэгжийг төлөөлөгчид'}
+                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            {isCluster ? 'Кластерын гишүүн байгууллагууд' : 'Аж ахуйн нэгжийг төлөөлөгчид'}
                         </div>
                         {isCluster ?
                             project.clusters?.map((item, i) =>
@@ -327,8 +327,8 @@ export default function UrgudulPreview(props) {
                     </div>
 
                     <div className="no-break">
-                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            A3 - Товч танилцуулга
+                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            Товч танилцуулга
                         </div>
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
                             <RowHtml label={labels.a3_4.applicant_overview[type]} html={project.applicant_overview} />
@@ -336,8 +336,8 @@ export default function UrgudulPreview(props) {
                     </div>
 
                     <div className="no-break">
-                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-t-0 tw-border-gray-800">
-                            A4 - Техникийн туршлага
+                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-t-0 tw-border-gray-800">
+                            Техникийн туршлага
                         </div>
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
                             <RowHtml label={labels.a3_4.applicant_experience[type]} html={project.applicant_experience} />
@@ -345,8 +345,8 @@ export default function UrgudulPreview(props) {
                     </div>
 
                     <div className="no-break">
-                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            B - Төслийн задаргаа
+                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            Төслийн задаргаа
                         </div>
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" style={{ breakInside: 'avoid' }}>
                             <Row label={labels.b.project_duration} value={`${project.project_duration} сар`} />
@@ -361,8 +361,8 @@ export default function UrgudulPreview(props) {
                     </div>
 
                     <div className="no-break">
-                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            B6 - үйл ажиллагаа
+                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            Үйл ажиллагаа
                         </div>
                         {project.activities?.map((item, i) =>
                             <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
@@ -376,8 +376,8 @@ export default function UrgudulPreview(props) {
                     </div>
 
                     <div className="no-break">
-                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            B7 - Төслийн үр ашгийн талаар
+                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            Төслийн үр ашгийн талаар
                         </div>
                         <div className="tw-border tw-border-t-0 tw-border-gray-400">
                             {Object.entries(labels.benefit).filter(([key, value]) => key !== 'growths_explanation' && key !== 'assumptions').map(([key, value]) =>
@@ -389,8 +389,8 @@ export default function UrgudulPreview(props) {
                     </div>
 
                     <div className="no-break">
-                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-b-0 tw-border-gray-800 tw-mt-8">
-                            B8 - Төслийн тооцоолол
+                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-b-0 tw-border-gray-800 tw-mt-8">
+                            Төслийн тооцоолол
                         </div>
                         {Object.keys(project.exportDatas || {}).length > 0 ?
                             dateHalves.map((dates, h) =>
@@ -501,8 +501,8 @@ export default function UrgudulPreview(props) {
                     </div>
 
                     <div className="no-break">
-                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            D - Мэдэгдэл
+                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            Мэдэгдэл
                         </div>
                         {isCluster ?
                             project.noticeClusters?.map((item, i) =>
@@ -526,15 +526,15 @@ export default function UrgudulPreview(props) {
                     </div>
 
                     <div className="no-break">
-                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-font-medium tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            E - Шалгах хуудас
+                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            Шалгах хуудас
                         </div>
                         <div className="tw-border tw-border-t-0 tw-border-gray-400">
                             <Row label={labels.e.confirmed} value={project.confirmed ? 'Тийм' : 'Үгүй'} />
                         </div>
                     </div>
 
-                    <div className="tw-text-center tw-text-base tw-p-4 tw-pt-8 tw-font-medium">
+                    <div className="tw-text-center tw-text-15px tw-p-4 tw-pt-8 tw-font-medium">
                         {new Date(project.createdAt).toLocaleDateString()}
                     </div>
                 </div>

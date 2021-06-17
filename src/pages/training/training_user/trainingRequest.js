@@ -39,7 +39,7 @@ export default function TrainingRequest() {
          setRequest(res.data.data)
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын хүсэлтийг хүлээж авлаа.' })
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хүсэлт илгээж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хүсэлт илгээж чадсангүй.' })
       })
    }
 
@@ -65,37 +65,37 @@ export default function TrainingRequest() {
             Захиалгат сургалтын хүсэлт
          </div>
 
-         <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-pl-1 tw-pr-4 tw-mt-3">
-            <FormInline label="Овог нэр" type="text" value={request.fullname ?? ''} name="fullname" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" invalid={validate && checkInvalid(request.fullname)} />
+         <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-gap-x-4 tw-mt-3">
+            <FormInline label="Овог нэр" type="text" value={request.fullname ?? ''} name="fullname" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(request.fullname)} />
 
-            <FormInline label="Ажлын байрны албан тушаал" type="text" value={request.employee_position ?? ''} name="employee_position" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" invalid={validate && checkInvalid(request.employee_position)} />
+            <FormInline label="Ажлын байрны албан тушаал" type="text" value={request.employee_position ?? ''} name="employee_position" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(request.employee_position)} />
 
-            <FormInline label="Регистрийн дугаар" type="text" value={request.registration_number ?? ''} name="registration_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" invalid={validate && checkInvalid(request.registration_number)} />
+            <FormInline label="Регистрийн дугаар" type="text" value={request.registration_number ?? ''} name="registration_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(request.registration_number)} />
 
-            <FormInline label="Утасны дугаар" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={request.phone ?? ''} name="phone" onChange={handleInputFormat} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" invalid={validate && checkInvalid(request.phone)} />
+            <FormInline label="Утасны дугаар" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={request.phone ?? ''} name="phone" onChange={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(request.phone)} />
 
             <div className="tw-w-full md:tw-col-span-2">
                <FormLabel label="Хуулийн этгээдийн товч тахилцуулга." SVG={PenSVG} invalid={validate && checkInvalid(request.company_introduction, 'quill')} />
 
-               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 786 }}>
+               <div className="tw-px-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 786 }}>
                   <FormRichText modules="small" value={request.company_introduction ?? ''} name="company_introduction" setForm={handleInput} />
                </div>
             </div>
 
-            <FormInline label="Имэйл хаяг" type="email" value={request.company_email ?? ''} name="company_email" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(request.company_email)} />
+            <FormInline label="Имэйл хаяг" type="email" value={request.company_email ?? ''} name="company_email" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(request.company_email)} />
 
             <TreeSelect data={sectors} label="Харьялагдах салбар" displayName="bdescription_mon" value={request.business_sectorId} name="business_sectorId" handleChange={handleInput} invalid={validate && checkInvalid(request.business_sectorId)} />
 
-            <FormInline label="Улсын бүртгэлийн дугаар" type="number" value={request.company_registration_number ?? ''} name="company_registration_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" invalid={validate && checkInvalid(request.company_registration_number)} />
+            <FormInline label="Улсын бүртгэлийн дугаар" type="number" value={request.company_registration_number ?? ''} name="company_registration_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(request.company_registration_number)} />
 
-            <FormInline label="Сургалтад хамрагдах ажилчдын тоо" type="number" value={request.participant_number ?? ''} name="participant_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" invalid={validate && checkInvalid(request.participant_number)} />
+            <FormInline label="Сургалтад хамрагдах ажилчдын тоо" type="number" value={request.participant_number ?? ''} name="participant_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(request.participant_number)} />
 
             <div className="tw-w-full md:tw-col-span-2">
                <div className="">
                   <FormLabel label="Та ямар чиглэлээр ямар сургалт авах хүсэлтэй байгаа вэ? Та сургалтын хэрэгцээ, шаардлагаа тодорхой бичнэ үү." SVG={PenSVG} HelpPopup={<HelpPopup classAppend="tw-mx-2" main="Экспортод чиглэсэн байх шаардлагатай." position="bottom" />} invalid={validate && checkInvalid(request.training_benefit, 'quill')} />
                </div>
 
-               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 786 }}>
+               <div className="tw-px-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 786 }}>
                   <FormRichText modules="small" value={request.training_request ?? ''} name="training_request" setForm={handleInput} />
                </div>
             </div>
@@ -103,7 +103,7 @@ export default function TrainingRequest() {
             <div className="tw-w-full md:tw-col-span-2">
                <FormLabel label="Та сургалтад хамрагдсанаар та ямар ур чадвар эзэмших вэ? Та сургалтаас авах ашиг, үр дүнгийн талаар дэлгэрэнгүй бичнэ үү." SVG={PenSVG} invalid={validate && checkInvalid(request.training_benefit, 'quill')} />
 
-               <div className="tw-pl-8 tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 786 }}>
+               <div className="tw-px-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 786 }}>
                   <FormRichText modules="small" value={request.training_benefit ?? ''} name="training_benefit" setForm={handleInput} />
                </div>
             </div>

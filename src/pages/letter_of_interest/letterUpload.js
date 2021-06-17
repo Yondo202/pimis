@@ -71,7 +71,7 @@ export default function LetterUpload() {
          setForm({ attachedFile: res.data.data })
       }).catch(err => {
          setForm({ attachedFile: null })
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсаргасан файлыг хадгалж чадсангүй.' })
       })
    }
 
@@ -87,7 +87,7 @@ export default function LetterUpload() {
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татаж чадсангүй.' })
       })
    }
 
@@ -106,7 +106,7 @@ export default function LetterUpload() {
             setForm(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файлаар хавсаргасныг хадгаллаа.' })
          }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсаргасан файлыг хадгалж чадсангүй.' })
          })
       } else {
          axios.post(`letter-of-interests`, form, {
@@ -115,7 +115,7 @@ export default function LetterUpload() {
             setForm(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Файлаар хавсаргасныг хадгаллаа.' })
          }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсаргасан файлыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсаргасан файлыг хадгалж чадсангүй.' })
          })
       }
    }
@@ -134,7 +134,7 @@ export default function LetterUpload() {
             </div>
 
             <div className="tw-relative tw-p-2 tw-pl-4">
-               <div className="tw-text-15px tw-font-medium tw-flex tw-items-center tw-mt-2">
+               <div className="tw-text-15px tw-flex tw-items-center tw-mt-2">
                   <PaperClipSVG className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-600" />
                   {userId
                      ? 'Сонирхол илэрхийлэх албан тоот файлаар'
@@ -152,7 +152,7 @@ export default function LetterUpload() {
                         ? anims =>
                            <FileCard name={item?.name} type={item?.mimetype} size={item?.size} classAppend="tw-my-1 tw-mx-1.5" uploading={item === 'loading' && true} removeFile={handleRemoveFile} downloadFile={handleDownloadFile} style={anims} />
                         : anims => (userId
-                           ? <div className="tw-pt-4 tw-pb-2 tw-font-medium tw-italic tw-text-gray-500">
+                           ? <div className="tw-pt-4 tw-pb-2 tw-italic tw-text-gray-500">
                               Файлаар иpүүлээгүй байна.
                            </div>
                            : <FileCardAdd classAppend="tw-my-1 tw-mx-1.5" onClick={handleAddFileClick} style={anims} />
@@ -163,7 +163,7 @@ export default function LetterUpload() {
 
                {!userId &&
                   <div className="tw-flex tw-justify-center">
-                     <button className="tw-my-2 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow-md tw-px-6 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none" onClick={handleSubmitFile}>
+                     <button className="tw-my-2 tw-flex tw-items-center tw-text-white tw-rounded hover:tw-shadow-md tw-px-6 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none tw-font-light" onClick={handleSubmitFile}>
                         Хадгалах
                      </button>
                   </div>
@@ -173,7 +173,7 @@ export default function LetterUpload() {
             </div>
 
             <div className="tw-p-2 tw-pl-4">
-               <div className="tw-text-15px tw-font-medium tw-mt-2 tw-flex tw-items-center">
+               <div className="tw-text-15px tw-mt-2 tw-flex tw-items-center">
                   <PenAltSVG className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-600" />
                   {userId
                      ? 'Сонирхол илэрхийлэх албан тоот цахимаар'
@@ -186,12 +186,12 @@ export default function LetterUpload() {
                      ? <div className="tw-mt-6 tw-px-2 tw-w-full tw-overflow-x-auto tw-overflow-y-hidden">
                         <LetterPreview form={form} />
                      </div>
-                     : <div className="tw-ml-3 tw-mt-3 tw-pt-4 tw-pb-2 tw-font-medium tw-italic tw-text-gray-500">
+                     : <div className="tw-ml-3 tw-mt-3 tw-pt-4 tw-pb-2 tw-italic tw-text-gray-500">
                         Цахимаар үүсгээгүй байна.
                      </div>
 
                   : <div className="tw-flex tw-justify-center">
-                     <button className="tw-mt-28 tw-mb-6 tw-flex tw-items-center tw-text-white tw-font-medium tw-rounded hover:tw-shadow-md tw-pl-5 tw-pr-3 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none" onClick={handleNavLetterOIWeb}>
+                     <button className="tw-mt-28 tw-mb-6 tw-flex tw-items-center tw-text-white tw-font-light tw-rounded hover:tw-shadow-md tw-pl-5 tw-pr-3 tw-py-1.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors focus:tw-outline-none" onClick={handleNavLetterOIWeb}>
                         Цахим хэлбэрээр үүсгэх
                         <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform-gpu tw--rotate-90 tw-ml-1" />
                      </button>

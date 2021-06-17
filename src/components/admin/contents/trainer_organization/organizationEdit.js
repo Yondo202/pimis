@@ -35,7 +35,7 @@ export default function TrainerOrganizationEdit() {
             setOrganization(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Байгууллагын мэдээллийг шинэчиллээ.' })
          }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Байгууллагын мэдээллийг засаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Байгууллагын мэдээллийг засаж чадсангүй.' })
          })
       }
       else {
@@ -46,7 +46,7 @@ export default function TrainerOrganizationEdit() {
             setTrainerOrgId(res.data.data.id)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Байгууллагын мэдээлэл нэмэгдлээ.' })
          }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Байгууллагын мэдээлэл нэмж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Байгууллагын мэдээлэл нэмж чадсангүй.' })
          })
       }
    }

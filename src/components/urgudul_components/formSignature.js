@@ -24,7 +24,7 @@ function FormSignature(props) {
 
     return (
         <div className={`tw-flex tw-items-center ${props.classAppend}`}>
-            <SignaturePad canvasProps={{ className: `tw-border tw-border-gray-400 tw-rounded-lg tw-shadow-md ${props.classCanvas}`, ...props.canvasProps }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
+            <SignaturePad canvasProps={{ className: `tw-border tw-border-gray-400 tw-rounded tw-shadow-md ${props.classCanvas}`, ...props.canvasProps }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
 
             <ButtonTooltip tooltip="Арилгах" beforeSVG={<CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors tw-duration-300" />} onClick={handleClearCanvas} classAppend="tw-mx-2" classButton="tw-text-red-500 active:tw-text-red-600" />
         </div>

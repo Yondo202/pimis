@@ -90,7 +90,7 @@ export default function AcceptPeriodHandle() {
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Нээлттэй хугацааг хадгаллаа.' })
             handleCloseModal()
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Нээлттэй хугацааг нэмж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Нээлттэй хугацааг нэмж чадсангүй.' })
             handleCloseModal()
         })
     }
@@ -103,7 +103,7 @@ export default function AcceptPeriodHandle() {
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Нээлттэй хугацааг өөрчиллөө.' })
             handleCloseModal()
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Нээлттэй хугацааг өөрчилж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Нээлттэй хугацааг өөрчилж чадсангүй.' })
             handleCloseModal()
         })
     }
@@ -127,7 +127,7 @@ export default function AcceptPeriodHandle() {
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Нээлттэй хугацааг устгалаа.' })
             handleCloseModal()
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Нээлттэй хугацааг устгаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Нээлттэй хугацааг устгаж чадсангүй.' })
             handleCloseModal()
         })
     }
@@ -152,7 +152,7 @@ export default function AcceptPeriodHandle() {
             setPeriods(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Нээлттэй хугацааг хадгаллаа.' })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Нээлттэй хугацааг нэмж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Нээлттэй хугацааг нэмж чадсангүй.' })
             axios.get('accept-periods', {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
@@ -168,7 +168,7 @@ export default function AcceptPeriodHandle() {
             setPeriods(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Нээлттэй хугацааг өөрчиллөө.' })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Нээлттэй хугацааг өөрчилж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Нээлттэй хугацааг өөрчилж чадсангүй.' })
             axios.get('accept-periods', {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
@@ -185,7 +185,7 @@ export default function AcceptPeriodHandle() {
             setPeriods(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Нээлттэй хугацааг устгалаа.' })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Нээлттэй хугацааг устгаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Нээлттэй хугацааг устгаж чадсангүй.' })
             axios.get('accept-periods', {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
@@ -201,7 +201,7 @@ export default function AcceptPeriodHandle() {
         //         setPeriods(res.data.data)
         //         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Нээлттэй хугацааг устгалаа.' })
         //     }).catch(err => {
-        //         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Нээлттэй хугацааг устгаж чадсангүй.' })
+        //         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Нээлттэй хугацааг устгаж чадсангүй.' })
         //         return true
         //     })
         // }

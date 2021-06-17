@@ -5,6 +5,7 @@ import ClipboardListSVG from 'assets/svgComponents/clipboardListSVG'
 import ClipboardCheckSVG from 'assets/svgComponents/clipboardCheckSVG'
 import AnnotationSVG from 'assets/svgComponents/annotationSVG'
 import { Transition, animated, Spring } from 'react-spring/renderprops'
+import LoginSVG from 'assets/svgComponents/loginSVG'
 
 export default function TrainingFrontPage({ user }) {
    const location = useLocation()
@@ -22,6 +23,7 @@ export default function TrainingFrontPage({ user }) {
                   <SidebarItem label="Сургалтын бүртгэл" link="/trainings" pathnames={['trainings', 'registration']} pathOfLast={pathOfLast} SVG={ClipboardListSVG} />
                   <SidebarItem label="Захиалгат сургалтын хүсэлт" link="/trainings/request" pathnames={['request']} pathOfLast={pathOfLast} SVG={AnnotationSVG} />
                   <SidebarItem label="Сургалтын үнэлгээ" link="/trainings/feedback" pathnames={['feedback']} pathOfLast={pathOfLast} SVG={ClipboardCheckSVG} />
+                  <SidebarItem label="Экспортыг дэмжих төсөл" link="/" SVG={LoginSVG} classAppend="tw-mt-auto tw-mb-2" />
                </div>
             </div>
 
@@ -37,6 +39,7 @@ export default function TrainingFrontPage({ user }) {
                   <NavbarItem label="Сургалтын бүртгэл" link="/trainings" pathnames={['trainings', 'registration']} pathOfLast={pathOfLast} SVG={ClipboardListSVG} />
                   <NavbarItem label="Захиалгат сургалтын хүсэлт" link="/trainings/request" pathnames={['request']} pathOfLast={pathOfLast} SVG={AnnotationSVG} />
                   <NavbarItem label="Сургалтын үнэлгээ" link="/trainings/feedback" pathnames={['feedback']} pathOfLast={pathOfLast} SVG={ClipboardCheckSVG} />
+                  <NavbarItem link="/" SVG={LoginSVG} classAppend="tw-ml-auto" />
                </div>
 
                <div className="tw-flex-grow tw-mt-6">
@@ -48,11 +51,11 @@ export default function TrainingFrontPage({ user }) {
    )
 }
 
-const SidebarItem = ({ label, link, pathnames, pathOfLast, SVG }) => {
+const SidebarItem = ({ label, link, pathnames, pathOfLast, SVG, classAppend }) => {
    const isActive = pathnames?.includes(pathOfLast)
 
    return (
-      <div className={`tw-rounded tw-py-1.5 tw-m-0.5 tw-px-1.5 tw-font-medium ${isActive && 'tw-bg-blue-500 tw-text-white'} tw-transition-colors`}>
+      <div className={`tw-rounded tw-py-1.5 tw-m-0.5 tw-px-1.5 tw-font-medium ${isActive && 'tw-bg-blue-500 tw-text-white'} tw-transition-colors ${classAppend}`}>
          <Link className="tw-flex tw-items-center tw-text-13px" style={{ color: 'currentcolor' }} to={link}>
             {SVG && <SVG className="tw-w-5 tw-h-5 tw-mr-2" />}
             {label}
@@ -61,7 +64,7 @@ const SidebarItem = ({ label, link, pathnames, pathOfLast, SVG }) => {
    )
 }
 
-const NavbarItem = ({ label, link, pathnames, pathOfLast, SVG }) => {
+const NavbarItem = ({ label, link, pathnames, pathOfLast, SVG, classAppend }) => {
    const isActive = pathnames?.includes(pathOfLast)
 
    return (
@@ -70,7 +73,7 @@ const NavbarItem = ({ label, link, pathnames, pathOfLast, SVG }) => {
          to={{ backgroundColor: isActive ? 'rgba(59, 130, 246, 1)' : 'rgba(59, 130, 246, 0)', color: isActive ? 'white' : 'rgb(55, 65, 81)' }}
          config={{ clamp: true }}>
          {anims1 =>
-            <animated.button className="focus:tw-outline-none tw-rounded-full tw-p-2 tw-mx-1 tw-overflow-hidden tw-font-medium" style={anims1}>
+            <animated.button className={`focus:tw-outline-none tw-rounded-full tw-px-2 tw-py-1.5 tw-mx-1 tw-overflow-hidden tw-font-medium ${classAppend}`} style={anims1}>
                <Link className="tw-flex tw-items-center" style={{ color: 'currentcolor' }} to={link}>
                   <SVG className="tw-w-5 tw-h-5 tw-ml-1 tw-mr-2 tw-flex-shrink-0" />
                   <Transition

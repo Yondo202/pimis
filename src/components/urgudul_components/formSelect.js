@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
-import SelectorSVG from 'assets/svgComponents/selectorSVG'
 import axios from 'axiosbase'
-
 
 function FormSelect(props) {
     const [open, setOpen] = useState(false)
@@ -46,25 +44,23 @@ function FormSelect(props) {
     }
 
     return (
-        <div className={`tw-relative tw-pl-10 tw-pr-3 tw-pt-8 tw-pb-3 tw-flex tw-flex-col ${props.classAppend}`}>
-            <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-font-medium tw-whitespace-nowrap ${props.classLabel} ${open ? 'tw-text-sm tw-top-2 tw-left-8' : 'tw-text-xs tw-top-6 tw-left-12'} tw-transition-all tw-duration-300`}>
+        <div className={`tw-relative tw-pl-3 tw-pr-3 tw-pt-8 tw-pb-3 tw-flex tw-flex-col ${props.classAppend}`}>
+            <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-whitespace-nowrap ${props.classLabel} ${open ? 'tw-text-sm tw-top-2 tw-left-2' : 'tw-text-xs tw-top-6 tw-left-6'} tw-transition-all tw-duration-300`}>
                 {props.label}
             </label>
 
-            <SelectorSVG className={`tw-absolute tw-w-5 tw-h-5 tw-top-10 tw-left-4 tw-flex-shrink-0 ${props.invalid ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
-
-            <button className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border tw-rounded-md tw-pt-2 tw-pb-1 tw-px-2 focus:tw-outline-none ${props.invalid ? 'tw-border-red-500' : 'tw-border-gray-500'} tw-transition-colors`} onClick={handleClickButton} ref={buttonRef}>
-                <span className="tw-h-5">
+            <button className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border tw-rounded tw-pt-2 tw-pb-1 tw-px-2 focus:tw-outline-none ${props.invalid ? 'tw-border-red-500' : (open ? 'tw-border-blue-700 tw-shadow' : 'tw-border-gray-500')} tw-transition-colors tw-duration-700`} onClick={handleClickButton} ref={buttonRef}>
+                <span className="tw-h-5 tw-text-13px">
                     {fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] ?? 'Сонгох'}
                 </span>
 
-                <ChevronDownSVG className={`tw-w-4 tw-h-4 tw-ml-auto ${props.invalid ? 'tw-text-red-500' : 'tw-text-gray-600'} tw-transition-colors`} />
+                <ChevronDownSVG className={`tw-w-4 tw-h-4 tw-ml-auto ${open ? 'tw-text-blue-700' : 'tw-text-gray-600'} tw-transition-colors`} />
             </button>
 
-            <div className={`tw-text-sm tw-rounded-md tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto ${open ? 'tw-visible tw-opacity-100 tw-h-48 tw-mt-2' : 'tw-invisible tw-opacity-0 tw-h-0'} tw-transition-all tw-duration-300`} ref={divRef}>
+            <div className={`tw-text-sm tw-rounded tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto ${open ? 'tw-visible tw-opacity-100 tw-h-48 tw-mt-2' : 'tw-invisible tw-opacity-0 tw-h-0'} tw-transition-all tw-duration-300`} ref={divRef}>
                 {fetch.map((item, i) =>
-                    <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-500 hover:tw-text-gray-50' onMouseDown={() => handleSelectId(item.id)} key={item.id}>
-                        <span className="tw-font-medium tw-pr-2">{i + 1}.</span>
+                    <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-600 hover:tw-text-gray-50 tw-text-13px tw-transition-colors' onMouseDown={() => handleSelectId(item.id)} key={item.id}>
+                        <span className="tw-pr-2">{i + 1}.</span>
                         {item[props.displayName]}
                     </div>
                 )}

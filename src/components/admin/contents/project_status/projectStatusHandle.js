@@ -6,7 +6,7 @@ import { DataGrid } from 'devextreme-react'
 import { Column, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
 import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
-import { animated, config, Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import AlertContext from 'components/utilities/alertContext'
 import AnnotationSVG from 'assets/svgComponents/annotationSVG'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
@@ -42,7 +42,7 @@ export default function ProjectStatusHandle() {
             if (err.response.status === 490) {
                 AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Төлөв өөрчлөх эрх таньд олгогдоогүй байна.' })
             } else {
-                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Төлөв өөрчилж чадсангүй.' })
+                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Төлвийг өөрчилж чадсангүй.' })
             }
         })
     }
@@ -78,7 +78,7 @@ export default function ProjectStatusHandle() {
             setHistories(res.data.data || [])
             setHistoriesOpen(true)
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Өөрчлөлтүүдийг татаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Өөрчлөлтийн түүхийг татаж чадсангүй.' })
         })
     }
 
@@ -147,9 +147,10 @@ export default function ProjectStatusHandle() {
 
                         <Transition
                             items={statusDropdownOpen}
-                            from={{ height: 0, opacity: 0 }}
-                            enter={{ height: 'auto', opacity: 1 }}
-                            leave={{ height: 0, opacity: 0 }}>
+                            from={{ height: 0 }}
+                            enter={{ height: 'auto' }}
+                            leave={{ height: 0 }}
+                            config={{ tension: 300, clamp: true }}>
                             {item => item && (anims =>
                                 <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 72, minWidth: 160, ...anims }} ref={dropdownRef}>
                                     {Object.keys(statusNames).map(status =>

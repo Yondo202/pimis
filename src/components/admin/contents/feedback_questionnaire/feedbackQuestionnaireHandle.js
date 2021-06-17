@@ -18,7 +18,7 @@ export default function FeedbackQuestionnaireHandle() {
       }).then(res => {
          setQuestionnaire(res.data.data)
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Асуумжуудыг татаж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Асуумжуудыг татаж чадсангүй.' })
       })
    }, [])
 
@@ -46,7 +46,7 @@ export default function FeedbackQuestionnaireHandle() {
          setQuestionnaire(res.data.data)
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үнэлгээний асуумжуудыг хадгаллаа.' })
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Үнэлгээний асуумжуудыг хадгалж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Үнэлгээний асуумжуудыг хадгалж чадсангүй.' })
       })
    }
 

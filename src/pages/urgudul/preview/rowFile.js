@@ -23,7 +23,7 @@ export default function RowFile(props) {
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         AlertCtx.setAlert({open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг татаж чадсангүй.'})
+         AlertCtx.setAlert({open: true, variant: 'error', msg: 'Файлыг татаж чадсангүй.'})
       })
    }
 
