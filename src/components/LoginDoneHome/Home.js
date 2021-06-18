@@ -20,7 +20,6 @@ function Home() {
                 headers: { Authorization: AccessToken() },
                 params: projectId ? { userId: userId, projectId: projectId } : { userId: userId },
             }).then((res) => {
-                console.log(res, " ressssssssssssssssss");
                 if (res.data.data[0]) { setInfData(res.data.data[0]) }
             })
         } else {
@@ -28,7 +27,6 @@ function Home() {
             axios.get(`pps-infos/registered-companies?userId=${userID}`, {
                 headers: { Authorization: AccessToken() }
             }).then((res) => {
-                console.log(res, " ressaaaaaaaaaaaaa");
                 if (res.data.data[0]) { setInfData(res.data.data[0]) }
             })
         }
@@ -54,7 +52,10 @@ function Home() {
                     <div className="col-md-4"><div className="headItems"><span className="text">Бизнес шинжээчийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span> </div></div>
                 </div>}
             </div>
-                {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />}</>}
+
+            <ActiveComp prew={userId} data={infData} /></>}
+            {/* {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />}</>} */}
+                
         </HomeComponent>
     )
 }
@@ -172,7 +173,7 @@ const HomeComponent = styled.div`
                 .line{
                     position:relative;
                     animation: ${animate5} 1s ease;
-                    height:6vh;
+                    height:4em;
                     width:1.2px;
                     background-color:#C1C1C1;
                     &::after{
@@ -196,7 +197,7 @@ const HomeComponent = styled.div`
             .lineFull{
                 position:relative;
                 animation: ${animate4} 1s ease;
-                height:100%;
+                height:80%;
                 width:1.2px;
                 background-color:#C1C1C1;
                 &::after{
