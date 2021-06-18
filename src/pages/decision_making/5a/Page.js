@@ -10,7 +10,6 @@ import DecisionMakingPreviewModal from "./previewModal"
 import FirstEvaluationPreview from './preview'
 import { useHistory, useParams } from "react-router"
 
-
 const FirstEvaluation = () => {
   const [rows, setRows] = useState(initialState)
   const [saved, setSaved] = useState(false)
@@ -87,7 +86,7 @@ const FirstEvaluation = () => {
     axios.post(`projects/${projectId}/first-evalutions`, rows, {
       headers: { Authorization: getLoggedUserToken() },
     }).then(res => {
-      AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Анхан шатны үнэлгээ хадгалагдлаа.' })
+      AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Анхан шатны үнэлгээ хийгдлээ.' })
       setSaved(true)
     }).catch(err => {
       AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
@@ -113,36 +112,35 @@ const FirstEvaluation = () => {
 
   return (
     <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-      <button className="tw-float-right tw-mt-2 tw-mr-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center" onClick={() => setPreviewModalOpen(true)}>
+      <button className="tw-float-right tw-mt-2 tw-mr-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center tw-font-light" onClick={() => setPreviewModalOpen(true)}>
         <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
         Харах
       </button>
 
       <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<FirstEvaluationPreview rows={rows} company={company} />} />
 
-      <div className="tw-font-medium tw-p-3 tw-pb-2 tw-flex tw-items-center">
-        <span className="tw-text-blue-500 tw-text-xl tw-mx-2 tw-leading-tight">5a</span>
-        <span className="tw-text-base">
-          - Анхан шатны үнэлгээний хуудас
+      <div className="tw-p-3 tw-pb-2 tw-flex tw-items-center">
+        <span className="tw-pl-2 tw-font-medium tw-text-blue-500 tw-text-base">
+          Анхан шатны үнэлгээний хуудас
         </span>
       </div>
 
-      <div className="tw-border-b tw-border-dashed tw-text-13px tw-pl-5 tw-pr-3 tw-pb-2 tw-font-medium tw-leading-snug">
+      <div className="tw-border-b tw-border-dashed tw-text-13px tw-pl-5 tw-pr-3 tw-pb-2 tw-leading-snug">
         <div className="tw-relative">
           Дугаар:
-          <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.project?.project_number}</span>
+          <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_number}</span>
         </div>
         <div className="tw-relative">
           Төрөл:
-          <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.project?.project_type_name}</span>
+          <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_type_name}</span>
         </div>
         <div className="tw-relative">
           Байгууллагын нэр:
-          <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.companyname}</span>
+          <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.companyname}</span>
         </div>
         <div className="tw-relative">
           Төслийн нэр:
-          <span className="tw-absolute tw-left-32 tw-text-blue-500">{company.project?.project_name}</span>
+          <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_name}</span>
         </div>
       </div>
 
@@ -150,12 +148,12 @@ const FirstEvaluation = () => {
         {rows.map(row =>
           <div key={row.rowcode}>
             <div className="tw-flex tw-items-center tw-text-sm">
-              <span className={`tw-px-4 tw-py-2.5 tw-flex-grow tw-font-medium ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "" : "tw-pl-8"}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
+              <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "" : "tw-pl-8 tw-font-light"}`}>
                 {row.description}
               </span>
 
               {{
-                'z': <button className="tw-relative tw-flex tw-items-center tw-leading-tight tw-bg-gray-300 focus:tw-outline-none tw-rounded-full tw-font-medium tw-mr-4 tw-shadow-inner" style={{ fontSize: '13px', height: '22px' }} onClick={() => handleInput('isChecked', !row.isChecked, 'z')}>
+                'z': <button className="tw-relative tw-flex tw-items-center tw-leading-tight tw-bg-gray-300 focus:tw-outline-none tw-rounded-full tw-mr-4 tw-shadow-inner" style={{ fontSize: '13px', height: '22px' }} onClick={() => handleInput('isChecked', !row.isChecked, 'z')}>
                   <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
                     Тийм
                   </span>
@@ -175,7 +173,8 @@ const FirstEvaluation = () => {
               items={commentsOpen[row.rowcode]}
               from={{ height: 0, opacity: 0 }}
               enter={{ height: 'auto', opacity: 1 }}
-              leave={{ height: 0, opacity: 0 }}>
+              leave={{ height: 0, opacity: 0 }}
+              config={{ tension: 300, clamp: true }}>
               {item => item && (anims =>
                 <animated.div className="tw-flex tw-justify-end tw-items-start tw-overflow-hidden" style={anims}>
                   <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-px-1.5 tw-py-1 tw-mt-1 tw-mx-3 tw-mb-3 tw-resize-none tw-text-13px" value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />
@@ -189,12 +188,12 @@ const FirstEvaluation = () => {
       {projectId &&
         <div className="tw-relative tw-flex tw-items-center tw-justify-center tw-h-20 tw-mt-2">
           {canEdit &&
-            <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-6 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
+            <button className="tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-px-6 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
               Хадгалах
             </button>
           }
 
-          <button className={`tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors tw-absolute tw-right-2 ${!saved && 'tw-opacity-70'}`} onClick={handleSendNotice}>
+          <button className={`tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors tw-absolute tw-right-2 ${!saved && 'tw-opacity-70'}`} onClick={handleSendNotice}>
             Мэдэгдэл илгээх
           </button>
         </div>

@@ -18,7 +18,7 @@ export default function TrainerOrganizationsList() {
       }).then(res => {
          setOrganizations(res.data.data)
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Мэдээллийг татаж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалтын байгууллагуудыг татаж чадсангүй.' })
       })
    }, [])
 

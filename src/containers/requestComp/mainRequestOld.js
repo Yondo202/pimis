@@ -26,7 +26,7 @@ function MainRequest() {
     const param = useParams().url;
     const [showModal, setShowModal] = useState(false);
     const ModalOpen = () => { setShowModal(prev => !prev); }
-    const helpCtx = useContext(HelpContext);
+    const helpCtx = useContext(HelpContext) ?? {};
     const [initialData, setInitialData] = useState(null);
     const [ScrollClass, setScrollClass] = useState("");
     const [tokens, setTokens] = useState("");
@@ -63,12 +63,12 @@ function MainRequest() {
     const backHanlde = () => { history.goBack(); }
 
     const func = param === "user" && helpCtx.StyleComp;
-    const One = param === "user" && helpCtx.GlobalStyle.tableOne;
-    const Two = param === "user" && helpCtx.GlobalStyle.tableTwo;
-    const Three = param === "user" && helpCtx.GlobalStyle.tableThree;
-    const Four = param === "user" && helpCtx.GlobalStyle.tableFour;
-    const Five = param === "user" && helpCtx.GlobalStyle.tableFive;
-    const Six = param === "user" && helpCtx.GlobalStyle.tableSix;
+    const One = param === "user" && helpCtx.GlobalStyle?.tableOne;
+    const Two = param === "user" && helpCtx.GlobalStyle?.tableTwo;
+    const Three = param === "user" && helpCtx.GlobalStyle?.tableThree;
+    const Four = param === "user" && helpCtx.GlobalStyle?.tableFour;
+    const Five = param === "user" && helpCtx.GlobalStyle?.tableFive;
+    const Six = param === "user" && helpCtx.GlobalStyle?.tableSix;
     const errMsg = () => { console.log("+*+*+* err Msg"); };
 
     return (

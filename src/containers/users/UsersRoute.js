@@ -20,7 +20,6 @@ import MiddleRoute from "containers/middle/middleRoute"
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
-import Test from "components/Test"
 import TrainingFrontPage from 'pages/training/frontPage';
 
 
@@ -38,7 +37,7 @@ function UsersRoute() {
                     </Route>
                     <Route path="/check/:url" component={CheckComp} />
                     <Route path="/checks/test" component={PdfTest} />
-                    <Route path="/test" component={Test} />
+                    {/* <Route path="/test" component={Test} /> */}
                     {/* <Route path="/notify-page/:paramId" component={MainPage} /> */}
                     {/* <Route path="/comp-request" component={MainRequest} /> */}
                     <Route path="/request/:url" component={MainRequestOld} />

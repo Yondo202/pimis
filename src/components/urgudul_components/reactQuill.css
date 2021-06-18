@@ -2,8 +2,10 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    --label-color: #4B5563;
-    --border-color: #6B7280;
+    --label-color: #6B7280;
+    --border-color: #9CA3AF;
+    --border-radius: 4px;
+    --toolbar-br: 2px;
 }
 
 .quill .ql-stroke {
@@ -11,16 +13,16 @@
 }
 
 .quill .ql-toolbar {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     padding: 4px;
     color: var(--label-color);
 }
 
 .quill .ql-container {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     flex-grow: 1;
 }
@@ -60,7 +62,7 @@
 }
 
 .quill .ql-toolbar .ql-formats .ql-clean::after {
-    background-color: #4B5563;
+    background-color: var(--label-color);
     position: absolute;
     display: none;
     padding: 3px 8px;
@@ -86,12 +88,12 @@
 }
 
 .quill .ql-toolbar .ql-formats .ql-video::after {
-    background-color: #4B5563;
+    background-color: var(--label-color);
     position: absolute;
     display: none;
     display: inline-block;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     font-size: 13px;
     line-height: 1.2;
     color: white;
@@ -113,11 +115,11 @@
 }
 
 .quill .ql-toolbar .ql-formats .ql-image::after {
-    background-color: #4B5563;
+    background-color: var(--label-color);
     position: absolute;
     display: none;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     font-size: 13px;
     line-height: 1.2;
     color: white;
@@ -139,11 +141,11 @@
 }
 
 .quill .ql-toolbar .ql-formats .ql-link::after {
-    background-color: #4B5563;
+    background-color: var(--label-color);
     position: absolute;
     display: none;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     font-size: 13px;
     line-height: 1.2;
     color: white;
@@ -173,7 +175,7 @@
 /* align */
 
 .quill .ql-toolbar .ql-formats .ql-align .ql-picker-label {
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     border: 1px solid (--border-color);
 }
 
@@ -184,11 +186,11 @@
 }
 
 .quill .ql-toolbar .ql-formats .ql-code-block::after {
-    background-color: #4B5563;
+    background-color: var(--label-color);
     position: absolute;
     display: none;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     font-size: 13px;
     line-height: 1.2;
     color: white;
@@ -210,11 +212,11 @@
 }
 
 .quill .ql-toolbar .ql-formats .ql-blockquote::after {
-    background-color: #4B5563;
+    background-color: var(--label-color);
     position: absolute;
     display: none;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     font-size: 13px;
     line-height: 1.2;
     color: white;
@@ -232,11 +234,11 @@
 /* background */
 
 .quill .ql-toolbar .ql-formats .ql-background::after {
-    background-color: #4B5563;
+    background-color: var(--label-color);
     position: absolute;
     display: none;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     font-size: 13px;
     line-height: 1.2;
     color: white;
@@ -254,11 +256,11 @@
 /* color */
 
 .quill .ql-toolbar .ql-formats .ql-color::after {
-    background-color: #4B5563;
+    background-color: var(--label-color);
     position: absolute;
     display: none;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     font-size: 13px;
     line-height: 1.2;
     color: white;
@@ -276,16 +278,16 @@
 /* font */
 
 .quill .ql-toolbar .ql-formats .ql-font .ql-picker-label {
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     border: 1px solid var(--border-color);
 }
 
 .quill .ql-toolbar .ql-formats .ql-font .ql-picker-label::after {
-    background-color: #4B5563;
+    background-color: var(--label-color);
     position: absolute;
     display: none;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     font-size: 13px;
     line-height: 1.2;
     color: white;
@@ -303,16 +305,16 @@
 /* size */
 
 .quill .ql-toolbar .ql-formats .ql-size .ql-picker-label {
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     border: 1px solid var(--border-color);
 }
 
 .quill .ql-toolbar .ql-formats .ql-size .ql-picker-label::after {
-    background-color: #4B5563;
+    background-color: var(--label-color);
     position: absolute;
     display: none;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: var(--toolbar-br);
     font-size: 13px;
     line-height: 1.2;
     color: white;

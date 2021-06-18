@@ -26,7 +26,7 @@ export default function TrainingsList() {
       }).then(res => {
          setTrainings(res.data.data)
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Сургалтуудыг татаж чадсангүй.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалтуудыг татаж чадсангүй.' })
       })
    }, [])
 
@@ -38,7 +38,7 @@ export default function TrainingsList() {
          const URL = window.URL.createObjectURL(res.data)
          FilePreviewCtx.setFile({ open: true, src: URL })
       }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татахад алдаа гарлаа.' })
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татаж чадсангүй.' })
       })
    }
 
@@ -107,7 +107,7 @@ export default function TrainingsList() {
          {trainings.map(training =>
             <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
          )}
-         
+
          {/* {[{ ...trainings[0], training_name: 'Экпортыг дэмжих төслийн ерөнхий сургалт', registeredUserCount: 25 }].map(training =>
             <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
          )} */}
@@ -201,16 +201,16 @@ const TrainingCard = ({ training, handleDownloadFile, setModalOpenIsFull }) => {
             {item => item && (anims =>
                <animated.div className="tw-overflow-hidden tw-text-13px tw-font-medium" style={anims}>
                   <div className="tw-pt-1 tw-pl-6">
-                     <button className="focus:tw-outline-none tw-font-medium tw-border-b tw-border-gray-600 tw-transition-colors tw-transition-shadow hover:tw-shadow-md tw-text-blue-500 active:tw-text-blue-600" onClick={handleViewFile}>
+                     <button className="focus:tw-outline-none tw-leading-tight tw-font-medium tw-border-b tw-border-blue-500 tw-transition-colors tw-transition-shadow hover:tw-shadow-md tw-text-blue-500 active:tw-text-blue-600 active:tw-border-blue-600" onClick={handleViewFile}>
                         Сургалтын агуулгыг харах
                      </button>
                   </div>
                   <div className="tw-mt-1 tw-pl-6">
-                     <span className="tw-mr-2 tw-border-b tw-border-gray-600">Төрөл:</span>
+                     <span className="tw-mr-2">Төрөл:</span>
                      {training.training_type}
                   </div>
                   <div className="tw-mt-1 tw-pl-6">
-                     <span className="tw-mr-2 tw-border-b tw-border-gray-600">Орчин:</span>
+                     <span className="tw-mr-2">Орчин:</span>
                      {training.training_method}
                   </div>
                   <div className="tw-flex tw-items-center tw-mt-1">

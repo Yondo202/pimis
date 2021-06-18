@@ -13,20 +13,19 @@ import SEctor from 'containers/users/Sector'
 function UsersInfo() {
     const ref = useRef(null);
     const ctx = useContext(UserContext);
-    const [userData, setUserData] = useState(null);
-    const [imgData, setImgData] = useState(null);
-    const [spnBtn, setSpnBtn] = useState(false);
-    const [opacity2, setOpacity2] = useState("0");
-    const [emailShow, setEmailShow] = useState({ email: false, companyname: false });
-    const [sectorData, setSectorData] = useState([]);
-    const [showSectors, setShowSectors] = useState(false);
-    const [selectSectors, setSelectSectors] = useState("- Сонго -");
-    const [sectorId, setSectorId] = useState(null);
-
-    useEffect(() => {
-        axios.get(`users/${ctx.userInfo.userId}`).then(res => {
-            console.log(`res`, res);
-            if (Object.keys(res.data.data).length > 0) {
+    const [ userData, setUserData ] = useState(null);
+    const [ imgData, setImgData ] = useState(null);
+    const [ spnBtn, setSpnBtn ] = useState(false);
+    const [ opacity2, setOpacity2] = useState("0");
+    const [ emailShow, setEmailShow ] = useState( { email: false, companyname: false} );
+    const [ sectorData, setSectorData ] = useState([]);
+    const [ showSectors, setShowSectors ] = useState(false);
+    const [ selectSectors, setSelectSectors ] = useState("- Сонго -");
+    const [ sectorId, setSectorId ] = useState(null);
+    
+    useEffect(async()=>{
+       await axios.get(`users/${ctx.userInfo.userId}`).then(res=>{
+            if(Object.keys(res.data.data).length > 0){
                 setUserData(res.data.data);
                 if (res.data.data.signature) {
                     setImgData(res.data.data.signature);
@@ -72,11 +71,13 @@ function UsersInfo() {
             {emailShow.email || emailShow.companyname ? <div ref={ref} onClick={clickHandleEdit} className="ghost"></div> : null}
             <div className="ContPar">
                 <div className="TitleBig">Хэрэглэгчийн мэдээлэл</div>
-                <div className="userInfoCont">
-                    {/* <div className="smTitle">Овог нэр</div>
-                    <div className="value">{`${userData?.firstname} ${userData?.lastname}`}</div> */}
-                    {/* <InputStyle className="smTitle"> <input  placeholder="Овог..." /> <div className="line"/> </InputStyle> */}
-                </div>
+                {/* <div className="userInfoCont">
+                   <div className="smTitle">Овог нэр</div>
+                   <div className="value">{`${userData?.firstname} ${userData?.lastname}`}</div>
+                </div> */}
+
+                {/* <InputStyle className="smTitle"> <input  placeholder="Овог..." /> <div className="line"/> </InputStyle> */}
+
 
                 <div onClick={() => clickHandleEdit("email")} className={emailShow.email ? `userInfoCont A1` : `userInfoCont`}>
                     <div className="smTitle">Цахим хаяг</div>

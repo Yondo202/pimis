@@ -98,7 +98,7 @@ export default function EvaluatorsMeetingEdit(props) {
                 })
             }
         } else {
-            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Аль нэг талбарын мэдээлэл дутуу байна.' })
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
         }
     }
 

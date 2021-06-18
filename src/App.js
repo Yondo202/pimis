@@ -14,7 +14,6 @@ import 'assets/devExtremeTheme/dx.material.blue-light-compact.css'
 import MemberRoute from 'containers/member/MemberRoute'
 import TrainerPanel from "containers/trainer/TrainerPanel"
 
-
 function App() {
   const [userId, setUserId] = useState(null);
   const ctxUser = useContext(UserContext);

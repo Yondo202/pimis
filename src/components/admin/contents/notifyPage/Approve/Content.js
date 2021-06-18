@@ -48,17 +48,12 @@ const DataList = [
         }
     }
 
-
-
     alertText = ( color, text, cond ) => {
         this.setState({ color:color, text:text, cond:cond  });
          setTimeout(()=>{ this.setState({ color:color, text:text, cond:false })},[4000]);
     }
 
-
-    
     DeleteHandle = (el) =>{
-
         this.setState({
             myData: this.state.myData.filter(item => item !==el)
         })
@@ -83,9 +78,8 @@ const DataList = [
                     this.alertText("orange", "Алдаа гарлаа", true);
             });
         }
-
-       
     };
+    
     changeHandle = (event) =>{
          this.setState({  rejectReason: event.target.value })
     }
@@ -125,7 +119,8 @@ const DataList = [
                     <div className="toname">Эрхэм <span className="name"> {data?.project?.company?.representative_name} </span> Танд,</div><br />
                     <div className="contentPar">
                         <div className="items">Экспортыг дэмжих төслийн анхан шатны шалгаруулалтанд зориулж таны илгээсэн {data?.project_number} Дугаартай өргөдөл нь анхан шатны шалгаруулалтанд тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна</div> <br />
-                        <div className="items">Шаардлатай материалын жагсаалтыг хавсаргасан бөгөөд таныг энэхүү захидал илгээсэн өдрөөс эхлэн ажлын 10 хоногийн дотор буюу {year2}оны  {month2}сарын {day2}өдрийн 18 цагаас өмнө мэдээллээ " {edpInfo.email} "  хаягаар илгээхийг хүсч байна. </div> <br />
+                        <div className="items">Шаардлатай материалын жагсаалтыг хавсаргасан бөгөөд таныг энэхүү захидал илгээсэн өдрөөс эхлэн ажлын 10 хоногийн дотор буюу 
+                         <span style={{fontWeight:"500"}}> {data.project?.final_date.slice(0,4)}оны  {data.project?.final_date.slice(5,7)}сарын {data.project?.final_date.slice(8,10)}өдрийн 18 цагаас өмнө </span>  мэдээллээ " {edpInfo.email} "  хаягаар илгээхийг хүсч байна. </div> <br />
                         <div className="items">Хэрэв дээр дурдсан хугацаанд материал ирээгүй тохиолдолд танай байгууллагыг энэхүү түншлэлийн хөтөлбөрт оролцох сонирхолгүй болсоноор тооцон таны өргөдлийн материал хаагдах болно.  Өргөдлийн материал хаагдсаны дараа та дахин оролцох хүсэлтэй бол шинээр процессыг эхэлж, дахин шалгаруулалтанд орох болно.</div> <br />
                     </div>
                     <div className="nameTitle"><span className="smtitle A22">Шаардлагатай материалын жагсаалт: </span>
@@ -148,7 +143,7 @@ const DataList = [
                         <span className="SignaturePar"><img src={this.state.signature} alt="edpSignature" /></span>
                         {/* <span className="smtitle">{`${this.props?.Signature?.lastname.slice(0,1).toUpperCase()}. ${this.props?.Signature?.firstname}`}</span>  */}
                     </div>
-                </MainPar> 
+                </MainPar>
 
                 <SendBtn onClick={this.clickHandle} style={{transform:`scale(${this.state.Btn})`,opacity:`${this.state.Btn}`}} className="btn btn-primary">Илгээх</SendBtn>
                 <AlertStyle style={this.state.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${this.state.color}` } : { bottom: `50px`, opacity: `0` }} >
@@ -161,10 +156,6 @@ const DataList = [
 }
 
 export default withRouter(Content);
-
-
-const bla2 = `<h1>lallalalalla</h1>`
-
 
 const EmailHTML = (stateData, data, edpInfo, userName, rejectReason) => renderEmail(
     <Email style={{border:"1px solid rgba(0,0,0,0.2)",padding:'30px 70px', paddingTop:"15px",  width:"830px", backgroundColor:"rgba(220,220,220,0.2)"}} title="EDP">
@@ -193,7 +184,9 @@ const EmailHTML = (stateData, data, edpInfo, userName, rejectReason) => renderEm
                     <Box style={{textAlign:"start",width:"100%", margin:'16px 0px', fontSize:'13px'}}>Эрхэм хүндэт {data?.project?.company?.representative_name} Танд,</Box>
 
                     <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Экспортыг дэмжих төслийн анхан шатны шалгаруулалтанд зориулж таны илгээсэн {data?.project_number} Дугаартай өргөдөл нь анхан шатны шалгаруулалтанд тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна. </Box>
-                    <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Шаардлатай материалын жагсаалтыг хавсаргасан бөгөөд таныг энэхүү захидал илгээсэн өдрөөс эхлэн <Span style={{fontWeight:"600", fontSize:'13px'}}>ажлын 10 хоногийн дотор буюу {year2}оны  {month2}сарын {day2}өдрийн 18 цагаас өмнө</Span>   мэдээллээ " {edpInfo?.email} " хаягаар илгээхийг хүсч байна. </Box>
+                    <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Шаардлатай материалын жагсаалтыг хавсаргасан бөгөөд таныг энэхүү захидал илгээсэн өдрөөс эхлэн 
+                    <Span style={{fontWeight:"600", fontSize:'13px'}}> ажлын 10 хоногийн дотор буюу {data.project?.final_date.slice(0,4)}оны  {data.project?.final_date.slice(5,7)}сарын {data.project?.final_date.slice(8,10)}өдрийн 18 цагаас өмнө </Span> 
+                      мэдээллээ " {edpInfo?.email} " хаягаар илгээхийг хүсч байна. </Box>
                     <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Хэрэв дээр дурдсан хугацаанд материал ирээгүй тохиолдолд танай байгууллагыг энэхүү түншлэлийн хөтөлбөрт оролцох сонирхолгүй болсоноор тооцон таны өргөдлийн материал хаагдах болно.  Өргөдлийн материал хаагдсаны дараа та дахин оролцох хүсэлтэй бол шинээр процессыг эхэлж, дахин шалгаруулалтанд орох болно.</Box>
                 
                     <Box style={{textAlign:"start",width:"100%",marginTop:'5px',marginBottom:'10px', fontSize:'13px', fontWeight:"500"}}>Шаардлагатай материалын жагсаалт:</Box>

@@ -114,7 +114,7 @@ export default function AttachmentUploads() {
             const newForm2 = form
             newForm2[index].files = newForm[index].files.filter(item => item !== 'loading')
             setForm([...newForm2])
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Гэрээний файлыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээний файлыг хадгалж чадсангүй.' })
         })
     }
 
@@ -134,7 +134,7 @@ export default function AttachmentUploads() {
             const URL = window.URL.createObjectURL(res.data)
             FilePreviewCtx.setFile({ open: true, src: URL })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Файлыг татаж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татаж чадсангүй.' })
         })
     }
 
@@ -144,7 +144,7 @@ export default function AttachmentUploads() {
         }).then(res => {
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт файлуудыг амжилттай хадгаллаа.' })
         }).catch(err => {
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа. Хавсралт файлуудыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсралт файлуудыг хадгалж чадсангүй.' })
         })
     }
 
@@ -168,27 +168,26 @@ export default function AttachmentUploads() {
 
     return (
         <div className="tw-relative tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2">
-            <div className="tw-font-medium tw-p-3 tw-flex tw-items-center">
-                <span className="tw-text-blue-500 tw-text-xl tw-mx-2">2</span>
-                <span className="tw-text-lg">
-                    - Нотлох бичиг баримтууд
+            <div className="tw-p-3 tw-flex tw-items-center">
+                <span className="tw-text-base tw-font-medium tw-text-blue-500 tw-pl-2">
+                    Нотлох бичиг баримтууд
                 </span>
-                <HelpPopup classAppend="tw-ml-auto tw-mr-2 sm:tw-ml-12" main="/.../" position="bottom" />
+                <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="/.../" position="bottom" />
             </div>
 
-            <input className="tw-invisible tw-absolute" type="file" onChange={handleFileInput} ref={inputRef} />
+            <input className="tw-invisible tw-absolute" type="file" accept={acceptDocTypes} onChange={handleFileInput} ref={inputRef} />
 
             <ol className="tw-list-decimal tw-list-inside tw-m-2 tw-rounded-sm tw-shadow-md tw-divide-y tw-divide-dashed">
                 {form.map(item =>
-                    <li className="tw-p-2 tw-pl-4 tw-font-medium odd:tw-bg-gray-50" key={item.code}>
+                    <li className="tw-p-2 tw-pl-4 tw-pt-3" key={item.code}>
                         <span className="tw-text-sm">{item.description}</span>
 
                         <div className="tw-flex tw-flex-wrap tw-mt-1">
                             {item.files?.map((file, j) =>
-                                <FileCard name={file.name} type={file.mimetype} size={file.size} removeFile={() => handleRemoveFile(item.code, j)} classAppend="tw-my-1 tw-mx-1.5" uploading={file === 'loading' && true} downloadFile={() => handleDownloadFile(item.code, j)} key={file.id} />
+                                <FileCard name={file.name} type={file.mimetype} size={file.size} removeFile={() => handleRemoveFile(item.code, j)} classAppend="tw-m-2" uploading={file === 'loading' && true} downloadFile={() => handleDownloadFile(item.code, j)} key={file.id} />
                             )}
 
-                            <FileCardAdd classAppend="tw-my-1 tw-mx-1.5" onClick={() => handleButtonClick(item.code)} />
+                            <FileCardAdd classAppend="tw-m-2" onClick={() => handleButtonClick(item.code)} />
                         </div>
                     </li>
                 )}
@@ -196,11 +195,13 @@ export default function AttachmentUploads() {
 
             {(projectId === undefined || null) &&
                 <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
-                    <button className="tw-bg-blue-800 tw-text-white tw-font-medium tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
+                    <button className="tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
                         Хадгалах
-                </button>
+                    </button>
                 </div>
             }
         </div>
     )
 }
+
+export const acceptDocTypes = '.pdf, image/*, .doc, .docx, .txt, .xml, .csv, .xls, .xlsx, .ppt, .pptx'

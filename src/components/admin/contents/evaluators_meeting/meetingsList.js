@@ -60,16 +60,16 @@ export default function EvaluatorsMeetingsList(props) {
                 </div>
 
                 <div className="tw-mt-10 tw-overflow-x-auto tw-overflow-y-hidden tw-w-full">
-                    <div className="tw-flex tw-flex-nowrap tw-h-10 tw-font-medium tw-rounded-t-md tw-bg-gray-600 tw-text-white tw-pt-1" style={{ width: 1024 }}>
+                    <div className="tw-flex tw-flex-nowrap tw-h-10 tw-font-medium tw-rounded-t-md tw-bg-gray-200 tw-pt-1" style={{ width: 1024 }}>
                         <div className="tw-w-12 tw-flex tw-items-center tw-justify-center">
                             Д/д
                         </div>
                         <div className="tw-w-40 tw-flex tw-items-center tw-justify-center">
                             Төлөв
-                                </div>
+                        </div>
                         <div className="tw-w-40 tw-flex tw-items-center tw-justify-center">
                             Уулзалтын өдөр
-                                </div>
+                        </div>
                         <div className="tw-w-56 tw-flex tw-items-center tw-justify-center">
                             Харах
                         </div>
@@ -119,8 +119,8 @@ export default function EvaluatorsMeetingsList(props) {
                                                 {{
                                                     'members':
                                                         <div className="tw-overflow-y-auto" style={{ maxHeight: 320 }}>
-                                                            <div className="tw-sticky tw-top-0 tw-flex tw-flex-nowrap tw-h-8 tw-bg-gray-200 tw-rounded-sm" style={{ marginLeft: '380px' }}>
-                                                                <div className="tw-w-10 tw-flex tw-items-center tw-px-1">
+                                                            <div className="tw-sticky tw-top-0 tw-flex tw-flex-nowrap tw-h-8 tw-bg-gray-200 tw-roundedt" style={{ marginLeft: '380px' }}>
+                                                                <div className="tw-w-10 tw-flex tw-items-center tw-pl-2 tw-pr-1">
                                                                     Д/д
                                                                 </div>
                                                                 <div className="tw-w-32 tw-flex tw-items-center tw-px-1">
@@ -139,7 +139,7 @@ export default function EvaluatorsMeetingsList(props) {
 
                                                             {getEvalautors(meeting.members).map((evaluator, j) =>
                                                                 <div className="tw-flex tw-flex-nowrap tw-h-8 tw-border-b tw-border-dashed tw-border-gray-300" style={{ marginLeft: '380px' }} key={evaluator.id}>
-                                                                    <div className="tw-w-10 tw-flex tw-items-center tw-truncate tw-px-1">
+                                                                    <div className="tw-w-10 tw-flex tw-items-center tw-truncate tw-pl-2 tw-pr-1">
                                                                         {j + 1}
                                                                     </div>
                                                                     <div className="tw-w-32 tw-flex tw-items-center tw-truncate tw-px-1">
@@ -160,7 +160,7 @@ export default function EvaluatorsMeetingsList(props) {
                                                     'projects':
                                                         <div className="tw-overflow-y-auto" style={{ maxHeight: 320 }}>
                                                             <div className="tw-sticky tw-top-0 tw-flex tw-flex-nowrap tw-h-8 tw-bg-gray-200 tw-rounded-sm" style={{ marginLeft: '380px' }}>
-                                                                <div className="tw-w-10 tw-flex tw-items-center tw-px-1">
+                                                                <div className="tw-w-10 tw-flex tw-items-center tw-pl-2 tw-pr-1">
                                                                     Д/д
                                                                 </div>
                                                                 <div className="tw-w-40 tw-flex tw-items-center tw-px-1">
@@ -179,7 +179,7 @@ export default function EvaluatorsMeetingsList(props) {
 
                                                             {getProjects(meeting.projects).map((project, j) =>
                                                                 <div className="tw-flex tw-flex-nowrap tw-h-8 tw-border-b tw-border-dashed tw-border-gray-300" style={{ marginLeft: '380px' }} key={project.project.id}>
-                                                                    <div className="tw-w-10 tw-flex tw-items-center tw-truncate tw-px-1">
+                                                                    <div className="tw-w-10 tw-flex tw-items-center tw-truncate tw-pl-2 tw-pr-1">
                                                                         {j + 1}
                                                                     </div>
                                                                     <div className="tw-w-40 tw-flex tw-items-center tw-truncate tw-px-1">

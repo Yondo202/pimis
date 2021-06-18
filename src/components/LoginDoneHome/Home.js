@@ -34,6 +34,7 @@ function Home() {
 
     return (
         <HomeComponent style={userId ? { maxWidth: "2000px" } : { maxWidth: "1160px" }} className={`container`}>
+<<<<<<< HEAD
             {infData?.criteria === 1 ? <h3 style={{ marginTop: 50 }}>
                 Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
                 </h3> : <> <div className="headerPar">
@@ -56,6 +57,31 @@ function Home() {
             <ActiveComp prew={userId} data={infData} /></>}
             {/* {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />}</>} */}
                 
+=======
+            {infData?.criteria === 1
+                ? <h3 style={{ marginTop: 50 }}>
+                    Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
+                </h3>
+                : <>
+                    <div className="headerPar">
+                        {userId ? <div className="header row">
+                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын нэр:</span>{infData?.companyname}</span> </div></div>
+                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Төслийн нэр:</span>{infData?.project?.project_name}</span>  </div></div>
+                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын регистр:</span>{infData?.companyregister}</span> </div></div>
+                        </div>
+                            : (<div className="header row">
+                                <div className="col-md-4"><div className="headItems"><span className="text">1. Түншлэлийн хөтөлбөрт бүрдүүлэх баримт</span> </div></div>
+                                <div className="col-md-4"><div className="headItems"><span className="text">2. Үнэлгээ, шийдвэр гарах явц</span> </div></div>
+                                <div className="col-md-4"><div className="headItems"><span className="text">3. Түншлэлийн гэрээ, гүйцэтгэл, санхүүжилт</span></div></div>
+                            </div>)}
+                        {!userId && <div className="otherHead row">
+                            <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
+                            <div className="col-md-4"><div className="headItems"><span className="text">Бизнес шинжээчийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span></div></div>
+                        </div>}
+                    </div>
+                    {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />}
+                </>}
+>>>>>>> c785cabab3511f75e8e627f73f53872da547871e
         </HomeComponent>
     )
 }
