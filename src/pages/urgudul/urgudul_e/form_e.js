@@ -185,7 +185,7 @@ function UrgudulChecklist() {
                                         Анхааруулга
                                     </div>
                                     <div className="tw-text-sm tw-p-2 tw-text-center">
-                                        Өргөдлийг баталгаажуулсны дараа та дахин өөрчлөх эрхгүй болох учир бүрэн гүйцэт бөглөсний дараа баталгаажуулна уу.
+                                        Өргөдлийг баталгаажуулсны дараа та дахин өөрчлөлт хийх эрхгүй болох тул бүрэн гүйцэт бөглөсний дараа баталгаажуулна уу.
                                     </div>
                                     <div className="tw-flex tw-justify-center tw-text-sm">
                                         <button className="tw-rounded focus:tw-outline-none tw-bg-blue-700 active:tw-bg-blue-800 tw-transition-colors tw-px-4 tw-py-1.5 tw-mt-4 tw-mb-2 tw-text-white tw-font-light" onClick={handleSubmit}>
