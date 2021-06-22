@@ -32,16 +32,16 @@ function UrgudulActivities() {
         UrgudulCtx.data.project_type === 1 && setIsCluster(true)
     }, [UrgudulCtx.data.id])
 
-    const handleInputFormat = (values, key, index) => {
-        const newForm = form
-        newForm[index][key] = values.value
-        setForm([...newForm])
-    }
+    const handleInputFormat = (key, values, index) => setForm(prev => {
+        const next = [...prev]
+        next[index][key] = values.value
+        return next
+    })
 
-    const handleSetForm = (name, value, index) => {
+    const handleSetForm = (key, value, index) => {
         setForm(prev => {
             const newForm = [...prev]
-            newForm[index][name] = value
+            newForm[index][key] = value
             return newForm
         })
     }
@@ -142,19 +142,20 @@ function UrgudulActivities() {
             {form.map((item, i) =>
                 <div className="tw-flex odd:tw-bg-gray-50" key={i}>
                     <div className="tw-flex-grow">
-                        <div className="tw-flex tw-items-center tw-px-2 tw-mt-2">
-                            <span className={`tw-ml-4 tw-text-sm ${validate && checkInvalid(item.activity, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
-                                {`Үйл ажиллагаа ${i + 1}:`}
-                            </span>
-                        </div>
-
-                        <div className="tw-py-2 tw-pl-5 tw-pr-3 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                            <FormRichText modules="small" value={item.activity || ''} name="activity" id={i} setForm={handleSetForm} />
-                        </div>
+                        <FormRichText
+                            label={`Үйл ажиллагаа ${i + 1}:`}
+                            invalid={validate && checkInvalid(item.activity, 'quill')}
+                            modules="small"
+                            value={item.activity || ''}
+                            name="activity"
+                            index={i}
+                            setter={handleSetForm}
+                            classAppend="tw-pl-5"
+                        />
 
                         <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-2">
                             <div className="tw-w-full tw-max-w-lg tw-flex">
-                                <FormInline label="Дээрх үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" id={i} onChange={handleInputFormat} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" invalid={validate && checkInvalid(item.budget_cost)} />
+                                <FormInline label="Дээрх үйл ажиллагааны төсөвт зардал, доллароор" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={item.budget_cost || ''} name="budget_cost" index={i} setter={handleInputFormat} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-32" invalid={validate && checkInvalid(item.budget_cost)} />
 
                                 <div className="tw-relative tw-w-2 tw-ml-56">
                                     <HelpPopup classAppend="tw-right-5 tw-top-1" main="Энэхүү зардлийн тал хувийг өргөдөл гаргагч өөрийн талаас, тал хувийг экспортыг дэмжих төслийн зүгээс гаргах юм." list={['Үйл ажиллагааны төсөвт дүнг тооцохдоо бодит өртөгөөс 20 хувиас дээш хэлбэлзэлтэй байж болохгүй тул бодитоор өртөгөөр тооцоолно уу.', 'Экспортыг дэмжих төслийн санхүүжилтийн дээд хэмжээ нь $50,000 гэдгийг анхаарна уу.']} position="top-left" />
@@ -163,8 +164,8 @@ function UrgudulActivities() {
                         </div>
                     </div>
 
-                    <div className="tw-flex tw-items-center">
-                        <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                    <div className="tw-flex tw-items-center tw-px-2">
+                        <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
                     </div>
                 </div>
             )}

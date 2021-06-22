@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react'
-import PenSVG from 'assets/svgComponents/penSVG'
 import NumberFormat from 'react-number-format'
 
 function FormInline(props) {
@@ -18,10 +17,10 @@ function FormInline(props) {
                 {props.label}
             </label>
 
-            {props.type === 'numberFormat' ?
-                <NumberFormat className={`tw-h-8.5 tw-text-sm tw-bg-transparent tw-border ${props.invalid ? 'tw-border-red-500' : 'tw-border-gray-400 focus:tw-border-blue-700'} tw-rounded tw-pt-2 tw-pb-1 tw-px-2 tw-outline-none tw-transition-all tw-duration-700 tw-placeholder-gray-400 tw-text-13px focus:tw-shadow ${props.classInput}`} {...props.formats} value={props.value} onValueChange={(values) => props.onChange(values, props.name, props.id)} placeholder={props.placeholder} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
-                :
-                <input className={`tw-h-8.5 tw-text-sm tw-bg-transparent tw-border ${props.invalid ? 'tw-border-red-500' : 'tw-border-gray-400 focus:tw-border-blue-700'} tw-rounded tw-pt-2 tw-pb-1 tw-px-2 tw-outline-none tw-transition-all tw-duration-700 tw-placeholder-gray-400 tw-text-13px focus:tw-shadow ${props.classInput}`} type={props.type} {...props.formats} value={props.value} name={props.name} id={props.id} onChange={props.onChange} placeholder={props.placeholder} onFocus={() => setFocused(true)} onBlur={handleBlur} ref={inputRef} />
+            {props.type === 'numberFormat'
+                ? <NumberFormat className={`tw-h-8.5 tw-text-sm tw-bg-transparent tw-border ${props.invalid ? 'tw-border-red-500' : 'tw-border-gray-400 focus:tw-border-blue-700'} tw-rounded tw-pt-2 tw-pb-1 tw-px-2 tw-outline-none tw-transition-colors tw-duration-700 tw-placeholder-gray-400 tw-text-13px focus:tw-shadow ${props.classInput}`} {...props.formats} value={props.value} onValueChange={(values) => props.setter(props.name, values, props.index)} placeholder={props.placeholder} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
+
+                : <input className={`tw-h-8.5 tw-text-sm tw-bg-transparent tw-border ${props.invalid ? 'tw-border-red-500' : 'tw-border-gray-400 focus:tw-border-blue-700'} tw-rounded tw-pt-2 tw-pb-1 tw-px-2 tw-outline-none tw-transition-colors tw-duration-700 tw-placeholder-gray-400 tw-text-13px focus:tw-shadow ${props.classInput}`} type={props.type} {...props.formats} value={props.value} onChange={e => props.setter(props.name, e.target.value, props.index)} placeholder={props.placeholder} onFocus={() => setFocused(true)} onBlur={handleBlur} ref={inputRef} />
             }
         </div>
     )

@@ -39,17 +39,11 @@ function UrgudulNoticeCompany({ projects }) {
         }
     }, [UrgudulCtx.data.id])
 
-    const handleInput = (e) => {
-        const newForm = form
-        newForm[e.target.id][e.target.name] = e.target.value
-        setForm([...newForm])
-    }
-
-    const handleSetForm = (key, value, index) => {
-        const newForm = form
-        newForm[index][key] = value
-        setForm([...newForm])
-    }
+    const handleInput = (key, value, index) => setForm(prev => {
+        const next = [...prev]
+        next[index][key] = value
+        return next
+    })
 
     const directorIndex = form.findIndex(obj => obj.director === true)
     const directorItem = form[directorIndex]
@@ -291,22 +285,22 @@ function UrgudulNoticeCompany({ projects }) {
                             Гүйцэтгэх захирал:
                         </div>
 
-                        <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-4">
+                        <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-4">
                             <div className="tw-w-full tw-h-full tw-max-w-md tw-flex tw-place-items-center tw-p-2 tw-pl-3">
                                 <span className="tw-text-sm tw-font-light">Албан тушаал:</span>
                                 <span className="tw-ml-3 tw-bg-indigo-50 tw-rounded tw-py-1 tw-px-2 tw-text-sm tw-text-indigo-500">Гүйцэтгэх захирал</span>
                             </div>
 
-                            <FormInline label="Овог нэр" type="text" value={directorItem.representative_name || ''} name="representative_name" id={directorIndex} onChange={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(directorItem.representative_name)} />
+                            <FormInline label="Овог нэр" type="text" value={directorItem.representative_name || ''} name="representative_name" index={directorIndex} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(directorItem.representative_name)} />
 
-                            <FormInline label="Огноо" type="date" value={directorItem.submitDate || ''} name="submitDate" id={directorIndex} onChange={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-40" invalid={validate && checkInvalid(directorItem.submitDate)} />
+                            <FormInline label="Огноо" type="date" value={directorItem.submitDate || ''} name="submitDate" index={directorIndex} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-40" invalid={validate && checkInvalid(directorItem.submitDate)} />
 
                             <div className="tw-w-full tw-h-full tw-max-w-sm tw-pl-4">
                                 <div className={`tw-text-sm tw-pt-2 tw-font-light ${validate && checkInvalid(directorItem.representative_signature) && 'tw-text-red-500'} tw-transition-colors`}>
                                     Гарын үсэг
                                 </div>
 
-                                <FormSignature value={directorItem.representative_signature} name="representative_signature" id={directorIndex} setForm={handleSetForm} classAppend="tw-pl-8 pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
+                                <FormSignature value={directorItem.representative_signature} name="representative_signature" id={directorIndex} setForm={handleInput} classAppend="tw-pl-8 pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
                             </div>
                         </div>
 
@@ -318,23 +312,23 @@ function UrgudulNoticeCompany({ projects }) {
                             directorIndex !== i &&
                             <div className="tw-flex even:tw-bg-gray-50 tw-px-4" key={i}>
                                 <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.representative_positionId)} />
+                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.representative_positionId)} />
 
-                                    <FormInline label="Овог нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.representative_name)} />
+                                    <FormInline label="Овог нэр" type="text" value={item.representative_name || ''} name="representative_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.representative_name)} />
 
-                                    <FormInline label="Огноо" type="date" value={item.submitDate || ''} name="submitDate" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.submitDate)} />
+                                    <FormInline label="Огноо" type="date" value={item.submitDate || ''} name="submitDate" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.submitDate)} />
 
                                     <div className="tw-w-full tw-h-full tw-max-w-sm tw-pl-4">
                                         <div className={`tw-text-sm tw-pt-2 tw-font-light ${validate && checkInvalid(item.representative_signature) && 'tw-text-red-500'}`}>
                                             Гарын үсэг
                                         </div>
 
-                                        <FormSignature value={item.representative_signature} name="representative_signature" id={i} setForm={handleSetForm} classAppend="tw-pl-8 tw-pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
+                                        <FormSignature value={item.representative_signature} name="representative_signature" id={i} setForm={handleInput} classAppend="tw-pl-8 tw-pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
                                     </div>
                                 </div>
 
                                 <div className="tw-flex tw-items-center">
-                                    <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                                    <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
                                 </div>
                             </div>
                         )}

@@ -49,17 +49,11 @@ function UrgudulNoticeCluster({ projects }) {
         }
     }, [UrgudulCtx.data.id])
 
-    const handleInput = (e) => {
-        const newForm = form
-        newForm[e.target.id][e.target.name] = e.target.value
-        setForm([...newForm])
-    }
-
-    const handleSetForm = (key, value, index) => {
-        const newForm = form
-        newForm[index][key] = value
-        setForm([...newForm])
-    }
+    const handleInput = (key, value, index) => setForm(prev => {
+        const next = [...prev]
+        next[index][key] = value
+        return next
+    })
 
     const applicantIndex = form.findIndex(obj => obj.applicant === true)
     const applicantItem = form[applicantIndex]
@@ -73,7 +67,6 @@ function UrgudulNoticeCluster({ projects }) {
             representative_signature: null,
             submitDate: null,
         }
-
         setForm([...form, newObj])
     }
 
@@ -313,7 +306,7 @@ function UrgudulNoticeCluster({ projects }) {
                             Өргөдөл гаргагч ААН төлөөлж:
                         </div>
 
-                        <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-4">
+                        <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-4">
                             <div className="tw-w-full tw-h-full tw-max-w-md tw-flex tw-place-items-center tw-p-2 tw-pl-3">
                                 <span className="tw-text-sm tw-font-light">Аж ахуйн нэгжийн нэр:</span>
                                 {companyName &&
@@ -321,19 +314,19 @@ function UrgudulNoticeCluster({ projects }) {
                                 }
                             </div>
 
-                            <SearchSelect label="Албан тушаал" data={occupations} value={applicantItem.representative_positionId} name="representative_positionId" id={applicantIndex} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(applicantItem.representative_positionId)} />
+                            <SearchSelect label="Албан тушаал" data={occupations} value={applicantItem.representative_positionId} name="representative_positionId" id={applicantIndex} displayName="description_mon" setForm={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(applicantItem.representative_positionId)} />
 
-                            <FormInline label="Овог нэр" type="text" value={applicantItem.representative_name || ''} name="representative_name" id={applicantIndex} onChange={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(applicantItem.representative_name)} />
+                            <FormInline label="Овог нэр" type="text" value={applicantItem.representative_name || ''} name="representative_name" index={applicantIndex} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(applicantItem.representative_name)} />
 
                             <div className="tw-w-full tw-h-full tw-max-w-sm tw-pl-4">
                                 <div className={`tw-text-sm tw-pt-2 tw-font-light ${validate && checkInvalid(applicantItem.representative_signature) && 'tw-text-red-500'}`}>
                                     Гарын үсэг
                                 </div>
 
-                                <FormSignature value={applicantItem.representative_signature} name="representative_signature" id={applicantIndex} setForm={handleSetForm} classAppend="tw-pl-8 tw-pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
+                                <FormSignature value={applicantItem.representative_signature} name="representative_signature" id={applicantIndex} setForm={handleInput} classAppend="tw-pl-8 tw-pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
                             </div>
 
-                            <FormInline label="Огноо" type="date" value={applicantItem.submitDate || ''} name="submitDate" id={applicantIndex} onChange={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-40" invalid={validate && checkInvalid(applicantItem.submitDate)} />
+                            <FormInline label="Огноо" type="date" value={applicantItem.submitDate || ''} name="submitDate" index={applicantIndex} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-40" invalid={validate && checkInvalid(applicantItem.submitDate)} />
                         </div>
 
                         <div className="tw-p-2 tw-pl-4 tw-text-blue-500 tw-font-medium">
@@ -344,25 +337,25 @@ function UrgudulNoticeCluster({ projects }) {
                             applicantIndex !== i &&
                             <div className="tw-flex even:tw-bg-gray-50 tw-px-4" key={i}>
                                 <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                                    <FormSelect label="Аж ахуйн нэгжийн нэр" data={clusters} value={item.companyId} name="companyId" id={i} setForm={handleSetForm} displayName="company_name" classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.companyId)} />
+                                    <FormSelect label="Аж ахуйн нэгжийн нэр" data={clusters} value={item.companyId} name="companyId" id={i} setForm={handleInput} displayName="company_name" classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.companyId)} />
 
-                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.representative_positionId)} />
+                                    <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" id={i} displayName="description_mon" setForm={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.representative_positionId)} />
 
-                                    <FormInline label="Овог нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.representative_name)} />
+                                    <FormInline label="Овог нэр" type="text" value={item.representative_name || ''} name="representative_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.representative_name)} />
 
                                     <div className="tw-w-full tw-h-full tw-max-w-sm tw-pl-5">
                                         <div className={`tw-pt-2 tw-text-sm tw-font-light ${validate && checkInvalid(item.representative_signature) && 'tw-text-red-500'}`}>
                                             Гарын үсэг
                                         </div>
 
-                                        <FormSignature value={item.representative_signature} name="representative_signature" id={i} setForm={handleSetForm} classAppend="tw-pl-6 pw-pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
+                                        <FormSignature value={item.representative_signature} name="representative_signature" id={i} setForm={handleInput} classAppend="tw-pl-6 pw-pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
                                     </div>
 
-                                    <FormInline label="Огноо" type="date" value={item.submitDate || ''} name="submitDate" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.submitDate)} />
+                                    <FormInline label="Огноо" type="date" value={item.submitDate || ''} name="submitDate" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.submitDate)} />
                                 </div>
 
                                 <div className="tw-flex tw-items-center">
-                                    <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                                    <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
                                 </div>
                             </div>
                         )}

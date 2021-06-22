@@ -21,9 +21,7 @@ export default function TrainingUserRegistration() {
 
    const handleInput = (key, value) => setRegistration(prev => ({ ...prev, [key]: value }))
 
-   const handleInputFormat = (values, name) => setRegistration(prev => ({ ...prev, [name]: values.value }))
-
-   const handleInputEvent = (e) => setRegistration(prev => ({ ...prev, [e.target.name]: e.target.value }))
+   const handleInputFormat = (key, values) => setRegistration(prev => ({ ...prev, [key]: values.value }))
 
    const [sectors, setSectors] = useState([])
 
@@ -169,31 +167,33 @@ export default function TrainingUserRegistration() {
          </div>
 
          <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-x-4 tw-place-items-start tw-mt-3">
-            <FormInline label="Овог нэр" type="text" value={registration.fullname ?? ''} name="fullname" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(registration.fullname)} />
+            <FormInline label="Овог нэр" type="text" value={registration.fullname ?? ''} name="fullname" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(registration.fullname)} />
 
             <FormOptions label="Хүйс" options={['Эрэгтэй', 'Эмэгтэй']} values={['Эрэгтэй', 'Эмэгтэй']} value={registration.gender ?? ''} name="gender" setForm={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(registration.gender)} />
 
-            <FormInline label="Регистрийн дугаар" type="text" value={registration.register_number ?? ''} name="register_number" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(registration.register_number)} />
+            <FormInline label="Регистрийн дугаар" type="text" value={registration.register_number ?? ''} name="register_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(registration.register_number)} />
 
-            <FormInline label="Утасны дугаар" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={registration.phone ?? ''} name="phone" onChange={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(registration.phone)} />
+            <FormInline label="Утасны дугаар" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={registration.phone ?? ''} name="phone" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(registration.phone)} />
 
-            <FormInline label="Имэйл хаяг" type="email" value={registration.email ?? ''} name="email" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(registration.email)} />
+            <FormInline label="Имэйл хаяг" type="email" value={registration.email ?? ''} name="email" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(registration.email)} />
 
-            <FormInline label="Байгууллагын нэр" type="text" value={registration.company_name ?? ''} name="company_name" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(registration.company_name)} />
+            <FormInline label="Байгууллагын нэр" type="text" value={registration.company_name ?? ''} name="company_name" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(registration.company_name)} />
 
-            <FormInline label="Одоогийн ажлын албан тушаал" type="text" value={registration.employee_position ?? ''} name="employee_position" onChange={handleInputEvent} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(registration.employee_position)} />
+            <FormInline label="Одоогийн ажлын албан тушаал" type="text" value={registration.employee_position ?? ''} name="employee_position" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(registration.employee_position)} />
 
             <TreeSelect data={sectors} label="Ямар чиглэлээр үйл ажиллагаа явуулдаг вэ?" displayName="bdescription_mon" value={registration.business_sectorId} name="business_sectorId" handleChange={handleInput} invalid={validate && checkInvalid(registration.business_sectorId)} />
 
-            <FormInline label="Жилийн борлуулалтын тоо хэмжээ" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={registration.annual_sales ?? ''} name="annual_sales" onChange={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(registration.annual_sales)} />
+            <FormInline label="Жилийн борлуулалтын тоо хэмжээ" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={registration.annual_sales ?? ''} name="annual_sales" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(registration.annual_sales)} />
 
-            <div className="tw-w-full md:tw-col-span-2">
-               <FormLabel label="Манай сургалтад хамрагдах нь танд ямар ашиг тустай вэ? Энэхүү сургалтаас ямар үр дүн хүлээж байгаа вэ?" invalid={validate && checkInvalid(registration.training_benefit, 'quill')} />
-
-               <div className="tw-px-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 786 }}>
-                  <FormRichText modules="small" value={registration.training_benefit ?? ''} name="training_benefit" setForm={handleInput} />
-               </div>
-            </div>
+            <FormRichText
+               label="Манай сургалтад хамрагдах нь танд ямар ашиг тустай вэ? Энэхүү сургалтаас ямар үр дүн хүлээж байгаа вэ?"
+               invalid={validate && checkInvalid(registration.training_benefit, 'quill')}
+               modules="small"
+               value={registration.training_benefit ?? ''}
+               name="training_benefit"
+               setter={handleInput}
+               classAppend="tw-w-full md:tw-col-span-2 tw-pl-3 tw-pt-1"
+            />
 
             <div className="tw-w-full md:tw-col-span-2">
                <div className="tw-flex tw-items-end tw-text-13px tw-mt-5 tw-mb-2">
@@ -233,10 +233,15 @@ export default function TrainingUserRegistration() {
                         </animated.div>
                      : anims =>
                         <animated.div className="tw-overflow-y-hidden" style={anims}>
-                           <FormLabel classAppend="tw--mt-3" label="Та доорх хэсэгт өөрийн ажиллаж буй байгууллагын танилцуулгыг бичнэ үү." invalid={checkInvalid(registration.company_introduction_file) && validate && checkInvalid(registration.company_introduction, 'quill')} />
-                           <div className="tw-px-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl" style={{ minHeight: 160, maxHeight: 768 }}>
-                              <FormRichText modules="small" value={registration.company_introduction ?? ''} name="company_introduction" setForm={handleInput} />
-                           </div>
+                           <FormRichText
+                              label="Та доорх хэсэгт өөрийн ажиллаж буй байгууллагын танилцуулгыг бичнэ үү."
+                              invalid={checkInvalid(registration.company_introduction_file) && validate && checkInvalid(registration.company_introduction, 'quill')}
+                              modules="small"
+                              value={registration.company_introduction ?? ''}
+                              name="company_introduction"
+                              setter={handleInput}
+                              classAppend="tw-pl-3 tw--mt-1"
+                           />
                         </animated.div>
                   }
                </Transition>

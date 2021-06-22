@@ -74,7 +74,7 @@ function SearchSelect(props) {
                 {props.label}
             </label>
 
-            <div className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border ${props.invalid ? 'tw-border-red-500' : (focused ? 'tw-border-blue-700 tw-shadow' : 'tw-border-gray-400')} tw-rounded tw-pt-2 tw-pb-1 tw-pl-2 tw-pr-1 tw-transition-all tw-duration-700 tw-placeholder-gray-400 ${props.classInput}`}>
+            <div className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border ${props.invalid ? 'tw-border-red-500' : (focused ? 'tw-border-blue-700 tw-shadow' : 'tw-border-gray-400')} tw-rounded tw-pt-2 tw-pb-1 tw-pl-2 tw-pr-1 tw-transition-colors tw-duration-700 tw-placeholder-gray-400 ${props.classInput}`}>
                 <input className="tw-mr-1 tw-bg-transparent tw-outline-none tw-flex-grow tw-text-13px" type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} ref={inputRef} />
 
                 <SearchSVG className={`tw-w-4 tw-h-4 tw-transform tw--translate-y-0.5 tw--translate-x-0.5 tw-flex-shrink-0 ${focused ? 'tw-text-blue-700' : 'tw-text-gray-600'} tw-transition-colors`} onClick={() => inputRef.current?.focus()} />

@@ -36,7 +36,7 @@ export default function TreeSelect(props) {
                     {props.label}
                 </label>
 
-                <button className={`tw-h-8.5 tw-flex tw-min-w-0 tw-items-center tw-border tw-rounded tw-px-2 tw-pt-2 tw-pb-1 focus:tw-outline-none ${props.invalid ? 'tw-text-red-500 tw-border-red-500 active:tw-border-red-600 active:tw-text-red-600' : (open ? 'tw-border-blue-700 tw-shadow' : 'tw-border-gray-400')} active:tw-shadow-md tw-transition-colors tw-duration-700`} onClick={() => setOpen(!open)} title={selectedName}>
+                <button className={`tw-h-8.5 tw-flex tw-min-w-0 tw-items-center tw-border tw-rounded tw-px-2 tw-pt-2 tw-pb-1 focus:tw-outline-none ${props.invalid ? 'tw-text-red-500 tw-border-red-500 active:tw-border-red-600 active:tw-text-red-600' : (open ? 'tw-border-blue-700 tw-shadow' : 'tw-border-gray-400')} tw-transition-colors tw-duration-700`} onClick={() => setOpen(!open)} title={selectedName}>
                     <div className="tw-mr-2 tw-truncate tw-text-left tw-text-gray-700 tw-text-13px" style={{ minWidth: 160 }}>
                         {selectedName ?? 'Сонгох'}
                     </div>
@@ -51,7 +51,7 @@ export default function TreeSelect(props) {
                 leave={{ height: 0, opacity: 0 }}
                 config={{ tension: 300, clamp: true }}>
                 {item => item && (anims =>
-                    <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-my-2 tw-border tw-border-gray-500 tw-rounded tw-ml-3 tw-mr-3 tw-bg-white" style={anims}>
+                    <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-my-2 tw-border tw-border-gray-500 tw-rounded tw-ml-3 tw-mr-3 tw-bg-white tw-shadow-sm" style={anims}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">
                             <div className={`tw-flex tw-items-center tw-border-b ${search ? 'tw-border-blue-700 tw-text-blue-700' : 'tw-border-gray-600 tw-text-gray-600'} tw-pb-0.5 tw-my-1.5 tw-mr-2 tw-transition-colors`}>
                                 <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />

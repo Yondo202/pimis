@@ -45,17 +45,17 @@ function UrgudulClusters({ projects }) {
         }
     }, [UrgudulCtx.data.id])
 
-    const handleInput = (e) => {
-        const newForm = form
-        newForm[e.target.id][e.target.name] = e.target.value
-        setForm([...newForm])
-    }
+    const handleInput = (key, value, index) => setForm(prev => {
+        const next = [...prev]
+        next[index][key] = value
+        return next
+    })
 
-    const handleInputFormatted = (values, key, index) => {
-        const newForm = form
-        newForm[index][key] = values.formattedValue
-        setForm([...newForm])
-    }
+    const handleInputFormatted = (key, values, index) => setForm(prev => {
+        const next = [...prev]
+        next[index][key] = values.formattedValue
+        return next
+    })
 
     const [editIndex, setEditIndex] = useState()
 
@@ -127,20 +127,11 @@ function UrgudulClusters({ projects }) {
             project_contribution: null,
             attachedFiles: null,
         }
-
         setForm([...form, newObj])
     }
 
     const handleRemove = (index) => {
         setForm(form.filter((_, i) => i !== index))
-    }
-
-    const handleSetForm = (key, value, index) => {
-        setForm(prev => {
-            const newForm = [...prev]
-            newForm[index][key] = value
-            return newForm
-        })
     }
 
     const AlertCtx = useContext(AlertContext)
@@ -248,19 +239,19 @@ function UrgudulClusters({ projects }) {
             {form.map((item, i) =>
                 <div className="tw-flex even:tw-bg-gray-50" key={i}>
                     <div className="tw-flex-grow">
-                        <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-3">
-                            <FormInline label="Кластерын гишүүн аж ахуйн нэгж" type="text" value={item.company_name || ''} name="company_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.company_name)} />
+                        <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-3">
+                            <FormInline label="Кластерын гишүүн аж ахуйн нэгж" type="text" value={item.company_name || ''} name="company_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.company_name)} />
 
-                            <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name || ''} name="representative_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.representative_name)} />
+                            <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.representative_name || ''} name="representative_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.representative_name)} />
 
-                            <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.representative_phone || ''} name="representative_phone" id={i} onChange={handleInputFormatted} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.representative_phone)} />
+                            <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.representative_phone || ''} name="representative_phone" index={i} setter={handleInputFormatted} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.representative_phone)} />
 
-                            <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.representative_email || ''} name="representative_email" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.representative_email)} />
+                            <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.representative_email || ''} name="representative_email" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.representative_email)} />
 
-                            <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={item.business_sectorId} name="business_sectorId" index={i} handleChange={handleSetForm} invalid={validate && checkInvalid(item.business_sectorId)} />
+                            <TreeSelect data={sectors} label="Салбар" displayName="bdescription_mon" value={item.business_sectorId} name="business_sectorId" index={i} handleChange={handleInput} invalid={validate && checkInvalid(item.business_sectorId)} />
 
                             <div className="tw-w-full tw-max-w-md tw-flex">
-                                <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleSetForm} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.company_size)} />
+                                <FormOptions label="Аж ахуйн нэгжийн хэмжээ" options={['Бичил', 'Жижиг', 'Дунд']} values={[1, 2, 3]} value={item.company_size} name="company_size" id={i} setForm={handleInput} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.company_size)} />
 
                                 <div className="tw-relative tw-w-2">
                                     <HelpPopup classAppend="tw-right-5 tw-top-1" main="Аж ахуйн нэгжийн хэмжээ нь борлуулалт эсвэл бүтэн цагийн ажилтнуудын аль өндрөөр тогтоосноор ангилал нь тогтоно. Жишээ нь:" list={["$30M борлуулалттай 30 хүнтэй аж ахуйн нэгжийн хувьд Дунд ангиллын аж ахуйн нэгжид хамаарна."]} position="top" />
@@ -271,22 +262,20 @@ function UrgudulClusters({ projects }) {
                                 {helperTable}
                             </div>
 
-                            <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх" options={['Тийм', 'Үгүй']} values={[true, false]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleSetForm} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.support_recipient)} />
+                            <FormOptions label="Манай дэмжлэг хүртэгч мөн эсэх" options={['Тийм', 'Үгүй']} values={[true, false]} value={item.support_recipient} name="support_recipient" id={i} setForm={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.support_recipient)} />
                         </div>
 
-                        <div className="tw-w-full">
-                            <div className="tw-flex tw-items-center tw-px-2 tw-mt-3">
-                                <span className={`tw-ml-2 tw-text-sm ${validate && checkInvalid(item.project_contribution, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
-                                    Төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр
-                                </span>
-
-                                <HelpPopup classAppend="tw-ml-2" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
-                            </div>
-
-                            <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                                <FormRichText modules="small" value={item.project_contribution || ''} name="project_contribution" id={i} setForm={handleSetForm} />
-                            </div>
-                        </div>
+                        <FormRichText
+                            label="Төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр"
+                            invalid={validate && checkInvalid(item.project_contribution, 'quill')}
+                            HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />}
+                            modules="small"
+                            value={item.project_contribution || ''}
+                            name="project_contribution"
+                            index={i}
+                            setter={handleInput}
+                            classAppend="tw-pl-6 tw-pt-1 tw-pr-1"
+                        />
 
                         <div className="tw-w-full">
                             <div className="tw-flex tw-items-center tw-px-2 tw-pb-2 tw-mt-3">
@@ -314,7 +303,7 @@ function UrgudulClusters({ projects }) {
                     </div>
 
                     <div className="tw-flex tw-items-center">
-                        <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                        <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
                     </div>
                 </div>
             )}

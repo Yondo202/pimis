@@ -40,13 +40,7 @@ function UrgudulFront() {
         })
     }, [UrgudulCtx.data.id])
 
-    const handleClickForm = (key, value) => {
-        setForm({ ...form, [key]: value })
-    }
-
-    const handleInput = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value })
-    }
+    const handleInput = (key, value) => setForm(prev => ({ ...prev, [key]: value }))
 
     const AlertCtx = useContext(AlertContext)
 
@@ -148,7 +142,7 @@ function UrgudulFront() {
                             Өргөдлийн төрөл:
                         </div>
 
-                        <button className={`tw-mt-3 tw-p-1.5 tw-border tw-rounded tw-flex tw-items-center focus:tw-outline-none tw-transition-colors tw-duration-300 ${form.project_type === 0 && 'tw-border-blue-700 tw-shadow'}`} onClick={() => handleClickForm('project_type', 0)} >
+                        <button className={`tw-mt-3 tw-p-1.5 tw-border tw-rounded tw-flex tw-items-center focus:tw-outline-none tw-transition-colors tw-duration-300 ${form.project_type === 0 && 'tw-border-blue-700 tw-shadow'}`} onClick={() => handleInput('project_type', 0)} >
                             <div className={`tw-ml-1 tw-w-4 tw-h-4 tw-border tw-rounded-full tw-inline-flex tw-justify-center tw-items-center tw-transition-colors tw-duration-300 ${form.project_type === 0 ? 'tw-border-blue-500' : 'tw-border-gray-700'}`}>
                                 <span className={`tw-w-2 tw-h-2 tw-rounded-full ${form.project_type === 0 ? 'tw-bg-blue-500' : 'tw-bg-transparent'} tw-transition-colors tw-duration-300`} />
                             </div>
@@ -156,7 +150,7 @@ function UrgudulFront() {
                             <span className="tw-ml-2 tw-text-sm tw-text-13px">Аж ахуй нэгж</span>
                         </button>
 
-                        <button className={`tw-my-2 tw-p-1.5 tw-border tw-rounded tw-flex tw-items-center focus:tw-outline-none tw-transition-colors tw-duration-300 ${form.project_type === 1 && 'tw-border-green-500 tw-shadow'}`} onClick={() => handleClickForm('project_type', 1)} >
+                        <button className={`tw-my-2 tw-p-1.5 tw-border tw-rounded tw-flex tw-items-center focus:tw-outline-none tw-transition-colors tw-duration-300 ${form.project_type === 1 && 'tw-border-green-500 tw-shadow'}`} onClick={() => handleInput('project_type', 1)} >
                             <div className={`tw-ml-1 tw-w-4 tw-h-4 tw-border tw-rounded-full tw-inline-flex tw-justify-center tw-items-center tw-transition-colors tw-duration-300 ${form.project_type === 1 ? 'tw-border-green-500' : 'tw-border-gray-700'}`}>
                                 <span className={`tw-w-2 tw-h-2 tw-rounded-full ${form.project_type === 1 ? 'tw-bg-green-500' : 'tw-bg-transparent'} tw-transition-colors tw-duration-300`} />
                             </div>
@@ -165,9 +159,9 @@ function UrgudulFront() {
                         </button>
                     </div>
 
-                    <FormInline label={form.project_type === 1 ? 'Кластерын тэргүүлэгч байгууллагын нэр:' : 'Аж ахуйн нэгжийн нэр'} type="text" value={form.company_name || ''} name="company_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(form.company_name)} />
+                    <FormInline label={form.project_type === 1 ? 'Кластерын тэргүүлэгч байгууллагын нэр:' : 'Аж ахуйн нэгжийн нэр'} type="text" value={form.company_name || ''} name="company_name" setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(form.company_name)} />
 
-                    <FormInline label="Төслийн нэр" type="text" value={form.project_name || ''} name="project_name" onChange={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(form.project_name)} />
+                    <FormInline label="Төслийн нэр" type="text" value={form.project_name || ''} name="project_name" setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(form.project_name)} />
 
                     {UrgudulCtx.data.id ?
                         <ButtonTooltip classAppend="tw-mt-6" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px tw-font-light" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmitEdit} />

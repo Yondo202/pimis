@@ -112,39 +112,35 @@ function UrgudulOverview({ projects }) {
                 </div>
             }
 
-            <div className="tw-p-2">
-                <div className={`tw-flex tw-items-center ${validate && checkInvalid(form.applicant_overview) && 'tw-text-red-500'} tw-transition-colors`}>
-                    <span className="tw-pl-5 tw-text-sm">
-                        {isCluster ? 'Өргөдөл гаргагч кластерын хувьд кластерын хамтрагч талуудын товч танилцуулга'
-                            : 'Өргөдөл гаргагч аж ахуй нэгжийн товч танилцуулга'
-                        }
-                    </span>
+            <FormRichText
+                label={isCluster
+                    ? 'Өргөдөл гаргагч кластерын хувьд кластерын хамтрагч талуудын товч танилцуулга'
+                    : 'Өргөдөл гаргагч аж ахуй нэгжийн товч танилцуулга'
+                }
+                invalid={validate && checkInvalid(form.applicant_overview)}
+                HelpPopup={isCluster
+                    ? <HelpPopup classAppend="tw-ml-2" main="Кластерын тэргүүлэгч аж ахуйн нэгж болон бусад гишүүдийн хооронд кластерын хамтын ажиллагаа хэрхэн эхэлж, ямар хугацаанд, ямар хэмжээнд явагдаж буй талаар товч мэдээлэл. Үүнд:" list={['Кластераар хамтарч хийж буй эсвэл кластер дотор солилцож буй гол бүтээгдэхүүн, үйлчилгээг үнийн дүнгийн хамт оруулна уу.', 'Мөн хамааралтай холбоод, судалгааны хүрээлэнгүүдтэй ямар хэмжээний хамааралтай ажилладаг талаарх мэдээлэл оруулна уу.']} position="bottom" />
+                    : <HelpPopup classAppend="tw-ml-2" main="ААН-ийн хувьд экспортын бүтээгдэхүүний гол орцыг борлуулалтанд эзлэх үнийн дүнгээр оруулах бөгөөд үүнийг хаана хаанаас авч буй талаар мэдээллийг оруулна уу." position="bottom" />
+                }
+                modules="full"
+                value={form.applicant_overview}
+                name="applicant_overview"
+                setter={handleSetForm}
+                height={256}
+                classAppend="tw-pr-2 tw-pl-5"
+            />
 
-                    {isCluster ?
-                        <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Кластерын тэргүүлэгч аж ахуйн нэгж болон бусад гишүүдийн хооронд кластерын хамтын ажиллагаа хэрхэн эхэлж, ямар хугацаанд, ямар хэмжээнд явагдаж буй талаар товч мэдээлэл. Үүнд:" list={['Кластераар хамтарч хийж буй эсвэл кластер дотор солилцож буй гол бүтээгдэхүүн, үйлчилгээг үнийн дүнгийн хамт оруулна уу.', 'Мөн хамааралтай холбоод, судалгааны хүрээлэнгүүдтэй ямар хэмжээний хамааралтай ажилладаг талаарх мэдээлэл оруулна уу.']} position="bottom" />
-                        :
-                        <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="ААН-ийн хувьд экспортын бүтээгдэхүүний гол орцыг борлуулалтанд эзлэх үнийн дүнгээр оруулах бөгөөд үүнийг хаана хаанаас авч буй талаар мэдээллийг оруулна уу." position="bottom" />
-                    }
-                </div>
-
-                <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                    <FormRichText modules="full" value={form.applicant_overview} name="applicant_overview" setForm={handleSetForm} />
-                </div>
-            </div>
-
-            <div className="tw-p-2">
-                <div className={`tw-flex tw-items-center ${validate && checkInvalid(form.applicant_experience) && 'tw-text-red-500'} tw-transition-colors`}>
-                    <span className="tw-pl-5 tw-text-sm">
-                        {`Өргөдөл гаргагч ${isCluster ? 'кластерын' : 'ААН-ийн'} төслийг хэрэгжүүлэх техникийн туршлага`}
-                    </span>
-
-                    <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." position="bottom" />
-                </div>
-
-                <div className="tw-py-2 tw-px-4 tw-h-64 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                    <FormRichText modules="full" value={form.applicant_experience} name="applicant_experience" setForm={handleSetForm} />
-                </div>
-            </div>
+            <FormRichText
+                label={`Өргөдөл гаргагч ${isCluster ? 'кластерын' : 'ААН-ийн'} төслийг хэрэгжүүлэх техникийн туршлага`}
+                invalid={validate && checkInvalid(form.applicant_experience)}
+                HelpPopup={<HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." position="bottom" />}
+                modules="full"
+                value={form.applicant_experience}
+                name="applicant_experience"
+                setter={handleSetForm}
+                height={256}
+                classAppend="tw-pr-2 tw-pl-5"
+            />
 
             <div className="tw-flex tw-justify-end">
                 <ButtonTooltip classAppend="tw-mt-6 tw-mb-4 tw-mr-4" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px tw-font-light" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />

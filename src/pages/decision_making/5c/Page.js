@@ -396,22 +396,26 @@ export default function AnalystReport() {
                     leave={{ opacity: 0, display: 'none' }}>
                     {item => item
                         ? anims =>
-                            <animated.div className="tw-mt-3" style={anims}>
-                                <div className="">
-                                    Төслийг дэмжиж буй бол хэрэгжүүлэх явцад анхаарах зөвлөмж:
-                                </div>
-                                <div className="tw-mt-1 tw-p-1 tw-pb-2 tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-shadow-inner tw-rounded-lg" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                                    <FormRichText modules="small" value={info.accept_tips} name="accept_tips" setForm={handleInputEvaluator} />
-                                </div>
+                            <animated.div className="tw-mt-1.5" style={anims}>
+                                <FormRichText
+                                    label="Төслийг дэмжиж буй бол хэрэгжүүлэх явцад анхаарах зөвлөмж:"
+                                    modules="small"
+                                    value={info.accept_tips}
+                                    name="accept_tips"
+                                    setter={handleInputEvaluator}
+                                    classQuill="tw-max-w-3xl"
+                                />
                             </animated.div>
                         : anims =>
-                            <animated.div className="tw-mt-3" style={anims}>
-                                <div className="">
-                                    Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:
-                                </div>
-                                <div className="tw-mt-1 tw-p-1 tw-pb-2 tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-shadow-inner tw-rounded-lg" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                                    <FormRichText modules="small" value={info.decline_reason} name="decline_reason" setForm={handleInputEvaluator} />
-                                </div>
+                            <animated.div className="tw-mt-1.5" style={anims}>
+                                <FormRichText
+                                    label="Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:"
+                                    modules="small"
+                                    value={info.decline_reason}
+                                    name="decline_reason"
+                                    setter={handleInputEvaluator}
+                                    classQuill="tw-max-w-3xl"
+                                />
                             </animated.div>
                     }
                 </Transition>

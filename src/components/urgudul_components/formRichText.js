@@ -4,7 +4,6 @@ import 'react-quill/dist/quill.snow.css'
 import 'react-quill/dist/quill.bubble.css'
 import './reactQuill.css'
 
-
 const modulesFull = {
     toolbar: [
         [{ 'size': ['small', false, 'large', 'huge'] }],
@@ -32,26 +31,36 @@ const modulesSmall = {
     ]
 }
 
-function FormRichText(props) {
-    const handleOnChange = (content) => {
-        props.setForm(props.name, content, props.id)
-    }
-
-    let modules
-    switch (props.modules) {
+function FormRichText({ label, HelpPopup, modules, value, name, index, setter, invalid, classAppend, classLabel, classQuill, height }) {
+    let useModules
+    switch (modules) {
         case 'full':
-            modules = modulesFull
+            useModules = modulesFull
             break
         case 'small':
-            modules = modulesSmall
+            useModules = modulesSmall
             break
         default:
-            if (typeof props.modules === 'object') modules = props.modules
+            if (typeof modules === 'object') useModules = modules
             break
     }
 
     return (
-        <ReactQuill theme="snow" id={`react-quill-${props.name}-${props.id}`} modules={modules} tabIndex={0} value={props.value} onChange={content => handleOnChange(content)} />
+        <div className={classAppend}>
+            {label &&
+                <div className={`tw-flex tw-items-center tw-pr-2 tw-pt-2 ${classLabel}`}>
+                    <span className={`tw-text-sm ${invalid && 'tw-text-red-500'} tw-transition-colors`}>
+                        {label}
+                    </span>
+
+                    {HelpPopup && HelpPopup}
+                </div>
+            }
+
+            <div className={`tw-pr-2 tw-py-2 tw-h-40 tw-resize-y tw-overflow-y-hidden ${classQuill}`} style={{ height: height, minHeight: '128px', maxHeight: '768px' }}>
+                <ReactQuill theme="snow" id={`react-quill-${name}-${index}`} modules={useModules} tabIndex={0} value={value} onChange={content => setter(name, content, index)} />
+            </div>
+        </div>
     )
 }
 

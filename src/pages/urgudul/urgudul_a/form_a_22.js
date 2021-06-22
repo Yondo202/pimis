@@ -38,17 +38,17 @@ function UrgudulDirectors({ projects }) {
         }
     }, [UrgudulCtx.data.id])
 
-    const handleInput = (e) => {
-        const newForm = form
-        newForm[e.target.id][e.target.name] = e.target.value
-        setForm([...newForm])
-    }
+    const handleInput = (key, value, index) => setForm(prev => {
+        const next = [...prev]
+        next[index][key] = value
+        return next
+    })
 
-    const handleInputFormatted = (values, key, index) => {
-        const newForm = form
-        newForm[index][key] = values.formattedValue
-        setForm([...newForm])
-    }
+    const handleInputFormatted = (key, values, index) => setForm(prev => {
+        const next = [...prev]
+        next[index][key] = values.formattedValue
+        return next
+    })
 
     const handleAdd = () => {
         const newObj = {
@@ -176,35 +176,33 @@ function UrgudulDirectors({ projects }) {
             {form.map((item, i) =>
                 <div className="tw-flex odd:tw-bg-gray-50 tw-px-3" key={i}>
                     <div className="tw-flex-grow">
-                        <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                        <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                             <SearchSelect label="Албан тушаал" data={occupations} value={item.position} name="position" id={i} displayName="description_mon" setForm={handleSetForm} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.position)} />
 
-                            <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.director_name || ''} name="director_name" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.director_name)} />
+                            <FormInline label="Төлөөлөх албан тушаалтны нэр" type="text" value={item.director_name || ''} name="director_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.director_name)} />
 
-                            <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.director_phone || ''} name="director_phone" id={i} onChange={handleInputFormatted} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.director_phone)} />
+                            <FormInline label="Төлөөлөгчийн утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={item.director_phone || ''} name="director_phone" index={i} setter={handleInputFormatted} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.director_phone)} />
 
-                            <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.director_email || ''} name="director_email" id={i} onChange={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.director_email)} />
+                            <FormInline label="Төлөөлөгчийн имэйл" type="email" value={item.director_email || ''} name="director_email" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(item.director_email)} />
 
-                            <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" formats={{ max: todayStr }} value={item.employed_date || ''} name="employed_date" id={i} onChange={handleInput} classAppend="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.employed_date)} />
+                            <FormInline label="Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр" type="date" formats={{ max: todayStr }} value={item.employed_date || ''} name="employed_date" index={i} setter={handleInput} classAppend="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.employed_date)} />
                         </div>
 
-                        <div className="tw-w-full">
-                            <div className="tw-flex tw-items-center tw-px-2 tw-mt-2">
-                                <span className={`tw-ml-2 tw-text-sm ${validate && checkInvalid(item.project_contribution, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
-                                    Энэхүү төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр
-                                </span>
-
-                                <HelpPopup classAppend="tw-ml-2" main="Тухайлбал ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />
-                            </div>
-
-                            <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                                <FormRichText modules="small" value={item.project_contribution || ''} name="project_contribution" id={i} setForm={handleSetForm} />
-                            </div>
-                        </div>
+                        <FormRichText
+                            label="Энэхүү төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр"
+                            invalid={validate && checkInvalid(item.project_contribution, 'quill')}
+                            HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Тухайлбал ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />}
+                            modules="small"
+                            value={item.project_contribution || ''}
+                            name="project_contribution"
+                            index={i}
+                            setter={handleSetForm}
+                            classAppend="tw-pl-6 tw-pt-1 tw-pr-1"
+                        />
                     </div>
 
                     <div className="tw-flex tw-items-center">
-                        <ButtonTooltip tooltip="Устгах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+                        <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
                     </div>
                 </div>
             )}

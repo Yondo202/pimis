@@ -75,7 +75,6 @@ function HelpPopup(props) {
                         }
                     </ul>
                 }
-
             </div>
         </div>
     )

@@ -21,6 +21,14 @@ import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import TrainingFrontPage from 'pages/training/frontPage';
+import UrgudulPage1 from 'pages/urgudul/pages/1st';
+import UrgudulPage2 from 'pages/urgudul/pages/2nd';
+import UrgudulPage3 from 'pages/urgudul/pages/3rd';
+import UrgudulPage4 from 'pages/urgudul/pages/4th';
+import UrgudulPage5 from 'pages/urgudul/pages/5th';
+import UrgudulPage6 from 'pages/urgudul/pages/6h';
+import UrgudulPage7 from 'pages/urgudul/pages/7th';
+import UrgudulPage8 from 'pages/urgudul/pages/8th';
 
 
 function UsersRoute() {
@@ -53,6 +61,16 @@ function UsersRoute() {
                     <Route path="/5a" component={FirstEvaluation} />
                     <Route path="/5b" component={CompilationCheck} />
                     <Route path="/5c" component={AnalystReport} />
+
+                    <Route path="/urgudul-1" component={UrgudulPage1} />
+                    <Route path="/urgudul-2" component={UrgudulPage2} />
+                    <Route path="/urgudul-3" component={UrgudulPage3} />
+                    <Route path="/urgudul-4" component={UrgudulPage4} />
+                    <Route path="/urgudul-5" component={UrgudulPage5} />
+                    <Route path="/urgudul-6" component={UrgudulPage6} />
+                    <Route path="/urgudul-7" component={UrgudulPage7} />
+                    <Route path="/urgudul-8" component={UrgudulPage8} />
+
                     <Route path="/trainings">
                         <TrainingFrontPage user={true} />
                     </Route>

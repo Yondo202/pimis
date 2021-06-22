@@ -326,9 +326,15 @@ const FormCategory = ({ category, feedback, setFeedback, index }) => {
                </div>
 
                {category === 'Бичвэр'
-                  ? <div className="tw-h-32 tw-resize-y tw-overflow-y-hidden tw-max-w-3xl tw-p-2 tw-pl-5 tw-pb-3 tw-mr-3" style={{ minHeight: 160, maxHeight: 512 }}>
-                     <FormRichText modules="small" value={feedback[rowIndex].comment} name="comment" id={rowIndex} setForm={handleInput} />
-                  </div>
+                  ? <FormRichText
+                     modules="small"
+                     value={feedback[rowIndex].comment}
+                     name="comment"
+                     index={rowIndex}
+                     setter={handleInput}
+                     classAppend="tw-pl-6"
+                     height={128}
+                  />
 
                   : <div className="tw-flex tw-flex-col tw-items-center tw-mt-2 tw-mb-2 tw-text-13px tw-tracking-wide tw-text-gray-600 tw-px-4">
                      <div className="tw-max-w-sm tw-flex tw-justify-between tw-w-full">

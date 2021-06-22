@@ -45,17 +45,10 @@ function UrgudulBreakdown() {
         }
     }, [UrgudulCtx.data.id])
 
-    const handleInput = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value })
-    }
+    const handleInput = (key, value) => setForm(prev => ({ ...prev, [key]: value }))
 
-    const handleInputFormat = (values, name) => {
-        setForm({ ...form, [name]: values.value })
-    }
+    const handleInputFormat = (key, values) => setForm(prev => ({ ...prev, [key]: values.value }))
 
-    const handleSetForm = (key, value) => {
-        setForm(prev => ({ ...prev, [key]: value }))
-    }
 
     useEffect(() => {
         if (form.project_duration && form.project_start) {
@@ -128,16 +121,16 @@ function UrgudulBreakdown() {
                 }
             </div>
 
-            <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-3">
+            <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-3">
                 <div className="tw-w-full tw-max-w-lg tw-flex">
-                    <FormInline label="Төслийн үргэлжлэх хугацаа" type="numberFormat" formats={{ format: '# сар' }} value={form.project_duration || ''} name="project_duration" onChange={handleInputFormat} classInput="tw-w-20" invalid={validate && checkInvalid(form.project_duration)} />
+                    <FormInline label="Төслийн үргэлжлэх хугацаа" type="numberFormat" formats={{ format: '# сар' }} value={form.project_duration || ''} name="project_duration" setter={handleInputFormat} classInput="tw-w-20" invalid={validate && checkInvalid(form.project_duration)} />
 
                     <div className="tw-relative tw-w-2 tw-ml-28">
                         <HelpPopup classAppend="tw-right-5 tw-top-1" main="Төслийг хэрэгжүүлэх нийт төслийн үргэлжлэх хугацаа, cараар. Дээд тал нь 9 сар." position="top" />
                     </div>
                 </div>
 
-                <FormInline label="Төслийн эхлэх хугацаа" type="date" value={form.project_start || ''} name="project_start" onChange={handleInput} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" invalid={validate && checkInvalid(form.project_start)} />
+                <FormInline label="Төслийн эхлэх хугацаа" type="date" value={form.project_start || ''} name="project_start" setter={handleInput} classAppend="tw-w-full tw-max-w-lg" classInput="tw-w-40" invalid={validate && checkInvalid(form.project_start)} />
 
                 <div className="tw-text-sm tw-p-3 tw-flex tw-flex-col tw-items-start">
                     <div className="">
@@ -150,75 +143,60 @@ function UrgudulBreakdown() {
                 </div>
             </div>
 
-            <div className="tw-w-full tw-px-1">
-                <div className="tw-flex tw-items-center tw-px-2 tw-mt-2">
-                    <span className={`tw-ml-3 tw-text-sm ${validate && checkInvalid(form.project_introduction, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
-                        Төслийн танилцуулга
-                    </span>
+            <FormRichText
+                label="Төслийн танилцуулга"
+                invalid={validate && checkInvalid(form.project_introduction, 'quill')}
+                HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Одоогийн нөхцөл байдал, гол асуудал, төслийн агуулгын талаар товч танилцуулна." list={['Ямар зах зээлийн боломж харагдаж буй ба үүнийг хэрхэн тодорхойлсон бэ?', 'Потенциалт худалдан авагч нар хэн бэ? гэх зэргийг нарийн тодорхойлоно уу.']} position="top" />}
+                modules="small"
+                value={form.project_introduction || ''}
+                name="project_introduction"
+                setter={handleInput}
+                classAppend="tw-pl-5 tw-pr-2"
+            />
 
-                    <HelpPopup classAppend="tw-ml-2" main="Одоогийн нөхцөл байдал, гол асуудал, төслийн агуулгын талаар товч танилцуулна." list={['Ямар зах зээлийн боломж харагдаж буй ба үүнийг хэрхэн тодорхойлсон бэ?', 'Потенциалт худалдан авагч нар хэн бэ? гэх зэргийг нарийн тодорхойлоно уу.']} position="top" />
-                </div>
+            <FormRichText
+                label="Бэлтгэл ажил"
+                validate={validate && checkInvalid(form.preperation, 'quill')}
+                HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Төслийн бэлтгэл ажил хийгдсэн байгаа эсэх. Зорилтот зах зээлийн судалгаа, хэрэглэгчийн судалгаа хийсэн эсэх. Хэрэв тийм бол уг ажлын талаар товч тайлбар бичих. Бэлтгэл зах зээлийн судалгаа нь зах зээлийн боломжоо үр дүнтэй тодорхойлж чадаж буй эсэхэд хамгийн их нөлөөтэй болно." position="top" />}
+                modules="small"
+                value={form.preperation || ''}
+                name="preperation"
+                setter={handleInput}
+                classAppend="tw-pl-5 tw-pr-2"
+            />
 
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                    <FormRichText modules="small" value={form.project_introduction || ''} name="project_introduction" setForm={handleSetForm} />
-                </div>
-            </div>
+            <FormRichText
+                label="Тодорхойлсон асуудлууд"
+                invalid={validate && checkInvalid(form.identified_problems, 'quill')}
+                HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Уг төслөөр ямар асуудлуудыг шийдвэрлэж, төслийн танилцуулгад тодорхойлсон зах зээлийн боломжийг ашиглах боломжтой болох вэ?" position="top" />}
+                modules="small"
+                value={form.identified_problems || ''}
+                name="identified_problems"
+                setter={handleInput}
+                classAppend="tw-pl-5 tw-pr-2"
+            />
 
-            <div className="tw-w-full tw-px-1">
-                <div className="tw-flex tw-items-center tw-px-2 tw-mt-2">
-                    <span className={`tw-ml-3 tw-text-sm ${validate && checkInvalid(form.preperation, 'quill') && 'tw-text-red-500'}`}>
-                        Бэлтгэл ажил
-                    </span>
+            <FormRichText
+                label="Санал болгож буй шийдэл"
+                invalid={validate && checkInvalid(form.suggested_solutions, 'quill')}
+                HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Дээр тодорхойлсон асуудлуудыг шийдвэрлэхэд санал болгож буй ямар шийдлүүд байгаа вэ? Хувь аж ахуйн нэгжээрээ болон кластераар шийдвэрлэх үйл ажиллагааг санал болгоно уу." position="top" />}
+                modules="small"
+                value={form.suggested_solutions || ''}
+                name="suggested_solutions"
+                setter={handleInput}
+                classAppend="tw-pl-5 tw-pr-2"
+            />
 
-                    <HelpPopup classAppend="tw-ml-2" main="Төслийн бэлтгэл ажил хийгдсэн байгаа эсэх. Зорилтот зах зээлийн судалгаа, хэрэглэгчийн судалгаа хийсэн эсэх. Хэрэв тийм бол уг ажлын талаар товч тайлбар бичих. Бэлтгэл зах зээлийн судалгаа нь зах зээлийн боломжоо үр дүнтэй тодорхойлж чадаж буй эсэхэд хамгийн их нөлөөтэй болно." position="top" />
-                </div>
-
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                    <FormRichText modules="small" value={form.preperation || ''} name="preperation" setForm={handleSetForm} />
-                </div>
-            </div>
-
-            <div className="tw-w-full tw-px-1">
-                <div className="tw-flex tw-items-center tw-px-2 tw-mt-2">
-                    <span className={`tw-ml-3 tw-text-sm ${validate && checkInvalid(form.identified_problems, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
-                        Тодорхойлсон асуудлууд
-                    </span>
-
-                    <HelpPopup classAppend="tw-ml-2" main="Уг төслөөр ямар асуудлуудыг шийдвэрлэж, төслийн танилцуулгад тодорхойлсон зах зээлийн боломжийг ашиглах боломжтой болох вэ?" position="top" />
-                </div>
-
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                    <FormRichText modules="small" value={form.identified_problems || ''} name="identified_problems" setForm={handleSetForm} />
-                </div>
-            </div>
-
-            <div className="tw-w-full tw-px-1">
-                <div className="tw-flex tw-items-center tw-px-2 tw-mt-2">
-                    <span className={`tw-ml-3 tw-text-sm ${validate && checkInvalid(form.suggested_solutions, 'quill') && 'tw-text-red-500'} tw-transition-colors`}>
-                        Санал болгож буй шийдэл
-                    </span>
-
-                    <HelpPopup classAppend="tw-ml-2" main="Дээр тодорхойлсон асуудлуудыг шийдвэрлэхэд санал болгож буй ямар шийдлүүд байгаа вэ? Хувь аж ахуйн нэгжээрээ болон кластераар шийдвэрлэх үйл ажиллагааг санал болгоно уу." position="top" />
-                </div>
-
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                    <FormRichText modules="small" value={form.suggested_solutions || ''} name="suggested_solutions" setForm={handleSetForm} />
-                </div>
-            </div>
-
-            <div className="tw-w-full tw-px-1">
-                <div className="tw-flex tw-items-center tw-px-2 tw-mt-2">
-                    <span className={`tw-ml-3 tw-text-sm ${validate && checkInvalid(form.expected_result, 'quill') && 'tw-text-red-500'}`}>
-                        Төлөвлөсөн үйл ажиллагаа болон зорилтот хүлээгдэж буй үр дүн
-                    </span>
-
-                    <HelpPopup classAppend="tw-ml-2" main="Уг төслийн хүрээнд хийхээр зорьж буй гол үйл ажиллагаануудыг тус бүрийн хүлээгдэж буй үр дүнтэй нь бичнэ үү" list={['Хэмжих хэмжүүрийг тодорхой бичнэ үү.', 'Үйл ажиллагаа нь практик бодит үр дүн авчрах ажил байхыг анхаарна уу.', '(Аж ахуйн нэгжийн болон кластераар хийх ажлуудыг тусад нь бичнэ.)']} position="top" />
-                </div>
-
-                <div className="tw-py-2 tw-px-4 tw-h-40 tw-resize-y tw-overflow-y-hidden" style={{ minHeight: '128px', maxHeight: '768px' }}>
-                    <FormRichText modules="small" value={form.expected_result || ''} name="expected_result" setForm={handleSetForm} />
-                </div>
-            </div>
+            <FormRichText
+                label="Төлөвлөсөн үйл ажиллагаа болон зорилтот хүлээгдэж буй үр дүн"
+                invalid={validate && checkInvalid(form.expected_result, 'quill')}
+                HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Уг төслийн хүрээнд хийхээр зорьж буй гол үйл ажиллагаануудыг тус бүрийн хүлээгдэж буй үр дүнтэй нь бичнэ үү" list={['Хэмжих хэмжүүрийг тодорхой бичнэ үү.', 'Үйл ажиллагаа нь практик бодит үр дүн авчрах ажил байхыг анхаарна уу.', '(Аж ахуйн нэгжийн болон кластераар хийх ажлуудыг тусад нь бичнэ.)']} position="top" />}
+                modules="small"
+                value={form.expected_result || ''}
+                name="expected_result"
+                setter={handleInput}
+                classAppend="tw-pl-5 tw-pr-2"
+            />
 
             <div className="tw-flex tw-justify-end">
                 <ButtonTooltip classAppend="tw-mt-6 tw-mb-4 tw-mr-4" classButton="tw-px-8 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-15px tw-font-light" classLabel="tw-text-white" label="Хадгалах" onClick={handleSubmit} />
