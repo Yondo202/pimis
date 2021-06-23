@@ -278,8 +278,8 @@ function UrgudulClusters({ projects }) {
                         />
 
                         <div className="tw-w-full">
-                            <div className="tw-flex tw-items-center tw-px-2 tw-pb-2 tw-mt-3">
-                                <span className={`tw-ml-2 tw-text-sm ${validate && checkInvalid(item.attachedFiles) && 'tw-text-red-500'} tw-transition-colors`}>
+                            <div className="tw-flex tw-items-center tw-pl-6 tw-pr-2 tw-py-3">
+                                <span className={`tw-text-sm ${validate && checkInvalid(item.attachedFiles) && 'tw-text-red-500'} tw-transition-colors`}>
                                     Кластерийн хамтын ажиллагааны гэрээ
                                 </span>
 
@@ -294,9 +294,9 @@ function UrgudulClusters({ projects }) {
                                 {item1 => item1
                                     ? anims => {
                                         const file = item.attachedFiles || []
-                                        return <FileCard name={file[0]?.name} type={file[0]?.mimetype} size={file[0]?.size} classAppend="tw-ml-6 tw-mb-5" uploading={item.attachedFiles === 'loading' && true} removeFile={() => handleRemoveFile(i)} downloadFile={() => handleDownloadFile(i)} style={anims} />
+                                        return <FileCard name={file[0]?.name} type={file[0]?.mimetype} size={file[0]?.size} classAppend="tw-ml-9 tw-mb-5" uploading={item.attachedFiles === 'loading' && true} removeFile={() => handleRemoveFile(i)} downloadFile={() => handleDownloadFile(i)} style={anims} />
                                     }
-                                    : anims => <FileCardAdd classAppend="tw-ml-6 tw-mb-5" onClick={() => handleFileInputClick(i)} style={anims} />
+                                    : anims => <FileCardAdd classAppend="tw-ml-9 tw-mb-5" onClick={() => handleFileInputClick(i)} style={anims} />
                                 }
                             </Transition>
                         </div>
