@@ -7,10 +7,10 @@ import React, { useState } from 'react'
 import { Transition, animated } from 'react-spring/renderprops'
 
 
-export default function TreeSelect(props) {
-    const display = props.displayName
-    const parents = props.data.filter(item => item.parentId === 0)
-    const selectedName = props.data.filter(item => item.id === props.value)[0]?.[display]
+export default function TreeSelect({ displayName, data, value, setter, name, index, label, classLabel, invalid, }) {
+    const display = displayName
+    const parents = data.filter(item => item.parentId === 0)
+    const selectedName = data.filter(item => item.id === value)[0]?.[display]
     const [open, setOpen] = useState(false)
     const [search, setSearch] = useState('')
     // const buttonRef = useRef()
@@ -25,18 +25,18 @@ export default function TreeSelect(props) {
     //     return () => document.removeEventListener('mousedown', handleClickOutside)
     // })
     const handleSelectId = (value) => {
-        props.handleChange(props.name, value, props.index)
+        setter(name, value, index)
         setOpen(false)
     }
 
     return (
         <div className="tw-w-full tw-text-sm tw-text-gray-700">
             <div className="tw-flex tw-items-center tw-relative tw-pt-8 tw-ml-3 tw-mr-3">
-                <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-whitespace-nowrap ${props.classLabel} ${open ? 'tw-text-sm tw-top-2 tw--left-1' : 'tw-text-xs tw-top-6 tw-left-3'} tw-transition-all tw-duration-300`}>
-                    {props.label}
+                <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-whitespace-nowrap ${classLabel} ${open ? 'tw-text-sm tw-top-2 tw--left-1' : 'tw-text-xs tw-top-6 tw-left-3'} tw-transition-all tw-duration-300`}>
+                    {label}
                 </label>
 
-                <button className={`tw-h-8.5 tw-flex tw-min-w-0 tw-items-center tw-border tw-rounded tw-px-2 tw-pt-2 tw-pb-1 focus:tw-outline-none ${props.invalid ? 'tw-text-red-500 tw-border-red-500 active:tw-border-red-600 active:tw-text-red-600' : (open ? 'tw-border-blue-700 tw-shadow' : 'tw-border-gray-400')} tw-transition-colors tw-duration-700`} onClick={() => setOpen(!open)} title={selectedName}>
+                <button className={`tw-h-8.5 tw-flex tw-min-w-0 tw-items-center tw-border tw-rounded tw-px-2 tw-pt-2 tw-pb-1 focus:tw-outline-none ${invalid ? 'tw-text-red-500 tw-border-red-500 active:tw-border-red-600 active:tw-text-red-600' : (open ? 'tw-border-blue-700 tw-shadow' : 'tw-border-gray-400')} tw-transition-colors tw-duration-700`} onClick={() => setOpen(!open)} title={selectedName}>
                     <div className="tw-mr-2 tw-truncate tw-text-left tw-text-gray-700 tw-text-13px" style={{ minWidth: 160 }}>
                         {selectedName ?? 'Сонгох'}
                     </div>
@@ -60,7 +60,7 @@ export default function TreeSelect(props) {
                         </div>
 
                         {parents.map(parent =>
-                            <Tree parent={parent} childs={props.data.filter(item => item.parentId === parent.id && item[display].toLowerCase().includes(search.toLowerCase()))} display={display} handleSelectId={handleSelectId} value={props.value} key={parent.id} />
+                            <Tree parent={parent} childs={data.filter(item => item.parentId === parent.id && item[display].toLowerCase().includes(search.toLowerCase()))} display={display} handleSelectId={handleSelectId} value={value} key={parent.id} />
                         )}
                     </animated.div>
                 )}

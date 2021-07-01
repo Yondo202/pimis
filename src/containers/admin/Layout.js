@@ -12,7 +12,7 @@ import { Route, Switch } from "react-router-dom";
 import UserHandle from 'components/admin/contents/users/UserHandle';
 import ProjectHandle from 'components/admin/contents/projects/ProjectHandle'
 import { UrgudulStore } from 'components/utilities/urgudulContext'
-import UrgudulNavigator from 'pages/urgudul/Page'
+import UrgudulNavigator from 'pages/urgudul/Navigator'
 import Home from 'components/LoginDoneHome/Home'
 import Request from 'containers/requestComp/mainRequestOld'
 import Check from 'components/check/compCheck'

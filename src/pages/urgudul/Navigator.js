@@ -1,18 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Switch, Route, useHistory, useParams, useLocation } from 'react-router-dom'
-import UrgudulFront from './formFront'
-import UrgudulApplicant from './urgudul_a/form_a_1'
-import UrgudulClusters from './urgudul_a/form_a_21'
-import UrgudulDirectors from './urgudul_a/form_a_22'
-import UrgudulBreakdown from './urgudul_b/form_b'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
-import UrgudulActivities from './urgudul_b/form_b_6'
-import UrgudulBenefits from './urgudul_b/form_b_7'
-import UrgudulCalculations from './urgudul_b/form_b_8'
-import UrgudulChecklist from './urgudul_e/form_e'
-import UrgudulOverview from './urgudul_a/form_a_3_4'
-import UrgudulNoticeCluster from './urgudul_d/form_d_1'
-import UrgudulNoticeCompany from './urgudul_d/form_d_2'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import { useTransition, animated } from 'react-spring'
 import CloseSVG from 'assets/svgComponents/closeSVG'
@@ -22,62 +10,57 @@ import AlertContext from 'components/utilities/alertContext'
 import DocAddSVG from 'assets/svgComponents/docAddSVG'
 import SearchSVG from 'assets/svgComponents/searchSVG'
 import { Transition } from 'react-spring/renderprops'
-import UrgudulPreview from './preview/Preview'
+// import UrgudulPreview from './preview/Preview'
 import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
+import UrgudulPage1 from './pages/page1'
+import UrgudulPage2 from './pages/page2'
+import UrgudulPage3 from './pages/page3'
+import UrgudulPage4 from './pages/page4'
+import UrgudulPage5 from './pages/page5'
+import UrgudulPage6 from './pages/page6'
+import UrgudulPage7Cluster from './pages/page7_cluster'
+import UrgudulPage7Company from './pages/page7_company'
+import UrgudulPage8 from './pages/page8'
 
-
-function UrgudulNavigator(props) {
+export default function UrgudulNavigator() {
     const history = useHistory()
     const params = useParams()
-    const page = + params.page
-
-    let startPage = 1
-    if (page > 5) startPage = 6
-
-    const [slideLeft, setSlideLeft] = useState(false)
+    const page = +params.page
 
     const handleJump = (index) => {
         history.push(`/urgudul/${index}`)
-        if (index < page) setSlideLeft(true)
     }
 
     const handlePrev = () => {
         page !== 1 && history.push(`/urgudul/${page - 1}`)
-        setSlideLeft(true)
     }
 
     const handleNext = () => {
-        page !== 10 && history.push(`/urgudul/${page + 1}`)
-        setSlideLeft(false)
+        page !== maxPage && history.push(`/urgudul/${page + 1}`)
     }
 
     const UrgudulCtx = useContext(UrgudulContext)
+    const AlertCtx = useContext(AlertContext)
 
-    const isCluster = UrgudulCtx.data.project_type === 1 ? true : false
+    const isCluster = UrgudulCtx.data.project_type === 1
 
     const location = useLocation()
 
     const transitionsPages = useTransition(location, location => location.pathname, {
-        // from: { opacity: 0, transform: slideLeft ? 'translateX(-100px)' : 'translateX(100px)' },
-        // enter: { opacity: 1, transform: 'translateX(0)' },
         from: { opacity: 0 },
         enter: { opacity: 1 },
         leave: { display: 'none' },
-        config: { tension: 300, clamp: true },
+        config: { clamp: true },
     })
 
-    const [modalOpen, setModalOpen] = useState(props.preloaded ? false : true)
+    const [modalOpen, setModalOpen] = useState(true)
 
     const [projects, setProjects] = useState([])
-
-    const AlertCtx = useContext(AlertContext)
 
     useEffect(() => {
         if (modalOpen) {
             axios.get('projects', {
-                headers: {
-                    'Authorization': getLoggedUserToken(),
-                }
+                headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
                 setProjects(res.data.data)
             })
@@ -144,20 +127,18 @@ function UrgudulNavigator(props) {
                 </button>
             </div>
 
-            <div className="tw-py-1 tw-px-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
-                <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 1 && 'tw-invisible'} tw-transition-shadow`} onClick={handlePrev}>
+            <div className="tw-py-2 tw-px-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
+                <button className="tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 tw-transition-colors tw-transition-shadow" onClick={handlePrev}>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90" />
-                    <span className="tw-mr-1 tw-text-13px">Өмнөх</span>
                 </button>
-                {
-                    [...Array(5)].map((item, i) =>
-                        <button className={`tw-mx-2 tw-px-2 tw-py-0.5 tw-rounded-md hover:tw-shadow-md focus:tw-outline-none tw-text-sm active:tw-text-indigo-500 ${page === startPage + i && 'tw-bg-indigo-500 tw-text-white'} tw-transition-colors`} key={i} onClick={() => handleJump(startPage + i)}>
-                            {startPage + i}
-                        </button>
-                    )
-                }
-                <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 ${page === 10 && 'tw-invisible'} tw-transition-shadow`} onClick={handleNext}>
-                    <span className="tw-ml-1 tw-text-13px">Дараах</span>
+
+                {{
+                    'start': <PaginationStart page={page} handleJump={handleJump} />,
+                    'middle': <PaginationMiddle page={page} handleJump={handleJump} />,
+                    'end': <PaginationEnd page={page} handleJump={handleJump} />,
+                }[showPaginationVariant(page)]}
+
+                <button className="tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 tw-transition-colors tw-transition-shadow" onClick={handleNext}>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw--rotate-90" />
                 </button>
             </div>
@@ -166,49 +147,38 @@ function UrgudulNavigator(props) {
                 <animated.div key={key} className="tw-pb-10" style={props}>
                     <Switch location={item}>
                         <Route path="/urgudul/1">
-                            <UrgudulFront />
+                            <UrgudulPage1 />
                         </Route>
 
                         <Route path="/urgudul/2">
-                            <UrgudulApplicant projects={projects} />
+                            <UrgudulPage2 />
                         </Route>
 
                         <Route path="/urgudul/3">
-                            {isCluster
-                                ? <UrgudulClusters projects={projects} />
-                                : <UrgudulDirectors projects={projects} />
-                            }
+                            <UrgudulPage3 />
                         </Route>
 
                         <Route path="/urgudul/4">
-                            <UrgudulOverview projects={projects} />
+                            <UrgudulPage4 />
                         </Route>
 
                         <Route path="/urgudul/5">
-                            <UrgudulBreakdown />
+                            <UrgudulPage5 />
                         </Route>
 
                         <Route path="/urgudul/6">
-                            <UrgudulActivities />
+                            <UrgudulPage6 />
                         </Route>
 
                         <Route path="/urgudul/7">
-                            <UrgudulBenefits />
-                        </Route>
-
-                        <Route path="/urgudul/8">
-                            <UrgudulCalculations />
-                        </Route>
-
-                        <Route path="/urgudul/9">
                             {isCluster
-                                ? <UrgudulNoticeCluster projects={projects} />
-                                : <UrgudulNoticeCompany projects={projects} />
+                                ? <UrgudulPage7Cluster />
+                                : <UrgudulPage7Company />
                             }
                         </Route>
 
-                        <Route path="/urgudul/10">
-                            <UrgudulChecklist />
+                        <Route path="/urgudul/8">
+                            <UrgudulPage8 />
                         </Route>
                     </Switch>
                 </animated.div>
@@ -285,7 +255,7 @@ function UrgudulNavigator(props) {
                                         <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" />
                                     </button>
 
-                                    <UrgudulPreview project={UrgudulCtx.data} />
+                                    {/* <UrgudulPreview project={UrgudulCtx.data} /> */}
                                 </animated.div>
                             )}
                         </Transition>
@@ -296,4 +266,53 @@ function UrgudulNavigator(props) {
     )
 }
 
-export default UrgudulNavigator
+const PageButton = ({ page, currentPage, handleJump }) => (
+    <button
+        className={`tw-mx-2 tw-px-2 tw-py-0.5 tw-rounded-md hover:tw-shadow-md focus:tw-outline-none tw-text-sm active:tw-text-indigo-500 ${page === currentPage && 'tw-bg-indigo-500 tw-text-white'} tw-transition-colors tw-transition-shadow`}
+        onClick={handleJump}
+    >
+        {page}
+    </button>
+)
+
+const PaginationStart = ({ page, handleJump }) => (
+    <>
+        <PageButton page={1} currentPage={page} handleJump={() => handleJump(1)} />
+        <PageButton page={2} currentPage={page} handleJump={() => handleJump(2)} />
+        <PageButton page={3} currentPage={page} handleJump={() => handleJump(3)} />
+        {page === 3 && <PageButton page={4} currentPage={page} handleJump={() => handleJump(4)} />}
+        <span className={page !== 3 && 'tw-mx-3'}>...</span>
+        <PageButton page={maxPage} currentPage={page} handleJump={() => handleJump(maxPage)} />
+    </>
+)
+
+const PaginationMiddle = ({ page, handleJump }) => (
+    <>
+        <PageButton page={1} currentPage={page} handleJump={() => handleJump(1)} />
+        <span className="">...</span>
+        <PageButton page={page - 1} currentPage={page} handleJump={() => handleJump(page - 1)} />
+        <PageButton page={page} currentPage={page} handleJump={() => handleJump(page)} />
+        <PageButton page={page + 1} currentPage={page} handleJump={() => handleJump(page + 1)} />
+        <span className="">...</span>
+        <PageButton page={maxPage} currentPage={page} handleJump={() => handleJump(maxPage)} />
+    </>
+)
+
+const PaginationEnd = ({ page, handleJump }) => (
+    <>
+        <PageButton page={1} currentPage={page} handleJump={() => handleJump(1)} />
+        <span className={page !== maxPage - 2 && 'tw-mx-3'}>...</span>
+        {page === maxPage - 2 && <PageButton page={maxPage - 3} currentPage={page} handleJump={() => handleJump(maxPage - 3)} />}
+        <PageButton page={maxPage - 2} currentPage={page} handleJump={() => handleJump(maxPage - 2)} />
+        <PageButton page={maxPage - 1} currentPage={page} handleJump={() => handleJump(maxPage - 1)} />
+        <PageButton page={maxPage} currentPage={page} handleJump={() => handleJump(maxPage)} />
+    </>
+)
+
+const maxPage = 8
+
+function showPaginationVariant(page) {
+    if (page <= 3) return 'start'
+    else if (page >= maxPage - 2) return 'end'
+    else return 'middle'
+}

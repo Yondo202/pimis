@@ -2,37 +2,30 @@ import React, { useState, useEffect, useRef } from 'react'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import axios from 'axiosbase'
 
-function FormSelect(props) {
+function FormSelect({ data, api, keys, setter, name, index, label, classAppend, classLabel, value, displayName, invalid }) {
     const [open, setOpen] = useState(false)
 
     const [fetch, setFetch] = useState([])
 
     useEffect(() => {
-        if (props.data) {
-            setFetch(props.data)
+        if (data) {
+            setFetch(data)
         } else {
-            props.api &&
-                axios.get(props.api)
-                    .then(res => {
-                        const data = props.keys.reduce((a, v) => a[v], res.data)
-                        setFetch(data)
-                    })
+            api && axios.get(api).then(res => {
+                const data = keys.reduce((a, v) => a[v], res.data)
+                setFetch(data)
+            })
         }
-    }, [props.data])
+    }, [data])
 
     const handleClickButton = () => {
         setOpen(!open)
     }
 
     const handleSelectId = (id) => {
-        props.setForm(props.name, id, props.id)
+        setter(name, id, index)
         setOpen(false)
     }
-
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    })
 
     const divRef = useRef()
     const buttonRef = useRef()
@@ -43,17 +36,21 @@ function FormSelect(props) {
         }
     }
 
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    })
+
     return (
-        <div className={`tw-relative tw-pl-3 tw-pr-3 tw-pt-8 tw-pb-3 tw-flex tw-flex-col ${props.classAppend}`}>
-            <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-whitespace-nowrap ${props.classLabel} ${open ? 'tw-text-sm tw-top-2 tw-left-2' : 'tw-text-xs tw-top-6 tw-left-6'} tw-transition-all tw-duration-300`}>
-                {props.label}
+        <div className={`tw-relative tw-pl-3 tw-pr-3 tw-pt-8 tw-pb-3 tw-flex tw-flex-col ${classAppend}`}>
+            <label className={`tw-absolute tw-px-1 tw-bg-white tw-rounded-full tw-whitespace-nowrap ${classLabel} ${open ? 'tw-text-sm tw-top-2 tw-left-2' : 'tw-text-xs tw-top-6 tw-left-6'} tw-transition-all tw-duration-300`}>
+                {label}
             </label>
 
-            <button className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border tw-rounded tw-pt-2 tw-pb-1 tw-px-2 focus:tw-outline-none ${props.invalid ? 'tw-border-red-500' : (open ? 'tw-border-blue-700 tw-shadow' : 'tw-border-gray-500')} tw-transition-colors tw-duration-700`} onClick={handleClickButton} ref={buttonRef}>
+            <button className={`tw-h-8.5 tw-flex tw-items-center tw-text-sm tw-border tw-rounded tw-pt-2 tw-pb-1 tw-px-2 focus:tw-outline-none ${invalid ? 'tw-border-red-500' : (open ? 'tw-border-blue-700 tw-shadow' : 'tw-border-gray-500')} tw-transition-colors tw-duration-700`} onClick={handleClickButton} ref={buttonRef}>
                 <span className="tw-h-5 tw-text-13px">
-                    {fetch.filter(obj => obj.id === props.value)[0]?.[props.displayName] ?? 'Сонгох'}
+                    {fetch.filter(obj => obj.id === value)[0]?.[displayName] ?? 'Сонгох'}
                 </span>
-
                 <ChevronDownSVG className={`tw-w-4 tw-h-4 tw-ml-auto ${open ? 'tw-text-blue-700' : 'tw-text-gray-600'} tw-transition-colors`} />
             </button>
 
@@ -61,7 +58,7 @@ function FormSelect(props) {
                 {fetch.map((item, i) =>
                     <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-600 hover:tw-text-gray-50 tw-text-13px tw-transition-colors' onMouseDown={() => handleSelectId(item.id)} key={item.id}>
                         <span className="tw-pr-2">{i + 1}.</span>
-                        {item[props.displayName]}
+                        {item[displayName]}
                     </div>
                 )}
             </div>
