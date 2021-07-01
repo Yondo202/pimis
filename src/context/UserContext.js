@@ -28,6 +28,7 @@ export const UserStore = (props) => {
     localStorage.setItem("username", user.name);
     localStorage.setItem("signature", user.signature);
     localStorage.setItem("trainerOrganizationId", user.trainerOrganizationId);
+    localStorage.setItem("companyname", user.companyname);
   };
 
   const loginUser = (email, password) => {

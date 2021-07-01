@@ -13,7 +13,7 @@ import FormSignature from 'components/urgudul_components/formSignature'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { animated, Transition } from 'react-spring/renderprops'
 import LoadFromOtherProject from '../loadFromOtherProject'
-import { SaveButton, UrgudulHeader } from './page1'
+import { SaveButton, StaticText, UrgudulHeader } from './page1'
 
 
 const initialState = [
@@ -275,10 +275,7 @@ export default function UrgudulPage7Company({ projects }) {
                   </div>
 
                   <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-4">
-                     <div className="tw-w-full tw-h-full tw-max-w-md tw-flex tw-place-items-center tw-p-2 tw-pl-3">
-                        <span className="tw-text-sm tw-font-light">Албан тушаал:</span>
-                        <span className="tw-ml-3 tw-bg-indigo-50 tw-rounded tw-py-1 tw-px-2 tw-text-sm tw-text-indigo-500">Гүйцэтгэх захирал</span>
-                     </div>
+                     <StaticText label="Албан тушаал" text="Гүйцэтгэх захирал" />
 
                      <FormInline label="Овог нэр" type="text" value={directorItem.representative_name} name="representative_name" index={directorIndex} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(directorItem.representative_name)} />
 

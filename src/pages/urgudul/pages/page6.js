@@ -65,47 +65,37 @@ export default function UrgudulPage6() {
          <UrgudulHeader label="Төлөвлөсөн үйл ажиллагаа, төсөв" />
 
          {activities.map((activity, i) =>
-            <Transition
-               items={activity ?? false}
-               from={{ opacity: 0, height: 0 }}
-               enter={{ opacity: 1, height: 'auto' }}
-               leave={{ opacity: 0, height: 0 }}
-               config={{ clamp: true }}
-            >
-               {item => item && (anims =>
-                  <animated.div className="tw-flex odd:tw-bg-gray-50 tw-px-2" style={anims}>
-                     <div className="tw-flex-grow">
-                        <FormOptions label="Үйл ажиллагаа" options={activitiyOptions} values={Array.from({ length: 9 }, (_, i) => i + 1)} value={item.activityId} name="activityId" index={i} setter={handleInput} />
+            <div className="tw-flex odd:tw-bg-gray-50 tw-px-2">
+               <div className="tw-flex-grow">
+                  <FormOptions label="Үйл ажиллагаа" options={activitiyOptions} values={Array.from({ length: 9 }, (_, i) => i + 1)} value={activity.activityId} name="activityId" index={i} setter={handleInput} />
 
-                        <FormRichText
-                           label="Тайлбар"
-                           modules="small"
-                           value={item.explanation}
-                           setter={handleInput}
-                           name="explanation"
-                           index={i}
-                           classAppend="tw-pl-3"
-                        />
+                  <FormRichText
+                     label="Тайлбар"
+                     modules="small"
+                     value={activity.explanation}
+                     setter={handleInput}
+                     name="explanation"
+                     index={i}
+                     classAppend="tw-pl-3"
+                  />
 
-                        <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                           <FormInline label="Үйл ажиллагааны төсөв" type="number" value={item.budget} name="budget" index={i} setter={handleInput} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
+                  <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                     <FormInline label="Үйл ажиллагааны төсөв" type="number" value={activity.budget} name="budget" index={i} setter={handleInput} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
 
-                           <div className="">
-                              <div className="">
-                                 ЭДТ-с хүсэж буй санхүүжилт
-                              </div>
-                              <span className="">
-                                 {+item.budget / 2}
-                              </span>
-                           </div>
+                     <div className="">
+                        <div className="">
+                           ЭДТ-с хүсэж буй санхүүжилт
                         </div>
+                        <span className="">
+                           {+activity.budget / 2}
+                        </span>
                      </div>
-                     <div className="tw-flex tw-items-center">
-                        <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
-                     </div>
-                  </animated.div>
-               )}
-            </Transition>
+                  </div>
+               </div>
+               <div className="tw-flex tw-items-center">
+                  <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
+               </div>
+            </div>
          )}
 
          <div className="tw-flex tw-justify-end">

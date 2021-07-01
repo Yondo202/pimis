@@ -14,7 +14,7 @@ import FormSignature from 'components/urgudul_components/formSignature'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { animated, Transition } from 'react-spring/renderprops'
 import LoadFromOtherProject from '../loadFromOtherProject'
-import { UrgudulHeader, SaveButton } from './page1'
+import { UrgudulHeader, SaveButton, StaticText } from './page1'
 
 const initialState = [
    {
@@ -81,7 +81,7 @@ export default function UrgudulPage7Cluster({ projects }) {
       })
    }, [])
 
-   const [companyName, setCompanyName] = useState(UrgudulCtx.data.company?.company_name || '')
+   const [companyName, setCompanyName] = useState(localStorage.getItem('companyname'))
    const [clusters, setClusters] = useState(UrgudulCtx.data.clusters)
 
    const AlertCtx = useContext(AlertContext)
@@ -294,12 +294,7 @@ export default function UrgudulPage7Cluster({ projects }) {
                   </div>
 
                   <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-4">
-                     <div className="tw-w-full tw-h-full tw-max-w-md tw-flex tw-place-items-center tw-p-2 tw-pl-3">
-                        <span className="tw-text-sm tw-font-light">Аж ахуйн нэгжийн нэр:</span>
-                        {companyName &&
-                           <span className="tw-ml-3 tw-bg-indigo-50 tw-rounded tw-py-1 tw-px-2 tw-text-sm tw-text-indigo-500">{companyName}</span>
-                        }
-                     </div>
+                     <StaticText label="Аж ахуйн нэгжийн нэр" text={companyName} />
 
                      <SearchSelect label="Албан тушаал" data={occupations} value={applicantItem.representative_positionId} name="representative_positionId" index={applicantIndex} displayName="description_mon" setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(applicantItem.representative_positionId)} />
 
