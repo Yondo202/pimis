@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { animated, Transition } from 'react-spring/renderprops'
-import { containerClass, UrgudulHeader, SaveButton } from './page1'
+import { containerClass, UrgudulHeader, SaveButton, StaticText } from './page1'
 import FormOptions from 'components/urgudul_components/formOptions'
 import FormRichText from 'components/urgudul_components/formRichText'
 import FormInline from 'components/urgudul_components/formInline'
@@ -14,6 +13,7 @@ import { useEffect } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
+import HelpPopup from 'components/help_popup/helpPopup'
 
 export default function UrgudulPage6() {
    const [activities, setActivities] = useState(initialActivities)
@@ -21,6 +21,12 @@ export default function UrgudulPage6() {
    const handleInput = (key, value, index) => setActivities(prev => {
       const next = [...prev]
       next[index][key] = value
+      return next
+   })
+
+   const handleInputFormat = (key, values, index) => setActivities(prev => {
+      const next = [...prev]
+      next[index][key] = values.floatValue
       return next
    })
 
@@ -60,6 +66,7 @@ export default function UrgudulPage6() {
       })
    }
 
+
    return (
       <div className={containerClass}>
          <UrgudulHeader label="Төлөвлөсөн үйл ажиллагаа, төсөв" />
@@ -67,7 +74,9 @@ export default function UrgudulPage6() {
          {activities.map((activity, i) =>
             <div className="tw-flex odd:tw-bg-gray-50 tw-px-2">
                <div className="tw-flex-grow">
-                  <FormOptions label="Үйл ажиллагаа" options={activitiyOptions} values={Array.from({ length: 9 }, (_, i) => i + 1)} value={activity.activityId} name="activityId" index={i} setter={handleInput} />
+                  <FormOptions label="Үйл ажиллагаа" options={activitiyOptions} values={Array.from({ length: 9 }, (_, i) => i + 1)} value={activity.activityId} name="activityId" index={i} setter={handleInput}
+                     HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Экспорт хөгжлийн төлөвлөгөө, Зах зээлийн судалгаа гэж сонгосон бол өөр үйл ажиллагаа нэмэх боломжгүй болно." />}
+                  />
 
                   <FormRichText
                      label="Тайлбар"
@@ -80,16 +89,18 @@ export default function UrgudulPage6() {
                   />
 
                   <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                     <FormInline label="Үйл ажиллагааны төсөв" type="number" value={activity.budget} name="budget" index={i} setter={handleInput} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
+                     <FormInline label="Үйл ажиллагааны төсөв" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={activity.budget} name="budget" index={i} setter={handleInputFormat} classLabel={i % 2 === 1 && 'tw-bg-gray-50'} />
 
-                     <div className="">
+                     {/* <div className="">
                         <div className="">
                            ЭДТ-с хүсэж буй санхүүжилт
                         </div>
                         <span className="">
                            {+activity.budget / 2}
                         </span>
-                     </div>
+                     </div> */}
+
+                     <StaticText label="ЭДТ-с хүсэж буй санхүүжилт" text={`₮ ${(activity.budget / 2).toLocaleString()}`} />
                   </div>
                </div>
                <div className="tw-flex tw-items-center">
@@ -98,9 +109,14 @@ export default function UrgudulPage6() {
             </div>
          )}
 
-         <div className="tw-flex tw-justify-end">
-            <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton={`tw-text-green-500 active:tw-text-green-600`} />
-         </div>
+         {activities.length < 6 &&
+            <div className="tw-flex tw-justify-end tw-items-center">
+               <span className="tw-italic tw-text-gray-500 tw-text-xs">
+                  Үйл ажиллагаа нэмэх
+               </span>
+               <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2 tw-ml-1" classButton={`tw-text-green-500 active:tw-text-green-600`} />
+            </div>
+         }
 
          <div className="tw-flex tw-justify-end">
             <SaveButton buttonAppend="tw-m-6" onClick={handleSubmit} />

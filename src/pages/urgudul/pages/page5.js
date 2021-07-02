@@ -255,7 +255,7 @@ function UrgudulPage5() {
          <div className="tw-mt-8 tw-mb-70 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-max-w-full">
             <UrgudulHeader
                label="Өөрийн төслийн хувьд дараах тооцооллыг хийнэ үү"
-               HelpPopup={<HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Мөнгөн дүн бүхий тооцооллуудыг тухайн жилийн доор харуулсан тэр оны долларын ханшийг ашиглан доллар руу хөрвүүлж хийнэ үү." position="bottom" />}
+               HelpPopup={<HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Мөнгөн дүн бүхий тооцооллуудыг тухайн жилийн доор харуулсан тэр оны долларын ханшийг ашиглан доллар руу хөрвүүлж хийнэ үү." />}
                projectNumber={UrgudulCtx.data.project_number}
             />
 
@@ -274,7 +274,7 @@ function UrgudulPage5() {
                                  return <th className="tw-border tw-border-gray-300" key={date}>
                                     <div className={`tw-flex tw-justify-around tw-items-center ${!endDateGiven && 'tw-bg-red-100 tw-rounded'} tw-px-1`}>
                                        {`${form.endDate.year ? form.endDate.year : '....'}-${form.endDate.month ? form.endDate.month : '..'}`}
-                                       <HelpPopup main="Төслийн дуусах хугацаа, жил сараар." position="bottom" />
+                                       <HelpPopup main="Төслийн дуусах хугацаа, жил сараар." />
                                     </div>
                                  </th>
                               default:
@@ -302,7 +302,7 @@ function UrgudulPage5() {
                         <td className="tw-border tw-border-gray-300 tw-px-1">
                            <div className="tw-flex tw-justify-between tw-items-center">
                               <span className="pl-1 tw-font-medium">Ажлын байр</span>
-                              <HelpPopup classAppend="tw-ml-2" main="НДШ төлдөг бүтэн цагийн ажлын байрны тоо." position="bottom" />
+                              <HelpPopup classAppend="tw-ml-2" main="НДШ төлдөг бүтэн цагийн ажлын байрны тоо." />
                            </div>
                         </td>
                         {datesForm.map((item, i) =>
@@ -319,7 +319,7 @@ function UrgudulPage5() {
                            <div className="tw-flex tw-justify-between tw-items-center">
                               <span className="pl-1 tw-font-medium">Бүтээмж</span>
 
-                              <HelpPopup classAppend="tw-ml-2" main="Нэг жилд үйлдвэрлэх үйлдвэрлэлийн тоо хэмжээ гм." position="bottom" />
+                              <HelpPopup classAppend="tw-ml-2" main="Нэг жилд үйлдвэрлэх үйлдвэрлэлийн тоо хэмжээ гм." />
                            </div>
                         </td>
                         {datesForm.map((item, i) =>
@@ -336,7 +336,7 @@ function UrgudulPage5() {
                            <div className="tw-flex tw-justify-between tw-items-center">
                               <span className="pl-1 tw-font-medium">Экспорт</span>
 
-                              <HelpPopup classAppend="tw-ml-2" main="Экспортын тооцоог доорх хүснэгтэнд экспорт хийсэн улс болон бүтээгдхүүнээр задлан бичнэ үү." position="bottom" />
+                              <HelpPopup classAppend="tw-ml-2" main="Экспортын тооцоог доорх хүснэгтэнд экспорт хийсэн улс болон бүтээгдхүүнээр задлан бичнэ үү."/>
                            </div>
                         </td>
                         {datesForm.map((item, i) =>
@@ -377,7 +377,7 @@ function UrgudulPage5() {
                                     <td className="tw-border tw-border-gray-300 tw-px-1">
                                        <div className="tw-flex tw-items-center">
                                           <input className={`tw-text-13px tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-0.5 tw-ml-3 tw-rounded ${validate && checkInvalid(product.product_name) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-placeholder-gray-600`} type="number" value={product.product_name || ''} onChange={e => handleSetFormProduct('product_name', e.target.value, j, i)} placeholder="Бүтээгдэхүүний код" title={product.product_name} />
-                                          <HelpPopup classAppend="tw-ml-1" main="Гаалийн бараа, бүтээгдэхүүний кодыг бичнэ үү." position="bottom" />
+                                          <HelpPopup classAppend="tw-ml-1" main="Гаалийн бараа, бүтээгдэхүүний кодыг бичнэ үү." />
                                        </div>
                                     </td>
                                     {

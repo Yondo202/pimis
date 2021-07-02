@@ -37,6 +37,8 @@ export default function UrgudulPage2() {
       return { ...prev, [key]: nextKey }
    })
 
+   const [years, setYears] = useState(yearsArr)
+
    const [infos, setInfos] = useState(initialInfos)
 
    const handleInputInfos = (key, value) => setInfos(prev => ({ ...prev, [key]: value }))
@@ -54,6 +56,7 @@ export default function UrgudulPage2() {
       const value = UrgudulCtx.data.salesData
       if (value !== null && value !== undefined) {
          setSales(value)
+         setYears(Object.keys(value.net).sort())
       }
 
       const temp = {}
@@ -89,16 +92,16 @@ export default function UrgudulPage2() {
             HelpPopup={isCluster && <HelpPopup classAppend="tw-mx-2" main="Кластерын хувьд тэргүүлэх аж ахуйн нэгжийн хувьд бөглөнө үү." />}
          />
 
-         <div className="tw-pb-4">
+         <div className="tw-pb-4 tw-pl-2.5 tw-pr-2">
             <div className="tw-p-2 tw-text-sm">
                Борлуулалт болон Экпортын хэмжээ
             </div>
 
-            <table className="tw-ml-2 tw-mt-1">
+            <table className="tw-ml-2">
                <thead>
                   <tr>
                      <th className={tableCellClass}></th>
-                     {yearsArr.map(year =>
+                     {years.map(year =>
                         <th className={`${tableCellClass} tw-py-2 tw-font-medium tw-text-center`} key={year}>
                            {year}
                         </th>
@@ -110,7 +113,7 @@ export default function UrgudulPage2() {
                      <td className={tableCellClass}>
                         Жилийн борлуулалтын хэмжээ
                      </td>
-                     {yearsArr.map(year =>
+                     {years.map(year =>
                         <td className={tableCellClass} key={year}>
                            <NumberFormat className={tableInputClass} prefix="₮ " decimalScale={2} thousandSeparator={true} value={sales.net?.[year]} onValueChange={values => handleInputSales('net', year, values.floatValue)} />
                         </td>
@@ -130,7 +133,7 @@ export default function UrgudulPage2() {
             </table>
          </div>
 
-         <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+         <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-2">
             <FormInline label="Албан газрын утасны дугаар" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={infos.company_phone} name="company_phone" setter={handleInputFormattedInfos} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" />
 
             <FormInline label="Вэбсайт" value={infos.company_website} name="company_website" setter={handleInputInfos} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
@@ -145,5 +148,5 @@ export default function UrgudulPage2() {
    )
 }
 
-const tableCellClass = 'tw-border tw-px-2'
+const tableCellClass = 'tw-border tw-border-gray-300 tw-px-2'
 const tableInputClass = 'tw-outline-none tw-py-1 tw-px-2 tw-my-1 tw-text-right tw-rounded-sm tw-bg-indigo-50 tw-w-32'

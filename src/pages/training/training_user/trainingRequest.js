@@ -92,7 +92,7 @@ export default function TrainingRequest() {
 
             <FormRichText
                label="Та ямар чиглэлээр ямар сургалт авах хүсэлтэй байгаа вэ? Та сургалтын хэрэгцээ, шаардлагаа тодорхой бичнэ үү."
-               HelpPopup={<HelpPopup classAppend="tw-mr-2" main="Экспортод чиглэсэн байх шаардлагатай." position="bottom" />}
+               HelpPopup={<HelpPopup classAppend="tw-mr-2" main="Экспортод чиглэсэн байх шаардлагатай." />}
                invalid={validate && checkInvalid(request.training_request, 'quill')}
                modules="small"
                value={request.training_request}

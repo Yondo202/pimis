@@ -1,6 +1,6 @@
 import React from 'react'
 
-function FormOptions({ label, options, values, value, name, index, setter, classAppend, classLabel, invalid }) {
+function FormOptions({ label, options, values, value, name, index, setter, classAppend, classLabel, invalid, HelpPopup }) {
     const handleSelect = (key, value, index) => {
         setter(key, value, index)
     }
@@ -10,9 +10,10 @@ function FormOptions({ label, options, values, value, name, index, setter, class
     }
 
     return (
-        <div className={`tw-relative tw-px-3 tw-pt-8 tw-pb-3 tw-flex tw-items-center ${classAppend}`}>
-            <label className={`tw-absolute tw-rounded-full tw-whitespace-nowrap ${invalid && 'tw-text-red-500'} tw-transition-colors tw-duration-300 ${classLabel} tw-text-sm tw-top-2 tw-left-3`}>
+        <div className={`tw-relative tw-px-3 tw-pt-8 tw-pb-3 ${classAppend}`}>
+            <label className={`tw-absolute tw-rounded-full ${invalid && 'tw-text-red-500'} tw-transition-colors tw-duration-300 ${classLabel} tw-text-sm tw-top-2 tw-left-3 tw-flex tw-items-center`}>
                 {label}
+                {HelpPopup && HelpPopup}
             </label>
 
             <div className="tw-flex tw-flex-col tw-items-start tw-pl-2">

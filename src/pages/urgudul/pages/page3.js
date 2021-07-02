@@ -112,7 +112,7 @@ export default function UrgudulPage3() {
 
                   <FormRichText
                      label="Төслийг хэрэгжүүлэхэд гүйцэтгэх үүрэг"
-                     HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Тухайлбал ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." position="top-left" />}
+                     HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Тухайлбал ажлын цар хүрээ, ач холбогдол тодорхойлох, төсөв боловсруулах, төслийг хэрэгжүүлэхэд дэмжлэг үзүүлэх гм." />}
                      modules="small"
                      value={director.project_role}
                      name="project_role"
@@ -128,8 +128,11 @@ export default function UrgudulPage3() {
             </div>
          )}
 
-         <div className="tw-flex tw-justify-end">
-            <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton={`tw-text-green-500 active:tw-text-green-600`} />
+         <div className="tw-flex tw-justify-end tw-items-center">
+            <span className="tw-italic tw-text-gray-500 tw-text-xs">
+               Түлхүүр албан тушаалтан нэмэх
+            </span>
+            <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2 tw-ml-1" classButton={`tw-text-green-500 active:tw-text-green-600`} />
          </div>
 
          <div className="tw-flex tw-justify-end">
@@ -137,7 +140,7 @@ export default function UrgudulPage3() {
          </div>
       </div>
 
-      <ClusterMembers isCluster={isCluster} />
+      {isCluster && <ClusterMembers />}
    </>
    )
 }
@@ -158,12 +161,19 @@ const initialMembers = [
 const thisYear = new Date().getFullYear()
 const last3years = [thisYear - 3, thisYear - 2, thisYear - 1]
 
-function ClusterMembers({ isCluster }) {
+function ClusterMembers() {
    const [members, setMembers] = useState(initialMembers)
+   const [netSales, setNetSales] = useState(null)
 
    const handleInput = (key, value, index) => setMembers(prev => {
       const next = [...prev]
       next[index][key] = value
+      return next
+   })
+
+   const handleInputFormat = (key, values, index) => setMembers(prev => {
+      const next = [...prev]
+      next[index][key] = values.floatValue
       return next
    })
 
@@ -180,8 +190,6 @@ function ClusterMembers({ isCluster }) {
       director_email: null,
    }])
 
-   const [netSales, setNetSales] = useState(null)
-
    const UrgudulCtx = useContext(UrgudulContext)
    const AlertCtx = useContext(AlertContext)
    const history = useHistory()
@@ -193,6 +201,11 @@ function ClusterMembers({ isCluster }) {
       if (value instanceof Array && value?.length) {
          setMembers(value)
       }
+
+      const value1 = UrgudulCtx.data.cluster_net_sales
+      if (value1 !== null && value1 !== undefined) {
+         setNetSales(value1)
+      }
    }, [projectId])
 
    const handleSubmit = () => {
@@ -200,7 +213,7 @@ function ClusterMembers({ isCluster }) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
          history.push('/urgudul/1')
       }
-      axios.put(`projects/${projectId}`, { clusters: members }, {
+      axios.put(`projects/${projectId}`, { clusters: members, cluster_net_sales: netSales }, {
          headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
          UrgudulCtx.setData(prev => ({ ...prev, ...res.data.data }))
@@ -211,64 +224,58 @@ function ClusterMembers({ isCluster }) {
    }
 
    return (
-      <Transition
-         items={isCluster}
-         from={{ transform: 'scale(0)' }}
-         enter={{ transform: 'scale(1)' }}
-         leave={{ transform: 'scale(0)' }}
-         config={{ clamp: true }}
-      >
-         {item => item && (anims =>
-            <animated.div className={containerClass} style={anims}>
-               <UrgudulHeader
-                  label="Кластерын гишүүн байгууллагууд"
-               />
+      <div className={containerClass}>
+         <UrgudulHeader
+            label="Кластерын гишүүн байгууллагууд"
+         />
 
-               {members.map((member, i) =>
-                  <div className="tw-flex odd:tw-bg-gray-50 tw-px-2" key={i}>
-                     <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                        <FormInline label="Аж ахуйн нэгжийн нэр" value={member.company_name} name="company_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+         {members.map((member, i) =>
+            <div className="tw-flex odd:tw-bg-gray-50 tw-px-2" key={i}>
+               <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                  <FormInline label="Аж ахуйн нэгжийн нэр" value={member.company_name} name="company_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
-                        <FormInline label="Регистрийн дугаар" type="number" value={member.company_register} name="company_register" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                  <FormInline label="Регистрийн дугаар" type="number" value={member.company_register} name="company_register" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
 
-                        <FormInline label="Голлох борлуулалт хийдэг үйл ажиллагааны чиглэл" value={member.main_activity} name="main_activity" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                  <FormInline label="Голлох борлуулалт хийдэг үйл ажиллагааны чиглэл" value={member.main_activity} name="main_activity" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
 
-                        <div className="tw-flex">
-                           <FormSelectValue label="Борлуулалтын жил сонгох" width={120} options={last3years} value={member.sales_year} keyName="sales_year" index={i} setter={handleInput} />
+                  <div className="tw-flex">
+                     <FormSelectValue label="Борлуулалтын жил сонгох" width={120} options={last3years} value={member.sales_year} keyName="sales_year" index={i} setter={handleInput} classAppend="tw-mr-8" />
 
-                           <FormInline label="Аж ахуйн нэгжийн борлуулалт" type="number" value={member.sales_amount} name="sales_amount" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
-                        </div>
-
-                        <FormInline label="Гүйцэтгэх захирлын нэр" value={member.director_name} name="director_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
-
-                        <FormInline label="Гүйцэтгэх захирлын утасны дугаар" value={member.director_phone} name="director_phone" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
-
-                        <FormInline label="Гүйцэтгэх захирлын имэйл" type="email" value={member.director_email} name="director_email" index={i} setter={handleInput} validate classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
-                     </div>
-
-                     <div className="tw-flex tw-items-center">
-                        <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
-                     </div>
+                     <FormInline label="Аж ахуйн нэгжийн борлуулалт" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={member.sales_amount} name="sales_amount" index={i} setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
                   </div>
-               )}
 
-               <div className="tw-flex tw-justify-end">
-                  <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton={`tw-text-green-500 active:tw-text-green-600`} />
+                  <FormInline label="Гүйцэтгэх захирлын нэр" value={member.director_name} name="director_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+
+                  <FormInline label="Гүйцэтгэх захирлын утасны дугаар" value={member.director_phone} name="director_phone" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+
+                  <FormInline label="Гүйцэтгэх захирлын имэйл" type="email" value={member.director_email} name="director_email" index={i} setter={handleInput} validate classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
                </div>
 
-               <div className="tw-p-3 tw-pl-5">
-                  <div className="">
-                     Кластерын гишүүдийн нийт борлуулалт /төгрөгөөр/ /тэргүүлэх ААН-г оролцуулаад/
-                  </div>
-                  <NumberFormat className={`${basicInputClass} tw-mt-2 tw-py-1.5`} prefix="₮ " decimalScale={2} thousandSeparator value={netSales} onValueChange={values => setNetSales(values.floatValue)} />
+               <div className="tw-flex tw-items-center">
+                  <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
                </div>
-
-               <div className="tw-flex tw-justify-end">
-                  <SaveButton buttonAppend="tw-m-6" onClick={handleSubmit} />
-               </div>
-            </animated.div>
+            </div>
          )}
-      </Transition>
+
+         <div className="tw-flex tw-justify-end tw-items-center">
+            <span className="tw-italic tw-text-gray-500 tw-text-xs">
+               Гишүүн байгууллага нэмэх
+            </span>
+            <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2 tw-ml-1" classButton={`tw-text-green-500 active:tw-text-green-600`} />
+         </div>
+
+         <div className="tw-p-3 tw-pl-5">
+            <div className="tw-flex tw-items-center">
+               Кластерын гишүүдийн нийт борлуулалт
+               <HelpPopup classAppend="tw-ml-2" main="Тэргүүлэх ААН-г оролцуулаад" />
+            </div>
+            <NumberFormat className={`${basicInputClass} tw-mt-2 tw-py-1.5`} prefix="₮ " decimalScale={2} thousandSeparator value={netSales} onValueChange={values => setNetSales(values.floatValue)} />
+         </div>
+
+         <div className="tw-flex tw-justify-end">
+            <SaveButton buttonAppend="tw-m-6" onClick={handleSubmit} />
+         </div>
+      </div>
    )
 }
 

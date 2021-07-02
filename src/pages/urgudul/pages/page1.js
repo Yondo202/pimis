@@ -71,7 +71,7 @@ export default function UrgudulPage1() {
       <div className={containerClass}>
          <UrgudulHeader
             label="Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт"
-            HelpPopup={isCluster && <HelpPopup classAppend="tw-mx-2" main="Кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." position="bottom" />}
+            HelpPopup={isCluster && <HelpPopup classAppend="tw-mx-2" main="Кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." />}
             projectNumber={UrgudulCtx.data.project_number}
          />
 
@@ -243,8 +243,8 @@ function Select1({ label, HelpPopup, options, value, valueOther, keyName, keyNam
             {HelpPopup && HelpPopup}
          </div>
 
-         <div className="tw-pl-1 tw-mt-1">
-            <div className="tw-h-48 tw-overflow-y-auto tw-w-full tw-flex tw-flex-col tw-items-start">
+         <div className="tw-mt-1">
+            <div className="tw-h-40 tw-overflow-y-auto tw-w-full tw-flex tw-flex-col tw-items-start tw-border tw-border-gray-300 tw-rounded tw-px-1 tw-py-0.5">
                {options.map((option, i) =>
                   <div className="tw-flex tw-items-center tw-py-1 tw-cursor-pointer" onClick={() => setter(keyName, i + 1)} key={i}>
                      <span className={`tw-w-4 tw-h-4 tw-rounded-full tw-border-2 ${value === i + 1 ? 'tw-border-blue-700' : 'tw-border-gray-500'} tw-transition-colors tw-flex tw-justify-center tw-items-center`}>
@@ -322,15 +322,15 @@ function ExportProducts({ label, list, setter, HelpPopup }) {
 
                   <input className={`${basicInputClass} tw-ml-2 tw-flex-grow`} value={item?.product_name ?? ''} onChange={e => handleInput('product_name', e.target.value, i)} placeholder="Бүтээгдэхүүний нэр" />
 
-                  <input className={`${basicInputClass} tw-ml-3`} type="number" value={item?.hs_code ?? ''} onChange={e => handleInput('hs_code', e.target.value, i)} placeholder="HS код" />
+                  <input className={`${basicInputClass} tw-ml-4`} type="number" value={item?.hs_code ?? ''} onChange={e => handleInput('hs_code', e.target.value, i)} placeholder="HS код" />
 
-                  <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classAppend="tw-ml-2" classButton="tw-text-red-500 active:tw-text-red-600" />
+                  <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classAppend="tw-ml-3" classButton="tw-text-red-500 active:tw-text-red-600" />
                </div>
             )}
          </div>
 
          <div className="tw-flex tw-justify-end tw-items-center">
-            <span className="tw-italic tw-text-gray-500 tw-text-13px">
+            <span className="tw-italic tw-text-gray-500 tw-text-xs">
                Экпортын бүтээгдэхүүн нэмэх
             </span>
             <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-ml-1" classButton="tw-text-green-500 active:tw-text-green-600" />

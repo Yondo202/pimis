@@ -38,7 +38,7 @@ export default function UrgudulPage7Cluster({ projects }) {
             const newForm = UrgudulCtx.data.noticeClusters
             newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
             setForm([...newForm])
-            setCheckList(new Set([1, '2a', '2b', '2c', '2d', 3, 4, 5, 6, 7]))
+            setCheckList(new Set([1, '2a', '2b', '2c', 3, 4, 5, 6, 7, 8, 9]))
             setAgreed(true)
          } else {
             const newForm = form
@@ -146,7 +146,7 @@ export default function UrgudulPage7Cluster({ projects }) {
    }
 
    const handleClickAgree = () => {
-      if (checkList.size === 10) {
+      if (checkList.size === 11) {
          if (!agreed) {
             setAgreed(true)
             window.scrollBy({ top: 400, left: 0, behavior: 'smooth' })
@@ -185,88 +185,71 @@ export default function UrgudulPage7Cluster({ projects }) {
          <div className="tw-mt-8 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <UrgudulHeader
                label="Мэдэгдэл"
-               HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Кластерын өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." position="bottom" />}
+               HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Кластерын өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." />}
                projectNumber={UrgudulCtx.data.project_number}
             />
 
             <div>
                <div className="tw-p-1 tw-mt-2 tw-text-center">
-                  Өргөдөл гаргагч болон хамтран хүсэлт гаргаж буй хамтрагч талуудад дараах зүйлсийг мэдэгдэж байна:
+                  Өргөдөл гаргагч болон хамтран хүсэлт гаргаж буй аж ахуйн нэгжүүд нь дараах зүйлсийг мэдэгдэж байна:
                </div>
 
                <div className="tw-mt-2 tw-mx-4 tw-text-sm tw-font-light tw-rounded tw-shadow-md tw-text-13px">
-                  <div className="tw-py-2 tw-pl-6 tw-pr-2 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                     <span className="">
-                        1. Өргөдөл гаргагч нь шалгуур үзүүлэлтийг бүрэн хангасан бөгөөд хориотой зардал, хориотой үйл ажиллагааны чиглэлийг энэхүү санхүүжилтийн төсөлд хамруулаагүй.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(1)} onChange={e => handleCheckList(1, e.target.checked)} />
-                  </div>
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={1}
+                     notice="Өргөдөл гаргагч нь шалгуур үзүүлэлтийг бүрэн хангасан бөгөөд хориотой зардал, хориотой үйл ажиллагааны чиглэлийг энэхүү санхүүжилтийн төсөлд хамруулаагүй."
+                  />
                   <div className="tw-pl-6 tw-pr-2 odd:tw-bg-gray-50">
                      <div className="tw-py-2 tw-pr-12">
-                        2. Өргөдөл гаргагч нь кластерын бүтцэд орсон гишүүн байгууллагуудтай дараах чиглэлээр нягт мэдээлэл, хамтын ажиллагаатай ажиллана:
+                        2. Өргөдөл гаргагч нь кластерын гишүүн байгууллагуудтай дараах чиглэлээр нягт уялдаа холбоотой ажиллана:
                      </div>
                      <div className="">
-                        <div className="tw-py-2 tw-pl-4 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                           <span className="">
-                              a. Бүх гишүүд энэхүү өргөдлийн маягтад буй мэдээлэлтэй танилцсан бөгөөд өөр өөрсдийн үүргийг ойлгож байгаа.
-                           </span>
-                           <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has('2a')} onChange={e => handleCheckList('2a', e.target.checked)} />
-                        </div>
-                        <div className="tw-py-2 tw-pl-4 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                           <span className="">
-                              b. Өргөдөл гаргагч нь кластерын бусад гишүүдтэй уг төслийн хэрэгжилтийн талаар тогтмол мэдээлэлтэй хамтарч ажиллана.
-                           </span>
-                           <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has('2b')} onChange={e => handleCheckList('2b', e.target.checked)} />
-                        </div>
-                        <div className="tw-py-2 tw-pl-4 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                           <span className="">
-                              c. Бүх гишүүд өргөдөл гаргагч аж ахуйн нэгжээс Экспортыг дэмжих төсөлд илгээгдэж буй тайлан мэдээлэлтэй танилцсан байна.
-                           </span>
-                           <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has('2c')} onChange={e => handleCheckList('2c', e.target.checked)} />
-                        </div>
-                        <div className="tw-py-2 tw-pl-4 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                           <span className="">
-                              d. Экспортыг дэмжих төсөлд илгээгдэх төслийн өөрчлөлтүүд нь илгээгдэхээс өмнө кластерын гишүүн байгууллага хооронд зөвшилцөж, шийдэлд хүрсэн санал байна.
-                           </span>
-                           <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has('2d')} onChange={e => handleCheckList('2d', e.target.checked)} />
-                        </div>
+                        <Notice checkList={checkList} handleCheckList={handleCheckList} sub
+                           order="2a"
+                           notice="Бүх гишүүд энэхүү өргөдлийн маягтад бичсэн мэдээлэлтэй танилцсан бөгөөд өөр өөрсдийн үүргийг ойлгож байгаа."
+                        />
+                        <Notice checkList={checkList} handleCheckList={handleCheckList} sub
+                           order="2b"
+                           notice="Өргөдөл гаргагч нь кластерын бусад гишүүдийг уг төслийн хэрэгжилтийн талаар тогтмол мэдээллээр хангаж ажиллана."
+                        />
+                        <Notice checkList={checkList} handleCheckList={handleCheckList} sub
+                           order="2c"
+                           notice="Бүх гишүүд Экспортыг дэмжих төсөлд илгээж буй өргөдөл гаргагч аж ахуйн нэгжийн тайлан, мэдээлэлтэй танилцсан байна.Экспортыг дэмжих төсөлд илгээх төслийн өөрчлөлтүүд нь кластерын гишүүн байгууллага хооронд хэлэлцэгдэж, зөвшилцөлд хүрсэн санал байна."
+                        />
                      </div>
                   </div>
-
-                  <div className="tw-py-2 tw-pl-6 tw-pr-2 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                     <span className="">
-                        3. Өргөдөл гаргагч нь кластерын бусад гишүүдтэй уг төслийн бэлтгэл, удирдлагын хувьд шууд хариуцлага хүлээх бөгөөд зуучлагчийн байр суурьтай оролцохгүй.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(3)} onChange={e => handleCheckList(3, e.target.checked)} />
-                  </div>
-                  <div className="tw-py-2 tw-pl-6 tw-pr-2 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                     <span className="">
-                        4. Өргөдөл гаргагч нь Байгаль орчны шалгуур, өргөдөл гаргагчийн шалгуур, зардлын шалгуурыг бүрэн хангаж тэнцсэн бөгөөд аль нэг гишүүн нь уг шалгуурыг хангаагүй тохиолдолд уг санхүүжилтийн хүсэлт нь бүрэн татгалзах үндэслэл болно.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(4)} onChange={e => handleCheckList(4, e.target.checked)} />
-                  </div>
-                  <div className="tw-py-2 tw-pl-6 tw-pr-2 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                     <span className="">
-                        5. Өргөдөл гаргагч нь санал болгосон үйл ажиллагааны төлөвлөгөөг хэрэгжүүлэхэд санхүүгийн хувьд болон үйл ажиллагааны хувьд хүчин чадалтай бөгөөд үүнийгээ нотлон харуулна.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(5)} onChange={e => handleCheckList(5, e.target.checked)} />
-                  </div>
-                  <div className="tw-py-2 tw-pl-6 tw-pr-2 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                     <span className="">
-                        6. Кластерын гишүүд нь өргөдөл гаргагчид Экспортыг дэмжих төслөөс олгогдох Үр дүнтэй түншлэлийн санхүүжилтийн гэрээнд гарын үсэг зурах бүрэн эрхийг олгосон.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(6)} onChange={e => handleCheckList(6, e.target.checked)} />
-                  </div>
-                  <div className="tw-py-2 tw-pl-6 tw-pr-2 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                     <span className="">
-                        7. Кластерын гишүүд нь энэхүү төслийн үйл ажиллагааны төлөвлөгөөнөөс бий болох үр шимийг хамтран эзэмших, төслийг хэрэгжүүлэхэд шаардлагатай удирдлага, санхүүжилтийн зардлыг хамтран гаргахаар тохиролцсон.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(7)} onChange={e => handleCheckList(7, e.target.checked)} />
-                  </div>
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={3}
+                     notice="Өргөдөл гаргагч нь кластерын бусад гишүүдийг бүрэн төлөөлж, төслийн бэлтгэл ажил, хэрэгжилтэд шууд хариуцлага хүлээнэ."
+                  />
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={4}
+                     notice="Өргөдөл гаргагч нь байгаль орчны шалгуур, өргөдөл гаргагчийн шалгуур, зардлын шалгуурыг бүрэн хангасан бөгөөд аль нэг гишүүн нь эдгээр шалгуурыг хангаагүй тохиолдолд энэ нь санхүүжилтийн хүсэлтээс бүрэн татгалзах үндэслэл болно."
+                  />
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={5}
+                     notice="Өргөдөл гаргагч нь санал болгосон үйл ажиллагааны төлөвлөгөөг хэрэгжүүлэхэд санхүүгийн болон үйл ажиллагааны хувьд хүчин чадалтай бөгөөд үүнийг нотлох баримтуудыг бүрэн хавсаргасан."
+                  />
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={6}
+                     notice="Кластерын гишүүд нь өргөдөл гаргагчид Экспортыг дэмжих төслөөс олгогдох Үр дүнтэй түншлэлийн санхүүжилтийн гэрээнд гарын үсэг зурах бүрэн эрхийг олгосон."
+                  />
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={7}
+                     notice="Кластерын гишүүд нь энэхүү төслийн дэмжлэгийг хамтран хүртэх, төслийг хэрэгжүүлэхэд шаардлагатай удирдлага, санхүүжилтийн зардлыг хамтран гаргахаар тохиролцсон."
+                  />
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={8}
+                     notice="Өргөдөл гаргагч болон кластерын гишүүн аж ахуйн нэгжүүд нь шаардлагатай тохиолдолд экспортын үйл ажиллагаатай холбоотой туршлага, мэдлэг, мэдээллээ Экспортыг дэмжих төсөлд хамрагдаж буй болон хамрагдах хүсэлт гаргасан бусад аж ахуйн нэгжүүдтэй нээлттэй, үнэ төлбөргүйгээр хуваалцаж, төслийн зүгээс зохион байгуулж буй албан ёсны сургалт, сурталчилгааны арга хэмжээнд оролцоно."
+                  />
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={9}
+                     notice="Өргөдөл гаргагч болон кластерын гишүүн аж ахуйн нэгжүүд нь Экспортыг дэмжих төслийн зүгээс гаргах аливаа сурталчилгаа, мэдээллийн чанартай контентүүдэд тухайн аж ахуйн нэгжүүдийн талаарх мэдээллийг тусгаж, олон нийтэд мэдээлэхийг хүлээн зөвшөөрч байна."
+                  />
                </div>
 
                <div className="tw-px-8 tw-py-1 tw-mt-3 tw-text-sm tw-font-light">
-                  Энэхүү өргөдлийн маягтанд орсон бүхий л мэдээллийг үнэн зөвөөр мэдээллэсэн бөгөөд санаатай болон санаандгүйгээр мэдээллийг хооронд нь зөрүүлэх, мэдээллийг нотлох баримт нь мэдээллээс зөрөх, нотлох баримтгүй байх нь уг санхүүжилтийг олгохоос татгалзах, цаашид өргөдөл хүлээн авахгүй хүртэл шийдвэр гаргах шалтгаан болохыг бүрэн ойлгож байгаа болно.
+                  Өргөдөл гаргагчаас шалтгаалан мэдээлэл буруу бөглөх, материал дутуу илгээх, дэмжих чиглэлийн бус өргөдлийн материал хүргүүлэх тохиолдолд энэ нь төслийн нэгжийн зүгээс татгалзах шалтгаан болох бөгөөд дараагийн цонх нээгдэх хүртэл дахин материал авч судлах, тайлбар хүргүүлэх боломжгүйг хүлээн зөвшөөрөв. Энэхүү өргөдлийн маягтад орсон бүх мэдээллийг үнэн зөвөөр мэдүүлсэн бөгөөд санаатай болон санаандгүйгээр мэдээллийг хооронд нь зөрүүлэх, мэдээллийг нотлох баримт нь мэдээллээс зөрөх, нотлох баримтгүй байх нь уг санхүүжилтийг олгохоос татгалзах, цаашид өргөдөл хүлээн авахгүй байх хүртэлх шийдвэр гаргах шалтгаан болохыг бүрэн ойлгож байгаа болно.
                </div>
 
                <div className="tw-flex tw-justify-end tw-items-center">
@@ -359,3 +342,12 @@ export default function UrgudulPage7Cluster({ projects }) {
       </div>
    )
 }
+
+export const Notice = ({ checkList, handleCheckList, order, sub, notice }) => (
+   <div className={`tw-py-2 ${sub ? 'tw-pl-4' : 'tw-pl-6 tw-pr-2'} tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50`}>
+      <span className="">
+         {order}. {notice}
+      </span>
+      <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(order)} onChange={e => handleCheckList(order, e.target.checked)} />
+   </div>
+)

@@ -14,7 +14,7 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { animated, Transition } from 'react-spring/renderprops'
 import LoadFromOtherProject from '../loadFromOtherProject'
 import { SaveButton, StaticText, UrgudulHeader } from './page1'
-
+import { Notice } from './page7_cluster'
 
 const initialState = [
    {
@@ -173,7 +173,7 @@ export default function UrgudulPage7Company({ projects }) {
          <div className="tw-mt-8 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <UrgudulHeader
                label="Мэдэгдэл"
-               HelpPopup={<HelpPopup classAppend="tw-ml-2" main="ААН өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." position="bottom" />}
+               HelpPopup={<HelpPopup classAppend="tw-ml-2" main="ААН өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." />}
                projectNumber={UrgudulCtx.data.project_number}
             />
 
@@ -183,71 +183,53 @@ export default function UrgudulPage7Company({ projects }) {
                </div>
 
                <div className="tw-mt-2 tw-mx-4 tw-text-sm tw-font-light tw-rounded tw-shadow-md tw-text-13px">
-                  <div className="tw-py-2 tw-pl-6 tw-pr-2 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                     <span className="">
-                        1. Өргөдөл гаргагч нь шалгуур үзүүлэлтийг бүрэн хангасныг мэдэгдэж буй бөгөөд хориотой зардал, хориотой үйл ажиллагааны чиглэлийг энэхүү санхүүжилтийн төсөлд төлөвлөөгүй болно.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(1)} onChange={e => handleCheckList(1, e.target.checked)} />
-                  </div>
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={1}
+                     notice="Өргөдөл гаргагч нь шалгуур үзүүлэлтийг бүрэн хангасныг мэдэгдэж буй бөгөөд хориотой зардал, хориотой үйл ажиллагааны чиглэлийг энэхүү санхүүжилтийн төсөлд төлөвлөөгүй болно."
+                  />
                   <div className="tw-pl-6 tw-pr-2 odd:tw-bg-gray-50">
                      <div className="tw-py-2 tw-pr-12">
-                        2. Өргөдөл гаргагч ААН-ийг төлөөлөгч нь энэхүү өргөдөлд тусгасан түлхүүр албан тушаалтнуудтай нягт мэдээлэл, хамтын ажиллагаатай ажиллана:
+                        2. Өргөдөл гаргагч аж ахуйн нэгжийг төлөөлөгч нь энэхүү өргөдөлд тусгасан түлхүүр албан тушаалтнуудтай нягт уялдаа холбоотой ажиллана:
                      </div>
                      <div className="">
-                        <div className="tw-py-2 tw-pl-4 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                           <span className="">
-                              a. Бүх гишүүд энэхүү өргөдлийн маягтад буй мэдээлэлтэй танилцсан бөгөөд өөр өөрсдийн үүргийг ойлгож байгаа.
-                           </span>
-                           <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has('2a')} onChange={e => handleCheckList('2a', e.target.checked)} />
-                        </div>
-                        <div className="tw-py-2 tw-pl-4 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                           <span className="">
-                              b. Өргөдөл гаргагч нь бусад түлхүүр албан тушаалтнуудтай уг төслийн хэрэгжилтийн талаар тогтмол мэдээлэлтэй хамтарч ажиллана.
-                           </span>
-                           <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has('2b')} onChange={e => handleCheckList('2b', e.target.checked)} />
-                        </div>
-                        <div className="tw-py-2 tw-pl-4 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                           <span className="">
-                              c. Бүх гишүүд өргөдөл гаргагч аж ахуйн нэгжээс Экспортыг дэмжих төсөлд илгээгдэж буй тайлан мэдээлэлтэй танилцсан байна.
-                           </span>
-                           <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has('2c')} onChange={e => handleCheckList('2c', e.target.checked)} />
-                        </div>
-                        <div className="tw-py-2 tw-pl-4 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                           <span className="">
-                              d. Экспортыг дэмжих төсөлд илгээгдэх төслийн өөрчлөлтүүд нь илгээгдэхээс өмнө байгууллагынхаа дотоодод болон түлхүүр албан тушаалтнуудын хооронд зөвшилцөж, шийдэлд хүрсэн санал байна.
-                           </span>
-                           <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has('2d')} onChange={e => handleCheckList('2d', e.target.checked)} />
-                        </div>
+                        <Notice checkList={checkList} handleCheckList={handleCheckList} sub
+                           order="2a"
+                           notice="Бүх түлхүүр албан тушаалтнууд энэхүү өргөдлийн маягтад бичсэн мэдээлэлтэй танилцсан бөгөөд өөр өөрсдийн үүргийг ойлгож байгаа."
+                        />
+                        <Notice checkList={checkList} handleCheckList={handleCheckList} sub
+                           order="2b"
+                           notice="Өргөдөл гаргагч нь түлхүүр албан тушаалтнуудыг уг төслийн хэрэгжилтийн талаар тогтмол мэдээллээр хангаж ажиллана."
+                        />
+                        <Notice checkList={checkList} handleCheckList={handleCheckList} sub
+                           order="2c"
+                           notice="Бүх түлхүүр албан тушаалтнууд Экспортыг дэмжих төсөлд илгээж буй өргөдөл гаргагч аж ахуйн нэгжийн тайлан, мэдээлэлтэй танилцсан байна."
+                        />
+                        <Notice checkList={checkList} handleCheckList={handleCheckList} sub
+                           order="2d"
+                           notice="o	Экспортыг дэмжих төсөлд илгээх төслийн өөрчлөлтүүд нь байгууллагын дотоодод мөн түлхүүр албан тушаалтнуудын хооронд хэлэлцэгдэж, зөвшилцөлд хүрсэн санал байна."
+                        />
                      </div>
                   </div>
-                  <div className="tw-py-2 tw-pl-6 tw-pr-2 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                     <span className="">
-                        3. Өргөдөл гаргагч нь бусад гишүүдтэй уг төслийн бэлтгэл, удирдлагын хувьд шууд хариуцлага хүлээх бөгөөд зуучлагчийн байр суурьтай оролцохгүй.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(3)} onChange={e => handleCheckList(3, e.target.checked)} />
-                  </div>
-                  <div className="tw-py-2 tw-pl-6 tw-pr-2 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                     <span className="">
-                        4. Өргөдөл гаргагч нь Байгаль орчны шалгуур, өргөдөл гаргагчийн шалгуур, зардлын шалгуурыг бүрэн хангаж тэнцсэн бөгөөд аль нэг шалгуурыг хангаагүй тохиолдолд уг санхүүжилтийн хүсэлт нь бүрэн татгалзах үндэслэл болно.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(4)} onChange={e => handleCheckList(4, e.target.checked)} />
-                  </div>
-                  <div className="tw-py-2 tw-pl-6 tw-pr-2 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                     <span className="">
-                        5. Өргөдөл гаргагч нь санал болгосон үйл ажиллагааны төлөвлөгөөг хэрэгжүүлэхэд санхүүгийн хувьд болон үйл ажиллагааны хувьд хүчин чадалтай бөгөөд үүнийгээ нотлон харуулна.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(5)} onChange={e => handleCheckList(5, e.target.checked)} />
-                  </div>
-                  <div className="tw-py-2 tw-pl-6 tw-pr-2 tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50">
-                     <span className="">
-                        6. Өргөдөл гаргагч ААН нь энэхүү төслийн үйл ажиллагааны төлөвлөгөөнөөс бий болох үр дүн, туршлага болон өөрийн эзэмшсэн бусад туршлагаас үнэ төлбөргүйгээр бусад ААН-үүдтэй хуваалцахаар тохиролцсон.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(6)} onChange={e => handleCheckList(6, e.target.checked)} />
-                  </div>
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={3}
+                     notice="Өргөдөл гаргагч нь төслийн бэлтгэл ажил, хэрэгжилтэд шууд хариуцлага хүлээнэ."
+                  />
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={4}
+                     notice="Өргөдөл гаргагч нь байгаль орчны шалгуур, өргөдөл гаргагчийн шалгуур, зардлын шалгуурыг бүрэн хангасан бөгөөд аль нэг шалгуурыг хангаагүй тохиолдолд энэ нь  санхүүжилтийн хүсэлтээс бүрэн татгалзах үндэслэл болно."
+                  />
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={5}
+                     notice="Өргөдөл гаргагч нь санал болгосон үйл ажиллагааны төлөвлөгөөг хэрэгжүүлэхэд санхүүгийн болон үйл ажиллагааны хувьд хүчин чадалтай бөгөөд үүнийг нотлох баримтуудыг бүрэн хавсаргасан. Өргөдөл гаргагч аж ахуйн нэгж нь шаардлагатай тохиолдолд экспортын үйл ажиллагаатай холбоотой туршлага, мэдлэг, мэдээллээ Экспортыг дэмжих төсөлд хамрагдаж буй болон хамрагдах хүсэлт гаргасан бусад аж ахуйн нэгжүүдтэй нээлттэй, үнэ төлбөргүйгээр хуваалцаж, төслийн зүгээс зохион байгуулж буй албан ёсны сургалт, сурталчилгааны арга хэмжээнд оролцоно."
+                  />
+                  <Notice checkList={checkList} handleCheckList={handleCheckList}
+                     order={6}
+                     notice="Өргөдөл гаргагч нь Экспортыг дэмжих төслийн зүгээс гаргах аливаа сурталчилгаа, мэдээллийн чанартай контентүүдэд тухайн аж ахуйн нэгжийн талаарх мэдээллийг тусгаж, олон нийтэд мэдээлэхийг хүлээн зөвшөөрч байна."
+                  />
                </div>
 
                <div className="tw-px-8 tw-py-1 tw-mt-3 tw-text-sm tw-font-light">
-                  Энэхүү өргөдлийн маягтанд орсон бүхий л мэдээллийг үнэн зөвөөр мэдээллэсэн бөгөөд санаатай болон санаандгүйгээр мэдээллийг хооронд нь зөрүүлэх, мэдээллийг нотлох баримт нь мэдээллээс зөрөх, нотлох баримтгүй байх нь уг санхүүжилтийг олгохоос татгалзах, цаашид өргөдөл хүлээн авахгүй хүртэл шийдвэр гаргах шалтгаан болохыг бүрэн ойлгож, гарын үсэг зурсан:
+                  Өргөдөл гаргагчаас шалтгаалан мэдээлэл буруу бөглөх, материал дутуу илгээх, дэмжих чиглэлийн бус өргөдлийн материал хүргүүлэх тохиолдолд энэ нь төслийн нэгжийн зүгээс татгалзах шалтгаан болох бөгөөд дараагийн цонх нээгдэх хүртэл дахин материал авч судлах, тайлбар хүргүүлэх боломжгүйг хүлээн зөвшөөрөв. Энэхүү өргөдлийн маягтад орсон бүх мэдээллийг үнэн зөвөөр мэдүүлсэн бөгөөд санаатай болон санаандгүйгээр мэдээллийг хооронд нь зөрүүлэх, мэдээллийг нотлох баримт нь мэдээллээс зөрөх, нотлох баримтгүй байх нь уг санхүүжилтийг олгохоос татгалзах, цаашид өргөдөл хүлээн авахгүй байх хүртэлх шийдвэр гаргах шалтгаан болохыг бүрэн ойлгож байгаа болно.
                </div>
 
                <div className="tw-flex tw-justify-end tw-items-center">

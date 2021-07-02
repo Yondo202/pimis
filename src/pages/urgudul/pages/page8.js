@@ -87,7 +87,7 @@ export default function UrgudulPage8() {
          <div className="tw-mt-8 tw-rounded-lg tw-shadow-md tw-min-w-min tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed">
             <UrgudulHeader
                label="Шалгах хуудас"
-               HelpPopup={<HelpPopup classAppend="tw-ml-2" main="/.../" position="bottom" />}
+               HelpPopup={<HelpPopup classAppend="tw-ml-2" main="/.../" />}
                projectNumber={UrgudulCtx.data.project_number}
             />
 
@@ -117,7 +117,7 @@ export default function UrgudulPage8() {
                      <span className="tw-px-4 tw-py-2">
                         <span className="tw-mr-2">3.</span>
                         Төслийг хэрэгжүүлэх хугацаа нь 9 сараас хэтрэхгүй байна.
-                        <HelpPopup classAppend="tw-ml-2 tw-inline-flex tw-top-1.5" main="Хамгийн дээд хугацаа нь 9 сар болно." position="bottom" />
+                        <HelpPopup classAppend="tw-ml-2 tw-inline-flex tw-top-1.5" main="Хамгийн дээд хугацаа нь 9 сар болно." />
                      </span>
                      <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.nine_months} name="nine_months" onChange={handleInputCheckbox} />
                   </div>
@@ -126,7 +126,7 @@ export default function UrgudulPage8() {
                      <span className="tw-px-4 tw-py-2">
                         <span className="tw-mr-2">4.</span>
                         Экспортыг дэмжих төслөөс хүссэн нийт санхүүжилт нь кластерын хувьд 100,000 ам.доллараас, аж ахуйн нэгжийн хувьд 50,000 ам.доллараас хэтрэхгүй байна.
-                        <HelpPopup classAppend="tw-ml-2 tw-inline-flex tw-top-1.5" main="Өмнө нь авсан болон энэ удаа хүсч буй нийт дүн нь дээрх дүнгээс хэтрэхгүй байх ёстой." position="bottom" />
+                        <HelpPopup classAppend="tw-ml-2 tw-inline-flex tw-top-1.5" main="Өмнө нь авсан болон энэ удаа хүсч буй нийт дүн нь дээрх дүнгээс хэтрэхгүй байх ёстой." />
                      </span>
                      <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.max_amount} name="max_amount" onChange={handleInputCheckbox} />
                   </div>

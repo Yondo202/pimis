@@ -55,12 +55,12 @@ export default function UrgudulPage4() {
 
          <div className="tw-px-2">
             <FormInline label="Төслийг хэрэгжүүлэх нийт хугацаа" value={form.project_duration} name="project_duration" setter={handleInput} classAppend="tw-w-64" classInput="tw-w-40"
-               HelpPopup={<HelpPopup main="Сараар, дээд тал нь 9 сар" position="top" />}
+               HelpPopup={<HelpPopup main="Сараар, дээд тал нь 9 сар" />}
             />
 
             <FormRichText
                label="Экспортын бүтээгдэхүүн, экспортын зорилтот орны зах зээлийн мэдээлэл"
-               HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Ямар бүтээгдэхүүнийг аль орны зах зээлд гаргах талаар товч танилцуулна. Уг зах зээлийн талаарх судалгаа хийгдсэн эсэх, зах зээлийн мэдээлэл, өрсөлдөгчид, бэлтгэн нийлүүлэлтийн сүлжээний талаар судалгаа хийгдсэн бол энд дурдана уу." position="top" />}
+               HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Ямар бүтээгдэхүүнийг аль орны зах зээлд гаргах талаар товч танилцуулна. Уг зах зээлийн талаарх судалгаа хийгдсэн эсэх, зах зээлийн мэдээлэл, өрсөлдөгчид, бэлтгэн нийлүүлэлтийн сүлжээний талаар судалгаа хийгдсэн бол энд дурдана уу." />}
                modules="full"
                value={form.target_market}
                name="target_market"
@@ -70,7 +70,7 @@ export default function UrgudulPage4() {
 
             <FormRichText
                label="Тодорхойлсон асуудлууд"
-               HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Экспортын зорилтот орны зах зээлд өөрийн бүтээгдэхүүнээ борлуулахад ямар асуудлуудыг урьдчилж шийдвэрлэх шаардлагатай байгааг бичнэ үү." position="top" />}
+               HelpPopup={<HelpPopup classAppend="tw-ml-2" main="Экспортын зорилтот орны зах зээлд өөрийн бүтээгдэхүүнээ борлуулахад ямар асуудлуудыг урьдчилж шийдвэрлэх шаардлагатай байгааг бичнэ үү." />}
                modules="full"
                value={form.defined_problems}
                name="defined_problems"

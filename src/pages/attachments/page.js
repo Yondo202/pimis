@@ -172,7 +172,7 @@ export default function AttachmentUploads() {
                 <span className="tw-text-base tw-font-medium tw-text-blue-500 tw-pl-2">
                     Нотлох бичиг баримтууд
                 </span>
-                <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="/.../" position="bottom" />
+                <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="/.../" />
             </div>
 
             <input className="tw-invisible tw-absolute" type="file" accept={acceptDocTypes} onChange={handleFileInput} ref={inputRef} />
