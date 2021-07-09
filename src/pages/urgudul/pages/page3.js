@@ -16,6 +16,7 @@ import NumberFormat from 'react-number-format'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
+import { yearsArr, yearObj, tableCellClass, tableInputClass } from './page2'
 
 const initialDirectors = [
    {
@@ -152,6 +153,9 @@ const initialMembers = [
       main_activity: null,
       sales_year: null,
       sales_amount: null,
+      sales: {
+         ...yearObj,
+      },
       director_name: null,
       director_phone: null,
       director_email: null,
@@ -185,6 +189,9 @@ function ClusterMembers() {
       main_activity: null,
       sales_year: null,
       sales_amount: null,
+      sales: {
+         ...yearObj,
+      },
       director_name: null,
       director_phone: null,
       director_email: null,
@@ -196,9 +203,22 @@ function ClusterMembers() {
 
    const projectId = UrgudulCtx.data.id
 
+   const [years, setYears] = useState(yearsArr)
+
+   const handleInputSales = (key, value, index) => setMembers(prev => {
+      const next = [...prev]
+      next[index].sales[key] = value
+      return next
+   })
+
    useEffect(() => {
       const value = UrgudulCtx.data.clusters
       if (value instanceof Array && value?.length) {
+         value.forEach((member, i) => {
+            if (member.sales === null || member.sales === undefined) {
+               value[i].sales = { ...yearObj }
+            }
+         })
          setMembers(value)
       }
 
@@ -242,6 +262,33 @@ function ClusterMembers() {
                      <FormSelectValue label="Борлуулалтын жил сонгох" width={120} options={last3years} value={member.sales_year} keyName="sales_year" index={i} setter={handleInput} classAppend="tw-mr-8" />
 
                      <FormInline label="Аж ахуйн нэгжийн борлуулалт" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={member.sales_amount} name="sales_amount" index={i} setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                  </div>
+
+                  <div className="md:tw-col-span-2 tw-pl-3 tw-pt-5 tw-pb-2">
+                     <table className="">
+                        <thead>
+                           <tr>
+                              <th className={tableCellClass}></th>
+                              {years.map(year =>
+                                 <th className={`${tableCellClass} tw-py-2 tw-font-medium tw-text-center`} key={year}>
+                                    {year}
+                                 </th>
+                              )}
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td className={tableCellClass}>
+                                 Аж ахуйн нэгжийн борлуулалт
+                              </td>
+                              {years.map(year =>
+                                 <td className={tableCellClass} key={year}>
+                                    <NumberFormat className={tableInputClass} prefix="₮ " decimalScale={2} thousandSeparator value={member.sales[year]} onValueChange={values => handleInputSales(year, values.floatValue, i)} />
+                                 </td>
+                              )}
+                           </tr>
+                        </tbody>
+                     </table>
                   </div>
 
                   <FormInline label="Гүйцэтгэх захирлын нэр" value={member.director_name} name="director_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
@@ -322,13 +369,13 @@ const FormSelectValue = ({ label, options, value, keyName, index, setter, classA
             config={{ clamp: true }}
          >
             {item => item && (anims =>
-               <div className="tw-absolute tw-left-3 tw-z-10 tw-bg-white tw-text-sm tw-rounded tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto tw-max-h-48" style={{ ...anims, top: 72, width: width }} ref={selectRef}>
+               <animated.div className="tw-absolute tw-left-3 tw-z-10 tw-bg-white tw-text-sm tw-rounded tw-shadow-sm tw-border tw-border-gray-500 tw-divide-y tw-divide-dashed tw-overflow-y-auto tw-max-h-48" style={{ ...anims, top: 72, width: width }} ref={selectRef}>
                   {options.map((option, i) =>
                      <div className='tw-p-1 tw-pl-2 hover:tw-bg-blue-600 hover:tw-text-gray-50 tw-text-13px tw-transition-colors tw-cursor-pointer' onMouseDown={() => handleSelect(option)} key={i}>
                         {option}
                      </div>
                   )}
-               </div>
+               </animated.div>
             )}
          </Transition>
       </div>
