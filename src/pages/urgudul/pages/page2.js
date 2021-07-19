@@ -10,8 +10,8 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useHistory } from 'react-router-dom'
 
 const thisYear = new Date().getFullYear()
-const yearsArr = [thisYear - 3, thisYear - 2, thisYear - 1]
-const yearObj = yearsArr.reduce((acc, cv) => ({ ...acc, [cv]: null }), {})
+export const yearsArr = [thisYear - 3, thisYear - 2, thisYear - 1]
+export const yearObj = yearsArr.reduce((acc, cv) => ({ ...acc, [cv]: null }), {})
 
 const initialSales = {
    net: {
@@ -115,7 +115,7 @@ export default function UrgudulPage2() {
                      </td>
                      {years.map(year =>
                         <td className={tableCellClass} key={year}>
-                           <NumberFormat className={tableInputClass} prefix="₮ " decimalScale={2} thousandSeparator={true} value={sales.net?.[year]} onValueChange={values => handleInputSales('net', year, values.floatValue)} />
+                           <NumberFormat className={tableInputClass} prefix="₮ " decimalScale={2} thousandSeparator value={sales.net?.[year]} onValueChange={values => handleInputSales('net', year, values.floatValue)} />
                         </td>
                      )}
                   </tr>
@@ -125,7 +125,7 @@ export default function UrgudulPage2() {
                      </td>
                      {yearsArr.map(year =>
                         <td className={tableCellClass} key={year}>
-                           <NumberFormat className={tableInputClass} prefix="₮ " decimalScale={2} thousandSeparator={true} value={sales.export?.[year]} onValueChange={values => handleInputSales('export', year, values.floatValue)} />
+                           <NumberFormat className={tableInputClass} prefix="₮ " decimalScale={2} thousandSeparator value={sales.export?.[year]} onValueChange={values => handleInputSales('export', year, values.floatValue)} />
                         </td>
                      )}
                   </tr>
@@ -148,5 +148,5 @@ export default function UrgudulPage2() {
    )
 }
 
-const tableCellClass = 'tw-border tw-border-gray-300 tw-px-2'
-const tableInputClass = 'tw-outline-none tw-py-1 tw-px-2 tw-my-1 tw-text-right tw-rounded-sm tw-bg-indigo-50 tw-w-32'
+export const tableCellClass = 'tw-border tw-border-gray-300 tw-px-2'
+export const tableInputClass = 'tw-outline-none tw-py-1 tw-px-2 tw-my-1 tw-text-right tw-rounded-sm tw-bg-indigo-50 tw-w-32'
