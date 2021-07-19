@@ -15,7 +15,8 @@ import { UrgudulStore } from 'components/utilities/urgudulContext'
 import UrgudulNavigator from 'pages/urgudul/Page'
 import Home from 'components/LoginDoneHome/Home'
 import Request from 'containers/requestComp/mainRequestOld'
-import Check from 'components/check/compCheck'
+// import Check from 'components/check/compCheck'
+import Check2 from 'components/check/CompCheck2'
 import AttachmentUploads from 'pages/attachments/page';
 import FirstEvaluation from 'pages/decision_making/5a/Page';
 import CompilationChecklist from 'pages/decision_making/5b/Page';
@@ -82,7 +83,7 @@ function Layout({ setLocale }) {
               <Route path="/currency-rates" component={CurrencyRateHandle} />
               <Route path="/progress" component={Home} />
               <Route path="/request/:url" component={Request} />
-              <Route path="/check/:url" component={Check} />
+              <Route path="/check/:url" component={Check2} />
               <Route path="/notify-page/:paramId" component={NotifyPage1} />
               {/* <Route path="/memberdecision" component={MemberDecision} /> */}
               <Route path="/maindecision/:id" component={MainDecision} />

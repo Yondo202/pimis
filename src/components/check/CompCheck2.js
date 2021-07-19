@@ -6,6 +6,7 @@ import { IoMdCheckmarkCircle, IoIosArrowBack } from 'react-icons/io';
 import { fontFamily, textColor, Color, fontSize, NextBtn } from '../theme';
 import { AiOutlineSend, AiOutlineCheckCircle } from 'react-icons/ai'
 import { CgDanger } from 'react-icons/cg'
+import { RiArrowDownSLine } from 'react-icons/ri'
 import UserContext from '../../context/UserContext'
 import AccessToken from '../../context/accessToken'
 import axios from '../../axiosbase'
@@ -14,7 +15,7 @@ import Modal from 'react-awesome-modal';
 import { motion } from 'framer-motion';
 import DocumentTitle from 'containers/document/DocumentTitle';
 
-function CompCheck() {
+function CompCheck2() {
   DocumentTitle("Шалгуур хангалтыг тулгах хуудас");
   const init = "once";
   const param = useParams().url;
@@ -34,11 +35,13 @@ function CompCheck() {
   const [opacity2, setOpacity2] = useState("0");
   const [procent, setProcent] = useState('0');
   const [FinalErrorText, setFinalErrorText] = useState("");
+  const [ target, setTarget ] = useState(null);
 
   useEffect(() => {
     const localId = localStorage.getItem("userId");
     void async function fetch() {
       const data = await axios.get(`criterias${param !== "user" ? `?userId=${param}` : `?userId=${localId}`}`, { headers: { Authorization: AccessToken() } });
+      console.log(`data`, data);
       let keys = Object.keys(data.data.data);
       if (keys.length > 1) {
         setSuccess(data.data.data.approved);
@@ -46,7 +49,9 @@ function CompCheck() {
         keys.forEach((el, i) => { let obj1 = {}; value.forEach((elem, ind) => { if (i === ind) { obj1["keys"] = el; obj1["values"] = elem; } }); filterArr.push(obj1); });
         allData.forEach(el => { el.items.forEach((elem, ind) => { filterArr.forEach(element => { if (el.group + (ind + 1) === element.keys) { elem["value"] = element.values }; }); }); });
         setInitialData(allData); setUpdateMount(1);
-      } else { console.log("^^data alga") }
+      } else { 
+        console.log("^^data alga");
+      }
     }()
   }, [updateMount]);
   const NextPageHandle = (el) => { history.push(el); };
@@ -72,30 +77,30 @@ function CompCheck() {
       if (element.checked === true) {
         let field = element.name; let value = element.value; let id = element.id; soloObject2[id + field] = value;
       }
-      if (element.checked === true && element.id + element.name !== "a6" && element.id + element.name !== "a7" && element.value === "false") {
+      if (element.checked === true && element.value === "false") {
         let field = element.name; let value = element.value; let id = element.id; cond[id + field] = value;
       }
     });
     let finalCond = Object.keys(cond);
     let keys = Object.keys(soloObject2);
-    const Procent = keys.length * 100 / 25;
+    const Procent = keys.length * 100 / 14;
     const FinalProcent = Math.round(Procent);
 
-    console.log(`soloObject2`, soloObject2);
-
-
-    if (keys.length < 25) {
+    if (keys.length < 14) {
       setOpacity("1");
       setProcent(FinalProcent);
+      setTimeout(() => { setOpacity("0"); }, 5000);
     } else if (finalCond.length > 0) {
       setOpacity("0");
       setSecondChance(cond);
       if (btn === "twice") {
         soloObject2["approved"] = 1;
+        soloObject2["target"] = target;
         setBtnSpin(true);
         setOpacity("0");
         setOpacity2("0");
         setVisible2(false);
+        console.log(`soloObject2`, soloObject2);
         axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(res => {
           setUpdateMount(2); ctx.alertText('orange, Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.', true); setBtnSpin(false);
           setTimeout(() => { history.push('/'); }, 5000);
@@ -105,9 +110,11 @@ function CompCheck() {
       }
     } else {
       soloObject2["approved"] = 2;
+      soloObject2["target"] = target;
       setBtnSpin(true);
       setOpacity("0");
       setOpacity2("0");
+      console.log(`soloObject2`, soloObject2);
       axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(res => {
         setUpdateMount(2); ctx.alertText('green, Амжилттай илгээгдлээ', true); setBtnSpin(false); setVisible(true);
       }).catch(_=> { setFinalErrorText("Алдаа гарлаа."); setBtnSpin(false); });
@@ -128,10 +135,35 @@ function CompCheck() {
     }
   }
 
+  const TargetHandle= (e) =>{
+    setTarget(e);
+    let arr = [];
+    allData.forEach(el=>{
+      if(el.group === "a"){
+        el.items.forEach(elem=>{
+          if(elem.cond){
+            if(e==="Кластер"){
+              elem.name = "Кластерын ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар кластерын тэргүүлэгч аж ахуйн нэгж доод тал нь 300 сая, дээд тал нь 150 тэрбум, кластерын гишүүн аж ахуйн нэгж тус бүр доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
+            }
+            if(e==="Аж ахуйн нэгж"){
+              elem.name = "Аж ахуйн нэгжийн ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
+            }
+          }
+        })
+        arr.push(el);
+      }else{
+        arr.push(el);
+      }
+    });
+    setInitialData(arr);
+  }
+
   return (
     <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
       <Component1 className="container" >
-        {param !== "user" ? (updateMount === 1 ? <div className="boxShadow">
+        {param !== "user" 
+        ? (updateMount === 1 
+        ? <div className="boxShadow">
           <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
           {initialData.map((el, i) => {
             return (
@@ -168,8 +200,18 @@ function CompCheck() {
           </div>
         </div> : (<NullParent className="BtnPar"><button onClick={() => OneBack()}><RiArrowGoBackFill /> Буцах</button> <h2 style={{ textAlign: "center" }}>Мэдээлэл оруулаагүй байна</h2> </NullParent>))
           : (<div className="boxShadow">
-            <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
-            {initialData.map((el, i) => {
+            <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас<span className="tseg">*</span></div>
+
+            <div className="TargetParent">
+              <div className="title">Та аль ангилалд өргөдөл гаргаж байна вэ?</div>
+              <div className="Target">
+                <div onClick={()=>TargetHandle('Аж ахуйн нэгж')} className={`items ${target===`Аж ахуйн нэгж`?`A11`:``}`}><span>Аж ахуйн нэгж</span><RiArrowDownSLine /></div>
+                <div onClick={()=>TargetHandle('Кластер')}  className={`items ${target===`Кластер`?`A11`:``}`}><span>Кластер</span> <RiArrowDownSLine /></div>
+              </div>
+            </div>
+
+
+            {target?initialData.map((el, i) => {
               return (
                 <div key={i} className="formTwoParent ">
                   <div className="headerPar">
@@ -192,11 +234,11 @@ function CompCheck() {
                     )
                   })}
                 </div>)
-            })}
+            }):null}
 
             <Modal visible={visible2} width="800" effect="fadeInDown" >
               <div className="Modaltest">
-                <div onClick={closeMModalX} className="headPar"><span >x</span></div>
+                <div onClick={closeMModalX} className="headPar"><span >✖</span></div>
                 <div className="ModalTextPar">
                   <div className="redPAr">
                     <div className="redDesc">Таныг бөгөлсөн мэдээллээ дахин нэг шалгахыг хүсэж байна:</div>
@@ -204,29 +246,25 @@ function CompCheck() {
                   <div className="mainText">
                     <div className="title">Доорх асуултуудад "ҮГҮЙ" гэж хариулсандаа итгэлтэй байна уу?:</div>
                     <ul className="desc">
-                      {secondChance.a1 && <li>100 хувь хувийн ААН мөн эсэх</li>}
-                      {secondChance.a2 && <li>2 жилийн турш тогтмол үйл ажиллагаа явуулсныг батлах санхүүгийн тайлантай эсэх</li>}
-                      {secondChance.a3 && <li>Уул уурхайн салбарт ажилладаггүй эсэх</li>}
-                      {secondChance.a4 && <li>Ре-экспортын худалдаа эрхэлдэггүй эсэх</li>}
-                      {secondChance.a5 && <li>Түүхий эд экспортлогч бус эсэх /хэрэв жилийн 100 мянган ам.доллараас дээш экспорт хийдэг бөгөөд энэ ойрын хугацаанд боловсруулсан бүтээгдэхүүний экспорт хийхээр зорьж буй бол тийм гэж дугуйлна уу</li>}
-                      {secondChance.b1 && <li>12 сараас дээш хугацааны нийгмийн даатгалын өргүй бөгөөд нотлох тодорхойлолттой эсэх</li>}
-                      {secondChance.b2 && <li>12 сараас дээш хугацааны татварын өргүй бөгөөд нотлох тодорхойлолттой эсэх</li>}
-                      {secondChance.b3 && <li>Монголбанкны муу ангиллын зээлгүй бөгөөд нотлох тодорхойлолттой эсэх</li>}
-                      {secondChance.c1 && <li>Ерөнхийлөгчтэй холбоогүй</li>}
-                      {secondChance.c2 && <li>Ерөнхий сайдтай холбоогүй</li>}
-                      {secondChance.c3 && <li>УИХ-н гишүүнтэй холбоогүй</li>}
-                      {secondChance.c4 && <li>Үндсэн хуулийн цэцийн гишүүдтэй холбоогүй</li>}
-                      {secondChance.c5 && <li>Дээд шүүхийн шүүгчидтэй холбоогүй</li>}
-                      {secondChance.c6 && <li>Улсын прокурортой холбоогүй</li>}
-                      {secondChance.c7 && <li>Аймаг, нийслэлийн засаг даргатай холбоогүй</li>}
-                      {secondChance.c8 && <li>Сайд, Төрийн нарийн бичгийн даргатай холбоогүй</li>}
-                      {secondChance.c9 && <li>Яам, хэрэгжүүлэгч агентлагуудын захирал, дарга нартай холбоогүй</li>}
-                      {secondChance.c10 && <li>Төрийн өмчит компаниудын захирал, дарга нартай холбоогүй</li>}
-                      {secondChance.d1 && <li>Экспортын чиглэлээр санхүүжилт хүсч, хийхээр төлөвлөсөн ажил нь гэрээ шалгаруулалт хийгдэж, гэрээ зурагдсанаас хойш 9 сарын дотор хэрэгжиж дуусах боломжтой эсэх</li>}
-                      {secondChance.d2 && <li>Экспортыг дэмжих төслөөс хүсч буй дэмжлэгтэй тэнцүү дүнгээр санхүүжилт гаргах боломжтой бөгөөд бэлэн эсэх</li>}
-                      {secondChance.d3 && <li>Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр өмнө гарсан зардлыг санхүүжүүлэхгүй эсэх</li>}
-                      {secondChance.d4 && <li>Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр зөвхөн зөвшөөрөгдсөн үйл ажиллагааг санхүүжүүлэх эсэх</li>}
-                      {secondChance.f1 && <li>Ирэх нэг жилийн хугацаанд Экспортыг дэмжих төслөөс зохион байгуулах арга хэмжээнд хамтарч, бусад экспортлогчид болон шинээр экспортлохоор зорьж буй аж ахуйн нэгжүүдийг бэлтгэх сургалт, мэдээлэл хуваалцах ажлилд өөрийн байгууллагын туршлага, мэдлэгээ хуваалцаж, идэвхитэй оролцох эсэх</li>}
+                      {secondChance.a1 && <li>Монгол улсад бүртгэлтэй 100 хувь хувийн аж ахуйн нэгж мөн эсэхийг нотолсон аж ахуйн нэгжийн гэрчилгээг хавсаргасан эсэх</li>}
+                      {secondChance.a2 && <li>Сүүлийн 2 жилийн турш тогтмол үйл ажиллагаа явуулсныг нотлох аудитлагдсан санхүүгийн тайланг хавсаргасан эсэх</li>}
+                      {secondChance.a3 && <li>Өргөдөл гаргагч нь уул уурхайн салбарт үйл ажиллагаа эрхэлдэггүй бөгөөд хориотой үйл ажиллагааны чиглэлээр хандаагүй эсэх</li>}
+                      {secondChance.a4 && <li>Өргөдөл гаргагч нь түүхий эд экспортлогч бус эсэх /хэрэв жилд 300 сая төгрөгөөс дээш экспорт хийдэг бөгөөд ойрын хугацаанд боловсруулсан бүтээгдэхүүний экспорт хийхээр зорьж буй бол тийм гэж хариулна уу/</li>}
+                      {secondChance.a5 && <li>Экспортыг дэмжих төслийн санхүүгийн дэмжлэгтэйгээр хийхээр төлөвлөсөн ажлуудын санхүүжилтийг урьдчилан гаргах боломжтой бөгөөд түүнийгээ нотлох баримттай эсэх /сүүлийн 2 жилийн мөнгөн урсгалын тайлан, 1 жилийн мөнгөн урсгалын төлөвлөгөө, банкны хуулга гм/</li>}
+                      {secondChance.a6 && <li>Аж ахуйн нэгжийн эцсийн өмчлөгч нь улс төрийн нөлөө бүхий этгээд биш эсэх</li>}
+
+                      {secondChance.a7 && <li>{target==="Аж ахуйн нэгж"
+                      ?`Аж ахуйн нэгжийн ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх`
+                      :`Кластерын ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар кластерын тэргүүлэгч аж ахуйн нэгж доод тал нь 300 сая, дээд тал нь 150 тэрбум, кластерын гишүүн аж ахуйн нэгж тус бүр доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх`
+                      }</li>}
+                      {secondChance.b1 && <li>Экспорт хөгжлийн төлөвлөгөөгөө боловсруулсан эсэх /Хэрэв үгүй бол энэ удаагийн өргөдлөөр уг үйл ажиллагааг санхүүжүүлэх эсэх/</li>}
+                      {secondChance.b2 && <li>Экспортыг дэмжих төслийн санхүүгийн дэмжлэгтэйгээр хийхээр төлөвлөсөн ажлууд нь гэрээ зурагдсанаас хойш 9 сарын дотор хэрэгжиж дуусах боломжтой эсэх</li>}
+                      {secondChance.b3 && <li>Экспортыг дэмжих төслийн санхүүгийн дэмжлэгээр төслийн зорилтот салбарт зөвхөн зөвшөөрөгдсөн үйл ажиллагааг санхүүжүүлэх эсэх</li>}
+                      {secondChance.b3 && <li>Төлөвлөсөн үйл ажиллагааг гүйцэтгэгч байгууллагуудаас үнийн санал авч, харьцуулалт хийсэн эсэх</li>}
+                      {secondChance.c1 && <li>Ирэх нэг жилийн хугацаанд Экспортыг дэмжих төслөөс зохион байгуулах арга хэмжээнд хамтарч, бусад экспортлогчид болон экспортлогч болохоор зорьж буй аж ахуйн нэгжүүдийг бэлтгэх сургалт, мэдээлэл хуваалцах ажилд өөрийн байгууллагын туршлага, мэдээллээ хуваалцаж, идэвхтэй оролцох эсэх</li>}
+                      {secondChance.c2 && <li>Хөтөлбөрт хүсэлт гаргасан, тэнцсэн болон тэнцээгүй, гэрээ байгуулсан, санхүүжилт авсан аж ахуйн нэгжүүдийн талаар олон нийтэд нээлттэй мэдээлэхийг хүлээн зөвшөөрч өргөдлөө гаргаж буй эсэх</li>}
+                      {secondChance.c3 && <li>Өргөдөл гаргагч байгууллагын түлхүүр албан тушаалтнуудын боловсрол, ажлын туршлага, ур чадварыг илэрхийлэх намтрыг хавсаргасан эсэх</li>}
+                
                     </ul>
                   </div>
                   <div className="btnPar">
@@ -239,10 +277,11 @@ function CompCheck() {
 
             <Modal visible={visible} width="800" effect="fadeInDown" >
               <div className="Modaltest Modaltest22">
-                {showFinal && <div onClick={() => setVisible(false)} className="headPar"><span >x</span></div>}
+                {showFinal && <div onClick={() => setVisible(false)} className="headPar"><span >✖</span></div>}
                 <div style={showFinal ? { opacity: 0.4 } : { opacity: 1 }} className="ModalTextPar">
                   <div className="redPAr">
-                    <div className="redDesc"> Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна.</div>
+                    {target==="Аж ахуйн нэгж"&&<div className="redDesc">Түншлэлийн хөтөлбөрийн аж ахуйн нэгжийн ангилалд өргөдөл гаргах  шалгуур үзүүлэлтийг хангаж байна.</div>}
+                    {target==="Кластер"&&<div className="redDesc">Түншлэлийн хөтөлбөрийн кластерын ангилалд өргөдөл гаргах  шалгуур үзүүлэлтийг хангаж байна.</div>}
                   </div>
                   <div className="mainText">
                     <div className="title">Жилийн борлуулалтын орлого нь 100 мянган ам.доллароос их бол  <span style={{ fontWeight: "400" }}> ( тийм ) </span>
@@ -277,10 +316,13 @@ function CompCheck() {
 
             {updateMount === 1 ? success === 1 ? <div className="Success"> <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> </div>
               : <div className="Success">
-                <div className="item"><IoMdCheckmarkCircle />Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна. </div>
+                <div className="item"><IoMdCheckmarkCircle />
+                    {target==="Аж ахуйн нэгж"&&`Түншлэлийн хөтөлбөрийн аж ахуйн нэгжийн ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
+                    {target==="Кластер"&&`Түншлэлийн хөтөлбөрийн кластерын ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
+                </div>
                 <NextBtn onClick={() => NextPageHandle('/request/user')} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
               </div>
-              : (<div className="buttonPar">
+              : (target&&<div className="buttonPar">
                 <div style={{ opacity: `${opacity2}` }} className="errtext"><CgDanger /> {FinalErrorText}</div>
                 <NextBtn onClick={() => clickHandles(btnCond)} style={BtnSpin === false ? { width: "40%" } : { width: "10%" }} className="SubmitButton" type="button"> {BtnSpin === false ? <>Цааш <div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div> </> : <img src="/gifff.gif" alt="" />} </NextBtn>
               </div>)}
@@ -292,7 +334,7 @@ function CompCheck() {
   )
 }
 
-export default CompCheck
+export default CompCheck2
 
 
 const NullParent = styled.div`
@@ -321,6 +363,16 @@ const animate = keyframes`
   100% { transform:translate(0px); opacity:1;  }
 `
 
+const anime = keyframes`
+  0% { transform:translateY(-20px); opacity:0; }
+  100% { transform:translateY(0px); opacity:1;  }
+`
+
+const animate22 = keyframes`
+  0% { transform:scale(0);  }
+  100% { transform:scale(1); }
+`
+
 const Component1 = styled.div`
     margin-top:40px;
     padding-bottom:80px;
@@ -330,8 +382,8 @@ const Component1 = styled.div`
         .Modaltest{
           position:relative;
           width:100%;
-          // height:100%;
-          // overflow-y:scroll;
+          height:30rem;
+          overflow-y:scroll;
           background-color:white;
           .headPar{
             cursor:pointer;
@@ -341,12 +393,16 @@ const Component1 = styled.div`
             justify-content:center;
             background-color:white;
             position:absolute;
-            right:-10px;
-            top:-10px;
+            right:10px;
+            top:10px;
             height:30px;
             width:30px;
             padding:5px 8px;
             border-radius:50%;
+            z-index: 99999999;
+            span{
+                font-size: 26px;
+            }
             a{
               color:black;
               text-decoration:none;
@@ -467,10 +523,11 @@ const Component1 = styled.div`
           display:flex;
           align-items:center;
           justify-content:space-between;
+          gap: 50px;
           .item{
             font-size:15px;
             display:flex;
-            align-item:center;
+            align-items:center;
             border-radius:4px;
             border:1px solid rgba(0,0,0,0.3);
             padding:10px 30px;
@@ -500,7 +557,68 @@ const Component1 = styled.div`
               color:red;
             }
           }
+          .TargetParent{
+            background-color: #FFFFFF;
+            padding: 20px 26px;
+            .title{
+              font-weight: 500;
+              margin-bottom: 20px;
+              font-size: 15px;
+            }
+            .Target{
+              display: flex;
+              .items{
+                gap: 20px;
+                color: rgba(0, 18, 41, 0.8);
+                text-decoration: none;
+                margin-right: 18px;
+                transition: all 0.3s ease 0s;
+                cursor: pointer;
+                border-radius: 5px;
+                padding: 8px 30px 8px 60px;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                display: flex;
+                -webkit-box-align: center;
+                align-items: center;
+                -webkit-box-pack: justify;
+                justify-content: space-between;
+                box-shadow: 1px 1px 8px -6px;
+                svg{
+                  opacity: 0.6;
+                  height: 100%;
+                  font-size: 16px;
+                }
+              }
+              .A11{
+                position: relative;
+                color: green;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                box-shadow: 1px 1px 14px -6px;
+                &:before{
+                  animation: ${animate22} 0.4s ease;
+                  content: "✔";
+                  position: absolute;
+                  display: flex;
+                  -webkit-box-align: center;
+                  align-items: center;
+                  -webkit-box-pack: center;
+                  justify-content: center;
+                  z-index: 1;
+                  bottom: -7px;
+                  right: 0%;
+                  border: 1px solid green;
+                  background-color: white;
+                  color: green;
+                  width: 19px;
+                  height: 19px;
+                  border-radius: 50%;
+                }
+              }
+            }
+          }
+
         .formTwoParent{
+          animation: ${anime} 0.6s ease;
             border-radius:0px 0px 6px 6px;
             background-color:white;
             font-size:${fontSize};
@@ -512,8 +630,8 @@ const Component1 = styled.div`
               font-size:13px;
              
               .head1{
-                padding-top: 10px;
-                padding-bottom: 16px;
+                padding-top: 12px;
+                padding-bottom: 12px;
               }
               .head2{
                 padding-bottom: 18px;
@@ -749,55 +867,39 @@ const allData = [
     group: "a",
     title: "ҮНДСЭН ШАЛГУУР ХАНГАЛТ",
     items: [
-      { name: "100 хувь хувийн ААН мөн эсэх" },
-      { name: "2 жилийн турш тогтмол үйл ажиллагаа явуулсныг батлах санхүүгийн тайлантай эсэх" },
-      { name: "Уул уурхайн салбарт ажилладаггүй эсэх" },
-      { name: "Ре-экспортын худалдаа эрхэлдэггүй эсэх" },
-      { name: "Түүхий эд экспортлогч бус эсэх /хэрэв жилийн 100 мянган ам.доллараас дээш экспорт хийдэг бөгөөд энэ ойрын хугацаанд боловсруулсан бүтээгдэхүүний экспорт хийхээр зорьж буй бол тийм гэж дугуйлна уу" },
-      { name: "*Сүүлийн хоёр жил тус бүр 50 мянгаас 50 сая ам.доллартай тэнцэх нийт борлуулалтын орлоготой ажилласан эсэх " },
-      { name: "*Сүүлийн 2 жил тус бүр НДШ төлдөг бүтэн цагийн ажилчдын тоо 10-250 хооронд байсан эсэх" },
+      { name: "Монгол улсад бүртгэлтэй 100 хувь хувийн аж ахуйн нэгж мөн эсэхийг нотолсон аж ахуйн нэгжийн гэрчилгээг хавсаргасан эсэх" },
+      { name: "Сүүлийн 2 жилийн турш тогтмол үйл ажиллагаа явуулсныг нотлох аудитлагдсан санхүүгийн тайланг хавсаргасан эсэх" },
+      { name: "Өргөдөл гаргагч нь уул уурхайн салбарт үйл ажиллагаа эрхэлдэггүй бөгөөд хориотой үйл ажиллагааны чиглэлээр хандаагүй эсэх" },
+      { name: "Өргөдөл гаргагч нь түүхий эд экспортлогч бус эсэх /хэрэв жилд 300 сая төгрөгөөс дээш экспорт хийдэг бөгөөд ойрын хугацаанд боловсруулсан бүтээгдэхүүний экспорт хийхээр зорьж буй бол тийм гэж хариулна уу/" },
+
+      { name: "Экспортыг дэмжих төслийн санхүүгийн дэмжлэгтэйгээр хийхээр төлөвлөсөн ажлуудын санхүүжилтийг урьдчилан гаргах боломжтой бөгөөд түүнийгээ нотлох баримттай эсэх /сүүлийн 2 жилийн мөнгөн урсгалын тайлан, 1 жилийн мөнгөн урсгалын төлөвлөгөө, банкны хуулга гм/" },
+      { name: "Аж ахуйн нэгжийн эцсийн өмчлөгч нь улс төрийн нөлөө бүхий этгээд биш эсэх" },
+
+      { name: "", cond:true },
+      // { name: "Аж ахуйн нэгжийн ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх", code:true },
+    //   { name: "Кластерын ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар кластерын тэргүүлэгч аж ахуйн нэгж доод тал нь 300 сая, дээд тал нь 150 тэрбум, кластерын гишүүн аж ахуйн нэгж тус бүр доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх ", code:true },
+
     ]
   },
   {
     group: "b",
-    title: "ӨР ТӨЛБӨРИЙН ШАЛГУУР ХАНГАЛТ",
-    items: [
-      { name: "12 сараас дээш хугацааны нийгмийн даатгалын өргүй бөгөөд нотлох тодорхойлолттой эсэх" },
-      { name: "12 сараас дээш хугацааны татварын өргүй бөгөөд нотлох тодорхойлолттой эсэх" },
-      { name: "Монголбанкны муу ангиллын зээлгүй бөгөөд нотлох тодорхойлолттой эсэх" },
-    ]
-  },
-  {
-    group: "c",
-    title: "АЖ АХУЙН НЭГЖИЙН ХУВЬ ЭЗЭМШИГЧ НЬ ДАРААХ УЛС ТӨРИЙН НӨЛӨӨ БҮХИЙ ЭТГЭЭДҮҮД БОЛОН ТЭДНИЙ ГЭР БҮЛИЙН ГИШҮҮНТЭЙ ХОЛБООТОЙ БАЙЖ БОЛОХГҮЙ",
-    items: [
-      { name: "Ерөнхийлөгчтэй холбоогүй" },
-      { name: "Ерөнхий сайдтай холбоогүй" },
-      { name: "УИХ-н гишүүнтэй холбоогүй" },
-      { name: "Үндсэн хуулийн цэцийн гишүүдтэй холбоогүй" },
-      { name: "Дээд шүүхийн шүүгчидтэй холбоогүй" },
-      { name: "Улсын прокурортой холбоогүй" },
-      { name: "Аймаг, нийслэлийн засаг даргатай холбоогүй" },
-      { name: "Сайд, Төрийн нарийн бичгийн даргатай холбоогүй" },
-      { name: "Яам, хэрэгжүүлэгч агентлагуудын захирал, дарга нартай холбоогүй" },
-      { name: "Төрийн өмчит компаниудын захирал, дарга нартай холбоогүй" },
-    ]
-  },
-  {
-    group: "d",
     title: "ЭКСПОРТ ХӨГЖЛИЙН ТӨЛӨВЛӨГӨӨГӨӨ БЭЛТГЭСЭН ЭСЭХ",
     items: [
-      { name: "Экспортын чиглэлээр санхүүжилт хүсч, хийхээр төлөвлөсөн ажил нь гэрээ шалгаруулалт хийгдэж, гэрээ зурагдсанаас хойш 9 сарын дотор хэрэгжиж дуусах боломжтой эсэх" },
-      { name: "Экспортыг дэмжих төслөөс хүсч буй дэмжлэгтэй тэнцүү дүнгээр санхүүжилт гаргах боломжтой бөгөөд бэлэн эсэх" },
-      { name: "Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр өмнө гарсан зардлыг санхүүжүүлэхгүй эсэх" },
-      { name: "Экспортыг дэмжих төслөөс хүсч буй дэмжлэгээр зөвхөн зөвшөөрөгдсөн үйл ажиллагааг санхүүжүүлэх эсэх" },
+      { name: "Экспорт хөгжлийн төлөвлөгөөгөө боловсруулсан эсэх /Хэрэв үгүй бол энэ удаагийн өргөдлөөр уг үйл ажиллагааг санхүүжүүлэх эсэх/" },
+      { name: "Экспортыг дэмжих төслийн санхүүгийн дэмжлэгтэйгээр хийхээр төлөвлөсөн ажлууд нь гэрээ зурагдсанаас хойш 9 сарын дотор хэрэгжиж дуусах боломжтой эсэх" },
+      { name: "Экспортыг дэмжих төслийн санхүүгийн дэмжлэгээр төслийн зорилтот салбарт зөвхөн зөвшөөрөгдсөн үйл ажиллагааг санхүүжүүлэх эсэх" },
+      { name: "Төлөвлөсөн үйл ажиллагааг гүйцэтгэгч байгууллагуудаас үнийн санал авч, харьцуулалт хийсэн эсэх" },
     ]
   },
+
   {
-    group: "f",
-    title: "БУСАДТАЙ ТУРШЛАГА, МЭДЭЭЛЛЭЭ ХУВААЛЦАХ БОЛОМЖТОЙ ЭСЭХ",
+    group: "c",
+    title: "БУСАД ШААРДЛАГАТАЙ МЭДЭЭЛЛҮҮД",
     items: [
-      { name: "Ирэх нэг жилийн хугацаанд Экспортыг дэмжих төслөөс зохион байгуулах арга хэмжээнд хамтарч, бусад экспортлогчид болон шинээр экспортлохоор зорьж буй аж ахуйн нэгжүүдийг бэлтгэх сургалт, мэдээлэл хуваалцах ажлилд өөрийн байгууллагын туршлага, мэдлэгээ хуваалцаж, идэвхитэй оролцох эсэх" },
+      { name: "Ирэх нэг жилийн хугацаанд Экспортыг дэмжих төслөөс зохион байгуулах арга хэмжээнд хамтарч, бусад экспортлогчид болон экспортлогч болохоор зорьж буй аж ахуйн нэгжүүдийг бэлтгэх сургалт, мэдээлэл хуваалцах ажилд өөрийн байгууллагын туршлага, мэдээллээ хуваалцаж, идэвхтэй оролцох эсэх" },
+      { name: "Хөтөлбөрт хүсэлт гаргасан, тэнцсэн болон тэнцээгүй, гэрээ байгуулсан, санхүүжилт авсан аж ахуйн нэгжүүдийн талаар олон нийтэд нээлттэй мэдээлэхийг хүлээн зөвшөөрч өргөдлөө гаргаж буй эсэх" },
+      { name: "Өргөдөл гаргагч байгууллагын түлхүүр албан тушаалтнуудын боловсрол, ажлын туршлага, ур чадварыг илэрхийлэх намтрыг хавсаргасан эсэх" },
+ 
     ]
   },
 ]
