@@ -17,9 +17,8 @@ function Menu() {
   const [proHover, setProHover] = useState(false);
   const [userName, setUserName] = useState();
   const [currPath, setCurrPath] = useState();
-  const [diplayFlex, setDisplayNone] = useState("flex");
   const [headerHeight, setheaderHeight] = useState("45px");
-  const [open, close] = useState('');
+  const [open, close] = useState(false);
   const [activeMenu, setActiveMenu] = useState({
     Home: '',
     Req: '',
@@ -52,7 +51,7 @@ function Menu() {
 
   return (
     <Componentss>
-      <div style={{ height: headerHeight, display: diplayFlex }} className="MainMenus">
+      <div style={{ height: headerHeight, display: 'flex' }} className="MainMenus">
         <div style={currPath === "/" ? { maxWidth: `1160px` } : { maxWidth: 1000 }} className="container">
           <input type="checkbox" id="check" name="check" />
           <span className="menuPar">
