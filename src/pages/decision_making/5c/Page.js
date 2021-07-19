@@ -10,7 +10,7 @@ import SearchSVG from 'assets/svgComponents/searchSVG'
 import DecisionMakingPreviewModal from 'pages/decision_making/5a/previewModal'
 import AnalystReportPreview from './preview'
 import { useParams } from 'react-router'
-import { todayStr } from 'pages/urgudul/urgudul_a/form_a_1'
+import { todayStr } from 'components/utilities/utilities'
 
 
 const rowDescriptions = {

@@ -25,11 +25,10 @@ function Signup() {
   const [Show2, setShow2] = useState(false);
   const [sectorData, setSectorData] = useState([]);
   const [PassText, setPassText] = useState("");
-  const [ errTextShow, setErrTextShow ] = useState(false);
   const [scale, setScale] = useState("1");
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
-  const [passwordFocused, setPasswordFocused] = useState(false);
+  // const [passwordFocused, setPasswordFocused] = useState(false);
   const [color1, setColor1] = useState("rgba(0,0,0,0.7)");
   const [reg, setReg] = useState('');
 
@@ -163,7 +162,6 @@ function Signup() {
       </Modal>
 
       <Modal visible={visible} width="900" height="580" effect="fadeInDown" onClickAway={closeModal}  >
-        <form>
           <div className="formOneParent">
             <div className="headPar"><span className="headText">Бүртгүүлэх</span>
               <a style={{cursor:"pointer"}} onClick={closeModal}>X</a>
@@ -234,7 +232,9 @@ function Signup() {
                   <div className="name">
                     <BiLockOpen />
                     <InputStyle className="newInp pass">
-                      <input onFocus={() => setPasswordFocused(true)} onBlur={() => setPasswordFocused(false)} onChange={e => onChangePassword(e.target.value)} value={password} type={Show ? 'text' : 'password'} className="userInp  form__field" placeholder="Нууц үг" name="password" />
+                      <input
+                      //  onFocus={() => setPasswordFocused(true)} onBlur={() => setPasswordFocused(false)}
+                       onChange={e => onChangePassword(e.target.value)} value={password} type={Show ? 'text' : 'password'} className="userInp  form__field" placeholder="Нууц үг" name="password" />
                       {Show ? <FaRegEye onClick={() => setShow(false)} /> : <FaRegEyeSlash onClick={() => setShow(true)} />}
                       <div className="line"></div>
                     </InputStyle>
@@ -269,7 +269,6 @@ function Signup() {
               </div>)}
 
           </div>
-        </form>
       </Modal>
       {/* </form> */}
     </Component>
@@ -317,6 +316,7 @@ const GhostPar = styled.div`
 `
 
 const Component = styled.div`
+    
     margin-top:15px;
     text-align:center;
     .Modaltest{

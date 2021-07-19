@@ -2,13 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import QuestionMarkSVG from 'assets/svgComponents/questionMarkSVG'
 
 
-function HelpPopup(props) {
+function HelpPopup({ classAppend, buttonClass, main, list }) {
     const [open, setOpen] = useState(false)
-
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    })
 
     const divRef = useRef()
     const buttonRef = useRef()
@@ -19,59 +14,46 @@ function HelpPopup(props) {
         }
     }
 
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    })
+
     const [size, setSize] = useState({ width: 0, height: 0 })
+    const [buttonLocation, setButtonLocation] = useState()
 
     useEffect(() => {
         setSize({ width: divRef.current.clientWidth, height: divRef.current.clientHeight })
-    }, [])
+        setButtonLocation(buttonRef.current.getBoundingClientRect())
+    }, [window.innerWidth])
 
-    let positionStyle = {}
+    let popupStyle = { top: 26, left: 11 - size.width / 2 }
 
-    switch (props.position) {
-        case 'top':
-            positionStyle = { top: `${-size.height - 4}px`, left: `${-size.width / 2 + 12}px` }
-            break
-        case 'bottom':
-            positionStyle = { bottom: `${-size.height - 4}px`, left: `${-size.width / 2 + 12}px` }
-            break
-        case 'left':
-            positionStyle = { top: `${-size.height / 2 + 12}px`, left: `${-size.width - 4}px` }
-            break
-        case 'right':
-            positionStyle = { top: `${-size.height / 2 + 12}px`, right: `${-size.width - 4}px` }
-            break
-        case 'top-left':
-            positionStyle = { top: `${-size.height - 2}px`, left: `${-size.width - 2}px` }
-            break
-        case 'top-right':
-            positionStyle = { top: `${-size.height - 2}px`, right: `${-size.width - 2}px` }
-            break
-        case 'bottom-left':
-            positionStyle = { bottom: `${-size.height - 2}px`, left: `${-size.width - 2}px` }
-            break
-        default:
-            positionStyle = { bottom: `${-size.height - 2}px`, right: `${-size.width - 2}px` }
-            break
+    if (size.width > window.innerWidth - 16) {
+        popupStyle.left = 8 - buttonLocation?.left
+        popupStyle.width = window.innerWidth - 16
+        console.log('i run')
+    } else if (window.innerWidth - 8 < buttonLocation?.left + 11 + size.width / 2) {
+        popupStyle.left = window.innerWidth - size.width - buttonLocation?.left - 8
     }
 
     return (
-        <div className={`tw-relative tw-flex ${props.classAppend}`}>
-            <button className={`tw-rounded-full focus:tw-outline-none hover:tw-shadow-md ${props.buttonClass ? props.buttonClass : 'tw-text-gray-600 active:tw-text-gray-800'} tw-transition-colors tw-duration-300`} onClick={() => { setOpen(!open) }} ref={buttonRef}>
+        <div className={`tw-relative tw-inline-flex ${classAppend}`}>
+            <button className={`tw-rounded-full focus:tw-outline-none hover:tw-shadow-md ${buttonClass ? buttonClass : 'tw-text-gray-600 active:tw-text-gray-800'} tw-transition-colors tw-duration-300`} onClick={() => { setOpen(!open) }} ref={buttonRef}>
                 <QuestionMarkSVG style={{ width: 22, height: 22 }} />
             </button>
 
-            <div className={`tw-absolute ${props.popupClass || 'tw-w-72'} tw-bg-indigo-600 tw-bg-opacity-90 tw-text-white tw-font-normal tw-rounded-lg tw-shadow-md tw-p-2 tw-z-10 ${open ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300`} style={{ ...positionStyle, fontSize: '13px' }} ref={divRef}>
+            <div className={`tw-absolute tw-w-72 tw-bg-indigo-600 tw-bg-opacity-90 tw-text-white tw-font-normal tw-rounded-lg tw-shadow-md tw-p-2 tw-z-10 ${open ? 'tw-visible tw-opacity-100' : 'tw-invisible tw-opacity-0'} tw-transition-all tw-duration-300 tw-text-13px`} style={popupStyle} ref={divRef}>
                 <div className="tw-ml-2">
-                    {props.main}
+                    {main}
                 </div>
-                {props.list &&
+                {list &&
                     <ul className="tw-list-disc tw-pl-6 tw-mt-1">
-                        {
-                            props.list.map((item, i) =>
-                                <li className="tw-py-1" key={i}>
-                                    {item}
-                                </li>
-                            )
+                        {list.map((item, i) =>
+                            <li className="tw-py-1" key={i}>
+                                {item}
+                            </li>
+                        )
                         }
                     </ul>
                 }

@@ -129,7 +129,7 @@ export default function LetterUpload() {
                   - Сонирхол илэрхийлэх албан тоот
                </span>
                {!userId &&
-                  <HelpPopup classAppend="" main="Та сонирхол илэрхийлэх албан тоотоо файлаар хавсаргах юм уу, эсвэл цахим хэлбэрээр үүсгэж болно." position="bottom" />
+                  <HelpPopup classAppend="" main="Та сонирхол илэрхийлэх албан тоотоо файлаар хавсаргах юм уу, эсвэл цахим хэлбэрээр үүсгэж болно." />
                }
             </div>
 

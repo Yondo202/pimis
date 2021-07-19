@@ -10,7 +10,7 @@ import EmialSender2 from "components/emailSend/EmailSend2";
 import LoginDoneHome2 from "components/LoginDoneHome/Home";
 import MainRequestOld from "containers/requestComp/mainRequestOld";
 import { UrgudulStore } from "components/utilities/urgudulContext"
-import UrgudulNavigator from "pages/urgudul/Page"
+import UrgudulNavigator from "pages/urgudul/Navigator"
 import FirstEvaluation from "pages/decision_making/5a/Page";
 import CompilationCheck from "pages/decision_making/5b/Page";
 import AnalystReport from "pages/decision_making/5c/Page";
@@ -22,14 +22,14 @@ import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 // import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import TrainingFrontPage from 'pages/training/frontPage';
-import UrgudulPage1 from 'pages/urgudul/pages/1st';
-import UrgudulPage2 from 'pages/urgudul/pages/2nd';
-import UrgudulPage3 from 'pages/urgudul/pages/3rd';
-import UrgudulPage4 from 'pages/urgudul/pages/4th';
-import UrgudulPage5 from 'pages/urgudul/pages/5th';
-import UrgudulPage6 from 'pages/urgudul/pages/6h';
-import UrgudulPage7 from 'pages/urgudul/pages/7th';
-import UrgudulPage8 from 'pages/urgudul/pages/8th';
+import UrgudulPage1 from 'pages/urgudul/pages/page1';
+import UrgudulPage2 from 'pages/urgudul/pages/page2';
+import UrgudulPage3 from 'pages/urgudul/pages/page3';
+import UrgudulPage4 from 'pages/urgudul/pages/page4';
+import UrgudulPage5 from 'pages/urgudul/pages/page5';
+import UrgudulPage6 from 'pages/urgudul/pages/page6';
+import UrgudulPage7 from 'pages/urgudul/pages/page7_company';
+import UrgudulPage8 from 'pages/urgudul/pages/page8';
 
 
 function UsersRoute() {
@@ -62,16 +62,6 @@ function UsersRoute() {
                     <Route path="/5a" component={FirstEvaluation} />
                     <Route path="/5b" component={CompilationCheck} />
                     <Route path="/5c" component={AnalystReport} />
-
-                    <Route path="/urgudul-1" component={UrgudulPage1} />
-                    <Route path="/urgudul-2" component={UrgudulPage2} />
-                    <Route path="/urgudul-3" component={UrgudulPage3} />
-                    <Route path="/urgudul-4" component={UrgudulPage4} />
-                    <Route path="/urgudul-5" component={UrgudulPage5} />
-                    <Route path="/urgudul-6" component={UrgudulPage6} />
-                    <Route path="/urgudul-7" component={UrgudulPage7} />
-                    <Route path="/urgudul-8" component={UrgudulPage8} />
-
                     <Route path="/trainings">
                         <TrainingFrontPage user={true} />
                     </Route>

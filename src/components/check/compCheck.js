@@ -11,7 +11,6 @@ import AccessToken from '../../context/accessToken'
 import axios from '../../axiosbase'
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import Modal from 'react-awesome-modal';
-import { motion } from 'framer-motion';
 import DocumentTitle from 'containers/document/DocumentTitle';
 
 function CompCheck() {
@@ -129,7 +128,6 @@ function CompCheck() {
   }
 
   return (
-    <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
       <Component1 className="container" >
         {param !== "user" ? (updateMount === 1 ? <div className="boxShadow">
           <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
@@ -287,7 +285,6 @@ function CompCheck() {
           </div>
           )}
       </Component1>
-    </motion.div>
 
   )
 }
@@ -309,19 +306,18 @@ const NullParent = styled.div`
         }
     }
 `
-
-let easing = [0, 0, 0.56, 0.95];
-const textVariants2 = {
-  exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
-  enter: { y: 0, opacity: 1, transition: { delay: 0.2, duration: 0.6, ease: easing } }
-};
-
 const animate = keyframes`
   0% { transform:translateX(100px); opacity:0; }
   100% { transform:translate(0px); opacity:1;  }
 `
 
+const animate2 = keyframes`
+  0% { transform:translateY(-70px); opacity:0; }
+  100% { transform:translateY(0px); opacity:1;  }
+`
+
 const Component1 = styled.div`
+    animation:${animate2} 0.7s ease;
     margin-top:40px;
     padding-bottom:80px;
     color:rgba(${textColor},0.9);

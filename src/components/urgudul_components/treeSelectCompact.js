@@ -7,10 +7,10 @@ import React, { useRef, useState } from 'react'
 import { Transition, animated } from 'react-spring/renderprops'
 
 
-export default function TreeSelectCompact(props) {
-    const display = props.displayName
-    const parents = props.data.filter(item => item.parentId === 0)
-    const selectedName = props.data.filter(item => item.id === props.value)[0]?.[display]
+export default function TreeSelectCompact({ displayName, value, data, setter, name, index, index1, classAppend, validate, placeholder, selectWidth }) {
+    const display = displayName
+    const parents = data.filter(item => item.parentId === 0)
+    const selectedName = data.filter(item => item.id === value)[0]?.[display]
     const [open, setOpen] = useState(false)
     const [search, setSearch] = useState('')
     const buttonRef = useRef()
@@ -25,17 +25,17 @@ export default function TreeSelectCompact(props) {
     //     return () => document.removeEventListener('mousedown', handleClickOutside)
     // })
     const handleSelectId = (value) => {
-        props.handleChange(props.name, value, props.index, props.index1)
+        setter(name, value, index, index1)
         setOpen(false)
     }
 
     // const containerHeight = Math.min(window.innerHeight - buttonRef.current?.getBoundingClientRect().bottom - 10, 360)
 
     return (
-        <div className={`tw-relative ${props.classAppend}`}>
-            <button className={`tw-flex tw-items-center focus:tw-outline-none tw-text-sm tw-rounded ${props.validate ? 'tw-bg-red-100 active:tw-bg-red-200' : 'tw-bg-indigo-50 active:tw-bg-indigo-100'} tw-px-1.5 tw-py-0.5 tw-ml-3 tw-transition-colors`} style={{ width: 193 }} onClick={() => setOpen(!open)} ref={buttonRef}>
+        <div className={`tw-relative ${classAppend}`}>
+            <button className={`tw-flex tw-items-center focus:tw-outline-none tw-text-sm tw-rounded ${validate ? 'tw-bg-red-100 active:tw-bg-red-200' : 'tw-bg-indigo-50 active:tw-bg-indigo-100'} tw-px-1.5 tw-py-0.5 tw-ml-3 tw-transition-colors`} style={{ width: 193 }} onClick={() => setOpen(!open)} ref={buttonRef}>
                 <div className="tw-mr-1 tw-relative tw-text-left tw-truncate tw-text-13px" title={selectedName}>
-                    {selectedName || <span className="tw-text-gray-600">{props.placeholder}</span>}
+                    {selectedName || <span className="tw-text-gray-600">{placeholder}</span>}
                 </div>
                 <ChevronDownSVG className="tw-w-4 tw-h-4 tw-text-gray-600 tw-ml-auto tw-flex-shrink-0" />
             </button>
@@ -47,7 +47,7 @@ export default function TreeSelectCompact(props) {
                 leave={{ height: 0, opacity: 0 }}
                 config={{ tension: 300, clamp: true }}>
                 {item => item && (anims =>
-                    <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-fixed tw-z-10 tw-text-13px" style={{ width: props.selectWidth, top: buttonRef.current?.getBoundingClientRect().top + 26, left: buttonRef.current?.getBoundingClientRect().left, ...anims }}>
+                    <animated.div className="tw-overflow-y-auto tw-overflow-x-hidden tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-fixed tw-z-10 tw-text-13px" style={{ width: selectWidth, top: buttonRef.current?.getBoundingClientRect().top + 26, left: buttonRef.current?.getBoundingClientRect().left, ...anims }}>
                         <div className="tw-flex tw-justify-end tw-sticky tw-top-0 tw-bg-white">
                             <div className={`tw-flex tw-items-center tw-border-b ${search ? 'tw-border-blue-700 tw-text-blue-700' : 'tw-border-gray-600 tw-text-gray-600'} tw-pb-0.5 tw-my-1.5 tw-mr-2 tw-transition-colors`}>
                                 <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
@@ -56,7 +56,7 @@ export default function TreeSelectCompact(props) {
                         </div>
 
                         {parents.map(parent =>
-                            <Tree parent={parent} childs={props.data.filter(item => item.parentId === parent.id && item[display].toLowerCase().includes(search.toLowerCase()))} display={display} handleSelectId={handleSelectId} value={props.value} />
+                            <Tree parent={parent} childs={data.filter(item => item.parentId === parent.id && item[display].toLowerCase().includes(search.toLowerCase()))} display={display} handleSelectId={handleSelectId} value={value} />
                         )}
 
                         <div className="tw-flex tw-justify-end tw-sticky tw-bottom-0">
