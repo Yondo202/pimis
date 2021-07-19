@@ -235,7 +235,7 @@ function CompCheck2() {
                   })}
                 </div>)
             }):null}
-            
+
 
             <Modal visible={visible2} width="800" effect="fadeInDown" >
               <div className="Modaltest">
@@ -862,6 +862,7 @@ const Component1 = styled.div`
         }
     }
 `
+
 
 const allData = [
   {
