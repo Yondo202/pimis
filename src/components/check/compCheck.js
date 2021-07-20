@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { useHistory } from 'react-router-dom'
 import { IoMdCheckmarkCircle, IoIosArrowBack } from 'react-icons/io';
-import { fontFamily, textColor, Color, fontSize, NextBtn } from '../theme';
+import { fontFamily, textColor, Color, fontSize, NextBtn, InputStyle } from '../theme';
 import { AiOutlineSend, AiOutlineCheckCircle } from 'react-icons/ai'
 import { CgDanger } from 'react-icons/cg'
 import UserContext from '../../context/UserContext'
@@ -12,6 +12,12 @@ import axios from '../../axiosbase'
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import Modal from 'react-awesome-modal';
 import DocumentTitle from 'containers/document/DocumentTitle';
+import FileUpload from "components/check/FileUpload"
+import{  CustomFileUpload } from "components/misc/CustomStyle";
+import { FaPenNib } from "react-icons/fa";
+
+const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
 
 function CompCheck() {
   DocumentTitle("Шалгуур хангалтыг тулгах хуудас");
@@ -65,7 +71,8 @@ function CompCheck() {
     }
   }
 
-  const clickHandles = (btn) => {
+  const clickHandles = (e,btn) => {
+    e.preventDefault();
     let rs2 = document.querySelectorAll(".inpTest333"); let arr2 = Array.from(rs2); let soloObject2 = {}; const cond = {};
     arr2.forEach((element, i) => {
       if (element.checked === true) {
@@ -128,6 +135,7 @@ function CompCheck() {
 
   return (
       <Component1 className="container" >
+        <form onSubmit={e => clickHandles(e, btnCond)} >
         {param !== "user" ? (updateMount === 1 ? <div className="boxShadow">
           <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
           {initialData.map((el, i) => {
@@ -146,8 +154,8 @@ function CompCheck() {
                       <div className="row" >
                         <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
                         <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
-                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === true ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true" /></div>
-                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === false ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false" /></div>
+                        <div className="radios col-md-1 col-sm-2 col-2"><input required checked={updateMount === 1 ? elem.value === true ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true" /></div>
+                        <div className="radios col-md-1 col-sm-2 col-2"><input required checked={updateMount === 1 ? elem.value === false ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false" /></div>
                       </div>
                     </div>
                   )
@@ -182,14 +190,80 @@ function CompCheck() {
                         <div className="row" >
                           <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
                           <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
-                          <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === true ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true" /></div>
-                          <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === false ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false" /></div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === true ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true" required /></div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === false ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false" required /></div>
                         </div>
                       </div>
                     )
                   })}
                 </div>)
             })}
+
+            
+            <div className="CompanyInformation">
+                <div className="title">Мэдүүлэг бөглөсөн:</div>
+                <div className="roww">
+                    <div className="coll">
+                      <div className="label">Аж ахуйн нэгжийн нэр :</div>
+                      <InputStyle><input type="text" required /><div className="line" /></InputStyle>
+                    </div>
+                    <div className="coll">
+                    <div className="label">Гүйцэтгэх захирлын овог, нэр :</div>
+                      <InputStyle><input type="text" required /><div className="line"   /></InputStyle>
+                    </div>
+                </div>
+
+                <div className="roww">
+                    <div className="coll">
+                      <div className="label">Гар утасны дугаар :</div>
+                      <InputStyle><input type="number" required /><div className="line"  /></InputStyle>
+                    </div>
+                    <div className="coll">
+                    <div className="label">Имэйл хаяг:</div>
+                      <InputStyle><input type="email" required /><div className="line"  /></InputStyle>
+                    </div>
+                </div>
+
+                <div className="roww">
+                    <div className="coll">
+                      <div className="label">Огноо :</div>
+                      <InputStyle><input type="date" max={Currentdate} required /><div className="line" /></InputStyle>
+                    </div>
+                    <div className="coll" />
+                </div>
+
+                <div className="roww">
+                    <div className="coll">
+                      <div className="label">Гүйцэтгэх албан тушаалтны гарын үсэг:</div>
+                      <div className="infoPrent">
+                        <div className="draw">
+                          <div className="smTitle">Шинээр зурах:</div>
+                          <CustomFileUpload>
+                            <div className="contentPar contentPar2">
+                              <div className="inputSector">
+                                <label className="inputStyle inputStyle2">
+                                  <FaPenNib />
+                                </label>
+                              </div>
+                            </div>
+                          </CustomFileUpload>
+                        </div>
+                        <div className="draw">
+                          <div className="smTitle">Хавсаргах:</div>
+                          <FileUpload />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="coll">
+                      <div className="label">Тамга :</div>
+                      <div className="draw">
+                        <div className="smTitle">Хавсаргах</div>
+                        <FileUpload />
+                      </div>
+                    </div>
+                </div>
+            </div>
+
 
             <Modal visible={visible2} width="800" effect="fadeInDown" >
               <div className="Modaltest">
@@ -279,10 +353,11 @@ function CompCheck() {
               </div>
               : (<div className="buttonPar">
                 <div style={{ opacity: `${opacity2}` }} className="errtext"><CgDanger /> {FinalErrorText}</div>
-                <NextBtn onClick={() => clickHandles(btnCond)} style={BtnSpin === false ? { width: "40%" } : { width: "10%" }} className="SubmitButton" type="button"> {BtnSpin === false ? <>Цааш <div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div> </> : <img src="/gifff.gif" alt="" />} </NextBtn>
+                <NextBtn style={BtnSpin === false ? { width: "40%" } : { width: "10%" }} className="SubmitButton" type="submit"> {BtnSpin === false ? <>Цааш <div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div> </> : <img src="/gifff.gif" alt="" />} </NextBtn>
               </div>)}
           </div>
           )}
+        </form>
       </Component1>
 
   )
@@ -322,6 +397,41 @@ const Component1 = styled.div`
     color:rgba(${textColor},0.9);
     transition: all 0.5s ease-out;
     font-family: ${fontFamily};
+        .CompanyInformation{
+          background-color:#ffffff;
+          padding: 24px 26px;
+          .roww{
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:26px;
+            .coll{
+              width:45%;
+              .label{
+                font-weight:500;
+                margin-bottom:8px;
+              }
+              .draw{
+                .smTitle{
+                  font-weight:400;
+                  margin:6px 0px;
+                }
+              }
+              .infoPrent{
+                display:flex;
+                gap:30px;
+              }
+              input{
+                background-color:#f6f8fa;
+              }
+            }
+          }
+          .title{
+            font-size:17px;
+            font-weight:500;
+            color:rgb(${textColor});
+            margin-bottom:25px;
+          }
+        }
         .Modaltest{
           position:relative;
           width:100%;
