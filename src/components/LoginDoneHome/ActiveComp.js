@@ -47,9 +47,9 @@ function ActiveComp(props) {
                                 1. Анхан шатны үнэлгээ
                             </Link>
                         <div className="line" />
-                        <Link to={props.prew ? `/5b/${props?.data?.project?.id}` : '/5b'} className={props?.data?.evaluation5b ? `itemsActive` : `items`}><div className="helpArr"></div> 2. Баримтжуулах бүрдүүлбэрийн шалгах хуудас </Link>
+                        <Link to={props.prew ? `/5b/${props?.data?.project?.id}` : '/5b'} className={props?.data?.evaluation5b ? `itemsActive` : `items`}><div className="helpArr"></div> 2. Бичиг баримтын бүрдүүлбэрийг шалгах хуудас</Link>
                         <div className="line" />
-                        <Link to={props.prew ? `/5c/${props?.data?.project?.id}` : '/5c'} className={props?.data?.evaluation5c ? `items itemsActive` : `items`}>3. Бизнес шинжээчийн шинжилгээний тайлан </Link>
+                        <Link to={props.prew ? `/5c/${props?.data?.project?.id}` : '/5c'} className={props?.data?.evaluation5c ? `items itemsActive` : `items`}>3. Шинжилгээний тайлан</Link>
                     </div>
                     {/* <div className="lineFull" ></div>
                     <Link to={props.prew ? `/5c/${props?.data?.project?.id}` : '/5c'} className={props?.data?.evaluation5c ? `items resultActive` : `items resultDesable`}>3. Бизнес шинжээчийн шинжилгээний тайлан </Link> */}
@@ -88,7 +88,7 @@ function ActiveComp(props) {
                     <div className="mains">
                         <div className="items arrHelp"><div className="helpArr"></div>4. Хийгдсэн ажлуудын санхүүгийн баримтууд</div>
                         <div className="line" ></div>
-                        <div className="items">5. Санхүүгийн дэмжлэг буюу буцаан олголтын хүсэлт</div>
+                        <div className="items">5. Санхүүгийн дэмжлэгийн төлбөрийн нэхэмжлэх</div>
                         <div className="line" ></div>
                         <div className="items">6. Ажлын гүйцэтгэл хүлээн авах маягт</div>
                         <div className="line" ></div>
