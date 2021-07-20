@@ -16,21 +16,31 @@ function Home() {
 
     useEffect(() => {
         if (userId) {
-            axios.get(`pps-infos/registered-companies`, {
-                headers: { Authorization: AccessToken() },
-                params: projectId ? { userId: userId, projectId: projectId } : { userId: userId },
-            }).then((res) => {
-                if (res.data.data[0]) { setInfData(res.data.data[0]) }
-            })
+            Go();
         } else {
-            let userID = localStorage.getItem("userId");
-            axios.get(`pps-infos/registered-companies?userId=${userID}`, {
+            GoUser();
+        }
+    }, []);
+
+    const Go = async () =>{
+       await axios.get(`pps-infos/registered-companies`, {
+            headers: { Authorization: AccessToken() },
+            params: projectId ? { userId: userId, projectId: projectId } : { userId: userId },
+        }).then((res) => {
+            if (res.data.data[0]) { setInfData(res.data.data[0]) }
+        })
+    }
+    const GoUser = async () =>{
+        let userID = localStorage.getItem("userId");
+           await axios.get(`pps-infos/registered-companies?userId=${userID}`, {
                 headers: { Authorization: AccessToken() }
             }).then((res) => {
                 if (res.data.data[0]) { setInfData(res.data.data[0]) }
+            }).catch(err=>{
+                console.log(`err`, err.response)
             })
-        }
-    }, []);
+    }
+
 
     return (
         <HomeComponent style={userId ? { maxWidth: "2000px" } : { maxWidth: "1160px" }} className={`container`}>
@@ -55,7 +65,8 @@ function Home() {
                             <div className="col-md-4"><div className="headItems"><span className="text">Бизнес шинжээчийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span></div></div>
                         </div>}
                     </div>
-                    {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />}
+                    {/* {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />} */}
+                    <ActiveComp prew={userId} data={infData} />
                 </>}
         </HomeComponent>
     )

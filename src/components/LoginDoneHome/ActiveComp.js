@@ -5,12 +5,14 @@ import { edplanFront } from "axiosbase"
 
 function ActiveComp(props) {
     DocumentTitle("EDP");
+
+    console.log(`props?.data?.criteria`, props?.data?.criteria);
     return (
         <div style={{ paddingTop: 20 }} className="row">
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <Link to={!props.prew ? `/check/user` : `/check/${props.prew}`} className={props?.data?.criteria !== 0 ? props?.data?.criteria === 1 ? `items itemsNotApproved` : `itemsActive` : `items`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
+                        <Link to={!props.prew ? `/check/user` : `/check/${props.prew}`} className={props?.data?.criteria !== 0 ? props?.data?.criteria === 2 ? `itemsActive`: `items items` : `items`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
                         {/* <div className="line line2" ></div> */}
                         <div className="line" ></div>
                         <Link to={!props.prew ? `/request/user` : `/request/${props.prew}`}

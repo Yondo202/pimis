@@ -73,6 +73,7 @@ function Signup() {
   }
 
   const handleClick = () => {
+      console.log("+++++++++++++++++++++++++++");
       let rs = document.querySelectorAll(".userInp"); let arr = Array.from(rs); let finalOne = {};
       arr.forEach(element => {
         if (element.value !== "") {
@@ -257,7 +258,7 @@ function Signup() {
               </div>
 
               <div className="SubmitButtonPar">
-                <NextBtn style={cond ? { width: `20%`, opacity: `0.7` } : { width: `100%`, opacity: `1` }} disabled={true} onClick={handleClick} className="SubmitButton" type="button">{cond ? <img src="/gif1.gif" alt="" /> : `Бүртгүүлэх`}  <div style={cond ? { display: `none` } : { display: `flex` }} className="flexchild"><AiOutlineSend /> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
+                <NextBtn style={cond ? { width: `20%`, opacity: `0.7` } : { width: `100%`, opacity: `1` }} onClick={handleClick} className="SubmitButton" type="button">{cond ? <img src="/gif1.gif" alt="" /> : `Бүртгүүлэх`}  <div style={cond ? { display: `none` } : { display: `flex` }} className="flexchild"><AiOutlineSend /> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </NextBtn>
                 {PassText ?
                 (<span className="colorText" style={{ transform: `scale(${scale})` }}>{PassText}</span>)
                 :(<span className="colorText" style={{ transform: `scale(${scale})` }}>{signUpCtx.errMsgSignup.msg}</span>)}

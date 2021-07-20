@@ -3,23 +3,33 @@ import { useParams } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { useHistory } from 'react-router-dom'
 import { IoMdCheckmarkCircle, IoIosArrowBack } from 'react-icons/io';
-import { fontFamily, textColor, Color, fontSize, NextBtn } from '../theme';
+import { fontFamily, textColor, Color, fontSize, NextBtn, InputStyle, ColorRgb } from '../theme';
 import { AiOutlineSend, AiOutlineCheckCircle } from 'react-icons/ai'
 import { CgDanger } from 'react-icons/cg'
 import { RiArrowDownSLine } from 'react-icons/ri'
 import UserContext from '../../context/UserContext'
 import AccessToken from '../../context/accessToken'
-import axios from '../../axiosbase'
+import axios, {FrontUrl} from '../../axiosbase'
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import Modal from 'react-awesome-modal';
 import { motion } from 'framer-motion';
 import DocumentTitle from 'containers/document/DocumentTitle';
+import FileUpload from "components/check/FileUpload"
+import{  CustomFileUpload } from "components/misc/CustomStyle";
+
+import { FaPenNib } from "react-icons/fa";
+import SignatureCanvas from 'react-signature-canvas'
+
+const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
+const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
 
 function CompCheck2() {
   DocumentTitle("Шалгуур хангалтыг тулгах хуудас");
+  const localId = localStorage.getItem("userId");
   const init = "once";
   const param = useParams().url;
   const ctx = useContext(UserContext);
+  const [ usersInfo, setUsersInfo ] = useState({});
   const history = useHistory();
   const [showFinal, setShowFinal] = useState(false);
   const [count, setCount] = useState(0);
@@ -36,12 +46,15 @@ function CompCheck2() {
   const [procent, setProcent] = useState('0');
   const [FinalErrorText, setFinalErrorText] = useState("");
   const [ target, setTarget ] = useState(null);
+  const [imgData, setImgData ] = useState(null);
+  const [visibleSig, setVisibleSig] = useState(false);
+  let [ sigCanvas, setSigCanvas] = useState({});
+  let [ trimmedDataURL, setTrimmedDataURL] = useState(null);
+  const [ selectLogo, setSelectLogo ] = useState({});
 
   useEffect(() => {
-    const localId = localStorage.getItem("userId");
     void async function fetch() {
       const data = await axios.get(`criterias${param !== "user" ? `?userId=${param}` : `?userId=${localId}`}`, { headers: { Authorization: AccessToken() } });
-      console.log(`data`, data);
       let keys = Object.keys(data.data.data);
       if (keys.length > 1) {
         setSuccess(data.data.data.approved);
@@ -52,6 +65,13 @@ function CompCheck2() {
       } else { 
         console.log("^^data alga");
       }
+    }()
+    void async function fetch() {
+      const data = await axios.get(`users/${localId}`, { headers: { Authorization: AccessToken() } });
+      setUsersInfo(data.data.data);
+      setTarget(data.data.data?.project_type);
+      setImgData(data.data.data?.signature);
+      setSelectLogo({ fileUrl: data.data.data?.company_stamp });
     }()
   }, [updateMount]);
   const NextPageHandle = (el) => { history.push(el); };
@@ -70,10 +90,10 @@ function CompCheck2() {
       setVisible(false);
     }
   }
-
-  const clickHandles = (btn) => {
+  const clickHandles = (e,btn) => {
+    e.preventDefault();
     let rs2 = document.querySelectorAll(".inpTest333"); let arr2 = Array.from(rs2); let soloObject2 = {}; const cond = {};
-    arr2.forEach((element, i) => {
+    arr2.forEach(element => {
       if (element.checked === true) {
         let field = element.name; let value = element.value; let id = element.id; soloObject2[id + field] = value;
       }
@@ -86,39 +106,66 @@ function CompCheck2() {
     const Procent = keys.length * 100 / 14;
     const FinalProcent = Math.round(Procent);
 
-    if (keys.length < 14) {
+    let inp = document.querySelectorAll(".getC"); let arr = Array.from(inp); let userInfos = {};
+
+    arr.forEach(elem => {
+      userInfos[elem.name] = elem.value;
+    });
+
+    userInfos["signature"] = imgData;
+    userInfos["project_type"] = target === "Аж ахуйн нэгж"?1:2;
+    userInfos["company_stamp"] = FrontUrl + selectLogo.fileUrl?.replace("public", "");
+
+    if(keys.length < 14) {
       setOpacity("1");
       setProcent(FinalProcent);
       setTimeout(() => { setOpacity("0"); }, 5000);
-    } else if (finalCond.length > 0) {
+    }else if(!imgData){
+      setOpacity2("1");
+      setFinalErrorText("Гүйцэтгэх албан тушаалтны гарын үсэгийг оруулна уу")
+      setTimeout(() => {setOpacity2("0");}, 5000)
+    }else if(!selectLogo?.fileUrl){
+      setOpacity2("1");
+      setFinalErrorText("Тамгаа хавсаргана уу")
+      setTimeout(() => {setOpacity2("0");}, 5000);
+    }else if (finalCond.length > 0) {
       setOpacity("0");
       setSecondChance(cond);
       if (btn === "twice") {
         soloObject2["approved"] = 1;
-        soloObject2["target"] = target;
+        // soloObject2["target"] = target;
         setBtnSpin(true);
         setOpacity("0");
         setOpacity2("0");
         setVisible2(false);
-        console.log(`soloObject2`, soloObject2);
-        axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(res => {
-          setUpdateMount(2); ctx.alertText('orange, Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.', true); setBtnSpin(false);
-          setTimeout(() => { history.push('/'); }, 5000);
-        }).catch(_=> { setFinalErrorText("Алдаа гарлаа."); setBtnSpin(false); });
+        SendData(soloObject2, false, userInfos);
+    
       } else if (btn === "once") {
         setVisible2(true);
       }
     } else {
       soloObject2["approved"] = 2;
-      soloObject2["target"] = target;
+      // soloObject2["target"] = target;
       setBtnSpin(true);
       setOpacity("0");
       setOpacity2("0");
-      console.log(`soloObject2`, soloObject2);
-      axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(res => {
-        setUpdateMount(2); ctx.alertText('green, Амжилттай илгээгдлээ', true); setBtnSpin(false); setVisible(true);
-      }).catch(_=> { setFinalErrorText("Алдаа гарлаа."); setBtnSpin(false); });
+      SendData(soloObject2, true, userInfos);
+ 
     }
+  }
+
+  const SendData = (soloObject2, cond, userInfos) =>{
+    axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(_=> {
+
+          axios.put(`users/${localId}`, userInfos, { headers: { Authorization: AccessToken() }}).then(res=>{
+            setUpdateMount(2);
+            if(cond){ ctx.alertText('green, Амжилттай илгээгдлээ', true); }
+            else{ ctx.alertText('orange, Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.', true); }
+            setBtnSpin(false);
+            setTimeout(() => { history.push('/'); }, 5000);
+          })
+
+    }).catch(_=> { setFinalErrorText("Алдаа гарлаа."); setBtnSpin(false); });
   }
 
   const closeMModalX = () => { setVisible2(false); }
@@ -136,32 +183,37 @@ function CompCheck2() {
   }
 
   const TargetHandle= (e) =>{
-    setTarget(e);
-    let arr = [];
-    allData.forEach(el=>{
-      if(el.group === "a"){
-        el.items.forEach(elem=>{
-          if(elem.cond){
-            if(e==="Кластер"){
-              elem.name = "Кластерын ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар кластерын тэргүүлэгч аж ахуйн нэгж доод тал нь 300 сая, дээд тал нь 150 тэрбум, кластерын гишүүн аж ахуйн нэгж тус бүр доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
+    if(updateMount===0 && param === "user"){
+      setTarget(e);
+      let arr = [];
+      allData.forEach(el=>{
+        if(el.group === "a"){
+          el.items.forEach(elem=>{
+            if(elem.cond){
+              if(e===2){
+                elem.name = "Кластерын ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар кластерын тэргүүлэгч аж ахуйн нэгж доод тал нь 300 сая, дээд тал нь 150 тэрбум, кластерын гишүүн аж ахуйн нэгж тус бүр доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
+              }
+              if(e===1){
+                elem.name = "Аж ахуйн нэгжийн ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
+              }
             }
-            if(e==="Аж ахуйн нэгж"){
-              elem.name = "Аж ахуйн нэгжийн ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
-            }
-          }
-        })
-        arr.push(el);
-      }else{
-        arr.push(el);
-      }
-    });
-    setInitialData(arr);
+          })
+          arr.push(el);
+        }else{
+          arr.push(el);
+        }
+      });
+      setInitialData(arr);
+    }
   }
+  const clear = () => sigCanvas.clear();
+  const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); setImgData(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); setVisibleSig(false);};
 
   return (
     <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
       <Component1 className="container" >
-        {param !== "user" 
+      <form onSubmit={e => clickHandles( e, btnCond)}>
+        {param !== "user"
         ? (updateMount === 1 
         ? <div className="boxShadow">
           <div className="rowHeader">Шалгуур хангалтыг тулгах хуудас <span className="tseg">*</span></div>
@@ -181,8 +233,8 @@ function CompCheck2() {
                       <div className="row" >
                         <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
                         <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
-                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === true ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true" /></div>
-                        <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === false ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false" /></div>
+                        <div className="radios col-md-1 col-sm-2 col-2"><input required checked={updateMount === 1 ? elem.value === true ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true" /></div>
+                        <div className="radios col-md-1 col-sm-2 col-2"><input required checked={updateMount === 1 ? elem.value === false ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false" /></div>
                       </div>
                     </div>
                   )
@@ -205,8 +257,8 @@ function CompCheck2() {
             <div className="TargetParent">
               <div className="title">Та аль ангилалд өргөдөл гаргаж байна вэ?</div>
               <div className="Target">
-                <div onClick={()=>TargetHandle('Аж ахуйн нэгж')} className={`items ${target===`Аж ахуйн нэгж`?`A11`:``}`}><span>Аж ахуйн нэгж</span><RiArrowDownSLine /></div>
-                <div onClick={()=>TargetHandle('Кластер')}  className={`items ${target===`Кластер`?`A11`:``}`}><span>Кластер</span> <RiArrowDownSLine /></div>
+                <div onClick={()=>TargetHandle(1)} className={`items ${target===1?`A11`:``}`}><span>Аж ахуйн нэгж</span><RiArrowDownSLine /></div>
+                <div onClick={()=>TargetHandle(2)}  className={`items ${target===2?`A11`:``}`}><span>Кластер</span> <RiArrowDownSLine /></div>
               </div>
             </div>
 
@@ -227,8 +279,8 @@ function CompCheck2() {
                         <div className="row" >
                           <div className="number col-md-1 col-sm-1 col-1">{`${ind + 1}`}</div>
                           <div className="texts col-md-9 col-sm-7 col-7">{elem.name}</div>
-                          <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === true ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true" /></div>
-                          <div className="radios col-md-1 col-sm-2 col-2"><input checked={updateMount === 1 ? elem.value === false ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false" /></div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input required checked={updateMount === 1 ? elem.value === true ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="true" /></div>
+                          <div className="radios col-md-1 col-sm-2 col-2"><input required checked={updateMount === 1 ? elem.value === false ? true : false : null} className={`getinput22 inpTest333`} type="radio" name={el.group + (ind + 1)} value="false" /></div>
                         </div>
                       </div>
                     )
@@ -236,6 +288,105 @@ function CompCheck2() {
                 </div>)
             }):null}
 
+
+            <div className="FinalBtn">
+              <div style={{ opacity: `${opacity}` }} className="errtext">Таны асуулга {procent}% байна..</div>
+              <div style={{ opacity: `${opacity}` }} className="errtext">Та гүйцэд бөгөлнө үү...</div>
+            </div>
+
+
+            {target?<div className="CompanyInformation">
+                <div className="title">Мэдүүлэг бөглөсөн:</div>
+                <div className="roww">
+                    <div className="coll">
+                      <div className="label">Аж ахуйн нэгжийн нэр :</div>
+                      <div className="Fields">{usersInfo?.companyname}</div>
+                    </div>
+                    <div className="coll">
+                      <div className="label">Имэйл хаяг:</div>
+                      {/* <InputStyle><input type="email"  /><div className="line"  /></InputStyle> */}
+                      <div className="Fields">{usersInfo?.email}</div>
+                    </div>
+                </div>
+
+                <div className="roww">
+                    <div className="coll">
+                      <div className="label">Гүйцэтгэх захирлын овог :</div>
+                      {!usersInfo.lastname?
+                      <InputStyle><input type="text" name="lastname" required className="getC" /><div className="line" /></InputStyle>:
+                      <div className="Fields">{usersInfo.lastname}</div>}
+                    </div>
+                    <div className="coll">
+                      <div className="label">Гүйцэтгэх захирлын нэр :</div>
+                      {!usersInfo.firstname?<InputStyle><input type="text" name="firstname" required className="getC" /><div className="line"   /></InputStyle>
+                      :<div className="Fields">{usersInfo.firstname}</div>}
+                    </div>
+                </div>
+
+                <div className="roww">
+                    <div className="coll">
+                      <div className="label">Гар утасны дугаар :</div>
+                      {!usersInfo.phone?<InputStyle><input type="number" name="phone" required className="getC" /><div className="line"  /></InputStyle>
+                      :<div className="Fields">{usersInfo.phone}</div>}
+                    </div>
+                    <div className="coll">
+                      <div className="label">Огноо :</div>
+                      {!usersInfo.criteria_date?<InputStyle><input type="date" name="criteria_date" required className="getC" max={Currentdate}  /><div className="line" /></InputStyle>
+                      :<div className="Fields">{usersInfo.criteria_date}</div>}
+                    </div>
+                </div>
+
+                <div className="roww">
+                    <div className="coll">
+                      <div className="label">Гүйцэтгэх албан тушаалтны гарын үсэг:</div>
+                      <div className="infoPrent">
+                        <div className="draw">
+                        {!imgData?<>
+                            <div className="smTitle">{!imgData? `Зурах`: `Засах` }:</div>
+                            <CustomFileUpload>
+                              <div className="contentPar contentPar2">
+                                <div onClick={()=>setVisibleSig(true)} className="inputSector">
+                                  <label className="inputStyle inputStyle2">
+                                    <FaPenNib />
+                                  </label>
+                                </div>
+                              </div>
+                            </CustomFileUpload>
+                          </>:null}
+                          {imgData? <img className="SingatureImg" src={imgData} alt="гарын үсэг"/>  :  trimmedDataURL ? <img className="SingatureImg" src={trimmedDataURL} alt="гарын үсэг"/> : null} 
+                        </div>
+
+                        {/* {!imgData?<div className="draw">
+                          <div className="smTitle">Хавсаргах:</div>
+                          <FileUpload />
+                        </div>:null} */}
+
+                      </div>
+                    </div>
+                    <div className="coll">
+                      <div className="label">Тамга :</div>
+                      <div className="draw">
+                        {!selectLogo.fileUrl?<div className="smTitle">Хавсаргах</div>:null}
+                        <FileUpload stamp={usersInfo.company_stamp} selectLogo={selectLogo} setSelectLogo={setSelectLogo} />
+                      </div>
+                    </div>
+                </div>
+            </div>:null}
+
+            {updateMount === 1 ? success === 1 ? <div className="Success"> <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> </div>
+              : <div className="Success">
+                <div className="item"><IoMdCheckmarkCircle />
+                    {target===1&&`Түншлэлийн хөтөлбөрийн аж ахуйн нэгжийн ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
+                    {target===2&&`Түншлэлийн хөтөлбөрийн кластерын ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
+                </div>
+                <NextBtn onClick={() => NextPageHandle('/request/user')} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+              </div>
+              : (target&&<div className="buttonPar">
+                <div style={{ opacity: `${opacity2}` }} className="errtext"><CgDanger /> {FinalErrorText}</div>
+                <NextBtn  style={BtnSpin === false ? { width: "40%" } : { width: "10%" }} className="SubmitButton" type="submit"> {BtnSpin === false ? <>Цааш <div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div> </> : <img src="/gifff.gif" alt="" />} </NextBtn>
+              </div>)}
+          </div>
+          )}
 
             <Modal visible={visible2} width="800" effect="fadeInDown" >
               <div className="Modaltest">
@@ -254,7 +405,7 @@ function CompCheck2() {
                       {secondChance.a5 && <li>Экспортыг дэмжих төслийн санхүүгийн дэмжлэгтэйгээр хийхээр төлөвлөсөн ажлуудын санхүүжилтийг урьдчилан гаргах боломжтой бөгөөд түүнийгээ нотлох баримттай эсэх /сүүлийн 2 жилийн мөнгөн урсгалын тайлан, 1 жилийн мөнгөн урсгалын төлөвлөгөө, банкны хуулга гм/</li>}
                       {secondChance.a6 && <li>Аж ахуйн нэгжийн эцсийн өмчлөгч нь улс төрийн нөлөө бүхий этгээд биш эсэх</li>}
 
-                      {secondChance.a7 && <li>{target==="Аж ахуйн нэгж"
+                      {secondChance.a7 && <li>{target===1
                       ?`Аж ахуйн нэгжийн ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх`
                       :`Кластерын ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар кластерын тэргүүлэгч аж ахуйн нэгж доод тал нь 300 сая, дээд тал нь 150 тэрбум, кластерын гишүүн аж ахуйн нэгж тус бүр доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх`
                       }</li>}
@@ -269,12 +420,15 @@ function CompCheck2() {
                     </ul>
                   </div>
                   <div className="btnPar">
-                    <button onClick={() => { clickHandles("twice"); closeModal("shuud") }} className="btn btn-primary">Тийм &nbsp;&nbsp; (илгээх)</button>
-                    <button onClick={() => closeModal(1)} className="btn btn-primary">Үгүй &nbsp;&nbsp; (буцах)</button>
+                    <button onClick={e => { clickHandles(e,"twice"); closeModal("shuud") }} className="btn btn-primary" type="submit">Тийм &nbsp;&nbsp; (илгээх)</button>
+                    <button onClick={() => closeModal(1)} className="btn btn-primary" type="button">Үгүй &nbsp;&nbsp; (буцах)</button>
                   </div>
                 </div>
               </div>
             </Modal>
+        </form>
+
+          
 
             <Modal visible={visible} width="800" effect="fadeInDown" >
               <div className="Modaltest Modaltest22">
@@ -307,28 +461,18 @@ function CompCheck2() {
 
               </div>
             </Modal>
-
-
-
-            <div className="FinalBtn">
-              <div style={{ opacity: `${opacity}` }} className="errtext">Таны асуулга {procent}% байна..</div>
-              <div style={{ opacity: `${opacity}` }} className="errtext">Та гүйцэд бөгөлнө үү...</div>
-            </div>
-
-            {updateMount === 1 ? success === 1 ? <div className="Success"> <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> </div>
-              : <div className="Success">
-                <div className="item"><IoMdCheckmarkCircle />
-                    {target==="Аж ахуйн нэгж"&&`Түншлэлийн хөтөлбөрийн аж ахуйн нэгжийн ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
-                    {target==="Кластер"&&`Түншлэлийн хөтөлбөрийн кластерын ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
+            <Modal visible={visibleSig} width="620" height="380" effect="fadeInDown" onClickAway={()=>setVisibleSig(false)}>
+                <div className="modalPar">
+                    <div className="Canvass">
+                        <SignatureCanvas className='sigCanvas' penColor='blue' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
+                    </div>
+                    <div className="BtnPar">
+                        <button onClick={clear}>Цэвэрлэх</button>
+                        <button onClick={()=>trim()}>Хадгалах</button>
+                        <button onClick={()=>setVisibleSig(false)}>X</button>
+                    </div>
                 </div>
-                <NextBtn onClick={() => NextPageHandle('/request/user')} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
-              </div>
-              : (target&&<div className="buttonPar">
-                <div style={{ opacity: `${opacity2}` }} className="errtext"><CgDanger /> {FinalErrorText}</div>
-                <NextBtn onClick={() => clickHandles(btnCond)} style={BtnSpin === false ? { width: "40%" } : { width: "10%" }} className="SubmitButton" type="button"> {BtnSpin === false ? <>Цааш <div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div> </> : <img src="/gifff.gif" alt="" />} </NextBtn>
-              </div>)}
-          </div>
-          )}
+            </Modal>
       </Component1>
     </motion.div>
 
@@ -355,7 +499,7 @@ const NullParent = styled.div`
 
 let easing = [0, 0, 0.56, 0.95];
 const textVariants2 = {
-  exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
+  exit: { y: -50, opacity: 0, transition: { duration: 0.6, ease: easing } },
   enter: { y: 0, opacity: 1, transition: { delay: 0.2, duration: 0.6, ease: easing } }
 };
 
@@ -380,6 +524,77 @@ const Component1 = styled.div`
     color:rgba(${textColor},0.9);
     transition: all 0.5s ease-out;
     font-family: ${fontFamily};
+    .modalPar{
+          text-align:center;
+          .Canvass{
+              border:1px solid rgba(${ColorRgb},0.5);
+          }
+          .BtnPar{
+          padding:0px 10px;
+          margin:20px 0px;
+          display:flex;
+          flex-direction:row;
+          align-items:center;
+          justify-content:space-between;
+          button{
+              font-weight:500;
+              color:rgba(${textColor},0.9);
+              cursor:pointer;
+              border-style:none;
+              border-radius:4px;
+              padding:6px 14px;
+              background-color:white;
+              box-shadow:1px 1px 8px -2px;
+          }
+          }
+    }
+    .CompanyInformation{
+      background-color:#ffffff;
+      padding: 24px 26px;
+      .roww{
+        display:flex;
+        justify-content:space-between;
+        margin-bottom:26px;
+        .coll{
+          width:45%;
+          .Fields{
+            letter-spacing:0.3px;
+            color:hsl(110, 90%, 30%);
+            font-size:15px;
+          }
+          .label{
+            opacity:0.9;
+            font-weight:500;
+            margin-bottom:8px;
+          }
+          .draw{
+            .smTitle{
+              font-weight:400;
+              margin:6px 0px;
+            }
+            .SingatureImg{
+                border:1px solid rgba(${ColorRgb},0.3);
+                width:260px;
+                height:130px;
+                object-fit:contain;
+            }
+          }
+          .infoPrent{
+            display:flex;
+            gap:30px;
+          }
+          input{
+            background-color:#f6f8fa;
+          }
+        }
+      }
+      .title{
+        font-size:17px;
+        font-weight:500;
+        color:rgb(${textColor});
+        margin-bottom:25px;
+      }
+    }
         .Modaltest{
           position:relative;
           width:100%;
@@ -519,7 +734,8 @@ const Component1 = styled.div`
         border-radius:6px;
         margin-bottom:80px;
         .Success{
-          padding:0px 30px;
+          background-color:#ffffff;
+          padding:15px 30px;
           padding-bottom:30px;
           display:flex;
           align-items:center;

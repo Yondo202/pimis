@@ -15,7 +15,6 @@ import { UrgudulStore } from 'components/utilities/urgudulContext'
 import UrgudulNavigator from 'pages/urgudul/Navigator'
 import Home from 'components/LoginDoneHome/Home'
 import Request from 'containers/requestComp/mainRequestOld'
-// import Check from 'components/check/compCheck'
 import Check2 from 'components/check/CompCheck2'
 import AttachmentUploads from 'pages/attachments/page';
 import FirstEvaluation from 'pages/decision_making/5a/Page';

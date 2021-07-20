@@ -4,7 +4,6 @@ import { Switch, Route } from "react-router-dom";
 import Menu from "containers/menu/menu";
 import { HelpStore } from "context/HelperContext";
 import Feedback from 'components/feedback/Feedback'
-// import CheckComp from "components/check/compCheck";
 import CheckComp2 from "components/check/CompCheck2";
 import EmialSender2 from "components/emailSend/EmailSend2";
 import LoginDoneHome2 from "components/LoginDoneHome/Home";
