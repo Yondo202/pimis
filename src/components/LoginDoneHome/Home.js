@@ -27,7 +27,6 @@ function Home() {
             setTimeout(() => {
                 setHomeC(false);
             }, 4700)
-            
             setTimeout(() => {
                 setInfCond(true);
             }, 5000)

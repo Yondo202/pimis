@@ -20,8 +20,8 @@ const Start = ({userId}) => {
                             <div className="line A2" />
                             <Link to="#" className={`itemsA hide`} >2. Байгаль орчны үнэлгээний асуумж</Link>
                             <div className="line" />
-                            <Link to="#" className={`itemsA hide`} >3. Сонирхол илэрхийлэх албан тоот</Link>
-                            <div className="line" />
+                            <Link to="#" className={`itemsA hide hideAA`} >3. Сонирхол илэрхийлэх албан тоот</Link>
+                            <div className="line B2" />
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,8 @@ const Container = styled.div`
         }
     }
     .Big{
-        font-size:30px;
+        font-size:26px;
+        font-weight:400;
         .itemsParA{
             .mains{
                 width:57%;
@@ -105,7 +106,7 @@ const Container = styled.div`
                     color:rgb(${props=>props.theme.textColor}) !important;
                     width:93%;
                     border-radius:8px;
-                    padding:30px 10px;
+                    padding:38px 10px;
                     color:rgba(0,0,0,0.5);
                     position:relative;
                     &::before{
@@ -125,12 +126,22 @@ const Container = styled.div`
                         background-color:rgba(0,0,0,0.7);
                     }
                 }
+                .B2{
+                    background-color:rgba(0,0,0,0.15);
+                    &::after{
+                        background-color:rgba(0,0,0,0.15);
+                    }
+                }
                 .hide{
-                    color:rgba(${props=>props.theme.textColor}, 0.2) !important;
+                    color:rgba(${props=>props.theme.textColor}, 0.3) !important;
                     &:hover{
                         transform:scale(1);
                         box-shadow:1px 1px 0px -12px;
                     }
+                }
+                .hideAA{
+                    border:1px solid rgba(0,0,0,0.15);
+                    color:rgba(${props=>props.theme.textColor}, 0.15) !important;
                 }
             }
         }
