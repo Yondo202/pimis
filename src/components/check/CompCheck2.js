@@ -428,8 +428,6 @@ function CompCheck2() {
             </Modal>
         </form>
 
-          
-
             <Modal visible={visible} width="800" effect="fadeInDown" >
               <div className="Modaltest Modaltest22">
                 {showFinal && <div onClick={() => setVisible(false)} className="headPar"><span >✖</span></div>}

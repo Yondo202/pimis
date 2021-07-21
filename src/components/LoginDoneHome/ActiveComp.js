@@ -5,8 +5,6 @@ import { edplanFront } from "axiosbase"
 
 function ActiveComp(props) {
     DocumentTitle("EDP");
-
-    console.log(`props?.data?.criteria`, props?.data?.criteria);
     return (
         <div style={{ paddingTop: 20 }} className="row">
             <div className="col-md-2 col-sm-2 itemsCol">
@@ -14,12 +12,12 @@ function ActiveComp(props) {
                     <div className="mains">
                         <Link to={!props.prew ? `/check/user` : `/check/${props.prew}`} className={props?.data?.criteria !== 0 ? props?.data?.criteria === 2 ? `itemsActive`: `items items` : `items`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
                         {/* <div className="line line2" ></div> */}
-                        <div className="line" ></div>
+                        <div className="line" />
                         <Link to={!props.prew ? `/request/user` : `/request/${props.prew}`}
                             className={!props?.data?.esm ? `items` : props?.data?.esm === "A" ? `items itemsNotApproved` : props?.data?.esm === "B" ? `itemsActive` : props?.data?.esm === "C" || props?.data?.esm === "F" ? `itemsActive` : `items itemsNotWait`}>2. Байгаль орчны үнэлгээний асуумж </Link>
-                        <div className="line" ></div>
+                        <div className="line" />
                         <Link to={props.prew ? `/letter-of-interest?userId=${props.prew}` : '/letter-of-interest'} className={props?.data?.letterOfInterst === true ? `itemsActive` : `items`} >3. Сонирхол илэрхийлэх албан тоот</Link>
-                        <div className="line" ></div>
+                        <div className="line" />
                         <Link to={props.prew ? `/urgudul-preview/${props?.data?.project?.id}` : '/urgudul/1'} className={props?.data?.project && props?.data?.project.confirmed === 1 ? `itemsActive` : `items`} >4. Өргөдлийн маягт </Link>
 
                     </div>
@@ -63,7 +61,7 @@ function ActiveComp(props) {
                     <div className="mains">
                         <Link to="#" className={props?.data?.lastEvalution.value === 0 ? `items arrHelp` : props?.data?.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} ><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
                         <div className="line" />
-                        <Link to={props.prew ? `/maindecision/${props?.data?.project?.id}` : `#`} className={props?.data?.lastEvalution.value === 0 ? `items` : props?.data?.lastEvalution.value === 1 ? `resultWaiting` : `resultActive`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
+                        <Link to={props.prew ? `/maindecision/${props?.data?.project?.id}` : `#`} className={props?.data?.lastEvalution.value === 0 ? `items` : props?.data?.lastEvalution.value === 1 ? `resultWaiting` : `itemsActive`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
                     </div>
 
                     {/* <div className="lineFull" ></div>
