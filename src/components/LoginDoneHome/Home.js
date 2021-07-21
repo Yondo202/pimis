@@ -5,7 +5,6 @@ import axios from '../../axiosbase';
 import AccessToken from '../../context/accessToken'
 import ActiveComp from './ActiveComp'
 // import InitialComp from './initialComp'
-import { Link } from "react-router-dom";
 import useQuery from 'components/utilities/useQueryLocation'
 import Start from "components/LoginDoneHome/Start"
 
@@ -57,7 +56,6 @@ function Home() {
 
     return (
         <HomeComponent style={userId ? { maxWidth: "2000px" } : { maxWidth: "1160px" }} className={`container`}>
-            
             {!infCond? infData?.criteria === 1
                 ? <h3 style={{ marginTop: 50 }}>
                     Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
