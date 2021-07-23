@@ -9,11 +9,15 @@ import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import { checkInvalid } from './page3'
 
 export default function UrgudulPage4() {
    const [form, setForm] = useState(initialState)
+   const [validate, setValidate] = useState(false)
 
    const handleInput = (key, value) => setForm(prev => ({ ...prev, [key]: value }))
+
+   const handleInputFormat = (key, values) => setForm(prev => ({ ...prev, [key]: values.value }))
 
    const UrgudulCtx = useContext(UrgudulContext)
    const AlertCtx = useContext(AlertContext)
@@ -33,6 +37,13 @@ export default function UrgudulPage4() {
    }, [projectId])
 
    const handleSubmit = () => {
+      setValidate(true)
+      const allValid = Object.keys(initialState).every(key => !checkInvalid(form[key], key !== 'project_duration' && 'quill'))
+      if (!allValid) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
+         return
+      }
+
       if (projectId === undefined || projectId === null) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
          history.push('/urgudul/1')
@@ -54,8 +65,9 @@ export default function UrgudulPage4() {
          />
 
          <div className="tw-px-2">
-            <FormInline label="Төслийг хэрэгжүүлэх нийт хугацаа" value={form.project_duration} name="project_duration" setter={handleInput} classAppend="tw-w-64" classInput="tw-w-40"
-               HelpPopup={<HelpPopup main="Сараар, дээд тал нь 9 сар" />}
+            <FormInline label="Төслийг хэрэгжүүлэх нийт хугацаа" type="numberFormat" formats={{ format: '# сар' }} value={form.project_duration} name="project_duration" setter={handleInputFormat} classAppend="tw-w-64" classInput="tw-w-40"
+               HelpPopup={<HelpPopup main="Сараар, дээд тал нь 9 сар байна." />}
+               invalid={validate && checkInvalid(form.project_duration)}
             />
 
             <FormRichText
@@ -66,6 +78,7 @@ export default function UrgudulPage4() {
                name="target_market"
                setter={handleInput}
                classAppend="tw-pl-2"
+               invalid={validate && checkInvalid(form.target_market, 'quill')}
             />
 
             <FormRichText
@@ -76,6 +89,7 @@ export default function UrgudulPage4() {
                name="defined_problems"
                setter={handleInput}
                classAppend="tw-pl-2"
+               invalid={validate && checkInvalid(form.defined_problems, 'quill')}
             />
          </div>
 

@@ -117,9 +117,8 @@ export default function ProjectHandle() {
                         <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} alignment="left" width={119} />
                         <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} alignment="left" />
                         <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} alignment="left" minWidth={120} />
+                        <Column dataField="project.project_duration" caption="Төслийг хэрэгжүүлэх хугацаа" headerCellRender={HeaderCell} customizeText={customizeTextDuration} alignment="left" />
                         <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} customizeText={customizeTextConfirmed} alignment="left" />
-                        <Column dataField="project.project_start" dataType="date" caption="Эхлэх хугацаа" headerCellRender={HeaderCell} alignment="left" />
-                        <Column dataField="project.project_end" dataType="date" caption="Дуусах хугацаа" headerCellRender={HeaderCell} alignment="left" />
                         <Column dataField="project.bds_userId" caption="БЗ Зөвлөх" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueBdsUser} minWidth={100} alignment="left" />
                     </Column>
 
@@ -306,3 +305,5 @@ const cellRender5c = (cellData) => {
             {evalutionTexts[evalution]}
         </div>
 }
+
+const customizeTextDuration = (cellinfo) => cellinfo.value ? `${cellinfo.value} сар` : ''

@@ -10,7 +10,6 @@ import { UrgudulHeader } from './page1'
 
 const initialState = {
    format: false,
-   dollar: false,
    nine_months: false,
    max_amount: false,
    self_fund: false,
@@ -108,14 +107,6 @@ export default function UrgudulPage8() {
                   <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
                      <span className="tw-px-4 tw-py-2">
                         <span className="tw-mr-2">2.</span>
-                        Төсвийг ам.доллараар бэлтгэсэн.
-                     </span>
-                     <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.dollar} name="dollar" onChange={handleInputCheckbox} />
-                  </div>
-
-                  <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
-                     <span className="tw-px-4 tw-py-2">
-                        <span className="tw-mr-2">3.</span>
                         Төслийг хэрэгжүүлэх хугацаа нь 9 сараас хэтрэхгүй байна.
                         <HelpPopup classAppend="tw-ml-2 tw-inline-flex tw-top-1.5" main="Хамгийн дээд хугацаа нь 9 сар болно." />
                      </span>
@@ -124,7 +115,7 @@ export default function UrgudulPage8() {
 
                   <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
                      <span className="tw-px-4 tw-py-2">
-                        <span className="tw-mr-2">4.</span>
+                        <span className="tw-mr-2">3.</span>
                         Экспортыг дэмжих төслөөс хүссэн нийт санхүүжилт нь кластерын хувьд 100,000 ам.доллараас, аж ахуйн нэгжийн хувьд 50,000 ам.доллараас хэтрэхгүй байна.
                         <HelpPopup classAppend="tw-ml-2 tw-inline-flex tw-top-1.5" main="Өмнө нь авсан болон энэ удаа хүсч буй нийт дүн нь дээрх дүнгээс хэтрэхгүй байх ёстой." />
                      </span>
@@ -133,7 +124,7 @@ export default function UrgudulPage8() {
 
                   <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
                      <span className="tw-px-4 tw-py-2">
-                        <span className="tw-mr-2">5.</span>
+                        <span className="tw-mr-2">4.</span>
                         Экспортыг дэмжих төслөөс хүссэн санхүүжилтийн дүнтэй тэнцүү хэмжээний санхүүжилтийг өргөдөл гаргагч нь өөрийн компанийн зүгээс гаргах бөгөөд энэ дүн нь өргөдөл гаргахаас өмнөх зардал ороогүй дүн байна.
                      </span>
                      <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.self_fund} name="self_fund" onChange={handleInputCheckbox} />
@@ -141,7 +132,7 @@ export default function UrgudulPage8() {
 
                   <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
                      <span className="tw-px-4 tw-py-2">
-                        <span className="tw-mr-2">6.</span>
+                        <span className="tw-mr-2">5.</span>
                         Мэдэгдэл нь өргөдөл гаргагч болон кластерын гишүүд бүрээр гарын үсэг зурагдсан байна.
                      </span>
                      <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.signed} name="signed" onChange={handleInputCheckbox} />

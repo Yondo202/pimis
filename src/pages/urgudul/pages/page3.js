@@ -30,6 +30,8 @@ const initialDirectors = [
 
 export default function UrgudulPage3() {
    const [directors, setDirectors] = useState(initialDirectors)
+   const [validate, setValidate] = useState(false)
+   const [initialized, setInitialized] = useState(false)
 
    const handleInput = (key, value, index) => setDirectors(prev => {
       const next = [...prev]
@@ -65,6 +67,7 @@ export default function UrgudulPage3() {
       if (value instanceof Array && value?.length) {
          setDirectors(value)
       }
+      setInitialized(true)
    }, [projectId])
 
    // const [occupations, setOccupations] = useState([])
@@ -76,6 +79,21 @@ export default function UrgudulPage3() {
    // }, [])
 
    const handleSubmit = () => {
+      setValidate(true)
+      let allValid = true
+      directors.forEach(director => {
+         allValid = allValid && Object.keys(initialDirectors[0]).every(key => !checkInvalid(director[key], key === 'project_role' && 'quill'))
+      })
+      if (!allValid) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
+         return
+      }
+
+      if (directors.length < 1) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Түлхүүр албан тушаалтны мэдээлэл оруулна уу.' })
+         return
+      }
+
       if (projectId === undefined || projectId === null) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
          history.push('/urgudul/1')
@@ -97,18 +115,18 @@ export default function UrgudulPage3() {
          />
 
          {directors.map((director, i) =>
-            <div className="tw-flex odd:tw-bg-gray-50 tw-px-2" key={i}>
-               <div className="tw-flex-grow">
+            <div className="tw-flex tw-px-2" key={i}>
+               <ExpandableContainer classAppend="tw-flex-grow" order={i + 1} label={director.fullname} placeholder="Түлхүүр албан тушаалтан" initialized={initialized}>
                   <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                     <FormInline label="Албан тушаалтны овог нэр" value={director.fullname} name="fullname" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                     <FormInline label="Албан тушаалтны овог нэр" value={director.fullname} name="fullname" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(director.fullname)} />
 
-                     {/* <SearchSelect label="Албан тушаал" data={occupations} value={director.position} name="position" id={i} displayName="description_mon" setForm={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} /> */}
+                     {/* <SearchSelect label="Албан тушаал" data={occupations} value={director.position} name="position" id={i} displayName="description_mon" setForm={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" /> */}
 
-                     <FormInline label="Албан тушаал" value={director.position} name="position" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                     <FormInline label="Албан тушаал" value={director.position} name="position" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(director.position)} />
 
-                     <FormInline label="Гар утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={director.phone} name="phone" index={i} setter={handleInputFormatted} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                     <FormInline label="Гар утас" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={director.phone} name="phone" index={i} setter={handleInputFormatted} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(director.phone)} />
 
-                     <FormInline label="Имэйл хаяг" type="email" value={director.email} name="email" index={i} setter={handleInput} validate classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                     <FormInline label="Имэйл хаяг" type="email" value={director.email} name="email" index={i} setter={handleInput} validate classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(director.email)} />
                   </div>
 
                   <FormRichText
@@ -119,9 +137,10 @@ export default function UrgudulPage3() {
                      name="project_role"
                      index={i}
                      setter={handleInput}
-                     classAppend="tw-pl-3 tw-pt-1"
+                     classAppend="tw-pl-3 tw-pt-1 tw-pb-2"
+                     invalid={validate && checkInvalid(director.project_role, 'quill')}
                   />
-               </div>
+               </ExpandableContainer>
 
                <div className="tw-flex tw-items-center">
                   <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
@@ -151,8 +170,8 @@ const initialMembers = [
       company_name: null,
       company_register: null,
       main_activity: null,
-      sales_year: null,
-      sales_amount: null,
+      // sales_year: null,
+      // sales_amount: null,
       sales: {
          ...yearObj,
       },
@@ -162,22 +181,15 @@ const initialMembers = [
    },
 ]
 
-const thisYear = new Date().getFullYear()
-const last3years = [thisYear - 3, thisYear - 2, thisYear - 1]
-
 function ClusterMembers() {
    const [members, setMembers] = useState(initialMembers)
    const [netSales, setNetSales] = useState(null)
+   const [validate, setValidate] = useState(false)
+   const [initialized, setInitialized] = useState(false)
 
    const handleInput = (key, value, index) => setMembers(prev => {
       const next = [...prev]
       next[index][key] = value
-      return next
-   })
-
-   const handleInputFormat = (key, values, index) => setMembers(prev => {
-      const next = [...prev]
-      next[index][key] = values.floatValue
       return next
    })
 
@@ -187,8 +199,8 @@ function ClusterMembers() {
       company_name: null,
       company_register: null,
       main_activity: null,
-      sales_year: null,
-      sales_amount: null,
+      // sales_year: null,
+      // sales_amount: null,
       sales: {
          ...yearObj,
       },
@@ -207,7 +219,7 @@ function ClusterMembers() {
 
    const handleInputSales = (key, value, index) => setMembers(prev => {
       const next = [...prev]
-      next[index].sales[key] = value
+      next[index].sales[key] = value ?? null
       return next
    })
 
@@ -226,9 +238,30 @@ function ClusterMembers() {
       if (value1 !== null && value1 !== undefined) {
          setNetSales(value1)
       }
+
+      setInitialized(true)
    }, [projectId])
 
    const handleSubmit = () => {
+      setValidate(true)
+      let allValid = true
+      members.forEach(member => {
+         allValid = allValid && Object.keys(initialMembers[0])
+            .filter(key => key !== 'sales')
+            .every(key => !checkInvalid(member[key]))
+         allValid = allValid && Object.values(member.sales).every(val => !checkInvalid(val))
+      })
+      allValid = allValid && !checkInvalid(netSales)
+      if (!allValid) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
+         return
+      }
+
+      if (members.length < 1) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Кластерын гишүүн байгууллагуудын мэдээлэл оруулна уу.' })
+         return
+      }
+
       if (projectId === undefined || projectId === null) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
          history.push('/urgudul/1')
@@ -250,53 +283,55 @@ function ClusterMembers() {
          />
 
          {members.map((member, i) =>
-            <div className="tw-flex odd:tw-bg-gray-50 tw-px-2" key={i}>
-               <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                  <FormInline label="Аж ахуйн нэгжийн нэр" value={member.company_name} name="company_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+            <div className="tw-flex tw-px-2" key={i}>
+               <ExpandableContainer classAppend="tw-flex-grow" order={i + 1} label={member.company_name} placeholder="Кластерийн гишүүн байгууллага" initialized={initialized}>
+                  <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                     <FormInline label="Аж ахуйн нэгжийн нэр" value={member.company_name} name="company_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(member.company_name)} />
 
-                  <FormInline label="Регистрийн дугаар" type="number" value={member.company_register} name="company_register" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
+                     <FormInline label="Регистрийн дугаар" type="number" value={member.company_register} name="company_register" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(member.company_register)} />
 
-                  <FormInline label="Голлох борлуулалт хийдэг үйл ажиллагааны чиглэл" value={member.main_activity} name="main_activity" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
+                     <FormInline label="Голлох борлуулалт хийдэг үйл ажиллагааны чиглэл" value={member.main_activity} name="main_activity" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(member.main_activity)} />
 
-                  <div className="tw-flex">
+                     {/* <div className="tw-flex">
                      <FormSelectValue label="Борлуулалтын жил сонгох" width={120} options={last3years} value={member.sales_year} keyName="sales_year" index={i} setter={handleInput} classAppend="tw-mr-8" />
 
-                     <FormInline label="Аж ахуйн нэгжийн борлуулалт" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={member.sales_amount} name="sales_amount" index={i} setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
-                  </div>
+                     <FormInline label="Аж ахуйн нэгжийн борлуулалт" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={member.sales_amount} name="sales_amount" index={i} setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" />
+                  </div> */}
 
-                  <div className="md:tw-col-span-2 tw-pl-3 tw-pt-5 tw-pb-2">
-                     <table className="">
-                        <thead>
-                           <tr>
-                              <th className={tableCellClass}></th>
-                              {years.map(year =>
-                                 <th className={`${tableCellClass} tw-py-2 tw-font-medium tw-text-center`} key={year}>
-                                    {year}
-                                 </th>
-                              )}
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr>
-                              <td className={tableCellClass}>
-                                 Аж ахуйн нэгжийн борлуулалт
-                              </td>
-                              {years.map(year =>
-                                 <td className={tableCellClass} key={year}>
-                                    <NumberFormat className={tableInputClass} prefix="₮ " decimalScale={2} thousandSeparator value={member.sales[year]} onValueChange={values => handleInputSales(year, values.floatValue, i)} />
+                     <div className="md:tw-col-span-2 tw-pl-3 tw-pt-5 tw-pb-2">
+                        <table className="">
+                           <thead>
+                              <tr>
+                                 <th className={tableCellClass}></th>
+                                 {years.map(year =>
+                                    <th className={`${tableCellClass} tw-py-2 tw-font-medium tw-text-center`} key={year}>
+                                       {year}
+                                    </th>
+                                 )}
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr>
+                                 <td className={tableCellClass}>
+                                    Аж ахуйн нэгжийн борлуулалт
                                  </td>
-                              )}
-                           </tr>
-                        </tbody>
-                     </table>
+                                 {years.map(year =>
+                                    <td className={tableCellClass} key={year}>
+                                       <NumberFormat className={`{${tableInputClass} ${validate && checkInvalid(member.sales[year]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-transition-colors`} prefix="₮ " decimalScale={2} thousandSeparator value={member.sales[year]} onValueChange={values => handleInputSales(year, values.floatValue, i)} />
+                                    </td>
+                                 )}
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+
+                     <FormInline label="Гүйцэтгэх захирлын нэр" value={member.director_name} name="director_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(member.director_name)} />
+
+                     <FormInline label="Гүйцэтгэх захирлын утасны дугаар" value={member.director_phone} name="director_phone" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(member.director_phone)} />
+
+                     <FormInline label="Гүйцэтгэх захирлын имэйл" type="email" value={member.director_email} name="director_email" index={i} setter={handleInput} validate classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(member.director_email)} />
                   </div>
-
-                  <FormInline label="Гүйцэтгэх захирлын нэр" value={member.director_name} name="director_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
-
-                  <FormInline label="Гүйцэтгэх захирлын утасны дугаар" value={member.director_phone} name="director_phone" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" />
-
-                  <FormInline label="Гүйцэтгэх захирлын имэйл" type="email" value={member.director_email} name="director_email" index={i} setter={handleInput} validate classAppend="tw-w-full tw-max-w-md" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" />
-               </div>
+               </ExpandableContainer>
 
                <div className="tw-flex tw-items-center">
                   <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />
@@ -314,9 +349,9 @@ function ClusterMembers() {
          <div className="tw-p-3 tw-pl-5">
             <div className="tw-flex tw-items-center">
                Кластерын гишүүдийн нийт борлуулалт
-               <HelpPopup classAppend="tw-ml-2" main="Тэргүүлэх ААН-г оролцуулаад" />
+               <HelpPopup classAppend="tw-ml-2" main="Тэргүүлэх ААН-ийг оролцуулаад сүүлийн жилээр тооцон оруулна уу." />
             </div>
-            <NumberFormat className={`${basicInputClass} tw-mt-2 tw-py-1.5`} prefix="₮ " decimalScale={2} thousandSeparator value={netSales} onValueChange={values => setNetSales(values.floatValue)} />
+            <NumberFormat className={`${basicInputClass} tw-mt-2 tw-py-1.5 ${validate && checkInvalid(netSales) && 'tw-border-red-500'}`} prefix="₮ " decimalScale={2} thousandSeparator value={netSales} onValueChange={values => setNetSales(values.floatValue ?? null)} />
          </div>
 
          <div className="tw-flex tw-justify-end">
@@ -379,5 +414,46 @@ const FormSelectValue = ({ label, options, value, keyName, index, setter, classA
             )}
          </Transition>
       </div>
+   )
+}
+
+export const checkInvalid = (value, type) => {
+   switch (value) {
+      case null:
+         return true
+      case '':
+         return true
+      case '<p><br></p>':
+         if (type === 'quill') return true
+         else return false
+      default:
+         return false
+   }
+}
+
+export function ExpandableContainer({ order, label, children, placeholder, initialized, classAppend }) {
+   const [open, setOpen] = useState(true)
+
+   return (
+      <div className={classAppend}>
+         <div className="tw-inline-flex tw-items-center tw-cursor-pointer tw-pl-2 tw-py-2 tw-text-sm" onClick={() => setOpen(prev => !prev)}>
+            <ChevronDownSVG className={`tw-w-4 tw-h-4 tw-transform-gpu ${!open && 'tw--rotate-90'} tw-transition-transform`} />
+            <span className="tw-ml-1 tw-mr-1.5 tw-text-blue-500 tw-font-medium">{order}.</span>
+            <span className="tw-pr-3">{label || placeholder}</span>
+         </div>
+         <Transition
+            items={open}
+            from={{ height: 0 }}
+            enter={{ height: 'auto' }}
+            leave={{ height: 0 }}
+            initial={!initialized ? { height: 'auto' } : { height: 0 }}
+         >
+            {item => item && (anims =>
+               <animated.div className="tw-overflow-hidden" style={anims}>
+                  {children}
+               </animated.div>
+            )}
+         </Transition>
+      </div >
    )
 }

@@ -3,7 +3,7 @@ import FormInline from 'components/urgudul_components/formInline'
 import AlertContext from 'components/utilities/alertContext'
 import UrgudulContext from 'components/utilities/urgudulContext'
 import React, { useContext, useEffect, useState } from 'react'
-import { containerClass, UrgudulHeader, SaveButton } from './page1'
+import { containerClass, UrgudulHeader, SaveButton, checkInvalid } from './page1'
 import NumberFormat from 'react-number-format'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
@@ -33,13 +33,13 @@ export default function UrgudulPage2() {
 
    const handleInputSales = (key, year, value) => setSales(prev => {
       const nextKey = { ...prev[key] }
-      nextKey[year] = value
+      nextKey[year] = value ?? null
       return { ...prev, [key]: nextKey }
    })
 
    const [years, setYears] = useState(yearsArr)
-
    const [infos, setInfos] = useState(initialInfos)
+   const [validate, setValidate] = useState(false)
 
    const handleInputInfos = (key, value) => setInfos(prev => ({ ...prev, [key]: value }))
 
@@ -54,7 +54,7 @@ export default function UrgudulPage2() {
 
    useEffect(() => {
       const value = UrgudulCtx.data.salesData
-      if (value !== null && value !== undefined) {
+      if (value !== null && value !== undefined && Object.keys(value.net).length !== 0) {
          setSales(value)
          setYears(Object.keys(value.net).sort())
       }
@@ -70,6 +70,17 @@ export default function UrgudulPage2() {
    }, [projectId])
 
    const handleSubmit = () => {
+      setValidate(true)
+      let allValid = true
+      Object.values(sales).forEach(obj => {
+         allValid = allValid && Object.values(obj).every(val => !checkInvalid(val))
+      })
+      allValid = allValid && Object.keys(initialInfos).every(key => !checkInvalid(infos[key]))
+      if (!allValid) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
+         return
+      }
+
       if (projectId === undefined || projectId === null) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
          history.push('/urgudul/1')
@@ -87,14 +98,14 @@ export default function UrgudulPage2() {
    return (
       <div className={containerClass}>
          <UrgudulHeader
-            label="Өргөдөл гаргагч"
+            label="Өргөдөл гаргагчийн мэдээлэл"
             projectNumber={UrgudulCtx.data.project_number}
             HelpPopup={isCluster && <HelpPopup classAppend="tw-mx-2" main="Кластерын хувьд тэргүүлэх аж ахуйн нэгжийн хувьд бөглөнө үү." />}
          />
 
          <div className="tw-pb-4 tw-pl-2.5 tw-pr-2">
-            <div className="tw-p-2 tw-text-sm">
-               Борлуулалт болон Экпортын хэмжээ
+            <div className="tw-p-2 tw-mt-2 tw-text-sm">
+               Борлуулалт болон экпортын хэмжээ
             </div>
 
             <table className="tw-ml-2">
@@ -115,7 +126,7 @@ export default function UrgudulPage2() {
                      </td>
                      {years.map(year =>
                         <td className={tableCellClass} key={year}>
-                           <NumberFormat className={tableInputClass} prefix="₮ " decimalScale={2} thousandSeparator value={sales.net?.[year]} onValueChange={values => handleInputSales('net', year, values.floatValue)} />
+                           <NumberFormat className={`${tableInputClass} ${validate && checkInvalid(sales.net?.[year] ? 'tw-bg-red-100' : 'tw-bg-indigo-50')} tw-transition-colors`} prefix="₮ " decimalScale={2} thousandSeparator value={sales.net?.[year]} onValueChange={values => handleInputSales('net', year, values.floatValue)} />
                         </td>
                      )}
                   </tr>
@@ -125,7 +136,7 @@ export default function UrgudulPage2() {
                      </td>
                      {yearsArr.map(year =>
                         <td className={tableCellClass} key={year}>
-                           <NumberFormat className={tableInputClass} prefix="₮ " decimalScale={2} thousandSeparator value={sales.export?.[year]} onValueChange={values => handleInputSales('export', year, values.floatValue)} />
+                           <NumberFormat className={`${tableInputClass} ${validate && checkInvalid(sales.export?.[year]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-transition-colors`} prefix="₮ " decimalScale={2} thousandSeparator value={sales.export?.[year]} onValueChange={values => handleInputSales('export', year, values.floatValue)} />
                         </td>
                      )}
                   </tr>
@@ -149,4 +160,4 @@ export default function UrgudulPage2() {
 }
 
 export const tableCellClass = 'tw-border tw-border-gray-300 tw-px-2'
-export const tableInputClass = 'tw-outline-none tw-py-1 tw-px-2 tw-my-1 tw-text-right tw-rounded-sm tw-bg-indigo-50 tw-w-32'
+export const tableInputClass = 'focus:tw-outline-none tw-py-1 tw-px-2 tw-my-1 tw-text-right tw-rounded-sm tw-w-32'

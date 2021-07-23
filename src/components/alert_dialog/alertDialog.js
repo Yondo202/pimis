@@ -47,9 +47,9 @@ function AlertDialog() {
 
     return (
         <Transition items={show}
-            from={{ bottom: window.innerWidth < 640 ? '-32px' : '-48px' }}
-            enter={{ bottom: window.innerWidth < 640 ? '32px' : '48px' }}
-            leave={{ bottom: window.innerWidth < 640 ? '-32px' : '-48px' }}>
+            from={{ bottom: window.innerWidth < 640 ? '-24px' : '-32px' }}
+            enter={{ bottom: window.innerWidth < 640 ? '24px' : '32px' }}
+            leave={{ bottom: window.innerWidth < 640 ? '-24px' : '-32px' }}>
             {show => show && (props =>
                 <animated.div style={props} className="tw-fixed tw-w-full tw-flex tw-justify-center tw-z-50">
                     <div className={`tw-inline-flex tw-items-center tw-flex-grow tw-mx-2 tw-text-sm sm:tw-max-w-lg sm:tw-mx-0 tw-shadow-md tw-rounded-lg tw-p-1.5 ${classTheme.bgColor[alert.variant]} tw-transition-colors`}>

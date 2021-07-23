@@ -15,6 +15,7 @@ import { animated, Transition } from 'react-spring/renderprops'
 import LoadFromOtherProject from '../loadFromOtherProject'
 import { SaveButton, StaticText, UrgudulHeader } from './page1'
 import { Notice } from './page7_cluster'
+import { ExpandableContainer } from './page3'
 
 const initialState = [
    {
@@ -28,6 +29,7 @@ const initialState = [
 
 export default function UrgudulPage7Company({ projects }) {
    const [form, setForm] = useState(initialState)
+   const [initialized, setInitialized] = useState(false)
 
    const UrgudulCtx = useContext(UrgudulContext)
 
@@ -37,6 +39,7 @@ export default function UrgudulPage7Company({ projects }) {
          setCheckList(new Set([1, '2a', '2b', '2c', '2d', 3, 4, 5, 6]))
          setAgreed(true)
       }
+      setInitialized(true)
    }, [UrgudulCtx.data.id])
 
    const handleInput = (key, value, index) => setForm(prev => {
@@ -56,7 +59,6 @@ export default function UrgudulPage7Company({ projects }) {
          representative_signature: null,
          submitDate: null,
       }
-
       setForm([...form, newObj])
    }
 
@@ -159,7 +161,7 @@ export default function UrgudulPage7Company({ projects }) {
          if (loadNoticeCompany.length > 0) {
             setForm(loadNoticeCompany)
          } else {
-            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'ААН ажилчдын мэдээллээ оруулаагүй өргөдөл байна.' })
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'ААН төлөөлөгчдийн мэдээллээ оруулаагүй өргөдөл байна.' })
             return
          }
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
@@ -256,44 +258,48 @@ export default function UrgudulPage7Company({ projects }) {
                      Гүйцэтгэх захирал:
                   </div>
 
-                  <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-4">
-                     <StaticText label="Албан тушаал" text="Гүйцэтгэх захирал" />
+                  <ExpandableContainer classAppend="tw-pl-2" order={1} label={directorItem.representative_name} placeholder="Гүйцэтгэх захирал" initialized={true}>
+                     <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-4">
+                        <StaticText label="Албан тушаал" text="Гүйцэтгэх захирал" />
 
-                     <FormInline label="Овог нэр" type="text" value={directorItem.representative_name} name="representative_name" index={directorIndex} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(directorItem.representative_name)} />
+                        <FormInline label="Овог нэр" type="text" value={directorItem.representative_name} name="representative_name" index={directorIndex} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" invalid={validate && checkInvalid(directorItem.representative_name)} />
 
-                     <FormInline label="Огноо" type="date" value={directorItem.submitDate} name="submitDate" index={directorIndex} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-40" invalid={validate && checkInvalid(directorItem.submitDate)} />
+                        <FormInline label="Огноо" type="date" value={directorItem.submitDate} name="submitDate" index={directorIndex} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-40" invalid={validate && checkInvalid(directorItem.submitDate)} />
 
-                     <div className="tw-w-full tw-h-full tw-max-w-sm tw-pl-4">
-                        <div className={`tw-text-sm tw-pt-2 tw-font-light ${validate && checkInvalid(directorItem.representative_signature) && 'tw-text-red-500'} tw-transition-colors`}>
-                           Гарын үсэг
+                        <div className="tw-w-full tw-h-full tw-max-w-sm tw-pl-4">
+                           <div className={`tw-text-sm tw-pt-2 tw-font-light ${validate && checkInvalid(directorItem.representative_signature) && 'tw-text-red-500'} tw-transition-colors`}>
+                              Гарын үсэг
+                           </div>
+
+                           <FormSignature value={directorItem.representative_signature} name="representative_signature" index={directorIndex} setter={handleInput} classAppend="tw-pl-8 pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
                         </div>
-
-                        <FormSignature value={directorItem.representative_signature} name="representative_signature" index={directorIndex} setter={handleInput} classAppend="tw-pl-8 pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
                      </div>
-                  </div>
+                  </ExpandableContainer>
 
                   <div className="tw-p-2 tw-pl-4 tw-text-blue-500 tw-font-medium">
-                     Болон бусад ажилчид:
+                     Болон бусад төлөөлөгч:
                   </div>
 
                   {form.map((item, i) =>
                      directorIndex !== i &&
-                     <div className="tw-flex even:tw-bg-gray-50 tw-px-4" key={i}>
-                        <div className="tw-flex-grow tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                           <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" index={i} displayName="description_mon" setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.representative_positionId)} />
+                     <div className="tw-flex tw-pl-2 tw-pr-4" key={i}>
+                        <ExpandableContainer classAppend="tw-flex-grow" order={directorIndex > i ? i + 2 : i + 1} placeholder="Төлөөлөгч" initialized={initialized}>
+                           <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                              <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" index={i} displayName="description_mon" setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.representative_positionId)} />
 
-                           <FormInline label="Овог нэр" type="text" value={item.representative_name} name="representative_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.representative_name)} />
+                              <FormInline label="Овог нэр" type="text" value={item.representative_name} name="representative_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-full" invalid={validate && checkInvalid(item.representative_name)} />
 
-                           <FormInline label="Огноо" type="date" value={item.submitDate} name="submitDate" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.submitDate)} />
+                              <FormInline label="Огноо" type="date" value={item.submitDate} name="submitDate" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} classInput="tw-w-40" invalid={validate && checkInvalid(item.submitDate)} />
 
-                           <div className="tw-w-full tw-h-full tw-max-w-sm tw-pl-4">
-                              <div className={`tw-text-sm tw-pt-2 tw-font-light ${validate && checkInvalid(item.representative_signature) && 'tw-text-red-500'}`}>
-                                 Гарын үсэг
+                              <div className="tw-w-full tw-h-full tw-max-w-sm tw-pl-4">
+                                 <div className={`tw-text-sm tw-pt-2 tw-font-light ${validate && checkInvalid(item.representative_signature) && 'tw-text-red-500'}`}>
+                                    Гарын үсэг
+                                 </div>
+
+                                 <FormSignature value={item.representative_signature} name="representative_signature" index={i} setter={handleInput} classAppend="tw-pl-8 tw-pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
                               </div>
-
-                              <FormSignature value={item.representative_signature} name="representative_signature" index={i} setter={handleInput} classAppend="tw-pl-8 tw-pr-2 tw-pb-3 tw-pt-1 tw-justify-center" canvasProps={{ width: 360, height: 100 }} />
                            </div>
-                        </div>
+                        </ExpandableContainer>
 
                         <div className="tw-flex tw-items-center">
                            <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classButton="tw-text-red-500 active:tw-text-red-600" />

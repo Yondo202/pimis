@@ -8,118 +8,84 @@ import AlertContext from 'components/utilities/alertContext'
 import Row from './row'
 import RowImage from './rowImage'
 import RowHtml from './rowHtml'
-import { districts } from 'components/utilities/utilities'
 import { useParams } from 'react-router-dom'
-import { sortDates } from '../pages/page5'
 import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
 import RowFile from './rowFile'
-
+import { activityClass, productClass, exportCountries, plannedActivityClass } from '../pages/page1'
+import RowLabel from './rowLabel'
+import { activitiyOptions } from '../pages/page6'
 
 const labels = {
-    front: {
+    page1: {
         project_type: 'Өргөдлийн төрөл:',
-        company_name: 'Өргөдөл гаргагч ААН нэр',
         project_name: 'Төслийн нэр',
+        certificate_number: 'Регистрийн дугаар',
+        activity_direction: 'Үйл ажиллагааны чиглэл',
+        main_export: 'Экспортын гол бүтээгдэхүүний ангилал',
+        export_products: 'Экспортийн бүтээгдэхүүнүүд',
+        export_country: 'Экспортын зорилтот орны нэр',
+        planned_activity: 'Төлөвлөсөн үйл ажиллагааны чиглэл',
+        planned_activity_budget: 'Төлөвлөсөн үйл ажиллагааны нийт төсөв'
     },
-    company: {
-        company_name: 'Аж ахуйн нэгжийн нэр',
-        representative_name: 'Аж ахуйн нэгжийг төлөөлөх албан тушаалтны овог нэр',
-        representative_position: 'Төлөөлөгчийн албан тушаал',
-        registered_date: 'ААН бүртгүүлсэн огноо',
-        registration_number: 'Регистерийн дугаар',
-        official_address: 'Албан ёсны хаяг',
-        locationId: 'Хот/аймаг',
-        districtId: 'Дүүрэг',
-        telephone: 'Албан газрын утас',
-        handphone: 'Гар утас',
-        email: 'Имэйл хаяг',
-        website: 'Вэбсайт',
-        company_size: 'Компаний хэмжээ',
-        emp_count: 'Ажилтны тоо',
-        project_plan: 'Төслийн төлөвлөлт, гүйцэтгэл дэх оролцоо',
-        business_sectorId: 'Салбар',
-        foreign_invested: 'Гадаад хөрөнгө оруулалттай эсэх',
-        invested_countryid: 'Аль улсаас гадаад хөрөнгө оруулалдаг болох нь',
-        investment_percent: 'Гадаад хөрөнгө оруулалтын эзлэх хувь',
+    page2: {
+        salesData: 'Борлуулалт болон экпортын хэмжээ',
+        company_phone: 'Албан газрын утасны дугаар',
+        company_website: 'Вэбсайт',
+        company_address: 'Албан ёсны хаяг'
     },
-    clusters: {
-        company_name: 'Кластерын гишүүн аж ахуйн нэгж',
-        representative_name: 'Төлөөлөх албан тушаалтны нэр',
-        representative_phone: 'Төлөөлөгчийн утас',
-        representative_email: 'Төлөөлөгчийн имэйл',
-        business_sectorId: 'Салбар',
-        company_size: 'Аж ахуйн нэгжийн хэмжээ',
-        support_recipient: 'Манай дэмжлэг хүртэгч мөн эсэх',
-        project_contribution: 'Төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр',
-        attachedFiles: 'Кластерийн хамтын ажиллагааны гэрээ файл',
-    },
-    directors: {
-        position: 'Албан тушаал',
-        director_name: 'Төлөөлөх албан тушаалтны нэр',
-        employed_date: 'Тухайн байгууллагад ажиллаж эхэлсэн он сар өдөр',
-        project_contribution: 'Энэхүү төслийн төлөвлөлт, гүйцэтгэлд оруулах хувь нэмэр',
-    },
-    a3_4: {
-        applicant_overview: {
-            cluster: 'Өргөдөл гаргагч кластерын хувьд кластерын хамтрагч талуудын товч танилцуулга',
-            company: 'Өргөдөл гаргагч аж ахуй нэгжийн товч танилцуулга',
+    page3: {
+        directors: {
+            fullname: 'Албан тушаалтны овог нэр',
+            position: 'Албан тушаал',
+            phone: 'Гар утас',
+            email: 'Имэйл хаяг',
+            project_role: 'Төслийг хэрэгжүүлэхэд гүйцэтгэх үүрэг'
         },
-        applicant_experience: {
-            cluster: 'Кластерын төслийг хэрэгжүүлэх техникийн туршлага',
-            company: 'ААН-ийн төслийг хэрэгжүүлэх техникийн туршлага',
-        },
+        clusters: {
+            company_name: 'Аж ахуйн нэгжийн нэр',
+            company_register: 'Регистрийн дугаар',
+            main_activity: 'Голлох борлуулалт хийдэг үйл ажиллагааны чиглэл',
+            sales: 'Аж ахуйн нэгжийн борлуулалт',
+            director_name: 'Гүйцэтгэх захирлын нэр',
+            director_phone: 'Гүйцэтгэх захирлын утасны дугаар',
+            director_email: 'Гүйцэтгэх захирлын имэйл'
+        }
     },
-    b: {
-        project_duration: 'Төслийн үргэлжлэх хугацаа',
-        project_start: 'Төслийн эхлэх хугацаа',
-        project_end: 'Төслийн дуусах хугацаа',
-        project_introduction: 'Төслийн танилцуулга',
-        preperation: 'Бэлтгэл ажил',
-        identified_problems: 'Тодорхойлсон асуудлууд',
-        suggested_solutions: 'Санал болгож буй шийдэл',
-        expected_result: 'Төлөвлөсөн үйл ажиллагаа болон зорилтот хүлээгдэж буй үр дүн',
+    page4: {
+        project_duration: 'Төслийг хэрэгжүүлэх нийт хугацаа',
+        target_market: 'Экспортын бүтээгдэхүүн, экспортын зорилтот орны зах зээлийн мэдээлэл',
+        defined_problems: 'Тодорхойлсон асуудлууд'
     },
-    activities: {
-        activity: {
-            cluster: 'Кластераар хийх үйл ажиллагаа',
-            company: 'Аж ахуйн нэгжээр хийх үйл ажиллагаа',
-        },
-        budget_cost: 'Үйл ажиллагааны төсөвт зардал, доллароор',
-    },
-    benefit: {
-        sales_growth: 'Борлуулалтын өсөлт',
-        export_growth: 'Экспортын өсөлт',
-        profit_growth: 'Ашгийн өсөлт',
-        efficiency_growth: 'Бүтээмжийн өсөлт',
-        workplace_growth: 'Ажлын байрны өсөлт',
-        growths_explanation: 'Төслийн үр ашгийн талаар',
-        assumptions: 'Таамаглал',
-    },
-    exportDatas: {
+    page5: {
         sales: 'Борлуулалт',
         fullTime_workplace: 'Ажлын байр',
         productivity: 'Бүтээмж',
         export_details: 'Экспортын задаргаа',
     },
-    noticeClusters: {
-        companyId: 'Аж ахуйн нэгжийн нэр',
-        representative_positionId: 'Албан тушаал',
-        representative_name: 'Овог нэр',
-        representative_signature: 'Гарын үсэг',
-        submitDate: 'Огноо',
+    page6: {
+        activity: 'Үйл ажиллагаа',
+        explanation: 'Тайлбар',
+        budget: 'Төсөв'
     },
-    noticeCompany: {
-        representative_positionId: 'Албан тушаал',
-        representative_name: 'Овог нэр',
-        representative_signature: 'Гарын үсэг',
-        submitDate: 'Огноо',
+    page7: {
+        noticeCluster: {
+            companyId: 'Аж ахуйн нэгжийн нэр',
+            representative_positionId: 'Албан тушаал',
+            representative_name: 'Овог нэр',
+            representative_signature: 'Гарын үсэг',
+            submitDate: 'Огноо',
+        },
+        noticeCompany: {
+            representative_positionId: 'Албан тушаал',
+            representative_name: 'Овог нэр',
+            representative_signature: 'Гарын үсэг',
+            submitDate: 'Огноо',
+        }
     },
-    e: {
-        confirmed: 'Өргөдлийн маягт баталгаажсан эсэх',
-    },
+    page8: {
+        confirmed: 'Өргөдлийн маягт баталгаажсан эсэх'
+    }
 }
-
-const companySizes = ['Бичил', 'Жижиг', 'Дунд']
 
 export default function UrgudulPreview(props) {
     const componentRef = useRef()
@@ -129,6 +95,7 @@ export default function UrgudulPreview(props) {
     })
 
     const [project, setProject] = useState({})
+    const [companyName, setCompanyName] = useState(localStorage.getItem('companyname'))
 
     const AlertCtx = useContext(AlertContext)
 
@@ -156,51 +123,26 @@ export default function UrgudulPreview(props) {
         }
     }, [])
 
-    const isCluster = project.project_type === 1 || false
-    const type = isCluster ? 'cluster' : 'company'
+    const isCluster = project.project_type === 1
 
-    const [occupations, setOccupations] = useState([])
+    const getActivityDirection = (id) => activityClass[id - 1]
+    const getMainExport = (id, other) => id === -1
+        ? `Бусад: ${other}`
+        : productClass[id - 1]
 
-    useEffect(() => {
-        axios.get('occupations').then(res => {
-            setOccupations(res.data.data)
-        })
-        axios.get('business-sector').then(res => {
-            setSectors(res.data.data)
-        })
-        axios.get('locations').then(res => {
-            setLocations(res.data.data)
-        })
-        axios.get('countries').then(res => {
-            setCountries(res.data.data)
-        })
-        axios.get('products').then(res => {
-            setProducts(res.data.data.docs)
-        })
-        axios.get('currency-rates').then(res => {
-            setRates(res.data.data)
-        })
-    }, [])
+    const getExportCountry = (id, other) => id === -1
+        ? `Бусад: ${other}`
+        : exportCountries[id - 1]
 
-    const getOccupationName = (id) => occupations.filter(obj => obj.id === id)[0]?.description_mon
+    const getPlannedActivity = (id, cost) => cost
+        ? `${plannedActivityClass[id - 1]} - ${cost?.toLocaleString()} ₮`
+        : plannedActivityClass[id - 1]
 
-    const getCompanyName = (id) => project.clusters.filter(obj => obj.id === id)[0]?.company_name
+    const salesDataYears = Object.keys(project.salesData?.net || []).sort()
+    const salesDataNet = project.salesData?.net
+    const salesDataExport = project.salesData?.export
 
-    const [sectors, setSectors] = useState([])
-
-    const getSectorName = (id) => sectors.filter(obj => obj.id === id)[0]?.bdescription_mon
-
-    const [locations, setLocations] = useState([])
-
-    const getLocationName = (id) => locations.filter(obj => obj.id === id)[0]?.description_mon
-
-    const getDistrictName = (id) => districts.filter(obj => obj.id === id)[0]?.description_mon
-
-    const [countries, setCountries] = useState([])
-
-    const getCountryName = (id) => countries.filter(obj => obj.id === id)[0]?.description_mon
-
-    const dates = project.exportDatas?.sales ? sortDates(project.exportDatas?.sales) : []
+    const dates = Object.keys(project.exportDatas?.sales ?? []).sort()
     const sliceIndex = Math.floor(dates.length / 2) + dates.length % 2
     const datesFirstHalf = dates.slice(0, sliceIndex)
     const datesSecondHalf = dates.slice(sliceIndex)
@@ -220,15 +162,32 @@ export default function UrgudulPreview(props) {
         }
     }
 
-    const [products, setProducts] = useState([])
+    const getActivity = (id) => activitiyOptions[id - 1]
 
+    useEffect(() => {
+        axios.get('countries').then(res => {
+            setCountries(res.data.data)
+        })
+        axios.get('products').then(res => {
+            setProducts(res.data.data.docs)
+        })
+        axios.get('occupations').then(res => {
+            setOccupations(res.data.data)
+        })
+    }, [])
+
+    const [countries, setCountries] = useState([])
+    const getCountryName = (id) => countries.filter(obj => obj.id === id)[0]?.description_mon
+
+    const [products, setProducts] = useState([])
     const getProductName = (id) => products.filter(obj => obj.id === id)[0]?.description_mon
 
-    const sumBudgetCost = project.activities?.map(activity => + activity.budget_cost).reduce((acc, cv) => acc + cv, 0)
+    const sumBudgetCost = project.activities?.map(activity => + activity.budget).reduce((acc, cv) => acc + cv, 0)
 
-    const [rates, setRates] = useState([])
+    const getCompanyName = (id) => project.clusters.filter(obj => obj.id === id)[0]?.company_name
 
-    const getRate = (year) => rates.filter(rate => rate.eyear === year)[0]?.usd_to_mnt
+    const [occupations, setOccupations] = useState([])
+    const getOccupationName = (id) => occupations.filter(obj => obj.id === id)[0]?.description_mon
 
     return (
         <div className="tw-overflow-x-auto tw-overflow-y-hidden">
@@ -249,7 +208,7 @@ export default function UrgudulPreview(props) {
 
                 <div className="preview-container" ref={componentRef}>
                     <div className="tw-text-lg text-center tw-font-medium tw-p-4 tw-mt-3 tw-mb-3">
-                        Түншлэлийн дэмжлэг хүсэх өргөдлийн маягт
+                        Санхүүгийн дэмжлэг хүсэх өргөдлийн маягт
                     </div>
 
                     <div className="no-break">
@@ -258,133 +217,157 @@ export default function UrgudulPreview(props) {
                             <span className="tw-ml-2 tw-tracking-wide tw-font-medium">{project.project_number}</span>
                         </div>
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
-                            <Row label={labels.front.project_type} value={project.project_type === 1 ? 'Кластер' : (project.project_type === 0 && 'Аж ахуйн нэгж')} />
-                            <Row label={labels.front.company_name} value={project.company_name} />
-                            <Row label={labels.front.project_name} value={project.project_name} />
+                            <Row label={labels.page1.project_type} value={project.project_type === 1 ? 'Кластер' : (project.project_type === 0 && 'Аж ахуйн нэгж')} />
+                            <Row label={labels.page1.project_name} value={project.project_name} />
+                            <Row label={isCluster ? 'Кластерын тэргүүлэгч ААН-ийн нэр' : 'Аж ахуйн нэгж'} value={companyName} />
+                            <Row label={labels.page1.certificate_number} value={project.certificate_number} />
+                            <Row label={labels.page1.activity_direction} value={getActivityDirection(project.activity_direction)} />
+                            <RowLabel label={labels.page1.main_export} />
+                            <Row label="Одоогийн байдлаар" value={getMainExport(project.main_export, project.main_export_other)} labelClass="tw-pl-4" />
+                            <Row label="Уг өргөдлийн хувьд төлөвлөсөн" value={getMainExport(project.main_export_planned, project.main_export_planned_other)} labelClass="tw-pl-4" />
+
+                            <RowLabel label={labels.page1.export_products} />
+                            <div className="tw-border-b tw-border-gray-400 tw-pl-2">
+                                {project.exportProducts?.map((product, i) =>
+                                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center">
+                                        <span className="tw-mr-3">{i + 1}.</span>
+                                        {product.product_name},
+                                        <span className="tw-ml-3">HS код: {product.hs_code}</span>
+                                    </div>
+                                )}
+                            </div>
+
+                            <RowLabel label={labels.page1.export_country} />
+                            <Row label="Одоогийн байдлаар" value={getExportCountry(project.export_country, project.export_country_other)} labelClass="tw-pl-4" />
+                            <Row label="Уг өргөдлийн хувьд төлөвлөсөн" value={getExportCountry(project.export_country_planned, project.export_country_planned_other)} labelClass="tw-pl-4" classAppend="tw-border-b tw-border-gray-400" />
+
+                            <Row label={labels.page1.planned_activity} value={getPlannedActivity(project.planned_activity, project.planned_activity_cost)} />
+                            <Row label={labels.page1.planned_activity_budget} value={`${project.planned_activity_budget?.toLocaleString()} ₮`} />
                         </div>
                     </div>
 
                     <div className="no-break">
                         <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            Өргөдөл гаргагч
+                            Өргөдөл гаргагчийн мэдээлэл
                         </div>
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
-                            <Row label={labels.company.company_name} value={project.company?.company_name} />
-                            <Row label={labels.company.representative_name} value={project.company?.representative_name} />
-                            <Row label={labels.company.representative_position} value={project.company?.representative_position} />
-                            <Row label={labels.company.registered_date} value={project.company?.registered_date} />
-                            <Row label={labels.company.registration_number} value={project.company?.registration_number} />
-                            <Row label={labels.company.official_address} value={project.company?.official_address} />
-                            <Row label={labels.company.locationId} value={getLocationName(project.company?.locationId)} />
-                            {project.company?.locationId === 39 &&
-                                <Row label={labels.company.districtId} value={getDistrictName(project.company?.districtId)} />
-                            }
-                            <Row label={labels.company.telephone} value={project.company?.telephone} />
-                            <Row label={labels.company.handphone} value={project.company?.handphone} />
-                            <Row label={labels.company.email} value={project.company?.email} />
-                            <Row label={labels.company.website} value={project.company?.website} />
-                            <Row label={labels.company.company_size} value={companySizes[project.company?.company_size - 1]} />
-                            <Row label={labels.company.emp_count} value={project.company?.emp_count?.toLocaleString()} />
-                            <Row label={labels.company.business_sectorId} value={getSectorName(project.company?.business_sectorId)} />
-                            <Row label={labels.company.foreign_invested} value={project.company?.foreign_invested ? 'Тийм' : 'Үгүй'} />
-                            {project.company?.foreign_invested === 1 &&
-                                <>
-                                    <Row label={labels.company.invested_countryid} value={getCountryName(project.company?.invested_countryid)} />
-                                    <Row label={labels.company.investment_percent} value={project.company?.investment_percent + '%'} />
-                                </>
-                            }
-                            <RowHtml label={labels.company.project_plan} html={project.company?.project_plan} />
+                            <div className="tw-px-2 tw-pt-1.5 tw-pb-1.5">
+                                {labels.page2.salesData}
+                            </div>
+                            <div className="tw-border-b tw-border-gray-400 tw-px-2 tw-pb-3">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th className={classTableCell}></th>
+                                            {salesDataYears.map(year =>
+                                                <th className={`${classTableCell} tw-text-center`} key={year}>
+                                                    {year}
+                                                </th>
+                                            )}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className={classTableCell}>
+                                                Жилийн борлуулалтын хэмжээ
+                                            </td>
+                                            {salesDataYears.map(year =>
+                                                <td className={`${classTableCell} tw-text-right tw-w-32`} key={year}>
+                                                    {`${salesDataNet[year]?.toLocaleString()} ₮`}
+                                                </td>
+                                            )}
+                                        </tr>
+                                        <tr>
+                                            <td className={classTableCell}>
+                                                Жилийн экспортын хэмжээ
+                                            </td>
+                                            {salesDataYears.map(year =>
+                                                <td className={`${classTableCell} tw-text-right tw-w-32`} key={year}>
+                                                    {`${salesDataExport[year]?.toLocaleString()} ₮`}
+                                                </td>
+                                            )}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <Row label={labels.page2.company_phone} value={project.company_phone} />
+                            <Row label={labels.page2.company_website} value={project.company_website} />
+                            <Row label={labels.page2.company_address} value={project.company_address} />
                         </div>
                     </div>
 
                     <div className="no-break">
                         <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            {isCluster ? 'Кластерын гишүүн байгууллагууд' : 'Аж ахуйн нэгжийг төлөөлөгчид'}
+                            Түлхүүр албан тушаалтнууд
                         </div>
-                        {isCluster ?
-                            project.clusters?.map((item, i) =>
-                                <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
-                                    <Row label={labels.clusters.company_name} value={item.company_name} />
-                                    <Row label={labels.clusters.representative_name} value={item.representative_name} />
-                                    <Row label={labels.clusters.representative_phone} value={item.representative_phone} />
-                                    <Row label={labels.clusters.representative_email} value={item.representative_email} />
-                                    <Row label={labels.clusters.business_sectorId} value={getSectorName(item.business_sectorId)} />
-                                    <Row label={labels.clusters.company_size} value={companySizes[item.company_size - 1]} />
-                                    <Row label={labels.clusters.support_recipient} value={item.support_recipient ? 'Тийм' : 'Үгүй'} />
-                                    <RowHtml label={labels.clusters.project_contribution} html={item.project_contribution} borderBottom={true} />
-                                    <RowFile label={labels.clusters.attachedFiles} file={item.attachedFiles[0]} />
+                        {project.directors?.map((item, i) =>
+                            <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
+                                <Row label={labels.page3.directors.fullname} value={item.fullname} />
+                                <Row label={labels.page3.directors.position} value={item.position} />
+                                <Row label={labels.page3.directors.phone} value={item.phone} />
+                                <Row label={labels.page3.directors.email} value={item.email} />
+                                <RowHtml label={labels.page3.directors.project_role} html={item.project_role} />
+                            </div>
+                        )}
+                    </div>
+
+                    {isCluster &&
+                        <div className="np-break">
+                            <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                                Кластерын гишүүн байгууллагууд
+                            </div>
+                            {project.clusters?.map((item, i) => {
+                                const sales = item.sales
+                                const years = Object.keys(sales).sort()
+
+                                return <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
+                                    <Row label={labels.page3.clusters.company_name} value={item.company_name} />
+                                    <Row label={labels.page3.clusters.company_register} value={item.company_register} />
+                                    <Row label={labels.page3.clusters.main_activity} value={item.main_activity} />
+                                    <Row label={labels.page3.clusters.director_name} value={item.director_name} />
+                                    <Row label={labels.page3.clusters.director_phone} value={item.director_phone} />
+                                    <Row label={labels.page3.clusters.director_email} value={item.director_email} />
+
+                                    <div className="tw-border-t tw-border-gray-400 tw-px-2 tw-py-3">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th className={classTableCell}></th>
+                                                    {years.map(year =>
+                                                        <th className={`${classTableCell} tw-text-center`} key={year}>
+                                                            {year}
+                                                        </th>
+                                                    )}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td className={classTableCell}>
+                                                        Аж ахуйн нэгжийн борлуулалт
+                                                    </td>
+                                                    {years.map(year =>
+                                                        <td className={`${classTableCell} tw-text-right tw-w-32`} key={year}>
+                                                            {`${sales[year]?.toLocaleString()} ₮`}
+                                                        </td>
+                                                    )}
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            ) :
-                            project.directors?.map((item, i) =>
-                                <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
-                                    <Row label={labels.directors.position} value={getOccupationName(item.position)} />
-                                    <Row label={labels.directors.director_name} value={item.director_name} />
-                                    <Row label={labels.directors.employed_date} value={item.employed_date} />
-                                    <RowHtml label={labels.directors.project_contribution} html={item.project_contribution} />
-                                </div>
-                            )
-                        }
-                    </div>
-
-                    <div className="no-break">
-                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            Товч танилцуулга
+                            })}
                         </div>
-                        <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
-                            <RowHtml label={labels.a3_4.applicant_overview[type]} html={project.applicant_overview} />
-                        </div>
-                    </div>
-
-                    <div className="no-break">
-                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-t-0 tw-border-gray-800">
-                            Техникийн туршлага
-                        </div>
-                        <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
-                            <RowHtml label={labels.a3_4.applicant_experience[type]} html={project.applicant_experience} />
-                        </div>
-                    </div>
+                    }
 
                     <div className="no-break">
                         <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                             Төслийн задаргаа
                         </div>
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" style={{ breakInside: 'avoid' }}>
-                            <Row label={labels.b.project_duration} value={`${project.project_duration} сар`} />
-                            <Row label={labels.b.project_start} value={project.project_start} />
-                            <Row label={labels.b.project_end} value={project.project_end} />
-                            <RowHtml label={labels.b.project_introduction} html={project.project_introduction} />
-                            <RowHtml label={labels.b.preperation} html={project.preperation} />
-                            <RowHtml label={labels.b.identified_problems} html={project.identified_problems} />
-                            <RowHtml label={labels.b.suggested_solutions} html={project.suggested_solutions} />
-                            <RowHtml label={labels.b.expected_result} html={project.expected_result} />
-                        </div>
-                    </div>
-
-                    <div className="no-break">
-                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            Үйл ажиллагаа
-                        </div>
-                        {project.activities?.map((item, i) =>
-                            <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
-                                <RowHtml label={labels.activities.activity[type]} html={item.activity} borderBottom={true} />
-                                <Row label={labels.activities.budget_cost} value={item.budget_cost?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} />
-                            </div>
-                        )}
-                        <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400 tw-font-medium">
-                            <Row label="Нийт үйл ажиллагаануудын төсөвт зардал" value={sumBudgetCost?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} />
-                        </div>
-                    </div>
-
-                    <div className="no-break">
-                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            Төслийн үр ашгийн талаар
-                        </div>
-                        <div className="tw-border tw-border-t-0 tw-border-gray-400">
-                            {Object.entries(labels.benefit).filter(([key, value]) => key !== 'growths_explanation' && key !== 'assumptions').map(([key, value]) =>
-                                <Row label={value} value={project.benefit?.[key] && project.benefit[key].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%'} key={key} />
-                            )}
-                            <RowHtml label={labels.benefit.growths_explanation} html={project.benefit?.growths_explanation} />
-                            <RowHtml label={labels.benefit.assumptions} html={project.benefit?.assumptions} />
+                            <Row label={labels.page4.project_duration} value={`${project.project_duration} сар`} />
+                            <RowHtml label={labels.page4.target_market} html={project.target_market} />
+                            <RowHtml label={labels.page4.defined_problems} html={project.defined_problems} />
                         </div>
                     </div>
 
@@ -394,97 +377,75 @@ export default function UrgudulPreview(props) {
                         </div>
                         {Object.keys(project.exportDatas || {}).length > 0 ?
                             dateHalves.map((dates, h) =>
-                                <table className="tw-border-collapse tw-table-auto tw-w-full tw-mt-6" key={h}>
+                                <table className="tw-border-collapse tw-table-auto tw-mt-6" key={h}>
                                     <thead>
                                         <tr>
                                             <th className="tw-border tw-border-gray-400"></th>
-                                            {dates.map(date => {
-                                                switch (date) {
-                                                    case 'submitDate':
-                                                        return <th className="tw-border tw-border-gray-400 tw-font-medium" key={date}>
-                                                            <div className="tw-flex tw-flex-col tw-items-center">
-                                                                <span className="tw-px-0.5">
-                                                                    {`${project.exportDatas?.submitDate?.year || '__'}-${project.exportDatas?.submitDate?.month || '__'}`}
-                                                                </span>
-                                                                <span className="tw-text-xs tw-px-0.5">
-                                                                    {getRate(project.exportDatas?.submitDate?.year) && `(${getRate(project.exportDatas?.submitDate?.year).toFixed(2)} ₮)`}
-                                                                </span>
-                                                            </div>
-                                                        </th>
-                                                    case 'endDate':
-                                                        return <th className="tw-border tw-border-gray-400 tw-font-medium" key={date}>
-                                                            <div className="tw-flex tw-flex-col tw-items-center">
-                                                                <span className="tw-px-0.5">
-                                                                    {`${project.exportDatas?.endDate?.year || '__'}-${project.exportDatas?.endDate?.month || '__'}`}
-                                                                </span>
-                                                                <span className="tw-text-xs tw-px-0.5">
-                                                                    {getRate(project.exportDatas?.endDate?.year) && `(${getRate(project.exportDatas?.endDate?.year).toFixed(2)} ₮)`}
-                                                                </span>
-                                                            </div>
-                                                        </th>
-                                                    default:
-                                                        return <th className="tw-border tw-border-gray-400 tw-font-medium" key={date}>
-                                                            <div className="tw-flex tw-flex-col tw-items-center">
-                                                                <span className="tw-px-1">
-                                                                    {date}
-                                                                </span>
-                                                                <span className="tw-text-xs tw-px-0.5">
-                                                                    {getRate(+date) && `(${getRate(+date).toFixed(2)} ₮)`}
-                                                                </span>
-                                                            </div>
-                                                        </th>
-                                                }
-                                            })}
-                                            <th className="tw-border tw-border-gray-400 tw-font-medium tw-text-center tw-px-1">Нэгж</th>
+                                            {dates.map(date =>
+                                                <th className="tw-border tw-border-gray-400 tw-text-center tw-font-normal" style={{ minWidth: 90 }} key={date}>
+                                                    {date}
+                                                </th>
+                                            )}
+                                            <th className="tw-border tw-border-gray-400 tw-text-center tw-px-2 tw-font-normal">Нэгж</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Борлуулалт</td>
+                                            <td className="tw-border tw-border-gray-400 tw-px-2">Борлуулалт</td>
                                             {dates.map((item, i) =>
-                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.sales?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-2" key={i}>
+                                                    {project.exportDatas?.sales?.[item]?.toLocaleString()}
+                                                </td>
                                             )}
-                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-2">₮</td>
                                         </tr>
                                         <tr>
-                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Ажлын байр</td>
+                                            <td className="tw-border tw-border-gray-400 tw-px-2">Ажлын байр</td>
                                             {dates.map((item, i) =>
-                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.fullTime_workplace?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-2" key={i}>
+                                                    {project.exportDatas?.fullTime_workplace?.[item]?.toLocaleString()}
+                                                </td>
                                             )}
-                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
+                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-2">Т/х</td>
                                         </tr>
                                         <tr>
-                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Бүтээмж</td>
+                                            <td className="tw-border tw-border-gray-400 tw-px-2">Бүтээмж</td>
                                             {dates.map((item, i) =>
-                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{project.exportDatas?.productivity?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-2" key={i}>
+                                                    {project.exportDatas?.productivity?.[item]?.toLocaleString()}
+                                                </td>
                                             )}
-                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">Т/х</td>
+                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-2">Т/х</td>
                                         </tr>
                                         <tr>
-                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1">Экспорт</td>
+                                            <td className="tw-border tw-border-gray-400 tw-px-2">Экспорт</td>
                                             {dates.map((item, i) =>
-                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={i}>{exportSums[item] !== 0 && exportSums[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-2" key={i}>
+                                                    {exportSums[item] !== 0 && exportSums[item]?.toLocaleString()}
+                                                </td>
                                             )}
-                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-2">₮</td>
                                         </tr>
                                         {project.exportDatas?.export_details?.map((country, i) =>
                                             <Fragment key={i}>
                                                 <tr>
-                                                    <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1" colSpan={dates.length + 2}>{getCountryName(country?.countryId)} - экспорт хийсэн улс</td>
+                                                    <td className="tw-border tw-border-gray-400 tw-px-2" colSpan={dates.length + 2}>{getCountryName(country?.countryId)} - экспорт хийсэн улс</td>
                                                 </tr>
                                                 {country?.export_products?.map((product, j) =>
                                                     <Fragment key={j}>
                                                         <tr>
-                                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-3" colSpan={dates.length + 2}>
+                                                            <td className="tw-border tw-border-gray-400 tw-px-2 tw-pl-3" colSpan={dates.length + 2}>
                                                                 {getProductName(product?.productId)} - экспортын бүтээгдэхүүний ангилал
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="tw-border tw-border-gray-400 tw-font-medium tw-px-1 tw-pl-5">{product?.product_name}</td>
+                                                            <td className="tw-border tw-border-gray-400 tw-px-2 tw-pl-5">{product?.product_name}</td>
                                                             {dates.map((item, k) =>
-                                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-1" key={k}>{product?.[item]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-2" key={k}>
+                                                                    {product?.[item]?.toLocaleString()}
+                                                                </td>
                                                             )}
-                                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-1">$</td>
+                                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-2">₮</td>
                                                         </tr>
                                                     </Fragment>
                                                 )}
@@ -502,24 +463,40 @@ export default function UrgudulPreview(props) {
 
                     <div className="no-break">
                         <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
+                            Үйл ажиллагаа
+                        </div>
+                        {project.activities?.map((item, i) =>
+                            <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
+                                <Row label={`${labels.page6.activity} ${i + 1}`} value={getActivity(item.activityId)} />
+                                <RowHtml label={labels.page6.explanation} html={item.explanation} />
+                                <Row label={labels.page6.budget} value={item.budget.toLocaleString()} classAppend="tw-border-t tw-border-gray-400" />
+                            </div>
+                        )}
+                        <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400 tw-font-medium">
+                            <Row label="Үйл ажиллагаануудын нийт төсөв." value={sumBudgetCost?.toLocaleString()} />
+                        </div>
+                    </div>
+
+                    <div className="no-break">
+                        <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                             Мэдэгдэл
                         </div>
                         {isCluster ?
                             project.noticeClusters?.map((item, i) =>
                                 <div className="tw-border tw-border-t-0 tw-border-gray-400" key={i}>
-                                    <Row label={labels.noticeClusters.companyId} value={getCompanyName(item.id)} />
-                                    <Row label={labels.noticeClusters.representative_positionId} value={getOccupationName(item.id)} />
-                                    <Row label={labels.noticeClusters.representative_name} value={item.representative_name} />
-                                    <RowImage label={labels.noticeClusters.representative_signature} src={item.representative_signature} />
-                                    <Row label={labels.noticeClusters.submitDate} value={item.submitDate} />
+                                    <Row label={labels.page7.noticeCluster.companyId} value={item.applicant ? companyName : getCompanyName(item.companyId)} />
+                                    <Row label={labels.page7.noticeCluster.representative_positionId} value={getOccupationName(item.id)} />
+                                    <Row label={labels.page7.noticeCluster.representative_name} value={item.representative_name} />
+                                    <RowImage label={labels.page7.noticeCluster.representative_signature} src={item.representative_signature} />
+                                    <Row label={labels.page7.noticeCluster.submitDate} value={item.submitDate} />
                                 </div>
                             ) :
                             project.noticeCompany?.map((item, i) =>
                                 <div className="tw-border tw-border-t-0 tw-border-gray-400" key={i}>
-                                    <Row label={labels.noticeCompany.representative_positionId} value={getOccupationName(item.id)} />
-                                    <Row label={labels.noticeCompany.representative_name} value={item.representative_name} />
-                                    <RowImage label={labels.noticeCompany.representative_signature} src={item.representative_signature} />
-                                    <Row label={labels.noticeCompany.submitDate} value={item.submitDate} />
+                                    <Row label={labels.page7.noticeCompany.representative_positionId} value={getOccupationName(item.id)} />
+                                    <Row label={labels.page7.noticeCompany.representative_name} value={item.representative_name} />
+                                    <RowImage label={labels.page7.noticeCompany.representative_signature} src={item.representative_signature} />
+                                    <Row label={labels.page7.noticeCompany.submitDate} value={item.submitDate} />
                                 </div>
                             )
                         }
@@ -530,7 +507,7 @@ export default function UrgudulPreview(props) {
                             Шалгах хуудас
                         </div>
                         <div className="tw-border tw-border-t-0 tw-border-gray-400">
-                            <Row label={labels.e.confirmed} value={project.confirmed ? 'Тийм' : 'Үгүй'} />
+                            <Row label={labels.page8.confirmed} value={project.confirmed ? 'Тийм' : 'Үгүй'} />
                         </div>
                     </div>
 
@@ -539,6 +516,8 @@ export default function UrgudulPreview(props) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
+
+const classTableCell = 'tw-border tw-border-gray-400 tw-px-2 tw-font-normal'
