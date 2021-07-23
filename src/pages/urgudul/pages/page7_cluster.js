@@ -58,7 +58,7 @@ export default function UrgudulPage7Cluster({ projects }) {
    })
 
    const applicantIndex = form.findIndex(obj => obj.applicant === true)
-   const applicantItem = form[applicantIndex]
+   const applicantItem = form[applicantIndex] ?? {}
 
    const handleAdd = () => {
       const newObj = {

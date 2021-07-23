@@ -49,7 +49,7 @@ export default function UrgudulPage7Company({ projects }) {
    })
 
    const directorIndex = form.findIndex(obj => obj.director === true)
-   const directorItem = form[directorIndex]
+   const directorItem = form[directorIndex] ?? {}
 
    const handleAdd = () => {
       const newObj = {
@@ -283,7 +283,7 @@ export default function UrgudulPage7Company({ projects }) {
                   {form.map((item, i) =>
                      directorIndex !== i &&
                      <div className="tw-flex tw-pl-2 tw-pr-4" key={i}>
-                        <ExpandableContainer classAppend="tw-flex-grow" order={directorIndex > i ? i + 2 : i + 1} placeholder="Төлөөлөгч" initialized={initialized}>
+                        <ExpandableContainer classAppend="tw-flex-grow" order={directorIndex > i ? i + 2 : i + 1} label={item.representative_name} placeholder="Төлөөлөгч" initialized={initialized}>
                            <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                               <SearchSelect label="Албан тушаал" data={occupations} value={item.representative_positionId} name="representative_positionId" index={i} displayName="description_mon" setter={handleInput} classAppend="tw-w-full tw-max-w-sm" classInput="tw-w-full" classLabel={i % 2 === 1 && 'tw-bg-gray-50'} invalid={validate && checkInvalid(item.representative_positionId)} />
 
