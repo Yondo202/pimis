@@ -122,7 +122,9 @@ export const NextBtn2 = styled.div`
     }
 `
 
-export const NextBtn = styled.div`
+export const NextBtn = styled.button`
+        outline: none;
+        border: none;
         position:relative;
         font-family: inherit;       
         padding:8px 0px;

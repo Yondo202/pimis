@@ -4,58 +4,82 @@ import { ColorRgb } from '../theme'
 import axios from '../../axiosbase';
 import AccessToken from '../../context/accessToken'
 import ActiveComp from './ActiveComp'
-import InitialComp from './initialComp'
+// import InitialComp from './initialComp'
 import useQuery from 'components/utilities/useQueryLocation'
+import Start from "components/LoginDoneHome/Start"
 
 
 function Home() {
     const userId = useQuery().get('userId')
     const projectId = useQuery().get('projectId')
-
     const [infData, setInfData] = useState(null);
+    const [ infCond, setInfCond ] = useState(false);
+    const [ homeC, setHomeC ] = useState(true);
 
     useEffect(() => {
         if (userId) {
-            axios.get(`pps-infos/registered-companies`, {
-                headers: { Authorization: AccessToken() },
-                params: projectId ? { userId: userId, projectId: projectId } : { userId: userId },
-            }).then((res) => {
-                if (res.data.data[0]) { setInfData(res.data.data[0]) }
-            })
+            Go();
         } else {
-            let userID = localStorage.getItem("userId");
-            axios.get(`pps-infos/registered-companies?userId=${userID}`, {
-                headers: { Authorization: AccessToken() }
-            }).then((res) => {
-                if (res.data.data[0]) { setInfData(res.data.data[0]) }
-            })
+            GoUser();
+        }
+        if(!infData){
+            setTimeout(() => {
+                setHomeC(false);
+            }, 4700)
+            setTimeout(() => {
+                setInfCond(true);
+            }, 5000)
         }
     }, []);
 
+    
+
+    const Go = async () =>{
+       await axios.get(`pps-infos/registered-companies`, {
+            headers: { Authorization: AccessToken() },
+            params: projectId ? { userId: userId, projectId: projectId } : { userId: userId },
+        }).then((res) => {
+            if (res.data.data[0]) { setInfData(res.data.data[0]) }
+        })
+    }
+    const GoUser = async () =>{
+        let userID = localStorage.getItem("userId");
+           await axios.get(`pps-infos/registered-companies?userId=${userID}`, {
+                headers: { Authorization: AccessToken() }
+            }).then((res) => {
+                if (res.data.data[0]) { setInfData(res.data.data[0]) }
+            }).catch(err=>{
+                console.log(`err`, err.response)
+            })
+    }
+
+
     return (
         <HomeComponent style={userId ? { maxWidth: "2000px" } : { maxWidth: "1160px" }} className={`container`}>
-            {infData?.criteria === 1 ? <h3 style={{ marginTop: 50 }}>
-                Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
-                </h3> : <> <div className="headerPar">
-                {userId ? <div className="header row">
-                    <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын нэр:</span>{infData?.companyname}</span> </div></div>
-                    <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Төслийн нэр:</span>{infData?.project?.project_name}</span>  </div></div>
-                    <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын регистр:</span>{infData?.companyregister}</span> </div></div>
-                </div>
-                    : (<div className="header row">
-                        <div className="col-md-4"><div className="headItems"><span className="text">1.Түншлэлийн хөтөлбөрт бүрдүүлэх баримт</span> </div></div>
-                        <div className="col-md-4"><div className="headItems"><span className="text">2. Үнэлгээ, шийдвэр гарах явц</span> </div></div>
-                        <div className="col-md-4"><div className="headItems"><span className="text">3. Түншлэлийн гэрээ, гүйцэтгэл, санхүүжилт</span></div></div>
-                    </div>)}
-                {!userId && <div className="otherHead row">
-                    <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
-                    <div className="col-md-4"><div className="headItems"><span className="text">Бизнес шинжээчийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span> </div></div>
-                </div>}
-            </div>
-
-            <ActiveComp prew={userId} data={infData} /></>}
-            {/* {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />}</>} */}
-                
+            {!infCond? infData?.criteria === 1
+                ? <h3 style={{ marginTop: 50 }}>
+                    Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
+                </h3>
+                : <div className={homeC?"":`Hiding`}>
+                    <div className="headerPar">
+                        {userId ? <div className="header row">
+                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын нэр:</span>{infData?.companyname}</span> </div></div>
+                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Төслийн нэр:</span>{infData?.project?.project_name}</span>  </div></div>
+                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын регистр:</span>{infData?.companyregister}</span> </div></div>
+                        </div>
+                            : (<div className="header row">
+                                <div className="col-md-4"><div className="headItems"><span className="text">1. Бүрдүүлэх материал</span> </div></div>
+                                <div className="col-md-4"><div className="headItems"><span className="text">2. Үнэлгээ, шийдвэр гаргах явц</span> </div></div>
+                                <div className="col-md-4"><div className="headItems"><span className="text">3. Гэрээ, гүйцэтгэл, санхүүжилт</span></div></div>
+                            </div>)}
+                        {!userId && <div className="otherHead row">
+                            <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
+                            <div className="col-md-4"><div className="headItems"><span className="text">Бизнес шинжээчийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span></div></div>
+                        </div>}
+                    </div>
+                    {/* {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />} */}
+                    <ActiveComp prew={userId} data={infData} />
+                </div>:<Start userId={userId} />}
         </HomeComponent>
     )
 }
@@ -433,6 +457,12 @@ const HomeComponent = styled.div`
                 }
             } 
         } 
+    }
+
+    .Hiding{
+        transition:all 0.4s ease;
+        transform:scale(0.8);
+        opacity:0;
     }
     
 `

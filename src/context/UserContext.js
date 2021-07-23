@@ -35,16 +35,15 @@ export const UserStore = (props) => {
     axios.post("users/login", { email: email, password: password })
       .then((res) => {
         loginUserSuccess(res.data.token, res.data.refreshToken, res.data.expireDate, res.data.user);
-
-        console.log(`object`, res.data.user.id);
-
         EdplanApprove(res.data.user.id, res.data.token, true);
       }).catch((err) => {
         console.log(err, "User context deeer aldaa garlaa");
         if (err?.response?.data) {
           setErrMsg(err.response.data.error.message);
+          setTimeout(() => {setErrMsg(""); }, 5000);
         } else {
-          setErrMsg("Холболт алдаатай байна")
+          setErrMsg("Холболт алдаатай байна");
+          setTimeout(() => {setErrMsg(""); }, 5000);
           setUserInfo(initialUserInfo);
         }
       });

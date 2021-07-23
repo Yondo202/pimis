@@ -6,13 +6,11 @@ import {AiOutlineSend} from 'react-icons/ai'
 import Modal from 'react-awesome-modal';
 import axios from "../../axiosbase";
 
-function ForgetPassword() {
+function ForgetPassword({ setVisible, visible }) {
     const [scale, setScale] = useState("0");
-    const [visible, setVisible] = useState(false);
+    // const [visible, setVisible] = useState(false);
     const [Errmsg, setErrmsg] = useState("0");
     const [color, setColor] = useState("red");
-    const openModal=()=> { setVisible(true); }
-    const closeModal=()=> { setVisible(false); }
 
     const handleClick = async (e) =>{
              let rs = document.querySelectorAll(".Email");
@@ -40,8 +38,8 @@ function ForgetPassword() {
       }
     return (
         <Component>
-            <span className="forget" onClick={openModal}> Нууц үг мартсан</span>
-                <Modal visible={visible} width="500" height="460" effect="fadeInDown" onClickAway={closeModal}>
+            {/* <span className="forget" onClick={openModal}> Нууц үг мартсан</span> */}
+                <Modal visible={visible} width="500" height="460" effect="fadeInDown" onClickAway={()=>setVisible(false)}>
                     <div className="formOneParent">
                         <div className="headPar">
                             <span className="headText">Нууц үг сэргээх</span>
@@ -72,15 +70,7 @@ function ForgetPassword() {
 export default ForgetPassword
 
 const Component = styled.div`
-    .forget{
-        font-size:14px;
-        color:#036 !important;
-        font-weight:500;
-        cursor:pointer;
-        &:hover{
-                color:rgba(${ColorRgb},0.7);
-        }
-    }
+    
     .formOneParent{
         padding:10px 60px;
         .headPar{

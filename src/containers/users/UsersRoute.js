@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import Menu from "containers/menu/menu";
 import { HelpStore } from "context/HelperContext";
 import Feedback from 'components/feedback/Feedback'
-import CheckComp from "components/check/compCheck";
+import CheckComp2 from "components/check/CompCheck2";
 import EmialSender2 from "components/emailSend/EmailSend2";
 import LoginDoneHome2 from "components/LoginDoneHome/Home";
 import MainRequestOld from "containers/requestComp/mainRequestOld";
@@ -18,7 +18,7 @@ import WorkPerformance from 'components/workPerformance/MainWorkPerformance'
 import PdfTest from 'components/check/PdfTest'
 import MiddleRoute from "containers/middle/middleRoute"
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
-import Holidays from "components/holidays/Holidays"
+// import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import TrainingFrontPage from 'pages/training/frontPage';
 import UrgudulPage1 from 'pages/urgudul/pages/page1';
@@ -43,7 +43,7 @@ function UsersRoute() {
                             <LoginDoneHome2 />
                         </motion.div>
                     </Route>
-                    <Route path="/check/:url" component={CheckComp} />
+                    <Route path="/check/:url" component={CheckComp2} />
                     <Route path="/checks/test" component={PdfTest} />
                     {/* <Route path="/test" component={Test} /> */}
                     {/* <Route path="/notify-page/:paramId" component={MainPage} /> */}

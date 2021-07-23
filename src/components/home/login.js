@@ -15,20 +15,20 @@ function Login() {
   const history = useHistory();
   const userCtx = useContext(UserContext);
   const [Show, setShow] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const handleClick = (e) => {
+    e.preventDefault();
     let Username = document.querySelectorAll(".LoginInpName");
     let User = Array.from(Username);
     const finalOneUser = {}
-    User.forEach(element => {
-      let field = element.name;
-      let value = element.value;
-      if (!value) {
-        element.classList += " red"
+    User.forEach(el => {
+      if (!el.value) {
+        el.classList += " red"
       }else {
-        element.classList = - " red"
-        element.classList += " LoginInpName"
-        finalOneUser[field] = value;
+        el.classList = - " red"
+        el.classList += " LoginInpName"
+        finalOneUser[el.name] = el.value;
       }
     });
 
@@ -43,37 +43,41 @@ function Login() {
         <img src="/head.jpg" alt="edp_logo" />
         <div className="text">Экспортыг дэмжих төсөл</div>
       </div>
-      <div className="formOneParent">
-        <div className="inputPar">
-          <div className="inpChild">
-            <div className="labels"><span>Нэвтрэх</span> </div>
-            <div className="name">
-              <CgProfile />
-              <InputStyle className="newInp">
-                <input ref={refFocus} type="input" className="LoginInpName" placeholder="Еmail хаягаараа нэвтэрнэ үү" name="name" />
-                <div className="line"></div>
-              </InputStyle>
+      <form onSubmit={handleClick}>
+        <div className="formOneParent">
+          <div className="inputPar">
+            <div className="inpChild">
+              <div className="labels"><span>Нэвтрэх</span> </div>
+              <div className="name">
+                <CgProfile />
+                <InputStyle className="newInp">
+                  <input ref={refFocus} type="email" className="LoginInpName" placeholder="Еmail хаягаараа нэвтэрнэ үү" name="name" required />
+                  <div className="line"></div>
+                </InputStyle>
+              </div>
             </div>
-          </div>
-          <div className="inpChild">
-            <div className="labels">
-              <span> Нууц үг </span>
-              <ForgetPassword />
-            </div>
-            <div className="name">
-              <BiLockOpen />
-              <InputStyle className="newInp pass">
-                <input type={Show ? 'text' : 'password'} className="LoginInpName form__field" placeholder="Нууц үгээ оруулна уу..." name="password" /> {Show ? <FaRegEye onClick={() => setShow(false)} /> : <FaRegEyeSlash onClick={() => setShow(true)} />}
-                <div className="line"></div>
-              </InputStyle>
+            <div className="inpChild">
+              <div className="labels">
+                <span> Нууц үг </span>
+                <span className="forget" onClick={()=>setVisible(true)} > Нууц үг мартсан</span>
+              </div>
+              <div className="name">
+                <BiLockOpen />
+                <InputStyle className="newInp pass">
+                  <input type={Show ? 'text' : 'password'} required className="LoginInpName form__field" placeholder="Нууц үгээ оруулна уу..." name="password" /> {Show ? <FaRegEye onClick={() => setShow(false)} /> : <FaRegEyeSlash onClick={() => setShow(true)} />}
+                  <div className="line"></div>
+                </InputStyle>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="SubmitButtonPar">
-        {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
-        <NextBtn onClick={handleClick} className="SubmitButton" type="button">Нэвтрэх<div className="flexchild"><AiOutlineSend /> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
-      </div>
+        <div className="SubmitButtonPar">
+          {userCtx.userInfo.userId ? <div className="green">Амжтлттай нэвтэрлээ...</div> : <div className="red">{userCtx.errMsg}</div>}
+          <button className="SubmitButton" type="submit">Нэвтрэх<div className="flexchild"><AiOutlineSend /> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></button>
+        </div>
+      </form>
+
+      <ForgetPassword visible={visible} setVisible={setVisible} />
       <Signup />
     </Component>
   )
@@ -148,6 +152,15 @@ const Component = styled.div`
                    color:rgba(0,0,0,0.7);
                    font-weight:500;
                }
+               .forget{
+                  font-size:14px;
+                  color:#036 !important;
+                  font-weight:500;
+                  cursor:pointer;
+                  &:hover{
+                          color:rgba(${ColorRgb},0.7);
+                  }
+                }
            }
         .name{
             padding:15px 0px;
@@ -218,13 +231,16 @@ const Component = styled.div`
       color:red;
     }
       .SubmitButton{
+        position:relative;
+        font-family: inherit;       
+        margin-bottom:10px;
         border-style:none;
-        border-radius:4px;
+        border-radius:6px;
         cursor:pointer;
         padding:5px 0px;
         color:white;
         background-color:${Color};
-        font-size:15px;
+        font-size:14px;
         text-align:center;
         transition:all 0.3s ease;
         display:flex;
@@ -232,9 +248,45 @@ const Component = styled.div`
         justify-content:space-around;
         border:1px solid rgba(63, 81, 181,0.5);
         width:100%;
-        border-radius:4px;
-        // box-shadow: 10px 16px 40px 0 rgb(84 210 117 / 46%);
-    }
+        border-radius:6px;
+        overflow:hidden;
+          &:active:after{
+            opacity: 1;
+            transition: 0s;
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        }
+        img{
+            width:30px;
+            height:30px;
+        }
+        .hide{
+            transition:all 0.3s ease;
+            transform:scale(0);
+            font-size:22px;
+        }
+        .hide1{
+            transition:all 0.7s ease;
+            transform:scale(0);
+            font-size:23px;
+        }
+        &:hover{
+            box-shadow:1px 1px 15px -2px black;
+            .hide{
+                transition:all 0.3s ease;
+                transform:scale(1);
+            }
+            .hide1{
+                transition:all 0.7s ease;
+                transform:scale(1);
+            }
+        }
+        .flexchild{
+            display:flex;
+            align-items:center;
+            justify-content:space-around;
+        }
+      }
   
   }
   .SignUp{

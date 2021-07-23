@@ -16,3 +16,6 @@ export const edplan = axios.create({
 });
 
 export const edplanFront = "https://pimis-plan.edp.mn";
+
+// export const FrontUrl = "https://pimis.edp.mn"
+export const FrontUrl = "http://localhost:3000"
