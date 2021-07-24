@@ -17,6 +17,7 @@ import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import { yearsArr, yearObj, tableCellClass, tableInputClass } from './page2'
+import LoadFromOtherProject from '../loadFromOtherProject'
 
 const initialDirectors = [
    {
@@ -28,7 +29,7 @@ const initialDirectors = [
    },
 ]
 
-export default function UrgudulPage3() {
+export default function UrgudulPage3({ projects = [] }) {
    const [directors, setDirectors] = useState(initialDirectors)
    const [validate, setValidate] = useState(false)
    const [initialized, setInitialized] = useState(false)
@@ -108,10 +109,29 @@ export default function UrgudulPage3() {
       })
    }
 
+   const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+
+   const loadFromOtherProjectDirectors = (id) => {
+      axios.get(`projects/${id}`, {
+         headers: { Authorization: getLoggedUserToken() },
+      }).then(res => {
+         const directorsToLoad = res.data.data?.directors
+         if (directorsToLoad instanceof Array && directorsToLoad?.length) {
+            setDirectors(directorsToLoad)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+         } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Сонгосон өргөдөл түлхүүр албан тушаалтнуудаа оруулаагүй байна.' })
+         }
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+      })
+   }
+
    return (<>
       <div className={containerClass}>
          <UrgudulHeader
             label="Түлхүүр албан тушаалтнуудын жагсаалт"
+            LoadFromOtherProject={<LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectDirectors} />}
          />
 
          {directors.map((director, i) =>
@@ -160,7 +180,7 @@ export default function UrgudulPage3() {
          </div>
       </div>
 
-      {isCluster && <ClusterMembers />}
+      {isCluster && <ClusterMembers otherProjects={otherProjects} />}
    </>
    )
 }
@@ -181,7 +201,7 @@ const initialMembers = [
    },
 ]
 
-function ClusterMembers() {
+function ClusterMembers({ otherProjects }) {
    const [members, setMembers] = useState(initialMembers)
    const [netSales, setNetSales] = useState(null)
    const [validate, setValidate] = useState(false)
@@ -276,10 +296,37 @@ function ClusterMembers() {
       })
    }
 
+   const loadFromOtherProjectCluster = (id) => {
+      axios.get(`projects/${id}`, {
+         headers: { Authorization: getLoggedUserToken() },
+      }).then(res => {
+         const projectToLoad = res.data.data
+         const value = projectToLoad?.clusters
+         if (value instanceof Array && value?.length) {
+            value.forEach((member, i) => {
+               if (member.sales === null || member.sales === undefined) {
+                  value[i].sales = { ...yearObj }
+               }
+            })
+            setMembers(value)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+         } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Сонгосон өргөдөл кластерын гишүүн байгууллагуудаа оруулаагүй байна.' })
+         }
+         const value1 = projectToLoad?.cluster_net_sales
+         if (value1 !== null && value1 !== undefined) {
+            setNetSales(value1)
+         }
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+      })
+   }
+
    return (
       <div className={containerClass}>
          <UrgudulHeader
             label="Кластерын гишүүн байгууллагууд"
+            LoadFromOtherProject={<LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectCluster} />}
          />
 
          {members.map((member, i) =>
@@ -436,7 +483,7 @@ export function ExpandableContainer({ order, label, children, placeholder, initi
 
    return (
       <div className={classAppend}>
-         <div className="tw-inline-flex tw-items-center tw-cursor-pointer tw-pl-2 tw-py-2 tw-text-sm" onClick={() => setOpen(prev => !prev)}>
+         <div className="tw-inline-flex tw-items-center tw-cursor-pointer tw-pl-2 tw-py-2 tw-text-sm hover:tw-underline" onClick={() => setOpen(prev => !prev)}>
             <ChevronDownSVG className={`tw-w-4 tw-h-4 tw-transform-gpu ${!open && 'tw--rotate-90'} tw-transition-transform`} />
             <span className="tw-ml-1 tw-mr-1.5 tw-text-blue-500 tw-font-medium">{order}.</span>
             <span className="tw-pr-3">{label || placeholder}</span>

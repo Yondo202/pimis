@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { animated, Transition } from 'react-spring/renderprops'
 
 
-export default function LoadFromOtherProject(props) {
+export default function LoadFromOtherProject({ classAppend, otherProjects, loadFromOtherProject }) {
     const [loadButtonHovered, setLoadButtonHovered] = useState(false)
     const [loadDropdownOpen, setLoadDropdownOpen] = useState(false)
 
@@ -22,10 +22,7 @@ export default function LoadFromOtherProject(props) {
             handleClickOutsideModal(e)
         }
         document.addEventListener('mousedown', mouseDownFn)
-
-        return () => {
-            document.removeEventListener('mousedown', mouseDownFn)
-        }
+        return () => document.removeEventListener('mousedown', mouseDownFn)
     })
 
     const [loadModal, setLoadModal] = useState({
@@ -43,13 +40,13 @@ export default function LoadFromOtherProject(props) {
 
     const handleLoadFromOtherProject = () => {
         const projectId = loadModal.id
-        props.loadFromOtherProject(projectId)
+        loadFromOtherProject(projectId)
         setLoadModal({ open: false, id: null })
     }
 
     return (
-        <div className={`${props.classAppend}`}>
-            <button className="tw-flex tw-items-center focus:tw-outline-none tw-rounded tw-bg-blue-700 active:tw-bg-blue-600 tw-transition-colors tw-p-1 tw-text-white" onClick={() => setLoadDropdownOpen(prev => !prev)} onMouseEnter={() => setLoadButtonHovered(true)} onMouseLeave={() => setLoadButtonHovered(false)} ref={loadbuttonRef}>
+        <div className={`${classAppend}`}>
+            <button className="tw-flex tw-items-center focus:tw-outline-none tw-rounded tw-bg-blue-700 active:tw-bg-blue-600 tw-transition-colors tw-p-0.5 tw-text-white" onClick={() => setLoadDropdownOpen(prev => !prev)} onMouseEnter={() => setLoadButtonHovered(true)} onMouseLeave={() => setLoadButtonHovered(false)} ref={loadbuttonRef}>
                 <Transition
                     items={loadButtonHovered || loadDropdownOpen}
                     from={{ width: 0, marginRight: 0, marginLeft: 0, opacity: 0 }}
@@ -72,7 +69,7 @@ export default function LoadFromOtherProject(props) {
                     leave={{ height: 0, opacity: 0 }}>
                     {item => item && (anims =>
                         <animated.div className="tw-absolute tw-right-0 tw-top-1 tw-z-10 tw-rounded tw-overflow-hidden tw-divide-y tw-divide-dashed tw-text-xs tw-w-40 tw-bg-blue-700 tw-text-white tw-overflow-y-auto tw-overflow-x-hidden" style={{ ...anims, maxHeight: 500 }} ref={dropdownRef}>
-                            {props.otherProjects.map(project =>
+                            {otherProjects.map(project =>
                                 <div className="tw-cursor-pointer tw-py-2 tw-px-2 hover:tw-bg-blue-500 tw-transition-colors" onClick={() => setLoadModal({ open: true, id: project.id })} key={project.id}>
                                     {project.project_number}
                                 </div>

@@ -15,8 +15,9 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import HelpPopup from 'components/help_popup/helpPopup'
 import { checkInvalid, ExpandableContainer } from './page3'
+import LoadFromOtherProject from '../loadFromOtherProject'
 
-export default function UrgudulPage6() {
+export default function UrgudulPage6({ projects = [] }) {
    const [activities, setActivities] = useState(initialActivities)
    const [validate, setValidate] = useState(false)
    const [initialized, setInitialized] = useState(false)
@@ -84,11 +85,30 @@ export default function UrgudulPage6() {
 
    const unconstrained = activities.every(activity => activity.activityId !== 1 && activity.activityId !== 2)
 
+   const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+
+   const loadFromOtherProjectDirectors = (id) => {
+      axios.get(`projects/${id}`, {
+         headers: { Authorization: getLoggedUserToken() },
+      }).then(res => {
+         const activitiesToLoad = res.data.data?.activities
+         if (activitiesToLoad instanceof Array && activitiesToLoad?.length) {
+            setActivities(activitiesToLoad)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+         } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Сонгосон өргөдөл үйл ажиллагаанууд оруулаагүй байна.' })
+         }
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+      })
+   }
+
    return (
       <div className={containerClass}>
          <UrgudulHeader
             label="Төлөвлөсөн үйл ажиллагаа, төсөв"
             HelpPopup={<HelpPopup classAppend="tw-mx-2" main="Дээд тал нь 5 үйл ажиллагаа сонгох боломжтой. Мөн экспорт хөгжлийн төлөвлөгөө, зах зээлийн судалгаа гэж сонгосон бол өөр үйл ажиллагаа нэмэх боломжгүй болно." />}
+            LoadFromOtherProject={<LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectDirectors} />}
          />
 
          {activities.map((activity, i) =>

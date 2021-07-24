@@ -16,18 +16,18 @@ import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import { useRef } from 'react'
 import useClickOutside from 'components/utilities/useClickOutside'
 
-export default function UrgudulPage1() {
+export default function UrgudulPage1({ projects = [] }) {
+   const UrgudulCtx = useContext(UrgudulContext)
+   const AlertCtx = useContext(AlertContext)
+
    const [form, setForm] = useState(initialState)
    const [products, setProducts] = useState(initialProducts)
-   const [companyName, setCompanyName] = useState(localStorage.getItem('companyname'))
+   const [companyName, setCompanyName] = useState(localStorage.getItem('companyname') ?? UrgudulCtx.data.user?.companyname)
    const [validate, setValidate] = useState(false)
 
    const handleInput = (key, value) => setForm(prev => ({ ...prev, [key]: value }))
 
    const handleInputFormat = (key, values) => setForm(prev => ({ ...prev, [key]: values.floatValue ?? null }))
-
-   const UrgudulCtx = useContext(UrgudulContext)
-   const AlertCtx = useContext(AlertContext)
 
    const projectId = UrgudulCtx.data.id
    const isCreated = projectId !== undefined && projectId !== null
@@ -147,12 +147,38 @@ export default function UrgudulPage1() {
       })
    }
 
+   const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+
+   const loadFromOtherProject = (id) => {
+      axios.get(`projects/${id}`, {
+         headers: { Authorization: getLoggedUserToken() },
+      }).then(res => {
+         const projectToLoad = res.data.data
+         const temp = {}
+         Object.keys(initialState).forEach(key => {
+            const value = projectToLoad[key]
+            if (value !== undefined && value !== null) {
+               temp[key] = value
+            }
+         })
+         setForm({ ...initialState, ...temp })
+         const value = projectToLoad.exportProducts
+         if (value instanceof Array && value?.length) {
+            setProducts(value)
+         }
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+      })
+   }
+
    return (
       <div className={containerClass}>
          <UrgudulHeader
             label="Санхүүгийн дэмжлэг хүсэх өргөдлийн маягт"
             HelpPopup={isCluster && <HelpPopup classAppend="tw-mx-2" main="Хэрэв кластер бол кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." />}
             projectNumber={UrgudulCtx.data.project_number}
+            LoadFromOtherProject={<LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProject} />}
          />
 
          <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-2">
@@ -161,11 +187,11 @@ export default function UrgudulPage1() {
             <FormInline label="Төслийн нэр" type="text" value={form.project_name} name="project_name" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(form.project_name)} />
 
             <StaticText
-               label={isCluster ? 'Кластерын тэргүүлэгч ААН-ийн нэр' : 'Аж ахуйн нэгж'}
+               label={isCluster ? 'Кластерын тэргүүлэгч ААН' : 'Аж ахуйн нэгж'}
                text={companyName}
             />
 
-            <FormInline label="Регистрийн дугаар" type="number" value={form.certificate_number} name="certificate_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(form.certificate_number)} />
+            <FormInline label="Регистрийн дугаар" type="number" value={form.register_number} name="register_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(form.register_number)} />
 
             <FormOptions label="Үйл ажиллагааны чиглэл" options={activityClass} values={[1, 2, 3]} value={form.activity_direction} name="activity_direction" setter={handleInput} invalid={validate && checkInvalid(form.activity_direction)} />
 
@@ -249,7 +275,7 @@ export default function UrgudulPage1() {
 const initialState = {
    project_type: null,
    project_name: null,
-   certificate_number: null,
+   register_number: null,
    activity_direction: null,
    main_export: null,
    main_export_other: null,

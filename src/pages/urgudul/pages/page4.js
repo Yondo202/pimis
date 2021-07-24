@@ -10,8 +10,9 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { checkInvalid } from './page3'
+import LoadFromOtherProject from '../loadFromOtherProject'
 
-export default function UrgudulPage4() {
+export default function UrgudulPage4({ projects = [] }) {
    const [form, setForm] = useState(initialState)
    const [validate, setValidate] = useState(false)
 
@@ -58,10 +59,32 @@ export default function UrgudulPage4() {
       })
    }
 
+   const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+
+   const loadFromOtherProjectDirectors = (id) => {
+      axios.get(`projects/${id}`, {
+         headers: { Authorization: getLoggedUserToken() },
+      }).then(res => {
+         const projectToLoad = res.data.data
+         const temp = {}
+         Object.keys(initialState).forEach(key => {
+            const value = projectToLoad[key]
+            if (value !== undefined && value !== null) {
+               temp[key] = value
+            }
+         })
+         setForm({ ...initialState, ...temp })
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+      })
+   }
+
    return (
       <div className={containerClass}>
          <UrgudulHeader
             label="Төслийн задаргаа"
+            LoadFromOtherProject={<LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectDirectors} />}
          />
 
          <div className="tw-px-2">

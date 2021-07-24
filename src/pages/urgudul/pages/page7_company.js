@@ -27,7 +27,7 @@ const initialState = [
    },
 ]
 
-export default function UrgudulPage7Company({ projects }) {
+export default function UrgudulPage7Company({ projects = [] }) {
    const [form, setForm] = useState(initialState)
    const [initialized, setInitialized] = useState(false)
 
@@ -146,7 +146,7 @@ export default function UrgudulPage7Company({ projects }) {
       }
    }
 
-   // const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+   const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
 
    const loadFromOtherProjectNoticeCompany = (id) => {
       if (!agreed) {
@@ -160,11 +160,10 @@ export default function UrgudulPage7Company({ projects }) {
          const loadNoticeCompany = res.data.data?.noticeCompany ?? []
          if (loadNoticeCompany.length > 0) {
             setForm(loadNoticeCompany)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
          } else {
-            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'ААН төлөөлөгчдийн мэдээллээ оруулаагүй өргөдөл байна.' })
-            return
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Сонгосон өргөдөл төлөөлөгчдийн мэдээллээ оруулаагүй байна.' })
          }
-         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
       }).catch(err => {
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
       })
@@ -177,6 +176,7 @@ export default function UrgudulPage7Company({ projects }) {
                label="Мэдэгдэл"
                HelpPopup={<HelpPopup classAppend="tw-ml-2" main="ААН өргөдлийн хувьд дараах зүйлсийг мэдэгдэж байна." />}
                projectNumber={UrgudulCtx.data.project_number}
+               LoadFromOtherProject={<LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectNoticeCompany} />}
             />
 
             <div>
