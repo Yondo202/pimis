@@ -1,5 +1,7 @@
 export const todayStr = new Date().toISOString().split('T')[0]
 
+export const formatNumber = (num) => num?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+
 export const districts = [
    {
       id: 1,

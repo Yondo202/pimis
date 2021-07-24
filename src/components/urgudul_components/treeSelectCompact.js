@@ -56,7 +56,7 @@ export default function TreeSelectCompact({ displayName, value, data, setter, na
                         </div>
 
                         {parents.map(parent =>
-                            <Tree parent={parent} childs={data.filter(item => item.parentId === parent.id && item[display].toLowerCase().includes(search.toLowerCase()))} display={display} handleSelectId={handleSelectId} value={value} />
+                            <Tree parent={parent} childs={data.filter(item => item.parentId === parent.id && item[display].toLowerCase().includes(search.toLowerCase()))} display={display} handleSelectId={handleSelectId} value={value} key={parent.id} />
                         )}
 
                         <div className="tw-flex tw-justify-end tw-sticky tw-bottom-0">

@@ -21,6 +21,7 @@ import UrgudulPage6 from './pages/page6'
 import UrgudulPage7Cluster from './pages/page7_cluster'
 import UrgudulPage7Company from './pages/page7_company'
 import UrgudulPage8 from './pages/page8'
+import UrgudulPreview from './preview/Preview'
 
 export default function UrgudulNavigator() {
     const history = useHistory()
@@ -255,7 +256,7 @@ export default function UrgudulNavigator() {
                                         <CloseSVG className="tw-w-6 tw-h-6 tw-transition-colors" />
                                     </button>
 
-                                    {/* <UrgudulPreview project={UrgudulCtx.data} /> */}
+                                    <UrgudulPreview project={UrgudulCtx.data} />
                                 </animated.div>
                             )}
                         </Transition>
