@@ -68,6 +68,7 @@ function CompCheck2() {
     }()
     void async function fetch() {
       const data = await axios.get(`users/${localId}`, { headers: { Authorization: AccessToken() } });
+      console.log(`res`, data);
       setUsersInfo(data.data.data);
       setTarget(data.data.data?.project_type);
       setImgData(data.data.data?.signature);
