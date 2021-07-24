@@ -30,7 +30,7 @@ function ActiveComp(props) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <a href={`${edplanFront}/${props?.data?.userId}`} rel="noreferrer" target="_blank" className={props?.data?.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
+                        <a href={props.prew?`#`:`${edplanFront}/${props?.data?.userId}`} rel="noreferrer" target={props.prew?"_self":"_blank"} className={props?.data?.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
                         <div className="line" ></div>
                         <Link to={props.prew ? `/attachments/${props.prew}` : '/attachments'} className={props?.data?.evidence === true ? `itemsActive` : `items`} >2.Нотлох бичиг баримтууд </Link>
                     </div>

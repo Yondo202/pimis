@@ -8,11 +8,10 @@ import ActiveComp from './ActiveComp'
 import useQuery from 'components/utilities/useQueryLocation'
 import Start from "components/LoginDoneHome/Start"
 
-
 function Home() {
     const userId = useQuery().get('userId')
     const projectId = useQuery().get('projectId')
-    const [infData, setInfData] = useState(null);
+    const [ infData, setInfData] = useState(null);
     const [ infCond, setInfCond ] = useState(false);
     const [ homeC, setHomeC ] = useState(true);
 
@@ -22,17 +21,7 @@ function Home() {
         } else {
             GoUser();
         }
-        if(!infData){
-            setTimeout(() => {
-                setHomeC(false);
-            }, 4700)
-            setTimeout(() => {
-                setInfCond(true);
-            }, 5000)
-        }
     }, []);
-
-    
 
     const Go = async () =>{
        await axios.get(`pps-infos/registered-companies`, {
@@ -42,21 +31,38 @@ function Home() {
             if (res.data.data[0]) { setInfData(res.data.data[0]) }
         })
     }
+    
     const GoUser = async () =>{
-        let userID = localStorage.getItem("userId");
+            let userID = localStorage.getItem("userId");
            await axios.get(`pps-infos/registered-companies?userId=${userID}`, {
                 headers: { Authorization: AccessToken() }
             }).then((res) => {
-                if (res.data.data[0]) { setInfData(res.data.data[0]) }
+                if (res.data.data[0]) { 
+                    setInfData(res.data.data[0])
+                    if(!res.data.data[0]?.criteria){
+                        setTimeout(() => {
+                            setHomeC(false);
+                        }, 2900)
+                        setTimeout(() => {
+                            setInfCond(true);
+                        }, 3000)
+                    }
+                }else{
+                    setTimeout(() => {
+                        setHomeC(false);
+                    }, 2900)
+                    setTimeout(() => {
+                        setInfCond(true);
+                    }, 3000)
+                }
             }).catch(err=>{
-                console.log(`err`, err.response)
+                console.log(`err`, err.response);
             })
     }
 
-
     return (
         <HomeComponent style={userId ? { maxWidth: "2000px" } : { maxWidth: "1160px" }} className={`container`}>
-            {!infCond? infData?.criteria === 1
+            {!infCond ? infData?.criteria === 1
                 ? <h3 style={{ marginTop: 50 }}>
                     Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
                 </h3>
@@ -163,7 +169,6 @@ const HomeComponent = styled.div`
                     position:relative;
                     background-color:#89E673;
                     animation: ${animate2} 1.2s ease;
-                  
                     &::before{
                         content:"✔";
                         position:absolute;

@@ -109,15 +109,12 @@ const Container = styled.div`
                     padding:38px 10px;
                     color:rgba(0,0,0,0.5);
                     position:relative;
-                    &::before{
-
-                    }
                     &:hover{
-                        transform:scale(1.054);
                         box-shadow:1px 1px 20px -12px;
                     }
                 }
                 .A22{
+                    transform:scale(1.054);
                     border:1px solid rgba(0,0,0,0.7);
                 }
                 .A2{
@@ -140,6 +137,7 @@ const Container = styled.div`
                     }
                 }
                 .hideAA{
+                    transform:scale(0.9);
                     border:1px solid rgba(0,0,0,0.15);
                     color:rgba(${props=>props.theme.textColor}, 0.15) !important;
                 }
