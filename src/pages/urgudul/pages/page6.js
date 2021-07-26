@@ -16,6 +16,7 @@ import AlertContext from 'components/utilities/alertContext'
 import HelpPopup from 'components/help_popup/helpPopup'
 import { checkInvalid, ExpandableContainer } from './page3'
 import LoadFromOtherProject from '../loadFromOtherProject'
+import FormSelect from 'components/urgudul_components/formSelect'
 
 export default function UrgudulPage6({ projects = [] }) {
    const [activities, setActivities] = useState(initialActivities)
@@ -103,6 +104,13 @@ export default function UrgudulPage6({ projects = [] }) {
       })
    }
 
+   const [activitiesData, setActivitiesData] = useState([])
+   const getActivityName = (id) => activitiesData.find(activity => activity.id === id)?.description_mon
+
+   useEffect(() => {
+      axios.get('/urgudul-datas/activities').then(res => setActivitiesData(res.data.data))
+   }, [])
+
    return (
       <div className={containerClass}>
          <UrgudulHeader
@@ -112,10 +120,19 @@ export default function UrgudulPage6({ projects = [] }) {
          />
 
          {activities.map((activity, i) =>
-            <div className="tw-flex tw-px-2">
-               <ExpandableContainer classAppend="tw-flex-grow" order={i + 1} label={activitiyOptions[activity.activityId - 1]} placeholder="Үйл ажиллагаа" initialized={initialized}>
-                  <FormOptions options={activitiyOptions} values={Array.from({ length: 9 }, (_, i) => i + 1)} value={activity.activityId} name="activityId" index={i} setter={handleInput} invalid={validate && checkInvalid(activity.activityId)} />
-
+            <div className="tw-flex tw-px-2" key={i}>
+               <ExpandableContainer classAppend="tw-flex-grow" order={i + 1} label={getActivityName(activity.activityId)} placeholder="Үйл ажиллагаа" initialized={initialized}>
+                  <FormSelect
+                     data={activitiesData}
+                     setter={handleInput}
+                     name="activityId"
+                     index={i}
+                     label="Үйл ажиллагаа сонгох:"
+                     value={activity.activityId}
+                     displayName="description_mon"
+                     invalid={validate && checkInvalid(activity.activityId)}
+                     classAppend="tw-max-w-md tw--mt-3"
+                  />
                   <FormRichText
                      label="Тайлбар"
                      modules="small"
@@ -126,7 +143,6 @@ export default function UrgudulPage6({ projects = [] }) {
                      classAppend="tw-pl-3"
                      invalid={validate && checkInvalid(activity.explanation, 'quill')}
                   />
-
                   <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                      <FormInline label="Үйл ажиллагааны төсөв" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={activity.budget} name="budget" index={i} setter={handleInputFormat} invalid={validate && checkInvalid(activity.budget)} />
 
@@ -168,16 +184,4 @@ const initialActivities = [
       explanation: null,
       budget: null,
    },
-]
-
-export const activitiyOptions = [
-   'Экспорт хөгжлийн төлөвлөгөө',
-   'Зах зээлийн судалгаа',
-   'Вебсайт, брэндбүүк, сав баглаа боодол, каталог хөгжүүлэлт',
-   'Сурталчилгааны эх бэлтгэл, видео сурталчилгаа, дуут сурталчилгаа бүтээх',
-   'Сурталчилгаа цацах',
-   'Үзэсгэлэн худалдаа',
-   'ERP систем',
-   'Чанарын удирдлага',
-   'Бүтээгдэхүүн хөгжүүлэлт, шинэ загвар',
 ]

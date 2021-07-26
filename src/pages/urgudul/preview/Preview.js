@@ -10,10 +10,8 @@ import RowImage from './rowImage'
 import RowHtml from './rowHtml'
 import { useParams } from 'react-router-dom'
 import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
-import RowFile from './rowFile'
-import { activityClass, productClass, exportCountries, plannedActivityClass } from '../pages/page1'
+import { activityClass, plannedActivityClass } from '../pages/page1'
 import RowLabel from './rowLabel'
-import { activitiyOptions } from '../pages/page6'
 
 const labels = {
     page1: {
@@ -126,12 +124,12 @@ export default function UrgudulPreview(props) {
 
     const getActivityDirection = (id) => activityClass[id - 1]
     const getMainExport = (id, other) => id === -1
-        ? `Бусад: ${other}`
-        : productClass[id - 1]
+        ? `Бусад:  ${other}`
+        : getProductNameOther(id)
 
     const getExportCountry = (id, other) => id === -1
-        ? `Бусад: ${other}`
-        : exportCountries[id - 1]
+        ? `Бусад:  ${other}`
+        : getCountryNameOther(id)
 
     const getPlannedActivity = (id, cost) => cost
         ? `${plannedActivityClass[id - 1]} - ${cost?.toLocaleString()} ₮`
@@ -161,19 +159,23 @@ export default function UrgudulPreview(props) {
         }
     }
 
-    const getActivity = (id) => activitiyOptions[id - 1]
-
     useEffect(() => {
-        axios.get('countries').then(res => {
-            setCountries(res.data.data)
-        })
-        axios.get('products').then(res => {
-            setProducts(res.data.data.docs)
-        })
-        axios.get('occupations').then(res => {
-            setOccupations(res.data.data)
-        })
+        axios.get('/urgudul-datas/products-other').then(res => setProductsOther(res.data.data))
+        axios.get('/urgudul-datas/countries-other').then(res => setCountriesOther(res.data.data))
+        axios.get('/urgudul-datas/activities').then(res => setActivitiesData(res.data.data))
+        axios.get('countries').then(res => setCountries(res.data.data))
+        axios.get('products').then(res => setProducts(res.data.data.docs))
+        axios.get('occupations').then(res => setOccupations(res.data.data))
     }, [])
+
+    const [productsOther, setProductsOther] = useState([])
+    const getProductNameOther = (id) => productsOther.find(product => product.id === id)?.description_mon
+
+    const [countriesOther, setCountriesOther] = useState([])
+    const getCountryNameOther = (id) => countriesOther.find(country => country.id === id)?.description_mon
+
+    const [activitiesData, setActivitiesData] = useState([])
+    const getActivityName = (id) => activitiesData.find(activity => activity.id === id)?.description_mon
 
     const [countries, setCountries] = useState([])
     const getCountryName = (id) => countries.filter(obj => obj.id === id)[0]?.description_mon
@@ -466,7 +468,7 @@ export default function UrgudulPreview(props) {
                         </div>
                         {project.activities?.map((item, i) =>
                             <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
-                                <Row label={`${labels.page6.activity} ${i + 1}`} value={getActivity(item.activityId)} />
+                                <Row label={`${labels.page6.activity} ${i + 1}`} value={getActivityName(item.activityId)} />
                                 <RowHtml label={labels.page6.explanation} html={item.explanation} />
                                 <Row label={labels.page6.budget} value={item.budget.toLocaleString()} classAppend="tw-border-t tw-border-gray-400" />
                             </div>
