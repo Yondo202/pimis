@@ -413,7 +413,7 @@ export default function LetterOfInterest() {
                                 <input className={`tw-w-60 tw-text-center tw-font-medium tw-ml-2 tw-py-1 tw-px-0.5 tw-shadow-inner focus:tw-outline-none tw-rounded ${validate && checkInvalid(form.director_name) && 'tw-border tw-border-red-500 tw-border-dashed'} tw-transition-colors`} type="text" value={form.director_name || ''} onChange={e => handleInput('director_name', e.target.value)} placeholder="Овог нэр" title="Овог нэр" />
 
                                 <div className="tw-w-0 tw-h-10 tw-relative">
-                                    <button className={`tw-absolute tw-top-0 tw-left-4 tw-text-blue-500 active:tw-text-blue-400 tw-transition-colors focus:tw-outline-none tw-shadow-inner tw-p-1 tw-rounded ${validate && checkInvalid(form.company_stamp) && 'tw-border tw-border-red-500 tw-border-dashed'}`} onClick={() => setSignatureModalOpen(true)} ref={signatureButtonRef} title="Гарын үсэг оруулах">
+                                    <button className={`tw-absolute tw-top-0 tw-left-4 tw-text-blue-500 active:tw-text-blue-400 tw-transition-colors focus:tw-outline-none tw-shadow-inner tw-p-1 tw-rounded ${validate && checkInvalid(form.director_signature) && 'tw-border tw-border-red-500 tw-border-dashed'}`} onClick={() => setSignatureModalOpen(true)} ref={signatureButtonRef} title="Гарын үсэг оруулах">
                                         <PenAltSVG className="tw-w-8 tw-h-8 tw-transition-colors" />
                                     </button>
                                 </div>
