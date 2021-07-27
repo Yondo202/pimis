@@ -16,7 +16,7 @@ import { useHistory } from 'react-router'
 export default function ProjectStatusHandle() {
     const projectId = useQuery().get('projectId')
 
-    const [status, setStatus] = useState(initialState)
+    const [status, setStatus] = useState({})
 
     useEffect(() => {
         axios.get(`projects/${projectId}/status`, {
@@ -125,22 +125,22 @@ export default function ProjectStatusHandle() {
                 </DataGrid> */}
 
                 <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-max-w-5xl tw-mt-6">
-                    <InfoItem label="Аж ахуйн нэгжийн нэр" value={status.company_name} />
-
                     <InfoItem label="Төслийн дугаар" value={status.project_number} />
 
                     <InfoItem label="Төслийн нэр" value={status.project_name} />
 
-                    <InfoItem label="Төслийн эхлэх хугацаа" value={status.project_start} />
+                    <InfoItem label={status.project_type === 1 ? 'Кластерийн тэргүүлэгч ААН' : 'Аж ахуйн нэгж'} value={status.user?.companyname} />
+
+                    <InfoItem label="Регистрийн дугаар" value={status.register_number} />
 
                     <InfoItem label="Өргөдөл үүсгэсэн өдөр" value={status.createdAt?.slice(0, 10)} />
 
                     <div className="tw-flex tw-flex-col tw-items-start md:tw-col-span-2 tw-p-2 tw-ml-2 tw-relative">
-                        <div className="tw-border-b tw-border-gray-500 tw-rounded-b tw-pl-1 tw-pr-2">
+                        <div className="">
                             Төслийн төлвийг сонгох:
                         </div>
 
-                        <button className="tw-mt-2 tw-rounded tw-py-1 tw-border tw-border-gray-500 focus:tw-outline-none tw-flex tw-items-center tw-px-2 tw-font-medium" style={{ minWidth: 160 }} onClick={() => setStatusDropdownOpen(prev => !prev)} ref={buttonRef}>
+                        <button className="tw-mt-1 tw-rounded tw-py-1 tw-border tw-border-gray-500 focus:tw-outline-none tw-flex tw-items-center tw-px-2" style={{ minWidth: 160 }} onClick={() => setStatusDropdownOpen(prev => !prev)} ref={buttonRef}>
                             <span className="tw-mr-2">{statusNames[status.status]}</span>
                             <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-auto" />
                         </button>
@@ -152,9 +152,9 @@ export default function ProjectStatusHandle() {
                             leave={{ height: 0 }}
                             config={{ tension: 300, clamp: true }}>
                             {item => item && (anims =>
-                                <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 72, minWidth: 160, ...anims }} ref={dropdownRef}>
+                                <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 70, minWidth: 160, ...anims }} ref={dropdownRef}>
                                     {Object.keys(statusNames).map(status =>
-                                        <div className="tw-cursor-pointer tw-py-2 tw-text-13px tw-font-medium tw-px-2 hover:tw-bg-indigo-100 tw-transition-colors" key={status} onClick={() => handleStatusSelect(status)}>
+                                        <div className="tw-cursor-pointer tw-py-1.5 tw-text-13px tw-px-2 hover:tw-bg-indigo-50 tw-transition-colors" key={status} onClick={() => handleStatusSelect(status)}>
                                             {statusNames[status]}
                                         </div>
                                     )}
@@ -164,11 +164,11 @@ export default function ProjectStatusHandle() {
                     </div>
 
                     <div className="tw-flex tw-flex-col tw-items-start md:tw-col-span-2 tw-p-2 tw-ml-2">
-                        <div className="tw-mt-2 tw-border-b tw-border-gray-500 tw-rounded-b tw-pl-1 tw-pr-2">
+                        <div className="">
                             Тайлбар:
                         </div>
 
-                        <textarea className="tw-mt-2 tw-w-full tw-max-w-3xl focus:tw-outline-none tw-border tw-border-gray-500 tw-rounded py-1 tw-px-2" rows="5" value={status.comment || ''} onChange={e => handleInput('comment', e.target.value)} style={{ minHeight: 46 }} />
+                        <textarea className="tw-mt-1 tw-w-full tw-max-w-3xl focus:tw-outline-none tw-border tw-border-gray-500 tw-rounded py-1 tw-px-2" rows="5" value={status.comment || ''} onChange={e => handleInput('comment', e.target.value)} style={{ minHeight: 46 }} />
                     </div>
                 </div>
 
@@ -196,7 +196,7 @@ export default function ProjectStatusHandle() {
                                     <HistoryItem history={history} key={history.id} />
                                 )}
                             </div>
-                            : <div className="tw-p-4 tw-font-medium tw-italic tw-bg-gray-50 tw-rounded-b-md" style={anims}>
+                            : <div className="tw-p-4 tw-italic tw-bg-gray-50 tw-rounded-b-md" style={anims}>
                                 <span className="tw-opacity-90">Өөрчилсөн түүх байхгүй байна.</span>
                             </div>
                         )}
@@ -224,22 +224,12 @@ export default function ProjectStatusHandle() {
 //     }
 // }
 
-const initialState = {
-    company_name: null,
-    project_name: null,
-    project_number: null,
-    project_start: null,
-    createdAt: null,
-    status: null,
-    comment: null,
-}
-
 const InfoItem = ({ label, value }) => (
     <div className="tw-flex tw-flex-col tw-items-start tw-p-2 tw-ml-2">
-        <div className="tw-border-b tw-border-gray-500 tw-rounded-b tw-pl-1 tw-pr-2">
+        <div className="">
             {label}:
         </div>
-        <div className={`tw-inline-flex tw-h-7 tw-items-center tw-font-medium tw-truncate tw-px-2 ${!value && 'tw-text-gray-500'}`}>
+        <div className={`tw-mt-0.5 tw-inline-flex tw-h-7 tw-items-center tw-truncate tw-px-2 tw-text-sm tw-rounded-md ${value && 'tw-bg-indigo-50'}`}>
             {value}
         </div>
     </div>
@@ -253,7 +243,7 @@ const HistoryItem = ({ history }) => {
 
     return (
         <div className="">
-            <div className="tw-flex tw-flex-nowrap tw-py-1.5 tw-font-medium">
+            <div className="tw-flex tw-flex-nowrap tw-py-1.5">
                 <div className="tw-w-48 tw-px-1 tw-flex tw-items-center tw-ml-4">
                     {new Date(history.createdAt).toLocaleString()}
                 </div>

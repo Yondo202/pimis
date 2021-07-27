@@ -162,6 +162,10 @@ export default function AttachmentUploads() {
                 headers: { 'Authorization': getLoggedUserToken() },
             }).then(res => {
                 setForm(res.data.data)
+            }).err(err => {
+                if (err.response.error.statusCode === 401) {
+                    AlertCtx.setAlert({ open: true, variant: 'normal', msg: err.response.error.message })
+                }
             })
         }
     }, [])

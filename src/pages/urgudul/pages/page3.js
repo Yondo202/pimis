@@ -103,7 +103,7 @@ export default function UrgudulPage3({ projects = [] }) {
          headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
          UrgudulCtx.setData(prev => ({ ...prev, ...res.data.data }))
-         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийг хадгаллаа.' })
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Түлхүүр албан тушаалтнуудыг хадгаллаа.' })
       }).catch(err => {
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
       })
