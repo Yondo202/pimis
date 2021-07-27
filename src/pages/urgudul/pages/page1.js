@@ -316,7 +316,7 @@ export default function UrgudulPage1({ projects = [] }) {
 
                <PlannedActivity label="Төлөвлөсөн үйл ажиллагааны чиглэл" value={form.planned_activity} valueCost={form.planned_activity_cost} setter={handleInput} validate={validate} />
 
-               <FormInline label="Төлөвлөсөн үйл ажиллагааны нийт төсөв" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={form.planned_activity_budget} name="planned_activity_budget" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" />
+               <FormInline label="Төлөвлөсөн үйл ажиллагааны нийт төсөв" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={form.planned_activity_budget} name="planned_activity_budget" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(form.planned_activity_budget)} />
             </div>
 
             <div className="tw-flex tw-justify-end">
