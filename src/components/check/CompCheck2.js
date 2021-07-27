@@ -114,7 +114,7 @@ function CompCheck2() {
     });
 
     userInfos["signature"] = imgData;
-    userInfos["project_type"] = target === "Аж ахуйн нэгж"?1:2;
+    userInfos["project_type"] = target === "Аж ахуйн нэгж"?0:1;
     userInfos["company_stamp"] = FrontUrl + selectLogo.fileUrl?.replace("public", "");
 
     if(keys.length < 14) {
