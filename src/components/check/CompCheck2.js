@@ -127,7 +127,7 @@ function CompCheck2() {
       setTimeout(() => {setOpacity2("0");}, 5000)
     }else if(!selectLogo?.fileUrl){
       setOpacity2("1");
-      setFinalErrorText("Тамгаа хавсаргана уу")
+      setFinalErrorText("Тамгаа хавсаргана уу");
       setTimeout(() => {setOpacity2("0");}, 5000);
     }else if (finalCond.length > 0) {
       setOpacity("0");
@@ -151,19 +151,18 @@ function CompCheck2() {
       setOpacity("0");
       setOpacity2("0");
       SendData(soloObject2, true, userInfos);
- 
     }
   }
 
   const SendData = (soloObject2, cond, userInfos) =>{
     axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(_=> {
 
-          axios.put(`users/${localId}`, userInfos, { headers: { Authorization: AccessToken() }}).then(res=>{
+          axios.put(`users/${localId}`, userInfos, { headers: { Authorization: AccessToken() }}).then(_=>{
             setUpdateMount(2);
-            if(cond){ ctx.alertText('green, Амжилттай илгээгдлээ', true); }
+            if(cond){ ctx.alertText('green, Амжилттай илгээгдлээ', true); setVisible(true); }
             else{ ctx.alertText('orange, Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.', true); }
             setBtnSpin(false);
-            setTimeout(() => { history.push('/'); }, 5000);
+            setTimeout(() => { history.push('/'); }, 10000);
           })
 
     }).catch(_=> { setFinalErrorText("Алдаа гарлаа."); setBtnSpin(false); });
@@ -460,6 +459,7 @@ function CompCheck2() {
 
               </div>
             </Modal>
+            
             <Modal visible={visibleSig} width="620" height="380" effect="fadeInDown" onClickAway={()=>setVisibleSig(false)}>
                 <div className="modalPar">
                     <div className="Canvass">

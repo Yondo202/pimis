@@ -23,7 +23,6 @@ function ActiveComp(props) {
                     </div>
                     {/* <div className="lineFull" ></div>
                     <Link to={props.prew ? `/urgudul-preview/${props?.data?.project?.id}` : '/urgudul/1'} className={props?.data?.project && props?.data?.project.confirmed === 1 ? `resultActive` : `resultDesable`} >4. Өргөдлийн маягт </Link> */}
-
                 </div>
             </div>
 
