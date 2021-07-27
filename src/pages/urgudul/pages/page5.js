@@ -162,7 +162,6 @@ function UrgudulPage5() {
             }).then(res => {
                UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Экспортын мэдээлэллийг хадгаллаа.' })
-               history.push('/urgudul/9')
             }).catch(err => {
                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
             })

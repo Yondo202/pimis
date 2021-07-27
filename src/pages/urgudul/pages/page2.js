@@ -126,7 +126,7 @@ export default function UrgudulPage2() {
                      </td>
                      {years.map(year =>
                         <td className={tableCellClass} key={year}>
-                           <NumberFormat className={`${tableInputClass} ${validate && checkInvalid(sales.net?.[year] ? 'tw-bg-red-100' : 'tw-bg-indigo-50')} tw-transition-colors`} prefix="₮ " decimalScale={2} thousandSeparator value={sales.net?.[year]} onValueChange={values => handleInputSales('net', year, values.floatValue)} />
+                           <NumberFormat className={`${tableInputClass} ${validate && checkInvalid(sales.net?.[year]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-transition-colors`} prefix="₮ " decimalScale={2} thousandSeparator value={sales.net?.[year]} onValueChange={values => handleInputSales('net', year, values.floatValue)} />
                         </td>
                      )}
                   </tr>
@@ -145,11 +145,11 @@ export default function UrgudulPage2() {
          </div>
 
          <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-2">
-            <FormInline label="Албан газрын утасны дугаар" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={infos.company_phone} name="company_phone" setter={handleInputFormattedInfos} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" />
+            <FormInline label="Албан газрын утасны дугаар" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={infos.company_phone} name="company_phone" setter={handleInputFormattedInfos} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(infos.company_phone)} />
 
-            <FormInline label="Вэбсайт" value={infos.company_website} name="company_website" setter={handleInputInfos} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
+            <FormInline label="Вэбсайт" value={infos.company_website} name="company_website" setter={handleInputInfos} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(infos.company_website)} />
 
-            <FormInline label="Албан ёсны хаяг" value={infos.company_address} name="company_address" setter={handleInputInfos} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" />
+            <FormInline label="Албан ёсны хаяг" value={infos.company_address} name="company_address" setter={handleInputInfos} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(infos.company_address)} />
          </div>
 
          <div className="tw-flex tw-justify-end">

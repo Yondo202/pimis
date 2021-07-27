@@ -37,15 +37,16 @@ export default function UrgudulPage7Cluster({ projects = [] }) {
    useEffect(() => {
       if (UrgudulCtx.data.id !== undefined) {
          if (UrgudulCtx.data.noticeClusters && UrgudulCtx.data.noticeClusters?.length) {
-            const newForm = UrgudulCtx.data.noticeClusters
+            const newForm = [...UrgudulCtx.data.noticeClusters]
+            const applicantIndex = newForm.findIndex(obj => obj.applicant === true)
             newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
             setForm([...newForm])
             setCheckList(new Set([1, '2a', '2b', '2c', 3, 4, 5, 6, 7, 8, 9]))
             setAgreed(true)
          } else {
-            const newForm = form
-            // newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
-            setForm([...newForm])
+            const newForm = [...form]
+            newForm[applicantIndex].companyId = UrgudulCtx.data.company?.id || 0
+            setForm(newForm)
          }
       }
       setInitialized(true)
@@ -107,7 +108,6 @@ export default function UrgudulPage7Cluster({ projects = [] }) {
             }).then(res => {
                UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Төлөөлөгч талуудын мэдээллийг хадгаллаа.' })
-               history.push('/urgudul/10')
             }).catch(err => {
                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
             })

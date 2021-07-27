@@ -69,11 +69,15 @@ export default function LoadFromOtherProject({ classAppend, otherProjects, loadF
                     leave={{ height: 0, opacity: 0 }}>
                     {item => item && (anims =>
                         <animated.div className="tw-absolute tw-right-0 tw-top-1 tw-z-10 tw-rounded tw-overflow-hidden tw-divide-y tw-divide-dashed tw-text-xs tw-w-40 tw-bg-blue-700 tw-text-white tw-overflow-y-auto tw-overflow-x-hidden" style={{ ...anims, maxHeight: 500 }} ref={dropdownRef}>
-                            {otherProjects.map(project =>
-                                <div className="tw-cursor-pointer tw-py-2 tw-px-2 hover:tw-bg-blue-500 tw-transition-colors" onClick={() => setLoadModal({ open: true, id: project.id })} key={project.id}>
-                                    {project.project_number}
+                            {otherProjects.length === 0
+                                ? <div className="tw-py-2 tw-px-2 tw-text-gray-100 tw-italic tw-text-center">
+                                    Өргөдөл байхгүй байна
                                 </div>
-                            )}
+                                : otherProjects.map(project =>
+                                    <div className="tw-cursor-pointer tw-py-2 tw-px-2 hover:tw-bg-blue-500 tw-transition-colors" onClick={() => setLoadModal({ open: true, id: project.id })} key={project.id}>
+                                        {project.project_number}
+                                    </div>
+                                )}
                         </animated.div>
                     )}
                 </Transition>

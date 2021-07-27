@@ -213,6 +213,12 @@ function ClusterMembers({ otherProjects }) {
       return next
    })
 
+   const handleInputFormatted = (key, values, index) => setMembers(prev => {
+      const next = [...prev]
+      next[index][key] = values.formattedValue
+      return next
+   })
+
    const handleRemove = (index) => setMembers(prev => prev.filter((_, i) => i !== index))
 
    const handleAdd = () => setMembers(prev => [...prev, {
@@ -364,7 +370,7 @@ function ClusterMembers({ otherProjects }) {
                                  </td>
                                  {years.map(year =>
                                     <td className={tableCellClass} key={year}>
-                                       <NumberFormat className={`{${tableInputClass} ${validate && checkInvalid(member.sales[year]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-transition-colors`} prefix="₮ " decimalScale={2} thousandSeparator value={member.sales[year]} onValueChange={values => handleInputSales(year, values.floatValue, i)} />
+                                       <NumberFormat className={`${tableInputClass} ${validate && checkInvalid(member.sales[year]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-transition-colors`} prefix="₮ " decimalScale={2} thousandSeparator value={member.sales[year]} onValueChange={values => handleInputSales(year, values.floatValue, i)} />
                                     </td>
                                  )}
                               </tr>
@@ -374,7 +380,7 @@ function ClusterMembers({ otherProjects }) {
 
                      <FormInline label="Гүйцэтгэх захирлын нэр" value={member.director_name} name="director_name" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(member.director_name)} />
 
-                     <FormInline label="Гүйцэтгэх захирлын утасны дугаар" value={member.director_phone} name="director_phone" index={i} setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(member.director_phone)} />
+                     <FormInline label="Гүйцэтгэх захирлын утасны дугаар" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={member.director_phone} name="director_phone" index={i} setter={handleInputFormatted} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(member.director_phone)} />
 
                      <FormInline label="Гүйцэтгэх захирлын имэйл" type="email" value={member.director_email} name="director_email" index={i} setter={handleInput} validate classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(member.director_email)} />
                   </div>
