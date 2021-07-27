@@ -148,7 +148,7 @@ export default function UrgudulNavigator() {
                 <animated.div key={key} className="tw-pb-10" style={props}>
                     <Switch location={item}>
                         <Route path="/urgudul/1">
-                            <UrgudulPage1 />
+                            <UrgudulPage1 projects={projects} />
                         </Route>
 
                         <Route path="/urgudul/2">
@@ -156,11 +156,11 @@ export default function UrgudulNavigator() {
                         </Route>
 
                         <Route path="/urgudul/3">
-                            <UrgudulPage3 />
+                            <UrgudulPage3 projects={projects} />
                         </Route>
 
                         <Route path="/urgudul/4">
-                            <UrgudulPage4 />
+                            <UrgudulPage4 projects={projects} />
                         </Route>
 
                         <Route path="/urgudul/5">
@@ -168,13 +168,13 @@ export default function UrgudulNavigator() {
                         </Route>
 
                         <Route path="/urgudul/6">
-                            <UrgudulPage6 />
+                            <UrgudulPage6 projects={projects} />
                         </Route>
 
                         <Route path="/urgudul/7">
                             {isCluster
-                                ? <UrgudulPage7Cluster />
-                                : <UrgudulPage7Company />
+                                ? <UrgudulPage7Cluster projects={projects} />
+                                : <UrgudulPage7Company projects={projects} />
                             }
                         </Route>
 

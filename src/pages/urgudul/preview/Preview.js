@@ -10,16 +10,14 @@ import RowImage from './rowImage'
 import RowHtml from './rowHtml'
 import { useParams } from 'react-router-dom'
 import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
-import RowFile from './rowFile'
-import { activityClass, productClass, exportCountries, plannedActivityClass } from '../pages/page1'
+import { activityClass, plannedActivityClass } from '../pages/page1'
 import RowLabel from './rowLabel'
-import { activitiyOptions } from '../pages/page6'
 
 const labels = {
     page1: {
         project_type: 'Өргөдлийн төрөл:',
         project_name: 'Төслийн нэр',
-        certificate_number: 'Регистрийн дугаар',
+        register_number: 'Регистрийн дугаар',
         activity_direction: 'Үйл ажиллагааны чиглэл',
         main_export: 'Экспортын гол бүтээгдэхүүний ангилал',
         export_products: 'Экспортийн бүтээгдэхүүнүүд',
@@ -95,7 +93,6 @@ export default function UrgudulPreview(props) {
     })
 
     const [project, setProject] = useState({})
-    const [companyName, setCompanyName] = useState(localStorage.getItem('companyname'))
 
     const AlertCtx = useContext(AlertContext)
 
@@ -127,12 +124,12 @@ export default function UrgudulPreview(props) {
 
     const getActivityDirection = (id) => activityClass[id - 1]
     const getMainExport = (id, other) => id === -1
-        ? `Бусад: ${other}`
-        : productClass[id - 1]
+        ? `Бусад:  ${other}`
+        : getProductNameOther(id)
 
     const getExportCountry = (id, other) => id === -1
-        ? `Бусад: ${other}`
-        : exportCountries[id - 1]
+        ? `Бусад:  ${other}`
+        : getCountryNameOther(id)
 
     const getPlannedActivity = (id, cost) => cost
         ? `${plannedActivityClass[id - 1]} - ${cost?.toLocaleString()} ₮`
@@ -162,19 +159,23 @@ export default function UrgudulPreview(props) {
         }
     }
 
-    const getActivity = (id) => activitiyOptions[id - 1]
-
     useEffect(() => {
-        axios.get('countries').then(res => {
-            setCountries(res.data.data)
-        })
-        axios.get('products').then(res => {
-            setProducts(res.data.data.docs)
-        })
-        axios.get('occupations').then(res => {
-            setOccupations(res.data.data)
-        })
+        axios.get('/urgudul-datas/products-other').then(res => setProductsOther(res.data.data))
+        axios.get('/urgudul-datas/countries-other').then(res => setCountriesOther(res.data.data))
+        axios.get('/urgudul-datas/activities').then(res => setActivitiesData(res.data.data))
+        axios.get('countries').then(res => setCountries(res.data.data))
+        axios.get('products').then(res => setProducts(res.data.data.docs))
+        axios.get('occupations').then(res => setOccupations(res.data.data))
     }, [])
+
+    const [productsOther, setProductsOther] = useState([])
+    const getProductNameOther = (id) => productsOther.find(product => product.id === id)?.description_mon
+
+    const [countriesOther, setCountriesOther] = useState([])
+    const getCountryNameOther = (id) => countriesOther.find(country => country.id === id)?.description_mon
+
+    const [activitiesData, setActivitiesData] = useState([])
+    const getActivityName = (id) => activitiesData.find(activity => activity.id === id)?.description_mon
 
     const [countries, setCountries] = useState([])
     const getCountryName = (id) => countries.filter(obj => obj.id === id)[0]?.description_mon
@@ -219,8 +220,8 @@ export default function UrgudulPreview(props) {
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400">
                             <Row label={labels.page1.project_type} value={project.project_type === 1 ? 'Кластер' : (project.project_type === 0 && 'Аж ахуйн нэгж')} />
                             <Row label={labels.page1.project_name} value={project.project_name} />
-                            <Row label={isCluster ? 'Кластерын тэргүүлэгч ААН-ийн нэр' : 'Аж ахуйн нэгж'} value={companyName} />
-                            <Row label={labels.page1.certificate_number} value={project.certificate_number} />
+                            <Row label={isCluster ? 'Кластерын тэргүүлэгч ААН' : 'Аж ахуйн нэгж'} value={project.user?.companyname} />
+                            <Row label={labels.page1.register_number} value={project.register_number} />
                             <Row label={labels.page1.activity_direction} value={getActivityDirection(project.activity_direction)} />
                             <RowLabel label={labels.page1.main_export} />
                             <Row label="Одоогийн байдлаар" value={getMainExport(project.main_export, project.main_export_other)} labelClass="tw-pl-4" />
@@ -229,15 +230,15 @@ export default function UrgudulPreview(props) {
                             <RowLabel label={labels.page1.export_products} />
                             <div className="tw-border-b tw-border-gray-400 tw-pl-2">
                                 {project.exportProducts?.map((product, i) =>
-                                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center">
-                                        <span className="tw-mr-3">{i + 1}.</span>
+                                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center tw-border-t-0">
+                                        <span className="tw-mr-1.5">{i + 1}.</span>
                                         {product.product_name},
                                         <span className="tw-ml-3">HS код: {product.hs_code}</span>
                                     </div>
                                 )}
                             </div>
 
-                            <RowLabel label={labels.page1.export_country} />
+                            <RowLabel label={labels.page1.export_country} style={{ borderTop: 'none' }} />
                             <Row label="Одоогийн байдлаар" value={getExportCountry(project.export_country, project.export_country_other)} labelClass="tw-pl-4" />
                             <Row label="Уг өргөдлийн хувьд төлөвлөсөн" value={getExportCountry(project.export_country_planned, project.export_country_planned_other)} labelClass="tw-pl-4" classAppend="tw-border-b tw-border-gray-400" />
 
@@ -373,7 +374,7 @@ export default function UrgudulPreview(props) {
 
                     <div className="no-break">
                         <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-b-0 tw-border-gray-800 tw-mt-8">
-                            Төслийн тооцоолол
+                            Экспортын мэдээлэл
                         </div>
                         {Object.keys(project.exportDatas || {}).length > 0 ?
                             dateHalves.map((dates, h) =>
@@ -455,8 +456,8 @@ export default function UrgudulPreview(props) {
                                 </table>
                             )
                             :
-                            <div className="tw-border tw-border-gray-400 tw-px-2 tw-py-4">
-                                Төслийн тооцоолол хүснэгтийн мэдээлэл оруулаагүй байна.
+                            <div className="tw-border tw-border-gray-400 tw-px-2 tw-py-2">
+                                Экспортын мэдээлэл оруулаагүй байна.
                             </div>
                         }
                     </div>
@@ -467,7 +468,7 @@ export default function UrgudulPreview(props) {
                         </div>
                         {project.activities?.map((item, i) =>
                             <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
-                                <Row label={`${labels.page6.activity} ${i + 1}`} value={getActivity(item.activityId)} />
+                                <Row label={`${labels.page6.activity} ${i + 1}`} value={getActivityName(item.activityId)} />
                                 <RowHtml label={labels.page6.explanation} html={item.explanation} />
                                 <Row label={labels.page6.budget} value={item.budget.toLocaleString()} classAppend="tw-border-t tw-border-gray-400" />
                             </div>
@@ -484,7 +485,7 @@ export default function UrgudulPreview(props) {
                         {isCluster ?
                             project.noticeClusters?.map((item, i) =>
                                 <div className="tw-border tw-border-t-0 tw-border-gray-400" key={i}>
-                                    <Row label={labels.page7.noticeCluster.companyId} value={item.applicant ? companyName : getCompanyName(item.companyId)} />
+                                    <Row label={labels.page7.noticeCluster.companyId} value={item.applicant ? project.user?.companyname : getCompanyName(item.companyId)} />
                                     <Row label={labels.page7.noticeCluster.representative_positionId} value={getOccupationName(item.id)} />
                                     <Row label={labels.page7.noticeCluster.representative_name} value={item.representative_name} />
                                     <RowImage label={labels.page7.noticeCluster.representative_signature} src={item.representative_signature} />

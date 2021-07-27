@@ -161,7 +161,7 @@ function UrgudulPage5() {
                headers: { 'Authorization': getLoggedUserToken() }
             }).then(res => {
                UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
-               AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Борлуулалт, экспортын тооцооллыг хадгаллаа.' })
+               AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Экспортын мэдээлэллийг хадгаллаа.' })
                history.push('/urgudul/9')
             }).catch(err => {
                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
@@ -183,8 +183,7 @@ function UrgudulPage5() {
       <div className="tw-flex tw-justify-center tw-w-full tw-px-4">
          <div className="tw-mt-8 tw-mb-70 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-max-w-full">
             <UrgudulHeader
-               label="Өөрийн төслийн хувьд дараах тооцооллыг хийнэ үү"
-               HelpPopup={<HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Мөнгөн дүн бүхий тооцооллуудыг тухайн жилийн доор харуулсан тэр оны долларын ханшийг ашиглан доллар руу хөрвүүлж хийнэ үү." />}
+               label="Экспортын мэдээлэл"
                projectNumber={UrgudulCtx.data.project_number}
             />
 

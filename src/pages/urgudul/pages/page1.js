@@ -12,22 +12,21 @@ import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import NumberFormat from 'react-number-format'
-import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
-import { useRef } from 'react'
-import useClickOutside from 'components/utilities/useClickOutside'
+import FormSelect from 'components/urgudul_components/formSelect'
+import ModalWindow from 'components/modal_window/modalWindow'
 
-export default function UrgudulPage1() {
+export default function UrgudulPage1({ projects = [] }) {
+   const UrgudulCtx = useContext(UrgudulContext)
+   const AlertCtx = useContext(AlertContext)
+
    const [form, setForm] = useState(initialState)
    const [products, setProducts] = useState(initialProducts)
-   const [companyName, setCompanyName] = useState(localStorage.getItem('companyname'))
+   const [companyName, setCompanyName] = useState(localStorage.getItem('companyname') ?? UrgudulCtx.data.user?.companyname)
    const [validate, setValidate] = useState(false)
 
    const handleInput = (key, value) => setForm(prev => ({ ...prev, [key]: value }))
 
    const handleInputFormat = (key, values) => setForm(prev => ({ ...prev, [key]: values.floatValue ?? null }))
-
-   const UrgudulCtx = useContext(UrgudulContext)
-   const AlertCtx = useContext(AlertContext)
 
    const projectId = UrgudulCtx.data.id
    const isCreated = projectId !== undefined && projectId !== null
@@ -50,6 +49,11 @@ export default function UrgudulPage1() {
    }, [projectId])
 
    const handleSubmitCreate = () => {
+      if (period.open !== true) {
+         setModalOpen(true)
+         return
+      }
+
       setValidate(true)
       let allValid = true
       Object.keys(initialState)
@@ -147,109 +151,237 @@ export default function UrgudulPage1() {
       })
    }
 
+   const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
+
+   const loadFromOtherProject = (id) => {
+      axios.get(`projects/${id}`, {
+         headers: { Authorization: getLoggedUserToken() },
+      }).then(res => {
+         const projectToLoad = res.data.data
+         const temp = {}
+         Object.keys(initialState).forEach(key => {
+            const value = projectToLoad[key]
+            if (value !== undefined && value !== null) {
+               temp[key] = value
+            }
+         })
+         setForm({ ...initialState, ...temp })
+         const value = projectToLoad.exportProducts
+         if (value instanceof Array && value?.length) {
+            setProducts(value)
+         }
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонгосон өргөдлөөс мэдээллийг нь орууллаа.' })
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сонгосон өргөдлийн мэдээллийг татаж чадсангүй.' })
+      })
+   }
+
+   const [productsOther, setProductsOther] = useState([])
+   const [countriesOther, setCountriesOther] = useState([])
+   const [period, setPeriod] = useState({
+      open: null,
+      period: {},
+   })
+
+   useEffect(() => {
+      axios.get('/urgudul-datas/products-other').then(res => setProductsOther(res.data.data))
+      axios.get('/urgudul-datas/countries-other').then(res => setCountriesOther(res.data.data))
+      axios.get('accept-periods', {
+         headers: { Authorization: getLoggedUserToken() },
+         params: { checkOpen: true }
+      }).then(res => {
+         setPeriod(res.data.data)
+      })
+   }, [])
+
+   const [modalOpen, setModalOpen] = useState(false)
+
    return (
-      <div className={containerClass}>
-         <UrgudulHeader
-            label="Санхүүгийн дэмжлэг хүсэх өргөдлийн маягт"
-            HelpPopup={isCluster && <HelpPopup classAppend="tw-mx-2" main="Хэрэв кластер бол кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." />}
-            projectNumber={UrgudulCtx.data.project_number}
-         />
-
-         <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-2">
-            <FormOptions label="Өргөдлийн төрөл" options={['Аж ахуйн нэгж', 'Кластер']} values={[0, 1]} value={form.project_type} name="project_type" setter={handleInput} invalid={validate && checkInvalid(form.project_type)} />
-
-            <FormInline label="Төслийн нэр" type="text" value={form.project_name} name="project_name" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(form.project_name)} />
-
-            <StaticText
-               label={isCluster ? 'Кластерын тэргүүлэгч ААН-ийн нэр' : 'Аж ахуйн нэгж'}
-               text={companyName}
+      <>
+         <div className={containerClass}>
+            <UrgudulHeader
+               label="Санхүүгийн дэмжлэг хүсэх өргөдлийн маягт"
+               HelpPopup={isCluster && <HelpPopup classAppend="tw-mx-2" main="Хэрэв кластер бол кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." />}
+               projectNumber={UrgudulCtx.data.project_number}
+               LoadFromOtherProject={<LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProject} />}
             />
 
-            <FormInline label="Регистрийн дугаар" type="number" value={form.certificate_number} name="certificate_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(form.certificate_number)} />
+            <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-px-2">
+               <FormOptions label="Өргөдлийн төрөл" options={['Аж ахуйн нэгж', 'Кластер']} values={[0, 1]} value={form.project_type} name="project_type" setter={handleInput} invalid={validate && checkInvalid(form.project_type)} />
 
-            <FormOptions label="Үйл ажиллагааны чиглэл" options={activityClass} values={[1, 2, 3]} value={form.activity_direction} name="activity_direction" setter={handleInput} invalid={validate && checkInvalid(form.activity_direction)} />
+               <FormInline label="Төслийн нэр" type="text" value={form.project_name} name="project_name" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(form.project_name)} />
 
-            <div className="md:tw-col-span-2 tw-w-full">
-               <div className="tw-text-sm tw-p-2">
-                  Экспортын гол бүтээгдэхүүний ангилал /Зөвхөн үйлдвэрлэлийн салбар/
+               <StaticText
+                  label={isCluster ? 'Кластерын тэргүүлэгч ААН' : 'Аж ахуйн нэгж'}
+                  text={companyName}
+               />
+
+               <FormInline label="Регистрийн дугаар" type="number" value={form.register_number} name="register_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(form.register_number)} />
+
+               <FormOptions label="Үйл ажиллагааны чиглэл" options={activityClass} values={[1, 2, 3]} value={form.activity_direction} name="activity_direction" setter={handleInput} invalid={validate && checkInvalid(form.activity_direction)} />
+
+               <div className="md:tw-col-span-2 tw-w-full">
+                  <div className="tw-text-sm tw-p-2">
+                     Экспортын гол бүтээгдэхүүний ангилал /Зөвхөн үйлдвэрлэлийн салбар/
+                  </div>
+                  <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                     <div className="tw-w-full">
+                        <FormSelect
+                           data={productsOther}
+                           setter={handleInput}
+                           name="main_export"
+                           label="Одоогийн байдлаар:"
+                           value={form.main_export}
+                           displayName="description_mon"
+                           invalid={validate && checkInvalid(form.main_export)}
+                           classAppend="tw-max-w-xs tw--mt-4"
+                        />
+                        <OthersInline
+                           value={form.main_export_other}
+                           name="main_export_other"
+                           setter={handleInput}
+                           invalid={validate && checkInvalid(form.main_export_other)}
+                           valueEffect={form.main_export}
+                        />
+                     </div>
+                     <div className="tw-w-full">
+                        <FormSelect
+                           data={productsOther}
+                           setter={handleInput}
+                           name="main_export_planned"
+                           label="Уг өргөдлийн хувьд төлөвлөсөн:"
+                           value={form.main_export_planned}
+                           displayName="description_mon"
+                           invalid={validate && checkInvalid(form.main_export_planned)}
+                           classAppend="tw-max-w-xs tw--mt-4"
+                        />
+                        <OthersInline
+                           value={form.main_export_planned_other}
+                           name="main_export_planned_other"
+                           setter={handleInput}
+                           invalid={validate && checkInvalid(form.main_export_planned_other)}
+                           valueEffect={form.main_export_planned}
+                        />
+                     </div>
+                  </div>
                </div>
-               <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                  <SelectWithOther
-                     label="Одоогийн байдлаар:"
-                     options={productClass}
-                     value={form.main_export}
-                     valueOther={form.main_export_other}
-                     keyName="main_export"
-                     keyNameOther="main_export_other"
-                     setter={handleInput}
-                     invalid={validate && checkInvalid(form.main_export)}
-                     invalidOther={validate && checkInvalid(form.main_export_other)}
-                  />
-                  <SelectWithOther
-                     label="Уг өргөдлийн хувьд төлөвлөсөн:"
-                     options={productClass}
-                     value={form.main_export_planned}
-                     valueOther={form.main_export_planned_other}
-                     keyName="main_export_planned"
-                     keyNameOther="main_export_planned_other"
-                     setter={handleInput}
-                     invalid={validate && checkInvalid(form.main_export_planned)}
-                     invalidOther={validate && checkInvalid(form.main_export_planned_other)}
-                  />
+
+               <ExportProducts label="Экспортийн бүтээгдэхүүнүүд" list={products} setter={setProducts} validate={validate} />
+
+               <div className="md:tw-col-span-2 tw-w-full">
+                  <div className="tw-text-sm tw-p-2">
+                     Экспортын зорилтот орны нэр
+                  </div>
+                  <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                     <div className="tw-w-full">
+                        <FormSelect
+                           data={countriesOther}
+                           setter={handleInput}
+                           name="export_country"
+                           label="Одоогийн байдлаар:"
+                           value={form.export_country}
+                           displayName="description_mon"
+                           invalid={validate && checkInvalid(form.export_country)}
+                           classAppend="tw-max-w-xs tw--mt-4"
+                        />
+                        <OthersInline
+                           value={form.export_country_other}
+                           name="export_country_other"
+                           setter={handleInput}
+                           invalid={validate && checkInvalid(form.export_country_other)}
+                           valueEffect={form.export_country}
+                        />
+                     </div>
+                     <div className="tw-w-full">
+                        <FormSelect
+                           data={countriesOther}
+                           setter={handleInput}
+                           name="export_country_planned"
+                           label="Уг өргөдлийн хувьд төлөвлөсөн:"
+                           value={form.export_country_planned}
+                           displayName="description_mon"
+                           invalid={validate && checkInvalid(form.export_country_planned)}
+                           classAppend="tw-max-w-xs tw--mt-4"
+                        />
+                        <OthersInline
+                           value={form.export_country_planned_other}
+                           name="export_country_planned_other"
+                           setter={handleInput}
+                           invalid={validate && checkInvalid(form.export_country_planned_other)}
+                           valueEffect={form.export_country_planned}
+                        />
+                     </div>
+                  </div>
                </div>
+
+               <PlannedActivity label="Төлөвлөсөн үйл ажиллагааны чиглэл" value={form.planned_activity} valueCost={form.planned_activity_cost} setter={handleInput} validate={validate} />
+
+               <FormInline label="Төлөвлөсөн үйл ажиллагааны нийт төсөв" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={form.planned_activity_budget} name="planned_activity_budget" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" />
             </div>
 
-            <ExportProducts label="Экспортийн бүтээгдэхүүнүүд" list={products} setter={setProducts} validate={validate} />
-
-            <div className="md:tw-col-span-2 tw-w-full">
-               <div className="tw-text-sm tw-p-2">
-                  Экспортын зорилтот орны нэр
-               </div>
-               <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
-                  <SelectWithOther
-                     label="Одоогийн байдлаар:"
-                     options={exportCountries}
-                     value={form.export_country}
-                     valueOther={form.export_country_other}
-                     keyName="export_country"
-                     keyNameOther="export_country_other"
-                     setter={handleInput}
-                     invalid={validate && checkInvalid(form.export_country)}
-                     invalidOther={validate && checkInvalid(form.export_country_other)}
-                  />
-                  <SelectWithOther
-                     label="Уг өргөдлийн хувьд төлөвлөсөн:"
-                     options={exportCountries}
-                     value={form.export_country_planned}
-                     valueOther={form.export_country_planned_other}
-                     keyName="export_country_planned"
-                     keyNameOther="export_country_planned_other"
-                     setter={handleInput}
-                     invalid={validate && checkInvalid(form.export_country_planned)}
-                     invalidOther={validate && checkInvalid(form.export_country_planned_other)}
-                  />
-               </div>
+            <div className="tw-flex tw-justify-end">
+               <SaveButton
+                  buttonAppend="tw-m-6"
+                  onClick={isCreated ? handleSubmitEdit : handleSubmitCreate}
+                  label={isCreated ? undefined : 'Өргөдөл үүсгэх'} />
             </div>
-
-            <PlannedActivity label="Төлөвлөсөн үйл ажиллагааны чиглэл" value={form.planned_activity} valueCost={form.planned_activity_cost} setter={handleInput} validate={validate} />
-
-            <FormInline label="Төлөвлөсөн үйл ажиллагааны нийт төсөв" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={form.planned_activity_budget} name="planned_activity_budget" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" />
          </div>
 
-         <div className="tw-flex tw-justify-end">
-            <SaveButton
-               buttonAppend="tw-m-6"
-               onClick={isCreated ? handleSubmitEdit : handleSubmitCreate}
-               label={isCreated ? undefined : 'Өргөдөл үүсгэх'} />
-         </div>
-      </div >
+         <Transition
+            items={period.open === false && (UrgudulCtx.data.id === undefined || UrgudulCtx.data.id === null)}
+            from={{ transform: 'scale(0)' }}
+            enter={{ transform: 'scale (1)' }}
+            leave={{ transform: 'scale (0)' }}
+            config={{ clamp: true }}
+         >
+            {item => item && (anims =>
+               <animated.div className="tw-mt-8 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white" style={anims}>
+                  <div className="tw-text-center tw-text-sm tw-p-2 tw-pt-5">
+                     Өргөдөл хүлээж авах хугацаа нээгдээгүй байна.
+                  </div>
+                  <div className="tw-text-center tw-text-13px tw-p-2 tw-pb-4">
+                     {period.period.start_date
+                        ? <span>
+                           {`Дараагийн нээгдэх хугацааг `}
+                           <span className="tw-text-blue-500">{period.period.start_date}</span>
+                           {` -аас `}
+                           <span className="tw-text-blue-500">{period.period.end_date}</span>
+                           {` хооронд байхаар төлөвлөж байна.`}
+                        </span>
+                        : `Дараагийн нээгдэх хугацааг төлөвлөөгүй байна.`
+                     }
+                  </div>
+               </animated.div>
+            )}
+         </Transition>
+
+         <ModalWindow modalOpen={modalOpen} setModalOpen={setModalOpen}
+            modalAppend="tw-max-w-md tw-ring-2 tw-ring-indigo-500"
+         >
+            <div className="tw-text-center tw-text-sm tw-p-2 tw-pt-4">
+               Өргөдөл хүлээж авах хугацаа нээгдээгүй байна.
+            </div>
+            <div className="tw-text-center tw-text-13px tw-pt-2 tw-pb-3 tw-px-4">
+               {period.period.start_date
+                  ? <span>
+                     {`Дараагийн нээгдэх хугацааг `}
+                     <span className="tw-text-blue-500">{period.period.start_date}</span>
+                     {` -аас `}
+                     <span className="tw-text-blue-500">{period.period.end_date}</span>
+                     {` хооронд байхаар төлөвлөж байна.`}
+                  </span>
+                  : `Дараагийн нээгдэх хугацааг төлөвлөөгүй байна.`
+               }
+            </div>
+         </ModalWindow>
+      </>
    )
 }
 
 const initialState = {
    project_type: null,
    project_name: null,
-   certificate_number: null,
+   register_number: null,
    activity_direction: null,
    main_export: null,
    main_export_other: null,
@@ -277,30 +409,6 @@ export const activityClass = [
    'Соёлын бүтээлч үйлдвэрэл, мэдээллийн технологи',
 ]
 
-export const productClass = [
-   'Хүнсний бүтээгдэхүүн',
-   'Бэлэн хувцас',
-   'Гутал, цүнх, арьсан эдлэл',
-   'Хивс',
-   'Монгол гэр',
-   'Амьтны хоол',
-   'Түүхий эд: мах',
-   'Түүхий эд: ноолуур/ноос',
-   'Түүхий эд: арьс, шир',
-]
-
-export const exportCountries = [
-   'БНСУ',
-   'Япон',
-   'ХБНГУ',
-   'АНУ',
-   'Итали',
-   'Франц',
-   'Их Британи',
-   'БНХАУ',
-   'ОХУ',
-]
-
 export const plannedActivityClass = [
    'Экспортын маркетинг',
    'Экспортын бүтээгдэхүүний чанарын удирдлага, гэрчилгээжүүлэлт',
@@ -326,74 +434,26 @@ export const UrgudulHeader = ({ label, HelpPopup, LoadFromOtherProject, projectN
    </div>
 )
 
-function SelectWithOther({ label, HelpPopup, options, value, valueOther, keyName, keyNameOther, setter, invalid, invalidOther }) {
-   const [open, setOpen] = useState(false)
-
-   const getValue = (id) => id === -1
-      ? 'Бусад'
-      : options[id - 1]
-
-   const buttonRef = useRef()
-   const dropdownRef = useRef()
-
-   useClickOutside([buttonRef, dropdownRef], open, () => setOpen(false))
+function OthersInline({ value, name, setter, invalid, valueEffect }) {
+   useEffect(() => {
+      valueEffect !== -1 && setter(name, null)
+   }, [valueEffect])
 
    return (
-      <div className="tw-w-full tw-pl-4 tw-pb-2">
-         <div className="tw-text-sm tw-flex tw-items-center">
-            {label}
-            {HelpPopup && HelpPopup}
-         </div>
-
-         <div className="tw-mt-1.5 tw-pl-2">
-            <div className="tw-relative">
-               <button className={`tw-flex tw-items-center tw-border tw-rounded tw-py-1.5 tw-px-2 focus:tw-outline-none ${invalid ? 'tw-border-red-500' : (open ? 'tw-border-blue-700 tw-shadow' : 'tw-border-gray-500')} tw-transition-colors tw-duration-700`} style={{ minWidth: 160 }} onClick={() => setOpen(prev => !prev)} ref={buttonRef}>
-                  <span className="tw-text-13px tw-mr-1.5">
-                     {getValue(value) ?? 'Сонгох'}
-                  </span>
-                  <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-auto" />
-               </button>
-
-               <Transition
-                  items={open}
-                  from={{ height: 0, opacity: 0 }}
-                  enter={{ height: 'auto', opacity: 1 }}
-                  leave={{ height: 0, opacity: 0 }}
-                  config={{ clamp: true }}
-               >
-                  {item => item && (anims =>
-                     <animated.div className="tw-absolute tw-top-9 tw-left-0 tw-bg-white tw-overflow-hidden tw-rounded tw-shadow-sm tw-border tw-border-gray-400 tw-divide-y tw-divide-dashed tw-z-10 tw-text-13px" style={anims} ref={dropdownRef}>
-                        {options.map((option, i) =>
-                           <div className="tw-py-1.5 tw-pl-2 tw-pr-4 hover:tw-bg-blue-600 hover:tw-text-gray-50 tw-transition-colors tw-cursor-pointer" style={{ minWidth: 160 }} onClick={() => { setter(keyName, i + 1); setOpen(false) }}>
-                              <span className="tw-pr-1.5">{i + 1}.</span>
-                              {option}
-                           </div>
-                        )}
-                        <div className="tw-py-1.5 tw-pl-2 tw-pr-4 hover:tw-bg-blue-600 hover:tw-text-gray-50 tw-transition-colors tw-cursor-pointer" style={{ minWidth: 160 }} onClick={() => { setter(keyName, -1); setOpen(false) }}>
-                           <span className="tw-pr-2">{options.length + 1}.</span>
-                           Бусад
-                        </div>
-                     </animated.div>
-                  )}
-               </Transition>
-
-               <Transition
-                  items={value === -1}
-                  from={{ opacity: 0, height: 0 }}
-                  enter={{ opacity: 1, height: 'auto' }}
-                  leave={{ opacity: 0, height: 0 }}
-                  config={{ clamp: true }}
-               >
-                  {item => item && (anims =>
-                     <animated.div className="tw-pt-2 tw-pl-1 tw-overflow-hidden tw-flex tw-items-center" style={anims}>
-                        <span className="tw-text-sm">Бусад:</span>
-                        <input className={`${basicInputClass} tw-ml-2 tw-flex-grow ${invalidOther && 'tw-border-red-500'} tw-transition-colors`} style={{ maxWidth: 240 }} value={valueOther ?? ''} onChange={e => setter(keyNameOther, e.target.value)} />
-                     </animated.div>
-                  )}
-               </Transition>
-            </div>
-         </div>
-      </div>
+      <Transition
+         items={valueEffect === -1}
+         from={{ opacity: 0, height: 0 }}
+         enter={{ opacity: 1, height: 'auto' }}
+         leave={{ opacity: 0, height: 0 }}
+         config={{ clamp: true }}
+      >
+         {item => item && (anims =>
+            <animated.div className="tw-pl-3 tw-overflow-hidden tw-flex tw-items-center" style={anims}>
+               <span className="tw-text-sm">Бусад:</span>
+               <input className={`${basicInputClass} tw-ml-2 tw-flex-grow ${invalid && 'tw-border-red-500'} tw-transition-colors`} style={{ maxWidth: 248 }} value={value ?? ''} onChange={e => setter(name, e.target.value)} />
+            </animated.div>
+         )}
+      </Transition>
    )
 }
 
