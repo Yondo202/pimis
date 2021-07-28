@@ -363,7 +363,7 @@ export default function UrgudulPreview(props) {
 
                     <div className="no-break">
                         <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
-                            Төслийн задаргаа
+                            Төслийн мэдээлэл
                         </div>
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" style={{ breakInside: 'avoid' }}>
                             <Row label={labels.page4.project_duration} value={`${project.project_duration} сар`} />

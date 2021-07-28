@@ -83,7 +83,7 @@ export default function UrgudulPage4({ projects = [] }) {
    return (
       <div className={containerClass}>
          <UrgudulHeader
-            label="Төслийн задаргаа"
+            label="Төслийн мэдээлэл"
             LoadFromOtherProject={<LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectDirectors} />}
          />
 

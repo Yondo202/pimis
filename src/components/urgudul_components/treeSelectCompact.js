@@ -33,7 +33,7 @@ export default function TreeSelectCompact({ displayName, value, data, setter, na
 
     return (
         <div className={`tw-relative ${classAppend}`}>
-            <button className={`tw-flex tw-items-center focus:tw-outline-none tw-text-sm tw-rounded ${validate ? 'tw-bg-red-100 active:tw-bg-red-200' : 'tw-bg-indigo-50 active:tw-bg-indigo-100'} tw-px-1.5 tw-py-0.5 tw-ml-3 tw-transition-colors`} style={{ width: 193 }} onClick={() => setOpen(!open)} ref={buttonRef}>
+            <button className={`tw-flex tw-items-center focus:tw-outline-none tw-text-sm tw-rounded ${validate ? 'tw-bg-red-100 active:tw-bg-red-200' : 'tw-bg-indigo-50 active:tw-bg-indigo-100'} tw-px-1.5 tw-py-0.5 tw-transition-colors tw-w-full`} onClick={() => setOpen(!open)} ref={buttonRef}>
                 <div className="tw-mr-1 tw-relative tw-text-left tw-truncate tw-text-13px" title={selectedName}>
                     {selectedName || <span className="tw-text-gray-600">{placeholder}</span>}
                 </div>

@@ -48,6 +48,7 @@ export default function UrgudulPage6({ projects = [] }) {
    const history = useHistory()
 
    const projectId = UrgudulCtx.data.id
+   const isCluster = UrgudulCtx.data.project_type === 1
 
    useEffect(() => {
       const value = UrgudulCtx.data.activities
@@ -84,8 +85,6 @@ export default function UrgudulPage6({ projects = [] }) {
 
    const sumBudget = activities.reduce((acc, cv) => acc + +cv.budget, 0)
 
-   const unconstrained = activities.every(activity => activity.activityId !== 1 && activity.activityId !== 2)
-
    const otherProjects = projects.filter(project => project.id !== UrgudulCtx.data.id)
 
    const loadFromOtherProjectDirectors = (id) => {
@@ -111,6 +110,8 @@ export default function UrgudulPage6({ projects = [] }) {
       axios.get('/urgudul-datas/activities').then(res => setActivitiesData(res.data.data))
    }, [])
 
+   const limited = activities.some(activity => limitIds.includes(activity.activityId))
+
    return (
       <div className={containerClass}>
          <UrgudulHeader
@@ -123,7 +124,10 @@ export default function UrgudulPage6({ projects = [] }) {
             <div className="tw-flex tw-px-2" key={i}>
                <ExpandableContainer classAppend="tw-flex-grow" order={i + 1} label={getActivityName(activity.activityId)} placeholder="Үйл ажиллагаа" initialized={initialized}>
                   <FormSelect
-                     data={activitiesData}
+                     data={activities.length > 1
+                        ? activitiesData.filter(item => !limitIds.includes(item.id))
+                        : activitiesData
+                     }
                      setter={handleInput}
                      name="activityId"
                      index={i}
@@ -156,7 +160,7 @@ export default function UrgudulPage6({ projects = [] }) {
             </div>
          )}
 
-         {activities.length < 6 && unconstrained &&
+         {activities.length < 6 && !limited &&
             <div className="tw-flex tw-justify-end tw-items-center">
                <span className="tw-italic tw-text-gray-500 tw-text-xs">
                   Үйл ажиллагаа нэмэх
@@ -185,3 +189,5 @@ const initialActivities = [
       budget: null,
    },
 ]
+
+const limitIds = [1, 2]

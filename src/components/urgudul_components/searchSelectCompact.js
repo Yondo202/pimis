@@ -76,7 +76,7 @@ function SearchSelectCompact({ data, api, keys, label, value, setter, displayNam
     return (
         <div className={`tw-relative ${classAppend}`}>
             <div className={`tw-flex tw-items-center tw-text-sm ${classDiv || `tw-border tw-border-gray-400`} tw-rounded tw-py-0.5 tw-px-1.5 tw-transition-colors`} ref={searchBarRef}>
-                <input className={`tw-text-13px tw-flex-grow tw-mr-1 tw-bg-transparent tw-outline-none tw-placeholder-gray-600 ${classInput || 'tw-flex-grow'}`} type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} placeholder={placeholder} ref={inputRef} />
+                <input className={`tw-text-13px tw-flex-grow tw-mr-1 tw-py-0.5 tw-bg-transparent tw-outline-none tw-placeholder-gray-500 ${classInput || 'tw-flex-grow'}`} type="text" value={search} onChange={e => setSearch(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} placeholder={placeholder} ref={inputRef} />
 
                 <SearchSVG className="tw-w-4 tw-h-4 tw-flex-shrink-0 tw-text-gray-600 tw-cursor-pointer" onClick={() => inputRef.current?.focus()} />
             </div>

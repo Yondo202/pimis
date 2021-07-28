@@ -24,9 +24,6 @@ const initialState = {
    fullTime_workplace: {
       ...datesObj
    },
-   productivity: {
-      ...datesObj
-   },
    export_details: [
       {
          countryId: null,
@@ -45,6 +42,7 @@ function UrgudulPage5() {
    const [form, setForm] = useState(initialState)
 
    const UrgudulCtx = useContext(UrgudulContext)
+   const isCluster = UrgudulCtx.data.project_type === 1
 
    useEffect(() => {
       if (UrgudulCtx.data.id !== undefined) {
@@ -143,7 +141,7 @@ function UrgudulPage5() {
    const handleSubmit = () => {
       setValidate(true)
       let allValid = true
-      const arr = ['sales', 'fullTime_workplace', 'productivity']
+      const arr = ['sales', 'fullTime_workplace']
       arr.forEach(key => {
          allValid = allValid && datesForm.every(item => !checkInvalid(form[key][item]))
       })
@@ -184,6 +182,7 @@ function UrgudulPage5() {
             <UrgudulHeader
                label="Экспортын мэдээлэл"
                projectNumber={UrgudulCtx.data.project_number}
+               HelpPopup={isCluster && <HelpPopup classAppend="tw-mx-2" main="Хэрэв кластер бол кластерын тэргүүлэх аж ахуйн нэгжийн хувиар бөглөнө үү." />}
             />
 
             <div className="tw-text-sm tw-overflow-x-auto tw-overflow-y-hidden tw-mx-auto" ref={containerRef}>
@@ -191,16 +190,19 @@ function UrgudulPage5() {
                   <thead>
                      <tr className="tw-h-9">
                         <th className="tw-border tw-border-gray-300 tw-text-center"></th>
+                        <th className="tw-border tw-border-gray-300 tw-text-center tw-px-1">Нэгж</th>
                         {datesForm.map(date => <th className="tw-border tw-border-gray-300 tw-text-center" key={date}>
                            {date}
                         </th>
                         )}
-                        <th className="tw-border tw-border-gray-300 tw-text-center">Нэгж</th>
                      </tr>
                   </thead>
                   <tbody>
                      <tr className="tw-h-9">
-                        <td className="tw-border tw-border-gray-300 pl-2 pr-1">Борлуулалт</td>
+                        <td className="tw-border tw-border-gray-300 tw-pl-2 tw-pr-1">
+                           Нийт борлуулалт
+                        </td>
+                        <td className="tw-border tw-border-gray-300 tw-text-center">₮</td>
                         {datesForm.map((item, i) =>
                            <td className="tw-border tw-border-gray-300 tw-px-1" key={i}>
                               <div className="tw-flex tw-justify-center">
@@ -208,15 +210,15 @@ function UrgudulPage5() {
                               </div>
                            </td>
                         )}
-                        <td className="tw-border tw-border-gray-300 tw-text-center">₮</td>
                      </tr>
                      <tr className="tw-h-9">
                         <td className="tw-border tw-border-gray-300 tw-px-1">
                            <div className="tw-flex tw-justify-between tw-items-center">
-                              <span className="pl-1">Ажлын байр</span>
-                              <HelpPopup classAppend="tw-ml-2" main="НДШ төлдөг бүтэн цагийн ажлын байрны тоо." />
+                              <span className="pl-1">Ажилчдын тоо</span>
+                              <HelpPopup classAppend="tw-ml-2" main="НДШ төлдөг бүтэн цагийн ажилчдын тоо." />
                            </div>
                         </td>
+                        <td className="tw-border tw-border-gray-300 tw-truncate tw-text-center">Т/х</td>
                         {datesForm.map((item, i) =>
                            <td className="tw-border tw-border-gray-300 tw-px-1" key={i}>
                               <div className="tw-flex tw-justify-center">
@@ -224,33 +226,15 @@ function UrgudulPage5() {
                               </div>
                            </td>
                         )}
-                        <td className="tw-border tw-border-gray-300 tw-truncate tw-text-center">Т/х</td>
                      </tr>
                      <tr className="tw-h-9">
                         <td className="tw-border tw-border-gray-300 tw-px-1">
                            <div className="tw-flex tw-justify-between tw-items-center">
-                              <span className="pl-1">Бүтээмж</span>
-
-                              <HelpPopup classAppend="tw-ml-2" main="Нэг жилд үйлдвэрлэх үйлдвэрлэлийн тоо хэмжээ гм." />
-                           </div>
-                        </td>
-                        {datesForm.map((item, i) =>
-                           <td className="tw-border tw-border-gray-300 tw-px-1" key={i}>
-                              <div className="tw-flex tw-justify-center">
-                                 <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(form.productivity[item]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={form.productivity[item]} thousandSeparator={true} onValueChange={values => handleInput(item, values.floatValue, 'productivity')} />
-                              </div>
-                           </td>
-                        )}
-                        <td className="tw-border tw-border-gray-300 tw-truncate tw-text-center">Т/х</td>
-                     </tr>
-                     <tr className="tw-h-9">
-                        <td className="tw-border tw-border-gray-300 tw-px-1">
-                           <div className="tw-flex tw-justify-between tw-items-center">
-                              <span className="pl-1">Экспорт</span>
-
+                              <span className="pl-1">Экспортын нийт борлуулалт</span>
                               <HelpPopup classAppend="tw-ml-2" main="Экспортын тооцоог доорх хүснэгтэнд экспорт хийсэн улс болон бүтээгдхүүнээр задлан бичнэ үү." />
                            </div>
                         </td>
+                        <td className="tw-border tw-border-gray-300 tw-truncate tw-text-center">₮</td>
                         {datesForm.map((item, i) =>
                            <td className="tw-border tw-border-gray-300 tw-px-1" key={i}>
                               <div className="tw-text-right tw-font-medium tw-truncate tw-w-20 tw-px-1 tw-py-0.5 tw-rounded">
@@ -258,7 +242,6 @@ function UrgudulPage5() {
                               </div>
                            </td>
                         )}
-                        <td className="tw-border tw-border-gray-300 tw-truncate tw-text-center">₮</td>
                      </tr>
                      {form.export_details.map((country, i) =>
                         <Fragment key={i}>
@@ -266,20 +249,19 @@ function UrgudulPage5() {
                               <td className="tw-border tw-border-gray-300 tw-px-1">
                                  <SearchSelectCompact placeholder="Экспорт хийсэн улс" data={countries} value={country.countryId} name="countryId" index={i} displayName="description_mon" setter={handleSetFormCountry} classDiv={validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} classInput="tw-bg-transparent" selectWidth={containerRef.current?.getBoundingClientRect().width > 220 ? 220 : containerRef.current?.getBoundingClientRect().width - 54} />
                               </td>
-                              <td className="tw-border tw-border-gray-300 tw-px-2" colSpan={datesForm.length}>
+                              <td className="tw-border tw-border-gray-300 tw-px-1" colSpan={datesForm.length + 1}>
                                  <button className="tw-float-right tw-bg-blue-800 tw-text-white tw-text-xs tw-rounded focus:tw-outline-none active:tw-bg-blue-600 tw-transition-colors tw-py-1 tw-px-4" onClick={() => handleRemoveCountry(i)}>
                                     Улсыг хасах
                                  </button>
                               </td>
-                              <td className="tw-border tw-truncate tw-text-center">₮</td>
                            </tr>
                            {country.export_products.map((product, j) =>
                               <Fragment key={j}>
                                  <tr className="tw-h-9">
                                     <td className="tw-border tw-border-gray-300 tw-px-1">
-                                       <TreeSelectCompact data={products} placeholder="Бүтээгдэхүүний ангилал" displayName="description_mon" value={product.productId} name="productId" index={j} index1={i} setter={handleSetFormProduct} selectWidth={containerRef.current?.getBoundingClientRect().width - 36} validate={validate && checkInvalid(product.productId)} />
+                                       <TreeSelectCompact data={products} placeholder="Бүтээгдэхүүний ангилал" displayName="description_mon" value={product.productId} name="productId" index={j} index1={i} setter={handleSetFormProduct} selectWidth={containerRef.current?.getBoundingClientRect().width - 36} validate={validate && checkInvalid(product.productId)} classAppend="tw-ml-2" />
                                     </td>
-                                    <td className="tw-border tw-border-gray-300 tw-px-2" colSpan={datesForm.length + 1}>
+                                    <td className="tw-border tw-border-gray-300 tw-px-1" colSpan={datesForm.length + 1}>
                                        <button className="tw-float-right tw-bg-blue-800 tw-text-white tw-text-xs tw-rounded focus:tw-outline-none active:tw-bg-blue-600 tw-transition-colors tw-py-1 tw-px-2" onClick={() => handleRemoveProduct(j, i)}>
                                           Бүтээгдэхүүнийг хасах
                                        </button>
@@ -288,26 +270,23 @@ function UrgudulPage5() {
                                  <tr className="tw-h-9">
                                     <td className="tw-border tw-border-gray-300 tw-px-1">
                                        <div className="tw-flex tw-items-center">
-                                          <input className={`tw-text-13px tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-0.5 tw-ml-3 tw-rounded ${validate && checkInvalid(product.product_name) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-placeholder-gray-600`} type="number" value={product.product_name || ''} onChange={e => handleSetFormProduct('product_name', e.target.value, j, i)} placeholder="Бүтээгдэхүүний код" title={product.product_name} />
-                                          <HelpPopup classAppend="tw-ml-1" main="Гаалийн бараа, бүтээгдэхүүний кодыг бичнэ үү." />
+                                          <input className={`tw-text-13px tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-1 tw-ml-4 tw-rounded ${validate && checkInvalid(product.product_name) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-placeholder-gray-500`} type="number" value={product.product_name || ''} onChange={e => handleSetFormProduct('product_name', e.target.value, j, i)} placeholder="HS код" title={product.product_name} />
                                        </div>
                                     </td>
-                                    {
-                                       datesForm.map((key, k) =>
-                                          <td className="tw-border tw-border-gray-300 tw-px-1" key={k}>
-                                             <div className="tw-flex tw-justify-center">
-                                                <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(product[key]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={product[key]} thousandSeparator={true} onValueChange={values => handleSetFormProduct(key, values.floatValue, j, i)} />
-                                             </div>
-                                          </td>
-                                       )
-                                    }
                                     <td className="tw-border tw-border-gray-300 tw-truncate tw-text-center">₮</td>
+                                    {datesForm.map((key, k) =>
+                                       <td className="tw-border tw-border-gray-300 tw-px-1" key={k}>
+                                          <div className="tw-flex tw-justify-center">
+                                             <NumberFormat className={`tw-px-1 tw-py-0.5 tw-outline-none tw-w-20 tw-rounded tw-text-right ${validate && checkInvalid(product[key]) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'}`} value={product[key]} thousandSeparator={true} onValueChange={values => handleSetFormProduct(key, values.floatValue, j, i)} />
+                                          </div>
+                                       </td>
+                                    )}
                                  </tr>
                               </Fragment>
                            )}
                            <tr className="tw-h-9">
-                              <td className="tw-border tw-border-gray-300 tw-px-2" colSpan={datesForm.length + 2}>
-                                 <button className="tw-float-right tw-bg-blue-800 tw-text-white tw-text-xs tw-rounded focus:tw-outline-none active:tw-bg-blue-600 tw-transition-colors tw-py-1 tw-px-2" onClick={() => handleAddProduct(i)}>
+                              <td className="tw-border tw-border-gray-300 tw-px-1" colSpan={datesForm.length + 2}>
+                                 <button className="tw-float-left tw-bg-blue-800 tw-text-white tw-text-xs tw-rounded focus:tw-outline-none active:tw-bg-blue-600 tw-transition-colors tw-py-1 tw-px-2 tw-ml-4 tw-mr-2" onClick={() => handleAddProduct(i)}>
                                     Бүтээгдэхүүн нэмэх
                                  </button>
                               </td>
@@ -315,8 +294,8 @@ function UrgudulPage5() {
                         </Fragment>
                      )}
                      <tr className="tw-h-9">
-                        <td className="tw-border tw-border-gray-300 tw-px-2" colSpan={datesForm.length + 2}>
-                           <button className="tw-float-right tw-bg-blue-800 tw-text-white tw-text-xs tw-rounded focus:tw-outline-none active:tw-bg-blue-600 tw-transition-colors tw-py-1 tw-px-4" onClick={handleAddCountry}>
+                        <td className="tw-border tw-border-gray-300 tw-px-1" colSpan={datesForm.length + 2}>
+                           <button className="tw-float-left tw-bg-blue-800 tw-text-white tw-text-xs tw-rounded focus:tw-outline-none active:tw-bg-blue-600 tw-transition-colors tw-py-1 tw-px-4 tw-mr-2" onClick={handleAddCountry}>
                               Улс нэмэх
                            </button>
                         </td>

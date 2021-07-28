@@ -208,15 +208,15 @@ export default function UrgudulPage7Cluster({ projects = [] }) {
                      </div>
                      <div className="">
                         <Notice checkList={checkList} handleCheckList={handleCheckList} sub
-                           order="2a"
+                           order="I"
                            notice="Бүх гишүүд энэхүү өргөдлийн маягтад бичсэн мэдээлэлтэй танилцсан бөгөөд өөр өөрсдийн үүргийг ойлгож байгаа."
                         />
                         <Notice checkList={checkList} handleCheckList={handleCheckList} sub
-                           order="2b"
+                           order="II"
                            notice="Өргөдөл гаргагч нь кластерын бусад гишүүдийг уг төслийн хэрэгжилтийн талаар тогтмол мэдээллээр хангаж ажиллана."
                         />
                         <Notice checkList={checkList} handleCheckList={handleCheckList} sub
-                           order="2c"
+                           order="III"
                            notice="Бүх гишүүд Экспортыг дэмжих төсөлд илгээж буй өргөдөл гаргагч аж ахуйн нэгжийн тайлан, мэдээлэлтэй танилцсан байна.Экспортыг дэмжих төсөлд илгээх төслийн өөрчлөлтүүд нь кластерын гишүүн байгууллага хооронд хэлэлцэгдэж, зөвшилцөлд хүрсэн санал байна."
                         />
                      </div>
