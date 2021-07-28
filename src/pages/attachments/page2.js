@@ -8,71 +8,7 @@ import HelpPopup from 'components/help_popup/helpPopup'
 import { useParams } from 'react-router-dom'
 import FileCardAdd from './fileCardAdd'
 
-
-const initialState = [
-    {
-        "code": "export_plan",
-        "description": "Экспорт хөгжлийн төлөвлөгөө.",
-        "files": null,
-    },
-    {
-        "code": "baigal_orchin",
-        "description": "Байгаль орчны үнэлгээний асуумжийг нотлох баримт бичгүүд, Байгаль орчны удирдлагын төлөвлөгөө.",
-        "files": null,
-    },
-    {
-        "code": "gerchilgee",
-        "description": "Хуулийн этгээдийн улсын бүртгэлийн гэрчилгээний хуулбар.",
-        "files": null,
-    },
-    {
-        "code": "prevbalance",
-        "description": "Өмнөх 2 жилийн санхүүгийн тайлан. (Энэ оны санхүүгийн тайлангийн хамт)",
-        "files": null,
-    },
-    {
-        "code": "tatvariin_or",
-        "description": "Холбогдох дүүргийн татварын албанаас 12 сараас дээш хугацааны татварын өргүйг нотолсон тодорхойлолт, баримт.",
-        "files": null,
-    },
-    {
-        "code": "ndsh_ajiltan",
-        "description": "Холбогдох нийгмийн даатгалын газраас 12 сараас дээш хугацааны өргүйг нотолсон тодорхойлолт, баримт, нийгмийн даатгал төлдөг ажилчдын тооны мэдээлэл.",
-        "files": null,
-    },
-    {
-        "code": "zeel_lavlagaa",
-        "description": "Монгол банкны зээлийн мэдээллийн сангаас муу ангиллын зээлгүйг нотолсон тодорхойлолт, баримт.",
-        "files": null,
-    },
-    {
-        "code": "omchlogchiin_todorhoilolt",
-        "description": "Хуулийн этгээдийн эцсийн өмчлөгчдийг тодорхойлох баримт.",
-        "files": null,
-    },
-    {
-        "code": "ajiltanii_namtar",
-        "description": "Өргөдөл гаргагч байгууллагын түлхүүр албан тушаалтнуудын ажлын туршлага, ур чадварыг илэрхийлэх намтар. (Дор хаяж 3 албан тушаалтны мэдээлэл)",
-        "files": null,
-    },
-    {
-        "code": "oyunii_ezemshil",
-        "description": "Экспортын болон кластерын гэрээ хэлцэл, оюуны өмчийн эзэмшлийн нотолгоо.",
-        "files": null,
-    },
-    {
-        "code": "banknii_huulga",
-        "description": "Санхүүжилтийг бүрэн хийх боломжтойг нотолсон баримт бичиг, банкны хуулга гм.",
-        "files": null,
-    },
-    {
-        "code": "busad_barimt",
-        "description": "Бусад шаардлагатай баримт бичиг.",
-        "files": null,
-    }
-]
-
-export default function AttachmentUploads() {
+export default function AttachmentUploadsSecond() {
     const [form, setForm] = useState(initialState)
 
     const [editCode, setEditCode] = useState()
@@ -114,7 +50,7 @@ export default function AttachmentUploads() {
             const newForm2 = form
             newForm2[index].files = newForm[index].files.filter(item => item !== 'loading')
             setForm([...newForm2])
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээний файлыг хадгалж чадсангүй.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсралт файлыг хадгалж чадсангүй.' })
         })
     }
 
@@ -162,7 +98,7 @@ export default function AttachmentUploads() {
                 headers: { 'Authorization': getLoggedUserToken() },
             }).then(res => {
                 setForm(res.data.data)
-            }).err(err => {
+            }).catch(err => {
                 if (err.response.error.statusCode === 401) {
                     AlertCtx.setAlert({ open: true, variant: 'normal', msg: err.response.error.message })
                 }
@@ -207,5 +143,19 @@ export default function AttachmentUploads() {
         </div>
     )
 }
+
+const initialState = [{
+    code: 'price_comparison',
+    description: 'Төлөвлөсөн үйл ажиллагаануудыг гүйцэтгэх байгууллагуудаас авсан үнийн санал, түүний харьцуулалт',
+    files: null
+}, {
+    code: 'environmental_planning',
+    description: 'Байгаль орчны үнэлгээний асуумжийг нотлох баримт бичгүүд, байгаль орчны удирдлагын төлөвлөгөө',
+    files: null
+}, {
+    code: 'contracts',
+    description: 'Экспортын гэрээ хэлцэл, кластерын гэрээ (хэрэв кластерын ангилалд өргөдөл гаргаж байгаа бол), оюуны өмчийн эзэмшлийн нотолгоо',
+    files: null
+}]
 
 export const acceptDocTypes = '.pdf, image/*, .doc, .docx, .txt, .xml, .csv, .xls, .xlsx, .ppt, .pptx'

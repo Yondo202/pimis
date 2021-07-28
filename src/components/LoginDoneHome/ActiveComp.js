@@ -10,7 +10,7 @@ function ActiveComp(props) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <Link to={!props.prew ? `/check/user` : `/check/${props.prew}`} className={props?.data?.criteria !== 0 ? props?.data?.criteria === 2 ? `itemsActive`: `items items` : `items`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
+                        <Link to={!props.prew ? `/check/user` : `/check/${props.prew}`} className={props?.data?.criteria !== 0 ? props?.data?.criteria === 2 ? `itemsActive` : `items items` : `items`}>1. Шалгуур хангалтыг тулгах хуудас</Link>
                         {/* <div className="line line2" ></div> */}
                         <div className="line" />
                         <Link to={!props.prew ? `/request/user` : `/request/${props.prew}`}
@@ -20,8 +20,7 @@ function ActiveComp(props) {
                         <div className="line" />
                         <Link to={props.prew ? `/urgudul-preview/${props?.data?.project?.id}` : '/urgudul/1'} className={props?.data?.project && props?.data?.project.confirmed === 1 ? `itemsActive` : `items`} >4. Өргөдлийн маягт </Link>
                         <div className="line" />
-                        <Link to={props.prew ? `/attachments/${props.prew}` : '/attachments'} className={props?.data?.evidence === true ? `itemsActive` : `items`} >5. Нотлох бичиг баримтууд </Link>
-
+                        <Link to={props.prew ? `/attachments/first/${props.prew}` : '/attachments/first'} className={props?.data?.evidence === true ? `itemsActive` : `items`} >5. Нотлох бичиг баримтууд </Link>
                     </div>
                     {/* <div className="lineFull" ></div>
                     <Link to={props.prew ? `/urgudul-preview/${props?.data?.project?.id}` : '/urgudul/1'} className={props?.data?.project && props?.data?.project.confirmed === 1 ? `resultActive` : `resultDesable`} >4. Өргөдлийн маягт </Link> */}
@@ -31,9 +30,9 @@ function ActiveComp(props) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <a href={props.prew?`#`:`${edplanFront}/${props?.data?.userId}`} rel="noreferrer" target={props.prew?"_self":"_blank"} className={props?.data?.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
+                        <a href={props.prew ? `#` : `${edplanFront}/${props?.data?.userId}`} rel="noreferrer" target={props.prew ? "_self" : "_blank"} className={props?.data?.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
                         <div className="line" ></div>
-                        <Link to={props.prew ? `/attachments/${props.prew}` : '/attachments'} className={props?.data?.evidence === true ? `itemsActive` : `items`} >2.Нотлох бичиг баримтууд </Link>
+                        <Link to={props.prew ? `/attachments/second/${props.prew}` : '/attachments/second'} className={props?.data?.evidence === true ? `itemsActive` : `items`} >2.Нотлох бичиг баримтууд </Link>
                     </div>
                     {/* <div className="lineFull" ></div> */}
                     {/* <Link to={props.prew ? `/attachments/${props.prew}` : '/attachments'} className={props?.data?.evidence === true ? `resultActive` : `resultDesable`} >2.Нотлох бичиг баримтууд </Link> */}
@@ -45,8 +44,8 @@ function ActiveComp(props) {
                     <div className="mains">
                         <Link to={props.prew ? `/5a/${props?.data?.project?.id}` : '#'} className={props?.data?.firstEvalution.value === 0 ? `items arrHelp` : props?.data?.firstEvalution.value === 1 ? `items itemsNotApproved arrHelp` : `itemsActive arrHelp`}>
                             <div className="helpArr" />
-                                1. Анхан шатны үнэлгээ
-                            </Link>
+                            1. Анхан шатны үнэлгээ
+                        </Link>
                         <div className="line" />
                         <Link to={props.prew ? `/5b/${props?.data?.project?.id}` : '/5b'} className={props?.data?.evaluation5b ? `itemsActive` : `items`}><div className="helpArr"></div> 2. Бичиг баримтын бүрдүүлбэрийг шалгах хуудас</Link>
                         <div className="line" />

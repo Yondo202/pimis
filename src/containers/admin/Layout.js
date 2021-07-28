@@ -16,7 +16,8 @@ import UrgudulNavigator from 'pages/urgudul/Navigator'
 import Home from 'components/LoginDoneHome/Home'
 import Request from 'containers/requestComp/mainRequestOld'
 import Check2 from 'components/check/CompCheck2'
-import AttachmentUploads from 'pages/attachments/page';
+import AttachmentUploadsFirst from 'pages/attachments/page1';
+import AttachmentUploadsSecond from 'pages/attachments/page2';
 import FirstEvaluation from 'pages/decision_making/5a/Page';
 import CompilationChecklist from 'pages/decision_making/5b/Page';
 import AnalystReport from 'pages/decision_making/5c/Page';
@@ -88,7 +89,8 @@ function Layout({ setLocale }) {
               <Route path="/maindecision/:id" component={MainDecision} />
               <Route path="/letter-of-interest" component={LetterNavigator} />
               <Route path="/urgudul-preview/:id" component={UrgudulPreviewForAdmin} />
-              <Route path="/attachments/:id" component={AttachmentUploads} />
+              <Route path="/attachments/first/:id" component={AttachmentUploadsFirst} />
+              <Route path="/attachments/second/:id" component={AttachmentUploadsSecond} />
               <Route exact path="/5a/:id" component={FirstEvaluation} />
               <Route path="/5a/:id/send-notice" component={FirstEvaluationSendNotice} />
               <Route path="/5b/:id" component={CompilationChecklist} />

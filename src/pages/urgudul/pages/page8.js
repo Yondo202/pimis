@@ -18,6 +18,7 @@ const initialState = {
 
 export default function UrgudulPage8() {
    const [form, setForm] = useState(initialState)
+   const [initialized, setInitialized] = useState(false)
 
    const UrgudulCtx = useContext(UrgudulContext)
    const isConfirmed = UrgudulCtx.data.confirmed === 1
@@ -30,6 +31,7 @@ export default function UrgudulPage8() {
          })
          setForm(temp)
       }
+      setInitialized(true)
    }, [UrgudulCtx.data.id])
 
    const handleInputCheckbox = (e) => {
@@ -188,6 +190,7 @@ export default function UrgudulPage8() {
             from={{ transform: 'scale(0)' }}
             enter={{ transform: 'scale(1)' }}
             leave={{ transform: 'scale(0)' }}
+            initial={!initialized ? { transform: 'scale(1)' } : { transform: 'scale(0)' }}
             config={{ clamp: true }}
          >
             {item => item && (anims =>

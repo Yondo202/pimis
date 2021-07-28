@@ -562,15 +562,17 @@ function PlannedActivity({ label, HelpPopup, value, valueCost, setter, validate 
 
 export const basicInputClass = 'tw-outline-none tw-py-1 tw-px-2 tw-rounded tw-border tw-border-gray-400 focus:tw-border-blue-700 focus:tw-shadow tw-duration-700 tw-transition-colors'
 
-export const StaticText = ({ label, text, HelpPopup }) => (
+export const StaticText = ({ label, text, HelpPopup, classLabel }) => (
    <div className="tw-w-full tw-max-w-md tw-p-3">
-      <div className="tw-text-sm tw-flex tw-items-center">
+      <div className={`tw-text-sm tw-flex tw-items-center ${classLabel}`}>
          {label}
          {HelpPopup && HelpPopup}
       </div>
       {text &&
          <div className="tw-mt-2">
-            <span className="tw-ml-2 tw-bg-indigo-50 tw-rounded tw-py-1 tw-px-2 tw-text-sm tw-text-indigo-500">{text}</span>
+            <span className="tw-ml-2 tw-bg-indigo-50 tw-rounded tw-py-1 tw-px-2 tw-text-sm tw-text-indigo-500">
+               {text}
+            </span>
          </div>
       }
    </div>

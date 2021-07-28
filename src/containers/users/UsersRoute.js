@@ -13,7 +13,8 @@ import UrgudulNavigator from "pages/urgudul/Navigator"
 import FirstEvaluation from "pages/decision_making/5a/Page";
 import CompilationCheck from "pages/decision_making/5b/Page";
 import AnalystReport from "pages/decision_making/5c/Page";
-import AttachmentUploads from "pages/attachments/page";
+import AttachmentUploadsFirst from 'pages/attachments/page1';
+import AttachmentUploadsSecond from "pages/attachments/page2";
 import WorkPerformance from 'components/workPerformance/MainWorkPerformance'
 import PdfTest from 'components/check/PdfTest'
 import MiddleRoute from "containers/middle/middleRoute"
@@ -57,7 +58,8 @@ function UsersRoute() {
                     <Route path="/letter-of-interest" component={LetterNavigator} />
                     <Route path="/urgudul/:page" component={UrgudulNavigator} />
                     <Route path="/urgudul-preview/:id" component={UrgudulPreviewForUser} />
-                    <Route path="/attachments" component={AttachmentUploads} />
+                    <Route apth="/attachments/first" component={AttachmentUploadsFirst} />
+                    <Route path="/attachments/second" component={AttachmentUploadsSecond} />
                     <Route path="/5a" component={FirstEvaluation} />
                     <Route path="/5b" component={CompilationCheck} />
                     <Route path="/5c" component={AnalystReport} />

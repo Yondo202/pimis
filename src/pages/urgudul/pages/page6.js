@@ -68,6 +68,10 @@ export default function UrgudulPage6({ projects = [] }) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
          return
       }
+      if (fundExceeded) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Санхүүжилтийн хэмжээ хэтэрсэн байна.' })
+         return
+      }
 
       if (projectId === undefined || projectId === null) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Өргөдлийн маягт үүсээгүй байна. Та маягтаа сонгох юм уу, үүсгэнэ үү.' })
@@ -112,6 +116,10 @@ export default function UrgudulPage6({ projects = [] }) {
 
    const limited = activities.some(activity => limitIds.includes(activity.activityId))
 
+   const fundExceeded = isCluster
+      ? sumBudget / 2 > 300000
+      : sumBudget / 2 > 150000
+
    return (
       <div className={containerClass}>
          <UrgudulHeader
@@ -150,7 +158,7 @@ export default function UrgudulPage6({ projects = [] }) {
                   <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
                      <FormInline label="Үйл ажиллагааны төсөв" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={activity.budget} name="budget" index={i} setter={handleInputFormat} invalid={validate && checkInvalid(activity.budget)} />
 
-                     <StaticText label="Экспортыг дэмжих төслөөс санхүүжигдэх" text={isNaN(activity.budget) ? '0 ₮' : `${(activity.budget / 2).toLocaleString()} ₮`} />
+                     <StaticText label="Экспортыг Дэмжих Төслөөс санхүүжигдэх" text={isNaN(activity.budget) ? '0 ₮' : `${(activity.budget / 2).toLocaleString()} ₮`} />
                   </div>
                </ExpandableContainer>
 
@@ -172,7 +180,12 @@ export default function UrgudulPage6({ projects = [] }) {
          <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-pr-10 tw-pl-2 tw-pb-2">
             <StaticText label="Нийт үйл ажиллагануудын төсөвт зардал" text={isNaN(sumBudget) ? '0 ₮' : `${sumBudget.toLocaleString()} ₮`} />
 
-            <StaticText label="Нийт экспортыг дэмжих төслөөс хүсч буй санхүүжилт" text={isNaN(sumBudget) ? '0 ₮' : `${(sumBudget / 2).toLocaleString()} ₮`} />
+            <StaticText
+               label="Нийт Экспортыг Дэмжих Төслөөс хүсч буй санхүүжилт"
+               text={isNaN(sumBudget) ? '0 ₮' : `${(sumBudget / 2).toLocaleString()} ₮`}
+               classLabel={validate && fundExceeded && 'tw-text-red-500'}
+               HelpPopup={validate && fundExceeded && <HelpPopup classAppend="tw-ml-1.5" buttonClass="tw-text-red-500 active:tw-text-red-600" main="Экспортыг дэмжих төслөөс хүссэн нийт санхүүжилт нь кластерын хувьд 300 сая төгрөгөөс, аж ахуйн нэгжийн хувьд 150 сая төгрөгөөс хэтрэхгүй байна." />}
+            />
          </div>
 
          <div className="tw-flex tw-justify-end">
