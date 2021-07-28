@@ -19,6 +19,8 @@ function ActiveComp(props) {
                         <Link to={props.prew ? `/letter-of-interest?userId=${props.prew}` : '/letter-of-interest'} className={props?.data?.letterOfInterst === true ? `itemsActive` : `items`} >3. Сонирхол илэрхийлэх албан тоот</Link>
                         <div className="line" />
                         <Link to={props.prew ? `/urgudul-preview/${props?.data?.project?.id}` : '/urgudul/1'} className={props?.data?.project && props?.data?.project.confirmed === 1 ? `itemsActive` : `items`} >4. Өргөдлийн маягт </Link>
+                        <div className="line" />
+                        <Link to={props.prew ? `/attachments/${props.prew}` : '/attachments'} className={props?.data?.evidence === true ? `itemsActive` : `items`} >5. Нотлох бичиг баримтууд </Link>
 
                     </div>
                     {/* <div className="lineFull" ></div>
