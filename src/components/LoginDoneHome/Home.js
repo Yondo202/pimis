@@ -79,8 +79,9 @@ function Home() {
                                 <div className="col-md-4"><div className="headItems"><span className="text">3. Гэрээ, гүйцэтгэл, санхүүжилт</span></div></div>
                             </div>)}
                         {!userId && <div className="otherHead row">
+                        {/* tosol heregjuuleh negjiin unelgee */}
                             <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
-                            <div className="col-md-4"><div className="headItems"><span className="text">Бизнес шинжээчийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span></div></div>
+                            <div className="col-md-4"><div className="headItems"><span className="text">Төсөл хэрэгжүүлэх нэгжийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span></div></div>
                         </div>}
                     </div>
                     {/* {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />} */}
@@ -441,7 +442,7 @@ const HomeComponent = styled.div`
                     border-right:1px solid rgba(0,0,0,0.1);
                     width:48%;
                     font-weight:500;
-                    font-size:14px;
+                    font-size:13px;
                 }
             }
         }
