@@ -311,7 +311,7 @@ export default function UrgudulPage7Company({ projects = [] }) {
                         Түлхүүр албан тушаалтнууд
                      </div>
 
-                     <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2" classButton="tw-text-green-500 active:tw-text-green-600" />
+                     <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2 tw-my-0.5" classButton="tw-text-green-500 active:tw-text-green-600" />
                   </div>
 
                   <div className="tw-flex tw-justify-end">

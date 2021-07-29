@@ -5,6 +5,8 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useHistory } from 'react-router-dom'
 import './dataGrid.css'
 import { loadMessages } from 'devextreme/localization'
+import { useContext } from 'react'
+import AlertContext from 'components/utilities/alertContext'
 
 loadMessages({
     "en": {
@@ -31,11 +33,15 @@ loadMessages({
 export default function ProjectHandle() {
     const [data, setData] = useState([])
 
+    const AlertCtx = useContext(AlertContext)
+
     useEffect(() => {
         axios.get('pps-infos/registered-companies', {
             headers: { 'Authorization': getLoggedUserToken() }
         }).then(res => {
             setData(res.data.data)
+        }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Байгууллагын жагсаалтыг татаж чадсангүй.' })
         })
 
         axios.get('users', {
@@ -107,14 +113,14 @@ export default function ProjectHandle() {
                     <Column caption="Явцыг харах" cellRender={data => <ButtonNavProgress data={data} />} headerCellRender={HeaderCell} alignment="left" width={115} />
                     <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="left" minWidth={120} />
                     <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} alignment="left" />
-                    <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} customizeText={customizeTextCriteria} cellRender={cellRenderCriteria} alignment="left" width={110} />
-                    <Column dataField="esq" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} cellRender={cellRenderEsq} alignment="left" width={102} />
-                    <Column dataField="esm" caption="Ангилал" headerCellRender={HeaderCell} alignment="center" width={110} />
+                    <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} customizeText={customizeTextCriteria} cellRender={cellRenderCriteria} alignment="left" minwidth={100} />
+                    <Column dataField="esq" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} cellRender={cellRenderEsq} alignment="left" minWidth={100} />
+                    <Column dataField="esm" caption="Ангилал" headerCellRender={HeaderCell} alignment="center" minWidth={100} />
                     <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueLetterOI} alignment="left" />
 
                     <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
                         <Column dataField="project.status" caption="Төлөв" cellRender={data => <ButtonNavStatus data={data} />} headerCellRender={HeaderCell} calculateCellValue={calculateCellValueStatus} alignment="left" width={140} />
-                        <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} alignment="left" width={119} />
+                        <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} alignment="left" minWidth={120} />
                         <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} alignment="left" />
                         <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} alignment="left" minWidth={120} />
                         <Column dataField="project.project_duration" caption="Төслийг хэрэгжүүлэх хугацаа" headerCellRender={HeaderCell} customizeText={customizeTextDuration} alignment="left" />
@@ -122,11 +128,25 @@ export default function ProjectHandle() {
                         <Column dataField="project.bds_userId" caption="БЗ Зөвлөх" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueBdsUser} minWidth={100} alignment="left" />
                     </Column>
 
-                    <Column dataField="evidence" caption="Нотлох бичиг баримтууд" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEvidence} alignment="left" />
+                    <Column dataField="evidence" caption="Нотлох бичиг баримтууд I шат" headerCellRender={HeaderCell} calculateCellValue={rowdata => calculateCellValueEvidence(rowdata, 'evidence')} alignment="left" />
                     <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEdpPlan} alignment="left" />
-                    <Column dataField="firstEvalution" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell} calculateCellValue={calculateCellValue5a} cellRender={cellRender5a} alignment="left" width={110} />
-                    <Column dataField="evaluation5b" caption="Бүрдүүлбэрийн нотлох баримтууд" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEvaluation5b} cellRender={cellRender5b} alignment="left" width={146} />
-                    <Column dataField="lastEvalution" caption="Бизнес шинжээчийн үнэлгээ" headerCellRender={HeaderCell} calculateCellValue={calculateCellValue5c} cellRender={cellRender5c} alignment="left" width={131} />
+                    <Column dataField="evidence" caption="Нотлох бичиг баримтууд II шат" headerCellRender={HeaderCell} calculateCellValue={rowdata => calculateCellValueEvidence(rowdata, 'evidence')} alignment="left" />
+                    <Column dataField="firstEvalution.description" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell}
+                        cellRender={cellData => <CellRenderEvalution cellData={cellData} field="firstEvalution" />}
+                        alignment="left" minWidth={110}
+                    />
+                    <Column dataField="evaluation5b.description" caption="Бичиг баримт бүрдүүлэлт" headerCellRender={HeaderCell}
+                        cellRender={cellData => <CellRenderEvalution cellData={cellData} field="evaluation5b" />}
+                        alignment="left" minWidth={110}
+                    />
+                    <Column dataField="evaluation5c.description" caption="Шинжилгээний тайлан" headerCellRender={HeaderCell}
+                        cellRender={cellData => <CellRenderEvalution cellData={cellData} field="evaluation5c" />}
+                        alignment="left" minWidth={110}
+                    />
+                    <Column dataField="lastEvalution.description" caption="Бизнес шинжээчийн үнэлгээ" headerCellRender={HeaderCell}
+                        cellRender={cellData => <CellRenderEvalution cellData={cellData} field="lastEvalution" />}
+                        alignment="left" minWidth={110}
+                    />
                 </DataGrid>
             </div>
         </div>
@@ -240,69 +260,25 @@ const customizeTextConfirmed = (cellinfo) => {
     return cellinfo.value ? 'Баталгаажсан' : null
 }
 
-const calculateCellValueEvidence = (rowdata) => {
-    return rowdata.evidence ? 'Бүрдүүлсэн' : null
+const calculateCellValueEvidence = (rowdata, field) => {
+    return rowdata[field] ? 'Бүрдүүлсэн' : null
 }
 
 const calculateCellValueEdpPlan = (rowdata) => {
     return rowdata.edpPlan ? 'Төлөвлсөн' : null
 }
 
-const evalutionTexts = {
-    1: 'Тэнцээгүй',
-    2: 'Тэнцсэн',
-}
-
-const evalutionClassNamse = {
+const evalutionClassNames = {
     1: 'tw-bg-red-400',
     2: 'tw-bg-green-400',
 }
 
-const calculateCellValue5a = (rowdata) => {
-    const evalution = +rowdata.firstEvalution.value
+const CellRenderEvalution = ({ cellData, field }) => {
+    const evalution = +cellData.data[field]?.value
     return evalution === 0
         ? null
-        : evalutionTexts[evalution]
-}
-
-const cellRender5a = (cellData) => {
-    const evalution = +cellData.data.firstEvalution.value
-    return evalution === 0
-        ? null
-        : <div className={`tw-py-1 tw-w-20 tw-text-center tw-text-white tw-rounded-sm ${evalutionClassNamse[evalution]}`}>
-            {evalutionTexts[evalution]}
-        </div>
-}
-
-const calculateCellValueEvaluation5b = (rowdata) => {
-    const evalution = rowdata.evaluation5b
-    return typeof (evalution) === 'boolean'
-        ? (evalution ? 'Тэнцсэн' : 'Тэнцээгүй')
-        : null
-}
-
-const cellRender5b = (cellData) => {
-    const evalution = cellData.data.evaluation5b
-    return typeof (evalution) === 'boolean'
-        ? <div className={`tw-mx-auto tw-py-1 tw-w-20 tw-text-center tw-text-white tw-rounded-sm ${evalution ? 'tw-bg-green-400' : 'tw-bg-red-400'}`}>
-            {evalution ? 'Тэнцсэн' : 'Тэнцээгүй'}
-        </div>
-        : null
-}
-
-const calculateCellValue5c = (rowdata) => {
-    const evalution = +rowdata.lastEvalution.value
-    return evalution === 0
-        ? null
-        : evalutionTexts[evalution]
-}
-
-const cellRender5c = (cellData) => {
-    const evalution = +cellData.data.lastEvalution.value
-    return evalution === 0
-        ? null
-        : <div className={`tw-mx-auto tw-py-1 tw-w-20 tw-text-center tw-text-white tw-rounded-sm ${evalutionClassNamse[evalution]}`}>
-            {evalutionTexts[evalution]}
+        : <div className={`tw-py-1 tw-w-20 tw-text-center tw-text-white tw-rounded-sm ${evalutionClassNames[evalution]}`}>
+            {cellData.data[field]?.description}
         </div>
 }
 

@@ -124,7 +124,7 @@ export default function UrgudulPage6({ projects = [] }) {
       <div className={containerClass}>
          <UrgudulHeader
             label="Төлөвлөсөн үйл ажиллагаа, төсөв"
-            HelpPopup={<HelpPopup classAppend="tw-mx-2" main="Дээд тал нь 5 үйл ажиллагаа сонгох боломжтой. Мөн экспорт хөгжлийн төлөвлөгөө, зах зээлийн судалгаа гэж сонгосон бол өөр үйл ажиллагаа нэмэх боломжгүй болно." />}
+            HelpPopup={<HelpPopup classAppend="tw-mx-2" main="Дээд тал нь 5 үйл ажиллагаа сонгох боломжтой. Мөн экспорт хөгжлийн төлөвлөгөө, зах зээлийн судалгааг сонгож буй бол бусад үйл ажиллагааг нэмэх боломжгүй байна." />}
             LoadFromOtherProject={<LoadFromOtherProject classAppend="tw-absolute tw-right-4" otherProjects={otherProjects} loadFromOtherProject={loadFromOtherProjectDirectors} />}
          />
 
@@ -132,9 +132,11 @@ export default function UrgudulPage6({ projects = [] }) {
             <div className="tw-flex tw-px-2" key={i}>
                <ExpandableContainer classAppend="tw-flex-grow" order={i + 1} label={getActivityName(activity.activityId)} placeholder="Үйл ажиллагаа" initialized={initialized}>
                   <FormSelect
-                     data={activities.length > 1
-                        ? activitiesData.filter(item => !limitIds.includes(item.id))
-                        : activitiesData
+                     data={i === 0
+                        ? activitiesData
+                        : limited
+                           ? activitiesData.filter(item => limitIds.includes(item.id))
+                           : activitiesData.filter(item => !limitIds.includes(item.id))
                      }
                      setter={handleInput}
                      name="activityId"
@@ -168,12 +170,14 @@ export default function UrgudulPage6({ projects = [] }) {
             </div>
          )}
 
-         {activities.length < 6 && !limited &&
+         {(limited
+            ? activities.length < 2
+            : activities.length < 5) &&
             <div className="tw-flex tw-justify-end tw-items-center">
                <span className="tw-italic tw-text-gray-500 tw-text-xs">
                   Үйл ажиллагаа нэмэх
                </span>
-               <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2 tw-ml-1" classButton={`tw-text-green-500 active:tw-text-green-600`} />
+               <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2 tw-ml-1 tw-my-0.5" classButton={`tw-text-green-500 active:tw-text-green-600`} />
             </div>
          }
 

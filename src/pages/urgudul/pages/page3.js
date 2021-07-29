@@ -172,7 +172,7 @@ export default function UrgudulPage3({ projects = [] }) {
             <span className="tw-italic tw-text-gray-500 tw-text-xs">
                Түлхүүр албан тушаалтан нэмэх
             </span>
-            <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2 tw-ml-1" classButton={`tw-text-green-500 active:tw-text-green-600`} />
+            <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2 tw-ml-1 tw-my-0.5" classButton={`tw-text-green-500 active:tw-text-green-600`} />
          </div>
 
          <div className="tw-flex tw-justify-end">
@@ -396,7 +396,7 @@ function ClusterMembers({ otherProjects }) {
             <span className="tw-italic tw-text-gray-500 tw-text-xs">
                Гишүүн байгууллага нэмэх
             </span>
-            <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2 tw-ml-1" classButton={`tw-text-green-500 active:tw-text-green-600`} />
+            <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-mr-2 tw-ml-1 tw-my-0.5" classButton={`tw-text-green-500 active:tw-text-green-600`} />
          </div>
 
          <div className="tw-p-3 tw-pl-5">

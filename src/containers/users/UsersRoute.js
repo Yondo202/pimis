@@ -22,14 +22,6 @@ import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 // import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import TrainingFrontPage from 'pages/training/frontPage';
-import UrgudulPage1 from 'pages/urgudul/pages/page1';
-import UrgudulPage2 from 'pages/urgudul/pages/page2';
-import UrgudulPage3 from 'pages/urgudul/pages/page3';
-import UrgudulPage4 from 'pages/urgudul/pages/page4';
-import UrgudulPage5 from 'pages/urgudul/pages/page5';
-import UrgudulPage6 from 'pages/urgudul/pages/page6';
-import UrgudulPage7 from 'pages/urgudul/pages/page7_company';
-import UrgudulPage8 from 'pages/urgudul/pages/page8';
 
 
 function UsersRoute() {
@@ -58,7 +50,7 @@ function UsersRoute() {
                     <Route path="/letter-of-interest" component={LetterNavigator} />
                     <Route path="/urgudul/:page" component={UrgudulNavigator} />
                     <Route path="/urgudul-preview/:id" component={UrgudulPreviewForUser} />
-                    <Route apth="/attachments/first" component={AttachmentUploadsFirst} />
+                    <Route path="/attachments/first" component={AttachmentUploadsFirst} />
                     <Route path="/attachments/second" component={AttachmentUploadsSecond} />
                     <Route path="/5a" component={FirstEvaluation} />
                     <Route path="/5b" component={CompilationCheck} />

@@ -42,15 +42,15 @@ export default function AttachmentUploadsFirst() {
             'Content-Type': 'multipart/form-data',
          }
       }).then(res => {
-         const newForm1 = form
+         const newForm1 = [...form]
          let newFiles = newForm1[index].files
          newFiles = newFiles.filter(item => item !== 'loading')
          newForm1[index].files = [...newFiles, res.data.data]
-         setForm([...newForm1])
+         setForm(newForm1)
       }).catch(err => {
-         const newForm2 = form
+         const newForm2 = [...form]
          newForm2[index].files = newForm[index].files.filter(item => item !== 'loading')
-         setForm([...newForm2])
+         setForm(newForm2)
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсралт файлыг хадгалж чадсангүй.' })
       })
    }
@@ -85,24 +85,22 @@ export default function AttachmentUploadsFirst() {
       })
    }
 
-   const projectId = useParams().id
+   const userId = useParams().id
 
    useEffect(() => {
-      if (projectId) {
-         axios.get(`evidences/${projectId}`, {
+      if (userId) {
+         axios.get(`evidences`, {
             headers: { 'Authorization': getLoggedUserToken() },
+            params: { userId: userId, stage: 1 }
          }).then(res => {
             setForm(res.data.data)
          })
       } else {
          axios.get('evidences', {
             headers: { 'Authorization': getLoggedUserToken() },
+            params: { stage: 1 }
          }).then(res => {
             setForm(res.data.data)
-         }).catch(err => {
-            if (err.response.error.statusCode === 401) {
-               AlertCtx.setAlert({ open: true, variant: 'normal', msg: err.response.error.message })
-            }
          })
       }
    }, [])
@@ -111,7 +109,7 @@ export default function AttachmentUploadsFirst() {
       <div className="tw-relative tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2">
          <div className="tw-p-3 tw-flex tw-items-center">
             <span className="tw-text-base tw-font-medium tw-text-blue-500 tw-pl-2">
-               Нотлох бичиг баримтууд
+               Нотлох бичиг баримтууд I
             </span>
             <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="/.../" />
          </div>
@@ -134,7 +132,7 @@ export default function AttachmentUploadsFirst() {
             )}
          </ol>
 
-         {(projectId === undefined || null) &&
+         {(userId === undefined || null) &&
             <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
                <button className="tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
                   Хадгалах
@@ -146,23 +144,28 @@ export default function AttachmentUploadsFirst() {
 }
 
 const initialState = [{
-   code: 'certificate_copy',
+   code: 'gerchilgee',
    description: 'Хуулийн этгээдийн улсын бүртгэлийн гэрчилгээний хуулбар',
+   stage: 1,
    files: null
 }, {
-   code: 'financial_report',
+   code: 'tailan',
    description: 'Сүүлийн 2 жилийн аудитлагдсан санхүүгийн тайлан',
+   stage: 1,
    files: null
 }, {
-   code: 'self_fund',
+   code: 'uuriin_sanhuujilt',
    description: 'Төлөвлөсөн үйл ажиллагааг өөрийн санхүүжилтээр гүйцэтгэх боломжтойг нотолсон баримт бичиг (сүүлийн 2 жилийн мөнгөн урсгалын тайлан, 1 жилийн мөнгөн урсгалын төлөвлөгөө, банкны хуулга гм)',
+   stage: 1,
    files: null
 }, {
-   code: 'owner',
+   code: 'umchlul',
    description: 'Аж ахуйн нэгжийн эцсийн өмчлөгчийг тодорхойлох баримт бичгүүд (дүрэм гм)',
+   stage: 1,
    files: null
 }, {
-   code: 'key_employees',
+   code: 'tulhuur_ajilchid',
    description: 'Өргөдөл гаргагч байгууллагын түлхүүр албан тушаалтнуудын ажлын туршлага, боловсрол, ур чадварыг илэрхийлэх намтар(Дор хаяж 3 албан тушаалтны мэдээлэл)',
+   stage: 1,
    files: null
 }]

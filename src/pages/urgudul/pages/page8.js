@@ -7,6 +7,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { Link, useHistory } from 'react-router-dom'
 import { animated, Transition } from 'react-spring/renderprops'
 import { UrgudulHeader } from './page1'
+import { initialState as evidences } from 'pages/attachments/page2'
 
 const initialState = {
    currency: false,
@@ -97,7 +98,7 @@ export default function UrgudulPage8() {
                   Өргөдлийг илгээхийн өмнө дараах шалгууруудыг бүрэн хангасан эсэхийг шалгана уу. Зөвлөсөн тэмдгээр арын нүдэнд тэмдэглэнэ үү:
                </div>
 
-               <div className="tw-m-4 tw-mb-6 tw-shadow-md tw-font-light">
+               <div className="tw-mx-4 tw-my-2 tw-shadow-md tw-font-light">
                   <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
                      <span className="tw-px-4 tw-py-2">
                         <span className="tw-mr-2">1.</span>
@@ -140,7 +141,7 @@ export default function UrgudulPage8() {
                </div>
 
                <div className="tw-flex tw-justify-end">
-                  <button className={`tw-m-6 tw-mt-2 tw-px-6 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-sm tw-font-light tw-text-white focus:tw-outline-none tw-rounded tw-transition-colors ${isConfirmed && 'tw-opacity-70'}`} onClick={() => !isConfirmed && handleOpenModal()}>
+                  <button className={`tw-my-6 tw-mr-4 tw-px-6 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-sm tw-font-light tw-text-white focus:tw-outline-none tw-rounded tw-transition-colors ${isConfirmed && 'tw-opacity-70'}`} onClick={() => !isConfirmed && handleOpenModal()}>
                      {isConfirmed
                         ? `Өргөдөл баталгаажсан байна`
                         : `Өргөдлийг баталгаажуулах`
@@ -196,57 +197,34 @@ export default function UrgudulPage8() {
             {item => item && (anims =>
                <animated.div className="tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-min-w-min tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed" style={anims}>
                   <div className="tw-p-3 tw-font-medium tw-text-blue-500 tw-text-base">
-                     <span className="">Бүрдүүлэх нотлох бичиг баримтууд</span>
+                     <span className="">Бүрдүүлэх бичиг баримтууд II шат</span>
                   </div>
 
                   <div className="">
                      <div className="tw-px-5 tw-pt-3 tw-text-sm">
-                        Урьдчилсан мэдүүлгээр буюу эхний шатанд тэнцсэн өргөдөл гаргагч нь ажлын 10 хоногийн дотор дараах материалуудыг бүрдүүлж өгөхийг анхаарна уу. Үүнд:
+                        Урьдчилсан мэдүүлгээр эхний шатанд тэнцсэн өргөдөл гаргагч нь тэнцсэн хариу авснаас хойш 14 хоногийн дотор дараах материалуудыг бүрдүүлж ирүүлэхийг анхаарна уу. Үүнд:
                      </div>
 
-                     <ol className="tw-list-decimal tw-list-inside tw-text-sm tw-m-4 tw-mb-6 tw-shadow-md tw-font-light">
+                     <ul className="tw-list-decimal tw-list-inside tw-text-sm tw-mx-4 tw-my-2 tw-shadow-md tw-font-light">
                         <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Экспорт хөгжлийн төлөвлөгөө.
+                           Экспорт хөгжлийн төлөвлөгөө
                         </li>
                         <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Байгаль орчны үнэлгээний асуумжийг нотлох баримт бичгүүд, Байгаль орчны удирдлагын төлөвлөгөө.
+                           Нотлох бичиг баримтууд
+                           <ol className="tw-list-inside tw-mt-1" style={{ listStyleType: 'upper-roman' }}>
+                              {evidencesArr.map((evidence, i) =>
+                                 <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50 tw--ml-1">
+                                    {evidence}
+                                 </li>
+                              )}
+                           </ol>
                         </li>
-                        <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Хуулийн этгээдийн улсын бүртгэлийн гэрчилгээний хуулбар.
-                        </li>
-                        <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Өмнөх 2 жилийн санхүүгийн тайлан. /Энэ оны санхүүгийн тайлангийн хамт/
-                        </li>
-                        <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Холбогдох дүүргийн татварын албанаас 12 сараас дээш хугацааны татварын өргүйг нотолсон тодорхойлолт, баримт.
-                        </li>
-                        <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Холбогдох нийгмийн даатгалын газраас 12 сараас дээш хугацааны өргүйг нотолсон тодорхойлолт, баримт, нийгмийн даатгал төлдөг ажилчдын тооны мэдээлэл.
-                        </li>
-                        <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Монгол банкны зээлийн мэдээллийн сангаас муу ангиллын зээлгүйг нотолсон тодорхойлолт, баримт.
-                        </li>
-                        <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Хуулийн этгээдийн эцсийн өмчлөгчдийг тодорхойлох баримт.
-                        </li>
-                        <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Өргөдөл гаргагч байгууллагын түлхүүр албан тушаалтнуудын ажлын туршлага, ур чадварыг илэрхийлэх намтар. (Дор хаяж 3 албан тушаалтны мэдээлэл)
-                        </li>
-                        <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Экспортын болон кластерын гэрээ хэлцэл, оюуны өмчийн эзэмшлийн нотолгоо.
-                        </li>
-                        <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Санхүүжилтийг бүрэн хийх боломжтойг нотолсон баримт бичиг, банкны хуулга гм.
-                        </li>
-                        <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Бусад шаардлагатай баримт бичиг.
-                        </li>
-                     </ol>
+                     </ul>
 
                      <div className="tw-flex tw-justify-end">
-                        <Link to="/attachments">
-                           <button className="tw-mt-2 tw-mb-6 tw-mr-4 tw-px-6 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-sm tw-text-white focus:tw-outline-none tw-rounded tw-transition-colors tw-font-light">
-                              Нотлох бичиг баримтууд
+                        <Link to="/">
+                           <button className="tw-my-6 tw-mr-4 tw-px-6 tw-py-2 tw-bg-blue-800 active:tw-bg-blue-700 tw-text-sm tw-text-white focus:tw-outline-none tw-rounded tw-transition-colors tw-font-light">
+                              Буцах
                            </button>
                         </Link>
                      </div>
@@ -257,3 +235,5 @@ export default function UrgudulPage8() {
       </div >
    )
 }
+
+const evidencesArr = evidences.map(evidence => evidence.description)

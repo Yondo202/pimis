@@ -41,15 +41,15 @@ export default function AttachmentUploadsSecond() {
                 'Content-Type': 'multipart/form-data',
             }
         }).then(res => {
-            const newForm1 = form
+            const newForm1 = [...form]
             let newFiles = newForm1[index].files
             newFiles = newFiles.filter(item => item !== 'loading')
             newForm1[index].files = [...newFiles, res.data.data]
-            setForm([...newForm1])
+            setForm(newForm1)
         }).catch(err => {
-            const newForm2 = form
+            const newForm2 = [...form]
             newForm2[index].files = newForm[index].files.filter(item => item !== 'loading')
-            setForm([...newForm2])
+            setForm(newForm2)
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсралт файлыг хадгалж чадсангүй.' })
         })
     }
@@ -84,23 +84,26 @@ export default function AttachmentUploadsSecond() {
         })
     }
 
-    const projectId = useParams().id
+    const userId = useParams().id
 
     useEffect(() => {
-        if (projectId) {
-            axios.get(`evidences/${projectId}`, {
+        if (userId) {
+            axios.get(`evidences`, {
                 headers: { 'Authorization': getLoggedUserToken() },
+                params: { userId: userId, stage: 2 }
             }).then(res => {
                 setForm(res.data.data)
             })
         } else {
             axios.get('evidences', {
                 headers: { 'Authorization': getLoggedUserToken() },
+                params: { stage: 2 }
             }).then(res => {
                 setForm(res.data.data)
             }).catch(err => {
-                if (err.response.error.statusCode === 401) {
-                    AlertCtx.setAlert({ open: true, variant: 'normal', msg: err.response.error.message })
+                if (err.response.status === 490) {
+                    const msg = err.response.data.error?.message
+                    msg && AlertCtx.setAlert({ open: true, variant: 'normal', msg: msg })
                 }
             })
         }
@@ -110,7 +113,7 @@ export default function AttachmentUploadsSecond() {
         <div className="tw-relative tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2">
             <div className="tw-p-3 tw-flex tw-items-center">
                 <span className="tw-text-base tw-font-medium tw-text-blue-500 tw-pl-2">
-                    Нотлох бичиг баримтууд
+                    Нотлох бичиг баримтууд II
                 </span>
                 <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="/.../" />
             </div>
@@ -133,7 +136,7 @@ export default function AttachmentUploadsSecond() {
                 )}
             </ol>
 
-            {(projectId === undefined || null) &&
+            {(userId === undefined || null) &&
                 <div className="tw-flex tw-items-center tw-justify-end tw-pt-6 tw-pb-4 tw-px-2">
                     <button className="tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
                         Хадгалах
@@ -144,17 +147,25 @@ export default function AttachmentUploadsSecond() {
     )
 }
 
-const initialState = [{
-    code: 'price_comparison',
+export const initialState = [{
+    code: 'uniin_sanal',
     description: 'Төлөвлөсөн үйл ажиллагаануудыг гүйцэтгэх байгууллагуудаас авсан үнийн санал, түүний харьцуулалт',
+    stage: 2,
     files: null
 }, {
-    code: 'environmental_planning',
+    code: 'baigal_orchin',
     description: 'Байгаль орчны үнэлгээний асуумжийг нотлох баримт бичгүүд, байгаль орчны удирдлагын төлөвлөгөө',
+    stage: 2,
     files: null
 }, {
-    code: 'contracts',
+    code: 'gereenuud',
     description: 'Экспортын гэрээ хэлцэл, кластерын гэрээ (хэрэв кластерын ангилалд өргөдөл гаргаж байгаа бол), оюуны өмчийн эзэмшлийн нотолгоо',
+    stage: 2,
+    files: null
+}, {
+    code: 'hudaldan_avalt',
+    description: 'Худалдан авах ажиллагааны төлөвлөгөө.',
+    stage: 2,
     files: null
 }]
 
