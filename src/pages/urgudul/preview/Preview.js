@@ -57,7 +57,6 @@ const labels = {
     page5: {
         sales: 'Борлуулалт',
         fullTime_workplace: 'Ажлын байр',
-        productivity: 'Бүтээмж',
         export_details: 'Экспортын задаргаа',
     },
     page6: {
@@ -405,15 +404,6 @@ export default function UrgudulPreview(props) {
                                             {dates.map((item, i) =>
                                                 <td className="tw-border tw-border-gray-400 tw-text-right tw-px-2" key={i}>
                                                     {project.exportDatas?.fullTime_workplace?.[item]?.toLocaleString()}
-                                                </td>
-                                            )}
-                                            <td className="tw-border tw-border-gray-400 tw-text-center tw-px-2">Т/х</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="tw-border tw-border-gray-400 tw-px-2">Бүтээмж</td>
-                                            {dates.map((item, i) =>
-                                                <td className="tw-border tw-border-gray-400 tw-text-right tw-px-2" key={i}>
-                                                    {project.exportDatas?.productivity?.[item]?.toLocaleString()}
                                                 </td>
                                             )}
                                             <td className="tw-border tw-border-gray-400 tw-text-center tw-px-2">Т/х</td>
