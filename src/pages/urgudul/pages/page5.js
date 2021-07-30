@@ -246,7 +246,7 @@ function UrgudulPage5() {
                      {form.export_details.map((country, i) =>
                         <Fragment key={i}>
                            <tr className="tw-h-9">
-                              <td className="tw-border tw-border-gray-300 tw-px-1">
+                              <td className="tw-border tw-border-gray-300 tw-px-1" style={{ maxWidth: 213.8 }}>
                                  <SearchSelectCompact placeholder="Экспорт хийсэн улс" data={countries} value={country.countryId} name="countryId" index={i} displayName="description_mon" setter={handleSetFormCountry} classDiv={validate && checkInvalid(country.countryId) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} classInput="tw-bg-transparent" selectWidth={containerRef.current?.getBoundingClientRect().width > 220 ? 220 : containerRef.current?.getBoundingClientRect().width - 54} />
                               </td>
                               <td className="tw-border tw-border-gray-300 tw-px-1" colSpan={datesForm.length + 1}>
@@ -258,7 +258,7 @@ function UrgudulPage5() {
                            {country.export_products.map((product, j) =>
                               <Fragment key={j}>
                                  <tr className="tw-h-9">
-                                    <td className="tw-border tw-border-gray-300 tw-px-1">
+                                    <td className="tw-border tw-border-gray-300 tw-px-1" style={{ maxWidth: 213.8 }}>
                                        <TreeSelectCompact data={products} placeholder="Бүтээгдэхүүний ангилал" displayName="description_mon" value={product.productId} name="productId" index={j} index1={i} setter={handleSetFormProduct} selectWidth={containerRef.current?.getBoundingClientRect().width - 36} validate={validate && checkInvalid(product.productId)} classAppend="tw-ml-2" />
                                     </td>
                                     <td className="tw-border tw-border-gray-300 tw-px-1" colSpan={datesForm.length + 1}>

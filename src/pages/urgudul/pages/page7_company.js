@@ -194,19 +194,23 @@ export default function UrgudulPage7Company({ projects = [] }) {
                      </div>
                      <div className="">
                         <Notice checkList={checkList} handleCheckList={handleCheckList} sub
-                           order="I"
+                           order="2a"
+                           orderDisplay="I"
                            notice="Бүх түлхүүр албан тушаалтнууд энэхүү өргөдлийн маягтад бичсэн мэдээлэлтэй танилцсан бөгөөд өөр өөрсдийн үүргийг ойлгож байгаа."
                         />
                         <Notice checkList={checkList} handleCheckList={handleCheckList} sub
-                           order="II"
+                           order="2b"
+                           orderDisplay="II"
                            notice="Өргөдөл гаргагч нь түлхүүр албан тушаалтнуудыг уг төслийн хэрэгжилтийн талаар тогтмол мэдээллээр хангаж ажиллана."
                         />
                         <Notice checkList={checkList} handleCheckList={handleCheckList} sub
-                           order="III"
+                           order="2c"
+                           orderDisplay="III"
                            notice="Бүх түлхүүр албан тушаалтнууд Экспортыг дэмжих төсөлд илгээж буй өргөдөл гаргагч аж ахуйн нэгжийн тайлан, мэдээлэлтэй танилцсан байна."
                         />
                         <Notice checkList={checkList} handleCheckList={handleCheckList} sub
-                           order="IV"
+                           order="2d"
+                           orderDisplay="IV"
                            notice="Экспортыг дэмжих төсөлд илгээх төслийн өөрчлөлтүүд нь байгууллагын дотоодод мөн түлхүүр албан тушаалтнуудын хооронд хэлэлцэгдэж, зөвшилцөлд хүрсэн санал байна."
                         />
                      </div>

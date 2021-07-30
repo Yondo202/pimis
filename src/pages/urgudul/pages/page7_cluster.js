@@ -208,15 +208,18 @@ export default function UrgudulPage7Cluster({ projects = [] }) {
                      </div>
                      <div className="">
                         <Notice checkList={checkList} handleCheckList={handleCheckList} sub
-                           order="I"
+                           order="2a"
+                           orderDisplay="I"
                            notice="Бүх гишүүд энэхүү өргөдлийн маягтад бичсэн мэдээлэлтэй танилцсан бөгөөд өөр өөрсдийн үүргийг ойлгож байгаа."
                         />
                         <Notice checkList={checkList} handleCheckList={handleCheckList} sub
-                           order="II"
+                           order="2b"
+                           orderDisplay="II"
                            notice="Өргөдөл гаргагч нь кластерын бусад гишүүдийг уг төслийн хэрэгжилтийн талаар тогтмол мэдээллээр хангаж ажиллана."
                         />
                         <Notice checkList={checkList} handleCheckList={handleCheckList} sub
-                           order="III"
+                           order="2c"
+                           orderDisplay="III"
                            notice="Бүх гишүүд Экспортыг дэмжих төсөлд илгээж буй өргөдөл гаргагч аж ахуйн нэгжийн тайлан, мэдээлэлтэй танилцсан байна.Экспортыг дэмжих төсөлд илгээх төслийн өөрчлөлтүүд нь кластерын гишүүн байгууллага хооронд хэлэлцэгдэж, зөвшилцөлд хүрсэн санал байна."
                         />
                      </div>
@@ -349,10 +352,10 @@ export default function UrgudulPage7Cluster({ projects = [] }) {
    )
 }
 
-export const Notice = ({ checkList, handleCheckList, order, sub, notice }) => (
+export const Notice = ({ checkList, handleCheckList, order, orderDisplay, sub, notice }) => (
    <div className={`tw-py-2 ${sub ? 'tw-pl-4' : 'tw-pl-6 tw-pr-2'} tw-flex tw-justify-between tw-items-center odd:tw-bg-gray-50`}>
       <span className="">
-         {order}. {notice}
+         {orderDisplay ?? order}. {notice}
       </span>
       <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={checkList.has(order)} onChange={e => handleCheckList(order, e.target.checked)} />
    </div>
