@@ -29,7 +29,6 @@ function Decision_main() {
 
     useEffect(() => {
         axios.get(`evaluation-meetings/scheduled-projects?parentId=${slug}`, { headers: { Authorization: Token() } }).then(res => {
-            console.log(res, "resss+-+--+-+-+-+-");
             setData(res.data.data[0]);
             if (res.data.data[0].sanalinnHuudas.approve !== null) {
                 setSanalData(true);
