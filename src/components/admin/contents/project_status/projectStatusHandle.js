@@ -171,6 +171,34 @@ export default function ProjectStatusHandle() {
                         </Transition>
                     </div>
 
+                    <div className="tw-flex tw-flex-col tw-items-start md:tw-col-span-2 tw-p-2 tw-ml-2 tw-relative">
+                        <div className="">
+                            Төслийн төлвийг сонгох:
+                        </div>
+
+                        <button className="tw-mt-1 tw-rounded tw-py-1 tw-border tw-border-gray-500 focus:tw-outline-none tw-flex tw-items-center tw-px-2" style={{ minWidth: 160 }} onClick={() => setStatusDropdownOpen(prev => !prev)} ref={buttonRef}>
+                            <span className="tw-mr-2">{statusNames[status.status]}</span>
+                            <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-auto" />
+                        </button>
+
+                        <Transition
+                            items={statusDropdownOpen}
+                            from={{ height: 0 }}
+                            enter={{ height: 'auto' }}
+                            leave={{ height: 0 }}
+                            config={{ tension: 300, clamp: true }}>
+                            {item => item && (anims =>
+                                <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 70, minWidth: 160, ...anims }} ref={dropdownRef}>
+                                    {Object.keys(statusNames).map(status =>
+                                        <div className="tw-cursor-pointer tw-py-1.5 tw-text-13px tw-px-2 hover:tw-bg-indigo-50 tw-transition-colors" key={status} onClick={() => handleStatusSelect(status)}>
+                                            {statusNames[status]}
+                                        </div>
+                                    )}
+                                </animated.div>
+                            )}
+                        </Transition>
+                    </div>
+
                     <div className="tw-flex tw-flex-col tw-items-start md:tw-col-span-2 tw-p-2 tw-ml-2">
                         <div className="">
                             Тайлбар:
