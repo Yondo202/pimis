@@ -38,7 +38,7 @@ function Decision_main() {
                     setReasonData(infoWhere2.filter(el => el.code === res.data.data[0].sanalinnHuudas.reject_reason.code));
                 }
             }
-        }).catch((err) => console.log(err.response.data, "+++++++++"))
+        }).catch((err) => console.log(err.response, "+++++++++"))
     }, []);
 
     const checkedHandle = (event) => {
@@ -221,7 +221,7 @@ function Decision_main() {
                     {sanalData ? null :
                         <div className="buttonPar">
                             <div style={{ opacity: opacity2 }} className="errtext">{FinalErrorText}</div>
-                            <div onClick={ClickHandle} style={!spin ? { width: `40%`, opacity: 1 } : { width: `10%`, opacity: 0.6 }} className="btn btn-primary">{!spin ? `Илгээх` : <img src="/gif1.gif" alt-="edp-img" alt=""/>} </div>
+                            <div onClick={ClickHandle} style={!spin ? { width: `40%`, opacity: 1 } : { width: `10%`, opacity: 0.6 }} className="btn btn-primary">{!spin ? `Илгээх` : <img src="/gif1.gif" alt-="edp-img" alt="" />} </div>
                         </div>
                     }
 
