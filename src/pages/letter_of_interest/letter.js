@@ -180,6 +180,7 @@ export default function LetterOfInterest() {
                 }).then(res => {
                     setForm({ ...form, ...res.data.data })
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сонирхол илэрхийлэх албан тоотыг хадгаллаа.' })
+                    history.push('/')
                 }).catch(err => {
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хадгалж чадсангүй.' })
                 })

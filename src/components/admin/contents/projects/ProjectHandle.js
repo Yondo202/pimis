@@ -68,19 +68,8 @@ export default function ProjectHandle() {
 
     const [consultants, setConsultants] = useState([])
 
-    const getConsultantName = (id) => {
-        if (id) {
-            const consultant = consultants.filter(consultant => consultant.id === id)[0]
-            return consultant?.firstname
-                ? `${consultant.lastname?.substr(0, 1).toUpperCase()}. ${consultant.firstname}`
-                : null
-        } else {
-            return null
-        }
-    }
-
     const calculateCellValueBdsUser = (rowdata) => {
-        return getConsultantName(rowdata.project?.bds_userId)
+        return getConsultantName(rowdata.project?.bds_userId, consultants)
     }
 
     return (
@@ -125,7 +114,7 @@ export default function ProjectHandle() {
                         <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} alignment="left" minWidth={120} />
                         <Column dataField="project.project_duration" caption="Төслийг хэрэгжүүлэх хугацаа" headerCellRender={HeaderCell} customizeText={customizeTextDuration} alignment="left" />
                         <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} customizeText={customizeTextConfirmed} alignment="left" />
-                        <Column dataField="project.bds_userId" caption="БЗ Зөвлөх" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueBdsUser} minWidth={100} alignment="left" />
+                        <Column dataField="project.bds_userId" caption="БХ Зөвлөх" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueBdsUser} minWidth={100} alignment="left" />
                     </Column>
 
                     <Column dataField="evidence" caption="Нотлох бичиг баримтууд I шат" headerCellRender={HeaderCell} calculateCellValue={rowdata => calculateCellValueEvidence(rowdata, 'evidence')} alignment="left" />
@@ -283,3 +272,14 @@ const CellRenderEvalution = ({ cellData, field }) => {
 }
 
 const customizeTextDuration = (cellinfo) => cellinfo.value ? `${cellinfo.value} сар` : ''
+
+export const getConsultantName = (id, data) => {
+    if (id) {
+        const consultant = data.filter(consultant => consultant.id === id)[0]
+        return consultant?.firstname
+            ? `${consultant.lastname?.substr(0, 1).toUpperCase()}. ${consultant.firstname}`
+            : null
+    } else {
+        return null
+    }
+}

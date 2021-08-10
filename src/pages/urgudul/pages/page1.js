@@ -14,10 +14,12 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import NumberFormat from 'react-number-format'
 import FormSelect from 'components/urgudul_components/formSelect'
 import ModalWindow from 'components/modal_window/modalWindow'
+import { useHistory } from 'react-router-dom'
 
 export default function UrgudulPage1({ projects = [] }) {
    const UrgudulCtx = useContext(UrgudulContext)
    const AlertCtx = useContext(AlertContext)
+   const history = useHistory()
 
    const [form, setForm] = useState(initialState)
    const [products, setProducts] = useState(initialProducts)
@@ -40,11 +42,17 @@ export default function UrgudulPage1({ projects = [] }) {
             temp[key] = value
          }
       })
-      setForm(prev => ({ ...prev, ...temp }))
+      if (Object.keys(temp).length) {
+         setForm(prev => ({ ...prev, ...temp }))
+      } else {
+         setForm(initialState)
+      }
 
       const value = UrgudulCtx.data.exportProducts
       if (value instanceof Array && value?.length) {
          setProducts(value)
+      } else {
+         setProducts(initialProducts)
       }
    }, [projectId])
 
@@ -97,6 +105,7 @@ export default function UrgudulPage1({ projects = [] }) {
       }).then(res => {
          UrgudulCtx.setData(res.data.data)
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдөл үүсгэлээ.' })
+         history.push('/urgudul/2')
       }).catch(err => {
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, өргөдөл үүсгэж чадсангүй.' })
       })

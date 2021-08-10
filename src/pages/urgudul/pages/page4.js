@@ -54,6 +54,7 @@ export default function UrgudulPage4({ projects = [] }) {
       }).then(res => {
          UrgudulCtx.setData(prev => ({ ...prev, ...res.data.data }))
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийг хадгаллаа.' })
+         history.push('/urgudul/5')
       }).catch(err => {
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
       })

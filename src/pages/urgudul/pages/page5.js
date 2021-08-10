@@ -13,7 +13,7 @@ import { SaveButton, UrgudulHeader } from './page1'
 const year = new Date().getFullYear()
 const baseYear = 2016
 
-const dates = Array.from({ length: year + 3 - baseYear + 1 }, (x, i) => baseYear + i)
+const dates = Array.from({ length: year + 2 - baseYear + 1 }, (x, i) => baseYear + i)
 
 const datesObj = dates.reduce((a, c) => ({ ...a, [c]: null }), {})
 
@@ -30,8 +30,8 @@ const initialState = {
          export_products: [
             {
                ...datesObj,
-               productId: null,
                product_name: null,
+               hs_code: null,
             },
          ],
       },
@@ -72,16 +72,16 @@ function UrgudulPage5() {
    }
 
    const [countries, setCounties] = useState([])
-   const [products, setProducts] = useState([])
+   // const [products, setProducts] = useState([])
 
    useEffect(() => {
       axios.get('countries').then(res => {
          setCounties(res.data.data)
       })
 
-      axios.get('products').then(res => {
-         setProducts(res.data.data.docs)
-      })
+      // axios.get('products').then(res => {
+      //    setProducts(res.data.data.docs)
+      // })
    }, [])
 
    const datesForm = Object.keys(form.sales).sort()
@@ -93,8 +93,8 @@ function UrgudulPage5() {
          export_products: [
             {
                ...datesFormObj,
-               productId: null,
                product_name: null,
+               hs_code: null,
             },
          ],
       }
@@ -110,8 +110,8 @@ function UrgudulPage5() {
       const newProducts = form.export_details[countryIndex].export_products
       const newProduct = {
          ...datesFormObj,
-         productId: null,
          product_name: null,
+         hs_code: null,
       }
       newCountries[countryIndex].export_products = [...newProducts, newProduct]
       setForm({ ...form, export_details: newCountries })
@@ -160,6 +160,7 @@ function UrgudulPage5() {
             }).then(res => {
                UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Экспортын мэдээлэллийг хадгаллаа.' })
+               history.push('/urgudul/6')
             }).catch(err => {
                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
             })
@@ -258,8 +259,13 @@ function UrgudulPage5() {
                            {country.export_products.map((product, j) =>
                               <Fragment key={j}>
                                  <tr className="tw-h-9">
-                                    <td className="tw-border tw-border-gray-300 tw-px-1" style={{ maxWidth: 213.8 }}>
-                                       <TreeSelectCompact data={products} placeholder="Бүтээгдэхүүний ангилал" displayName="description_mon" value={product.productId} name="productId" index={j} index1={i} setter={handleSetFormProduct} selectWidth={containerRef.current?.getBoundingClientRect().width - 36} validate={validate && checkInvalid(product.productId)} classAppend="tw-ml-2" />
+                                    <td className="tw-border tw-border-gray-300 tw-px-1"
+                                    // style={{ maxWidth: 213.8 }}
+                                    >
+                                       {/* <TreeSelectCompact data={products} placeholder="Бүтээгдэхүүний ангилал" displayName="description_mon" value={product.productId} name="productId" index={j} index1={i} setter={handleSetFormProduct} selectWidth={containerRef.current?.getBoundingClientRect().width - 36} validate={validate && checkInvalid(product.productId)} classAppend="tw-ml-2" /> */}
+                                       <div className="tw-flex tw-items-center">
+                                          <input className={`tw-text-13px tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-1 tw-ml-2 tw-rounded ${validate && checkInvalid(product.product_name) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-placeholder-gray-500`} type="text" value={product.product_name || ''} onChange={e => handleSetFormProduct('product_name', e.target.value, j, i)} placeholder="Бүтээгдэхүүний нэр" title={product.product_name} />
+                                       </div>
                                     </td>
                                     <td className="tw-border tw-border-gray-300 tw-px-1" colSpan={datesForm.length + 1}>
                                        <button className="tw-float-right tw-bg-blue-800 tw-text-white tw-text-xs tw-rounded focus:tw-outline-none active:tw-bg-blue-600 tw-transition-colors tw-py-1 tw-px-2" onClick={() => handleRemoveProduct(j, i)}>
@@ -270,7 +276,7 @@ function UrgudulPage5() {
                                  <tr className="tw-h-9">
                                     <td className="tw-border tw-border-gray-300 tw-px-1">
                                        <div className="tw-flex tw-items-center">
-                                          <input className={`tw-text-13px tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-1 tw-ml-4 tw-rounded ${validate && checkInvalid(product.product_name) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-placeholder-gray-500`} type="number" value={product.product_name || ''} onChange={e => handleSetFormProduct('product_name', e.target.value, j, i)} placeholder="HS код" title={product.product_name} />
+                                          <input className={`tw-text-13px tw-flex-grow focus:tw-outline-none tw-px-1.5 tw-py-1 tw-ml-2 tw-rounded ${validate && checkInvalid(product.hs_code) ? 'tw-bg-red-100' : 'tw-bg-indigo-50'} tw-placeholder-gray-500`} type="number" value={product.hs_code || ''} onChange={e => handleSetFormProduct('hs_code', e.target.value, j, i)} placeholder="HS код" title={product.hs_code} />
                                        </div>
                                     </td>
                                     <td className="tw-border tw-border-gray-300 tw-truncate tw-text-center">₮</td>
@@ -286,7 +292,7 @@ function UrgudulPage5() {
                            )}
                            <tr className="tw-h-9">
                               <td className="tw-border tw-border-gray-300 tw-px-1" colSpan={datesForm.length + 2}>
-                                 <button className="tw-float-left tw-bg-blue-800 tw-text-white tw-text-xs tw-rounded focus:tw-outline-none active:tw-bg-blue-600 tw-transition-colors tw-py-1 tw-px-2 tw-ml-4 tw-mr-2" onClick={() => handleAddProduct(i)}>
+                                 <button className="tw-float-left tw-bg-blue-800 tw-text-white tw-text-xs tw-rounded focus:tw-outline-none active:tw-bg-blue-600 tw-transition-colors tw-py-1 tw-px-2 tw-ml-2 tw-mr-2" onClick={() => handleAddProduct(i)}>
                                     Бүтээгдэхүүн нэмэх
                                  </button>
                               </td>

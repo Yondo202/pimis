@@ -108,6 +108,7 @@ export default function UrgudulPage7Cluster({ projects = [] }) {
             }).then(res => {
                UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Төлөөлөгч талуудын мэдээллийг хадгаллаа.' })
+               history.push('/urgudul/8')
             }).catch(err => {
                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
             })
