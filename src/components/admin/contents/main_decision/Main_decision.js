@@ -115,7 +115,7 @@ function Main_decision() {
                                 </tr>
                                 <tr className="getTable1">
                                     <td>Байгууллагын нэр:</td>
-                                    <td> <div className="input">{mainData?.company_name}</div></td>
+                                    <td> <div className="input">{mainData?.company?.company_name}</div></td>
                                 </tr>
                                 <tr className="getTable1">
                                     <td>Төслийн нэр:</td>

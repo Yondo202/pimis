@@ -51,7 +51,6 @@ class Content extends React.Component {
 
     render() {
         const app = this.props.approve;
-        console.log("--------------dd-----my APpp", app);
         const edpInfo = this.props?.edpInfo
         return (
             <>
@@ -65,7 +64,7 @@ class Content extends React.Component {
                 </Modal>
                 <MainPar className="MainPar" >
                     <div className="title"> Түншлэлийн дэмжлэг олгох тухай мэдэгдэл </div>
-                    <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч аж ахуйн нэгжийн нэр:</span> <span className="MemeberInfo">{app?.company_name}</span></div>
+                    <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч аж ахуйн нэгжийн нэр:</span> <span className="MemeberInfo">{app?.company?.company_name}</span></div>
                     <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч албан тушаалтны нэр: </span> <span className="MemeberInfo">{app?.company?.representative_name}</span></div>
                     <div className="nameTitle"><span className="smtitle">Албан тушаал: </span><span className="MemeberInfo">{app?.company?.representative_position}</span></div>
                     <div className="nameTitle"><span className="smtitle">Он сар өдөр: </span><span className="MemeberInfo">{app?.meetingDate}</span></div>
@@ -106,7 +105,7 @@ const EmailHTML = (props, edpInfo, username, signature) => renderEmail(
 
                     <Item style={{display:"flex", textAlign:"start", width:"100%", padding:"5px 0px", fontSize:'13px'}}>
                         <Span style={{color:"#222222",width:"50%",fontWeight:'600', fontSize:'13px'}}>Өргөдөл гаргагч аж ахуйн нэгжийн нэр: </Span>
-                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} >{props?.company_name}</Span>
+                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} >{props?.company?.company_name}</Span>
                     </Item>
 
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"5px 0px",  fontSize:'13px'}}>
