@@ -39,7 +39,11 @@ export default function ProjectStatusHandle() {
     const AlertCtx = useContext(AlertContext)
 
     const handleSubmit = () => {
-        axios.put(`projects/${projectId}/status`, { status: status.status, comment: status.comment }, {
+        axios.put(`projects/${projectId}/status`, {
+            status: status.status,
+            bds_userId: status.bds_userId,
+            comment: status.comment
+        }, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
             setStatus(prev => ({ ...prev, ...res.data.data }))
@@ -133,7 +137,40 @@ export default function ProjectStatusHandle() {
 
                     <InfoItem label="Өргөдөл үүсгэсэн өдөр" value={status.createdAt?.slice(0, 10)} />
 
-                    <div className="tw-flex tw-flex-col tw-items-start md:tw-col-span-2 tw-p-2 tw-ml-2 tw-relative">
+                    <div className="tw-flex tw-flex-col tw-items-start tw-p-2 tw-ml-2 tw-relative">
+                        <div className="">
+                            БХ Шинжээч сонгох:
+                        </div>
+
+                        <button className="tw-mt-1 tw-rounded tw-py-1 tw-border tw-border-gray-500 focus:tw-outline-none tw-flex tw-items-center tw-px-2" style={{ minWidth: 160 }} onClick={() => setConsultantDropdownOpen(prev => !prev)} ref={buttonRefConsultant}>
+                            <span className="tw-mr-2">{getConsultantName(status.bds_userId, consultants) ?? 'Сонгох'}</span>
+                            <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-auto" />
+                        </button>
+
+                        <Transition
+                            items={consultantDropdownOpen}
+                            from={{ height: 0 }}
+                            enter={{ height: 'auto' }}
+                            leave={{ height: 0 }}
+                            config={{ tension: 300, clamp: true }}>
+                            {item => item && (anims =>
+                                <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-x-hidden tw-overflow-y-auto tw-max-h-80" style={{ top: 70, minWidth: 160, ...anims }} ref={dropdownRefConsultant}>
+                                    {consultants.length
+                                        ? consultants.map(consultant =>
+                                            <div className="tw-cursor-pointer tw-py-1 tw-text-13px tw-px-2 hover:tw-bg-indigo-50 tw-transition-colors" key={consultant.id} onClick={() => handleConsultantSelect(consultant.id)}>
+                                                {getConsultantName(consultant.id, [consultant])}
+                                            </div>
+                                        )
+                                        : <div className="tw-text-gray-500 tw-text-13px tw-italic tw-text-center tw-pt-2.5 tw-pb-1 tw-px-2">
+                                            БХ Шинжээч байхгүй байна.
+                                        </div>
+                                    }
+                                </animated.div>
+                            )}
+                        </Transition>
+                    </div>
+
+                    <div className="tw-flex tw-flex-col tw-items-start tw-p-2 tw-ml-2 tw-relative">
                         <div className="">
                             Төслийн төлвийг сонгох:
                         </div>
@@ -152,44 +189,10 @@ export default function ProjectStatusHandle() {
                             {item => item && (anims =>
                                 <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 70, minWidth: 160, ...anims }} ref={dropdownRef}>
                                     {Object.keys(statusNames).map(status =>
-                                        <div className="tw-cursor-pointer tw-py-1.5 tw-text-13px tw-px-2 hover:tw-bg-indigo-50 tw-transition-colors" key={status} onClick={() => handleStatusSelect(status)}>
+                                        <div className="tw-cursor-pointer tw-py-1 tw-text-13px tw-px-2 hover:tw-bg-indigo-50 tw-transition-colors" key={status} onClick={() => handleStatusSelect(status)}>
                                             {statusNames[status]}
                                         </div>
                                     )}
-                                </animated.div>
-                            )}
-                        </Transition>
-                    </div>
-
-                    <div className="tw-flex tw-flex-col tw-items-start md:tw-col-span-2 tw-p-2 tw-ml-2 tw-relative">
-                        <div className="">
-                            БХ Шинжээч сонгох:
-                        </div>
-
-
-                        <button className="tw-mt-1 tw-rounded tw-py-1 tw-border tw-border-gray-500 focus:tw-outline-none tw-flex tw-items-center tw-px-2" style={{ minWidth: 160 }} onClick={() => setConsultantDropdownOpen(prev => !prev)} ref={buttonRefConsultant}>
-                            <span className="tw-mr-2">{getConsultantName(status.bds_userId, consultants) ?? 'Сонгох'}</span>
-                            <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-auto" />
-                        </button>
-
-                        <Transition
-                            items={consultantDropdownOpen}
-                            from={{ height: 0 }}
-                            enter={{ height: 'auto' }}
-                            leave={{ height: 0 }}
-                            config={{ tension: 300, clamp: true }}>
-                            {item => item && (anims =>
-                                <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 70, minWidth: 160, ...anims }} ref={dropdownRefConsultant}>
-                                    {consultants.length
-                                        ? consultants.map(consultant =>
-                                            <div className="tw-cursor-pointer tw-py-1.5 tw-text-13px tw-px-2 hover:tw-bg-indigo-50 tw-transition-colors" key={consultant.id} onClick={() => handleConsultantSelect(consultant.id)}>
-                                                {getConsultantName(consultant.id, [consultant])}
-                                            </div>
-                                        )
-                                        : <div className="">
-                                            БХ Шинжээч байхгүй байна.
-                                        </div>
-                                    }
                                 </animated.div>
                             )}
                         </Transition>
@@ -225,7 +228,7 @@ export default function ProjectStatusHandle() {
                         {item => item && (anims => histories.length
                             ? <div className="tw-divide-y tw-divide-dashed tw-rounded tw-border tw-border-gray-500" style={anims}>
                                 {histories.map(history =>
-                                    <HistoryItem history={history} key={history.id} />
+                                    <HistoryItem history={history} key={history.id} consultants={consultants} />
                                 )}
                             </div>
                             : <div className="tw-p-4 tw-italic tw-bg-gray-50 tw-rounded-b-md" style={anims}>
@@ -250,7 +253,7 @@ const InfoItem = ({ label, value }) => (
     </div>
 )
 
-const HistoryItem = ({ history }) => {
+const HistoryItem = ({ history, consultants }) => {
     const [commentOpen, setCommentOpen] = useState(false)
     const userName = history.user?.firstname
         ? `${history.user.lastname?.substr(0, 1).toUpperCase()}. ${history.user.firstname}`
@@ -263,7 +266,10 @@ const HistoryItem = ({ history }) => {
                     {new Date(history.createdAt).toLocaleString()}
                 </div>
                 <div className="tw-w-40 tw-px-1 tw-flex tw-items-center">
-                    {statusNames[history.description]}
+                    {history.actionName === 'status edit'
+                        ? statusNames[history.description]
+                        : (getConsultantName(history.description, consultants) ?? 'БХ Зөвлөх олдсонгүй')
+                    }
                 </div>
                 <div className="tw-w-40 tw-px-1 tw-flex tw-items-center">
                     {userName}
@@ -273,7 +279,7 @@ const HistoryItem = ({ history }) => {
                         Тайлбар
                     </span>
 
-                    <ButtonTooltip tooltip="Тайлбар харах" classButton="tw-p-0.5" afterSVG={<AnnotationSVG className={`tw-w-5 tw-h-5 ${history.userComment ? 'tw-text-blue-500' : 'tw-bg-gray-500'} tw-transition-colors`} />} onClick={() => setCommentOpen(prev => !prev)} />
+                    <ButtonTooltip tooltip="Тайлбар харах" classButton="tw-p-0.5" afterSVG={<AnnotationSVG className={`tw-w-5 tw-h-5 ${history.userComment ? 'tw-text-blue-500' : 'tw-text-gray-500'} tw-transition-colors`} />} onClick={() => setCommentOpen(prev => !prev)} />
                 </div>
             </div>
 

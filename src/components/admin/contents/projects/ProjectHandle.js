@@ -275,7 +275,7 @@ const customizeTextDuration = (cellinfo) => cellinfo.value ? `${cellinfo.value} 
 
 export const getConsultantName = (id, data) => {
     if (id) {
-        const consultant = data.filter(consultant => consultant.id === id)[0]
+        const consultant = data.find(consultant => consultant.id === +id)
         return consultant?.firstname
             ? `${consultant.lastname?.substr(0, 1).toUpperCase()}. ${consultant.firstname}`
             : null
