@@ -37,13 +37,13 @@ function HomePage({ setNotify }) {
                 {showModal && <Modal showModal={showModal} setNotify={setNotify} setShowModal={setShowModal} parent={parent} />}
                 {cardData.length!==0 ? cardData.map((el, i) => {
                     return (
-                        <div onClick={() => ClickHandle(el)} className="Ghost">
+                        <div key={i} onClick={() => ClickHandle(el)} className="Ghost">
                             <div className="cardItems">
                                 <div className="titleBig">{el.company_name}</div>
                                 <div className="contents">
                                     <div className="contItem">
                                         <span className="title">Регистр :</span>
-                                        <span className="desc">{el.company.register_number}</span>
+                                        <span className="desc">{el.register_number}</span>
                                     </div>
                                     <div className="contItem">
                                         <span className="title">Өргөдөлийн маягт :</span>
@@ -311,7 +311,7 @@ const Modal = ({ setShowModal, parent, setNotify }) => {
                 <div className="contents">
                     <div className="contItem">
                         <span className="title">Регистр :</span>
-                        <span className="desc">{parent.company.register_number}</span>
+                        <span className="desc">{parent.register_number}</span>
                     </div>
                     <div className="contItem">
                         <span className="title">ӨМ - дугаар :</span>
