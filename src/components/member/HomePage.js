@@ -9,17 +9,21 @@ import { IoMdCheckmarkCircle } from 'react-icons/io'
 
 function HomePage({ setNotify }) {
     DocumentTitle("EDP - Үнэлгээний хорооны гишүүн");
-    const [cardData, setCardData] = useState(null);
+    const [cardData, setCardData] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [parent, setParent] = useState({});
     const ClickHandle = e => { setParent(e); setShowModal(true); }
 
     useEffect(() => {
-        axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token() } }).then((res) => {
-            console.log(res, "------------");
-            if (res.data.data[0]) { setCardData(res.data.data); };
-        }).catch((err) => console.log(err.response.data.error))
+        GetData();
     }, []);
+
+    const GetData = async () =>{
+       await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token() } }).then((res) => {
+            console.log(res, "------------");
+            if (res.data.data.length!==0) { setCardData(res.data.data); };
+        }).catch((err) => console.log(err.response.data.error))
+    } 
 
     return (
         <Memberhome style={{ maxWidth: 1160 }} className="container">
@@ -31,7 +35,7 @@ function HomePage({ setNotify }) {
             </div>
             <div className="CardParent">
                 {showModal && <Modal showModal={showModal} setNotify={setNotify} setShowModal={setShowModal} parent={parent} />}
-                {cardData ? cardData.map((el, i) => {
+                {cardData.length!==0 ? cardData.map((el, i) => {
                     return (
                         <div onClick={() => ClickHandle(el)} className="Ghost">
                             <div className="cardItems">
