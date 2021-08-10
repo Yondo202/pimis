@@ -81,7 +81,8 @@ export default function UrgudulPage6({ projects = [] }) {
          headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
          UrgudulCtx.setData(prev => ({ ...prev, ...res.data.data }))
-         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийг хадгаллаа.' })
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Үйл ажиллагаануудыг хадгаллаа.' })
+         history.push('/urgudul/7')
       }).catch(err => {
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
       })
@@ -117,8 +118,8 @@ export default function UrgudulPage6({ projects = [] }) {
    const limited = activities.some(activity => limitIds.includes(activity.activityId))
 
    const fundExceeded = isCluster
-      ? sumBudget / 2 > 300000
-      : sumBudget / 2 > 150000
+      ? sumBudget / 2 > 300000000
+      : sumBudget / 2 > 150000000
 
    return (
       <div className={containerClass}>

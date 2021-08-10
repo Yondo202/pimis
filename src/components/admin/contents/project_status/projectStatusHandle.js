@@ -17,12 +17,20 @@ export default function ProjectStatusHandle() {
     const projectId = useQuery().get('projectId')
 
     const [status, setStatus] = useState({})
+    const [consultants, setConsultants] = useState([])
 
     useEffect(() => {
         axios.get(`projects/${projectId}/status`, {
             headers: { Authorization: getLoggedUserToken() }
         }).then(res => {
             setStatus(prev => ({ ...prev, ...res.data.data }))
+        })
+
+        axios.get('users', {
+            headers: { Authorization: getLoggedUserToken() },
+            params: { role: 'bh_zovloh' }
+        }).then(res => {
+            setConsultants(res.data.data)
         })
     }, [])
 

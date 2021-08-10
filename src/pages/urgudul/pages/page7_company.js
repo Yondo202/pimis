@@ -94,6 +94,7 @@ export default function UrgudulPage7Company({ projects = [] }) {
             }).then(res => {
                UrgudulCtx.setData({ ...UrgudulCtx.data, ...res.data.data })
                AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хамтрагч талуудын мэдээллийг хадгаллаа.' })
+               history.push('/urgudul/8')
             }).catch(err => {
                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
             })

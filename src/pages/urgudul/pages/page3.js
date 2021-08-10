@@ -297,6 +297,7 @@ function ClusterMembers({ otherProjects }) {
       }).then(res => {
          UrgudulCtx.setData(prev => ({ ...prev, ...res.data.data }))
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гишүүн байгууллагуудыг хадгаллаа.' })
+         history.push('/urgudul/4')
       }).catch(err => {
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
       })
