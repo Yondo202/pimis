@@ -39,7 +39,7 @@ function HomePage({ setNotify }) {
                                 <div className="contents">
                                     <div className="contItem">
                                         <span className="title">Регистр :</span>
-                                        <span className="desc">{el.company.registration_number}</span>
+                                        <span className="desc">{el.company.register_number}</span>
                                     </div>
                                     <div className="contItem">
                                         <span className="title">Өргөдөлийн маягт :</span>
@@ -307,7 +307,7 @@ const Modal = ({ setShowModal, parent, setNotify }) => {
                 <div className="contents">
                     <div className="contItem">
                         <span className="title">Регистр :</span>
-                        <span className="desc">{parent.company.registration_number}</span>
+                        <span className="desc">{parent.company.register_number}</span>
                     </div>
                     <div className="contItem">
                         <span className="title">ӨМ - дугаар :</span>

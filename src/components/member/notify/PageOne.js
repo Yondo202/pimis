@@ -25,7 +25,6 @@ function PageOne({ NotifyData }) {
 
   useEffect(() => {
     axios.get(`evaluation-meetings/scheduled-projects?projectId=${slug}`, { headers: { Authorization: AccessToken() } }).then(res => {
-      console.log(res, " notify res");
       setData(res.data.data[0]); setUserName(res.data.data[0].memberInfo.fullName);
       if (res.data.data[0].medegdehHuudas !== null) { setPropData(res.data.data[0].medegdehHuudas) };
     })
