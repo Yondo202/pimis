@@ -162,7 +162,7 @@ function CompCheck2() {
             if(cond){ ctx.alertText('green, Амжилттай илгээгдлээ', true); setVisible(true); }
             else{ ctx.alertText('orange, Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.', true); }
             setBtnSpin(false);
-            setTimeout(() => { history.push('/'); }, 10000);
+            setTimeout(() => { history.push('/'); }, 20000);
           })
 
     }).catch(_=> { setFinalErrorText("Алдаа гарлаа."); setBtnSpin(false); });

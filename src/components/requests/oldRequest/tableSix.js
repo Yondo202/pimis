@@ -51,8 +51,6 @@ function TableSix(props) {
             const Lala = {}
             let rs2 = document.querySelectorAll(`.PAS${i + 1}`);
             let arr23 = Array.from(rs2);
-
-            console.log(arr23, " arr 23");
             
             arr23.map((el,i)=>{
                 if(el.value !== ""){
