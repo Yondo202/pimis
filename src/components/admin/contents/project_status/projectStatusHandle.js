@@ -2,9 +2,7 @@ import useQuery from 'components/utilities/useQueryLocation'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
-import { DataGrid } from 'devextreme-react'
-import { Column, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid'
-import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
+import { getConsultantName, statusNames } from 'components/admin/contents/projects/ProjectHandle'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import { animated, Transition } from 'react-spring/renderprops'
 import AlertContext from 'components/utilities/alertContext'
@@ -41,7 +39,11 @@ export default function ProjectStatusHandle() {
     const AlertCtx = useContext(AlertContext)
 
     const handleSubmit = () => {
-        axios.put(`projects/${projectId}/status`, { status: status.status, comment: status.comment }, {
+        axios.put(`projects/${projectId}/status`, {
+            status: status.status,
+            bds_userId: status.bds_userId,
+            comment: status.comment
+        }, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
             setStatus(prev => ({ ...prev, ...res.data.data }))
@@ -73,8 +75,28 @@ export default function ProjectStatusHandle() {
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
+        document.addEventListener('mousedown', handleClickOutsideConsultant)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+            document.removeEventListener('mousedown', handleClickOutsideConsultant)
+        }
     })
+
+    const buttonRefConsultant = useRef()
+    const dropdownRefConsultant = useRef()
+
+    const [consultantDropdownOpen, setConsultantDropdownOpen] = useState(false)
+
+    const handleConsultantSelect = (id) => {
+        handleInput('bds_userId', id)
+        setConsultantDropdownOpen(false)
+    }
+
+    const handleClickOutsideConsultant = (e) => {
+        if (!dropdownRefConsultant.current?.contains(e.target) && !buttonRefConsultant.current?.contains(e.target)) {
+            setConsultantDropdownOpen(false)
+        }
+    }
 
     const [histories, setHistories] = useState([])
     const [historiesOpen, setHistoriesOpen] = useState(false)
@@ -104,34 +126,6 @@ export default function ProjectStatusHandle() {
                     Төслийн төлвийг тохируулах
                 </div>
 
-                {/* <DataGrid
-                    elementAttr={{ id: 'company-statuses-data-grid' }}
-                    dataSource={data}
-                    showBorders={true}
-                    wordWrapEnabled={true}
-                    rowAlternationEnabled={true}
-                    columnAutoWidth={true}
-                    showRowLines={true}
-                    showColumnLines={true}
-                    loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
-                >
-                    <SearchPanel visible={true} width={240} placeholder="Хайх..." />
-                    <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
-                    <Paging defaultPageSize={20} />
-                    <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
-                    <HeaderFilter visible={true} />
-
-                    <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="left" />
-                    <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} alignment="left" />
-                    <Column dataField="project.project_number" caption="Төслийн дугаар" headerCellRender={HeaderCell} alignment="left" />
-                    <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} alignment="left" />
-                    <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} alignment="left" />
-                    <Column dataField="project.status" caption="Төлөв" headerCellRender={HeaderCell} alignment="left" />
-                    <Column dataField="project.confirmed" caption="Баталгаажсан эсэх" headerCellRender={HeaderCell} customizeText={customizeTextConfirmed} alignment="left" />
-                    <Column dataField="project.project_start" caption="Эхлэх хугацаа" headerCellRender={HeaderCell} alignment="left" />
-                    <Column dataField="project.project_end" caption="Дуусах хугацаа" headerCellRender={HeaderCell} alignment="left" />
-                </DataGrid> */}
-
                 <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-max-w-5xl tw-mt-6">
                     <InfoItem label="Төслийн дугаар" value={status.project_number} />
 
@@ -143,35 +137,40 @@ export default function ProjectStatusHandle() {
 
                     <InfoItem label="Өргөдөл үүсгэсэн өдөр" value={status.createdAt?.slice(0, 10)} />
 
-                    <div className="tw-flex tw-flex-col tw-items-start md:tw-col-span-2 tw-p-2 tw-ml-2 tw-relative">
+                    <div className="tw-flex tw-flex-col tw-items-start tw-p-2 tw-ml-2 tw-relative">
                         <div className="">
-                            Төслийн төлвийг сонгох:
+                            БХ Шинжээч сонгох:
                         </div>
 
-                        <button className="tw-mt-1 tw-rounded tw-py-1 tw-border tw-border-gray-500 focus:tw-outline-none tw-flex tw-items-center tw-px-2" style={{ minWidth: 160 }} onClick={() => setStatusDropdownOpen(prev => !prev)} ref={buttonRef}>
-                            <span className="tw-mr-2">{statusNames[status.status]}</span>
+                        <button className="tw-mt-1 tw-rounded tw-py-1 tw-border tw-border-gray-500 focus:tw-outline-none tw-flex tw-items-center tw-px-2" style={{ minWidth: 160 }} onClick={() => setConsultantDropdownOpen(prev => !prev)} ref={buttonRefConsultant}>
+                            <span className="tw-mr-2">{getConsultantName(status.bds_userId, consultants) ?? 'Сонгох'}</span>
                             <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-auto" />
                         </button>
 
                         <Transition
-                            items={statusDropdownOpen}
+                            items={consultantDropdownOpen}
                             from={{ height: 0 }}
                             enter={{ height: 'auto' }}
                             leave={{ height: 0 }}
                             config={{ tension: 300, clamp: true }}>
                             {item => item && (anims =>
-                                <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 70, minWidth: 160, ...anims }} ref={dropdownRef}>
-                                    {Object.keys(statusNames).map(status =>
-                                        <div className="tw-cursor-pointer tw-py-1.5 tw-text-13px tw-px-2 hover:tw-bg-indigo-50 tw-transition-colors" key={status} onClick={() => handleStatusSelect(status)}>
-                                            {statusNames[status]}
+                                <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-x-hidden tw-overflow-y-auto tw-max-h-80" style={{ top: 70, minWidth: 160, ...anims }} ref={dropdownRefConsultant}>
+                                    {consultants.length
+                                        ? consultants.map(consultant =>
+                                            <div className="tw-cursor-pointer tw-py-1 tw-text-13px tw-px-2 hover:tw-bg-indigo-50 tw-transition-colors" key={consultant.id} onClick={() => handleConsultantSelect(consultant.id)}>
+                                                {getConsultantName(consultant.id, [consultant])}
+                                            </div>
+                                        )
+                                        : <div className="tw-text-gray-500 tw-text-13px tw-italic tw-text-center tw-pt-2.5 tw-pb-1 tw-px-2">
+                                            БХ Шинжээч байхгүй байна.
                                         </div>
-                                    )}
+                                    }
                                 </animated.div>
                             )}
                         </Transition>
                     </div>
 
-                    <div className="tw-flex tw-flex-col tw-items-start md:tw-col-span-2 tw-p-2 tw-ml-2 tw-relative">
+                    <div className="tw-flex tw-flex-col tw-items-start tw-p-2 tw-ml-2 tw-relative">
                         <div className="">
                             Төслийн төлвийг сонгох:
                         </div>
@@ -190,7 +189,7 @@ export default function ProjectStatusHandle() {
                             {item => item && (anims =>
                                 <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-500 tw-rounded tw-bg-white tw-divide-y tw-divide-dashed tw-overflow-hidden" style={{ top: 70, minWidth: 160, ...anims }} ref={dropdownRef}>
                                     {Object.keys(statusNames).map(status =>
-                                        <div className="tw-cursor-pointer tw-py-1.5 tw-text-13px tw-px-2 hover:tw-bg-indigo-50 tw-transition-colors" key={status} onClick={() => handleStatusSelect(status)}>
+                                        <div className="tw-cursor-pointer tw-py-1 tw-text-13px tw-px-2 hover:tw-bg-indigo-50 tw-transition-colors" key={status} onClick={() => handleStatusSelect(status)}>
                                             {statusNames[status]}
                                         </div>
                                     )}
@@ -229,7 +228,7 @@ export default function ProjectStatusHandle() {
                         {item => item && (anims => histories.length
                             ? <div className="tw-divide-y tw-divide-dashed tw-rounded tw-border tw-border-gray-500" style={anims}>
                                 {histories.map(history =>
-                                    <HistoryItem history={history} key={history.id} />
+                                    <HistoryItem history={history} key={history.id} consultants={consultants} />
                                 )}
                             </div>
                             : <div className="tw-p-4 tw-italic tw-bg-gray-50 tw-rounded-b-md" style={anims}>
@@ -243,23 +242,6 @@ export default function ProjectStatusHandle() {
     )
 }
 
-// const HeaderCell = (data) => (
-//     <div className="tw-text-center tw-font-medium tw-text-gray-700 tw-text-13px">
-//         {data.column.caption}
-//     </div>
-// )
-
-// const customizeTextConfirmed = (cellinfo) => {
-//     switch (cellinfo.value) {
-//         case 0:
-//             return 'Баталгаажаагүй'
-//         case 1:
-//             return 'Баталгаажсан'
-//         default:
-//             break
-//     }
-// }
-
 const InfoItem = ({ label, value }) => (
     <div className="tw-flex tw-flex-col tw-items-start tw-p-2 tw-ml-2">
         <div className="">
@@ -271,7 +253,7 @@ const InfoItem = ({ label, value }) => (
     </div>
 )
 
-const HistoryItem = ({ history }) => {
+const HistoryItem = ({ history, consultants }) => {
     const [commentOpen, setCommentOpen] = useState(false)
     const userName = history.user?.firstname
         ? `${history.user.lastname?.substr(0, 1).toUpperCase()}. ${history.user.firstname}`
@@ -284,7 +266,10 @@ const HistoryItem = ({ history }) => {
                     {new Date(history.createdAt).toLocaleString()}
                 </div>
                 <div className="tw-w-40 tw-px-1 tw-flex tw-items-center">
-                    {statusNames[history.description]}
+                    {history.actionName === 'status edit'
+                        ? statusNames[history.description]
+                        : (getConsultantName(history.description, consultants) ?? 'БХ Зөвлөх олдсонгүй')
+                    }
                 </div>
                 <div className="tw-w-40 tw-px-1 tw-flex tw-items-center">
                     {userName}
@@ -294,7 +279,7 @@ const HistoryItem = ({ history }) => {
                         Тайлбар
                     </span>
 
-                    <ButtonTooltip tooltip="Тайлбар харах" classButton="tw-p-0.5" afterSVG={<AnnotationSVG className={`tw-w-5 tw-h-5 ${history.userComment ? 'tw-text-blue-500' : 'tw-bg-gray-500'} tw-transition-colors`} />} onClick={() => setCommentOpen(prev => !prev)} />
+                    <ButtonTooltip tooltip="Тайлбар харах" classButton="tw-p-0.5" afterSVG={<AnnotationSVG className={`tw-w-5 tw-h-5 ${history.userComment ? 'tw-text-blue-500' : 'tw-text-gray-500'} tw-transition-colors`} />} onClick={() => setCommentOpen(prev => !prev)} />
                 </div>
             </div>
 

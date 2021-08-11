@@ -103,7 +103,7 @@ export default function ProjectHandle() {
                     <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="left" minWidth={120} />
                     <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} alignment="left" />
                     <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} customizeText={customizeTextCriteria} cellRender={cellRenderCriteria} alignment="left" minwidth={100} />
-                    <Column dataField="esq" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} cellRender={cellRenderEsq} alignment="left" minWidth={100} />
+                    <Column dataField="esm" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} cellRender={cellRenderEsq} alignment="left" minWidth={100} />
                     <Column dataField="esm" caption="Ангилал" headerCellRender={HeaderCell} alignment="center" minWidth={100} />
                     <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueLetterOI} alignment="left" />
 
@@ -219,26 +219,42 @@ const cellRenderCriteria = (cellData) => {
         </div>
 }
 
-const esqTexts = {
-    1: 'Тэнцээгүй',
-    2: 'Тэнцсэн',
-    3: 'Тэнцсэн',
-}
+// const esqTexts = {
+//     1: 'Тэнцээгүй',
+//     2: 'Тэнцсэн',
+//     3: 'Тэнцсэн',
+// }
 
-const customizeTextEsq = (cellInfo) => esqTexts[+cellInfo.value]
+// const customizeTextEsq = (cellInfo) => esqTexts[+cellInfo.value]
+
+// const cellRenderEsq = (cellData) => {
+//     const esq = +cellData.data.esq
+//     const classNames = {
+//         1: 'tw-bg-red-400',
+//         2: 'tw-bg-green-400',
+//         3: 'tw-bg-green-400',
+//     }
+//     return esq === 0
+//         ? null
+//         : <div className={`tw-py-1 tw-w-20 tw-text-center tw-text-white tw-rounded-sm ${classNames[esq]}`}>
+//             {esqTexts[esq]}
+//         </div>
+// }
+
+const customizeTextEsq = (cellInfo) => cellInfo.value
+    ? cellInfo.value === 'A'
+        ? 'Тэнцээгүй'
+        : 'Тэнцсэн'
+    : null
 
 const cellRenderEsq = (cellData) => {
-    const esq = +cellData.data.esq
-    const classNames = {
-        1: 'tw-bg-red-400',
-        2: 'tw-bg-green-400',
-        3: 'tw-bg-green-400',
-    }
-    return esq === 0
-        ? null
-        : <div className={`tw-py-1 tw-w-20 tw-text-center tw-text-white tw-rounded-sm ${classNames[esq]}`}>
-            {esqTexts[esq]}
+    const esm = cellData.data.esm
+    const quilified = esm !== 'A'
+    return esm
+        ? <div className={`tw-py-1 tw-w-20 tw-text-center tw-text-white tw-rounded-sm ${quilified ? 'tw-bg-green-400' : 'tw-bg-red-400'}`}>
+            {quilified ? 'Тэнцсэн' : 'Тэнцээгүй'}
         </div>
+        : null
 }
 
 const calculateCellValueLetterOI = (rowdata) => {
@@ -275,7 +291,7 @@ const customizeTextDuration = (cellinfo) => cellinfo.value ? `${cellinfo.value} 
 
 export const getConsultantName = (id, data) => {
     if (id) {
-        const consultant = data.filter(consultant => consultant.id === id)[0]
+        const consultant = data.find(consultant => consultant.id === +id)
         return consultant?.firstname
             ? `${consultant.lastname?.substr(0, 1).toUpperCase()}. ${consultant.firstname}`
             : null
