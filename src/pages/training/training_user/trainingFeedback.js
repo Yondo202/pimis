@@ -50,7 +50,7 @@ export default function TrainingFeedback() {
       axios.post(`trainings/${training.id}/feedbacks`, feedback, {
          params: { registrationId: training.trainingRegistrations[0].id },
       }).then(res => {
-         setModalOpen(true)
+         setModalOpenSuccess(true)
          const initialFeedback = []
          for (const question of questionnaire) {
             initialFeedback.push({
@@ -133,7 +133,7 @@ export default function TrainingFeedback() {
       return () => clearTimeout(timer)
    }, [modalOpenFeedbackGiven])
 
-   const [modalOpen, setModalOpen] = useState(false)
+   const [modalOpenSuccess, setModalOpenSuccess] = useState(false)
 
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-relative tw-p-2 tw-pb-12">
@@ -225,7 +225,7 @@ export default function TrainingFeedback() {
             </div>
          </ModalWindow>
 
-         <ModalWindow modalOpen={modalOpen} setModalOpen={setModalOpen} modalAppend="tw-p-5">
+         <ModalWindow modalOpen={modalOpenSuccess} setModalOpen={setModalOpenSuccess} modalAppend="tw-p-5">
             <div className="tw-px-4 tw-pt-4 tw-pb-2 tw-font-medium tw-text-base tw-flex tw-items-center tw-justify-center">
                Сургалтын үнэлгээг хүлээж авлаа
                <CheckCircleSVG className="tw-w-6 tw-h-6 tw-text-green-500 tw-ml-1" />

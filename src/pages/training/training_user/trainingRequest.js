@@ -34,8 +34,9 @@ export default function TrainingRequest() {
       }
 
       axios.post('trainings/requests', request).then(res => {
-         setModalOpen(true)
+         setModalOpenSuccess(true)
          setRequest(initialState)
+         setValidate(false)
       }).catch(err => {
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хүсэлт илгээж чадсангүй.' })
       })
@@ -57,7 +58,7 @@ export default function TrainingRequest() {
       }
    }
 
-   const [modalOpen, setModalOpen] = useState(false)
+   const [modalOpenSuccess, setModalOpenSuccess] = useState(false)
 
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-p-2 tw-pb-12">
@@ -122,7 +123,7 @@ export default function TrainingRequest() {
             </button>
          </div>
 
-         <ModalWindow modalOpen={modalOpen} setModalOpen={setModalOpen} modalAppend="tw-p-5">
+         <ModalWindow modalOpen={modalOpenSuccess} setModalOpen={setModalOpenSuccess} modalAppend="tw-p-5">
             <div className="tw-px-4 tw-pt-4 tw-pb-2 tw-font-medium tw-text-base tw-flex tw-items-center tw-justify-center">
                Захиалгат сургалтын хүсэлтийг хүлээж авлаа
                <CheckCircleSVG className="tw-w-6 tw-h-6 tw-text-green-500 tw-ml-1" />
