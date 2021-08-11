@@ -169,7 +169,7 @@ export default function TrainingUserRegistration() {
          <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-x-4 tw-place-items-start tw-mt-3">
             <FormInline label="Овог нэр" type="text" value={registration.fullname} name="fullname" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(registration.fullname)} />
 
-            <FormOptions label="Хүйс" options={['Эрэгтэй', 'Эмэгтэй']} values={['Эрэгтэй', 'Эмэгтэй']} value={registration.gender} name="gender" setForm={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(registration.gender)} />
+            <FormOptions label="Хүйс" options={['Эрэгтэй', 'Эмэгтэй']} values={['Эрэгтэй', 'Эмэгтэй']} value={registration.gender} name="gender" setter={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(registration.gender)} />
 
             <FormInline label="Регистрийн дугаар" type="text" value={registration.register_number} name="register_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(registration.register_number)} />
 
@@ -181,7 +181,7 @@ export default function TrainingUserRegistration() {
 
             <FormInline label="Одоогийн ажлын албан тушаал" type="text" value={registration.employee_position} name="employee_position" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(registration.employee_position)} />
 
-            <TreeSelect data={sectors} label="Ямар чиглэлээр үйл ажиллагаа явуулдаг вэ?" displayName="bdescription_mon" value={registration.business_sectorId} name="business_sectorId" handleChange={handleInput} invalid={validate && checkInvalid(registration.business_sectorId)} />
+            <TreeSelect data={sectors} label="Ямар чиглэлээр үйл ажиллагаа явуулдаг вэ?" displayName="bdescription_mon" value={registration.business_sectorId} name="business_sectorId" setter={handleInput} invalid={validate && checkInvalid(registration.business_sectorId)} />
 
             <FormInline label="Жилийн борлуулалтын тоо хэмжээ" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={registration.annual_sales} name="annual_sales" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(registration.annual_sales)} />
 

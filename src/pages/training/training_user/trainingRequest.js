@@ -1,13 +1,13 @@
-import PenSVG from 'assets/svgComponents/penSVG'
+import CheckCircleSVG from 'assets/svgComponents/checkCircleSVG'
 import axios from 'axiosbase'
 import HelpPopup from 'components/help_popup/helpPopup'
+import ModalWindow from 'components/modal_window/modalWindow'
 import FormInline from 'components/urgudul_components/formInline'
 import FormRichText from 'components/urgudul_components/formRichText'
 import TreeSelect from 'components/urgudul_components/treeSelect'
 import AlertContext from 'components/utilities/alertContext'
 import React, { useContext, useEffect, useState } from 'react'
 import { titleClass, buttonClass } from './trainingsList'
-import { FormLabel } from './userRegistration'
 
 export default function TrainingRequest() {
    const [request, setRequest] = useState(initialState)
@@ -34,8 +34,8 @@ export default function TrainingRequest() {
       }
 
       axios.post('trainings/requests', request).then(res => {
-         setRequest(res.data.data)
-         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтын хүсэлтийг хүлээж авлаа.' })
+         setModalOpen(true)
+         setRequest(initialState)
       }).catch(err => {
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хүсэлт илгээж чадсангүй.' })
       })
@@ -56,6 +56,8 @@ export default function TrainingRequest() {
             return false
       }
    }
+
+   const [modalOpen, setModalOpen] = useState(false)
 
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-p-2 tw-pb-12">
@@ -84,7 +86,7 @@ export default function TrainingRequest() {
 
             <FormInline label="Имэйл хаяг" type="email" value={request.company_email} name="company_email" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(request.company_email)} />
 
-            <TreeSelect data={sectors} label="Харьялагдах салбар" displayName="bdescription_mon" value={request.business_sectorId} name="business_sectorId" handleChange={handleInput} invalid={validate && checkInvalid(request.business_sectorId)} />
+            <TreeSelect data={sectors} label="Харьялагдах салбар" displayName="bdescription_mon" value={request.business_sectorId} name="business_sectorId" setter={handleInput} invalid={validate && checkInvalid(request.business_sectorId)} />
 
             <FormInline label="Улсын бүртгэлийн дугаар" type="number" value={request.company_registration_number} name="company_registration_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(request.company_registration_number)} />
 
@@ -119,6 +121,13 @@ export default function TrainingRequest() {
                Хүсэлт өгөх
             </button>
          </div>
+
+         <ModalWindow modalOpen={modalOpen} setModalOpen={setModalOpen} modalAppend="tw-p-5">
+            <div className="tw-px-4 tw-pt-4 tw-pb-2 tw-font-medium tw-text-base tw-flex tw-items-center tw-justify-center">
+               Захиалгат сургалтын хүсэлтийг хүлээж авлаа
+               <CheckCircleSVG className="tw-w-6 tw-h-6 tw-text-green-500 tw-ml-1" />
+            </div>
+         </ModalWindow>
       </div>
    )
 }

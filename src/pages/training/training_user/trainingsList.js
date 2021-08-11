@@ -10,7 +10,6 @@ import ClockSVG from 'assets/svgComponents/clockSVG'
 import LocationMarkerSVG from 'assets/svgComponents/locationMarker'
 import UsersSVG from 'assets/svgComponents/usersSVG'
 import LibrarySVG from 'assets/svgComponents/librarySVG'
-import { Link } from 'react-router-dom'
 import ModalWindow from 'components/modal_window/modalWindow'
 import ExclamationSVG from 'assets/svgComponents/exclamationSVG'
 
@@ -59,58 +58,9 @@ export default function TrainingsList() {
             Зарлагдсан сургалтууд
          </div>
 
-         {/* <table className="">
-            <thead>
-               <tr>
-                  {tableHeaders.map(header =>
-                     <th className="tw-border tw-border-gray-400" key={header}>
-                        {header}
-                     </th>
-                  )}
-               </tr>
-            </thead>
-            <tbody>
-               {trainings.map(training =>
-                  <tr className="" key={training.id}>
-                     {rowFields.map(field => {
-                        switch (field) {
-                           case 'module_file':
-                              return <td className="tw-border tw-border-gray-400" key={field}>
-                                 <button
-                                    className="tw-w-32 tw-truncate focus:tw-outline-none tw-rounded tw-px-2 tw-py-0.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-text-white"
-                                    onClick={() => handleDownloadFile(training.module_file?.id)}
-                                    title={training.module_file?.name}>
-                                    {training.module_file?.name}
-                                 </button>
-                              </td>
-                           case 'start_time':
-                              return <td className="tw-border tw-border-gray-400" key={field}>
-                                 {training.start_time} - {training.end_time}
-                              </td>
-                           case 'registerButton':
-                              return <td className="tw-border tw-border-gray-400" key={field}>
-                                 <button className="focus:tw-outline-none tw-rounded tw-px-2 tw-py-0.5 tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-text-white" onClick={() => navRegistration(training.id)}>
-                                    Бүртгүүлэх
-                                 </button>
-                              </td>
-                           default:
-                              return <td className="tw-border tw-border-gray-400" key={field}>
-                                 {training[field]}
-                              </td>
-                        }
-                     })}
-                  </tr>
-               )}
-            </tbody>
-         </table> */}
-
          {trainings.map(training =>
             <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
          )}
-
-         {/* {[{ ...trainings[0], training_name: 'Экпортыг дэмжих төслийн ерөнхий сургалт', registeredUserCount: 25 }].map(training =>
-            <TrainingCard training={training} key={training.id} handleDownloadFile={handleDownloadFile} setModalOpenIsFull={setModalOpenIsFull} />
-         )} */}
 
          <ModalWindow modalOpen={modalOpenIsFull} setModalOpen={setModalOpenIsFull} modalAppend="tw-p-5">
             <div className="tw-px-4 tw-pt-4 tw-pb-2 tw-font-medium tw-text-base tw-flex tw-items-center tw-justify-center">
@@ -124,36 +74,6 @@ export default function TrainingsList() {
       </div>
    )
 }
-
-// const tableHeaders = [
-//    'Сургалтын нэр',
-//    'Сургалтын агуулга, файлаар',
-//    'Сургалтын төрөл',
-//    'Сургалтын хэлбэр',
-//    'Сургалт эхлэх өдөр',
-//    'Сургалт дуусах өдөр',
-//    'Сургалтын цаг',
-//    'Сургалт зохион байгуулах байгууллага',
-//    'Байршил, сургалт зохион байгуулагдах хаяг',
-//    'Оролцогчдын тоо',
-//    'Сургалтын цар хүрээ',
-//    'Бүртгүүлэх',
-// ]
-
-// const rowFields = [
-//    'training_name',
-//    'module_file',
-//    'training_type',
-//    'training_method',
-//    'start_date',
-//    'end_date',
-//    'start_time',
-//    'organizer',
-//    'location',
-//    'participant_number',
-//    'scope',
-//    'registerButton',
-// ]
 
 const TrainingCard = ({ training, handleDownloadFile, setModalOpenIsFull }) => {
    const [expanded, setExpanded] = useState(false)
