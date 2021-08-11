@@ -255,40 +255,46 @@ export default function UrgudulPreview(props) {
                                 {labels.page2.salesData}
                             </div>
                             <div className="tw-border-b tw-border-gray-400 tw-px-2 tw-pb-3">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th className={classTableCell}></th>
-                                            {salesDataYears.map(year =>
-                                                <th className={`${classTableCell} tw-text-center`} key={year}>
-                                                    {year}
-                                                </th>
-                                            )}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td className={classTableCell}>
-                                                Жилийн борлуулалтын хэмжээ
-                                            </td>
-                                            {salesDataYears.map(year =>
-                                                <td className={`${classTableCell} tw-text-right tw-w-32`} key={year}>
-                                                    {`${salesDataNet[year]?.toLocaleString()} ₮`}
+                                {salesDataYears.length
+                                    ? <table>
+                                        <thead>
+                                            <tr>
+                                                <th className={classTableCell}></th>
+                                                {salesDataYears.map(year =>
+                                                    <th className={`${classTableCell} tw-text-center`} key={year}>
+                                                        {year}
+                                                    </th>
+                                                )}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td className={classTableCell}>
+                                                    Жилийн борлуулалтын хэмжээ
                                                 </td>
-                                            )}
-                                        </tr>
-                                        <tr>
-                                            <td className={classTableCell}>
-                                                Жилийн экспортын хэмжээ
-                                            </td>
-                                            {salesDataYears.map(year =>
-                                                <td className={`${classTableCell} tw-text-right tw-w-32`} key={year}>
-                                                    {`${salesDataExport[year]?.toLocaleString()} ₮`}
+                                                {salesDataYears.map(year =>
+                                                    <td className={`${classTableCell} tw-text-right tw-w-32`} key={year}>
+                                                        {`${salesDataNet[year]?.toLocaleString()} ₮`}
+                                                    </td>
+                                                )}
+                                            </tr>
+                                            <tr>
+                                                <td className={classTableCell}>
+                                                    Жилийн экспортын хэмжээ
                                                 </td>
-                                            )}
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                {salesDataYears.map(year =>
+                                                    <td className={`${classTableCell} tw-text-right tw-w-32`} key={year}>
+                                                        {`${salesDataExport[year]?.toLocaleString()} ₮`}
+                                                    </td>
+                                                )}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    :
+                                    <div className="tw-border tw-border-gray-400 tw-px-2 tw-py-2">
+                                        Борлуулалт болон экпортын мэдээллээ оруулаагүй байна.
+                                    </div>
+                                }
                             </div>
 
                             <Row label={labels.page2.company_phone} value={project.company_phone} />
@@ -426,11 +432,11 @@ export default function UrgudulPreview(props) {
                                                     <Fragment key={j}>
                                                         <tr>
                                                             <td className="tw-border tw-border-gray-400 tw-px-2 tw-pl-3" colSpan={dates.length + 2}>
-                                                                {getProductName(product?.productId)} - экспортын бүтээгдэхүүний ангилал
+                                                                {product?.product_name} - экпортын бүтээгдэхүүн
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="tw-border tw-border-gray-400 tw-px-2 tw-pl-5">{product?.product_name}</td>
+                                                            <td className="tw-border tw-border-gray-400 tw-px-2 tw-pl-3">{product?.hs_code}</td>
                                                             {dates.map((item, k) =>
                                                                 <td className="tw-border tw-border-gray-400 tw-text-right tw-px-2" key={k}>
                                                                     {product?.[item]?.toLocaleString()}
