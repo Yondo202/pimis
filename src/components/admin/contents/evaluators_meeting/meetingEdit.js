@@ -79,6 +79,7 @@ export default function EvaluatorsMeetingEdit(props) {
                     headers: { Authorization: getLoggedUserToken() },
                 }).then(res => {
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өөрчлөлтийг хадгаллаа.' })
+                    history.push('/meetings')
                 }).catch(err => {
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })
@@ -93,6 +94,7 @@ export default function EvaluatorsMeetingEdit(props) {
                 }).then(res => {
                     setMeetingId(res.data.data?.id)
                     AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Уулзалтыг нэмлээ.' })
+                    history.push('/meetings')
                 }).catch(err => {
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
                 })

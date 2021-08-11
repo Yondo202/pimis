@@ -122,7 +122,14 @@ export default function LetterUpload() {
 
    return (
       <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-w-full">
-         <div className={`tw-w-full ${userId ? 'tw-max-w-5xl' : 'tw-max-w-2xl'} tw-mx-auto tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-divide-y tw-divide-dashed`}>
+         {userId &&
+            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.goBack()}>
+               <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
+               Буцах
+            </button>
+         }
+
+         <div className={`tw-w-full ${userId ? 'tw-max-w-5xl' : 'tw-max-w-2xl'} tw-mx-auto tw-bg-white tw-mt-6 tw-mb-16 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-divide-y tw-divide-dashed`}>
             <div className="tw-font-medium tw-p-3 tw-mb-1 tw-pb-2 tw-flex tw-items-center">
                <span className="tw-text-xl tw-mx-2 tw-leading-tight tw-text-blue-500">3</span>
                <span className="tw-text-15px tw-mr-4">

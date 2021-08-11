@@ -9,6 +9,8 @@ import SearchSVG from 'assets/svgComponents/searchSVG'
 import DecisionMakingPreviewModal from 'pages/decision_making/5a/previewModal'
 import CompilationChecklistPreview from './preview'
 import { useParams } from 'react-router'
+import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
+import { useHistory } from 'react-router-dom'
 
 const rowDescriptions = {
     z: 'Өргөдөл гаргагч нь шалгаруулалтанд оролцох бүрэн бүрдүүлбэр, нотлох баримттай эсэх?',
@@ -371,88 +373,97 @@ export default function CompilationChecklist() {
 
     const [previewModalOpen, setPreviewModalOpen] = useState(false)
 
+    const history = useHistory()
+
     return (
-        <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700 tw-bg-white tw-mt-8 tw-mb-20 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <button className="tw-float-right tw-mt-2 tw-mr-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center tw-font-light" onClick={() => setPreviewModalOpen(true)}>
-                <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
-                Харах
+        <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700">
+            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.goBack()}>
+                <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
+                Буцах
             </button>
 
-            <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<CompilationChecklistPreview rows={rows} company={company} />} />
+            <div className="tw-bg-white tw-mt-6 tw-mb-16 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
+                <button className="tw-float-right tw-mt-2 tw-mr-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center tw-font-light" onClick={() => setPreviewModalOpen(true)}>
+                    <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
+                    Харах
+                </button>
 
-            <div className="tw-p-3 tw-pb-2 tw-flex tw-items-center">
-                <span className="tw-text-base tw-font-medium tw-text-blue-500 tw-pl-2">
-                    Бүрдүүлбэрийн нотлох баримтыг шалгах хуудас
-                </span>
-            </div>
+                <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<CompilationChecklistPreview rows={rows} company={company} />} />
 
-            <div className="tw-border-b tw-border-dashed tw-text-13px tw-pl-5 tw-pr-3 tw-pb-2 tw-leading-snug">
-                <div className="tw-relative">
-                    Дугаар:
-                    <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_number}</span>
+                <div className="tw-p-3 tw-pb-2 tw-flex tw-items-center">
+                    <span className="tw-text-base tw-font-medium tw-text-blue-500 tw-pl-2">
+                        Бүрдүүлбэрийн нотлох баримтыг шалгах хуудас
+                    </span>
                 </div>
-                <div className="tw-relative">
-                    Төрөл:
-                    <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_type_name}</span>
-                </div>
-                <div className="tw-relative">
-                    Байгууллагын нэр:
-                    <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.companyname}</span>
-                </div>
-                <div className="tw-relative">
-                    Төслийн нэр:
-                    <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_name}</span>
-                </div>
-            </div>
 
-            <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-3 tw-divide-y tw-divide-dashed">
-                {rows.map(row =>
-                    <div key={row.rowcode}>
-                        <div className="tw-flex tw-items-center tw-text-sm">
-                            <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "z" ? "" : "tw-pl-8 tw-font-light"}`}>
-                                {row.description}
-                            </span>
-
-                            {{
-                                'z': <button className="tw-relative tw-flex tw-items-center tw-leading-tight tw-bg-gray-300 focus:tw-outline-none tw-rounded-full tw-mr-4 tw-shadow-inner" style={{ fontSize: '13px', height: '22px' }} onClick={() => handleInput('isChecked', !row.isChecked, 'z')}>
-                                    <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
-                                        Тийм
-                                    </span>
-                                    <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
-                                        Үгүй
-                                    </span>
-                                    <span className={`tw-w-1/2 tw-h-6 tw-rounded-full tw-absolute ${row.isChecked ? 'tw-bg-green-500' : 'tw-transform-gpu tw-translate-x-20 tw-bg-red-500'} tw-transition-transform tw-duration-300 tw-ease-out`} style={{ height: '26px' }} />
-                                </button>,
-                            }[row.rowcode]
-                                || <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
-                            }
-
-                            <ButtonTooltip tooltip="Тайлбар оруулах" beforeSVG={<AnnotationSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} classAppend={`tw-mr-4 ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === 'z' ? 'tw-mr-7' : ''}`} classButton={`${row.comment ? 'tw-text-blue-600 active:tw-text-blue-500' : 'tw-text-gray-600 active:tw-text-gray-500'} tw-transition-colors tw-p-0.5`} onClick={() => handleCommentOpen(row.rowcode, !commentsOpen[row.rowcode])} />
-                        </div>
-
-                        <Transition
-                            items={commentsOpen[row.rowcode]}
-                            from={{ height: 0, opacity: 0 }}
-                            enter={{ height: 'auto', opacity: 1 }}
-                            leave={{ height: 0, opacity: 0 }}
-                            config={{ tension: 300, clamp: true }}>
-                            {item => item && (anims =>
-                                <animated.div className="tw-flex tw-justify-end tw-items-start tw-overflow-hidden" style={anims}>
-                                    <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-px-1.5 tw-py-1 tw-mt-1 tw-mx-3 tw-mb-3 tw-resize-none tw-text-13px" value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />
-                                </animated.div>
-                            )}
-                        </Transition>
+                <div className="tw-border-b tw-border-dashed tw-text-13px tw-pl-5 tw-pr-3 tw-pb-2 tw-leading-snug">
+                    <div className="tw-relative">
+                        Дугаар:
+                        <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_number}</span>
                     </div>
-                )}
-            </div>
-
-            {projectId && canEdit &&
-                <div className="tw-flex tw-items-center tw-justify-end tw-h-20 tw-mt-2">
-                    <button className="tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
-                        Хадгалах
-                    </button>
+                    <div className="tw-relative">
+                        Төрөл:
+                        <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_type_name}</span>
+                    </div>
+                    <div className="tw-relative">
+                        Байгууллагын нэр:
+                        <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.companyname}</span>
+                    </div>
+                    <div className="tw-relative">
+                        Төслийн нэр:
+                        <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_name}</span>
+                    </div>
                 </div>
-            }
+
+                <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-3 tw-divide-y tw-divide-dashed">
+                    {rows.map(row =>
+                        <div key={row.rowcode}>
+                            <div className="tw-flex tw-items-center tw-text-sm">
+                                <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "z" ? "" : "tw-pl-8 tw-font-light"}`}>
+                                    {row.description}
+                                </span>
+
+                                {{
+                                    'z': <button className="tw-relative tw-flex tw-items-center tw-leading-tight tw-bg-gray-300 focus:tw-outline-none tw-rounded-full tw-mr-4 tw-shadow-inner" style={{ fontSize: '13px', height: '22px' }} onClick={() => handleInput('isChecked', !row.isChecked, 'z')}>
+                                        <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
+                                            Тийм
+                                        </span>
+                                        <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
+                                            Үгүй
+                                        </span>
+                                        <span className={`tw-w-1/2 tw-h-6 tw-rounded-full tw-absolute ${row.isChecked ? 'tw-bg-green-500' : 'tw-transform-gpu tw-translate-x-20 tw-bg-red-500'} tw-transition-transform tw-duration-300 tw-ease-out`} style={{ height: '26px' }} />
+                                    </button>,
+                                }[row.rowcode]
+                                    || <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
+                                }
+
+                                <ButtonTooltip tooltip="Тайлбар оруулах" beforeSVG={<AnnotationSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} classAppend={`tw-mr-4 ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === 'z' ? 'tw-mr-7' : ''}`} classButton={`${row.comment ? 'tw-text-blue-600 active:tw-text-blue-500' : 'tw-text-gray-600 active:tw-text-gray-500'} tw-transition-colors tw-p-0.5`} onClick={() => handleCommentOpen(row.rowcode, !commentsOpen[row.rowcode])} />
+                            </div>
+
+                            <Transition
+                                items={commentsOpen[row.rowcode]}
+                                from={{ height: 0, opacity: 0 }}
+                                enter={{ height: 'auto', opacity: 1 }}
+                                leave={{ height: 0, opacity: 0 }}
+                                config={{ tension: 300, clamp: true }}>
+                                {item => item && (anims =>
+                                    <animated.div className="tw-flex tw-justify-end tw-items-start tw-overflow-hidden" style={anims}>
+                                        <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-px-1.5 tw-py-1 tw-mt-1 tw-mx-3 tw-mb-3 tw-resize-none tw-text-13px" value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />
+                                    </animated.div>
+                                )}
+                            </Transition>
+                        </div>
+                    )}
+                </div>
+
+                {projectId && canEdit &&
+                    <div className="tw-flex tw-items-center tw-justify-end tw-h-20 tw-mt-2">
+                        <button className="tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
+                            Хадгалах
+                        </button>
+                    </div>
+                }
+            </div>
         </div>
     )
 }

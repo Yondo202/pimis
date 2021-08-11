@@ -90,7 +90,7 @@ export default function UrgudulPage2() {
       }).then(res => {
          UrgudulCtx.setData(prev => ({ ...prev, ...res.data.data }))
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Өргөдлийг хадгаллаа.' })
-         history('/urgudul/3')
+         history.push('/urgudul/3')
       }).catch(err => {
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, хадгалж чадсангүй.' })
       })

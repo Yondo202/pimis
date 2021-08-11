@@ -16,7 +16,9 @@ function HomeLogin() {
             </div>
             <div className="training">
                 <div className="trainingCont">
-                    <TrainingsList />
+                    <div className="scroll">
+                        <TrainingsList />
+                    </div>
                     <div className="bottomMenu">
                         <Link to="/trainings/request" className="items">Захиалгат сургалтын хүсэлт <RiArrowRightSLine className="one" /> <RiArrowRightSLine /></Link>
                         <Link to="/trainings/feedback" className="items">Сургалтын үнэлгээ <RiArrowRightSLine className="one" /> <RiArrowRightSLine /></Link>
@@ -52,12 +54,15 @@ const ComponentHome = styled.div`
                 position:relative;
                 margin-top:-5rem;
                 overflow:hidden;
-                overflow-y:scroll;
                 height:100%;
                 padding:1rem 1rem;
                 width:40rem;
                 border-radius:8px;
                 background-color:#fff;
+                .scroll{
+                    height:100%;
+                    overflow-y:auto;
+                }
                 .bottomMenu{
                     background-color:rgba(230,230,230);
                     position:absolute;
