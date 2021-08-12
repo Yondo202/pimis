@@ -6,7 +6,7 @@ import styled from "styled-components"
 
 const AddModal = ({ setModal }) => {
     const [ cName, setName ] = useState('');
-    
+
     const CloseHandle = () =>{
         setName('contentParent2');
         setTimeout(() => {
@@ -46,6 +46,10 @@ const AddModal = ({ setModal }) => {
                             <input type="date" name="desc" className="gettInp" required />
                         </InputStyle>
                     </InputsParent>
+
+                   <InsureType>
+
+                   </InsureType>
                         
 
                     <div className="modalbtnPar">
@@ -63,5 +67,9 @@ export default AddModal
 const InputsParent = styled.div`
     display:flex;
     gap:35px;
+`
+const InsureType = styled.div`
+    padding:20px 15px;
+    border-top:1px solid rgba(0,0,0,.2);
 
 `
