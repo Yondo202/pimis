@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { containerClass, UrgudulHeader, SaveButton, StaticText } from './page1'
-import FormOptions from 'components/urgudul_components/formOptions'
 import FormRichText from 'components/urgudul_components/formRichText'
 import FormInline from 'components/urgudul_components/formInline'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
