@@ -38,6 +38,7 @@ import TrainingRequestsList from 'pages/training/training_admin/requestsList';
 import FeedbackQuestionnaireHandle from 'components/admin/contents/feedback_questionnaire/feedbackQuestionnaireHandle';
 import TrainingsReport from 'pages/training/training_admin/trainingReport';
 import TrainerOrganizationNavigator from 'components/admin/contents/trainer_organization/organizationNavigator';
+import Insurance from 'components/admin/contents/insurance/Insurance';
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -73,6 +74,7 @@ function Layout({ setLocale }) {
               <Route path="/projects" component={ProjectHandle} />
               <Route path="/report/" component={ReportLayout} />
               <Route path="/holidays" component={Holidays} />
+              <Route path="/insurance" component={Insurance} />
               {/* <Route path="/urgudul/:page">
                 <UrgudulNavigator preloaded={true} />
               </Route> */}
