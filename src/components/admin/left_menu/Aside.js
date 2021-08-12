@@ -37,6 +37,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               <Link to="/meetings">Үнэлгээний хорооны уулзалт</Link>
             </MenuItem>
             <MenuItem>
+              <Link to="/insurance">Даатгал</Link>
+            </MenuItem>
+            <MenuItem>
               <Link to="/maindecision">Үнэлгээний хорооны шийдвэр</Link>
             </MenuItem>
             <MenuItem>
