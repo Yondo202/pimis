@@ -22,6 +22,7 @@ import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 // import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import TrainingFrontPage from 'pages/training/frontPage';
+import MakeContract from 'pages/contract/make_contract/makeContract';
 
 
 function UsersRoute() {
@@ -58,6 +59,7 @@ function UsersRoute() {
                     <Route path="/trainings">
                         <TrainingFrontPage user={true} />
                     </Route>
+                    <Route path="/make-contract" component={MakeContract} />
                     <MiddleRoute />
                 </Switch>
             </UrgudulStore>

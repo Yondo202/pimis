@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import {fontSize, textColor,InputStyle,ColorRgb, NextBtn } from '../theme'
-import {MdAddCircle} from 'react-icons/md';
+import { fontSize, textColor, InputStyle, ColorRgb, NextBtn } from '../theme'
+import { MdAddCircle } from 'react-icons/md';
 import ModalOne from './one/ModalOne'
 import ModalTwo from './one/ModalTwo'
 import ModalThree from './one/ModalThree'
-import {AiOutlineSend} from 'react-icons/ai'
+import { AiOutlineSend } from 'react-icons/ai'
 
 import OneModalOne from './two/ModalOne'
 import TwoModalTwo from './two/ModalTwo'
@@ -13,50 +13,45 @@ import ThreeModalThree from './two/ModalThree'
 
 
 function MainWorkPerformance() {
-    const initialList = [{ids: 1}];
-    const initialList2 = [{ids: 1}];
+    const initialList = [{ ids: 1 }];
+    const initialList2 = [{ ids: 1 }];
     const [opacity2, setOpacity2] = useState("0");
-    const [ spnBtn, setSpnBtn ] = useState(false);
-    const [ initialData, setInitialData ] = useState(initialList);
-    const [ initialData2, setInitialData2 ] = useState(initialList2);
-    const [ success, setSuccess ] = useState();
+    const [spnBtn, setSpnBtn] = useState(false);
+    const [initialData, setInitialData] = useState(initialList);
+    const [initialData2, setInitialData2] = useState(initialList2);
+    const [success, setSuccess] = useState();
 
-    const AddHandle = ()=>{  const list = initialData.concat( {ids: 1}); setInitialData(list); }
-    const AddHandle2 = ()=>{  const list = initialData2.concat( {ids: 1}); setInitialData2(list); }
+    const AddHandle = () => { const list = initialData.concat({ ids: 1 }); setInitialData(list); }
+    const AddHandle2 = () => { const list = initialData2.concat({ ids: 1 }); setInitialData2(list); }
 
-
-
-
-    const clickHandle = () =>{
+    const clickHandle = () => {
         let inf = document.querySelectorAll(".getInp"); let arr = Array.from(inf); let final = {};
-        arr.map((el,i)=>{
-            if(!el.value){
+        arr.forEach((el, i) => {
+            if (!el.value) {
                 el.classList += " RedPar"
-            }else{
+            } else {
                 final[el.name] = el.value;
-                el.classList =- " RedPar"
+                el.classList = - " RedPar"
                 el.classList += " getInp"
             }
         });
 
-        let tb1 = document.querySelectorAll(".approve"); let tbarr2 = Array.from(tb1); let table1 = []; 
-        tbarr2.map((el,i)=>{
+        let tb1 = document.querySelectorAll(".approve"); let tbarr2 = Array.from(tb1); let table1 = [];
+        tbarr2.forEach((el, i) => {
             let item = document.querySelectorAll(".appItems"); let itmarr = Array.from(item);
-            itmarr.map((el,i)=>{
-                if(el.value){
+            itmarr.forEach((el, i) => {
+                if (el.value) {
                     let obj = {};
                     obj[el.name] = el.value;
                     table1.push(obj);
                 }
             });
         });
-        if(table1[0]){
+        if (table1[0]) {
             final["todo_works"] = table1
         };
-        console.log(final,"final");
+        console.log(final, "final");
     }
-
-    console.log(success, " succsess");
 
     return (
         <WorkPerformance className="container">
@@ -66,13 +61,13 @@ function MainWorkPerformance() {
                     <div className="desc">ЭКСПОРТЫГ ДЭМЖИХ ТӨСӨЛ (Кредит ........) Ажлын гүйцэтгэл хүлээн авах маягт</div>
                 </div>
 
-               <div className="tablePar">
+                <div className="tablePar">
                     <div className="rowItems">
                         <div className="row">
                             <div className="col-md-3 col-3"><div className="LeftHead">Түншлэлийн гэрээний дугаар: </div> </div>
                             <div className="col-md-9 col-9">
                                 <div className="RightHead SingleSide">
-                                  <InputStyle className="themeStyle" ><input className="getInp" name="contact_num" placeholder="гэрээний дугаар..." type="number" /><div className="line" /></InputStyle>
+                                    <InputStyle className="themeStyle" ><input className="getInp" name="contact_num" placeholder="гэрээний дугаар..." type="number" /><div className="line" /></InputStyle>
                                 </div>
                             </div>
                         </div>
@@ -96,10 +91,10 @@ function MainWorkPerformance() {
                     </div>
 
                     <div className="rowItems approve">
-                        {initialData.map((el,i)=>{
-                            return(
+                        {initialData.map((el, i) => {
+                            return (
                                 <div className="row rowA" key={i}>
-                                    <div className="col-md-3 col-3"><div className="LeftHead">Гүйцэтгэх ажил {i + 1}:  {i===0?`Гүйцэтгэх ажлыг бичнэ үү :`: ""}  </div> </div>
+                                    <div className="col-md-3 col-3"><div className="LeftHead">Гүйцэтгэх ажил {i + 1}:  {i === 0 ? `Гүйцэтгэх ажлыг бичнэ үү :` : ""}  </div> </div>
                                     <div className="col-md-9 col-9"><div className="RightHead RightHeadA"><InputStyle className="themeStyle" ><textarea className="appItems" name={`work`} placeholder="Ажил гүйцэтгэсэн түвшин, чанар..." /><div className="line" /></InputStyle></div></div>
                                 </div>
                             )
@@ -125,12 +120,12 @@ function MainWorkPerformance() {
                         </div>
                     </div>
 
-                   
+
                     <div className="rowItems">
-                        {initialData2.map((el,i)=>{
-                            return(
+                        {initialData2.map((el, i) => {
+                            return (
                                 <div className="row rowA" key={i}>
-                                    <div className="col-md-3 col-3"><div className="LeftHead">Гүйцэтгэх ажил {i + 1}:  {i===0?`Ажлыг бичих:`: ""}  </div> </div>
+                                    <div className="col-md-3 col-3"><div className="LeftHead">Гүйцэтгэх ажил {i + 1}:  {i === 0 ? `Ажлыг бичих:` : ""}  </div> </div>
                                     {/* <div className="col-md-9 col-9"><div className="RightHead"><ReactQuill placeholder={`Ажил гүйцэтгэсэн түвшин, чанар...`} theme="bubble" value={text} onChange={handleChange} /> </div></div> */}
                                     <div className="col-md-9 col-9"><div className="RightHead RightHeadA"><InputStyle className="themeStyle" ><textarea placeholder="Гүйцэтгэсэн ажлын чанарыг бичнэ үү..." /><div className="line" /></InputStyle></div></div>
                                 </div>
@@ -142,7 +137,7 @@ function MainWorkPerformance() {
                     <div className="rowItems">
                         <div className="row">
                             <div className="col-md-3 col-3"><div className="LeftHead">Баталсан : </div> </div>
-                            <div className="col-md-9 col-9"><div style={{backgroundColor:"white"}} className="RightHead RightHeadB">ТХН болон Түншлэлийн хөтөлбөр дээр дурдсан ажлуудыг хангалттай хэмжээнд гүйцэтгэсэн хэмээн зөвшөөрч байна.</div></div>
+                            <div className="col-md-9 col-9"><div style={{ backgroundColor: "white" }} className="RightHead RightHeadB">ТХН болон Түншлэлийн хөтөлбөр дээр дурдсан ажлуудыг хангалттай хэмжээнд гүйцэтгэсэн хэмээн зөвшөөрч байна.</div></div>
                         </div>
                     </div>
 
@@ -165,16 +160,16 @@ function MainWorkPerformance() {
                             </div>
                         </div>
                     </div>
-               </div>
+                </div>
 
 
-               <div className="buttonPar">
-                    <div style={{opacity:`${opacity2}`}} className="errtext">Гүйцэд бөглөнө үү...</div>
-                    <NextBtn onClick={clickHandle} style={spnBtn===false? { width:"40%" }:{ width:"10%" }} className="SubmitButton" type="button">{spnBtn===false?(<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend/><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></> ): <img src="/gif1.gif" alt="spin" />  }</NextBtn>
-               </div>
-                
+                <div className="buttonPar">
+                    <div style={{ opacity: `${opacity2}` }} className="errtext">Гүйцэд бөглөнө үү...</div>
+                    <NextBtn onClick={clickHandle} style={spnBtn === false ? { width: "40%" } : { width: "10%" }} className="SubmitButton" type="button">{spnBtn === false ? (<> Дараагийн хуудас <div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></>) : <img src="/gif1.gif" alt="spin" />}</NextBtn>
+                </div>
+
             </div>
-           
+
         </WorkPerformance>
     )
 }
@@ -432,5 +427,3 @@ const WorkPerformance = styled.div`
         }
     }
 `
-
-

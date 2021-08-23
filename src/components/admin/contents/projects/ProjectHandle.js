@@ -103,8 +103,8 @@ export default function ProjectHandle() {
                     <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="left" minWidth={120} />
                     <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} alignment="left" />
                     <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} customizeText={customizeTextCriteria} cellRender={cellRenderCriteria} alignment="left" minwidth={100} />
-                    <Column dataField="esm" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} cellRender={cellRenderEsq} alignment="left" minWidth={100} />
-                    <Column dataField="esm" caption="Ангилал" headerCellRender={HeaderCell} alignment="center" minWidth={100} />
+                    <Column dataField="esm" name="esm" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} cellRender={cellRenderEsq} alignment="left" minWidth={100} />
+                    <Column dataField="esm" name="esm1" caption="Ангилал" headerCellRender={HeaderCell} alignment="center" minWidth={100} />
                     <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueLetterOI} alignment="left" />
 
                     <Column caption="Өргөдлийн маягт" headerCellRender={HeaderCellMultiHeader}>
@@ -117,9 +117,9 @@ export default function ProjectHandle() {
                         <Column dataField="project.bds_userId" caption="БХ Зөвлөх" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueBdsUser} minWidth={100} alignment="left" />
                     </Column>
 
-                    <Column dataField="evidence" caption="Нотлох бичиг баримтууд I шат" headerCellRender={HeaderCell} calculateCellValue={rowdata => calculateCellValueEvidence(rowdata, 'evidence')} alignment="left" />
+                    <Column dataField="evidence1" caption="Нотлох бичиг баримтууд I шат" headerCellRender={HeaderCell} calculateCellValue={rowdata => calculateCellValueEvidence(rowdata, 'evidence1')} alignment="left" />
                     <Column dataField="edpPlan" caption="Экспорт хөгжлийн төлөвлөгөө" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueEdpPlan} alignment="left" />
-                    <Column dataField="evidence" caption="Нотлох бичиг баримтууд II шат" headerCellRender={HeaderCell} calculateCellValue={rowdata => calculateCellValueEvidence(rowdata, 'evidence')} alignment="left" />
+                    <Column dataField="evidence2" caption="Нотлох бичиг баримтууд II шат" headerCellRender={HeaderCell} calculateCellValue={rowdata => calculateCellValueEvidence(rowdata, 'evidence2')} alignment="left" />
                     <Column dataField="firstEvalution.description" caption="Анхан шатны үнэлгээ" headerCellRender={HeaderCell}
                         cellRender={cellData => <CellRenderEvalution cellData={cellData} field="firstEvalution" />}
                         alignment="left" minWidth={110}
