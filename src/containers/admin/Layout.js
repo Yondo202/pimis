@@ -16,8 +16,8 @@ import UrgudulNavigator from 'pages/urgudul/Navigator'
 import Home from 'components/LoginDoneHome/Home'
 import Request from 'containers/requestComp/mainRequestOld'
 import Check2 from 'components/check/CompCheck2'
-import AttachmentUploadsFirst from 'pages/attachments/page1';
-import AttachmentUploadsSecond from 'pages/attachments/page2';
+import EvidenceAttachments1 from 'pages/attachments/evidenceAttachments1';
+import EvidenceAttachments2 from 'pages/attachments/evidenceAttachments2';
 import FirstEvaluation from 'pages/decision_making/5a/Page';
 import CompilationChecklist from 'pages/decision_making/5b/Page';
 import AnalystReport from 'pages/decision_making/5c/Page';
@@ -39,6 +39,10 @@ import FeedbackQuestionnaireHandle from 'components/admin/contents/feedback_ques
 import TrainingsReport from 'pages/training/training_admin/trainingReport';
 import TrainerOrganizationNavigator from 'components/admin/contents/trainer_organization/organizationNavigator';
 import Insurance from 'components/admin/contents/insurance/Insurance';
+import MakeContract from 'pages/contract/make_contract/makeContract';
+import PerformanceAttachments from 'pages/attachments/performanceAttachements';
+import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
+import FinancialAttachments from 'pages/attachments/financialAttachments';
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -91,12 +95,16 @@ function Layout({ setLocale }) {
               <Route path="/maindecision/:id" component={MainDecision} />
               <Route path="/letter-of-interest" component={LetterNavigator} />
               <Route path="/urgudul-preview/:id" component={UrgudulPreviewForAdmin} />
-              <Route path="/attachments/first/:id" component={AttachmentUploadsFirst} />
-              <Route path="/attachments/second/:id" component={AttachmentUploadsSecond} />
+              <Route path="/attachments/evidence-1/:id" component={EvidenceAttachments1} />
+              <Route path="/attachments/evidence-2/:id" component={EvidenceAttachments2} />
+              <Route path="/attachments/performance/:id" component={PerformanceAttachments} />
+              <Route path="/attachments/financial/:id" component={FinancialAttachments} />
+              <Route path="/attachments/invoice/:id" component={InvoiceAttachments} />
               <Route exact path="/5a/:id" component={FirstEvaluation} />
               <Route path="/5a/:id/send-notice" component={FirstEvaluationSendNotice} />
               <Route path="/5b/:id" component={CompilationChecklist} />
               <Route path="/5c/:id" component={AnalystReport} />
+              <Route path="/make-contract" component={MakeContract} />
               <Route path="/trainings" component={TrainingNavigatorAdmin} />
               <Route path="/training-requests" component={TrainingRequestsList} />
               <Route path="/training-questionnaire" component={FeedbackQuestionnaireHandle} />

@@ -1,6 +1,10 @@
-import React from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
+import SignaturePad from 'react-signature-canvas'
+import ModalWindow from 'components/modal_window/modalWindow'
+import PenAltSVG from 'assets/svgComponents/penAltSVG'
+import PrintSVG from 'assets/svgComponents/printSVG'
+import { useReactToPrint } from 'react-to-print'
+import axios from 'axiosbase'
 
 const contract = {
    1: {
@@ -361,12 +365,56 @@ const contract = {
          },
          {
             "order": "6.9.2",
-            "provision": "Санхүүгийн дэмжлэг олгогчийн албан ёсны хаяг: ..................................",
+            "provision": "Санхүүгийн дэмжлэг олгогчийн албан ёсны хаяг: Монгол Улс, Улаанбаатар хот, Сүхбаатар дүүрэг, 2 дугаар хороо, Гэрэгэ тауэр, 8 дугаар  давхар",
             "subLevel": 1
          }
       ]
    },
 }
+
+const dateNow = new Date()
+const currentYear = dateNow.getFullYear()
+const currentMonth = dateNow.getMonth() + 1
+const currentDate = dateNow.getDate()
+
+const initialSignersEdp = [{
+   name: 'Т.ЖАМБАЛЦЭРЭН',
+   position: 'Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны Төрийн нарийн бичгийн дарга',
+   signature: null,
+   order: 1
+}, {
+   name: 'О.ОНОН',
+   position: 'Экспортыг дэмжих төслийн Захирал',
+   signature: null,
+   order: 2
+}, {
+   name: 'Б.ДӨЛГӨӨН',
+   position: 'Экспортыг дэмжих төслийн Зохицуулагч',
+   signature: null,
+   order: 3
+}, {
+   name: 'M.БАТТУЛГА',
+   position: 'Экспортыг дэмжих төслийн Бизнес хөгжлийн ахлах мэргэжилтэн',
+   signature: null,
+   order: 4
+}]
+
+const initialSignersReceiving = [{
+   name: null,
+   position: null,
+   signature: null,
+   order: 1
+}, {
+   name: null,
+   position: null,
+   signature: null,
+   order: 2
+}]
+
+const descriptions = [
+   '/Удирдах албан тушаалтан байна./',
+   '/Санхүү хариуцсан албан тушаалтан байна./'
+]
 
 export default function MakeContract() {
    const [info, setInfo] = useState({
@@ -381,107 +429,152 @@ export default function MakeContract() {
       registration_number: null,
       register: null,
       company_name: null,
+      bh_zuvluh: null,
+      amount: null,
+      amount_verbose: null,
+      location: null,
    })
 
-   const [signers, setSigners] = useState({
-      edp: {
-         
-      },
-      receiving: {
+   const handleInput = (key, value) => setInfo(prev => ({ ...prev, [key]: value }))
 
-      }
-   })
+   const [signersEdp, setSignersEpd] = useState(initialSignersEdp)
+   const [signersReceiving, setSignersReceiving] = useState(initialSignersReceiving)
 
    useEffect(() => {
       setInfo(prev => ({
          ...prev,
+         year: prev.year ?? currentYear,
+         month: prev.month ?? currentMonth,
+         day: prev.day ?? currentDate,
          company_name: localStorage.getItem('companyname')
       }))
    }, [])
 
+   const componentRef = useRef()
+
+   const handlePrint = useReactToPrint({
+      content: () => componentRef.current,
+   })
+
+   const handleSave = () => {
+      axios.post()
+   }
+
    return (
-      <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-8 tw-pb-20">
-         <div className=" tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <div className="tw-text-lg tw-font-medium tw-text-center tw-mt-10">
-               ТҮНШЛЭЛИЙН ГЭРЭЭ
+      <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
+         <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
+            <div className="tw-flex tw-justify-end">
+               <button className="tw-mt-2 tw-mr-2 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-transition-shadow tw-font-light" onClick={handlePrint}>
+                  <span className="tw-text-sm">Хэвлэх болон хадгалах</span>
+                  <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
+               </button>
             </div>
 
-            <div className="tw-px-2 sm:tw-px-10 tw-mt-6 tw-pb-4">
-               <div className="tw-flex tw-flex-wrap tw-justify-between tw-px-2 sm:tw-px-4">
-                  <span className="">
-                     <Fill fill={info.year} length="medium" /> оны <Fill fill={info.month} length="short" /> дугаар сарын <Fill fill={info.day} length="short" />-ний өдөр
-                  </span>
-                  <span className="">
-                     Гэрээний №: <Fill fill={info.contract_number} />
-                  </span>
-                  <span className="">
-                     Улаанбаатар хот
-                  </span>
+            <div className="" ref={componentRef}>
+               <div className="tw-text-lg tw-font-medium tw-text-center tw-mt-6">
+                  ТҮНШЛЭЛИЙН ГЭРЭЭ
                </div>
 
-               <p className="tw-mt-6" style={{ wordSpacing: 2 }}>
-                  <p className="" style={{ textIndent: 16 }}>
-                     Энэхүү Түншлэлийн гэрээ (цаашид “Гэрээ” гэх)-г Монгол Улсын Засгийн газар болон Олон Улсын Хөгжлийн ассоциаци нарын хооронд 2016 оны 08 дугаар сарын 26-ны өдөр байгуулсан Санхүүжилтийн гэрээ, Монгол Улсын Иргэний хуулийн 15 дугаар бүлэг, Экспортыг дэмжих төслийн түншлэлийн хөтөлбөрийн сонгон шалгаруулалтын багийн .... оны .... дугаар сарын ....-ны өдрийн .... дугаар шийдвэрийг тус тус үндэслэн,
-                  </p>
-                  <p className="">
-                     нэг талаас Монгол Улс, Улаанбаатар хот, Сүхбаатар дүүрэг, 2 дугаар хороо, Гэрэгэ тауэр, 8 дугаар  давхарт байрлах Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны дэргэдэх Экспортыг дэмжих төслийг хэрэгжүүлэх нэгж (цаашид “Санхүүгийн дэмжлэг олгогч” гэх),
-                  </p>
-                  <p className="">
-                     нөгөө талаас Монгол Улс, <Fill fill={info.hot_aimag} />, <Fill fill={info.sum_duureg} />, <Fill fill={info.sum_duureg} />, <Fill fill={info.detailed_location} /> хаягт байрлах улсын бүртгэлийн <Fill fill={info.registration_number} /> дугаартай, регистрийн <Fill fill={info.register} /> дугаартай <Fill fill={info.company_name} /> (цаашид “Санхүүгийн дэмжлэг хүртэгч” гэх) нар (цаашид хамтад нь “Талууд” гэх) харилцан тохиролцож байгуулав.
-                  </p>
-                  <p className="" style={{ textIndent: 16 }}>
-                     Энэхүү Гэрээний зорилго нь <Fill fill={info.company_name} />-ийн экспортын үйл ажиллагааг дэмжих зорилгоор энэхүү Гэрээнд заасан нөхцөл, зориулалтаар санхүүжилт олгох, үйл ажиллагааны хэрэгжилтэд хяналт тавих, уг санхүүжилттэй холбоотой бусад харилцаа, талуудын эрх, үүрэг хариуцлагыг тодорхойлон зохицуулахад оршино.
-                  </p>
-               </p>
-            </div>
+               <div className="tw-px-2 sm:tw-px-10 tw-mt-6 tw-pb-4">
+                  <div className="tw-flex tw-flex-wrap tw-justify-between tw-px-2 sm:tw-px-4">
+                     <span className="">
+                        <Fill value={info.year} /> оны <Fill value={info.month} /> дугаар сарын <Fill value={info.day} />-ний өдөр
+                     </span>
+                     <span className="tw-mx-2">
+                        Гэрээний №: <Fill value={info.contract_number} name="contract_number" setter={handleInput} editable />
+                     </span>
+                     <span className="">
+                        Улаанбаатар хот
+                     </span>
+                  </div>
 
-            <div className="tw-px-2 sm:tw-px-8 tw-mt-8">
-               {Object.entries(contract).map(([key, value]) =>
-                  <div className="">
-                     <Header header={`${key} ДҮГЭЭР ЗҮЙЛ. ${value.category?.toUpperCase()}`} key={key} />
+                  <div className="tw-mt-6 tw-leading-relaxed" style={{ wordSpacing: 2 }}>
+                     <p className="" style={{ textIndent: 16 }}>
+                        Энэхүү Түншлэлийн гэрээ (цаашид “Гэрээ” гэх)-г Монгол Улсын Засгийн газар болон Олон Улсын Хөгжлийн ассоциаци нарын хооронд 2016 оны 08 дугаар сарын 26-ны өдөр байгуулсан Санхүүжилтийн гэрээ, Монгол Улсын Иргэний хуулийн 15 дугаар бүлэг, Экспортыг дэмжих төслийн түншлэлийн хөтөлбөрийн сонгон шалгаруулалтын багийн .... оны .... дугаар сарын ....-ны өдрийн .... дугаар шийдвэрийг тус тус үндэслэн,
+                     </p>
+                     <p className="">
+                        нэг талаас Монгол Улс, Улаанбаатар хот, Сүхбаатар дүүрэг, 2 дугаар хороо, Гэрэгэ тауэр, 8 дугаар  давхарт байрлах Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны дэргэдэх Экспортыг дэмжих төслийг хэрэгжүүлэх нэгж (цаашид “Санхүүгийн дэмжлэг олгогч” гэх),
+                     </p>
+                     <p className="">
+                        нөгөө талаас Монгол Улс, <Fill value={info.hot_aimag} name="hot_aimag" setter={handleInput} editable placeholder="хот/аймаг" />, <Fill value={info.sum_duureg} name="sum_duureg" setter={handleInput} editable placeholder="сум/дүүрэг" />, <Fill value={info.horoo_bag} name="horoo_bag" setter={handleInput} editable placeholder="баг/хороо" />, <Fill value={info.detailed_location} name="detailed_location" setter={handleInput} editable placeholder="дэлгэрэнгүй хаяг" /> хаягт байрлах улсын бүртгэлийн <Fill value={info.registration_number} name="registration_number" setter={handleInput} editable defaultLength={12} /> дугаартай, регистрийн <Fill value={info.register} name="register" setter={handleInput} editable defaultLength={12} /> дугаартай <Fill value={info.company_name} dotted /> (цаашид “Санхүүгийн дэмжлэг хүртэгч” гэх) нар (цаашид хамтад нь “Талууд” гэх) харилцан тохиролцож байгуулав.
+                     </p>
+                     <p className="" style={{ textIndent: 16 }}>
+                        Энэхүү Гэрээний зорилго нь <Fill value={info.company_name} dotted />-ийн экспортын үйл ажиллагааг дэмжих зорилгоор энэхүү Гэрээнд заасан нөхцөл, зориулалтаар санхүүжилт олгох, үйл ажиллагааны хэрэгжилтэд хяналт тавих, уг санхүүжилттэй холбоотой бусад харилцаа, талуудын эрх, үүрэг хариуцлагыг тодорхойлон зохицуулахад оршино.
+                     </p>
+                  </div>
+               </div>
 
-                     {value.provisions.map(provision =>
-                        <Provision
-                           order={provision.order}
-                           provision={provision.provision}
-                           subLevel={provision.subLevel}
+               <div className="tw-px-2 sm:tw-px-8 tw-mt-8">
+                  {Object.entries(contract).map(([key, value]) =>
+                     <div className="">
+                        <Header header={`${key} ДҮГЭЭР ЗҮЙЛ. ${value.category?.toUpperCase()}`} key={key} />
+
+                        {value.provisions.map(provision =>
+                           <Provision
+                              order={provision.order}
+                              provision={{
+                                 '2.8': <span>
+                                    Гэрээний дагуу Санхүүгийн дэмжлэг олгогч нэгж нь батлагдсан үйл ажиллагааны зардлын зөвшөөрсөн хэсэг болох дээд тал нь 50 хувь буюу <Fill value={info.amount} name="amount" setter={handleInput} defaultLength={12} editable dotted />₮ (<Fill value={info.amount_verbose} name="amount_verbose" setter={handleInput} defaultLength={24} editable dotted /> үгээр) /НӨАТ ороогүй/ төгрөгийг Санхүүгийн дэмжлэг хүртэгчид олгоно."
+                                 </span>,
+                                 '6.9.1': <span>
+                                    Санхүүгийн дэмжлэг хүртэгчийн албан ёсны хаяг: <Fill value={info.location} name="location" setter={handleInput} defaultLength={48} editable dotted />
+                                 </span>
+                              }[provision.order] || provision.provision}
+                              subLevel={provision.subLevel}
+                              key={provision.order}
+                           />
+                        )}
+                     </div>
+                  )}
+               </div>
+
+               <div className="tw-text-base tw-text-center tw-mt-8 tw-font-medium">
+                  ГЭРЭЭ БАЙГУУЛСАН:
+               </div>
+
+               <div className="tw-mt-6 tw-flex tw-flex-wrap tw-pb-12 tw-px-2 sm:tw-px-10">
+                  <div className="sm:tw-w-1/2">
+                     <div className="tw-p-2 tw-font-medium">
+                        Санхүүгийн дэмжлэг олгогчийг төлөөлж:
+                     </div>
+
+                     {signersEdp.map(signer =>
+                        <Sign
+                           signer={signer}
+                           setter={setSignersEpd}
+                           key={signer.order}
                         />
                      )}
                   </div>
-               )}
-            </div>
 
-            <div className="tw-text-base tw-text-center tw-mt-8 tw-font-medium">
-               ГЭРЭЭ БАЙГУУЛСАН:
-            </div>
+                  <div className="sm:tw-w-1/2">
+                     <div className="tw-p-2 tw-font-medium">
+                        Санхүүгийн дэмжлэг хүртэгчийг төлөөлж:
+                     </div>
 
-            <div className="tw-mt-6 tw-flex tw-flex-wrap tw-mb-20 tw-px-2 sm:tw-px-10">
-               <div className="sm:tw-w-1/2">
-                  <div className="tw-p-2 tw-font-medium">
-                     Санхүүгийн дэмжлэг олгогчийг төлөөлж:
+                     {signersReceiving.map(signer =>
+                        <SignReceiving
+                           signer={signer}
+                           setter={setSignersReceiving}
+                           description={descriptions[signer.order - 1]}
+                           key={signer.order}
+                        />
+                     )}
                   </div>
 
-                  <Sign name="Т.ЖАМБАЛЦЭРЭН" position="Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны Төрийн нарийн бичгийн дарга" />
-                  <Sign name="О.ОНОН" position="Экспортыг дэмжих төслийн Захирал" />
-                  <Sign name="Б.ДӨЛГӨӨН" position="Экспортыг дэмжих төслийн Зохицуулагч" />
-                  <Sign name="M.БАТТУЛГА" position="Экспортыг дэмжих төслийн Бизнес хөгжлийн ахлах мэргэжилтэн" />
-               </div>
-
-               <div className="sm:tw-w-1/2">
-                  <div className="tw-p-2 tw-font-medium">
-                     Санхүүгийн дэмжлэг хүртэгчийг төлөөлж:
+                  <div className="">
+                     <Fill value={info.bh_zuvluh} name="bh_zuvluh" setter={handleInput} editable defaultLength={30} />
+                     <p className="">
+                        Экспортыг дэмжих төслийн Бизнес хөгжлийн зөвлөх
+                     </p>
                   </div>
-
-                  <SignReceiving description="/Удирдах албан тушаалтан байна./" />
-                  <SignReceiving description="/Санхүү хариуцсан албан тушаалтан байна./" />
                </div>
+            </div>
 
-               <div className="">
-                  <p className="">
-                     ..............................
-                  </p>
-                  Экспортыг дэмжих төслийн Бизнес хөгжлийн зөвлөх
-               </div>
+            <div className="tw-flex tw-justify-center">
+               <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSave}>
+                  Хадгалах
+               </button>
             </div>
          </div>
       </div>
@@ -498,7 +591,7 @@ function Header({ header }) {
 
 function Provision({ order, provision, subLevel }) {
    return (
-      <div className="tw-flex tw-p-2" style={{ marginLeft: +subLevel * 24 }}>
+      <div className="tw-flex tw-p-2" style={{ marginLeft: (+subLevel || 0) * 24 }}>
          {order &&
             <div className="tw-mr-4">
                {order}
@@ -511,52 +604,121 @@ function Provision({ order, provision, subLevel }) {
    )
 }
 
-function Fill({ fill, length }) {
-   return (
-      <span className="tw-font-medium">
-         {fill ?? {
-            short: '.....',
-            medium: '..........',
-         }[length] ?? '....................'
-         }
+function Fill({ value, name, setter, editable, defaultLength, dotted, placeholder }) {
+   return editable
+      ? <span className="tw-relative tw-inline-block">
+         <span className="tw-invisible tw-leading-snug tw-mx-0.5 tw-font-medium">
+            {value || (placeholder ?? '_'.repeat(defaultLength ?? 10))}
+         </span>
+
+         <input className="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-rounded-none tw-border-b-2 tw-border-gray-700 tw-border-dotted focus:tw-outline-none tw-box-border tw-leading-snug tw-text-sm tw-placeholder-red-400 tw-mx-0.5 tw-font-medium" value={value ?? ''} onChange={e => setter(name, e.target.value)} placeholder={placeholder} />
       </span>
-   )
+      : <span className={`tw-leading-snug tw-mx-0.5 tw-font-medium ${dotted && 'tw-border-b-2 tw-border-gray-700 tw-border-dotted tw-box-border'}`}>
+         {value}
+      </span>
 }
 
-function Sign({ name, position, signature, setter }) {
+function Sign({ signer, setter }) {
    return (
-      <div className="tw-p-2 tw-h-32">
+      <div className="tw-p-2 tw-h-44">
          <p className="">
-            {name}
+            {signer.name}
          </p>
-         <p className="">
-            Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны Төрийн нарийн бичгийн даргa
+         <p className="tw-mt-1">
+            {signer.position}
          </p>
-         Гарын үсэг:
+         <Signature signer={signer} setter={setter} />
       </div>
    )
 }
 
-function SignReceiving({ name, position, description, setter }) {
+function SignReceiving({ signer, description, setter }) {
+   const handleInput = (key, value) => {
+      setter(prev => {
+         const next = [...prev]
+         next[signer.order - 1][key] = value
+         return next
+      })
+   }
+
    return (
-      <div className="tw-p-2 tw-h-32">
+      <div className="tw-p-2 tw-h-44">
          <div className="">
-            <span className="">
+            <span className="tw-mr-2">
                Нэр:
             </span>
-            ____________________________
+            <Fill value={signer.name} name="name" setter={handleInput} editable defaultLength={30} dotted />
          </div>
-         <div className="">
-            <span className="">
+         <div className="mt-1">
+            <span className="tw-mr-2">
                Албан тушаал:
             </span>
-            ____________________________
+            <Fill value={signer.position} name="position" setter={handleInput} editable defaultLength={30} dotted />
          </div>
-         _____________________
-         <p className="">
+         <p className="tw-font-light">
             {description}
          </p>
-         Гарын үсэг:
+         <Signature signer={signer} setter={setter} />
       </div>
    )
 }
+
+function Signature({ signer, setter }) {
+   const [sigModalOpen, setSigModalOpen] = useState(false)
+   const [hovered, setHovered] = useState(false)
+
+   const sigCanvasRef = useRef()
+
+   const handleDrawSignature = () => {
+      setter(prev => {
+         const next = [...prev]
+         next[signer.order - 1].signature = sigCanvasRef.current.getTrimmedCanvas().toDataURL('image/png')
+         return next
+      })
+   }
+
+   const handleClearSignature = () => {
+      sigCanvasRef.current.clear()
+      setter(prev => {
+         const next = [...prev]
+         next[signer.order - 1].signature = null
+         return next
+      })
+   }
+
+   return (
+      <div className="tw-flex tw-flex-wrap tw-mt-2">
+         <div className="tw-mr-4">
+            Гарын үсэг:
+         </div>
+         <div className="tw-relative">
+            {signer.signature
+               ? <img src={signer.signature} alt="Гарын үсэг" className={`${classSignature} tw-object-scale-down`} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => setSigModalOpen(true)} />
+               : <div className={classSignature} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => setSigModalOpen(true)} />
+            }
+            <PenAltSVG className={`tw-absolute tw-top-1/2 tw-left-1/2 tw--translate-x-1/2 tw-w-7 tw-h-7 tw-text-gray-600 tw-transform-gpu ${hovered ? 'tw--translate-y-1/2 tw-opacity-100' : 'tw--translate-y-3/4 tw-opacity-0'} tw-transition-all tw-duration-300 tw-cursor-pointer`} onMouseEnter={() => setHovered(true)} onClick={() => setSigModalOpen(true)} />
+         </div>
+
+         <ModalWindow modalOpen={sigModalOpen} setModalOpen={setSigModalOpen}>
+            <div className="tw-p-2 tw-flex tw-flex-col">
+               <div className="tw-text-sm tw-mb-2">
+                  Гарын үсэг зурах:
+               </div>
+
+               <SignaturePad canvasProps={{ className: 'tw-rounded tw-border tw-border-gray-400', width: 624, height: 192 }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
+
+               <div className="tw-flex tw-justify-center tw-mt-4">
+                  <button className="tw-rounded tw-text-white tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-w-32 tw-py-1 focus:tw-outline-none tw-font-light" onClick={handleClearSignature}>
+                     Арилгах
+                  </button>
+                  <button className="tw-rounded tw-text-white tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-w-32 tw-py-1 tw-ml-3 focus:tw-outline-none tw-font-light" onClick={() => setSigModalOpen(false)}>
+                     Болсон
+                  </button>
+               </div>
+            </div>
+         </ModalWindow>
+      </div>
+   )
+}
+
+const classSignature = 'tw-w-52 tw-h-16 tw-border tw-rounded tw-border-gray-400 tw-cursor-pointer'

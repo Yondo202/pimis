@@ -1,17 +1,33 @@
 import AlertContext from 'components/utilities/alertContext'
 import FilePreviewContext from 'components/utilities/filePreviewContext'
-import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import React, { useContext, useEffect, useRef, useState } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
 import axios from 'axiosbase'
-import { useParams } from 'react-router'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import HelpPopup from 'components/help_popup/helpPopup'
-import { acceptDocTypes } from './page2'
+import { acceptDocTypes } from './evidenceAttachments2'
 import FileCard from './fileCard'
 import FileCardAdd from './fileCardAdd'
-import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
-import { useHistory } from 'react-router-dom'
 
-export default function AttachmentUploadsFirst() {
+const initialState = [{
+   code: 'tuslah_gereenuud',
+   description: 'Туслан гүйцэтгэгчийн гэрээнүүд',
+   stage: 3,
+   files: null
+}, {
+   code: 'aktuud',
+   description: 'Гэрээ дүгнэсэн актууд',
+   stage: 3,
+   files: null
+}, {
+   code: 'ajliin_tailan',
+   description: 'Хийгдсэн ажлуудын тайлан',
+   stage: 3,
+   files: null
+}]
+
+export default function PerformanceAttachments() {
    const [form, setForm] = useState(initialState)
 
    const [editCode, setEditCode] = useState()
@@ -20,6 +36,7 @@ export default function AttachmentUploadsFirst() {
 
    const AlertCtx = useContext(AlertContext)
    const FilePreviewCtx = useContext(FilePreviewContext)
+   const history = useHistory()
 
    const handleButtonClick = (code) => {
       setEditCode(code)
@@ -93,21 +110,19 @@ export default function AttachmentUploadsFirst() {
       if (userId) {
          axios.get(`evidences`, {
             headers: { 'Authorization': getLoggedUserToken() },
-            params: { userId: userId, stage: 1 }
+            params: { userId: userId, stage: 3 }
          }).then(res => {
             setForm(res.data.data)
          })
       } else {
          axios.get('evidences', {
             headers: { 'Authorization': getLoggedUserToken() },
-            params: { stage: 1 }
+            params: { stage: 3 }
          }).then(res => {
             setForm(res.data.data)
          })
       }
    }, [])
-
-   const history = useHistory()
 
    return (
       <div className="tw-relative tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm">
@@ -121,9 +136,9 @@ export default function AttachmentUploadsFirst() {
          <div className="tw-bg-white tw-mt-6 tw-mb-16 tw-rounded-lg tw-shadow-md tw-p-2">
             <div className="tw-p-3 tw-flex tw-items-center">
                <span className="tw-text-base tw-font-medium tw-text-blue-500 tw-pl-2">
-                  Нотлох бичиг баримтууд I
+                  Гүйцэтгэлийг нотлох баримтууд
                </span>
-               <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="/.../" />
+               <HelpPopup classAppend="tw-ml-2 tw-mr-2" main="Гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан" />
             </div>
 
             <input className="tw-invisible tw-absolute" type="file" accept={acceptDocTypes} onChange={handleFileInput} ref={inputRef} />
@@ -155,30 +170,3 @@ export default function AttachmentUploadsFirst() {
       </div>
    )
 }
-
-const initialState = [{
-   code: 'gerchilgee',
-   description: 'Хуулийн этгээдийн улсын бүртгэлийн гэрчилгээний хуулбар',
-   stage: 1,
-   files: null
-}, {
-   code: 'tailan',
-   description: 'Сүүлийн 2 жилийн аудитлагдсан санхүүгийн тайлан',
-   stage: 1,
-   files: null
-}, {
-   code: 'uuriin_sanhuujilt',
-   description: 'Төлөвлөсөн үйл ажиллагааг өөрийн санхүүжилтээр гүйцэтгэх боломжтойг нотолсон баримт бичиг (сүүлийн 2 жилийн мөнгөн урсгалын тайлан, 1 жилийн мөнгөн урсгалын төлөвлөгөө, банкны хуулга гм)',
-   stage: 1,
-   files: null
-}, {
-   code: 'umchlul',
-   description: 'Аж ахуйн нэгжийн эцсийн өмчлөгчийг тодорхойлох баримт бичгүүд (дүрэм гм)',
-   stage: 1,
-   files: null
-}, {
-   code: 'tulhuur_ajilchid',
-   description: 'Өргөдөл гаргагч байгууллагын түлхүүр албан тушаалтнуудын ажлын туршлага, боловсрол, ур чадварыг илэрхийлэх намтар(Дор хаяж 3 албан тушаалтны мэдээлэл)',
-   stage: 1,
-   files: null
-}]
