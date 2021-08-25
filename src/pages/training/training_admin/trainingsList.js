@@ -121,7 +121,7 @@ export default function TrainingsList() {
          </DataGrid>
 
          <div className="tw-flex tw-justify-center">
-            <button className="tw-py-2 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-12 tw-mb-6 tw-text-13px" onClick={handleAddTraining}>
+            <button className="tw-py-2 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-6 tw-text-13px" onClick={handleAddTraining}>
                Сургалт нэмэх
             </button>
          </div>
@@ -140,7 +140,7 @@ const ButtonNavTraining = ({ data }) => {
    const history = useHistory()
    const handleClick = () => {
       if (trainingId !== null && trainingId !== undefined) {
-         history.push(`/trainings/id/${data.data.id}`)
+         history.push(`/trainings/id/${trainingId}`)
       }
    }
    return (

@@ -74,7 +74,7 @@ export default function ProjectHandle() {
 
     return (
         <div className="tw-text-sm tw-text-gray-700 tw-pb-10 tw-w-full tw-overflow-hidden">
-            <div className="tw-px-3 tw-pt-2 tw-pb-6 tw-shadow-md tw-bg-white tw-flex tw-flex-col tw-rounded tw-overflow-hidden tw-w-full" ref={containerRef}>
+            <div className="tw-p-2 tw-pb-6 tw-shadow-md tw-bg-white tw-flex tw-flex-col tw-rounded tw-overflow-hidden tw-w-full" ref={containerRef}>
                 <div className="tw-p-2 tw-mt-6 tw-text-lg tw-font-medium tw-text-center">
                     Бүртгүүлсэн байгууллагууд
                 </div>

@@ -2,32 +2,19 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useHistory } from 'react-router'
-import { Transition, animated } from 'react-spring/renderprops'
-import UsersSVG from 'assets/svgComponents/usersSVG'
-import ClipboardListSVG from 'assets/svgComponents/clipboardListSVG'
-import TrashSVG from 'assets/svgComponents/trashSVG'
-import PenSVG from 'assets/svgComponents/penSVG'
 import './style.css'
-import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
+import { DataGrid, TabPanel } from 'devextreme-react'
+import { Column, HeaderFilter, MasterDetail, Pager, Paging, Scrolling } from 'devextreme-react/data-grid'
+import { Item } from 'devextreme-react/tab-panel'
+import { Link } from 'react-router-dom'
 
-
-export const statusWord = (int) => {
-    switch (int) {
-        case 0:
-            return 'Хүлээгдэж буй'
-        case 1:
-            return 'Хуралдаж буй'
-        case 2:
-            return 'Хуралдсан'
-        default:
-            break
-    }
+export const statusRef = {
+    0: 'Хүлээгдэж буй',
+    1: 'Хуралдаж буй',
+    2: 'Хуралдсан'
 }
 
-export default function EvaluatorsMeetingsList(props) {
-    const projects = props.projects
-    const evaluators = props.evaluators
-
+export default function EvaluatorsMeetingsList({ projects, evaluators }) {
     const [meetings, setMeetings] = useState([])
 
     useEffect(() => {
@@ -38,184 +25,139 @@ export default function EvaluatorsMeetingsList(props) {
         })
     }, [])
 
-    const history = useHistory()
-
-    const navigateMeeting = (id) => history.push(`/meetings/id?id=${id}`)
-
-    const getProjects = (idArr) => projects.filter(project => idArr.includes(project.project?.id))
-
-    const getEvalautors = (idArr) => evaluators.filter(evaluator => idArr.includes(evaluator.id))
-
-    const [details, setDetails] = useState({
-        open: false,
-        id: null,
-        key: null,
-    })
-
     return (
         <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-w-full tw-pb-10">
-            <div className="tw-bg-white tw-rounded tw-shadow-md tw-w-full tw-p-2" style={{ maxWidth: 1040 }}>
-                <div className="tw-text-lg tw-font-medium tw-p-2 tw-text-center tw-mt-6">
+            <div className="tw-bg-white tw-rounded tw-shadow-md tw-w-full tw-p-2 tw-max-w-5xl">
+                <div className="tw-text-lg tw-font-medium tw-p-2 tw-text-center tw-mt-6 tw-mb-6">
                     Үнэлгээний хорооны уулзалт
                 </div>
 
-                <div className="tw-mt-10 tw-overflow-x-auto tw-overflow-y-hidden tw-w-full">
-                    <div className="tw-flex tw-flex-nowrap tw-h-10 tw-font-medium tw-rounded-t-md tw-bg-gray-200 tw-pt-1" style={{ width: 1024 }}>
-                        <div className="tw-w-12 tw-flex tw-items-center tw-justify-center">
-                            Д/д
-                        </div>
-                        <div className="tw-w-40 tw-flex tw-items-center tw-justify-center">
-                            Төлөв
-                        </div>
-                        <div className="tw-w-40 tw-flex tw-items-center tw-justify-center">
-                            Уулзалтын өдөр
-                        </div>
-                        <div className="tw-w-56 tw-flex tw-items-center tw-justify-center">
-                            Харах
-                        </div>
-                        <div className="tw-w-56 tw-flex tw-items-center tw-justify-center tw-ml-auto">
-                            Үйлдэл
-                        </div>
-                    </div>
+                <DataGrid
+                    id="evaluators-meeting-datagrid"
+                    dataSource={meetings}
+                    showBorders={true}
+                    wordWrapEnabled={true}
+                    rowAlternationEnabled={true}
+                    columnAutoWidth={true}
+                    showRowLines={true}
+                    showColumnLines={true}
+                    loadPanel={{ enabled: true, height: 300, text: 'Уншиж байна' }}
+                    noDataText="Мэдээлэл байхгүй байна."
+                >
+                    <Scrolling mode="standard" columnRenderingMode="standard" showScrollbar="always" />
+                    <Paging defaultPageSize={40} />
+                    <Pager showPageSizeSelector={true} allowedPageSizes={[10, 20, 40]} showInfo={false} showNavigationButtons={true} />
+                    <HeaderFilter visible={true} />
 
-                    <div className="tw-overflow-x-hidden tw-overflow-y-auto tw-pb-10" style={{ maxHeight: 800, width: 1024 }}>
-                        {meetings.length > 0
-                            ? meetings.map((meeting, i) =>
-                                <div className="tw-bg-gray-50" key={meeting.id}>
-                                    <div className="tw-flex tw-flex-nowrap tw-h-10 tw-border-b tw-border-dashed tw-border-gray-300 tw-rounded-b-md">
-                                        <div className="tw-w-12 tw-flex tw-items-center tw-justify-center tw-font-medium">
-                                            {i + 1}
-                                        </div>
-                                        <div className="tw-w-40 tw-flex tw-items-center tw-justify-center tw-font-medium">
-                                            {statusWord(meeting.status)}
-                                        </div>
-                                        <div className="tw-w-40 tw-flex tw-items-center tw-justify-center tw-font-medium">
-                                            {meeting.sdate}
-                                        </div>
-                                        <div className="tw-w-56 tw-flex tw-flex-nowrap tw-items-center tw-justify-center tw-text-13px">
-                                            <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none" onClick={() => setDetails({ open: (details.id === meeting.id && details.type === 'members' ? !details.open : true), id: meeting.id, type: 'members' })}>
-                                                <UsersSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
-                                                {meeting.members?.length} гишүүн
-                                            </button>
-                                            <button className="tw-flex tw-items-center tw-bg-gray-600 active:tw-bg-gray-700 tw-text-white tw-transition-colors tw-rounded tw-py-0.5 tw-px-2 focus:tw-outline-none tw-ml-4" onClick={() => setDetails({ open: (details.id === meeting.id && details.type === 'projects' ? !details.open : true), id: meeting.id, type: 'projects' })}>
-                                                <ClipboardListSVG className="tw-w-4 tw-h-4 tw-mr-1.5" />
-                                                {meeting.projects?.length} төсөл
-                                            </button>
-                                        </div>
-                                        <div className="tw-w-56 tw-flex tw-flex-nowrap tw-items-center tw-justify-center tw-ml-auto tw-text-13px">
-                                            <ButtonTooltip tooltip="Өөрчлөлт оруулах" beforeSVG={<PenSVG className="tw-w-4 tw-h-4" />} classButton="tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-p-1" onClick={() => navigateMeeting(meeting.id)} />
+                    <Column caption="Д/д" headerCellRender={HeaderCell} cellRender={cellRenderOrder} />
+                    <Column dataField="status" caption="Төлөв" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueStatus} />
+                    <Column dataField="sdate" caption="Уулзалтын өдөр" headerCellRender={HeaderCell} />
+                    <Column caption="Бүрэлдэхүүн" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueDetail} />
+                    <Column caption="Уулзалтыг засах" cellRender={data => <ButtonNavEdit data={data} />} alignment="center" headerCellRender={HeaderCell} />
 
-                                            <ButtonTooltip tooltip="Устгах" beforeSVG={<TrashSVG className="tw-w-4 tw-h-4" />} classAppend="tw-ml-2" classButton="tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-p-1" />
-                                        </div>
-                                    </div>
-
-                                    <Transition
-                                        items={details.open && details.id === meeting.id}
-                                        from={{ height: 0 }}
-                                        enter={{ height: 'auto' }}
-                                        leave={{ height: 0 }}>
-                                        {item => item && (anims =>
-                                            <animated.div className="tw-overflow-hidden tw-font-medium" style={{ ...anims, fontSize: '13px' }}>
-                                                {{
-                                                    'members':
-                                                        <div className="tw-overflow-y-auto" style={{ maxHeight: 320 }}>
-                                                            <div className="tw-sticky tw-top-0 tw-flex tw-flex-nowrap tw-h-8 tw-bg-gray-200 tw-roundedt" style={{ marginLeft: '380px' }}>
-                                                                <div className="tw-w-10 tw-flex tw-items-center tw-pl-2 tw-pr-1">
-                                                                    Д/д
-                                                                </div>
-                                                                <div className="tw-w-32 tw-flex tw-items-center tw-px-1">
-                                                                    Овог
-                                                                </div>
-                                                                <div className="tw-w-32 tw-flex tw-items-center tw-px-1">
-                                                                    Нэр
-                                                                </div>
-                                                                <div className="tw-w-24 tw-flex tw-items-center tw-px-1">
-                                                                    Утас
-                                                                </div>
-                                                                <div className="tw-w-48 tw-flex tw-items-center tw-px-1">
-                                                                    И-мэйл
-                                                                </div>
-                                                            </div>
-
-                                                            {getEvalautors(meeting.members).map((evaluator, j) =>
-                                                                <div className="tw-flex tw-flex-nowrap tw-h-8 tw-border-b tw-border-dashed tw-border-gray-300" style={{ marginLeft: '380px' }} key={evaluator.id}>
-                                                                    <div className="tw-w-10 tw-flex tw-items-center tw-truncate tw-pl-2 tw-pr-1">
-                                                                        {j + 1}
-                                                                    </div>
-                                                                    <div className="tw-w-32 tw-flex tw-items-center tw-truncate tw-px-1">
-                                                                        {evaluator.lastname}
-                                                                    </div>
-                                                                    <div className="tw-w-32 tw-flex tw-items-center tw-truncate tw-px-1">
-                                                                        {evaluator.firstname}
-                                                                    </div>
-                                                                    <div className="tw-w-24 tw-flex tw-items-center tw-truncate tw-px-1">
-                                                                        {evaluator.phone}
-                                                                    </div>
-                                                                    <div className="tw-w-48 tw-flex tw-items-center tw-truncate tw-px-1">
-                                                                        {evaluator.email}
-                                                                    </div>
-                                                                </div>
-                                                            )}
-                                                        </div>,
-                                                    'projects':
-                                                        <div className="tw-overflow-y-auto" style={{ maxHeight: 320 }}>
-                                                            <div className="tw-sticky tw-top-0 tw-flex tw-flex-nowrap tw-h-8 tw-bg-gray-200 tw-rounded-sm" style={{ marginLeft: '380px' }}>
-                                                                <div className="tw-w-10 tw-flex tw-items-center tw-pl-2 tw-pr-1">
-                                                                    Д/д
-                                                                </div>
-                                                                <div className="tw-w-40 tw-flex tw-items-center tw-px-1">
-                                                                    ААН нэр
-                                                                </div>
-                                                                <div className="tw-w-24 tw-flex tw-items-center tw-px-1">
-                                                                    Регистр
-                                                                </div>
-                                                                <div className="tw-w-40 tw-flex tw-items-center tw-px-1">
-                                                                    Төслийн нэр
-                                                                </div>
-                                                                <div className="tw-w-28 tw-flex tw-items-center tw-px-1">
-                                                                    Төслийн төрөл
-                                                                </div>
-                                                            </div>
-
-                                                            {getProjects(meeting.projects).map((project, j) =>
-                                                                <div className="tw-flex tw-flex-nowrap tw-h-8 tw-border-b tw-border-dashed tw-border-gray-300" style={{ marginLeft: '380px' }} key={project.project.id}>
-                                                                    <div className="tw-w-10 tw-flex tw-items-center tw-truncate tw-pl-2 tw-pr-1">
-                                                                        {j + 1}
-                                                                    </div>
-                                                                    <div className="tw-w-40 tw-flex tw-items-center tw-truncate tw-px-1">
-                                                                        {project.companyname}
-                                                                    </div>
-                                                                    <div className="tw-w-24 tw-flex tw-items-center tw-truncate tw-px-1">
-                                                                        {project.companyregister}
-                                                                    </div>
-                                                                    <div className="tw-w-40 tw-flex tw-items-center tw-truncate tw-px-1">
-                                                                        {project.project.project_name}
-                                                                    </div>
-                                                                    <div className="tw-w-28 tw-flex tw-items-center tw-truncate tw-px-1">
-                                                                        {project.project.project_type_name}
-                                                                    </div>
-                                                                </div>
-                                                            )}
-                                                        </div>,
-                                                }[details.type]}
-                                            </animated.div>
-                                        )}
-                                    </Transition>
-                                </div>
-                            )
-                            : <div className="tw-p-4 tw-font-medium tw-italic tw-bg-gray-50 tw-rounded-b-md">
-                                <span className="tw-opacity-90">Товлосон уулзалт байхгүй байна.</span>
-                            </div>
-                        }
-                    </div>
-                </div>
+                    <MasterDetail enabled={true} render={data => <MasterDetails data={data} projects={projects} evaluators={evaluators} />} />
+                </DataGrid>
 
                 <div className="tw-flex tw-justify-center">
-                    <button className="tw-py-1.5 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-8 tw-text-13px" onClick={() => history.push('/meetings/id')}>
-                        Уулзалт нэмэх
-                    </button>
+                    <Link to="/meetings/id">
+                        <button className="tw-py-1.5 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-8 tw-mb-6 tw-text-13px">
+                            Уулзалт нэмэх
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>
     )
 }
+
+const HeaderCell = (data) => (
+    <div className="tw-text-center tw-font-medium tw-text-gray-700 tw-text-13px">
+        {data.column.caption}
+    </div>
+)
+
+const cellRenderOrder = (data) => {
+    return `${data.rowIndex + 1}.`
+}
+
+const calculateCellValueStatus = (rowdata) => {
+    return statusRef[rowdata.status]
+}
+
+const calculateCellValueDetail = (rowdata) => {
+    return `${rowdata.projects.length} төсөл, ${rowdata.members.length} гишүүн`
+}
+
+const ButtonNavEdit = ({ data }) => {
+    const meetingId = data.data?.id
+    const history = useHistory()
+    const handleClick = () => {
+        if (meetingId !== null && meetingId !== undefined) {
+            history.push(`/meetings/id?id=${meetingId}`)
+        }
+    }
+    return (
+        <button
+            className="tw-rounded-sm tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-px-2 tw-py-1 focus:tw-outline-none"
+            onClick={handleClick}
+            title="Сургалтын мэдээллийг засах">
+            Засах
+        </button>
+    )
+}
+
+const MasterDetails = ({ data, projects, evaluators }) => {
+    const projectIds = data.data?.projects
+    const evaluatorIds = data.data?.members
+    const meetingProjects = projects.filter(project => projectIds.includes(project.project?.id))
+    const meetingEvaluators = evaluators.filter(evaluator => evaluatorIds.includes(evaluator.id))
+
+    return (
+        <TabPanel>
+            <Item title="Тэнцсэн төслүүд" render={() => <ProjectsList projects={meetingProjects} />} />
+            <Item title="Үнэлгээний хорооны гишүүд" render={() => <EvaluatorsList evaluators={meetingEvaluators} />} />
+        </TabPanel>
+    )
+}
+
+const ProjectsList = ({ projects }) => (
+    <DataGrid
+        id="master-detail-projects-datagrid"
+        dataSource={projects}
+        showBorders={true}
+        wordWrapEnabled={true}
+        columnAutoWidth={true}
+        showRowLines={true}
+        showColumnLines={true}
+        noDataText="Мэдээлэл байхгүй байна."
+    >
+        <Paging defaultPageSize={20} />
+
+        <Column caption="Д/д" cellRender={cellRenderOrder} headerCellRender={HeaderCell} />
+        <Column dataField="companyname" caption="Байгууллага" headerCellRender={HeaderCell} />
+        <Column dataField="project.project_type_name" caption="Төслийн төрөл" headerCellRender={HeaderCell} />
+        <Column dataField="companyregister" caption="Регистр" headerCellRender={HeaderCell} />
+        <Column dataField="project.project_name" caption="Төслийн нэр" headerCellRender={HeaderCell} />
+    </DataGrid>
+)
+
+const EvaluatorsList = ({ evaluators }) => (
+    <DataGrid
+        id="master-detail-evaluators-datagrid"
+        dataSource={evaluators}
+        showBorders={true}
+        wordWrapEnabled={true}
+        columnAutoWidth={true}
+        showRowLines={true}
+        showColumnLines={true}
+        noDataText="Мэдээлэл байхгүй байна."
+    >
+        <Paging defaultPageSize={20} />
+
+        <Column caption="Д/д" cellRender={cellRenderOrder} headerCellRender={HeaderCell} />
+        <Column dataField="lastname" caption="Овог" headerCellRender={HeaderCell} />
+        <Column dataField="firstname" caption="Нэр" headerCellRender={HeaderCell} />
+        <Column dataField="phone" caption="Утас" headerCellRender={HeaderCell} />
+        <Column dataField="email" caption="Имэйл" headerCellRender={HeaderCell} />
+    </DataGrid>
+)
