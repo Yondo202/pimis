@@ -9,7 +9,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import FileCardAdd from './fileCardAdd'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 
-export default function AttachmentUploadsSecond() {
+export default function EvidenceAttachments2() {
     const [form, setForm] = useState(initialState)
 
     const [editCode, setEditCode] = useState()

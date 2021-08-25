@@ -13,8 +13,8 @@ import UrgudulNavigator from "pages/urgudul/Navigator"
 import FirstEvaluation from "pages/decision_making/5a/Page";
 import CompilationCheck from "pages/decision_making/5b/Page";
 import AnalystReport from "pages/decision_making/5c/Page";
-import AttachmentUploadsFirst from 'pages/attachments/page1';
-import AttachmentUploadsSecond from "pages/attachments/page2";
+import EvidenceAttachments1 from 'pages/attachments/evidenceAttachments1';
+import EvidenceAttachments2 from "pages/attachments/evidenceAttachments2";
 import WorkPerformance from 'components/workPerformance/MainWorkPerformance'
 import PdfTest from 'components/check/PdfTest'
 import MiddleRoute from "containers/middle/middleRoute"
@@ -22,6 +22,10 @@ import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 // import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import TrainingFrontPage from 'pages/training/frontPage';
+import MakeContract from 'pages/contract/make_contract/makeContract';
+import PerformanceAttachments from 'pages/attachments/performanceAttachements';
+import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
+import FinancialAttachments from 'pages/attachments/financialAttachments';
 
 
 function UsersRoute() {
@@ -50,11 +54,15 @@ function UsersRoute() {
                     <Route path="/letter-of-interest" component={LetterNavigator} />
                     <Route path="/urgudul/:page" component={UrgudulNavigator} />
                     <Route path="/urgudul-preview/:id" component={UrgudulPreviewForUser} />
-                    <Route path="/attachments/first" component={AttachmentUploadsFirst} />
-                    <Route path="/attachments/second" component={AttachmentUploadsSecond} />
+                    <Route path="/attachments/evidence-1" component={EvidenceAttachments1} />
+                    <Route path="/attachments/evidence-2" component={EvidenceAttachments2} />
+                    <Route path="/attachments/performance" component={PerformanceAttachments} />
+                    <Route path="/attachments/financial" component={FinancialAttachments} />
+                    <Route path="/attachments/invoice" component={InvoiceAttachments} />
                     <Route path="/5a" component={FirstEvaluation} />
                     <Route path="/5b" component={CompilationCheck} />
                     <Route path="/5c" component={AnalystReport} />
+                    <Route path="/make-contract" component={MakeContract} />
                     <Route path="/trainings">
                         <TrainingFrontPage user={true} />
                     </Route>

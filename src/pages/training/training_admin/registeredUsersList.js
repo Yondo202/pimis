@@ -48,6 +48,10 @@ export default function TrainingRegisteredUsersList() {
       return sectors.find(sector => sector.id === sectorId)?.bdescription_mon
    }
 
+   const removeRegistration = (id) => {
+      setRegisteredUsers(prev => prev.filter(registration => registration.id !== id))
+   }
+
    return (
       <div className="tw-absolute tw-w-full tw-text-gray-700 tw-text-sm">
          <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/trainings')}>
@@ -89,11 +93,37 @@ export default function TrainingRegisteredUsersList() {
                <Column dataField="employee_position" caption="Одоогийн ажлын албан тушаал" headerCellRender={HeaderCell} minWidth={160} />
                <Column dataField="business_sectorId" caption="Үйл ажиллагаа явуулдаг салбар" calculateCellValue={calculateCellSector} headerCellRender={HeaderCell} minWidth={240} />
                <Column dataField="annual_sales" caption="Жилийн борлуулалтын тоо хэмжээ" headerCellRender={HeaderCell} />
+               <Column caption="Бүртгэлийг устгах" cellRender={data => <ButtonDelete data={data} trainingId={trainingId} removeRegistration={removeRegistration} />} alignment="center" headerCellRender={HeaderCell} />
 
                <MasterDetail enabled={true} component={MasterDetails} />
             </DataGrid>
          </div>
       </div>
+   )
+}
+
+const ButtonDelete = ({ data, trainingId, removeRegistration }) => {
+   const AlertCtx = useContext(AlertContext)
+   const registrationId = data.data?.id
+
+   const handleClick = () => {
+      axios.delete(`/trainings/${trainingId}/registrations/${registrationId}`, {
+         headers: { Authorization: getLoggedUserToken() }
+      }).then(res => {
+         removeRegistration(registrationId)
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Бүртгэлийг устгалаа.' })
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Бүртгэлийг устгаж чадсангүй.' })
+      })
+   }
+
+   return (
+      <button
+         className="tw-rounded-sm tw-bg-red-400 active:tw-bg-red-500 tw-transition-colors tw-text-white tw-px-2 tw-py-1 focus:tw-outline-none"
+         onClick={handleClick}
+         title="Бүртгэлийг устгах">
+         Устгах
+      </button>
    )
 }
 

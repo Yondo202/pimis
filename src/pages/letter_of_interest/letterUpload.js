@@ -14,7 +14,7 @@ import HelpPopup from 'components/help_popup/helpPopup'
 import PaperClipSVG from 'assets/svgComponents/paperClipSVG'
 import PenAltSVG from 'assets/svgComponents/penAltSVG'
 import LetterPreview from './preview'
-import { acceptDocTypes } from 'pages/attachments/page2'
+import { acceptDocTypes } from 'pages/attachments/evidenceAttachments2'
 
 
 export default function LetterUpload() {

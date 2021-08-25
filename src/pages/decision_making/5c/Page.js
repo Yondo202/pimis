@@ -15,8 +15,9 @@ import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import { useHistory } from 'react-router-dom'
 
 const rowDescriptions = {
-    z: 'Өргөдөл гаргагчийн төслийг дэмжих саналтай эсэх?',
-    a: 'A ХЭСЭГ: Өргөдөл гаргагч экспорт хийх чадавхитай эсэх?',
+    z: 'Өргөдөл гаргагчийн төслийг дэмжих саналтай эсэх',
+
+    a: 'A ХЭСЭГ: Өргөдөл гаргагч экспорт хийх чадавхитай эсэх',
     a1: 'Шалгуур үзүүлэлтийг бүрэн хангасан эсэх (Шалгууруудыг хэрхэн хангасан талаарх мэдээлэл)',
     a2: 'Дотоодын зах зээл дээр байр сууриа олсон эсэх (Дотоодын зах зээл дээрх байр суурь, зорилтот зах зээлийн мэдээлэл)',
     a3: 'Одоогийн компанийн борлуулалт, ашигт гол нөлөө бүхий бүтээгдэхүүн, үйлчилгээ нь урт хугацааны өрсөлдөх чадвар бүхий бүтээгдэхүүн эсэх',
@@ -24,7 +25,8 @@ const rowDescriptions = {
     a5: 'Чадавхи бүхий хүний нөөц, баг бүрдүүлж чадсан эсэх',
     a6: 'Экспорт хийсэн туршлагатай эсэх (Экспортын мэдээлэлд өгсөн дүн шинжилгээ)',
     a7: 'Төслийн санхүүжилт дууссаны дараа, экспортын зах зээлдээ үргэлжлүүлэн байр сууриа бататгах санхүүгийн чадавхи, хүсэлтэй эсэх',
-    b: 'B ХЭСЭГ: Экспорт хөгжлийн төлөвлөгөө нь хэрэгжих боломжтой бөгөөд Монгол улсын экспортонд нөлөө үзүүлэх чадвартай эсэх?',
+
+    b: 'B ХЭСЭГ: Экспорт хөгжлийн төлөвлөгөө нь хэрэгжих боломжтой бөгөөд Монгол улсын экспортонд нөлөө үзүүлэх чадвартай эсэх',
     b1: 'Зорилтот экспорт хийх улсад өрсөлдөх боломжтой эсэх (зах зээлийн багтаамж, зорилтот зах зээлийн хэмжээний талаарх мэдээлэл)',
     b2: 'Экспортын зорилтот зах зээлийн зорилтот хэрэглэгчдийн бүлэгт тохирсон бүтээгдэхүүн, үйлчилгээг нийлүүлэх боломжтой эсэх (хэрэглэгчдийн зан төлөв, сонирхлын талаар судалгаанд үндэслэсэн)',
     b3: 'Экспортын зорилтот зах зээлд өрсөлдөх чадвараа нэмэгдүүлэх төлөвлөгөө, хүчин чадалтай эсэх (өрсөлдөгчдийн судалгаанд үндэслэсэн шинжилгээ)',
@@ -35,199 +37,22 @@ const rowDescriptions = {
     b8: 'Түгээлт, ханган нийлүүлэлтийг оновчтой төлөвлөсөн эсэх',
     b9: 'Төслийн өгөөж нь өргөдөл гаргагчид санхүүгийн өгөөжтэй эсэх (төслөөр бий болох санхүүгийн тооцооллын шинжилгээ)',
     b10: 'Төслөөс гарах үр дүн нь экспортын хэмжээ, экспортлогч улс, экспортлогчдын тоонд шууд нөлөөлөл үзүүлэх боломжтой эсэх (экспортын мэдээлэлтэй харьцуулсан шинжилгээ)',
-    c: 'C ХЭСЭГ: Хэрэгжүүлэх арга хэмжээ нь урт хугацаанд өгөөж, давуу талыг бий болгож буй эсэх?',
+
+    c: 'C ХЭСЭГ: Хэрэгжүүлэх арга хэмжээ нь урт хугацаанд өгөөж, давуу талыг бий болгож буй эсэх',
     c1: 'Өргөдөл гаргагчийн төлөвлөсөн үйл ажиллагаа нь 9 сарын дотор хэрэгжих боломжтой эсэх',
     c2: 'Уг үйл ажиллагаа нь Экспорт хөгжлийн төлөвлөгөөтэй уялдаж, үр дүнтэй байх чадах эсэх',
 }
 
 const initialCommentsOpen = Object.keys(rowDescriptions).reduce((a, c) => ({ ...a, [c]: false }), {})
 
-const initialState = [
-    {
-        description: rowDescriptions.z,
-        comment: '',
-        isChecked: false,
-        rowcode: 'z',
-        order: 1,
-        category: '@',
-    },
-    {
-        description: rowDescriptions.a,
-        comment: '',
-        isChecked: false,
-        rowcode: 'a',
-        order: 5,
-        category: 'A',
-    },
-    {
-        description: rowDescriptions.a1,
-        comment: '',
-        isChecked: false,
-        rowcode: 'a1',
-        order: 10,
-        category: 'A',
-    },
-    {
-        description: rowDescriptions.a2,
-        comment: '',
-        isChecked: false,
-        rowcode: 'a2',
-        order: 15,
-        category: 'A',
-    },
-    {
-        description: rowDescriptions.a3,
-        comment: '',
-        isChecked: false,
-        rowcode: 'a3',
-        order: 20,
-        category: 'A',
-    },
-    {
-        description: rowDescriptions.a4,
-        comment: '',
-        isChecked: false,
-        rowcode: 'a4',
-        order: 25,
-        category: 'A',
-    },
-    {
-        description: rowDescriptions.a5,
-        comment: '',
-        isChecked: false,
-        rowcode: 'a5',
-        order: 30,
-        category: 'A',
-    },
-    {
-        description: rowDescriptions.a6,
-        comment: '',
-        isChecked: false,
-        rowcode: 'a6',
-        order: 35,
-        category: 'A',
-    },
-    {
-        description: rowDescriptions.a7,
-        comment: '',
-        isChecked: false,
-        rowcode: 'a7',
-        order: 40,
-        category: 'A',
-    },
-    {
-        description: rowDescriptions.b,
-        comment: '',
-        isChecked: false,
-        rowcode: 'b',
-        order: 45,
-        category: 'B',
-    },
-    {
-        description: rowDescriptions.b1,
-        comment: '',
-        isChecked: false,
-        rowcode: 'b1',
-        order: 50,
-        category: 'B',
-    },
-    {
-        description: rowDescriptions.b2,
-        comment: '',
-        isChecked: false,
-        rowcode: 'b2',
-        order: 55,
-        category: 'B',
-    },
-    {
-        description: rowDescriptions.b3,
-        comment: '',
-        isChecked: false,
-        rowcode: 'b3',
-        order: 60,
-        category: 'B',
-    },
-    {
-        description: rowDescriptions.b4,
-        comment: '',
-        isChecked: false,
-        rowcode: 'b4',
-        order: 65,
-        category: 'B',
-    },
-    {
-        description: rowDescriptions.b5,
-        comment: '',
-        isChecked: false,
-        rowcode: 'b5',
-        order: 70,
-        category: 'B',
-    },
-    {
-        description: rowDescriptions.b6,
-        comment: '',
-        isChecked: false,
-        rowcode: 'b6',
-        order: 75,
-        category: 'B',
-    },
-    {
-        description: rowDescriptions.b7,
-        comment: '',
-        isChecked: false,
-        rowcode: 'b7',
-        order: 80,
-        category: 'B',
-    },
-    {
-        description: rowDescriptions.b8,
-        comment: '',
-        isChecked: false,
-        rowcode: 'b8',
-        order: 85,
-        category: 'B',
-    },
-    {
-        description: rowDescriptions.b9,
-        comment: '',
-        isChecked: false,
-        rowcode: 'b9',
-        order: 90,
-        category: 'B',
-    },
-    {
-        description: rowDescriptions.b10,
-        comment: '',
-        isChecked: false,
-        rowcode: 'b10',
-        order: 95,
-        category: 'B',
-    },
-    {
-        description: rowDescriptions.c,
-        comment: '',
-        isChecked: false,
-        rowcode: 'c',
-        order: 100,
-        category: 'C',
-    },
-    {
-        description: rowDescriptions.c1,
-        comment: '',
-        isChecked: false,
-        rowcode: 'c1',
-        order: 105,
-        category: 'C',
-    },
-    {
-        description: rowDescriptions.c2,
-        comment: '',
-        isChecked: false,
-        rowcode: 'c2',
-        order: 110,
-        category: 'C',
-    },
-]
+const initialState = Object.entries(rowDescriptions).map(([rowcode, description], i) => ({
+    description: description,
+    isChecked: false,
+    comment: '',
+    rowcode: rowcode,
+    order: i + 1,
+    category: rowcode[0].toUpperCase()
+}))
 
 const initialEvaluator = {
     check_start: '',
@@ -283,22 +108,6 @@ export default function AnalystReport() {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
                 setEvaluator(res.data.data)
-            })
-        } else {
-            axios.get('pps-infos/registered-companies', {
-                headers: { Authorization: getLoggedUserToken() },
-                params: { userId: loggedUserId },
-            }).then(res => {
-                setCompany(res.data.data[0] ?? {})
-                res.data.data[0]?.project?.id &&
-                    axios.get(`projects/${res.data.data[0].project.id}/bds-evaluation5c`, {
-                        headers: { Authorization: getLoggedUserToken() },
-                    }).then(res => {
-                        if (res.data.data?.rows?.length === initialState.length) {
-                            setRows(res.data.data.rows)
-                        }
-                        setInfo(res.data.data.info)
-                    })
             })
         }
     }, [])

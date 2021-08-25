@@ -21,7 +21,7 @@ function ActiveComp(props) {
                         <div className="line" />
                         <Link to={props.prew ? `/urgudul-preview/${props?.data?.project?.id}` : '/urgudul/1'} className={props?.data?.project && props?.data?.project.confirmed === 1 ? `itemsActive` : `items`} >4. Өргөдлийн маягт </Link>
                         <div className="line" />
-                        <Link to={props.prew ? `/attachments/first/${props.prew}` : '/attachments/first'} className={props?.data?.evidence1 === true ? `itemsActive` : `items`} >5. Нотлох бичиг баримтууд </Link>
+                        <Link to={props.prew ? `/attachments/evidence-1/${props.prew}` : '/attachments/evidence-1'} className={props?.data?.evidence1 === true ? `itemsActive` : `items`} >5. Нотлох бичиг баримтууд I</Link>
                     </div>
                     {/* <div className="lineFull" ></div>
                     <Link to={props.prew ? `/urgudul-preview/${props?.data?.project?.id}` : '/urgudul/1'} className={props?.data?.project && props?.data?.project.confirmed === 1 ? `resultActive` : `resultDesable`} >4. Өргөдлийн маягт </Link> */}
@@ -33,7 +33,9 @@ function ActiveComp(props) {
                     <div className="mains">
                         <a href={props.prew ? `` : `${edplanFront}/${props?.data?.userId}`} rel="noreferrer" target={props.prew ? "_self" : "_blank"} className={props?.data?.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
                         <div className="line" ></div>
-                        <Link to={props.prew ? `/attachments/second/${props.prew}` : '/attachments/second'} className={props?.data?.evidence2 === true ? `itemsActive` : `items`} >2.Нотлох бичиг баримтууд </Link>
+                        <Link to={props.prew ? `/attachments/evidence-2/${props.prew}` : '/attachments/evidence-2'} className={props?.data?.evidence2 === true ? `itemsActive` : `items`}>
+                            2.Нотлох бичиг баримтууд II
+                        </Link>
                     </div>
                     {/* <div className="lineFull" ></div> */}
                     {/* <Link to={props.prew ? `/attachments/${props.prew}` : '/attachments'} className={props?.data?.evidence === true ? `resultActive` : `resultDesable`} >2.Нотлох бичиг баримтууд </Link> */}
@@ -50,10 +52,12 @@ function ActiveComp(props) {
                         <div className="line" />
                         <Link to={props.prew ? `/5b/${props?.data?.project?.id}` : ''} className={props?.data?.evaluation5b.value === 0 ? 'items' : props?.data?.evaluation5b.value === 1 ? 'itemsNotApproved items' : 'itemsActive items'}>
                             <div className="helpArr"></div>
-                            2. Бичиг баримтын бүрдүүлбэрийг шалгах хуудас</Link>
+                            2. Бичиг баримтын бүрдүүлбэрийг шалгах хуудас
+                        </Link>
                         <div className="line" />
                         <Link to={props.prew ? `/5c/${props?.data?.project?.id}` : ''} className={props?.data?.evaluation5c.value === 0 ? 'items' : props?.data?.evaluation5c.value === 1 ? 'itemsNotApproved items' : 'itemsActive items'}>
-                            3. Шинжилгээний тайлан</Link>
+                            3. Шинжилгээний тайлан
+                        </Link>
                     </div>
                     {/* <div className="lineFull" ></div>
                     <Link to={props.prew ? `/5c/${props?.data?.project?.id}` : '/5c'} className={props?.data?.evaluation5c ? `items resultActive` : `items resultDesable`}>3. Бизнес шинжээчийн шинжилгээний тайлан </Link> */}
@@ -63,23 +67,27 @@ function ActiveComp(props) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <Link to="#" className={props?.data?.lastEvalution.value === 0 ? `items arrHelp` : props?.data?.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} ><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
+                        <Link to="" className={props?.data?.lastEvalution.value === 0 ? `items arrHelp` : props?.data?.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} ><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
                         <div className="line" />
-                        <Link to={props.prew ? `/maindecision/${props?.data?.project?.id}` : `#`} className={props?.data?.lastEvalution.value === 0 ? `items` : props?.data?.lastEvalution.value === 1 ? `resultWaiting` : `itemsActive`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
+                        <Link to={props.prew ? `/maindecision/${props?.data?.project?.id}` : ``} className={props?.data?.lastEvalution.value === 0 ? `items` : props?.data?.lastEvalution.value === 1 ? `resultWaiting` : `itemsActive`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
                     </div>
                     {/* <div className="lineFull" ></div>
-                    <Link to={props.prew ? `/maindecision/${props?.data?.project?.id}` : `#`} className={props?.data?.lastEvalution.value === 0 ? `resultDesable` : props?.data?.lastEvalution.value === 1 ? `resultWaiting` : `resultActive`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link> */}
+                    <Link to={props.prew ? `/maindecision/${props?.data?.project?.id}` : ``} className={props?.data?.lastEvalution.value === 0 ? `resultDesable` : props?.data?.lastEvalution.value === 1 ? `resultWaiting` : `resultActive`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link> */}
                 </div>
             </div>
 
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <div className="items arrHelp"><div className="helpArr"></div>1. Түншлэлийн гэрээ байгуулах </div>
-                        <div className="line" ></div>
-                        <Link to="#" className="items "><div className="helpArr"></div> 2. Түншлэлийн гэрээний гүйцэтгэлийн тайлан  </Link>
-                        <div className="line" ></div>
-                        <div className="items">3. Гүйцэтгэлийг нотлох баримтууд (гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан)</div>
+                        <Link to="/make-contract">
+                            <div className="items arrHelp"><div className="helpArr"></div>1. Түншлэлийн гэрээ байгуулах</div>
+                        </Link>
+                        <div className="line"></div>
+                        <div className="items">2. Түншлэлийн гэрээний гүйцэтгэлийн тайлан</div>
+                        <div className="line"></div>
+                        <Link to={props.prew ? `/attachments/performance/${props.prew}` : '/attachments/performance'}>
+                            <div className="items">3. Гүйцэтгэлийг нотлох баримтууд (гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан)</div>
+                        </Link>
                     </div>
                     {/* <div className="lineFull" ></div>
                     <div className="resultDesable">3. Гүйцэтгэлийг нотлох баримтууд (гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан)</div> */}
@@ -89,12 +97,16 @@ function ActiveComp(props) {
             <div style={{ borderRight: `none` }} className="col-md-2 col-sm-2 itemsCol itemsColA">
                 <div className="itemsPar">
                     <div className="mains">
-                        <div className="items arrHelp"><div className="helpArr"></div>4. Хийгдсэн ажлуудын санхүүгийн баримтууд</div>
+                        <Link to={props.prew ? `/attachments/financial/${props.prew}` : '/attachments/financial'}>
+                            <div className="items arrHelp"><div className="helpArr"></div>4. Хийгдсэн ажлуудын санхүүгийн баримтууд</div>
+                        </Link>
                         <div className="line" ></div>
-                        <div className="items">5. Санхүүгийн дэмжлэгийн төлбөрийн нэхэмжлэх</div>
-                        <div className="line" ></div>
+                        <Link to={props.prew ? `/attachments/invoice/${props.prew}` : '/attachments/invoice'}>
+                            <div className="items">5. Санхүүгийн дэмжлэгийн төлбөрийн нэхэмжлэх</div>
+                        </Link>
+                        <div className="line"></div>
                         <div className="items">6. Ажлын гүйцэтгэл хүлээн авах маягт</div>
-                        <div className="line" ></div>
+                        <div className="line"></div>
                         <div className="items">6. Гүйцэтгэлийн үнэгээ (ажлын чанар, гэрээний биелэлт, оролцоо)</div>
                     </div>
                     {/* <div className="lineFull" ></div>

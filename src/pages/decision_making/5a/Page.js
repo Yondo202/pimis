@@ -58,22 +58,6 @@ const FirstEvaluation = () => {
       }).then(res => {
         setEvaluator(res.data.data)
       })
-    } else {
-      axios.get('pps-infos/registered-companies', {
-        headers: { Authorization: getLoggedUserToken() },
-        params: { userId: loggedUserId },
-      }).then(res => {
-        setCompany(res.data.data[0] ?? {})
-        res.data.data[0]?.project?.id &&
-          axios.get(`projects/${res.data.data[0].project.id}/first-evalutions`, {
-            headers: { Authorization: getLoggedUserToken() },
-          }).then(res => {
-            if (res.data.data?.length === initialState.length) {
-              setRows(res.data.data)
-              setSaved(true)
-            }
-          })
-      })
     }
   }, [])
 
@@ -212,165 +196,38 @@ const FirstEvaluation = () => {
 
 const editors = ['edpadmin', 'member', 'ahlah_bhsh']
 
-const rowsDescriptions = {
+const rowDescriptions = {
   z: "Өргөдөл гаргагч нь дараагийн шатанд тэнцсэн эсэх?",
-  a: "A ХЭСЭГ: Өргөдөл гаргагчийн шалгуур хангалт",
-  a1: "Өргөдөл гаргагч нь зөвшөөрөгдсөн үйлдвэрлэл, үйлчилгээний салбарынх мөн эсэх",
-  a2: "Сүүлийн 2 жилийн хугацаанд тогтвортой үйл ажиллагаа явуулсан эсэх",
-  a3: "Жилийн борлуулалтын хэмжээ 50 мянгаас - 50 сая ам.долларын хооронд эсэх",
-  a4: "Нийгмийн даатгалд бүртгэлтэй бүтэн цагийн ажилтны тоо 10-250 хооронд эсэх",
-  a5: "12 сараас дээш хугацааны татвар болон нийгмийн даатгалын өргүй эсэх",
-  a6: "Муу зээлийн түүхгүй эсэх",
+
+  a: "A ХЭСЭГ: Өргөдөл гаргагч нь шалгуур үзүүлэлт хангасан эсэх",
+  a1: "Нэгдүгээр шатанд ирүүлэх бичиг баримтыг бүрэн ирүүлсэн эсэх",
+  a2: "2 ба түүнээс дээш жилийн хугацаанд тогтвортой үйл ажиллагаа явуулсан эсэх",
+  a3: "Сүүлийн 2 жилийн санхүүгийн тайлангаа илгээсэн эсэх",
+  a4: "Сүүлийн 2 жилийн борлуулалтын орлогын дундаж 150 сая төгрөгөөс 150 тэрбум төгрөгийн хооронд эсэх",
+  a5: "Экспортыг дэмжих төслийн санхүүгийн дэмжлэгтэйгээр хийхээр төлөвлөсөн ажлуудын санхүүжилтийг урьдчилан гаргах боломжтойг нотлох баримттай эсэх /сүүлийн 2 жилийн мөнгөн урсгалын тайлан, 1 жилийн мөнгөн урсгалын төлөвлөгөө, банкны хуулга, гм/",
+  a6: "Өргөдөл гаргагч нь зөвшөөрөгдсөн үйлдвэрлэл, үйлчилгээний салбарынх мөн эсэх",
   a7: "Аж ахуйн нэгжийн аль нэгэн хувь нийлүүлэгч нь улс төрийн нөлөө бүхий этгээд мөн эсэх",
   a8: "Байгаль орчны үнэлгээний шалгуурыг хангасан эсэх",
+  a9: "Өргөдөл гаргагч байгууллагын түлхүүр 3 албан тушаалтны ажлын туршлага, боловсрол, ур чадварыг илэрхийлэх намтар ирүүлсэн эсэх",
+
   b: "B ХЭСЭГ: Төслийн шалгуур",
-  b1: "Төслийн үр дүнд экспортын шинэ зах зээл бий болох, экспортын хэмжээ өсөх, экспортлогч компани мэдэгдэхүйц хэмжээнд өсөх эсэх?",
-  b2: "Төслийг хэрэгжүүлэх үйл ажиллагаа нь 9 сарын дотор хэрэгжих боломжтой эсэх? ",
-  b3: "Төслийг хэрэгжүүлэх үйл ажиллагааны зардал нь 5 мянган ам.доллараас 50 мянган ам.долларын хооронд эсэх?",
-  c: "C ХЭСЭГ: Зардлын шалгуур",
-  c1: "Төлөвлөсөн зардал нь хориотой үйл ажиллагааны ангилалд ороогүй эсэх",
-  c2: "Төлөвлөсөн зардал нь хориотой ангиллын зардалд ороогүй эсэх",
+  b1: "Төслийн үр дүнд экспортын шинэ зах зээл бий болох, экспортын хэмжээ өсөх, экспортлогч компани мэдэгдэхүйц хэмжээнд өсөх эсэх",
+  b2: "Төслийг хэрэгжүүлэх үйл ажиллагаа нь 9 сарын дотор хэрэгжих боломжтой 5 хүртэлх үйл ажиллагааг төлөвлөсөн эсэх",
+  b3: "Төслийг хэрэгжүүлэх үйл ажиллагааны зардал нь 10 сая төгрөгөөс 150 сая төгрөгийн хооронд эсэх",
+
+  c: "C ХЭСЭГ: Бусад шалгуур",
+  c1: "Төлөвлөсөн зардал нь хориотой үйл ажиллагааны ангилалд ороогүй эсэх"
 };
 
-const initialCommentsOpen = Object.keys(rowsDescriptions).reduce((a, c) => ({ ...a, [c]: false }), {})
+const initialCommentsOpen = Object.keys(rowDescriptions).reduce((a, c) => ({ ...a, [c]: false }), {})
 
-const initialState = [
-  {
-    description: rowsDescriptions.z,
-    isChecked: false,
-    comment: '',
-    rowcode: "z",
-    order: 1,
-    category: "@",
-  },
-  {
-    description: rowsDescriptions.a,
-    isChecked: false,
-    comment: '',
-    rowcode: "a",
-    order: 5,
-    category: "A",
-  },
-  {
-    description: rowsDescriptions.a1,
-    isChecked: false,
-    comment: '',
-    rowcode: "a1",
-    order: 10,
-    category: "A",
-  },
-  {
-    description: rowsDescriptions.a2,
-    isChecked: false,
-    comment: '',
-    rowcode: "a2",
-    order: 15,
-    category: "A",
-  },
-  {
-    description: rowsDescriptions.a3,
-    isChecked: false,
-    comment: '',
-    rowcode: "a3",
-    order: 20,
-    category: "A",
-  },
-  {
-    description: rowsDescriptions.a4,
-    isChecked: false,
-    comment: '',
-    rowcode: "a4",
-    order: 25,
-    category: "A",
-  },
-  {
-    description: rowsDescriptions.a5,
-    isChecked: false,
-    comment: '',
-    rowcode: "a5",
-    order: 30,
-    category: "A",
-  },
-  {
-    description: rowsDescriptions.a6,
-    isChecked: false,
-    comment: '',
-    rowcode: "a6",
-    order: 35,
-    category: "A",
-  },
-  {
-    description: rowsDescriptions.a7,
-    isChecked: false,
-    comment: '',
-    rowcode: "a7",
-    order: 40,
-    category: "A",
-  },
-  {
-    description: rowsDescriptions.a8,
-    isChecked: false,
-    comment: '',
-    rowcode: "a8",
-    order: 45,
-    category: "A",
-  },
-  {
-    description: rowsDescriptions.b,
-    isChecked: false,
-    comment: '',
-    rowcode: "b",
-    order: 50,
-    category: "B",
-  },
-  {
-    description: rowsDescriptions.b1,
-    isChecked: false,
-    comment: '',
-    rowcode: "b1",
-    order: 55,
-    category: "B",
-  },
-  {
-    description: rowsDescriptions.b2,
-    isChecked: false,
-    comment: '',
-    rowcode: "b2",
-    order: 60,
-    category: "B",
-  },
-  {
-    description: rowsDescriptions.b3,
-    isChecked: false,
-    comment: '',
-    rowcode: "b3",
-    order: 65,
-    category: "B",
-  },
-  {
-    description: rowsDescriptions.c,
-    isChecked: false,
-    comment: '',
-    rowcode: "c",
-    order: 70,
-    category: "C",
-  },
-  {
-    description: rowsDescriptions.c1,
-    isChecked: false,
-    comment: '',
-    rowcode: "c1",
-    order: 75,
-    category: "C",
-  },
-  {
-    description: rowsDescriptions.c2,
-    isChecked: false,
-    comment: '',
-    rowcode: "c2",
-    order: 80,
-    category: "C",
-  },
-];
+const initialState = Object.entries(rowDescriptions).map(([rowcode, description], i) => ({
+  description: description,
+  isChecked: false,
+  comment: '',
+  rowcode: rowcode,
+  order: i + 1,
+  category: rowcode[0].toUpperCase()
+}))
 
 export default FirstEvaluation;

@@ -16,7 +16,6 @@ import { useHistory } from 'react-router'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import NumberFormat from 'react-number-format'
 
-
 const initialState = {
     company_logo: null,
     company_name: null,
@@ -437,7 +436,7 @@ export default function LetterOfInterest() {
                     {item => item && (anims =>
                         <animated.div className="tw-fixed tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-700 tw-bg-opacity-80 tw-z-10 tw-p-2 sm:tw-p-8" style={anims}>
                             <div className="tw-bg-white tw-rounded tw-p-4 tw-relative tw-flex tw-flex-col" ref={signatureModalRef}>
-                                <div className="tw-text-sm tw-font-medium tw-mb-2">
+                                <div className="tw-text-sm tw-mb-2">
                                     Гарын үсэг зурах:
                                 </div>
 

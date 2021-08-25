@@ -73,6 +73,22 @@ export default function TrainingEdit() {
       }
    }
 
+   const handleDelete = () => {
+      if (trainingId === null || trainingId === undefined) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Сургалт сонгоогүй байна.' })
+         return
+      }
+
+      axios.delete(`trainings/${trainingId}`, {
+         headers: { Authorization: getLoggedUserToken() },
+      }).then(res => {
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Сургалтыг устгалаа.' })
+         history.push('/trainings')
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Сургалтыг устгаж чадсангүй.' })
+      })
+   }
+
    const handleFileInput = (e) => {
       const formData = new FormData()
       if (!e.target.files[0]) return
@@ -133,7 +149,7 @@ export default function TrainingEdit() {
             Буцах
          </button>
 
-         <div className="tw-rounded tw-shadow-md tw-bg-white tw-max-w-5xl tw-w-full tw-pt-8 tw-mt-6">
+         <div className="tw-rounded tw-shadow-md tw-bg-white tw-max-w-5xl tw-w-full tw-pt-8 tw-mt-6 tw-mb-12">
             <div className="tw-text-center tw-p-2 tw-mb-8 tw-text-lg tw-font-medium">
                Сургалтын мэдээлэл оруулах
             </div>
@@ -199,7 +215,11 @@ export default function TrainingEdit() {
                </FormElement>
             </div>
 
-            <div className="tw-flex tw-justify-center">
+            <div className="tw-flex tw-justify-center tw-relative">
+               <button className="tw-absolute tw-left-6 tw-rounded tw-bg-red-500 active:tw-bg-red-500 tw-transition-colors hover:tw-shadow-md tw-py-2 tw-px-6 tw-text-white tw-font-medium tw-my-6 focus:tw-outline-none tw-text-13px" onClick={handleDelete}>
+                  Устгах
+               </button>
+
                <button className="tw-rounded tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-py-2 tw-px-6 tw-text-white tw-font-medium tw-my-6 focus:tw-outline-none tw-text-13px" onClick={handleSubmit}>
                   Хадгалах
                </button>

@@ -7,7 +7,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { Link, useHistory } from 'react-router-dom'
 import { animated, Transition } from 'react-spring/renderprops'
 import { UrgudulHeader } from './page1'
-import { initialState as evidences } from 'pages/attachments/page2'
+import { initialState as evidences } from 'pages/attachments/evidenceAttachments2'
 
 const initialState = {
    currency: false,
@@ -210,7 +210,7 @@ export default function UrgudulPage8() {
                            Экспорт хөгжлийн төлөвлөгөө
                         </li>
                         <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50">
-                           Нотлох бичиг баримтууд
+                           Нотлох бичиг баримтууд II
                            <ol className="tw-list-inside tw-mt-1" style={{ listStyleType: 'upper-roman' }}>
                               {evidencesArr.map((evidence, i) =>
                                  <li className="tw-p-2 tw-pl-4 odd:tw-bg-gray-50 tw--ml-1">
