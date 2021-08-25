@@ -50,9 +50,7 @@ export const UserStore = (props) => {
   };
 
   const EdplanApprove = async (id, token, approves) => {
-    console.log("------------------");
     await edplan.get(`approves?idd=${id}`).then(res => {
-      console.log(`+-+-+-res`, res);
       if (res.data.length) {
         edplan.put(`approves/${res.data[0]?.id}`, { idd: parseInt(id), token: `${token}`, approve: approves });
         if (approves === false) {
@@ -93,7 +91,6 @@ export const UserStore = (props) => {
   const signUpUser = (userinfos) => {
     axios.post("users/register", userinfos)
       .then((res) => {
-        console.log(res, "^new user");
         // edplan.post(`approves`, { idd: res.data.user.id, approve: false, seen:false })
         setErrMsgSignUp({ msg: `Таны бүртгүүлсэн "${res.data.user.email}" имэйл хаягаар бид имэйл илгээсэн тул та шалгаж БАТАЛГААЖУУЛАЛТ дээр дарна уу.`, cond: true });;
       })

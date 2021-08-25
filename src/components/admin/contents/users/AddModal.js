@@ -40,8 +40,6 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
         if (per === 'trainer') {
             final.trainerOrganizationId = trainerId ?? null
         }
-        console.log(final, "^final");
-        console.log(cond.length, " my cond");
         if (cond.length < 6) {
             seBtnSpin(false);
             setErrText("1");
@@ -50,8 +48,8 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
             setErrText("1");
         } else {
             setErrText("0");
-            axios.post(`users`, final).then(res => {
-                console.log(res, "^ ress"); setUpdate(prev => !prev); ctx.alertText("green", "Амжилттай", true); seBtnSpin(false); setShowModal(prev => !prev);
+            axios.post(`users`, final).then(_=> {
+                setUpdate(prev => !prev); ctx.alertText("green", "Амжилттай", true); seBtnSpin(false); setShowModal(prev => !prev);
             }).catch(error => { ctx.alertText("orange", "Алдаа гарлаа", true); seBtnSpin(false); });
         }
     }

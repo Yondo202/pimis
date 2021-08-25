@@ -1,24 +1,35 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { CustomModal, InputStyle } from "./CustomTheme";
-import styled from "styled-components";
-import { MdAdd } from "react-icons/md";
-import { RiAddLine } from "react-icons/ri";
-import { IoMdArrowDropright } from "react-icons/io";
-import NumberFormat from "react-number-format";
+import styled from "styled-components"
+import { MdAdd } from "react-icons/md"
+import { RiAddLine } from "react-icons/ri"
+import { IoMdArrowDropright } from "react-icons/io"
+import NumberFormat from "react-number-format"
 import axios from 'axiosbase';
-import UserContext from "context/UserContext";
+import UserContext from "context/UserContext"
 import Select from 'react-select';
-import { VscSave } from "react-icons/vsc";
 
-const AddModal = ({ companyInfo, setModal, setCond, setAddCond }) => {
+const EditModal = ({ companyInfo, setModal, setCond, setAddCond, SD }) => {
     const { alertText } = useContext(UserContext);
     const [ cName, setName ] = useState('');
     const [ rate, setRate ] = useState('');
     const [ SumInsured, setSumInsured ] = useState('');
     const [ Premium, setPremium ] = useState('');
-
     const [ addCompany, setAddCompany ] = useState(false);
     const [ selected, setSelected ] = useState({});
+
+    useEffect(()=>{
+        if(SD?.rate){
+            setRate(SD.rate);
+            setSumInsured(SD.sum_insurance);
+            setPremium(SD.premium);
+        }
+        setSelected({
+            id:SD.user_id,
+            companyregister:SD.companyregister,
+            companyname:SD.companyname,
+        })
+    },[])
 
     const CloseHandle = () =>{
         setName('contentParent2');
@@ -45,7 +56,7 @@ const AddModal = ({ companyInfo, setModal, setCond, setAddCond }) => {
         if(!selected?.id){
             alertText('orange','Байгууллагаа сонгоно уу...',true );
         }else{
-            axios.post(`insurances/insurance`, {...final, user_id: selected.id }).then(_=>{
+            axios.put(`insurances/insurance/${SD.id}`, {...final, user_id: selected.id }).then(_=>{
                 alertText('green','Амжилттай',true );
                 setName('contentParent2');
                 setTimeout(() => {
@@ -77,22 +88,12 @@ const AddModal = ({ companyInfo, setModal, setCond, setAddCond }) => {
                             <InputStyle >
                                 <div className="label">Registration number <span className="reds">*</span></div>
                                 <div className="SelectPar">
-                                    {/* {addCompany.switch? <input autoFocus type="number" name='companyregister' className="gettInpp" required/>
-                                    :<select name='companyregister' className="gettInpp" onChange={e=>setCompSelectReg(e.target.value)} value={compSelectReg} required>
-                                        <option selected disabled></option>
-                                        {companyInfo?.map((el,ind)=>{
-                                            return(
-                                                <option value={el.companyregister} key={ind}>{el.companyregister}</option>
-                                            )  
-                                        })}
-                                    </select>} */}
-
                                     <Select
-                                        value={selected.id?selected:false}
+                                        options={companyInfo}
+                                        value={selected.id?selected:''}
                                         // isClearable 
                                         menuPortalTarget={document.body}
                                         styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-                                        options={companyInfo}
                                         // value={selected.companyregister}
                                         getOptionValue={option => `${option.id}`}
                                         onChange={handleSelect}
@@ -101,13 +102,7 @@ const AddModal = ({ companyInfo, setModal, setCond, setAddCond }) => {
                                         getOptionLabel={option => `${option.companyregister}`}
                                     />
 
-                                    {/* <div className="SelectArr" style={addCompany.switch?{opacity:`0`}:{opacity:`1`}} ><IoMdArrowDropright /></div> */}
-
                                     <div onClick={()=>setAddCompany(true)} className="smBtn"><MdAdd /></div>
-
-                                    {/* {addCompany.switch?
-                                    <div onClick={()=>setAddCompany({switch:false})} className="smBtn"><FiMinus /></div>
-                                    :<div onClick={()=>setAddCompany({switch:true})} className="smBtn"><MdAdd /></div>} */}
                                 </div>
                             </InputStyle>
 
@@ -116,7 +111,7 @@ const AddModal = ({ companyInfo, setModal, setCond, setAddCond }) => {
                                 <div style={{width:`100%`}} className="SelectPar">
                                     <Select
                                         options={companyInfo}
-                                        value={selected.id?selected:false}
+                                        value={selected.id?selected:''}
                                         // isClearable
                                         menuPortalTarget={document.body}
                                         styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
@@ -134,12 +129,12 @@ const AddModal = ({ companyInfo, setModal, setCond, setAddCond }) => {
                         <InputsParent>
                             <InputStyle >
                                 <div className="label">Issued date <span className="reds">*</span></div>
-                                <input type="date" name='issued_date' className="gettInpp" required />
+                                <input type="date" defaultValue={SD.issued_date} name='issued_date' className="gettInpp" required />
                             </InputStyle> 
 
                             <InputStyle >
                                 <div className="label">Expiration date <span className="reds">*</span></div>
-                                <input type="date" name='expiration_date' className="gettInpp" required />
+                                <input type="date" defaultValue={SD.expiration_date} name='expiration_date' className="gettInpp" required />
                             </InputStyle>
                         </InputsParent>
 
@@ -147,13 +142,13 @@ const AddModal = ({ companyInfo, setModal, setCond, setAddCond }) => {
                                 <InputsParent>
                                         <InputStyle >
                                             <div className="label">Insurance type <span className="reds">*</span></div>
-                                            {/* <input type="text" name="desc" className="gettInp" required /> */}
                                             <div className="SelectPar">
-                                                <select name='insurance_type' className="gettInpp" required>
-                                                    <option selected disabled></option>
-                                                    <option value="Working capital cover">Working capital cover</option>
-                                                    <option value="Supplier credit insurance" >Supplier credit insurance</option>
-                                                    <option value="Buyer credit insurance">Buyer credit insurance</option>
+                                                <select defaultValue={SD.insurance_type} name='insurance_type' className="gettInpp" required>
+                                                    {InsuranceType.map((el,ind)=>{
+                                                        return(
+                                                            <option key={ind} selected={SD.insurance_type===el?true:false} value={el}>{el}</option>
+                                                        )
+                                                    })}
                                                 </select>
 
                                                 <div className="SelectArr" ><IoMdArrowDropright /></div>
@@ -168,12 +163,12 @@ const AddModal = ({ companyInfo, setModal, setCond, setAddCond }) => {
                                 <InputsParent>
                                     <InputStyle >
                                         <div className="label">Contract number</div>
-                                        <input type="number" name="contract_number" className="gettInpp" />
+                                        <input defaultValue={SD.contract_number} type="number" name="contract_number" className="gettInpp" />
                                     </InputStyle> 
 
                                     <InputStyle >
                                         <div style={{fontWeight:`500`}} className="label">Rate</div>
-                                        <NumberFormat  placeholder={`0 ₮`} value={rate} onChange={e=>setRate(e.target.value.slice(0, -1).replace(/,/g, ''))} style={{textAlign:`right`, paddingRight:`7px`}} thousandSeparator={true} suffix={' ₮'} name="rate" className="gettInpp" />
+                                        <NumberFormat placeholder={`0 ₮`} value={rate} onChange={e=>setRate(e.target.value.slice(0, -1).replace(/,/g, ''))} style={{textAlign:`right`, paddingRight:`7px`}} thousandSeparator={true} suffix={' ₮'} name="rate" className="gettInpp" />
                                     </InputStyle>
                                 </InputsParent>
 
@@ -205,7 +200,7 @@ const AddModal = ({ companyInfo, setModal, setCond, setAddCond }) => {
                             
                         <div className="modalbtnPar">
                             <div style={{opacity:`0`}} className="errText"><span className="red">* </span> Тэмдэглэгээтэй хэсгийг заавал бөглөнө үү...</div>
-                            <button type="submit" className="modalbtn"> <VscSave /> Хадгалах</button>
+                            <button type="submit" className="modalbtn">Хадгалах</button>
                         </div>
                     </div>
                 </form>
@@ -215,7 +210,13 @@ const AddModal = ({ companyInfo, setModal, setCond, setAddCond }) => {
     )
 }
 
-export default AddModal
+export default EditModal
+
+const InsuranceType = [
+    'Working capital cover',
+    'Supplier credit insurance',
+    'Buyer credit insurance'
+]
 
 const InputsParent = styled.div`
     display:flex;

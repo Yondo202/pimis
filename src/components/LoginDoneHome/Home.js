@@ -6,7 +6,7 @@ import AccessToken from '../../context/accessToken'
 import ActiveComp from './ActiveComp'
 // import InitialComp from './initialComp'
 import useQuery from 'components/utilities/useQueryLocation'
-import Start from "components/LoginDoneHome/Start"
+// import Start from "components/LoginDoneHome/Start"
 
 function Home() {
     const userId = useQuery().get('userId')
@@ -62,7 +62,9 @@ function Home() {
 
     return (
         <HomeComponent style={userId ? { maxWidth: "2000px" } : { maxWidth: "1160px" }} className={`container`}>
-            {!infCond ? infData?.criteria === 1
+            {
+            // !infCond ? 
+            infData?.criteria === 1
                 ? <h3 style={{ marginTop: 50 }}>
                     Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
                 </h3>
@@ -86,7 +88,9 @@ function Home() {
                     </div>
                     {/* {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />} */}
                     <ActiveComp prew={userId} data={infData} />
-                </div>:<Start userId={userId} />}
+                </div>
+                // :<Start userId={userId} />
+                }
         </HomeComponent>
     )
 }
