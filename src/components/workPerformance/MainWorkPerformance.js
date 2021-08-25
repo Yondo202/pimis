@@ -6,11 +6,9 @@ import ModalOne from './one/ModalOne'
 import ModalTwo from './one/ModalTwo'
 import ModalThree from './one/ModalThree'
 import { AiOutlineSend } from 'react-icons/ai'
-
 import OneModalOne from './two/ModalOne'
 import TwoModalTwo from './two/ModalTwo'
 import ThreeModalThree from './two/ModalThree'
-
 
 function MainWorkPerformance() {
     const initialList = [{ ids: 1 }];

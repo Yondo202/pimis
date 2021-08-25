@@ -552,11 +552,11 @@ export default function MakeContract() {
                         Санхүүгийн дэмжлэг хүртэгчийг төлөөлж:
                      </div>
 
-                     {signersReceiving.map(signer =>
+                     {signersReceiving.map((signer, i) =>
                         <SignReceiving
                            signer={signer}
                            setter={setSignersReceiving}
-                           description={descriptions[signer.order - 1]}
+                           description={descriptions[i]}
                            key={signer.order}
                         />
                      )}
@@ -604,7 +604,7 @@ function Provision({ order, provision, subLevel }) {
    )
 }
 
-function Fill({ value, name, setter, editable, defaultLength, dotted, placeholder }) {
+export function Fill({ value, name, setter, editable, defaultLength, dotted, placeholder }) {
    return editable
       ? <span className="tw-relative tw-inline-block">
          <span className="tw-invisible tw-leading-snug tw-mx-0.5 tw-font-medium">
@@ -636,7 +636,8 @@ function SignReceiving({ signer, description, setter }) {
    const handleInput = (key, value) => {
       setter(prev => {
          const next = [...prev]
-         next[signer.order - 1][key] = value
+         const index = next.findIndex(item => item.order === signer.order)
+         next[index][key] = value
          return next
       })
    }
@@ -663,7 +664,7 @@ function SignReceiving({ signer, description, setter }) {
    )
 }
 
-function Signature({ signer, setter }) {
+export function Signature({ signer, setter }) {
    const [sigModalOpen, setSigModalOpen] = useState(false)
    const [hovered, setHovered] = useState(false)
 
@@ -672,7 +673,8 @@ function Signature({ signer, setter }) {
    const handleDrawSignature = () => {
       setter(prev => {
          const next = [...prev]
-         next[signer.order - 1].signature = sigCanvasRef.current.getTrimmedCanvas().toDataURL('image/png')
+         const index = next.findIndex(item => item.order === signer.order)
+         next[index].signature = sigCanvasRef.current.getTrimmedCanvas().toDataURL('image/png')
          return next
       })
    }
@@ -681,7 +683,8 @@ function Signature({ signer, setter }) {
       sigCanvasRef.current.clear()
       setter(prev => {
          const next = [...prev]
-         next[signer.order - 1].signature = null
+         const index = next.findIndex(item => item.order === signer.order)
+         next[index].signature = null
          return next
       })
    }

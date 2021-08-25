@@ -105,9 +105,15 @@ function ActiveComp(props) {
                             <div className="items">5. Санхүүгийн дэмжлэгийн төлбөрийн нэхэмжлэх</div>
                         </Link>
                         <div className="line"></div>
-                        <div className="items">6. Ажлын гүйцэтгэл хүлээн авах маягт</div>
+                        <Link to="/work-performance">
+                            <div className="items">6. Ажлын гүйцэтгэл хүлээн авах маягт</div>
+                        </Link>
                         <div className="line"></div>
-                        <div className="items">6. Гүйцэтгэлийн үнэгээ (ажлын чанар, гэрээний биелэлт, оролцоо)</div>
+                        <Link to="/control-report">
+                            <div className="items">7. Хамгааллын үйл  ажиллагааны хяналтын тайлан</div>
+                        </Link>
+                        <div className="line"></div>
+                        <div className="items">8. Гүйцэтгэлийн үнэгээ (ажлын чанар, гэрээний биелэлт, оролцоо)</div>
                     </div>
                     {/* <div className="lineFull" ></div>
                     <div className="resultDesable">6. Гүйцэтгэлийн үнэгээ (ажлын чанар, гэрээний биелэлт, оролцоо)</div> */}
