@@ -73,7 +73,6 @@ function Signup() {
   }
 
   const handleClick = () => {
-      console.log("+++++++++++++++++++++++++++");
       let rs = document.querySelectorAll(".userInp"); let arr = Array.from(rs); let finalOne = {};
       arr.forEach(element => {
         if (element.value !== "") {

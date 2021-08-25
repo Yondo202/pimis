@@ -9,7 +9,6 @@ const rowAnimation = keyframes`
     100% { opacity:1; transform:translateY(0px); }
 `
 
-
 export const Container = styled.div`
     page-break-inside: avoid;
     animation: ${bigAnimation} 0.6s ease;
@@ -24,7 +23,10 @@ export const Container = styled.div`
     @media only screen and (max-width:1400px){
         padding:30px 60px;
     }
-
+    .smTitles{
+        font-weight:500;
+        font-size:14px;
+    }
     .Title{
         font-weight:500;
         font-size:20px;
@@ -41,6 +43,10 @@ export const Container = styled.div`
             .title{
                 font-size:14px;
             }
+            .additions{
+                display:flex;
+                gap:30px;
+            }
             .addBtn{
                 cursor:pointer;
                 padding:5px 10px;
@@ -52,12 +58,20 @@ export const Container = styled.div`
                 border-style: solid;
                 display:flex;
                 align-items:center;
+                font-size:14px;
                 svg{
-                    margin-right:3px;
-                    font-size:20px;
+                    margin-right:8px;
+                    font-size:18px;
                 }
                 &:hover{
                     background-color:#ddd;
+                }
+            }
+            .addBtn2{
+                font-size:13px;
+                svg{
+                    margin-right:5px;
+                    font-size:18px;
                 }
             }
         }
@@ -73,14 +87,44 @@ export const Container = styled.div`
                 &:first-child{
                     text-align:center;
                 }
-                padding:8px;
-                border:1px solid rgba(0,0,0,.3);
+                padding:10px 8px;
+                border:1px solid rgba(0,0,0,.2);
             }
             td{
+                padding:7px 8px;
                 animation: ${rowAnimation} 0.5s ease;
                 // &:last-child{
                 //     padding:8px 0px;
                 // }
+            }
+            .cusorItems{
+                transition:all 0.2s ease;
+                cursor:pointer;
+                &:hover{
+                    background-color:#eaecf1;
+                }
+            }
+            .Selected{
+                position:relative;
+                transition:all 0.2s ease;
+                background-color:#d8dce6;
+                &:after{
+                    content:"✔";
+                    position:absolute;
+                    color:green;
+                    width:22px;
+                    height:22px;
+                    top:3.5px;
+                    left:-10px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:14px;
+                    border-radius:50%;
+                    // border:1px solid red;
+                    background:#fff;
+                    box-shadow:0px 0px 10px -6px;
+                }
             }
             .left{
                 text-align:left;
@@ -190,9 +234,11 @@ export const InputStyle = styled.div`
         display:flex;
         flex-direction:column;
         align-items:start;
+        justify-content:flex-end;
         overflow:hidden;
         width:100%;
-        margin-bottom:15px;
+        margin-bottom:20px;
+        
         .label{
             opacity:0.9;
             margin-bottom:8px;
@@ -220,8 +266,39 @@ export const InputStyle = styled.div`
         .RedPar{
             border-bottom:1px solid red;
         }
+        .SelectPar{
+            width:100%;
+            position:relative;
+            display:flex;
+            gap:8px;
+            .css-2b097c-container{
+                width:100%;
+            }
+            .smBtn{
+                width:37px;
+                height:100%;
+                cursor:pointer;
+                padding:5px;
+                background-color: #fff;
+                border-color: #ddd;
+                color: #333;
+                border-radius: 4px;
+                border-width: 1px;
+                border-style: solid;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                svg{
+                    font-size:17.5px;
+                }
+                &:hover{
+                    background-color:#ddd;
+                }
+            }
+        }
         select{
-            color:rgba(0,0,0,0.75);
+            cursor:pointer;
+            color:rgba(0,0,0,1);
             font-size:12px;
             transition:all 0.3s ease;
             -webkit-appearance: none;
@@ -238,20 +315,21 @@ export const InputStyle = styled.div`
             option[value=""][disabled] {
                 display: none;
             }
-            option {
+            option{
+                padding:8px 0px;
                 color:rgba(0,0,0,0.8);;
             }
             &:hover{
                 border:1px solid rgba(33, 101, 159, 0.4);
             }
-            &:focus{ 
+            &:focus{
                 border:1px solid #21659f;
                 outline-width: 0;
             }
             &:focus ~ .SelectArr{ 
-                background-color:rgba(0,0,0,0.1);
+                // background-color:rgba(0,0,0,0.1);
                 svg{
-                    transform: rotate(180deg);
+                    transform: rotate(90deg);
                 }
             }
             &::-ms-expand{
@@ -264,10 +342,10 @@ export const InputStyle = styled.div`
         .SelectArr{
             transition:all 0.3s ease;
             position:absolute;
-            top:2%;
-            right:0.5%;
+            top:2px;
+            right:2px;
             background-color:white;
-            height:95%;
+            height:90%;
             width:24px;
             display:flex;
             align-items:center;
@@ -276,18 +354,19 @@ export const InputStyle = styled.div`
             z-index:1;
             svg{
                 transition:all 0.3s ease;
-                font-size:13px;
+                font-size:18px;
                 color:rgba(0,0,0,0.8);
             }
         }
         
         textarea{
+            min-height:100px;
             border-radius: 4px;
             align-self:flex-end;
             width:100%;
             border:1px solid rgba(0,0,0,0.2);
             // padding:5px 5px;
-            padding-bottom:5px;
+            padding:8px 0px;
             padding-left:5px;
             transition:all 0.3s ease;
             &:hover{
@@ -317,6 +396,10 @@ export const InputStyle = styled.div`
             top: 0;
             width: auto;
         }
+        // input[type="number"]{
+        //     text-align:right;
+        //     padding-right:10px;
+        // }
 `
 
 const ModalAnimate = keyframes`
@@ -329,7 +412,7 @@ const ModalAnimate2 = keyframes`
 `
 
 export const CustomModal = styled.div`
-    z-index:1000;
+    z-index:10;
     position:fixed;
     width:100%;
     height:100%;
@@ -384,13 +467,24 @@ export const CustomModal = styled.div`
             padding:10px 40px;
             .modalbtnPar{
                 display:flex;
-                justify-content:flex-end;
-                padding:10px 0px;
+                width:100%;
+                justify-content:space-between;
+                padding:20px 0px;
+                .errText{
+                    padding:8px;
+                    border-radius:5px;
+                    color:#000;
+                    background-color:rgb(255, 204, 204);
+                    .red{
+                        font-weight:500;
+                        color:red;
+                    }
+                }
                 .modalbtn{
                     cursor:pointer;
-                    padding:5px 10px;
+                    padding:3px 10px;
                     background-color: #fff;
-                    border-color: #ddd;
+                    border-color: rgba(0,0,0,.5);
                     color: #333;
                     border-radius: 4px;
                     border-width: 1px;
@@ -398,9 +492,13 @@ export const CustomModal = styled.div`
                     display:flex;
                     align-items:center;
                     justify-content:center;
+                    gap:10px;
                     width:20%;
                     &:hover{
                         background-color:#ddd;
+                    }
+                    svg{
+                        font-size:18px;
                     }
                 }
             }

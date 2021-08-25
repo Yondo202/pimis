@@ -21,7 +21,9 @@ body {
 
 .MainParent{
   .pro-sidebar{
+    z-index: 2;
     .pro-sidebar-inner{
+      z-index: inherit;
       background: #32373d;
       // background: #3c4245;
       // background: #212121;
