@@ -43,8 +43,7 @@ import MakeContract from 'pages/contract/make_contract/makeContract';
 import PerformanceAttachments from 'pages/attachments/performanceAttachements';
 import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
 import FinancialAttachments from 'pages/attachments/financialAttachments';
-import MainWorkPerformance from 'components/workPerformance/MainWorkPerformance';
-import ControlReport from 'pages/contract/control_report/controlReport';
+import PerformanceReport from 'pages/contract/performance_report/performanceReport';
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -107,8 +106,7 @@ function Layout({ setLocale }) {
               <Route path="/5b/:id" component={CompilationChecklist} />
               <Route path="/5c/:id" component={AnalystReport} />
               <Route path="/make-contract" component={MakeContract} />
-              <Route path="/work-performance" component={MainWorkPerformance} />
-              <Route path="/control-report" component={ControlReport} />
+              <Route path="/performance-report" component={PerformanceReport} />
               <Route path="/trainings" component={TrainingNavigatorAdmin} />
               <Route path="/training-requests" component={TrainingRequestsList} />
               <Route path="/training-questionnaire" component={FeedbackQuestionnaireHandle} />

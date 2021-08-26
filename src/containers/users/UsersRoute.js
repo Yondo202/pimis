@@ -25,8 +25,13 @@ import MakeContract from 'pages/contract/make_contract/makeContract';
 import PerformanceAttachments from 'pages/attachments/performanceAttachements';
 import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
 import FinancialAttachments from 'pages/attachments/financialAttachments';
-import MainWorkPerformance from 'components/workPerformance/MainWorkPerformance';
-import ControlReport from 'pages/contract/control_report/controlReport';
+import PerformanceReport from 'pages/contract/performance_report/performanceReport';
+import ActivityPlanAttach from 'pages/contract/make_contract/activityPlanAttach';
+import FinalCostAttach from 'pages/contract/make_contract/finalCostAttach';
+import OwnershipAttach from 'pages/contract/make_contract/ownershipAttach';
+import PurchasePlanAttach from 'pages/contract/make_contract/purchasePlanAttach';
+import ContractAttach5 from 'pages/contract/make_contract/contractAttach5';
+import ContractAttach6 from 'pages/contract/make_contract/contractAttach6';
 
 function UsersRoute() {
     return (
@@ -62,8 +67,13 @@ function UsersRoute() {
                     <Route path="/5b" component={CompilationCheck} />
                     <Route path="/5c" component={AnalystReport} />
                     <Route path="/make-contract" component={MakeContract} />
-                    <Route path="/work-performance" component={MainWorkPerformance} />
-                    <Route path="/control-report" component={ControlReport} />
+                    <Route path="/performance-report" component={PerformanceReport} />
+                    <Route path="/asd" component={ActivityPlanAttach} />
+                    <Route path="/asd1" component={FinalCostAttach} />
+                    <Route path="/asd2" component={OwnershipAttach} />
+                    <Route path="/asd3" component={PurchasePlanAttach} />
+                    <Route path="/asd4" component={ContractAttach5} />
+                    <Route path="/asd5" component={ContractAttach6} />
                     <Route path="/trainings">
                         <TrainingFrontPage user={true} />
                     </Route>

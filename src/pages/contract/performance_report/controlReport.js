@@ -77,7 +77,7 @@ export default function ControlReport() {
 
    const AlertCtx = useContext(AlertContext)
 
-   const [signers, setSigrners] = useState(initialSigners)
+   const [signers, setSigners] = useState(initialSigners)
 
    useEffect(() => {
       // axios.post()
@@ -86,7 +86,7 @@ export default function ControlReport() {
    return (
       <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
          <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <div className="tw-font-medium tw-text-center tw-mt-6">
+            <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6">
                ii ХАМГААЛЛЫН ҮЙЛ  АЖИЛЛАГААНЫ ХЯНАЛТЫН ТАЙЛАН
             </div>
 
@@ -138,7 +138,7 @@ export default function ControlReport() {
                      <div className="tw-w-full tw-pl-4 lg:tw-pl-0">
                         {signers.filter(signer => signer.order >= category.minOrder && signer.order <= category.maxOrder).map(signer =>
                            <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 tw-gap-x-4" key={signer.order}>
-                              <Signature signer={signer} setter={setSigrners} />
+                              <Signature signer={signer} setter={setSigners} />
                               <div className="tw-mt-2">
                                  {signer.position}
                               </div>
@@ -155,7 +155,7 @@ export default function ControlReport() {
 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2 tw-relative'
 
-function TextareaCell({ value, name, index, setter }) {
+export function TextareaCell({ value, name, index, setter }) {
    return (
       <td className={`${classCell}`} style={{ padding: 0, minWidth: 120 }}>
          <div className="tw-p-2 tw-invisible tw-break-all tw-leading-tight" style={{ minHeight: 60 }}>

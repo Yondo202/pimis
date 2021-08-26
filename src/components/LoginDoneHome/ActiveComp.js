@@ -83,7 +83,9 @@ function ActiveComp(props) {
                             <div className="items arrHelp"><div className="helpArr"></div>1. Түншлэлийн гэрээ байгуулах</div>
                         </Link>
                         <div className="line"></div>
-                        <div className="items">2. Түншлэлийн гэрээний гүйцэтгэлийн тайлан</div>
+                        <Link to="performance-report">
+                            <div className="items">2. Түншлэлийн гэрээний гүйцэтгэлийн тайлан</div>
+                        </Link>
                         <div className="line"></div>
                         <Link to={props.prew ? `/attachments/performance/${props.prew}` : '/attachments/performance'}>
                             <div className="items">3. Гүйцэтгэлийг нотлох баримтууд (гэрээ, гэрээний дүгнэлт, хийгдсэн ажлуудын тайлан)</div>
@@ -104,16 +106,16 @@ function ActiveComp(props) {
                         <Link to={props.prew ? `/attachments/invoice/${props.prew}` : '/attachments/invoice'}>
                             <div className="items">5. Санхүүгийн дэмжлэгийн төлбөрийн нэхэмжлэх</div>
                         </Link>
-                        <div className="line"></div>
-                        <Link to="/work-performance">
+                        {/* <div className="line"></div> */}
+                        {/* <Link to="/work-performance">
                             <div className="items">6. Ажлын гүйцэтгэл хүлээн авах маягт</div>
                         </Link>
-                        <div className="line"></div>
-                        <Link to="/control-report">
+                        <div className="line"></div> */}
+                        {/* <Link to="/control-report">
                             <div className="items">7. Хамгааллын үйл  ажиллагааны хяналтын тайлан</div>
                         </Link>
-                        <div className="line"></div>
-                        <div className="items">8. Гүйцэтгэлийн үнэгээ (ажлын чанар, гэрээний биелэлт, оролцоо)</div>
+                        <div className="line"></div> */}
+                        {/* <div className="items">8. Гүйцэтгэлийн үнэгээ (ажлын чанар, гэрээний биелэлт, оролцоо)</div> */}
                     </div>
                     {/* <div className="lineFull" ></div>
                     <div className="resultDesable">6. Гүйцэтгэлийн үнэгээ (ажлын чанар, гэрээний биелэлт, оролцоо)</div> */}
