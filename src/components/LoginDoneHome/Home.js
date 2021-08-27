@@ -68,7 +68,9 @@ function Home() {
                 ? <h3 style={{ marginTop: 50 }}>
                     Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
                 </h3>
-                : <div className={homeC?"":`Hiding`}>
+                : <div
+                    //  className={homeC?"":`Hiding`}
+                    >
                     <div className="headerPar">
                         {userId ? <div className="header row">
                             <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын нэр:</span>{infData?.companyname}</span> </div></div>

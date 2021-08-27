@@ -13,6 +13,7 @@ export default instance;
 
 export const edplan = axios.create({
   baseURL: "https://pimis-plan.edp.mn/pimis-edplan/",
+  // baseURL: "https://localhost:3006/pimis-edplan/",
 });
 
 export const edplanFront = "https://pimis-plan.edp.mn";
