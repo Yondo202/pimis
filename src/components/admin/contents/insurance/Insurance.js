@@ -19,7 +19,6 @@ const Insurance = () => {
     const [ showEditModal, showSetEditModal ] = useState(false);
     const [ showDeleteModal, showSetDeleteModal ] = useState(false);
     const [ showIndemnity, setShowIndemnity ] = useState(false);
-
     const [ cond, setCond ] = useState(false);
     const [ addCond, setAddCond ] = useState(false);
     const [ selected, setSelected ] = useState({});

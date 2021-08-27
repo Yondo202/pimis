@@ -5,6 +5,7 @@ import { MenuColor, MainFontSize, fontFamily } from "../ThemeAdmin";
 import { useIntl } from "react-intl";
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from "react-pro-sidebar";
 import { FaChalkboardTeacher } from "react-icons/fa";
+import { FiBookOpen } from "react-icons/fi";
 import { MdSettings } from "react-icons/md";
 import { GiProgression } from "react-icons/gi";
 import sidebarBg from "./bg_image/bg1.jpg";
@@ -36,9 +37,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             <MenuItem>
               <Link to="/meetings">Үнэлгээний хорооны уулзалт</Link>
             </MenuItem>
-            <MenuItem>
+            {/* <MenuItem>
               <Link to="/insurance">Даатгал</Link>
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem>
               <Link to="/maindecision">Үнэлгээний хорооны шийдвэр</Link>
             </MenuItem>
@@ -56,6 +57,12 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             </MenuItem>
             <MenuItem>
               <Link to="/training-report">Тайлан</Link>
+            </MenuItem>
+          </SubMenu>
+
+          <SubMenu title="Даатгал" icon={<FiBookOpen />}>
+            <MenuItem>
+              <Link to="/insurance">Байгууллагуудын жагсаалт</Link>
             </MenuItem>
           </SubMenu>
 

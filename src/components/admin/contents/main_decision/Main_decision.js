@@ -27,6 +27,7 @@ function Main_decision() {
 
     useEffect(() => {
         axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
+            console.log(`res`, res);
             if (res.data.data) {
                 setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
                 if (res.data.data.approved === true) { setNotifyShow2(1); } else if (res.data.data.approved === false) { setNotifyShow2(2); } else { setNotifyShow2(0); }
@@ -34,9 +35,9 @@ function Main_decision() {
         }).catch((err) => console.log(err.response.data.error, "aldaa garsaaaa"));
     }, []);
 
-    const backHandle = (el) => { if (el === "projects") { history.push(`/${el}`); } else { history.push(`/progress/${el}`); } }
+    const backHandle = (el) => { if (el === "projects") { history.push(`/${el}`); } else { history.goBack(); } }
 
-    const clickHandle = (el) => {
+    const clickHandle = () => {
         let inp = document.querySelector(".getInpp");
         if (notifyShow2 !== 1) {
             if (inp.value === "") {
@@ -48,20 +49,19 @@ function Main_decision() {
                 inp.classList = - " red";
                 inp.classList += " getInpp";
                 mainData[inp.name] = inp.value;
-                console.log(`mainData`, mainData);
                 axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization: Token() } }).then((res) => {
-                    console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
+                    ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
                 }).catch((err) => { console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true); });
             }
         } else {
             mainData[inp.name] = inp.value;
             axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization: Token() } }).then((res) => {
-                console.log(res, " my data"); ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
+                ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
             }).catch((err) => { console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true); });
         }
     }
 
-    const clickHandle2 = (el) => {
+    const clickHandle2 = () => {
         if (cond) {
             if (notifyShow2 === 1) {
                 setNotifyShow(1);
@@ -104,8 +104,15 @@ function Main_decision() {
                     </div>
                     : <div className="contentPar">
                         <div className="TitlePar">
-                            <div className="title">ҮНЭЛГЭЭНИЙ ХОРООНЫ ШИЙДВЭРИЙН ХУУДАС</div>
-                            <div className="desc">Төсөл бүрт өгсөн нэгтгэсэн санал </div>
+                            <div className="title">
+                                {/* ҮНЭЛГЭЭНИЙ ХОРООНЫ ШИЙДВЭРИЙН ХУУДАС */}
+                                ЭКСПОРТЫГ ДЭМЖИХ ТӨСЛИЙН .... ОНЫ .... ДУГААР ЦОНХНЫ
+                                СОНГОН ШАЛГАРУУЛАЛТЫН БАГИЙН ХУРЛЫН ШИЙДВЭР
+                            </div>
+                            <div className="desc">
+                                {/* Төсөл бүрт өгсөн нэгтгэсэн санал */}
+                               Дугаар: {mainData?.project_number}
+                            </div>
                         </div>
                         <div className="infoWhere">
                             <table id="customers">
@@ -113,22 +120,31 @@ function Main_decision() {
                                     <th style={{ borderRight: `1px solid rgba(255,255,255,0.5)` }}>Талбар</th>
                                     <th>Утга</th>
                                 </tr>
-                                <tr className="getTable1">
-                                    <td>Байгууллагын нэр:</td>
-                                    <td> <div className="input">{mainData?.company?.company_name}</div></td>
-                                </tr>
-                                <tr className="getTable1">
-                                    <td>Төслийн нэр:</td>
-                                    <td><div className="input">{mainData?.project_name}</div> </td>
-                                </tr>
-                                <tr className="getTable1">
-                                    <td>Өргөдлийн дугаар:</td>
-                                    <td><div className="input">{mainData?.project_number}</div></td>
-                                </tr>
+
                                 <tr className="getTable1">
                                     <td>Хурлын огноо:</td>
                                     <td><div className="input">{mainData?.meetingDate}</div></td>
                                 </tr>
+                                <tr className="getTable1">
+                                    <td>Аж ахуйн нэгж эсхүл кластерын нэр:</td>
+                                    <td> <div className="input">{mainData?.company?.company_name}</div></td>
+                                </tr>
+
+                                <tr className="getTable1">
+                                    <td>Төслийн нэр:</td>
+                                    <td><div className="input">{mainData?.project_name}</div> </td>
+                                </tr>
+
+                                {/* <tr className="getTable1">
+                                    <td>Өргөдлийн дугаар:</td>
+                                    <td><div className="input">{mainData?.project_number}</div></td>
+                                </tr> */}
+
+                                {/* <tr className="getTable1">
+                                    <td>Дэмжих санхүүжилтийн дүн:</td>
+                                    <td><div className="input">{mainData?.project_number}</div></td>
+                                </tr> */}
+                               
                             </table>
                         </div>
 
@@ -176,8 +192,8 @@ function Main_decision() {
                         </div>
                         <div className="buttonPar">
                             {/* <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div> */}
-                            <NextBtn className="SubmitButton" onClick={() => clickHandle2(mainData ? mainData.approved : "code")} type="button">Мэдэгдэл илгээх<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
-                            {!cond && <NextBtn className="SubmitButton" onClick={() => clickHandle(mainData ? mainData.approved : "code")} type="button">Хадгалах<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>}
+                            <NextBtn className="SubmitButton" onClick={clickHandle2} type="button">Мэдэгдэл илгээх<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                            {!cond && <NextBtn className="SubmitButton" onClick={clickHandle} type="button">Хадгалах<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>}
                         </div>
                     </div>
                     : <div className="NullPar">

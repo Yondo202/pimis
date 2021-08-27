@@ -18,8 +18,8 @@ function HomePage({ setNotify }) {
         GetData();
     }, []);
 
-    const GetData = async () =>{
-       await axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token() } }).then((res) => {
+    const GetData = () =>{
+        axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token() } }).then((res) => {
             if (res.data.data.length!==0) { setCardData(res.data.data); };
         }).catch((err) => console.log(err.response.data.error))
     } 
