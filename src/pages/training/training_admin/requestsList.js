@@ -132,7 +132,7 @@ export default function TrainingRequestsList() {
             <Column dataField="company_registration_number" caption="Улсын бүртгэлийн дугаар" headerCellRender={HeaderCell} />
             <Column dataField="participant_number" caption="Сургалтад хамрагдах ажилчдын тоо" headerCellRender={HeaderCell} minWidth={100} />
             <Column dataField="createdAt" dataType="date" caption="Ирүүлсэн хугацаа" headerCellRender={HeaderCell} />
-            
+
             <MasterDetail enabled={true} component={MasterDetails} />
          </DataGrid>
       </div>

@@ -15,7 +15,6 @@ import CompilationCheck from "pages/decision_making/5b/Page";
 import AnalystReport from "pages/decision_making/5c/Page";
 import EvidenceAttachments1 from 'pages/attachments/evidenceAttachments1';
 import EvidenceAttachments2 from "pages/attachments/evidenceAttachments2";
-import WorkPerformance from 'components/workPerformance/MainWorkPerformance'
 import PdfTest from 'components/check/PdfTest'
 import MiddleRoute from "containers/middle/middleRoute"
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
@@ -26,7 +25,13 @@ import MakeContract from 'pages/contract/make_contract/makeContract';
 import PerformanceAttachments from 'pages/attachments/performanceAttachements';
 import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
 import FinancialAttachments from 'pages/attachments/financialAttachments';
-
+import PerformanceReport from 'pages/contract/performance_report/performanceReport';
+import ActivityPlanAttach from 'pages/contract/make_contract/activityPlanAttach';
+import FinalCostAttach from 'pages/contract/make_contract/finalCostAttach';
+import OwnershipAttach from 'pages/contract/make_contract/ownershipAttach';
+import PurchasePlanAttach from 'pages/contract/make_contract/purchasePlanAttach';
+import ContractAttach5 from 'pages/contract/make_contract/contractAttach5';
+import ContractAttach6 from 'pages/contract/make_contract/contractAttach6';
 
 function UsersRoute() {
     return (
@@ -47,7 +52,6 @@ function UsersRoute() {
                     {/* <Route path="/comp-request" component={MainRequest} /> */}
                     <Route path="/request/:url" component={MainRequestOld} />
                     <Route path="/feedback" component={Feedback} />
-                    <Route path="/workperformance" component={WorkPerformance} />
                     <Route path="/email2" component={EmialSender2} />
                     {/* <Route path="/members" component={MembersHome} />
                     <Route path="/memberdecision" component={MemberDecision} /> */}
@@ -63,6 +67,13 @@ function UsersRoute() {
                     <Route path="/5b" component={CompilationCheck} />
                     <Route path="/5c" component={AnalystReport} />
                     <Route path="/make-contract" component={MakeContract} />
+                    <Route path="/performance-report" component={PerformanceReport} />
+                    <Route path="/asd" component={ActivityPlanAttach} />
+                    <Route path="/asd1" component={FinalCostAttach} />
+                    <Route path="/asd2" component={OwnershipAttach} />
+                    <Route path="/asd3" component={PurchasePlanAttach} />
+                    <Route path="/asd4" component={ContractAttach5} />
+                    <Route path="/asd5" component={ContractAttach6} />
                     <Route path="/trainings">
                         <TrainingFrontPage user={true} />
                     </Route>

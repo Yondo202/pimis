@@ -7,9 +7,8 @@ import { Column, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'dev
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
-import { statusWord } from './meetingsList'
+import { statusRef } from './meetingsList'
 import useQuery from 'components/utilities/useQueryLocation'
-
 
 export default function EvaluatorsMeetingEdit(props) {
     const [approvedProjects, setApprovedProjects] = useState([])
@@ -42,8 +41,8 @@ export default function EvaluatorsMeetingEdit(props) {
         }
     }, [])
 
-    const [date, setDate] = useState(null)
-    const [status, setStatus] = useState('')
+    const [date, setDate] = useState()
+    const [status, setStatus] = useState()
 
     const handleSetDateTime = (e) => setDate(e.value)
 
@@ -133,7 +132,7 @@ export default function EvaluatorsMeetingEdit(props) {
                             Төлөв:
                         </span>
                         <span className="tw-font-medium tw-pt-2 tw-pb-1 tw-leading-tight tw-ml-4" style={{ minWidth: 80 }}>
-                            {statusWord(status)}
+                            {statusRef[status]}
                         </span>
                     </div>
                 </div>

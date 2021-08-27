@@ -15,3 +15,16 @@
 .ContentPar .itemsPar2 {
     overflow-x: hidden;
 }
+
+#evaluators-meeting-datagrid .dx-datagrid-rowsview .dx-row>.dx-master-detail-cell {
+    padding: 10px;
+    padding-bottom: 30px;
+}
+
+#master-detail-projects-datagrid .dx-datagrid {
+    background: transparent;
+}
+
+#master-detail-evaluators-datagrid .dx-datagrid {
+    background: transparent;
+}
