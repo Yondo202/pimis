@@ -1,6 +1,5 @@
 import React, { createContext, useState } from 'react'
 
-
 const AlertContext = createContext()
 
 const initialState = {

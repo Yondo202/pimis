@@ -10,8 +10,7 @@ import { Link } from 'react-router-dom'
 
 export const statusRef = {
     0: 'Хүлээгдэж буй',
-    1: 'Хуралдаж буй',
-    2: 'Хуралдсан'
+    1: 'Хуралдсан'
 }
 
 export default function EvaluatorsMeetingsList({ projects, evaluators }) {
