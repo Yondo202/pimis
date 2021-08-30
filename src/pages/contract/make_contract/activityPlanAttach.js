@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextareaCell } from '../performance_report/controlReport'
 import { Signature } from './makeContract'
+import axios from 'axiosbase'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import { useContext } from 'react'
+import AlertContext from 'components/utilities/alertContext'
 
 const initialState = [{
    order: '1',
@@ -56,7 +60,9 @@ const initialSigners = [{
    date: null
 }]
 
-export default function ActivityPlanAttach() {
+export default function ActivityPlanAttach({ contractId }) {
+   const AlertCtx = useContext(AlertContext)
+
    const [plan, setPlan] = useState(initialState)
 
    const handleInput = (key, value, index) => setPlan(prev => {
@@ -72,6 +78,38 @@ export default function ActivityPlanAttach() {
       next[index][key] = value
       return next
    })
+
+   useEffect(() => {
+      if (contractId === null || contractId === undefined) {
+         return
+      }
+      axios.get(`contracts/${contractId}/attach-1`, {
+         headers: { Authorization: getLoggedUserToken() }
+      }).then(res => {
+         const plan = res.data.data.attach
+         const signers = res.data.data.signers
+         plan && setPlan(plan)
+         signers && setSigners(signers)
+      })
+   }, [contractId])
+
+   const handleSave = () => {
+      if (contractId === null || contractId === undefined) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Эхлээд гэрээгээ үүсгэнэ үү.' })
+         return
+      }
+
+      axios.post(`contracts/${contractId}/attach-1`, {
+         attach: plan,
+         signers: signers
+      }, {
+         headers: { Authorization: getLoggedUserToken() }
+      }).then(res => {
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт 1-ийг хадгаллаа.' })
+      }).catch(err => {
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсралт 1-ийг хадгалж чадсангүй.' })
+      })
+   }
 
    return (
       <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
@@ -145,6 +183,12 @@ export default function ActivityPlanAttach() {
                      </div>
                   </div>
                )}
+            </div>
+
+            <div className="tw-flex tw-justify-center">
+               <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSave}>
+                  Хадгалах
+               </button>
             </div>
          </div>
       </div>

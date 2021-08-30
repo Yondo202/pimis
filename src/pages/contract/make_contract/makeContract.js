@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import SignaturePad from 'react-signature-canvas'
 import ModalWindow from 'components/modal_window/modalWindow'
 import PenAltSVG from 'assets/svgComponents/penAltSVG'
 import PrintSVG from 'assets/svgComponents/printSVG'
 import { useReactToPrint } from 'react-to-print'
 import axios from 'axiosbase'
-import Attach5 from './contractAttach5'
-import Attach6 from './contractAttach6'
 import ContractAttach5 from './contractAttach5'
 import ContractAttach6 from './contractAttach6'
 import ActivityPlanAttach from './activityPlanAttach'
 import FinalCostAttach from './finalCostAttach'
 import OwnershipAttach from './ownershipAttach'
 import PurchasePlanAttach from './purchasePlanAttach'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import AlertContext from 'components/utilities/alertContext'
 
 const contract = {
    1: {
@@ -389,34 +389,40 @@ const initialSignersEdp = [{
    name: 'Т.ЖАМБАЛЦЭРЭН',
    position: 'Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны Төрийн нарийн бичгийн дарга',
    signature: null,
-   order: 1
+   order: 1,
+   category: 'edp'
 }, {
    name: 'О.ОНОН',
    position: 'Экспортыг дэмжих төслийн Захирал',
    signature: null,
-   order: 2
+   order: 2,
+   category: 'edp'
 }, {
    name: 'Б.ДӨЛГӨӨН',
    position: 'Экспортыг дэмжих төслийн Зохицуулагч',
    signature: null,
-   order: 3
+   order: 3,
+   category: 'edp'
 }, {
    name: 'M.БАТТУЛГА',
    position: 'Экспортыг дэмжих төслийн Бизнес хөгжлийн ахлах мэргэжилтэн',
    signature: null,
-   order: 4
+   order: 4,
+   category: 'edp'
 }]
 
 const initialSignersReceiving = [{
    name: null,
    position: null,
    signature: null,
-   order: 1
+   order: 1,
+   category: 'receiving'
 }, {
    name: null,
    position: null,
    signature: null,
-   order: 2
+   order: 2,
+   category: 'receiving'
 }]
 
 const descriptions = [
@@ -425,6 +431,8 @@ const descriptions = [
 ]
 
 export default function MakeContract() {
+   const AlertCtx = useContext(AlertContext)
+
    const [info, setInfo] = useState({
       year: null,
       month: null,
@@ -434,13 +442,13 @@ export default function MakeContract() {
       sum_duureg: null,
       horoo_bag: null,
       detailed_location: null,
-      registration_number: null,
-      register: null,
+      state_reg: null,
+      register_no: null,
       company_name: null,
-      bh_zuvluh: null,
-      amount: null,
-      amount_verbose: null,
+      funding: null,
+      funding_verbose: null,
       location: null,
+      bh_zuvluh: null,
    })
 
    const handleInput = (key, value) => setInfo(prev => ({ ...prev, [key]: value }))
@@ -449,13 +457,27 @@ export default function MakeContract() {
    const [signersReceiving, setSignersReceiving] = useState(initialSignersReceiving)
 
    useEffect(() => {
-      setInfo(prev => ({
-         ...prev,
-         year: prev.year ?? currentYear,
-         month: prev.month ?? currentMonth,
-         day: prev.day ?? currentDate,
-         company_name: localStorage.getItem('companyname')
-      }))
+      axios.get(`contracts?projectId=${2}`, {
+         headers: { Authorization: getLoggedUserToken() }
+      }).then(res => {
+         const { signers, ...info } = res.data.data
+         setInfo(info)
+         setSignersEpd(signers.filter(signer => signer.category === 'edp'))
+         setSignersReceiving(signers.filter(signer => signer.category === 'receiving'))
+         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээг нээлээ.' })
+      }).catch(err => {
+         if (err.response.status === 490) {
+            setInfo(prev => ({
+               ...prev,
+               year: prev.year ?? currentYear,
+               month: prev.month ?? currentMonth,
+               day: prev.day ?? currentDate,
+               company_name: localStorage.getItem('companyname')
+            }))
+            return
+         }
+         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээг татаж чадсангүй.' })
+      })
    }, [])
 
    const componentRef = useRef()
@@ -465,7 +487,29 @@ export default function MakeContract() {
    })
 
    const handleSave = () => {
-      axios.post()
+      if (info.id === undefined) {
+         axios.post(`contracts?projectId=${2}`, {
+            contract: info,
+            signers: [...signersEdp, ...signersReceiving]
+         }, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээг хадгаллаа.' })
+         }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээг хадгалж чадсангүй.' })
+         })
+      } else {
+         axios.put(`contracts/${info.id}`, {
+            contract: info,
+            signers: [...signersEdp, ...signersReceiving]
+         }, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээний мэдээллийг шинэчиллээ.' })
+         }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээний мэдээллийг шинэчилж чадсангүй.' })
+         })
+      }
    }
 
    return (
@@ -505,7 +549,7 @@ export default function MakeContract() {
                            нэг талаас Монгол Улс, Улаанбаатар хот, Сүхбаатар дүүрэг, 2 дугаар хороо, Гэрэгэ тауэр, 8 дугаар  давхарт байрлах Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны дэргэдэх Экспортыг дэмжих төслийг хэрэгжүүлэх нэгж (цаашид “Санхүүгийн дэмжлэг олгогч” гэх),
                         </p>
                         <p className="">
-                           нөгөө талаас Монгол Улс, <Fill value={info.hot_aimag} name="hot_aimag" setter={handleInput} editable placeholder="хот/аймаг" />, <Fill value={info.sum_duureg} name="sum_duureg" setter={handleInput} editable placeholder="сум/дүүрэг" />, <Fill value={info.horoo_bag} name="horoo_bag" setter={handleInput} editable placeholder="баг/хороо" />, <Fill value={info.detailed_location} name="detailed_location" setter={handleInput} editable placeholder="дэлгэрэнгүй хаяг" /> хаягт байрлах улсын бүртгэлийн <Fill value={info.registration_number} name="registration_number" setter={handleInput} editable defaultLength={12} /> дугаартай, регистрийн <Fill value={info.register} name="register" setter={handleInput} editable defaultLength={12} /> дугаартай <Fill value={info.company_name} dotted /> (цаашид “Санхүүгийн дэмжлэг хүртэгч” гэх) нар (цаашид хамтад нь “Талууд” гэх) харилцан тохиролцож байгуулав.
+                           нөгөө талаас Монгол Улс, <Fill value={info.hot_aimag} name="hot_aimag" setter={handleInput} editable placeholder="хот/аймаг" />, <Fill value={info.sum_duureg} name="sum_duureg" setter={handleInput} editable placeholder="сум/дүүрэг" />, <Fill value={info.horoo_bag} name="horoo_bag" setter={handleInput} editable placeholder="баг/хороо" />, <Fill value={info.detailed_location} name="detailed_location" setter={handleInput} editable placeholder="дэлгэрэнгүй хаяг" /> хаягт байрлах улсын бүртгэлийн <Fill value={info.state_reg} name="state_reg" setter={handleInput} editable defaultLength={12} /> дугаартай, регистрийн <Fill value={info.register_no} name="register_no" setter={handleInput} editable defaultLength={12} /> дугаартай <Fill value={info.company_name} dotted /> (цаашид “Санхүүгийн дэмжлэг хүртэгч” гэх) нар (цаашид хамтад нь “Талууд” гэх) харилцан тохиролцож байгуулав.
                         </p>
                         <p className="" style={{ textIndent: 16 }}>
                            Энэхүү Гэрээний зорилго нь <Fill value={info.company_name} dotted />-ийн экспортын үйл ажиллагааг дэмжих зорилгоор энэхүү Гэрээнд заасан нөхцөл, зориулалтаар санхүүжилт олгох, үйл ажиллагааны хэрэгжилтэд хяналт тавих, уг санхүүжилттэй холбоотой бусад харилцаа, талуудын эрх, үүрэг хариуцлагыг тодорхойлон зохицуулахад оршино.
@@ -523,7 +567,7 @@ export default function MakeContract() {
                                  order={provision.order}
                                  provision={{
                                     '2.8': <span>
-                                       Гэрээний дагуу Санхүүгийн дэмжлэг олгогч нэгж нь батлагдсан үйл ажиллагааны зардлын зөвшөөрсөн хэсэг болох дээд тал нь 50 хувь буюу <Fill value={info.amount} name="amount" setter={handleInput} defaultLength={12} editable dotted />₮ (<Fill value={info.amount_verbose} name="amount_verbose" setter={handleInput} defaultLength={24} editable dotted /> үгээр) /НӨАТ ороогүй/ төгрөгийг Санхүүгийн дэмжлэг хүртэгчид олгоно."
+                                       Гэрээний дагуу Санхүүгийн дэмжлэг олгогч нэгж нь батлагдсан үйл ажиллагааны зардлын зөвшөөрсөн хэсэг болох дээд тал нь 50 хувь буюу <Fill value={info.funding} name="funding" setter={handleInput} defaultLength={12} editable dotted />₮ (<Fill value={info.funding_verbose} name="funding_verbose" setter={handleInput} defaultLength={24} editable dotted /> үгээр) /НӨАТ ороогүй/ төгрөгийг Санхүүгийн дэмжлэг хүртэгчид олгоно."
                                     </span>,
                                     '6.9.1': <span>
                                        Санхүүгийн дэмжлэг хүртэгчийн албан ёсны хаяг: <Fill value={info.location} name="location" setter={handleInput} defaultLength={48} editable dotted />
@@ -588,12 +632,12 @@ export default function MakeContract() {
             </div>
          </div>
 
-         <ActivityPlanAttach />
-         <FinalCostAttach />
-         <OwnershipAttach />
-         <PurchasePlanAttach />
-         <ContractAttach5 />
-         <ContractAttach6 />
+         <ActivityPlanAttach contractId={info.id} />
+         <FinalCostAttach contractId={info.id} />
+         <OwnershipAttach contractId={info.id} />
+         <PurchasePlanAttach contractId={info.id} />
+         <ContractAttach5 contractId={info.id} />
+         <ContractAttach6 contractId={info.id} />
       </>
    )
 }
