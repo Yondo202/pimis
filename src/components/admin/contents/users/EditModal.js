@@ -88,11 +88,11 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
                                 <div className="rowss">
                                     <div className="inputItem">
                                         <span className="title">Овог:</span>
-                                        <input onChange={editHandle} value={parent.firstname} name="firstname" className="getMainInp22 form-control" type="text" />
+                                        <input onChange={editHandle} value={parent.lastname} name="lastname" className="getMainInp22 form-control" type="text" />
                                     </div>
                                     <div className="inputItem">
                                         <span className="title">Нэр :</span>
-                                        <input onChange={editHandle} value={parent.lastname} name="lastname" className="getMainInp22 form-control" type="text" />
+                                        <input onChange={editHandle} value={parent.firstname} name="firstname" className="getMainInp22 form-control" type="text" />
                                     </div>
                                 </div>
                                 <div className="rowss">

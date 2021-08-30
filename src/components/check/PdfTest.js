@@ -32,12 +32,10 @@ const PdfTest = () => {
     }, 3000)
   }, []);
 
-  console.log(initialData, "554554");
-
   return (
     <div className="container">
       <PDFstyle className="Nanana">
-        <PDFViewer style={{ height: '90vh', width: `100%` }} >
+        <PDFViewer fileName="somename.pdf" style={{ height: '90vh', width: `100%` }} >
           <MyDocument wait={wait} data={initialData} />
         </PDFViewer>
       </PDFstyle>

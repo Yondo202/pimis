@@ -70,11 +70,11 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
                                 <div className="rowss">
                                     <div className="inputItem">
                                         <span className="title">Овог :</span>
-                                        <input name="firstname" className="getMainInp22 form-control" type="text" />
+                                        <input name="lastname" className="getMainInp22 form-control" type="text" />
                                     </div>
                                     <div className="inputItem">
                                         <span className="title">Нэр :</span>
-                                        <input name="lastname" className="getMainInp22 form-control" type="text" />
+                                        <input name="firstname" className="getMainInp22 form-control" type="text" />
                                     </div>
                                 </div>
                                 <div className="rowss">

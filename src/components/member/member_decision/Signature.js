@@ -18,15 +18,19 @@ function Signature(props) {
     return (
         <SignaturePar className="rowItems">
             <div className="row">
-                <div className="col-md-3 col-sm-3 col-12"><div style={{marginBottom:15, marginLeft:15, fontWeight:500, fontSize:"16px",}} className="LeftHead">Баталгаат гарын үсэг: </div> </div>
+                <div className="col-md-3 col-sm-3 col-12">
+                    <div className={`LeftHead ${props?.cond==='main'?`LeftHead2`:``}`}>
+                        {props.cond==='main'?`Гарын үсэг:`:`Баталгаат гарын үсэг:`} 
+                    </div>
+                </div>
                 <div className="col-md-9 col-sm-9 col-12">
                     <div className="RightHead">
-                        <div className="addInfoPar">
+                        <div className={`addInfoPar ${props?.cond==='main'?`addInfoPar2`:``}`} >
                             <div className="userInfPar">
                                 <div className="infItemPar">
                                         <div className="drowPar">
                                             <div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>{!props.url? `Зурах`: `Засах` }</span></div>
-                                            {props.url? <img className="SingatureImg" src={props.url}/>  :  trimmedDataURL ? <img className="SingatureImg" src={trimmedDataURL}/> : null}  
+                                            {props.url? <img className="SingatureImg" src={props?.url}/>  :  trimmedDataURL ? <img className="SingatureImg" src={trimmedDataURL}/> : null}  
                                             {/* {trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null} */}
                                                 <Modal visible={visible} width="620" height="380" effect="fadeInDown" onClickAway={closeModal}>
                                                     <div className="modalPar">
@@ -55,6 +59,16 @@ export default Signature
 
 const SignaturePar = styled.div`
     margin-top:20px;
+    .LeftHead{
+        font-weight:500;
+        font-size:16px;
+        margin-bottom:15px;
+        margin-left:15px;
+    }
+    .LeftHead2{
+        font-size:14px;
+        margin-left:0px;
+    }
     .addInfoPar{
         position:relative;
         .addBtn{
@@ -102,7 +116,9 @@ const SignaturePar = styled.div`
                     .SingatureImg{
                         border:1px solid rgba(${ColorRgb},0.3);
                         width:260px;
-                        height:130px;
+                        // height:130px;
+                        height:auto;
+                        max-height:250px;
                         object-fit:contain;
                     }
                     .modalPar{
@@ -138,6 +154,15 @@ const SignaturePar = styled.div`
                     span{
                         margin-right:10px;
                     }
+                }
+            }
+        }
+    }
+    .addInfoPar2{
+        .userInfPar{
+            .infItemPar{
+                .drowPar{
+
                 }
             }
         }

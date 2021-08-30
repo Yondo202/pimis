@@ -10,9 +10,9 @@ import { IoMdCheckmarkCircle } from 'react-icons/io'
 function HomePage({ setNotify }) {
     DocumentTitle("EDP - Үнэлгээний хорооны гишүүн");
     const [cardData, setCardData] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [parent, setParent] = useState({});
-    const ClickHandle = e => { setParent(e); setShowModal(true); }
+    // const [showModal, setShowModal] = useState(false);
+    // const [parent, setParent] = useState({});
+    // const ClickHandle = e => { setParent(e); setShowModal(true); }
 
     useEffect(() => {
         GetData();
@@ -33,10 +33,12 @@ function HomePage({ setNotify }) {
                 </div>
             </div>
             <div className="CardParent">
-                {showModal && <Modal showModal={showModal} setNotify={setNotify} setShowModal={setShowModal} parent={parent} />}
+                {/* {showModal && <Modal showModal={showModal} setNotify={setNotify} setShowModal={setShowModal} parent={parent} />} */}
                 {cardData.length!==0 ? cardData.map((el, i) => {
                     return (
-                        <div key={i} onClick={() => ClickHandle(el)} className="Ghost">
+                        <div key={i}
+                        //  onClick={() => ClickHandle(el)}
+                         className="Ghost">
                             <div className="cardItems">
                                 <div className="titleBig">{el.company_name}</div>
                                 <div className="contents">
@@ -146,11 +148,14 @@ const Memberhome = styled.div`
                             cursor:pointer;
                             // color: rgba(0,0,0,0.5);
                             border-radius:3px;
-                            padding:4px 10px;
+                            padding:6px 10px;
                             margin-top:14px;
                             // border:1px solid rgba(0,0,0,0.4);
                             background-color:#0d77b7;
                             border:1px solid rgba(255,255,255,0.4);
+                            &:hover{
+                                opacity:0.8;
+                            }
                             a{
                                 text-decoration:none;
                                 color: #fff;
@@ -162,7 +167,6 @@ const Memberhome = styled.div`
                             position:relative;
                             color: white;
                             border-radius:3px;
-                            padding:4px 10px;
                             border:1px solid rgba(255,255,255,0.4);
                             background-color:#0d77b7;
                             a{
@@ -301,8 +305,6 @@ const Memberhome = styled.div`
 const Modal = ({ setShowModal, parent, setNotify }) => {
     const ref = useRef();
     const closeModal = e => { if (ref.current === e.target) { setShowModal(false); } }
-
-    console.log(parent, " my parent");
     return (
         <div onClick={closeModal} ref={ref} className="Ghost Fix">
             <div className="cardItems">

@@ -3,7 +3,9 @@ import styled from 'styled-components'
 import Modal from 'react-awesome-modal';
 import SignatureCanvas from 'react-signature-canvas'
 import {FaPenNib} from 'react-icons/fa'
+import { VscAdd } from 'react-icons/vsc'
 import { ColorRgb, textColor,InputStyle } from '../../theme'
+import AddModal from "./AddModal"
 
 const today = new Date(); const month = (today.getMonth()+1); const day = today.getDate();
 const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0'+month : month) + '-' + (day.toString().length ===1?'0'+day : day);
@@ -11,6 +13,9 @@ const Currentdate = today.getFullYear() + '-' + (month.toString().length ===1?'0
 function PageOne(props) {
       const ref = useRef();
       const [ why, setWhy ] = useState(false);
+      const [ addModal, setAddModal ] = useState(false);
+      
+
       const [visible, setVisible] = useState(false);
       let [sigCanvas, setSigCanvas] = useState({});
       let [trimmedDataURL, setTrimmedDataURL] = useState(null);
@@ -18,86 +23,117 @@ function PageOne(props) {
       const closeModal=()=> { setVisible(false);}
       const clear = () => sigCanvas.clear();
       const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); props.setImgData(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); closeModal();};
-      const changeHandle = (event) =>{ if(event.target.value==="true"){ setWhy(true); ref.current.focus(); }else{ setWhy(false); } }
+      const changeHandle = (event) =>{ if(event.target.value==="true"){ setWhy(true); ref.current?.focus(); }else{ setWhy(false); } }
 
       return (
         <>
+            {addModal?<AddModal setAddModal={setAddModal} setConflict={props?.setConflict} />:null}
             <MainPar className="MainPar">
-                    <div className="title">Ашиг сонирхлын зөрчилгүй тухай мэдэгдэх хуудас</div>
-                    <div className="nameTitle">Үнэлгээний хорооны гишүүн: <span>{props.userName}</span></div>
+                    <div className="title">Ашиг сонирхлын зөрчилгүй гэдгээ илэрхийлэх, Зөрчил үүссэн тухай мэдэгдэл</div>
+                    <div className="title">Нэг. Сонгон шалгаруулалтын багийн гишүүн</div>
+
+                    <div className="MemeberInfo">
+                      <span className="titleSm">Эцэг (эх)-ийн нэр: </span> 
+                      <span className="Values">{props.userInfo?.memberInfo?.lastname}</span>
+                    </div>
+
+                    <div className="MemeberInfo">
+                      <span className="titleSm">Нэр: </span> 
+                      <span className="Values">{props.userInfo?.memberInfo?.firstname}</span>
+                    </div>
+
                     <div className="MemeberInfo"><span className="titleSm">Албан тушаал: </span> 
                         <InputStyle className="inpp">
-                        {
-                          props.propData?
-                          <input className="getInputt" name="occupation" value={props.propData.occupation} type="text" placeholder="албан тушаалаа бичнэ үү..." />  : 
-                          <input className="getInputt" name="occupation" type="text" placeholder="албан тушаалаа бичнэ үү..." /> 
-                        } 
-                         <div className="line"></div></InputStyle>
+                          <input className="getInputt" defaultValue={props.propData?.occupation} name="occupation" type="text" placeholder="албан тушаалаа бичнэ үү..." /> 
+                          <div className="line"></div>
+                        </InputStyle>
                     </div>
+
+                    <div className="MemeberInfo"><span className="titleSm">Байгууллагын нэр: </span> 
+                        <InputStyle className="inpp">
+                        <input className="getInputt" defaultValue={props.propData?.member_compname} name="member_compname" type="text" placeholder="байгууллагын нэрээ бичнэ үү..." /> 
+                        <div className="line"></div></InputStyle>
+                    </div>
+
+                    <div className="MemeberInfo MemeberInfo2">
+                      <span className="titleSm">Сонирхлын зөрчилтэй эсэх: </span>
+                      { props.propData?
+                            <div className="childPar">
+                                <div className="child"> <input className="radio getInputt" checked={props.propData.is_violation?true:false} id="radio" name="is_violation" value="true" type="radio" /><span className="smTitle">Тийм</span></div>
+                                <div className="child childA"><input className="radio getInputt" checked={props.propData.is_violation?false:true} name="is_violation" value="false" type="radio" /><span className="smTitle">Үгүй</span></div>
+                            </div>
+                            :
+                            <div className="childPar">
+                                <div className="child"> <input className="radio getInputt" onChange={changeHandle} id="radio" name="is_violation" value="true" type="radio" /><span className="smTitle">Тийм</span></div>
+                                <div className="child childA"><input className="radio getInputt" onChange={changeHandle} name="is_violation" value="false" type="radio" /><span className="smTitle">Үгүй</span></div>
+                            </div>
+                      }
+                    </div>
+
                     <div className="contentPar">
-                        <div className="items">Би Түншлэлийн дэмжлэг хүсэгчийн өргөдлийг үнэлэх, Түншлэлийн дэмжлэг хүсэгчийн чадавхыг үнэлэх үнэлгээний хорооны гишүүнээр ажиллахыг зөвшөөрч байна. </div>
-                        <div className="items">Би дараах мэдэгдлийг хийж байна: </div>
                         <div className="Content">
-                            <div className="Titles">I-р хэсэг – Ашиг сонирхлын зөрчилгүйг мэдүүлэх</div>
-                            <ul>
-                                <li className="items">
-                                    Үнэлгээний явцад оролцогч талуудтай ямар нэгэн ашиг сонирхлын зөрчил үүсгэхгүй бөгөөд аливаа зөрчил үүсэж болзошгүй тохиолдолд нөхцөл байдлыг ил тодоор зарлаж үнэлгээний багаас огцрох болно. <br /><br />
-                                    [Хэрэв танд Түншлэлийн дэмжлэг хүсэгч ААН, Кластер болон үнэлгээний хорооны бусад гишүүдтэй сонирхлын зөрчил байгаа бол үнэлгээний хорооноос өөрийн хүсэлтээр огцорно уу.]<br />
-                                    <div className="ZorchilPar"><span className="titleBig">Түншлэлийн дэмжлэг хүсэгчтэй дараах ашиг сонирхлын зөрчил үүсэж байна:</span> 
-                                    { props.propData?
-                                     <div className="childPar">
-                                          <div className="child"> <input className="radio getInputt" checked={props.propData.is_violation?true:false} id="radio" name="is_violation" value="true" type="radio" /><span className="smTitle">Тийм</span></div>
-                                          <div className="child childA"><input className="radio getInputt" checked={props.propData.is_violation?false:true} name="is_violation" value="false" type="radio" /><span className="smTitle">Үгүй</span></div>
-                                      </div>
-                                      :
-                                      <div className="childPar">
-                                          <div className="child"> <input className="radio getInputt" onChange={changeHandle} id="radio" name="is_violation" value="true" type="radio" /><span className="smTitle">Тийм</span></div>
-                                          <div className="child childA"><input className="radio getInputt" onChange={changeHandle} name="is_violation" value="false" type="radio" /><span className="smTitle">Үгүй</span></div>
-                                      </div>
-                                    }
-                                      
-                                      
-                                    </div>  
-                                </li>
-                                {props.propData? props.propData.is_violation? 
-                                <InputStyle >
-                                  <textarea ref={ref} id="reason" name="uussen_zorchil" value={props.propData.uussen_zorchil} placeholder="зөрчил үүсэж байгаа бол энд бичнэ үү..." />
-                                  <div className="line"></div>
-                                </InputStyle>
-                                 : 
-                                  <InputStyle style={why?{transform:`scale(1)`}:{transform:`scale(0)`}}>
-                                  <textarea ref={ref} id="reason" name="uussen_zorchil" placeholder="зөрчил үүсэж байгаа бол энд бичнэ үү..." />
-                                  <div className="line"></div>
-                                </InputStyle> 
-                                 :
-                                <InputStyle style={why?{transform:`scale(1)`}:{transform:`scale(0)`}}>
-                                  <textarea ref={ref} id="reason" name="uussen_zorchil" placeholder="зөрчил үүсэж байгаа бол энд бичнэ үү..." />
-                                  <div className="line"></div>
-                                </InputStyle> }
-                                
+                            <div className="title">Хоёр. Сонирхлын зөрчилгүйг илэрхийлсэн байдал</div>
+                            <div className="texts"><span style={{fontWeight:`500`}}>{props.userInfo?.memberInfo?.lastname}</span> овогтой <span style={{fontWeight:`500`}}>{props.userInfo?.memberInfo.firstname} </span> 
+                             миний бие Дэлхийн банкны санхүүжилтээр Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны дэргэд хэрэгжиж байгаа Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгчийн өргөдлийг үнэлэх Сонгон шалгаруулалтын багийн гишүүнээр ажиллахад ямар нэгэн сонирхлын зөрчилгүй болохыг үүгээр мэдэгдэж байна. </div>
+                            {/* <ul>
                                 <li className="items"> 
                                     Түншлэлийн дэмжлэг олгох үйл ажиллагааг үнэлэх явцад оролцож буй талуудтай ямар нэгэн бизнес эсвэл гэр бүлийн харилцаа байхгүй гэдгийг үүгээр баталгаажуулж байна. Хэрэв ийм харилцаа гарч ирвэл төслийн захиралд нэн даруй мэдэгдэх болно. 
                                 </li>
-                                <div className="Titles">II-р хэсэг – Ашиг сонирхлын зөрчилгүйг мэдүүлэх</div>
-                                <li className="items">Хэрэв Түншлэлийн дэмжлэг хүсэгч нь хээл хахууль өгөхийг оролдох эсвэл хууран мэхлэх, хуйвалдах, дарамт шахалт үзүүлэх, авлига өгөхийг санаархах зэрэг үйлдэл гаргасан тохиолдолд төслийн захиралд нэн даруй мэдэгдэх болно. </li>
-                                    <ul className="smUl">
-                                            <li>“хээл хахууль өгөх” 	гэдэг нь талуудын үйл ажиллагаанд зүй бусаар нөлөөлөхийн тулд үнэ цэнтэй зүйлийг шууд болон шууд бусаар санал болгох, өгөх, хүлээн авах, санал болгохыг хэлнэ. </li>
-                                            <li>"хууран мэхлэх үйлдэл" гэдэг нь санхүүгийн болон бусад ашиг хонжоо олох, үүрэг хариуцлагаас зайлсхийхийг оролдох, санаатайгаар төөрөгдүүлэх буюу төөрөгдүүлэхийг оролдсон аливаа үйлдэл, эс үйлдэл юм; </li>
-                                            <li>"хуйвалдааны үйл ажиллагаа" гэдэг нь зохисгүй зорилгод хүрэхэд чиглэсэн хоёр буюу түүнээс дээш талуудын хоорондох зохион байгуулалттай үйл ажиллагааг ойлгоно; </li>
-                                            <li>"дарамт шахалт үзүүлэх" гэдэг нь талуудын үйл ажиллагаанд зүй бусаар нөлөөлөхийн тулд талуудын өмч хөрөнгийг шууд болон шууд бусаар хохирол учруулах буюу хохирол учруулахыг завдахыг хэлнэ</li>
-                                            <li>“саад болох” авлигад автах, залилан мэхлэх, хуйвалдааны үйлдлийг илрүүлэх мөрдөн байцаалтын явцад худал мэдээлэл өгөх эсвэл нотлох баримтыг нуун дарагдуулах, хуурамчаар үйлдэх, өөрчлөх, устгах болон мөрдөн байцаах явцад мэдээллийг ил тод болгож буй этгээдийг сүрдүүлэх, дарамтлах, заналхийлэх зэрэг үйлдлийг хамааруулан ойлгоно</li>
-                                    </ul>
-                                <li className="items">Би Түншлэлийн дэмжлэг хүсэгч ААН, Кластерыг үнэлэхэд ямар нэгэн хувийн ашиг сонирхол үзүүлэхгүй.</li>
-                                <li className="items">Би дэмжлэг хүсэгч ААН, Кластеруудыг ялгаварлан гадуурхахгүй.</li>
-                                <li className="items">Би Монгол улсын засгийн газар болон төслийн эрх ашгийн төлөө бүх цаг хугацаанд үнэнч шударга, тууштай, ёс зүйтэй ажиллах болно.</li>
-                                <li className="items">Үнэлгээний хорооны гишүүнээр томилогдсоноос эхлэн үнэлгээ хийх явцад энэхүү мэдэгдлийн 1 болон 2-т заагдсан аливаа үйлдэл гарсан тохиолдолд төслийн захиралд нэн даруй мэдэгдэнэ.</li>
-                                <li className="items">Хүндэтгэн үзэх шалтгаангүйгээр Үнэлгээний хорооны хуралд оролцохоос татгалзахгүй.</li>
-                                <li className="items">Би ажил үүргээ өөрийн мэдлэг, туршлагын хүрээнд өндөр ёс зүйтэйгээр гүйцэтгэж, шударга дүгнэлтийг гаргана</li>
-                                <li className="items">Үнэлгээний хорооны гишүүний эрх үүргийн хүрээнд олж авсан аливаа нууцлал бүхий мэдээллийг урвуулан ашиглахгүй. Эдгээр мэдээллийг гуравдагч этгээдэд дамжуулахгүй</li>
-                                <li className="items">Үнэлгээний хорооны шийдвэр гаргахад нөлөөлөх зорилгоор Түншлэлийн дэмжлэг хүсэгч ААН, Кластер болон бусад холбоо бүхий этгээдээс ямар нэгэн шагнал, бэлэг болон үнэ бүхий зүйлийг авахгүй. </li>
-                                <li className="items">Үнэлгээний хорооны хурлын тэмдэглэлд ямар нэгэн төөрөгдүүлэх эсвэл худлаа мэдээлэл оруулахгүй.</li>
+                               
                                 <li className="items">Түншлэлийн дэмжлэг хүсэгчийн өргөдлийн үнэлэхдээ Түншлэлийн дэмжлэг үзүүлэх зааварт заасан дүрэм, шалгуурыг баримтална.</li>
-                            </ul>
+                            </ul> */}
+                        </div>
+                    </div>
+
+                    <div className="contentPar">
+                        <div className="Content">
+                            <div className="title">Гурав. Сонирхлын зөрчил үүссэн тухай</div>
+                            <div className="texts">Сонгон шалгаруулалтын багийн гишүүн би Түншлэлийн хөтөлбөрөөс дэмжлэг хүсэгч доорх хүснэгтэд байгаа аж ахуйн нэгж эсхүл кластертай сонирхлын зөрчил үүсэх нөхцөл байдал бий болсон гэж үзэж байгаа тул тухайн аж ахуйн нэгж эсхүл кластерын өргөдлийг үнэлэх Сонгон шалгаруулалтын багийн хуралд оролцохоос татгалзаж байна. </div>
+                            <div className="customTable">
+                              <table >
+                                <tbody>
+                                  <tr>
+                                    <th>№</th>
+                                    <th style={{minWidth:`200px`}}>Аж ахуйн нэгж эсхүл кластерын нэр</th>
+                                    <th>Сонирхлын зөрчил</th>
+                                  </tr>
+                                  {props?.conflict?.map((el,ind)=>{
+                                    return(
+                                      <tr key={ind}>
+                                        <td>{ind+1}</td>
+                                        <td>{el.compname}</td>
+                                        <td>{el.description}</td>
+                                      </tr>
+                                    )
+                                  })}
+                                </tbody>
+                              </table>
+                              <div onClick={e=>setAddModal(true)} className="Add">
+                                 <VscAdd  />
+                              </div>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+
+                    <div className="contentPar">
+                        <div className="Content">
+                            <div className="title">Дөрөв. Сонгон шалгаруулалтын багийн гишүүний үүрэг</div>
+                            {MemberRole.map((el,ind)=>{
+                              return(
+                                <div key={ind} className="texts texts2">
+                                    {el.text}
+                                </div>
+                              )
+                            })}
+                        </div>
+                    </div>
+
+                    <div className="contentPar">
+                        <div className="Content">
+                            <div className="title">Тав. Баталгаажуулалт</div>
+                            <div className="texts">Сонгон шалгаруулалтын багийн гишүүн би үүргээ чанд ухамсарлан энэхүү мэдэгдлийг үнэн зөв гаргасан болохоо үүгээр баталгаажуулж байна. </div>
                         </div>
                     </div>
 
@@ -106,20 +142,20 @@ function PageOne(props) {
                         <div className="drowPar">
                               <div className="titleee">Гарын үсэг:</div>
                               {!props.propData&&<div className="SignBtn" onClick={()=>openModal()} ><FaPenNib /><span>Зурах</span></div>} 
-                              {props.propData? <img className="SingatureImg"  src={props.propData.signature_data}/>  : trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null }
+                              {props.propData? <img className="SingatureImg"  src={props.propData?.signature_data}/>  : trimmedDataURL ? <img className="SingatureImg"  src={trimmedDataURL}/> : null }
                               {/* signature_data */}
-                                    <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
-                                        <div className="modalPar">
-                                            <div className="Canvass">
-                                                <SignatureCanvas className='sigCanvas' penColor='blue' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
-                                            </div>
-                                            <div className="BtnPar">
-                                                <button onClick={clear}>Цэвэрлэх</button>
-                                                <button onClick={()=>trim()}>Хадгалах</button>
-                                                <button onClick={closeModal}>X</button>
-                                            </div>
-                                        </div>
-                                    </Modal>
+                              <Modal visible={visible}  width="620" height="380"effect="fadeInDown" onClickAway={closeModal}>
+                                  <div className="modalPar">
+                                      <div className="Canvass">
+                                          <SignatureCanvas className='sigCanvas' penColor='blue' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
+                                      </div>
+                                      <div className="BtnPar">
+                                          <button onClick={clear}>Цэвэрлэх</button>
+                                          <button onClick={()=>trim()}>Хадгалах</button>
+                                          <button onClick={closeModal}>X</button>
+                                      </div>
+                                  </div>
+                              </Modal>
                         </div>
                     </div>
 
@@ -142,7 +178,7 @@ const MainPar = styled.div`
     background-color:white;
     // max-width:700px;
     margin-top:20px;
-    font-size:13px;
+    font-size:13.5px;
     padding:25px 100px;
     border:1px solid rgba(0,0,0,.3);
     color:rgba(${textColor},1);
@@ -227,21 +263,49 @@ const MainPar = styled.div`
       margin:10px 0px;
       margin-bottom:30px;
       text-align:center;
-      font-size:16px;
+      font-size:15px;
     }
     .MemeberInfo{
       margin-top:8px;
-      margin-bottom:25px;
+      margin-bottom:28px;
       display:flex;
       align-items:center;
       .titleSm{
         width:20%;
-        // font-weight:500;
+        font-weight:500;
         margin-right:15px;
       }
       .inpp{
         font-weight:400;
         width:80%;
+      }
+      .childPar{
+        display:flex;
+        align-items:center;
+        margin-top:10px;
+        .child{
+          display:flex;
+          align-items:center;
+          .smTitle{
+            margin-left:5px;
+          }
+          .radio{
+            cursor:pointer;
+            width:20px;
+            height:20px;
+          }
+        }
+        .childA{
+          margin-left:30px;
+        }
+      }
+    }
+    .MemeberInfo2{
+      .titleSm{
+        width:30%;
+      }
+      .childPar{
+        width:70%;
       }
     }
     .nameTitle{
@@ -252,15 +316,22 @@ const MainPar = styled.div`
       }
     }
     .contentPar{
-      margin-top:15px;
+      margin-top:30px;
       .items{
         margin:10px 0px; 
       }
       .Content{
-        padding:0px 50px;
+        padding:0px 0px;
         .Titles{
           margin:25px 0px;
           text-align:center;
+        }
+        .texts{
+          line-height: 2em;
+        }
+        .texts2{
+          line-height: 1.7em;
+          margin:12px 0px;
         }
         ul{
           list-style-type:decimal;
@@ -269,26 +340,6 @@ const MainPar = styled.div`
               margin:10px 0px;
               .titleBig{
                 font-weight:500;
-              }
-              .childPar{
-                display:flex;
-                align-items:center;
-                margin-top:10px;
-                .child{
-                  display:flex;
-                  align-items:center;
-                  .smTitle{
-                    margin-left:5px;
-                  }
-                  .radio{
-                    cursor:pointer;
-                    width:16px;
-                    height:16px;
-                  }
-                }
-                .childA{
-                  margin-left:30px;
-                }
               }
             }
           }
@@ -300,11 +351,53 @@ const MainPar = styled.div`
             list-style-type:upper-roman;
           }
         }
-        
-
+        .customTable{
+          width:100%;
+          margin:20px 0px;
+          .Add{
+            display:flex;
+            justify-content:center;
+            width:100%;
+            border:1px solid rgba(0,0,0,0.2);   
+            border-top:none;
+            padding:8px;
+            background-color:#d5e1ec;
+            cursor:pointer;
+            svg{
+              font-size:18px;
+            }
+            &:hover{
+              background-color:#e6ecf1;
+            }
+          }
+          table{
+            width:100%;
+            border-collapse: collapse;
+            th{
+              text-align:center;
+              background-color:#E7E9EB;
+              }
+              td, th{
+                  &:first-child{
+                      text-align:center;
+                  }
+                  padding:10px 8px;
+                  border:1px solid rgba(0,0,0,.2);
+              }
+              td{
+                  padding:12px 10px;
+                  // &:last-child{
+                  //     padding:8px 0px;
+                  // }
+                
+              }
+              
+            }
+            
+        }
       }
-      
     }
+
     @media (max-width:768px){
       
       .signature{
@@ -350,3 +443,19 @@ const MainPar = styled.div`
     }
 `
 
+const MemberRole = [
+  {text:'4.1. Хэрэв Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгч нь авлига, хээл хахууль өгөхийг оролдох, хууран мэхлэх, хуйвалдах, дарамт шахалт үзүүлэх зэрэг үйлдэл гаргасан тохиолдолд Экспортыг дэмжих төслийн Зохицуулагчид нэн даруй мэдэгдэнэ.' },
+  {text:'4.1.1. “авлига, хээл хахууль өгөх” гэж талуудын үйл ажиллагаанд зүй бусаар нөлөөлөхийн тулд үнэ цэнтэй зүйлийг шууд болон шууд бусаар санал болгох, өгөх, хүлээн авах, санал болгохыг хэлнэ.'},
+  {text:'4.1.2. "хууран мэхлэх үйлдэл" гэж санхүүгийн болон бусад ашиг хонжоо олох, үүрэг хариуцлагаас зайлсхийхийг оролдох, санаатайгаар төөрөгдүүлэх буюу төөрөгдүүлэхийг оролдсон аливаа үйлдэл, эс үйлдлийг хэлнэ. '},
+  {text:'4.1.3. "хуйвалдааны үйл ажиллагаа" гэж зохисгүй зорилгод хүрэхэд чиглэсэн хоёр буюу түүнээс дээш талуудын хоорондох зохион байгуулалттай үйл ажиллагааг ойлгоно.'},
+  {text:'4.1.4. "дарамт шахалт үзүүлэх" гэж талуудын үйл ажиллагаанд зүй бусаар нөлөөлөхийн тулд талуудын өмч хөрөнгийг шууд болон шууд бусаар хохирол учруулах буюу хохирол учруулахыг завдахыг хэлнэ.'},
+  {text:'4.3. Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгч аж ахуйн нэгж эсхүл кластерыг сонгон шалгаруулахад ямар нэгэн хувийн ашиг сонирхлын зөрчил гаргахгүй.'},
+  {text:'4.4. Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгч аж ахуйн нэгж эсхүл кластерыг ялгаварлан гадуурхахгүй.'},
+  {text:'4.5. Монгол Улсын Засгийн газар болон Экспортыг дэмжих төслийн эрх ашгийн төлөө бүх цаг хугацаанд үнэнч шударга, тууштай, ёс зүйтэй ажиллана.'},
+  {text:'4.6. Хүндэтгэн үзэх шалтгаангүйгээр Сонгон шалгаруулалтын багийн хуралд оролцохоос татгалзахгүй.'},
+  {text:'4.7. Ажил үүргээ өөрийн мэдлэг, туршлагын хүрээнд өндөр ёс зүйтэйгээр гүйцэтгэж, шударга дүгнэлт гаргана. '},
+  {text:'4.8. Сонгон шалгаруулалтын багийн гишүүний эрх, үүргийн хүрээнд олж авсан байгууллагын нууцлалтай мэдээллийг урвуулан ашиглахгүй. Эдгээр мэдээллийг гуравдагч этгээдэд дамжуулахгүй.'},
+  {text:'4.9. Сонгон шалгаруулалтын багийн шийдвэр гаргахад нөлөөлөх зорилгоор Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгч аж ахуйн нэгж эсхүл кластер болон бусад хамааралтай этгээдээс ямар нэгэн шагнал, бэлэг болон үнэ цэнтэй зүйлийг авахгүй. '},
+  {text:'4.10. Сонгон шалгаруулалтын багийн хурлын тэмдэглэлд ямар нэгэн төөрөгдүүлэх эсхүл худлаа мэдээлэл оруулахгүй. '},
+  {text:'4.11. Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгчийн өргөдлийг сонгон шалгаруулахдаа Түншлэлийн хөтөлбөрийг хэрэгжүүлэх зааварт заасан дүрэм, шалгуурыг баримтална.'},
+]

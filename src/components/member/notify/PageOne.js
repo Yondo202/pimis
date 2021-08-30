@@ -19,16 +19,31 @@ function PageOne({ NotifyData }) {
   const [errMsg, setErrMsg] = useState("");
   const [opacity, setOpacity] = useState("0");
   const [alert, setAlert] = useState({ color: 'yellow', text: 'null', cond: false });
-  const [userName, setUserName] = useState(null);
+  const [userName, setUserName] = useState({ firstname:'', lastname:'' });
+  const [ conflict, setConflict ] = useState([]);
 
   const alertHandle = (color, text, cond) => { setAlert({ color: color, text: text, cond: cond }); setTimeout(() => { setAlert({ color: color, text: text, cond: false }); }, 3000); }
 
   useEffect(() => {
-    axios.get(`evaluation-meetings/scheduled-projects?projectId=${slug}`, { headers: { Authorization: AccessToken() } }).then(res => {
-      setData(res.data.data[0]); setUserName(res.data.data[0].memberInfo.fullName);
-      if (res.data.data[0].medegdehHuudas !== null) { setPropData(res.data.data[0].medegdehHuudas) };
-    })
+    Go();
   }, []);
+
+  const Go = () =>{
+    axios.get(`evaluation-meetings/scheduled-projects?projectId=${slug}`, { headers: { Authorization: AccessToken() } }).then(res => {
+      if(res.data.data.length!==0){
+        setData(res.data.data[0]);
+        setUserName({firstname: res.data.data[0].memberInfo.firstname, lastname: res.data.data[0].memberInfo.lastname});
+        if (res.data.data[0].medegdehHuudas !== null) {
+          setPropData(res.data.data[0].medegdehHuudas);
+          setImgData(res.data.data[0].medegdehHuudas?.signature_data);
+          if(res.data.data[0].medegdehHuudas?.conflict!==null){
+            setConflict(JSON.parse(res.data.data[0].medegdehHuudas?.conflict));
+          }
+        };
+      }
+      
+    })
+  }
 
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
@@ -37,13 +52,18 @@ function PageOne({ NotifyData }) {
 
   const clickHandle = () => {
     let inp = document.querySelectorAll('.getInputt'); let arr = Array.from(inp); let final = {};
-    arr.forEach((el, i) => {
+    arr.forEach(el => {
       if (el.name === "is_violation") {
         if (el.checked === true) {
           if (el.value === "true") {
-            final[el.name] = true; let reason = document.getElementById('reason');
-            if (reason.value !== "") { final[reason.name] = reason.value; }
-          } else { final["uussen_zorchil"] = null; final[el.name] = false; }
+            final[el.name] = true;
+            // let reason = document.getElementById('reason');
+            // if (reason.value !== "") { final[reason.name] = reason.value; }
+          }
+          else {
+            //  final["uussen_zorchil"] = null;
+           final[el.name] = false;
+          }
         }
       } else {
         if (!el.value) { el.classList += " red"; } else {
@@ -53,38 +73,39 @@ function PageOne({ NotifyData }) {
         }
       }
     });
-    // final["fullName"] = userName;
-    final["projectId"] = Data.projectId;
-    final["evaluationMeetingId"] = Data.evaluationMeetingId;
 
     let keys = Object.keys(final);
-
-    if (keys.length < 6) {
+    if (keys.length < 4) {
       setErrMsg("Та гүйцэд бөгөлнө үү..."); setOpacity("1");
     } else if (!imgData) {
       setErrMsg("Гарын үсэгээ зурж баталгаажуулна уу..."); setOpacity("1");
     } else {
-      setSpin(true); final["signature_data"] = imgData; setOpacity("0");
+      final["firstname"] = userName.firstname;
+      final["lastname"] = userName.lastname;
+      final["projectId"] = Data.projectId;
+      final["evaluationMeetingId"] = Data.evaluationMeetingId;
+      final["signature_data"] = imgData;
+      final["conflict"] = JSON.stringify(conflict); 
+
+      setSpin(true); setOpacity("0");
       axios.post(`evaluation-results/member-interest`, final, { headers: { Authorization: AccessToken() } }).then((res) => {
-        console.log(res, " res");
         alertHandle("green", "Амжилттай илгээлээ", true); setTimeout(() => { history.push('/'); setSpin(false); }, 2000);
       }).catch((err) => { console.log(err); alertHandle("orange", "Алдаа гарлааа", true); setSpin(false); });
     }
-    console.log(final, "final");
   }
-
 
   return (
     <>
       <MainContainter className="container">
         <div className="parent" ref={componentRef}>
-          <Content propData={propData} userName={userName} setImgData={setImgData} />
+          <Content propData={propData} userInfo={Data} setImgData={setImgData} setConflict={setConflict} conflict={conflict} />
         </div>
 
         {!propData && <div className="buttonPar">
           <div style={{ opacity: opacity }} className="errtext">{errMsg}</div>
-          <div onClick={clickHandle} style={!spin ? { width: `40%`, opacity: 1 } : { width: `10%`, opacity: 0.6 }} className="btn btn-primary">{!spin ? `Илгээх` : <img src="/gif1.gif" alt="edp-img" />} </div>
+          <div onClick={clickHandle} style={!spin ? { width: `40%`, opacity: 1 } : { width: `10%`, opacity: 0.6 }} className="btn btn-primary">{!spin ? `Хадгалах` : <img src="/gif1.gif" alt="edp-img" />} </div>
         </div>}
+
         {/* <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button> */}
         {/* <button className="print"  onClick={()=>window.print()}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button> */}
       </MainContainter>

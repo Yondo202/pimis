@@ -3,12 +3,10 @@ const bigAnimation = keyframes`
     0% { opacity:0; transform:translateY(-12px); }
     100% { opacity:1; transform:translateY(0px); }
 `
-
 const rowAnimation = keyframes`
     0% { opacity:0; transform:translateY(-12px); }
     100% { opacity:1; transform:translateY(0px); }
 `
-
 export const Container = styled.div`
     page-break-inside: avoid;
     animation: ${bigAnimation} 0.6s ease;
@@ -75,7 +73,6 @@ export const Container = styled.div`
                 }
             }
         }
-        
         table{
             width:100%;
             border-collapse: collapse;
@@ -91,7 +88,7 @@ export const Container = styled.div`
                 border:1px solid rgba(0,0,0,.2);
             }
             td{
-                padding:7px 8px;
+                padding:12px 10px;
                 animation: ${rowAnimation} 0.5s ease;
                 // &:last-child{
                 //     padding:8px 0px;
@@ -114,7 +111,7 @@ export const Container = styled.div`
                     color:green;
                     width:22px;
                     height:22px;
-                    top:3.5px;
+                    top:8px;
                     left:-10px;
                     display:flex;
                     align-items:center;
@@ -227,7 +224,6 @@ export const Container = styled.div`
         }
     }
 `
-
 export const InputStyle = styled.div`
         transition:all 0.3s ease;
         position:relative;
@@ -401,7 +397,6 @@ export const InputStyle = styled.div`
         //     padding-right:10px;
         // }
 `
-
 const ModalAnimate = keyframes`
     0%{ opacity:0; transform:scale(0); }
     100%{ opacity:1; transform:scale(1); }
@@ -410,7 +405,6 @@ const ModalAnimate2 = keyframes`
     0%{ opacity:1; transform:scale(1); }
     100%{ opacity:0; transform:scale(0); }
 `
-
 export const CustomModal = styled.div`
     z-index:10;
     position:fixed;
@@ -527,5 +521,4 @@ export const CustomModal = styled.div`
     .contentParent2{
         animation:${ModalAnimate2} 0.4s ease;
     }
-    
 `

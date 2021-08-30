@@ -7,21 +7,22 @@ import Signature from './Signature';
 import axios from '../../../axiosbase';
 import Token from 'context/accessToken';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
+import { AiOutlineAlert } from 'react-icons/ai';
 import { CgDanger } from 'react-icons/cg';
 
-const today = new Date(); const month = (today.getMonth() + 1); const day = today.getDate();
-const Currentdate = today.getFullYear() + '-' + (month.toString().length === 1 ? '0' + month : month) + '-' + (day.toString().length === 1 ? '0' + day : day);
+// const today = new Date(); const month = (today.getMonth() + 1); const day = today.getDate();
+// const Currentdate = today.getFullYear() + '-' + (month.toString().length === 1 ? '0' + month : month) + '-' + (day.toString().length === 1 ? '0' + day : day);
 
 function Decision_main() {
     const { slug } = useParams();
     const history = useHistory();
     const [Data, setData] = useState(null);
     const [spin, setSpin] = useState(false);
+    const [FinalErrorText, setFinalErrorText] = useState("");
     const [ReasonData, setReasonData] = useState(infoWhere2);
     const [sanalData, setSanalData] = useState(false);
     const [type, setType] = useState(false);
     const [alert, setAlert] = useState({ color: 'yellow', text: 'null', cond: false });
-    const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
     const [otherOne, setOtherOne] = useState({ Cname: "getInputt", checked: null, self: "" });
     const [imgData, setImgData] = useState(null);
@@ -83,7 +84,9 @@ function Decision_main() {
                 }
             }
         });
-        final["projectId"] = Data.projectId; final["evaluationMeetingId"] = Data.evaluationMeetingId;
+        
+        final["projectId"] = Data.projectId;
+        final["evaluationMeetingId"] = Data.evaluationMeetingId;
         if (imgData !== null) { final["signature"] = imgData; }; let keys = Object.keys(final);
 
         if (type ? keys.length < 6 : keys.length < 5) {
@@ -96,7 +99,6 @@ function Decision_main() {
             axios.post(`evaluation-results/member-vote`, final, { headers: { Authorization: Token() } }).then((res) => { alertHandle("green", "Амжилттай илгээлээ", true); setTimeout(() => { history.push("/"); setSpin(false); }, 2000); console.log(`res`, res) })
                 .catch((err) => { setSpin(false); alertHandle("orange", "Алдаа гарлааа", true); console.log(`err`, err) });
         }
-        console.log(final, "^final");
     }
 
     return (
@@ -129,7 +131,11 @@ function Decision_main() {
                     </div>
 
                     <div className="infoWhere">
-                        <div className="Title Title4"><span className="circle">⬤</span>Төсөл хэрэгжүүлэгчийн чадавхийг үнэлсэн үнэлгээ </div>
+                        <div className="Title Title4 TitleBig"><span className="circle"><AiOutlineAlert /></span>Доорх хүснэгтэд заасан 2 шалгуурт үнэлгээ өгөх бөгөөд хэрэв аль нэг нь “Үгүй” гэсэн санал авсан бол эцсийн шийдвэр нь санхүүгийн дэмжлэг үзүүлэхгүй гэж гарна. </div>
+                    </div>
+
+                    <div className="infoWhere">
+                        <div className="Title Title4"><span className="circle">⬤</span>Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгч төсөл хэрэгжүүлэх чадавхтай эсэх </div>
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
                             {sanalData && Data.sanalinnHuudas.assess_one.checked !== null ?
@@ -158,7 +164,7 @@ function Decision_main() {
                     </div>
 
                     <div className="infoWhere">
-                        <div className="Title Title4"><span className="circle">⬤</span>Экспортын төсөлд өгсөн үнэлгээ</div>
+                        <div className="Title Title4"><span className="circle">⬤</span>Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгчийн төсөл экспортыг нэмэгдүүлэх боломжтой эсэх </div>
                         <div className="chekcPar">
                             <span className="title">Аль нэгийг тэмдэглэнэ үү. [√] : </span>
 
@@ -216,8 +222,8 @@ function Decision_main() {
                                     <div className="title">Бусад :</div><InputStyle className="nameText"><input className={otherOne.self} id="other" onChange={onChange1} name="reject_reason" placeholder="..." type="text" /> <div className="line"></div></InputStyle>
                                 </div>
                             </div>
-                        </div>
-                    }
+                        </div>}
+
                     {sanalData ? null :
                         <div className="buttonPar">
                             <div style={{ opacity: opacity2 }} className="errtext">{FinalErrorText}</div>
@@ -357,7 +363,15 @@ const FeedBackCont = styled.div`
                 }
             }
             .Title4{
-                margin-bottom:8px;
+                margin-bottom:15px;
+            }
+            .TitleBig{
+                font-weight:400;
+                font-size:14px;
+                svg{
+                    color:#b37b15;
+                    font-size:20px;
+                }
             }
             .helperTitle{
                 color: rgba(${textColor},0.8);

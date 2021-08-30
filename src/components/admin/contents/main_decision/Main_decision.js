@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components'
-import { fontSize, textColor, InputStyle, ColorRgb, NextBtn, AlertStyle } from '../../../theme'
+import { fontSize, textColor, InputStyle, ColorRgb, NextBtn, AlertStyle } from 'components/theme'
 import { AiOutlineSend } from 'react-icons/ai';
 import { IoIosShareAlt } from 'react-icons/io';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
@@ -10,8 +10,10 @@ import Token from 'context/accessToken';
 import UserContext from 'context/UserContext';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
-import AssistApprove from '../notifyPage/assistApprove/AssistApprove'
+import AssistApprove from '../notifyPage/assistApprove/AssistApprove';
 import NotAssist from '../notifyPage/notAssist/NotAssist';
+// import NumberFormat from "react-number-format";
+// import Signature from "components/member/member_decision/Signature"
 
 function Main_decision() {
     const ctx = useContext(UserContext);
@@ -25,9 +27,10 @@ function Main_decision() {
     const [mainData, setMainData] = useState(null);
     const [members, setMembers] = useState([]);
 
+    // const [imgData, setImgData] = useState(null);
+
     useEffect(() => {
         axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
-            console.log(`res`, res);
             if (res.data.data) {
                 setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
                 if (res.data.data.approved === true) { setNotifyShow2(1); } else if (res.data.data.approved === false) { setNotifyShow2(2); } else { setNotifyShow2(0); }
@@ -117,7 +120,7 @@ function Main_decision() {
                         <div className="infoWhere">
                             <table id="customers">
                                 <tr>
-                                    <th style={{ borderRight: `1px solid rgba(255,255,255,0.5)` }}>Талбар</th>
+                                    <th >Талбар</th>
                                     <th>Утга</th>
                                 </tr>
 
@@ -150,7 +153,7 @@ function Main_decision() {
 
                         <div className="infoWhere">
                             <table id="customers">
-                                <tr><th style={{ borderRight: `1px solid rgba(255,255,255,0.5)` }}>Үнэлгээний хорооны гишүүдийн овог нэр</th><th>Санал</th></tr>
+                                <tr><th >Үнэлгээний хорооны гишүүдийн овог нэр</th><th>Санал</th></tr>
                                 {members.map((el, i) => {
                                     return (
                                         <tr className="getTable1">
@@ -174,19 +177,149 @@ function Main_decision() {
                                 </tr>
                             </table>
                         </div>
-                        {notifyShow2 !== 1 ? <div className="reasonPar">
+
+                        {
+                        // reverse hiigdene
+                        notifyShow2 !== 1 
+                        // notifyShow2 === 1 
+                        ?
+                         <div className="reasonPar">
                             <div className="title">Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:</div>
                             <div className="inpPar">
                                 <div className="svg"><IoIosShareAlt /></div>
                                 <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
                             </div>
-                        </div> : <div className="reasonPar">
+                        </div>
+
+                        // <div className="RejectParent">
+                        //     <div className="TitlePar">
+                        //         <div className="title">
+                        //             {/* ҮНЭЛГЭЭНИЙ ХОРООНЫ ШИЙДВЭРИЙН ХУУДАС */}
+                        //             Сонгон шалгаруулалтын багийн гишүүний саналын хуудас<br />
+                        //             /Татгалзсан тохиолдолд бөглөнө/
+                        //         </div>
+                        //     </div>
+
+                        //     <div className="infoWhere">
+                        //         <table id="customers">
+                        //             <tr>
+                        //                 <th style={{width:`36%`}}>Талбар</th>
+                        //                 <th>Утга</th>
+                        //             </tr>
+                        //             <tr className="getTable1">
+                        //                 <td>Хурлын огноо:</td>
+                        //                 <td>
+                        //                     <InputStyle className="inpp"><input type="text" onBlur={(e) => e.target.type = 'text'} onFocus={(e) => e.target.type = 'date'} name="reason" className={`getInpp`} /> <div className="line" /></InputStyle>
+                        //                 </td>
+                        //             </tr>
+                        //             <tr className="getTable1">
+                        //                 <td>Сонгон шалгаруулалтын багийн гишүүний нэр:</td>
+                        //                 <td>
+                        //                     <InputStyle className="inpp"><input type="text" name="reason" className={`getInpp`} placeholder="Нэр бичнэ үү..." /> <div className="line" /></InputStyle>
+                        //                 </td>
+                        //             </tr>
+                        //             <tr className="getTable1">
+                        //                 <td>Аж ахуйн нэгж эсхүл кластерын толгой аж ахуйн нэгжийн нэр:</td>
+                        //                 <td>
+                        //                     <InputStyle className="inpp"><input type="text" name="reason" className={`getInpp`} placeholder="Нэр бичнэ үү..." /> <div className="line" /></InputStyle>
+                        //                 </td>
+                        //             </tr>
+                        //             <tr className="getTable1">
+                        //                 <td>Дэмжих санхүүжилтийн дүн:</td>
+                        //                 <td>
+                        //                     <InputStyle className="inpp">
+                        //                         <NumberFormat placeholder={`0 ₮`} 
+                        //                             // value={rate}
+                        //                             //  onChange={e=>setRate(e.target.value.slice(0, -1).replace(/,/g, ''))}
+                        //                         style={{textAlign:`right`, paddingRight:`7px`}} thousandSeparator={true} suffix={' ₮'} name="rate" className="getInpp" required />
+                        //                         <div className="line" />
+                        //                     </InputStyle>
+                        //                 </td>
+                        //             </tr>
+
+                        //         </table>
+                        //     </div>
+
+                        //     <div className="TitlePar">
+                        //         <div className="desc">
+                        //             Доорх хүснэгтэд заасан 2 шалгуурт үнэлгээ өгөх бөгөөд хэрэв аль нэг нь “Үгүй” гэсэн санал авсан бол эцсийн шийдвэр нь санхүүгийн дэмжлэг үзүүлэхгүй гэж гарна. 
+                        //         </div>
+                        //     </div>
+
+                        //     <div className="infoWhere">
+                        //         <table id="customers">
+                        //             <tr>
+                        //                 <th className="center">№</th>
+                        //                 <th className="center">Шалгуур</th>
+                        //                 <th>Санал</th>
+                        //             </tr>
+                        //             <tr className="getTable1">
+                        //                 <td className="center">1</td>
+                        //                 <td><div className="input">Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгч төсөл хэрэгжүүлэх чадавхтай эсэх</div></td>
+                        //                 <td>
+                        //                     <div className="customRadio">
+                        //                         <div className="item">
+                        //                             <div className="label">Тийм</div>
+                        //                             <InputStyle className="inpp"><input type="radio" /></InputStyle>
+                        //                         </div>
+                        //                         <div className="item">
+                        //                             <div className="label">Үгүй</div>
+                        //                             <InputStyle className="inpp"><input type="radio" /></InputStyle>
+                        //                         </div>
+                        //                     </div>
+                        //                 </td>
+                        //             </tr>
+
+                        //             <tr className="getTable1">
+                        //                 <td>2</td>
+                        //                 <td> <div className="input">Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгчийн төсөл экспортыг нэмэгдүүлэх боломжтой эсэх</div></td>
+                        //                 <td>
+                        //                     <div className="customRadio">
+                        //                         <div className="item">
+                        //                             <div className="label">Тийм</div>
+                        //                             <InputStyle className="inpp"><input type="radio" /></InputStyle>
+                        //                         </div>
+                        //                         <div className="item">
+                        //                             <div className="label">Үгүй</div>
+                        //                             <InputStyle className="inpp"><input type="radio" /></InputStyle>
+                        //                         </div>
+                        //                     </div>
+                        //                 </td>
+                        //             </tr>
+                                
+                        //         </table>
+                        //     </div>
+
+                        //     <div className="TitlePar">
+                        //         <div className="title">
+                        //             САНХҮҮГИЙН ДЭМЖЛЭГ ҮЗҮҮЛЭХ ЭСЭХ:  ТИЙМ/ҮГҮЙ
+                        //         </div>
+                        //     </div>
+
+                        //     <div className="reasonPar Par2">
+                        //         <div className="title">Хэрэв “Үгүй” бол шалтгаанаа бичнэ үү:</div>
+                        //         <div className="inpPar">
+                        //             <div className="svg"><IoIosShareAlt /></div>
+                        //             <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
+                        //         </div>
+                        //     </div>
+
+                        //     <div className="LastParent">
+                        //         <Signature cond="main" url={imgData} setImgData={setImgData}  />
+                        //         <div className="itemss">
+                        //             <div className="label">Огноо:</div>
+                        //             <InputStyle className="inpp"><input type="text" placeholder="2021-05-15" onBlur={(e) => e.target.type = 'text'} onFocus={(e) => e.target.type = 'date'} className={`getInpp`} /> <div className="line" /></InputStyle>
+                        //         </div>
+                        //     </div>
+                        // </div>
+                        : <div className="reasonPar">
                             <div className="title">Нэмэлт тайлбар бичих :</div>
                             <div className="inpPar">
                                 <div className="svg"><IoIosShareAlt /></div>
                                 <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Нэмэлт тайлбарыг энд бичнэ үү..." /> <div className="line" /></InputStyle>
                             </div>
                         </div>}
+
                         <div className="buttonPar">
                             <div style={{ opacity: `${opacity2}` }} className="errtext">{FinalErrorText}</div>
                         </div>
@@ -238,7 +371,7 @@ const homeAnimeSvg = keyframes`
     100% { left:0px; opacity: 1; transform:scale(1.2) }
 `
 
-const FeedBackCont = styled.div`
+export const FeedBackCont = styled.div`
         color: rgba(${textColor});
         padding-bottom:50px;
         .NullPar{
@@ -311,6 +444,37 @@ const FeedBackCont = styled.div`
                     }
                 }
             }
+            .Par2{
+                margin-bottom:4rem;
+            }
+            .LastParent{
+                .itemss{
+                    display:flex;
+                    gap:30px;
+                    margin-bottom: 25px;
+                    .label{
+                        font-weight:500;
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                    .button{
+                        font-weight:500;
+                        display:flex;
+                        align-items:center;
+                        gap:12px;
+                        cursor:pointer;
+                        border:1px solid rgba(0,0,0,0.3);
+                        border-radius:4px;
+                        padding:6px 30px;
+                        svg{
+                            font-size:18px;
+                        }
+                        &:hover{
+                            background-color:rgba(0,0,0,0.1);
+                        }
+                    }
+                }
+            }
 
             background-color:white;
             padding:30px 100px;
@@ -340,7 +504,7 @@ const FeedBackCont = styled.div`
                     border-collapse: collapse;
                     width: 100%;
                     td, th{
-                        border: 1px solid rgba(0,0,0,0.2);
+                        border: 1px solid rgba(0,0,0,0.3);
                         padding: 10px;
                     }
                     .B2{
@@ -349,8 +513,10 @@ const FeedBackCont = styled.div`
                         }
                     }
                     th{
-                        color:white;
-                        background-color:rgba(${ColorRgb},.9);
+                        // color:white;
+                        // background-color:rgba(${ColorRgb},.9);
+                        // background-color:#E7E9EB;
+                        background-color:rgb(217 217 217);
                         .question{
                             opacity:0;
                             transform:scale(0);
@@ -368,7 +534,27 @@ const FeedBackCont = styled.div`
                                 background-color:#1890ff;
                             }
                         }
+                        .customRadio{
+                            display:flex;
+                            gap:25px;
+                            .item{
+                                display:flex;
+                                flex-direction:column;
+                                align-items:center;
+                                text-align:center;
+                                .label{
+                                    margin-bottom:5px;
+                                }
+                            }
+                        }
                     }
+                    .center{
+                        text-align:center;
+                    }
+                    .right{
+                        text-align:right;
+                    }
+                    
                 
                 }
                 .Title{
