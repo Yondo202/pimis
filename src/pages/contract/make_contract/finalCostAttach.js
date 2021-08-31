@@ -1,30 +1,32 @@
 import React from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
 import { TextareaCell } from '../performance_report/controlReport'
 import { Fill, Signature } from './makeContract'
+import axios from 'axiosbase'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
+import { useContext } from 'react'
+import AlertContext from 'components/utilities/alertContext'
 
 const initialReport = [{
-   order: 1,
    activity: null,
-   butget: null,
+   budget: null,
    payment: null,
    final_cost: null,
    attachments: null,
    reviewed_amount: null,
    reduction_reason: null
 }, {
-   order: 2,
    activity: null,
-   butget: null,
+   budget: null,
    payment: null,
    final_cost: null,
    attachments: null,
    reviewed_amount: null,
    reduction_reason: null
 }, {
-   order: 3,
    activity: null,
-   butget: null,
+   budget: null,
    payment: null,
    final_cost: null,
    attachments: null,
@@ -62,7 +64,9 @@ const initialSigners = [{
    signature: null
 }]
 
-export default function FinalCostAttach() {
+export default function FinalCostAttach({ contractId }) {
+   const AlertCtx = useContext(AlertContext)
+
    const [info, setInfo] = useState({
       name: null,
       contract_number: null,
@@ -89,6 +93,58 @@ export default function FinalCostAttach() {
       next[index][key] = value
       return next
    })
+
+   useEffect(() => {
+      if (contractId === null || contractId === undefined) {
+         return
+      }
+      axios.get(`contracts/${contractId}/attach-2`, {
+         headers: { Authorization: getLoggedUserToken() }
+      }).then(res => {
+         const report = res.data.data.rows
+         const signers = res.data.data.signers
+         report?.length && setReport(report)
+         signers?.length && setSigners(signers)
+      })
+   }, [contractId])
+
+   const handleSave = () => {
+      if (contractId === null || contractId === undefined) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Эхлээд гэрээгээ үүсгэнэ үү.' })
+         return
+      }
+      if (report[0].id === undefined) {
+         axios.post(`contracts/${contractId}/attach-2`, {
+            rows: report,
+            signers: signers
+         }, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            const report = res.data.data.rows
+            const signers = res.data.data.signers
+            report?.length && setReport(report)
+            signers?.length && setSigners(signers)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт 2-ыг хадгаллаа.' })
+         }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсралт 2-ыг хадгалж чадсангүй.' })
+         })
+      } else {
+         axios.put(`contracts/${contractId}/attach-2`, {
+            rows: report,
+            signers: signers
+         }, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            const report = res.data.data.rows
+            const signers = res.data.data.signers
+            report?.length && setReport(report)
+            signers?.length && setSigners(signers)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт 2-ийг шинэчиллээ.' })
+         }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсралт 2-ийг шинэчилж чадсангүй.' })
+         })
+      }
+   }
 
    return (
       <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
@@ -147,12 +203,12 @@ export default function FinalCostAttach() {
                   </thead>
                   <tbody>
                      {report.map((row, i) =>
-                        <tr key={row.order}>
+                        <tr key={i}>
                            <td className={classCell}>
-                              {row.order}
+                              {i + 1}
                            </td>
                            <TextareaCell value={row.activity} name="activity" index={i} setter={handleInputReport} />
-                           <TextareaCell value={row.butget} name="butget" index={i} setter={handleInputReport} />
+                           <TextareaCell value={row.budget} name="budget" index={i} setter={handleInputReport} />
                            <TextareaCell value={row.payment} name="payment" index={i} setter={handleInputReport} />
                            <TextareaCell value={row.final_cost} name="final_cost" index={i} setter={handleInputReport} />
                            <td className={classCell}>
@@ -218,7 +274,7 @@ export default function FinalCostAttach() {
                )}
             </div>
 
-            <div className="tw-mt-6 tw-pb-10 tw-mx-2 sm:tw-mx-6">
+            <div className="tw-mt-6 tw-pb-8 tw-mx-2 sm:tw-mx-6">
                <p className="">
                   Холбогдох баримт* Төлбөрийн баримт, бүртгэлийн хураамж төлсөн баримт, түрээс төлсөн тохиолдолд төлбөрийн баримт, үзэсгэлэнд оролцогчдын нисэх тийз (хамгийн бага тарифаар), паспортын хуулбар, зочид буудлын зардал (Сангийн сайдын тушаалаар батлагдсан  төрийн албан хаагчийн зардлаас хэтрэхгүй), аудит хийлгэсэн бол аудитын тайлан, зөвлөх үйлчилгээ авсан бол зөвлөх үйлчилгээний тайлан, лабораторийн шинжилгээ хийлгэсэн бол үр дүн, судалгаа хийлгэсэн бол судалгааны тайлан, гэрчилгээний хуулбар, шаардлагатай бусад баримт бичиг.
                </p>
@@ -230,6 +286,12 @@ export default function FinalCostAttach() {
                <p className="tw-mt-2">
                   Гадаад валютаар хийгдсэн төлбөрүүдийг гүйлгээ хийгдсэн өдрийн өмнөх өдрийн Монголбанкны албан ханшаар төгрөгт хөрвүүлэн тооцож ирүүлэх ба санхүүгийн дэмжлэг нь уг дүнгийн 50 хувь байх бөгөөд Гэрээний Хавсралт 1-д заасан дүнгээс ихгүй байна.
                </p>
+            </div>
+
+            <div className="tw-flex tw-justify-center">
+               <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSave}>
+                  Хадгалах
+               </button>
             </div>
          </div>
       </div>

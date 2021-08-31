@@ -107,6 +107,22 @@ export default function EvaluatorsMeetingEdit(props) {
 
     const history = useHistory()
 
+    const handleDelete = () => {
+        if (meetingId === null || meetingId === undefined) {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Уулзалт сонгоогүй байна.' })
+            return
+        }
+
+        axios.delete(`evaluation-meetings/${meetingId}`, {
+            headers: { Authorization: getLoggedUserToken() }
+        }).then(res => {
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Уулзалтыг устгалаа.' })
+            history.push('/meetings')
+        }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Уулзалтыг устгаж чадсангүй.' })
+        })
+    }
+
     return (
         <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-pb-10 tw-w-full">
             <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/meetings')}>
@@ -195,7 +211,13 @@ export default function EvaluatorsMeetingEdit(props) {
                     </div>
                 </div>
 
-                <div className="tw-flex tw-justify-center">
+                <div className="tw-flex tw-justify-center tw-relative">
+                    {meetingId &&
+                        <button className="tw-absolute tw-left-2 tw-rounded tw-bg-red-500 active:tw-bg-red-500 tw-transition-colors hover:tw-shadow-md tw-py-1.5 tw-px-8 tw-text-white tw-font-medium tw-mt-10 tw-mb-6 focus:tw-outline-none tw-text-13px" onClick={handleDelete}>
+                            Устгах
+                        </button>
+                    }
+
                     <button className="tw-py-1.5 tw-px-8 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-10 tw-mb-6 tw-text-13px" onClick={handleSubmit}>
                         Хадгалах
                     </button>

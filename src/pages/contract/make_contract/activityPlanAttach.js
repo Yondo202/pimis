@@ -7,42 +7,36 @@ import { useContext } from 'react'
 import AlertContext from 'components/utilities/alertContext'
 
 const initialState = [{
-   order: '1',
    work: null,
    start_date: null,
    end_date: null,
    budget: null,
    in_charge: null
 }, {
-   order: '1.1',
    work: null,
    start_date: null,
    end_date: null,
    budget: null,
    in_charge: null
 }, {
-   order: '1.2',
    work: null,
    start_date: null,
    end_date: null,
    budget: null,
    in_charge: null
 }, {
-   order: '2',
    work: null,
    start_date: null,
    end_date: null,
    budget: null,
    in_charge: null
 }, {
-   order: '2.1',
    work: null,
    start_date: null,
    end_date: null,
    budget: null,
    in_charge: null
 }, {
-   order: '2.2',
    work: null,
    start_date: null,
    end_date: null,
@@ -51,10 +45,12 @@ const initialState = [{
 }]
 
 const initialSigners = [{
+   order: 1,
    position: 'Экспортыг дэмжих төслийн Зохицуулагч',
    signature: null,
    date: null
 }, {
+   order: 2,
    position: 'Санхүүгийн дэмжлэг хүртэгч хуулийн этгээдийн захирал',
    signature: null,
    date: null
@@ -71,6 +67,14 @@ export default function ActivityPlanAttach({ contractId }) {
       return next
    })
 
+   const handleAdd = () => setPlan(prev => [...prev, {
+      work: null,
+      start_date: null,
+      end_date: null,
+      budget: null,
+      in_charge: null
+   }])
+
    const [signers, setSigners] = useState(initialSigners)
 
    const handleChangeSigner = (key, value, index) => setSigners(prev => {
@@ -86,10 +90,10 @@ export default function ActivityPlanAttach({ contractId }) {
       axios.get(`contracts/${contractId}/attach-1`, {
          headers: { Authorization: getLoggedUserToken() }
       }).then(res => {
-         const plan = res.data.data.attach
+         const plan = res.data.data.rows
          const signers = res.data.data.signers
-         plan && setPlan(plan)
-         signers && setSigners(signers)
+         plan?.length && setPlan(plan)
+         signers?.length && setSigners(signers)
       })
    }, [contractId])
 
@@ -98,17 +102,37 @@ export default function ActivityPlanAttach({ contractId }) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Эхлээд гэрээгээ үүсгэнэ үү.' })
          return
       }
-
-      axios.post(`contracts/${contractId}/attach-1`, {
-         attach: plan,
-         signers: signers
-      }, {
-         headers: { Authorization: getLoggedUserToken() }
-      }).then(res => {
-         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт 1-ийг хадгаллаа.' })
-      }).catch(err => {
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсралт 1-ийг хадгалж чадсангүй.' })
-      })
+      if (plan[0].id === undefined) {
+         axios.post(`contracts/${contractId}/attach-1`, {
+            rows: plan,
+            signers: signers
+         }, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            const plan = res.data.data.rows
+            const signers = res.data.data.signers
+            plan?.length && setPlan(plan)
+            signers?.length && setSigners(signers)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт 1-ийг хадгаллаа.' })
+         }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсралт 1-ийг хадгалж чадсангүй.' })
+         })
+      } else {
+         axios.put(`contracts/${contractId}/attach-1`, {
+            rows: plan,
+            signers: signers
+         }, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            const plan = res.data.data.rows
+            const signers = res.data.data.signers
+            plan?.length && setPlan(plan)
+            signers?.length && setSigners(signers)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт 1-ийг шинэчиллээ.' })
+         }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Хавсралт 1-ийг шинэчилж чадсангүй.' })
+         })
+      }
    }
 
    return (
@@ -141,7 +165,7 @@ export default function ActivityPlanAttach({ contractId }) {
                   <tbody>
                      {plan.map((row, i) =>
                         <tr key={i}>
-                           <td className={classCell}>{row.order}</td>
+                           <td className={classCell}>{i + 1}</td>
 
                            <TextareaCell value={row.work} name="work" index={i} setter={handleInput} />
 
@@ -158,6 +182,7 @@ export default function ActivityPlanAttach({ contractId }) {
                      )}
                   </tbody>
                </table>
+               <div className="" onClick={handleAdd}>+ Нэмэх</div>
             </div>
 
             <div className="tw-mt-6 tw-mx-4 sm:tw-mx-8">
@@ -177,8 +202,8 @@ export default function ActivityPlanAttach({ contractId }) {
                         {signer.position}:
                      </p>
                      <Signature signer={signer} setter={setSigners} />
-                     <div className="">
-                        <span className="">Огноо:</span>
+                     <div className="tw-mt-2">
+                        <span className="tw-mr-2">Огноо:</span>
                         <input className={classInputDate} type="date" value={signer.date} onChange={e => handleChangeSigner('date', e.target.value, i)} />
                      </div>
                   </div>

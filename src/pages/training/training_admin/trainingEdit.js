@@ -216,9 +216,11 @@ export default function TrainingEdit() {
             </div>
 
             <div className="tw-flex tw-justify-center tw-relative">
-               <button className="tw-absolute tw-left-6 tw-rounded tw-bg-red-500 active:tw-bg-red-500 tw-transition-colors hover:tw-shadow-md tw-py-2 tw-px-6 tw-text-white tw-font-medium tw-my-6 focus:tw-outline-none tw-text-13px" onClick={handleDelete}>
-                  Устгах
-               </button>
+               {trainingId &&
+                  <button className="tw-absolute tw-left-6 tw-rounded tw-bg-red-500 active:tw-bg-red-500 tw-transition-colors hover:tw-shadow-md tw-py-2 tw-px-6 tw-text-white tw-font-medium tw-my-6 focus:tw-outline-none tw-text-13px" onClick={handleDelete}>
+                     Устгах
+                  </button>
+               }
 
                <button className="tw-rounded tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-py-2 tw-px-6 tw-text-white tw-font-medium tw-my-6 focus:tw-outline-none tw-text-13px" onClick={handleSubmit}>
                   Хадгалах
