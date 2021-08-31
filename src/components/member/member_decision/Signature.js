@@ -19,7 +19,7 @@ function Signature(props) {
         <SignaturePar className="rowItems">
             <div className="row">
                 <div className="col-md-3 col-sm-3 col-12">
-                    <div className={`LeftHead ${props?.cond==='main'?`LeftHead2`:``}`}>
+                    <div className={`LeftHead ${props?.cond==='main'?`LeftHead2`:``}   ${props?.cond==='sanal'?`LeftHead2`:``} `}>
                         {props.cond==='main'?`Гарын үсэг:`:`Баталгаат гарын үсэг:`} 
                     </div>
                 </div>
@@ -38,9 +38,9 @@ function Signature(props) {
                                                             <SignatureCanvas className='sigCanvas' penColor='blue' ref={(ref) => { sigCanvas = ref }} canvasProps={{width: 620, height: 310, className: 'sigCanvas'}} />
                                                         </div>
                                                         <div className="BtnPar">
-                                                            <button onClick={clear}>Цэвэрлэх</button>
-                                                            <button onClick={()=>trim()}>Хадгалах</button>
-                                                            <button onClick={closeModal}>X</button>
+                                                            <button type="button" onClick={clear}>Цэвэрлэх</button>
+                                                            <button type="button" onClick={()=>trim()}>Хадгалах</button>
+                                                            <button type="button" onClick={closeModal}>X</button>
                                                         </div>
                                                     </div>
                                                 </Modal>
@@ -61,7 +61,7 @@ const SignaturePar = styled.div`
     margin-top:20px;
     .LeftHead{
         font-weight:500;
-        font-size:16px;
+        font-size:15px;
         margin-bottom:15px;
         margin-left:15px;
     }

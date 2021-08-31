@@ -31,7 +31,7 @@ function ActiveComp(props) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <a href={props.prew ? `` : `${edplanFront}/${props?.data?.userId}`} rel="noreferrer" target={props.prew ? "_self" : "_blank"} className={props?.data?.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
+                        <a href={props.prew ? `#` : `${edplanFront}/${props?.data?.userId}`} rel="noreferrer" target={props.prew ? "_self" : "_blank"} className={props?.data?.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
                         <div className="line" ></div>
                         <Link to={props.prew ? `/attachments/evidence-2/${props.prew}` : '/attachments/evidence-2'} className={props?.data?.evidence2 === true ? `itemsActive` : `items`}>
                             2.Нотлох бичиг баримтууд II
@@ -67,7 +67,8 @@ function ActiveComp(props) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <Link to="" className={props?.data?.lastEvalution.value === 0 ? `items arrHelp` : props?.data?.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} ><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
+                        {/* <Link to={pathname} className={props?.data?.lastEvalution.value === 0 ? `items arrHelp` : props?.data?.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} ><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link> */}
+                        <div className={props?.data?.lastEvalution.value === 0 ? `items arrHelp` : props?.data?.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} ><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</div>
                         <div className="line" />
                         <Link to={props.prew ? `/maindecision/${props?.data?.project?.id}` : ``} className={props?.data?.lastEvalution.value === 0 ? `items` : props?.data?.lastEvalution.value === 1 ? `resultWaiting` : `itemsActive`} >2.Үнэлгээний хорооны шийдвэрийн хуудас</Link>
                     </div>

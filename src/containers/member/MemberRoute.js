@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Switch, Route } from 'react-router-dom';
 import Menu from 'containers/menu/menu';
-import MemberDecision from 'components/member/member_decision/Decision_main';
+// import MemberDecision from 'components/member/member_decision/Decision_main';
 import MemberDecision2 from 'components/member/member_decision/Decision_main2';
 import MembersHome from 'components/member/HomePage';
 import Notify from 'components/member/notify/PageOne';
