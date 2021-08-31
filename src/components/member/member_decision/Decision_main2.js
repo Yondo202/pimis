@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import UserCtx from "context/UserContext"
 import { useHistory, useParams } from 'react-router-dom';
 import { FeedBackCont } from "components/admin/contents/main_decision/Main_decision";
-import { fontSize, textColor, InputStyle, ColorRgb, NextBtn, AlertStyle } from 'components/theme';
-import NumberFormat from "react-number-format";
+import { InputStyle} from 'components/theme';
 import Signature from "components/member/member_decision/Signature";
 import { IoIosShareAlt } from 'react-icons/io';
 import axios from 'axiosbase';
@@ -10,31 +10,37 @@ import Token from 'context/accessToken';
 import { NumberComma } from "components/admin/contents/insurance/NumberComma"
   
 const Decision_main2 = () => {
+    const { alertText } = useContext(UserCtx);
     const { slug } = useParams();
     const history = useHistory();
     const [Data, setData] = useState(null);
-    const [imgData, setImgData] = useState(null);
     const [spin, setSpin] = useState(false);
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
 
+    const [imgData, setImgData] = useState(null);
     const [ assess_one, setAssess_one ] = useState(null);
     const [ assess_two, setAssess_two ] = useState(null);
     const [ date, setDate ] = useState('')
-
+    const [ reject, setReject ] = useState('')
     const [ cond, setCond ] = useState(true);
-
-
 
     useEffect(()=>{
         fetchData()
     },[])
 
     const fetchData = async () =>{
-       let ress =  await axios.get(`evaluation-meetings/scheduled-projects?parentId=${slug}`, { headers: { Authorization: Token() } });
+       let ress =  await axios.get(`evaluation-meetings/scheduled-projects?projectId=${slug}`, { headers: { Authorization: Token() } });
        if(ress.data.data.length!==0){
             setData(ress.data.data[0]);
-            setDate(ress.data.data[0].sanalinnHuudas?.last_date);
+            if(ress.data.data[0].sanalinnHuudas.approve!==null){
+                const sanal = ress.data.data[0].sanalinnHuudas;
+                setDate(sanal?.last_date);
+                setReject(sanal?.reject_reason);
+                setImgData(sanal?.signature);
+                setAssess_one(sanal?.assess_one.toString());
+                setAssess_two(sanal?.assess_two.toString());
+            }
        }
     }
 
@@ -44,15 +50,14 @@ const Decision_main2 = () => {
         }else{
             setCond(true);
         }
-    },[assess_two, assess_one])
-
-    console.log(`Dat++++a`, Data);    
+    },[assess_two, assess_one]);
 
     const SubmitHandle = (e) =>{
         e.preventDefault();
-        const Datas = {
+        const Final = {
             assess_one:assess_one==="true",
             assess_two:assess_two==="true",
+            reject_reason:reject,
             date:date,
             approve:cond,
             signature:imgData,
@@ -62,9 +67,15 @@ const Decision_main2 = () => {
 
         if(imgData===null){
             setFinalErrorText("Гарын үсэгээ баталгаажуулна уу..."); setOpacity2("1");
+            setTimeout(() => {
+                setOpacity2("0");
+            }, 5000)
+        }else{
+            setSpin(true);
+            axios.post(`evaluation-results/member-vote`, Final, { headers: { Authorization: Token() } }).then((res) => {
+                 alertText("green", "Амжилттай илгээлээ", true); setTimeout(() => { history.push("/"); setSpin(false); }, 3000) })
+                .catch((err) => { setSpin(false); alertText("orange", "Алдаа гарлааа", true); console.log(`err`, err) });
         }
-
-        console.log(`Data`, Datas);
     }
 
     return (
@@ -130,45 +141,46 @@ const Decision_main2 = () => {
 
                     <div className="infoWhere">
                         <table id="customers">
-                            <tr>
-                                <th className="center">№</th>
-                                <th className="center">Шалгуур</th>
-                                <th>Санал</th>
-                            </tr>
-                            <tr className="getTable1">
-                                <td className="center">1</td>
-                                <td><div className="input">Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгч төсөл хэрэгжүүлэх чадавхтай эсэх</div></td>
-                                <td>
-                                    <div className="customRadio">
-                                        <div className="item">
-                                            <div className="label">Тийм</div>
-                                            <InputStyle className="inpp"><input name="assess_one" value={true} checked={assess_one==='true'?true:false} onChange={e=>setAssess_one(e.target.value)} type="radio" required /></InputStyle>
+                            <tbody>
+                                <tr>
+                                    <th className="center">№</th>
+                                    <th className="center">Шалгуур</th>
+                                    <th>Санал</th>
+                                </tr>
+                                <tr className="getTable1">
+                                    <td className="center">1</td>
+                                    <td><div className="input">Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгч төсөл хэрэгжүүлэх чадавхтай эсэх</div></td>
+                                    <td>
+                                        <div className="customRadio">
+                                            <div className="item">
+                                                <div className="label">Тийм</div>
+                                                <InputStyle className="inpp"><input name="assess_one" value={true} checked={assess_one==='true'?true:false} onChange={e=>setAssess_one(e.target.value)} type="radio" required /></InputStyle>
+                                            </div>
+                                            <div className="item">
+                                                <div className="label">Үгүй</div>
+                                                <InputStyle className="inpp"><input name="assess_one" value={false} checked={assess_one==='false'?true:false} onChange={e=>setAssess_one(e.target.value)} type="radio" required /></InputStyle>
+                                            </div>
                                         </div>
-                                        <div className="item">
-                                            <div className="label">Үгүй</div>
-                                            <InputStyle className="inpp"><input name="assess_one" value={false} checked={assess_one==='false'?true:false} onChange={e=>setAssess_one(e.target.value)} type="radio" required /></InputStyle>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
 
-                            <tr className="getTable1">
-                                <td>2</td>
-                                <td> <div className="input">Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгчийн төсөл экспортыг нэмэгдүүлэх боломжтой эсэх</div></td>
-                                <td>
-                                    <div className="customRadio">
-                                        <div className="item">
-                                            <div className="label">Тийм</div>
-                                            <InputStyle className="inpp"><input value={true} checked={assess_two==='true'?true:false} onChange={e=>setAssess_two(e.target.value)} name="assess_two" type="radio" required /></InputStyle>
+                                <tr className="getTable1">
+                                    <td>2</td>
+                                    <td> <div className="input">Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгчийн төсөл экспортыг нэмэгдүүлэх боломжтой эсэх</div></td>
+                                    <td>
+                                        <div className="customRadio">
+                                            <div className="item">
+                                                <div className="label">Тийм</div>
+                                                <InputStyle className="inpp"><input value={true} checked={assess_two==='true'?true:false} onChange={e=>setAssess_two(e.target.value)} name="assess_two" type="radio" required /></InputStyle>
+                                            </div>
+                                            <div className="item">
+                                                <div className="label">Үгүй</div>
+                                                <InputStyle className="inpp"><input value={false} checked={assess_two==='false'?true:false} onChange={e=>setAssess_two(e.target.value)} name="assess_two" type="radio" required /></InputStyle>
+                                            </div>
                                         </div>
-                                        <div className="item">
-                                            <div className="label">Үгүй</div>
-                                            <InputStyle className="inpp"><input value={false} checked={assess_two==='false'?true:false} onChange={e=>setAssess_two(e.target.value)} name="assess_two" type="radio" required /></InputStyle>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
 
@@ -184,8 +196,8 @@ const Decision_main2 = () => {
                             <div className="svg"><IoIosShareAlt /></div>
                             <InputStyle className="inpp"><textarea
                                 name="reason" 
-                                // value={mainData?.reason}
-                                //  onChange={changeHandleReason}
+                                value={reject}
+                                 onChange={e=>setReject(e.target.value)}
                                 className={`getInpp`}
                                 placeholder="Шалтгааныг энд бичнэ үү..."
                                 required
@@ -195,17 +207,17 @@ const Decision_main2 = () => {
                     </div>:null}
 
                     <div className="LastParent">
-                        <Signature cond="main" url={imgData} setImgData={setImgData}  />
+                        <Signature cond="sanal" app={Data?.approve} url={imgData} setImgData={setImgData}  />
                         <div className="itemss">
                             <div className="label">Огноо:</div>
                             <InputStyle className="inpp"><input value={date} onChange={e=>setDate(e.target.value)} required type="text" placeholder="2021-05-15" onBlur={(e) => e.target.type = 'text'} onFocus={(e) => e.target.type = 'date'} className={`getInpp` } /> <div className="line" /></InputStyle>
                         </div>
                     </div>
 
-                    <div className="buttonPar">
+                    {Data?.sanalinnHuudas?.approve===null?<div className="buttonPar">
                         <div style={{ opacity: opacity2 }} className="errtext">{FinalErrorText}</div>
                         <button type="submit" style={!spin ? { width: `40%`, opacity: 1 } : { width: `10%`, opacity: 0.6 }} className="btn btn-primary">{!spin ? `Илгээх` : <img src="/gif1.gif" alt-="edp-img" alt="" />} </button>
-                    </div>
+                    </div>:null}
                 </div>   
               </form>     
             </div>

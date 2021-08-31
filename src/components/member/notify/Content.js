@@ -15,7 +15,6 @@ function PageOne(props) {
       const [ why, setWhy ] = useState(false);
       const [ addModal, setAddModal ] = useState(false);
       
-
       const [visible, setVisible] = useState(false);
       let [sigCanvas, setSigCanvas] = useState({});
       let [trimmedDataURL, setTrimmedDataURL] = useState(null);
@@ -224,10 +223,11 @@ const MainPar = styled.div`
             
             .SingatureImg{
                 border:1px solid rgba(${ColorRgb},0.3);
-                width:200px;
-                height:100px;
-                object-fit:contain;
-          }
+                width: 260px;
+                height: auto;
+                max-height: 250px;
+                object-fit: contain;
+            }
 
             .modalPar{
                 text-align:center;

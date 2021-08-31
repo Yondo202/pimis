@@ -42,7 +42,7 @@ function Decision_main() {
         }).catch((err) => console.log(err.response, "+++++++++"))
     }, []);
 
-    const checkedHandle = (event) => {
+    const checkedHandle = () => {
         let arr = document.querySelectorAll('.checkCond'); let arr2 = Array.from(arr); let arr3 = [];
 
         arr2.forEach((el, i) => {

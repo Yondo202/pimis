@@ -56,11 +56,19 @@ function HomePage({ setNotify }) {
                                     </div>
                                     <div className="mains">
                                         <div className="buttons Active">
-                                            <Link onClick={() => setNotify(el)} to={el.medegdehHuudas ? el.medegdehHuudas.is_violation === false ? `/notify/${el.projectId}` : `#` : `/notify/${el.projectId}`} >Mэдэгдэх хуудас</Link>
+                                            <Link
+                                            //  onClick={() => setNotify(el)}
+                                             to={el.medegdehHuudas ? el.medegdehHuudas.is_violation === false ? `/notify/${el.projectId}` : `#` : `/notify/${el.projectId}`} >Mэдэгдэх хуудас
+                                            </Link>
                                             {el.medegdehHuudas ? el.medegdehHuudas.is_violation !== null ? <IoMdCheckmarkCircle /> : null : null}
                                         </div>
                                         <div className="buttons Active">
-                                            <Link onClick={() => setNotify(el)} to={el.medegdehHuudas ? el.medegdehHuudas.is_violation === false ? `/memberdecision/${el.projectId}` : `#` : `/memberdecision/${el.projectId}`}>Саналын хуудас</Link>
+                                            <Link
+                                               //  onClick={() => setNotify(el)}
+                                              to={el.medegdehHuudas ? el.medegdehHuudas.is_violation === false ? `/memberdecision/${el.projectId}` : `#` : `/memberdecision/${el.projectId}`}
+                                              >
+                                                Саналын хуудас
+                                              </Link>
                                             {el.sanalinnHuudas ? el.sanalinnHuudas.approve === null ? null : <IoMdCheckmarkCircle /> : null}
                                         </div>
                                     </div>

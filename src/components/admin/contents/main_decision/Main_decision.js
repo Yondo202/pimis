@@ -12,74 +12,58 @@ import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { CgDanger } from 'react-icons/cg';
 import AssistApprove from '../notifyPage/assistApprove/AssistApprove';
 import NotAssist from '../notifyPage/notAssist/NotAssist';
-// import NumberFormat from "react-number-format";
-// import Signature from "components/member/member_decision/Signature"
+import NumberFormat from "react-number-format";
+import { NumberComma } from "components/admin/contents/insurance/NumberComma"
 
 function Main_decision() {
     const ctx = useContext(UserContext);
     const history = useHistory();
     const param = useParams().id;
     const [cond, setCond] = useState(false);
+    const [update, setUpdate ] = useState(false);
     const [notifyShow, setNotifyShow] = useState(0);
     const [notifyShow2, setNotifyShow2] = useState(0);
     const [FinalErrorText, setFinalErrorText] = useState("");
     const [opacity2, setOpacity2] = useState("0");
     const [mainData, setMainData] = useState(null);
     const [members, setMembers] = useState([]);
-
-    // const [imgData, setImgData] = useState(null);
+    const [rate, setRate ] = useState('');
 
     useEffect(() => {
         axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
             if (res.data.data) {
                 setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
-                if (res.data.data.approved === true) { setNotifyShow2(1); } else if (res.data.data.approved === false) { setNotifyShow2(2); } else { setNotifyShow2(0); }
+                setRate(res.data.data?.budgetCost);
+                if(res.data.data.final_decision!==0){
+                    setCond(true);
+                }
+                if (res.data.data.approved === true) { setNotifyShow2(2); } else if (res.data.data.approved === false) { setNotifyShow2(1); } else { setNotifyShow2(0); }
             }
-        }).catch((err) => console.log(err.response.data.error, "aldaa garsaaaa"));
-    }, []);
-
-    const backHandle = (el) => { if (el === "projects") { history.push(`/${el}`); } else { history.goBack(); } }
+        }).catch((err) => console.log(err.response, "aldaa garsaaaa"));
+    }, [update]);
 
     const clickHandle = () => {
-        let inp = document.querySelector(".getInpp");
-        if (notifyShow2 !== 1) {
-            if (inp.value === "") {
-                setOpacity2('1');
-                setFinalErrorText('Та шалтгааныг оруулна уу?')
-                inp.classList += " red";
-            } else {
-                setOpacity2('0');
-                inp.classList = - " red";
-                inp.classList += " getInpp";
-                mainData[inp.name] = inp.value;
-                axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization: Token() } }).then((res) => {
-                    ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
-                }).catch((err) => { console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true); });
-            }
-        } else {
-            mainData[inp.name] = inp.value;
-            axios.post(`evaluation-results/hurliin-negtgel`, mainData, { headers: { Authorization: Token() } }).then((res) => {
-                ctx.alertText('green', "Амжилттай хадаглалаа", true); setCond(true); setOpacity2('0');
-            }).catch((err) => { console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true); });
-        }
+        axios.post(`evaluation-results/hurliin-negtgel`, { ...mainData, approved:mainData.final_decision===0?null:mainData.approved, budget_cost: parseFloat(rate), final_decision:0}, { headers: { Authorization: Token() } }).then(res=> {
+            ctx.alertText('green', "Амжилттай хадаглалаа", true);
+            setCond(true);
+            setUpdate(prev=>!prev);
+            setOpacity2('0');
+        }).catch((err) => { console.log(err.response.data.error, "aldaa garsaaaa"); ctx.alertText('orange', "Алдаа гарлаа", true); });
     }
+
 
     const clickHandle2 = () => {
         if (cond) {
-            if (notifyShow2 === 1) {
-                setNotifyShow(1);
-            } else if (notifyShow2 === 2) {
-                let inp = document.querySelector(".getInpp");
-                if (inp.value === "") {
-                    setOpacity2('1');
-                    setFinalErrorText('Та шалтгааныг оруулна уу?')
-                    inp.classList += " red";
-                } else {
-                    setOpacity2('0');
-                    inp.classList = - " red";
-                    inp.classList += " getInpp";
+            if (notifyShow2 === 2) {
+                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData, budget_cost: parseFloat(rate), final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
+                    ctx.alertText('green', "Амжилттай хадаглалаа", true);
+                    setNotifyShow(1);
+                });
+            } else if (notifyShow2 === 1) {
+                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData, budget_cost: parseFloat(rate), final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
+                    ctx.alertText('green', "Амжилттай хадаглалаа", true);
                     setNotifyShow(2);
-                }
+                });
             } else {
                 setNotifyShow(0);
             }
@@ -97,10 +81,10 @@ function Main_decision() {
     return (
         <>
             {notifyShow === 0 ? <FeedBackCont className="container">
-                {mainData ? mainData.rejectedCount === 0 && mainData.approvedCount === 0 ?
+                {mainData ? mainData.rejectedCount === 0 && mainData.approvedCount === 1 ?
                     <div className="NullPar">
                         <div className="nullTitle">
-                            <div onClick={() => backHandle(mainData.userId)} className="BackPar"><div className="SvgPar"><MdKeyboardArrowLeft /></div>  <span>Буцах</span> </div>
+                            <div onClick={() => history.goBack()} className="BackPar"><div className="SvgPar"><MdKeyboardArrowLeft /></div>  <span>Буцах</span> </div>
                             <h2 className="title">Санал хураалт хийгдээгүй байна</h2>
                             <div className="desc"></div>
                         </div>
@@ -123,201 +107,93 @@ function Main_decision() {
                                     <th >Талбар</th>
                                     <th>Утга</th>
                                 </tr>
-
                                 <tr className="getTable1">
                                     <td>Хурлын огноо:</td>
-                                    <td><div className="input">{mainData?.meetingDate}</div></td>
+                                    <td className="center"><div className="input">{mainData?.meetingDate}</div></td>
                                 </tr>
                                 <tr className="getTable1">
                                     <td>Аж ахуйн нэгж эсхүл кластерын нэр:</td>
-                                    <td> <div className="input">{mainData?.company?.company_name}</div></td>
+                                    <td className="center"> <div className="input">{mainData?.company?.company_name}</div></td>
                                 </tr>
-
                                 <tr className="getTable1">
-                                    <td>Төслийн нэр:</td>
-                                    <td><div className="input">{mainData?.project_name}</div> </td>
-                                </tr>
-
-                                {/* <tr className="getTable1">
-                                    <td>Өргөдлийн дугаар:</td>
-                                    <td><div className="input">{mainData?.project_number}</div></td>
-                                </tr> */}
-
-                                {/* <tr className="getTable1">
                                     <td>Дэмжих санхүүжилтийн дүн:</td>
-                                    <td><div className="input">{mainData?.project_number}</div></td>
-                                </tr> */}
+                                    <td className="right">
+                                       
+                                       {cond? <div style={{fontWeight:`500`}}>{NumberComma(rate)} ₮</div>:<InputStyle >
+                                                <NumberFormat placeholder={`0 ₮`} value={rate} onChange={e=>setRate(e.target.value.slice(0, -1).replace(/,/g, ''))} style={{textAlign:`right`, paddingRight:`7px`}} thousandSeparator={true} suffix={' ₮'} name="rate" />
+                                                <div className="line" />
+                                            </InputStyle>} 
+                                    </td>
+                                    
+                                </tr>
                                
                             </table>
                         </div>
 
                         <div className="infoWhere">
                             <table id="customers">
-                                <tr><th >Үнэлгээний хорооны гишүүдийн овог нэр</th><th>Санал</th></tr>
-                                {members.map((el, i) => {
+                                <tr>
+                                    <th >Сонгон шалгаруулалтын багийн гишүүдийн овог нэр</th>
+                                    <th  className="center">Ирц /тоо/</th>
+                                    <th  className="center">Санал</th>
+                                    <th  className="center">Гарын үсэг</th>
+                                </tr>
+                                {members.length?members.map((el, i) => {
                                     return (
-                                        <tr className="getTable1">
-                                            <td>{el.user.firstname} {el.user.lastname}</td>
+                                        <tr key={i} className="getTable1">
+                                            <td>{el.firstname} {el.lastname}</td>
+                                            <td className="center">{el.irts}</td>
                                             {/* <td><InputStyle><input className={`input tableItem${i+1}`} placeholder="..." type="input" /> <div className="line" /></InputStyle></td> */}
-                                            <td><div className="input">{el.approve === true ? `Зөвшөөрсөн` : `Татгалзсан`}</div></td>
+                                            <td className="center">
+                                                <div className="input">
+                                                    {el.approved === "approved" ? `Тийм` : ``}
+                                                    {el.approved === "rejected" ? `Үгүй` : ``}
+                                                    {el.approved === "waiting" ? `Хүлээгдсэн...` : ``}
+                                                    {el.approved === "violation" ? `АС зөрчилтэй` : ``}
+                                                </div>
+                                            </td>
+                                            <td  className="center">{el.signature?<img className="finalSignature" src={el.signature} alt="Гарын үсэг" />:null}</td>
                                         </tr>
                                     )
-                                })}
+                                }):null}
                                 <tr className="getTable1 B2">
                                     <td>Дэмжсэн саналын тоо</td>
-                                    <td><div className="input">{mainData?.approvedCount}</div></td>
+                                    <td></td>
+                                    <td className="center"><div className="input">{mainData?.approvedCount}</div></td>
+                                    <td></td>
                                 </tr>
                                 <tr className="getTable1 B2">
                                     <td>Татгалзсан саналын тоо</td>
-                                    <td><div className="input">{mainData?.rejectedCount}</div></td>
+                                    <td></td>
+                                    <td className="center"><div className="input">{mainData?.rejectedCount}</div></td>
+                                    <td></td>
                                 </tr>
                                 <tr className="getTable1 B2">
                                     <td>ЭЦСИЙН ДҮН</td>
-                                    <td><div className="input">{mainData ? mainData.approved === true ? `Зөвшөөрсөн` : mainData.approved === false ? `Татгалзсан` : null : null}</div></td>
+                                    <td></td>
+                                    <td className="center"><div className="input">{mainData ? mainData.approved === true ? `Зөвшөөрсөн` : mainData.approved === false ? `Татгалзсан` : null : null}</div></td>
+                                    <td></td>
                                 </tr>
                             </table>
                         </div>
 
                         {
-                        // reverse hiigdene
-                        notifyShow2 !== 1 
-                        // notifyShow2 === 1 
+                        notifyShow2 === 1
                         ?
                          <div className="reasonPar">
                             <div className="title">Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:</div>
-                            <div className="inpPar">
+
+                            {cond?<div>-{mainData?.reason}</div> :<div className="inpPar">
                                 <div className="svg"><IoIosShareAlt /></div>
                                 <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
-                            </div>
+                            </div>}
                         </div>
-
-                        // <div className="RejectParent">
-                        //     <div className="TitlePar">
-                        //         <div className="title">
-                        //             {/* ҮНЭЛГЭЭНИЙ ХОРООНЫ ШИЙДВЭРИЙН ХУУДАС */}
-                        //             Сонгон шалгаруулалтын багийн гишүүний саналын хуудас<br />
-                        //             /Татгалзсан тохиолдолд бөглөнө/
-                        //         </div>
-                        //     </div>
-
-                        //     <div className="infoWhere">
-                        //         <table id="customers">
-                        //             <tr>
-                        //                 <th style={{width:`36%`}}>Талбар</th>
-                        //                 <th>Утга</th>
-                        //             </tr>
-                        //             <tr className="getTable1">
-                        //                 <td>Хурлын огноо:</td>
-                        //                 <td>
-                        //                     <InputStyle className="inpp"><input type="text" onBlur={(e) => e.target.type = 'text'} onFocus={(e) => e.target.type = 'date'} name="reason" className={`getInpp`} /> <div className="line" /></InputStyle>
-                        //                 </td>
-                        //             </tr>
-                        //             <tr className="getTable1">
-                        //                 <td>Сонгон шалгаруулалтын багийн гишүүний нэр:</td>
-                        //                 <td>
-                        //                     <InputStyle className="inpp"><input type="text" name="reason" className={`getInpp`} placeholder="Нэр бичнэ үү..." /> <div className="line" /></InputStyle>
-                        //                 </td>
-                        //             </tr>
-                        //             <tr className="getTable1">
-                        //                 <td>Аж ахуйн нэгж эсхүл кластерын толгой аж ахуйн нэгжийн нэр:</td>
-                        //                 <td>
-                        //                     <InputStyle className="inpp"><input type="text" name="reason" className={`getInpp`} placeholder="Нэр бичнэ үү..." /> <div className="line" /></InputStyle>
-                        //                 </td>
-                        //             </tr>
-                        //             <tr className="getTable1">
-                        //                 <td>Дэмжих санхүүжилтийн дүн:</td>
-                        //                 <td>
-                        //                     <InputStyle className="inpp">
-                        //                         <NumberFormat placeholder={`0 ₮`} 
-                        //                             // value={rate}
-                        //                             //  onChange={e=>setRate(e.target.value.slice(0, -1).replace(/,/g, ''))}
-                        //                         style={{textAlign:`right`, paddingRight:`7px`}} thousandSeparator={true} suffix={' ₮'} name="rate" className="getInpp" required />
-                        //                         <div className="line" />
-                        //                     </InputStyle>
-                        //                 </td>
-                        //             </tr>
-
-                        //         </table>
-                        //     </div>
-
-                        //     <div className="TitlePar">
-                        //         <div className="desc">
-                        //             Доорх хүснэгтэд заасан 2 шалгуурт үнэлгээ өгөх бөгөөд хэрэв аль нэг нь “Үгүй” гэсэн санал авсан бол эцсийн шийдвэр нь санхүүгийн дэмжлэг үзүүлэхгүй гэж гарна. 
-                        //         </div>
-                        //     </div>
-
-                        //     <div className="infoWhere">
-                        //         <table id="customers">
-                        //             <tr>
-                        //                 <th className="center">№</th>
-                        //                 <th className="center">Шалгуур</th>
-                        //                 <th>Санал</th>
-                        //             </tr>
-                        //             <tr className="getTable1">
-                        //                 <td className="center">1</td>
-                        //                 <td><div className="input">Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгч төсөл хэрэгжүүлэх чадавхтай эсэх</div></td>
-                        //                 <td>
-                        //                     <div className="customRadio">
-                        //                         <div className="item">
-                        //                             <div className="label">Тийм</div>
-                        //                             <InputStyle className="inpp"><input type="radio" /></InputStyle>
-                        //                         </div>
-                        //                         <div className="item">
-                        //                             <div className="label">Үгүй</div>
-                        //                             <InputStyle className="inpp"><input type="radio" /></InputStyle>
-                        //                         </div>
-                        //                     </div>
-                        //                 </td>
-                        //             </tr>
-
-                        //             <tr className="getTable1">
-                        //                 <td>2</td>
-                        //                 <td> <div className="input">Түншлэлийн хөтөлбөрөөс санхүүгийн дэмжлэг хүсэгчийн төсөл экспортыг нэмэгдүүлэх боломжтой эсэх</div></td>
-                        //                 <td>
-                        //                     <div className="customRadio">
-                        //                         <div className="item">
-                        //                             <div className="label">Тийм</div>
-                        //                             <InputStyle className="inpp"><input type="radio" /></InputStyle>
-                        //                         </div>
-                        //                         <div className="item">
-                        //                             <div className="label">Үгүй</div>
-                        //                             <InputStyle className="inpp"><input type="radio" /></InputStyle>
-                        //                         </div>
-                        //                     </div>
-                        //                 </td>
-                        //             </tr>
-                                
-                        //         </table>
-                        //     </div>
-
-                        //     <div className="TitlePar">
-                        //         <div className="title">
-                        //             САНХҮҮГИЙН ДЭМЖЛЭГ ҮЗҮҮЛЭХ ЭСЭХ:  ТИЙМ/ҮГҮЙ
-                        //         </div>
-                        //     </div>
-
-                        //     <div className="reasonPar Par2">
-                        //         <div className="title">Хэрэв “Үгүй” бол шалтгаанаа бичнэ үү:</div>
-                        //         <div className="inpPar">
-                        //             <div className="svg"><IoIosShareAlt /></div>
-                        //             <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
-                        //         </div>
-                        //     </div>
-
-                        //     <div className="LastParent">
-                        //         <Signature cond="main" url={imgData} setImgData={setImgData}  />
-                        //         <div className="itemss">
-                        //             <div className="label">Огноо:</div>
-                        //             <InputStyle className="inpp"><input type="text" placeholder="2021-05-15" onBlur={(e) => e.target.type = 'text'} onFocus={(e) => e.target.type = 'date'} className={`getInpp`} /> <div className="line" /></InputStyle>
-                        //         </div>
-                        //     </div>
-                        // </div>
                         : <div className="reasonPar">
                             <div className="title">Нэмэлт тайлбар бичих :</div>
-                            <div className="inpPar">
+                            {cond?<div>-{mainData?.reason}</div>:<div className="inpPar">
                                 <div className="svg"><IoIosShareAlt /></div>
                                 <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Нэмэлт тайлбарыг энд бичнэ үү..." /> <div className="line" /></InputStyle>
-                            </div>
+                            </div>}
                         </div>}
 
                         <div className="buttonPar">
@@ -325,13 +201,13 @@ function Main_decision() {
                         </div>
                         <div className="buttonPar">
                             {/* <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div> */}
-                            <NextBtn className="SubmitButton" onClick={clickHandle2} type="button">Мэдэгдэл илгээх<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
+                            {cond ? <NextBtn className="SubmitButton" onClick={clickHandle2} style={{width:`36%`}} type="button">Эцсийн байдлаар илгээх<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>: <div />}
                             {!cond && <NextBtn className="SubmitButton" onClick={clickHandle} type="button">Хадгалах<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>}
                         </div>
                     </div>
                     : <div className="NullPar">
                         <div className="nullTitle">
-                            <div onClick={() => backHandle('projects')} className="BackPar"><div className="SvgPar"><MdKeyboardArrowLeft /></div>  <span>Буцах</span> </div>
+                            <div onClick={() => history.goBack()} className="BackPar"><div className="SvgPar"><MdKeyboardArrowLeft /></div>  <span>Буцах</span> </div>
                             <h2 className="title">Мэдээлэл ороогүй байна</h2>
                             <div className="desc"></div>
                         </div>
@@ -417,6 +293,7 @@ export const FeedBackCont = styled.div`
         }
         .contentPar{
             .reasonPar{
+                margin:20px 0px;
                 .title{
                     font-size:14px;
                     font-weight:500;
@@ -503,6 +380,12 @@ export const FeedBackCont = styled.div`
                 #customers {
                     border-collapse: collapse;
                     width: 100%;
+                    .finalSignature{
+                        width:120px;
+                        height:auto;
+                        max-height:200px;
+                        object-fit:contain;
+                    }
                     td, th{
                         border: 1px solid rgba(0,0,0,0.3);
                         padding: 10px;
@@ -591,7 +474,7 @@ export const FeedBackCont = styled.div`
               }
             .SubmitButton{
                 font-size:13px;
-                width:30%;
+                width:26%;
             }
         }
         @media only screen and (max-width:786px){
@@ -602,15 +485,3 @@ export const FeedBackCont = styled.div`
 
 `
 
-const tableData = [
-    { title: "Байгууллагын нэр", name: "tablerow1" },
-    { title: "Төслийн нэр", name: "tablerow2" },
-    { title: "Өргөдлийн дугаар", name: "tablerow3" },
-    { title: "Хурлын огноо:", name: "tablerow4" },
-]
-const tableData2 = [
-    { title: "1-р гишүүн", name: "tablerow1" },
-    { title: "2-р гишүүн", name: "tablerow2" },
-    { title: "3-р гишүүн", name: "tablerow3" },
-    { title: "4-р гишүүн", name: "tablerow4" },
-]
