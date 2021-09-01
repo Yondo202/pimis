@@ -544,11 +544,11 @@ export default function MakeContract() {
                </div>
 
                <div className="" ref={componentRef}>
-                  <div className="tw-text-lg tw-font-medium tw-text-center tw-mt-6">
+                  <div className="tw-text-lg tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
                      ТҮНШЛЭЛИЙН ГЭРЭЭ
                   </div>
 
-                  <div className="tw-px-2 sm:tw-px-10 tw-mt-6 tw-pb-4">
+                  <div className="tw-mx-2 sm:tw-mx-10 tw-mt-6 tw-pb-4">
                      <div className="tw-flex tw-flex-wrap tw-justify-between tw-px-2 sm:tw-px-4">
                         <span className="">
                            <Fill value={info.year} /> оны <Fill value={info.month} /> дугаар сарын <Fill value={info.day} />-ний өдөр
@@ -577,12 +577,11 @@ export default function MakeContract() {
                      </div>
                   </div>
 
-                  <div className="tw-px-2 sm:tw-px-8 tw-mt-8">
+                  <div className="tw-mx-2 sm:tw-mx-8 tw-mt-8">
                      {Object.entries(contract).map(([key, value]) =>
                         <div className="" key={key}>
                            <Header header={`${key} ДҮГЭЭР ЗҮЙЛ. ${value.category?.toUpperCase()}`} key={key} />
-
-                           {value.provisions.map(provision =>
+                           {value.provisions.map((provision, i) =>
                               <Provision
                                  order={provision.order}
                                  provision={{
@@ -594,18 +593,18 @@ export default function MakeContract() {
                                     </span>
                                  }[provision.order] || provision.provision}
                                  subLevel={provision.subLevel}
-                                 key={provision.order}
+                                 key={i}
                               />
                            )}
                         </div>
                      )}
                   </div>
 
-                  <div className="tw-text-base tw-text-center tw-mt-8 tw-font-medium">
+                  <div className="tw-text-base tw-text-center tw-mt-8 tw-font-medium tw-mx-2 sm:tw-mx-8">
                      ГЭРЭЭ БАЙГУУЛСАН:
                   </div>
 
-                  <div className="tw-mt-6 tw-flex tw-flex-wrap tw-pb-12 tw-px-2 sm:tw-px-10">
+                  <div className="tw-mt-6 tw-flex tw-flex-wrap tw-pb-12 tw-mx-2 sm:tw-mx-10">
                      <div className="sm:tw-w-1/2">
                         <div className="tw-p-2 tw-font-medium">
                            Санхүүгийн дэмжлэг олгогчийг төлөөлж:

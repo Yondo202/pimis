@@ -4,7 +4,8 @@ import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useContext } from 'react'
 import AlertContext from 'components/utilities/alertContext'
-import { initialState } from 'pages/attachments/evidenceAttachments2'
+import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
+import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 
 const initialOwners = [{
    fullname: null,
@@ -35,6 +36,17 @@ export default function OwnershipAttach({ contract = {} }) {
       next[index][key] = value
       return next
    })
+
+   const handleAdd = () => setOwners(prev => [...prev, {
+      fullname: null,
+      citizenship: null,
+      residence_country: null,
+      share_quarter: null,
+      voting_share_quarter: null,
+      directive: null
+   }])
+
+   const handleRemove = (index) => setOwners(prev => prev.filter((_, i) => i !== index))
 
    const [signers, setSigners] = useState(initialSigners)
 
@@ -99,7 +111,7 @@ export default function OwnershipAttach({ contract = {} }) {
    return (
       <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
          <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6">
+            <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
                Хавсралт 3. Эцсийн өмчлөгчийн мэдээлэл
             </div>
 
@@ -125,7 +137,7 @@ export default function OwnershipAttach({ contract = {} }) {
                </ul>
             </div>
 
-            <div className="tw-mt-6 tw-mx-2 sm:tw-mx-4">
+            <div className="tw-mt-8 tw-mx-2 sm:tw-mx-4">
                <div className="tw-ml-2 tw-font-medium">
                   Хэнд: Экспортыг дэмжих төсөлд
                </div>
@@ -137,7 +149,7 @@ export default function OwnershipAttach({ contract = {} }) {
                </p>
             </div>
 
-            <div className="tw-mt-6 tw-mx-2 sm:tw-mx-4">
+            <div className="tw-mt-6 tw-mx-2 sm:tw-mx-4 tw-relative">
                <table>
                   <thead>
                      <tr>
@@ -147,10 +159,11 @@ export default function OwnershipAttach({ contract = {} }) {
                            'Саналын эрхтэй хувьцааны 25% ба түүнээс дээш хувийг шууд ба шууд бус хэлбэрээр эзэмшиж байгаа',
                            'Санхүүгийн дэмжлэг хүртэгч гишүүдийн Удирдах зөвлөл буюу түүнтэй адилтгах удирдах байгууллагуудын олонхыг шууд болон шууд бусаар томилох эрхтэй'
                         ].map((header, i) =>
-                           <th className={classCell} key={i}>
+                           <th className={`${classCell} tw-text-center` } key={i}>
                               {header}
                            </th>
                         )}
+                        <th></th>
                      </tr>
                   </thead>
                   <tbody>
@@ -174,10 +187,14 @@ export default function OwnershipAttach({ contract = {} }) {
                            <TableCellCheckbox checked={owner.share_quarter} name="share_quarter" index={i} setter={handleInputOwner} />
                            <TableCellCheckbox checked={owner.voting_share_quarter} name="voting_share_quarter" index={i} setter={handleInputOwner} />
                            <TableCellCheckbox checked={owner.directive} name="directive" index={i} setter={handleInputOwner} />
+                           <td className="">
+                              <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
+                           </td>
                         </tr>
                      )}
                   </tbody>
                </table>
+               <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
             </div>
 
             <div className="tw-mt-6 tw-mx-2 sm:tw-mx-4">
@@ -222,14 +239,14 @@ export default function OwnershipAttach({ contract = {} }) {
                </div>
             </div>
 
-            <div className="tw-mt-6 tw-pb-8 tw-mx-2 sm:tw-mx-4">
+            <div className="tw-mt-6 tw-pb-8 tw-mx-4 sm:tw-mx-12">
                {signers.map((signer, i) =>
                   <div className="" key={i}>
                      <div className="tw-flex tw-items-center tw-mt-1.5">
                         <span className="tw-mr-2">
                            Компаний нэр:
                         </span>
-                        <Fill editable defaultLength={20} dotted />
+                        <Fill setter={() => { }} editable defaultLength={20} dotted />
                      </div>
                      <div className="tw-flex tw-items-center tw-mt-1.5">
                         <span className="tw-mr-2">
@@ -247,10 +264,10 @@ export default function OwnershipAttach({ contract = {} }) {
                         <Signature signer={signer} setter={setSigners} />
                      </div>
                      <div className="tw-flex tw-items-center tw-mt-1.5">
-                        <span className="tw-mr-2">
+                        <span className="tw-mr-3">
                            Гарын үсэг зурсан огноо:
                         </span>
-                        <input className="focus:tw-outline-none tw-w-36" type="date" value={signer.date} onChange={e => handleInputSigner('date', e.target.value, i)} />
+                        <input className="focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none" type="date" value={signer.date ?? ''} onChange={e => handleInputSigner('date', e.target.value, i)} />
                      </div>
                   </div>
                )}
@@ -273,11 +290,11 @@ function TableCellCheckbox({ checked, name, index, setter, }) {
       <td className={classCell}>
          <div className="tw-flex tw-items-center tw-px-2">
             <input className="tw-w-3.5 tw-h-3.5" type="checkbox" checked={typeof (checked) === 'boolean' && checked} onChange={() => setter(name, true, index)} id={`${name}-${index}-true`} />
-            <label className="tw-ml-1 tw-mb-0 tw-font-medium" for={`${name}-${index}-true`}>Тийм</label>
+            <label className="tw-ml-1 tw-mb-0" htmlFor={`${name}-${index}-true`}>Тийм</label>
          </div>
          <div className="tw-flex tw-items-center tw-px-2">
             <input className="tw-w-3.5 tw-h-3.5" type="checkbox" checked={typeof (checked) === 'boolean' && !checked} onChange={() => setter(name, false, index)} id={`${name}-${index}-false`} />
-            <label className="tw-ml-1 tw-mb-0 tw-font-medium" for={`${name}-${index}-false`}>Үгүй</label>
+            <label className="tw-ml-1 tw-mb-0" htmlFor={`${name}-${index}-false`}>Үгүй</label>
          </div>
       </td>
    )

@@ -1,42 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { TextareaCell } from '../performance_report/controlReport'
+import { TextareaCell } from '../performance_report/protectionReport'
 import { Signature } from './makeContract'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useContext } from 'react'
 import AlertContext from 'components/utilities/alertContext'
+import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
+import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 
 const initialState = [{
-   work: null,
-   start_date: null,
-   end_date: null,
-   budget: null,
-   in_charge: null
-}, {
-   work: null,
-   start_date: null,
-   end_date: null,
-   budget: null,
-   in_charge: null
-}, {
-   work: null,
-   start_date: null,
-   end_date: null,
-   budget: null,
-   in_charge: null
-}, {
-   work: null,
-   start_date: null,
-   end_date: null,
-   budget: null,
-   in_charge: null
-}, {
-   work: null,
-   start_date: null,
-   end_date: null,
-   budget: null,
-   in_charge: null
-}, {
    work: null,
    start_date: null,
    end_date: null,
@@ -74,6 +46,8 @@ export default function ActivityPlanAttach({ contractId }) {
       budget: null,
       in_charge: null
    }])
+
+   const handleRemove = (index) => setPlan(prev => prev.filter((plan, i) => i !== index))
 
    const [signers, setSigners] = useState(initialSigners)
 
@@ -138,7 +112,7 @@ export default function ActivityPlanAttach({ contractId }) {
    return (
       <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
          <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6">
+            <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
                Хавсралт 1. Түншлэлийн гэрээний үйл ажиллагааны төлөвлөгөө
             </div>
 
@@ -146,20 +120,21 @@ export default function ActivityPlanAttach({ contractId }) {
                (Энэхүү Үйл ажиллагааны төлөвлөгөө нь хүсэлт гаргагч этгээдийн Экспорт хөгжүүлэх төлөвлөгөөнд заасан арга хэмжээнүүдийг хэрхэн биелүүлэхийг заасан байх ёстой бөгөөд тэдгээрийг Санхүүгийн дэмжлэг олгогчийн зүгээс санхүүжүүлэх шаардлагатай.)
             </div>
 
-            <div className="tw-mt-8 tw-mx-2 sm:tw-mx-4">
+            <div className="tw-mt-8 tw-mx-2 sm:tw-mx-4 tw-relative">
                <table>
                   <thead>
                      <tr>
-                        <th className={classCell}>№</th>
-                        <th className={classCell}>
+                        <th className={`${classCell} tw-text-center`}>№</th>
+                        <th className={`${classCell} tw-text-center`}>
                            Зөвшөөрөгдсөн ажлууд <span className="tw-font-light">(Ажлыг чухлаас бусад гэж эрэмбэлэх)</span>
                         </th>
-                        <th className={classCell}>Эхлэх огноо</th>
-                        <th className={classCell}>Дуусах огноо</th>
-                        <th className={classCell}>
+                        <th className={`${classCell} tw-text-center`}>Эхлэх огноо</th>
+                        <th className={`${classCell} tw-text-center`}>Дуусах огноо</th>
+                        <th className={`${classCell} tw-text-center`}>
                            Баталсан зардлын дээд хэмжээ <span className="tw-font-light">/төг/</span>
                         </th>
-                        <th className={classCell}>Хариуцах этгээд</th>
+                        <th className={`${classCell} tw-text-center`}>Хариуцах этгээд</th>
+                        <th></th>
                      </tr>
                   </thead>
                   <tbody>
@@ -170,22 +145,25 @@ export default function ActivityPlanAttach({ contractId }) {
                            <TextareaCell value={row.work} name="work" index={i} setter={handleInput} />
 
                            <td className={classCell}>
-                              <input className={classInputDate} type="date" value={row.start_date} onChange={e => handleInput('start_date', e.target.value, i)} />
+                              <input className={classInputDate} type="date" value={row.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value, i)} />
                            </td>
                            <td className={classCell}>
-                              <input className={classInputDate} type="date" value={row.end_date} onChange={e => handleInput('end_date', e.target.value, i)} />
+                              <input className={classInputDate} type="date" value={row.end_date ?? ''} onChange={e => handleInput('end_date', e.target.value, i)} />
                            </td>
 
                            <TextareaCell value={row.budget} name="budget" index={i} setter={handleInput} />
                            <TextareaCell value={row.in_charge} name="in_charge" index={i} setter={handleInput} />
+                           <td className="">
+                              <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
+                           </td>
                         </tr>
                      )}
                   </tbody>
                </table>
-               <div className="" onClick={handleAdd}>+ Нэмэх</div>
+               <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
             </div>
 
-            <div className="tw-mt-6 tw-mx-4 sm:tw-mx-8">
+            <div className="tw-mt-6 tw-mx-2 sm:tw-mx-8">
                <div>Тэмдэглэл:</div>
                <p className="tw-mt-4">
                   -	Бараа, зөвлөхийн бус үйлчилгээ болон зөвлөхийн үйлчилгээ авах аливаа худалдан авалт нь Дэлхийн банкны Худалдан авах ажиллагааны дараах зарчимд нийцсэн байна:  i) мөнгөний үнэ цэнэ;   ii) хэмнэлт;   iii) зохистой байдал;   iv) зорилгод нийцэх;   v) үр ашиг;   vi) ил тод байдал; болон   vii) шударга байдал. (Экспортыг дэмжих төслийн Худалдан авах ажиллагааны хялбарчилсан удирдамж);
@@ -195,16 +173,16 @@ export default function ActivityPlanAttach({ contractId }) {
                </p>
             </div>
 
-            <div className="tw-mt-6 tw-mx-2 sm:tw-mx-4 tw-pb-8">
+            <div className="tw-mt-8 tw-mx-4 sm:tw-mx-12 tw-pb-8">
                {signers.map((signer, i) =>
-                  <div className="tw-mb-4" key={i}>
+                  <div className="tw-mt-6" key={i}>
                      <p className="">
                         {signer.position}:
                      </p>
                      <Signature signer={signer} setter={setSigners} />
                      <div className="tw-mt-2">
-                        <span className="tw-mr-2">Огноо:</span>
-                        <input className={classInputDate} type="date" value={signer.date} onChange={e => handleChangeSigner('date', e.target.value, i)} />
+                        <span className="tw-mr-3">Огноо:</span>
+                        <input className={classInputDate} type="date" value={signer.date ?? ''} onChange={e => handleChangeSigner('date', e.target.value, i)} />
                      </div>
                   </div>
                )}
@@ -221,4 +199,4 @@ export default function ActivityPlanAttach({ contractId }) {
 }
 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2'
-const classInputDate = 'focus:tw-outline-none tw-w-36'
+const classInputDate = 'focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none'

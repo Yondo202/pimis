@@ -68,12 +68,6 @@ function UsersRoute() {
                     <Route path="/5c" component={AnalystReport} />
                     <Route path="/make-contract" component={MakeContract} />
                     <Route path="/performance-report" component={PerformanceReport} />
-                    <Route path="/asd" component={ActivityPlanAttach} />
-                    <Route path="/asd1" component={FinalCostAttach} />
-                    <Route path="/asd2" component={OwnershipAttach} />
-                    <Route path="/asd3" component={PurchasePlanAttach} />
-                    <Route path="/asd4" component={ContractAttach5} />
-                    <Route path="/asd5" component={ContractAttach6} />
                     <Route path="/trainings">
                         <TrainingFrontPage user={true} />
                     </Route>

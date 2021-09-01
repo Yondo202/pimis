@@ -530,7 +530,7 @@ function PlannedActivity({ label, HelpPopup, value, valueCost, setter, validate 
    return (
       <div className="md:tw-col-span-2 tw-w-full tw-mt-2">
          <div className="tw-text-sm tw-p-2 tw-flex tw-items-center">
-            <span className={validate && checkInvalid(value) && 'tw-text-red-500 tw-transition-colors'}>
+            <span className={(validate && checkInvalid(value)) ? 'tw-text-red-500 tw-transition-colors' : ''}>
                {label}
             </span>
             {HelpPopup && HelpPopup}
