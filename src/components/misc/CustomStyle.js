@@ -167,8 +167,6 @@ export const CustomFileUpload = styled.div`
     }
 `
 
-
-
 const bigAnimation = keyframes`
     0% { opacity:0; transform:translateY(-12px); }
     100% { opacity:1; transform:translateY(0px); }
@@ -178,6 +176,10 @@ const rowAnimation = keyframes`
     0% { opacity:0; transform:translateY(-12px); }
     100% { opacity:1; transform:translateY(0px); }
 `
+
+export const LangSwitch = styled.div`
+
+` 
 
 export const Container = styled.div`
     page-break-inside: avoid;
@@ -197,10 +199,17 @@ export const Container = styled.div`
         font-weight:500;
         font-size:14px;
     }
+    .TitlePar{
+        display:flex;
+        justify-content:space-between;
+    }
     .Title{
         font-weight:500;
         font-size:20px;
         margin-bottom:10px;
+    }
+    .opacity{
+        opacity:0.7;
     }
     .customTable{
         width:100%;
@@ -261,7 +270,7 @@ export const Container = styled.div`
                 border:1px solid rgba(0,0,0,.2);
             }
             td{
-                padding:7px 8px;
+                padding:12px 10px;
                 animation: ${rowAnimation} 0.5s ease;
                 // &:last-child{
                 //     padding:8px 0px;
@@ -284,7 +293,7 @@ export const Container = styled.div`
                     color:green;
                     width:22px;
                     height:22px;
-                    top:3.5px;
+                    top:8px;
                     left:-10px;
                     display:flex;
                     align-items:center;

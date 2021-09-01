@@ -6,14 +6,18 @@ import reportWebVitals from './reportWebVitals';
 import { UserStore } from "./context/UserContext";
 import { ThemeProvider } from 'styled-components';
 import * as theme from "components/theme"
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <UserStore>
-        <App />
-      </UserStore>
-    </ThemeProvider>
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider theme={theme}>
+        <UserStore>
+            <App />
+        </UserStore>
+      </ThemeProvider>
+    </I18nextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

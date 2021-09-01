@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axiosbase'
 import { motion } from "framer-motion";
-import { Container } from "./CustomTheme"
+import { Container, LangSwitch } from "components/misc/CustomStyle"
 import { RiAddLine, RiEdit2Line } from "react-icons/ri"
 import { VscError } from "react-icons/vsc"
 import { RiBillLine } from "react-icons/ri"
@@ -10,15 +10,20 @@ import AccessToken from "context/accessToken"
 import EditModal from "./EditModal"
 import DeleteModal from "./DeleteModal"
 import Indemnity from "./IndemnityAdd"
-import { NumberComma } from "./NumberComma"
+import { NumberComma } from "./NumberComma";
+import ExportData from "./exportData/ExportData";
+import { useTranslation } from 'react-i18next';
 
 const Insurance = () => {
+    const [t, i18n] = useTranslation();
     const [ ListData, setListData ] = useState([]);
     const [ users, setUsers ] = useState([]);
     const [ showAddModal, showSetAddModal ] = useState(false);
     const [ showEditModal, showSetEditModal ] = useState(false);
     const [ showDeleteModal, showSetDeleteModal ] = useState(false);
     const [ showIndemnity, setShowIndemnity ] = useState(false);
+    const [ showExportData, setShowExportData ] = useState(false);
+
     const [ cond, setCond ] = useState(false);
     const [ addCond, setAddCond ] = useState(false);
     const [ selected, setSelected ] = useState({});
@@ -31,6 +36,7 @@ const Insurance = () => {
 
     useEffect(()=>{
         void async function FetchData(){
+
            const Data = await axios.get(`insurances/insurance`);
            let final = [];
            if(Data.data.data.length!==0){
@@ -74,6 +80,16 @@ const Insurance = () => {
         }
     }
 
+    const ExportDataHandle = () =>{
+        if(selected.id){
+            setShowExportData(true);
+        }
+    }
+    
+    const handleChange = event => {
+        i18n.changeLanguage(event.target.value);
+    };
+
     return (
         <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 
@@ -82,26 +98,26 @@ const Insurance = () => {
             {showDeleteModal?<DeleteModal SD={selected} setCond={setCond} setModal={showSetDeleteModal} />:null}
             {showIndemnity?<Indemnity SD={selected} setCond={setCond} setModal={setShowIndemnity} />:null}
 
-            <Container>
-                <div className="Title">Company list</div>
+            {showExportData?<ExportData setCond={setCond} setModal={setShowExportData} SD={selected}  />:null}
 
-                {/* <div className="listHead">
-                    <div className="Inputs">
-                        <select  className="roleFilter">
-                            <option value="all" selected>- Бүгд -</option>
+
+            <Container>
+                <div className="TitlePar">
+                    <div onClick={handleChange} className="Title">{t('title')}</div>
+                    <LangSwitch>
+                        <select onChange={handleChange}>
+                            <option value="en">English</option>
+                            <option value="mn">Монгол</option>
                         </select>
-                    </div>
-                    <div className="AddBtn">
-                        <IoMdAdd className="addSvg" />Нэмэх
-                    </div>
-                </div> */}
+                    </LangSwitch>
+                </div>
 
                 <div className="customTable">
-
                     <div className="headPar">
                         {/* <div className="title"></div> */}
                         <div onClick={()=>showSetAddModal(true)} className="addBtn"><RiAddLine /><span>Нэмэх</span></div>
-                        <div className="additions">
+                        <div className={`additions ${selected.id?``:`opacity`}`}>
+                            <div onClick={ExportDataHandle} className="addBtn"><RiAddLine /><span>Export Data</span></div>
                             <div onClick={HandleIndeminty} className="addBtn"><RiBillLine /><span>Нөхөн төлбөр</span></div>
                             <div onClick={EditHandle} className="addBtn"><RiEdit2Line /><span>Засах</span></div>
                             <div onClick={DeleteHandle} className="addBtn"><VscError /><span>Устгах</span></div>
@@ -111,16 +127,15 @@ const Insurance = () => {
                     <table>
                         <tbody>
                             <tr>
-                                <th>Register number</th>
-                                <th>Company name</th>
+                                <th>{t('Register number')}</th>
+                                <th>{t('Company name')}</th>
                                 {/* <th>ESM</th> */}
 
-                                <th>Issued</th>
-                                <th>Expiration</th>
-                                 
+                                <th>{t('Issued')}</th>
+                                <th>{t('Expiration')}</th>
 
                                 {/* <th>Policy number</th> */}
-                                <th>Insurance type</th>
+                                <th>{t('Insurance type')}</th>
 
                                 <th>Sum insured (USD)</th>
                                 <th>Sum insured (MNT)</th>
@@ -174,3 +189,8 @@ const Insurance = () => {
 }
 
 export default Insurance
+// export default (translate("translations")(Insurance))
+
+
+
+// export default withTranslation()(Insurance);

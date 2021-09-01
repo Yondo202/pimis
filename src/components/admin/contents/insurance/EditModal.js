@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { CustomModal, InputStyle } from "./CustomTheme";
+import { CustomModal, InputStyle } from "components/misc/CustomStyle";
 import styled from "styled-components"
 import { MdAdd } from "react-icons/md"
 import { RiAddLine } from "react-icons/ri"

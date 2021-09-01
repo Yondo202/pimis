@@ -41,11 +41,11 @@ const Edit = ({ setModal, SD, setCond, selected }) => {
 
         axios.put(`insurances/indemnity/${selected?.id}`, {...final, insuranceId:SD.id }).then(_=>{
             alertText('green','Амжилттай',true );
+            setCond(prev=>!prev);
             setName('contentParent2');
             setTimeout(() => {
                 setModal(false);
             }, 370)
-            setCond(prev=>!prev);
         }).catch(()=>{
             alertText('orange','Хадаглахад алдаа гарлаа',true );
         })

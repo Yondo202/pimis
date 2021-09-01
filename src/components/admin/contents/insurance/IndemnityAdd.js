@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CustomModal, InputStyle, Container } from "./CustomTheme";
+import { CustomModal, InputStyle, Container } from "components/misc/CustomStyle";
 import styled from "styled-components"
 import { RiAddLine, RiEdit2Line } from "react-icons/ri"
 import { VscError } from "react-icons/vsc"
@@ -25,6 +25,7 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
 
     useEffect(()=>{
         setIndemnity(SD?.indemnities);
+        setSelected({...SD.indemnities.filter(item=>item.id===selected.id)});
     },[SD.indemnities])
 
     const selectRowHandle = (el) =>{
@@ -131,28 +132,7 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
 
 export default IndemnityAdd
 
-const InsuranceType = [
-    'Working capital cover',
-    'Supplier credit insurance',
-    'Buyer credit insurance'
-]
-
 const InputsParent = styled.div`
     display:flex;
     gap:35px;
-`
-const InsureType = styled.div`
-    margin-top:15px;
-    padding:20px 15px;
-    border:1px solid #b5b8c8;
-    border-radius:5px;
-    position:relative;
-    &:after{
-        content:"${props=>props.contents}";
-        top:-8px;
-        left:10px;
-        position:absolute;
-        background-color:#fff;
-        padding:0px 10px;
-    }
 `

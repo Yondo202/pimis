@@ -24,8 +24,8 @@ const AddModal = ({ setAddModal, setConflict }) => {
             setAddModal(false);
         }, 370)
     }
-    
     // { compname:'', description:'' }
+    
     return (
         <CustomModal>
             <div className={`contentParent ${cName}`} style={{width:"40rem"}}>

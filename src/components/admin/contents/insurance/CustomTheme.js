@@ -30,6 +30,9 @@ export const Container = styled.div`
         font-size:20px;
         margin-bottom:10px;
     }
+    .opacity{
+        opacity:0.7;
+    }
     .customTable{
         width:100%;
         margin-top:20px;

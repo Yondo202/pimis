@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { CustomModal, InputStyle } from "./CustomTheme";
+import { CustomModal, InputStyle } from "components/misc/CustomStyle";
 import styled from "styled-components"
 import { TiDeleteOutline } from "react-icons/ti"
 import axios from 'axiosbase';

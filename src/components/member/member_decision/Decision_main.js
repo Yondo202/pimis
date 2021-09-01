@@ -44,7 +44,6 @@ function Decision_main() {
 
     const checkedHandle = () => {
         let arr = document.querySelectorAll('.checkCond'); let arr2 = Array.from(arr); let arr3 = [];
-
         arr2.forEach((el, i) => {
             if (el.checked == true) { if (el.value === "false") { arr3.push(el); } }
         });
