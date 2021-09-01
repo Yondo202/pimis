@@ -390,25 +390,29 @@ const initialSignersEdp = [{
    position: 'Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны Төрийн нарийн бичгийн дарга',
    signature: null,
    order: 1,
-   category: 'edp'
+   category: 'edp',
+   page: 'contract'
 }, {
    name: 'О.ОНОН',
    position: 'Экспортыг дэмжих төслийн Захирал',
    signature: null,
    order: 2,
-   category: 'edp'
+   category: 'edp',
+   page: 'contract'
 }, {
    name: 'Б.ДӨЛГӨӨН',
    position: 'Экспортыг дэмжих төслийн Зохицуулагч',
    signature: null,
    order: 3,
-   category: 'edp'
+   category: 'edp',
+   page: 'contract'
 }, {
    name: 'M.БАТТУЛГА',
    position: 'Экспортыг дэмжих төслийн Бизнес хөгжлийн ахлах мэргэжилтэн',
    signature: null,
    order: 4,
-   category: 'edp'
+   category: 'edp',
+   page: 'contract'
 }]
 
 const initialSignersReceiving = [{
@@ -416,13 +420,15 @@ const initialSignersReceiving = [{
    position: null,
    signature: null,
    order: 1,
-   category: 'receiving'
+   category: 'receiving',
+   page: 'contract'
 }, {
    name: null,
    position: null,
    signature: null,
    order: 2,
-   category: 'receiving'
+   category: 'receiving',
+   page: 'contract'
 }]
 
 const descriptions = [
@@ -461,9 +467,11 @@ export default function MakeContract() {
          headers: { Authorization: getLoggedUserToken() }
       }).then(res => {
          const { signers, ...info } = res.data.data
-         setInfo(info)
-         setSignersEpd(signers.filter(signer => signer.category === 'edp'))
-         setSignersReceiving(signers.filter(signer => signer.category === 'receiving'))
+         setInfo(prev => ({ ...prev, ...info }))
+         if ((signers ?? []).length) {
+            setSignersEpd(signers.filter(signer => signer.category === 'edp'))
+            setSignersReceiving(signers.filter(signer => signer.category === 'receiving'))
+         }
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээг нээлээ.' })
       }).catch(err => {
          if (err.response.status === 490) {
@@ -494,6 +502,12 @@ export default function MakeContract() {
          }, {
             headers: { Authorization: getLoggedUserToken() }
          }).then(res => {
+            const { signers, ...info } = res.data.data
+            setInfo(prev => ({ ...prev, ...info }))
+            if ((signers ?? []).length) {
+               setSignersEpd(signers.filter(signer => signer.category === 'edp'))
+               setSignersReceiving(signers.filter(signer => signer.category === 'receiving'))
+            }
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээг хадгаллаа.' })
          }).catch(err => {
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээг хадгалж чадсангүй.' })
@@ -505,6 +519,12 @@ export default function MakeContract() {
          }, {
             headers: { Authorization: getLoggedUserToken() }
          }).then(res => {
+            const { signers, ...info } = res.data.data
+            setInfo(prev => ({ ...prev, ...info }))
+            if ((signers ?? []).length) {
+               setSignersEpd(signers.filter(signer => signer.category === 'edp'))
+               setSignersReceiving(signers.filter(signer => signer.category === 'receiving'))
+            }
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээний мэдээллийг шинэчиллээ.' })
          }).catch(err => {
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээний мэдээллийг шинэчилж чадсангүй.' })
@@ -524,11 +544,11 @@ export default function MakeContract() {
                </div>
 
                <div className="" ref={componentRef}>
-                  <div className="tw-text-lg tw-font-medium tw-text-center tw-mt-6">
+                  <div className="tw-text-lg tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
                      ТҮНШЛЭЛИЙН ГЭРЭЭ
                   </div>
 
-                  <div className="tw-px-2 sm:tw-px-10 tw-mt-6 tw-pb-4">
+                  <div className="tw-mx-2 sm:tw-mx-10 tw-mt-6 tw-pb-4">
                      <div className="tw-flex tw-flex-wrap tw-justify-between tw-px-2 sm:tw-px-4">
                         <span className="">
                            <Fill value={info.year} /> оны <Fill value={info.month} /> дугаар сарын <Fill value={info.day} />-ний өдөр
@@ -557,12 +577,11 @@ export default function MakeContract() {
                      </div>
                   </div>
 
-                  <div className="tw-px-2 sm:tw-px-8 tw-mt-8">
+                  <div className="tw-mx-2 sm:tw-mx-8 tw-mt-8">
                      {Object.entries(contract).map(([key, value]) =>
                         <div className="" key={key}>
                            <Header header={`${key} ДҮГЭЭР ЗҮЙЛ. ${value.category?.toUpperCase()}`} key={key} />
-
-                           {value.provisions.map(provision =>
+                           {value.provisions.map((provision, i) =>
                               <Provision
                                  order={provision.order}
                                  provision={{
@@ -574,18 +593,18 @@ export default function MakeContract() {
                                     </span>
                                  }[provision.order] || provision.provision}
                                  subLevel={provision.subLevel}
-                                 key={provision.order}
+                                 key={i}
                               />
                            )}
                         </div>
                      )}
                   </div>
 
-                  <div className="tw-text-base tw-text-center tw-mt-8 tw-font-medium">
+                  <div className="tw-text-base tw-text-center tw-mt-8 tw-font-medium tw-mx-2 sm:tw-mx-8">
                      ГЭРЭЭ БАЙГУУЛСАН:
                   </div>
 
-                  <div className="tw-mt-6 tw-flex tw-flex-wrap tw-pb-12 tw-px-2 sm:tw-px-10">
+                  <div className="tw-mt-6 tw-flex tw-flex-wrap tw-pb-12 tw-mx-2 sm:tw-mx-10">
                      <div className="sm:tw-w-1/2">
                         <div className="tw-p-2 tw-font-medium">
                            Санхүүгийн дэмжлэг олгогчийг төлөөлж:
@@ -634,7 +653,7 @@ export default function MakeContract() {
 
          <ActivityPlanAttach contractId={info.id} />
          <FinalCostAttach contractId={info.id} />
-         <OwnershipAttach contractId={info.id} />
+         <OwnershipAttach contract={info} />
          <PurchasePlanAttach contractId={info.id} />
          <ContractAttach5 contractId={info.id} />
          <ContractAttach6 contractId={info.id} />
@@ -665,14 +684,14 @@ export function Provision({ order, provision, subLevel }) {
    )
 }
 
-export function Fill({ value, name, setter, editable, defaultLength, dotted, placeholder }) {
+export function Fill({ value, name, index, setter, editable, defaultLength, dotted, placeholder }) {
    return editable
       ? <span className="tw-relative tw-inline-block">
          <span className="tw-invisible tw-leading-snug tw-mx-0.5 tw-font-medium">
             {value || (placeholder ?? '_'.repeat(defaultLength ?? 10))}
          </span>
 
-         <input className="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-rounded-none tw-border-b-2 tw-border-gray-700 tw-border-dotted focus:tw-outline-none tw-box-border tw-leading-snug tw-text-sm tw-placeholder-red-400 tw-mx-0.5 tw-font-medium" value={value ?? ''} onChange={e => setter(name, e.target.value)} placeholder={placeholder} />
+         <input className="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-rounded-none tw-border-b-2 tw-border-gray-700 tw-border-dotted focus:tw-outline-none tw-box-border tw-leading-snug tw-text-sm tw-placeholder-red-400 tw-mx-0.5 tw-font-medium" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
       </span>
       : <span className={`tw-leading-snug tw-mx-0.5 tw-font-medium ${dotted && 'tw-border-b-2 tw-border-gray-700 tw-border-dotted tw-box-border'}`}>
          {value}

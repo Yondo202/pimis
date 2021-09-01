@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import AlertContext from 'components/utilities/alertContext'
-import { useEffect } from 'react'
 import axios from 'axiosbase'
 import { Signature } from '../make_contract/makeContract'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 const initialState = [{
    description: 'Байгаль орчин, нийгмийн удирдлагын төлөвлөгөөний хэрэгжилт',
@@ -66,7 +66,9 @@ const initialSigners = [{
    signature: null
 }]
 
-export default function ControlReport() {
+export default function ProtectionReport() {
+   const AlertCtx = useContext(AlertContext)
+
    const [report, setReport] = useState(initialState)
 
    const handleInput = (key, value, index) => setReport(prev => {
@@ -75,26 +77,74 @@ export default function ControlReport() {
       return next
    })
 
-   const AlertCtx = useContext(AlertContext)
-
    const [signers, setSigners] = useState(initialSigners)
 
+   const contractId = 3 // <-- projectId=2
+
    useEffect(() => {
-      // axios.post()
-   }, [])
+      if (contractId === null || contractId === undefined) {
+         return
+      }
+      axios.get(`contracts/${contractId}/protection-report`, {
+         headers: { Authorization: getLoggedUserToken() }
+      }).then(res => {
+         const report = res.data.data.rows
+         const signers = res.data.data.signers
+         report?.length && setReport(report)
+         signers?.length && setSigners(signers)
+      })
+   }, [contractId])
+
+   const handleSave = () => {
+      if (contractId === null || contractId === undefined) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Түншлэлийн гэрээ сонгогдоогүй байна.' })
+         return
+      }
+      if (report[0].id === undefined) {
+         axios.post(`contracts/${contractId}/protection-report`, {
+            rows: report,
+            signers: signers
+         }, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            const report = res.data.data.rows
+            const signers = res.data.data.signers
+            report?.length && setReport(report)
+            signers?.length && setSigners(signers)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Тайланг хадгаллаа.' })
+         }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Тайланг хадгалж чадсангүй.' })
+         })
+      } else {
+         axios.put(`contracts/${contractId}/protection-report`, {
+            rows: report,
+            signers: signers
+         }, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            const report = res.data.data.rows
+            const signers = res.data.data.signers
+            report?.length && setReport(report)
+            signers?.length && setSigners(signers)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Тайланг шинэчиллээ.' })
+         }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Тайланг шинэчилж чадсангүй.' })
+         })
+      }
+   }
 
    return (
       <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
          <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6">
-               ii ХАМГААЛЛЫН ҮЙЛ  АЖИЛЛАГААНЫ ХЯНАЛТЫН ТАЙЛАН
+            <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
+               ii) ХАМГААЛЛЫН ҮЙЛ АЖИЛЛАГААНЫ ХЯНАЛТЫН ТАЙЛАН
             </div>
 
-            <div className="tw-font-medium tw-text-center tw-mt-4">
+            <div className="tw-font-medium tw-text-center tw-mt-4 tw-mx-4 sm:tw-mx-12">
                Санхүүгийн дэмжлэг хүртэгчийн байгаль орчин, нийгмийн удирдлага, хяналт шинжилгээний төлөвлөгөөний хэрэгжилт
             </div>
 
-            <div className="tw-mt-6 tw-mx-4 sm:tw-mx-12">
+            <div className="tw-mt-10 tw-mx-2 sm:tw-mx-4">
                <table className="">
                   <thead>
                      <tr>
@@ -117,7 +167,7 @@ export default function ControlReport() {
                </table>
             </div>
 
-            <div className="tw-mt-10 tw-pb-12 tw-mx-4 sm:tw-mx-12">
+            <div className="tw-mt-10 tw-pb-8 tw-mx-4 sm:tw-mx-12">
                {[{
                   minOrder: 1,
                   maxOrder: 1,
@@ -148,6 +198,12 @@ export default function ControlReport() {
                   </div>
                )}
             </div>
+
+            <div className="tw-flex tw-justify-center">
+               <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSave}>
+                  Хадгалах
+               </button>
+            </div>
          </div>
       </div>
    )
@@ -155,13 +211,13 @@ export default function ControlReport() {
 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2 tw-relative'
 
-export function TextareaCell({ value, name, index, setter }) {
+export function TextareaCell({ value, name, index, setter, placeholder }) {
    return (
       <td className={`${classCell}`} style={{ padding: 0, minWidth: 120 }}>
          <div className="tw-p-2 tw-invisible tw-break-all tw-leading-tight" style={{ minHeight: 60 }}>
             {value ?? ''}
          </div>
-         <textarea className="tw-absolute tw-top-0 tw-left-0 tw-bottom-0 tw-right-0 tw-w-full tw-p-2 tw-resize-none tw-overflow-hidden focus:tw-outline-none tw-bg-transparent" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} />
+         <textarea className="tw-absolute tw-top-0 tw-left-0 tw-bottom-0 tw-right-0 tw-w-full tw-p-2 tw-resize-none tw-overflow-hidden focus:tw-outline-none tw-bg-transparent" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
       </td>
    )
 }
