@@ -12,6 +12,8 @@ i18n.use(LanguageDetector).init({
         "Issued":"Issued",
         "Expiration":"Expiration",
         "Insurance type":"Insurance type",
+        "Total":"Total",
+
         Advantages: "Advantages",
         "Flexibility to use other packages": "Flexibility to use other packages",
 
@@ -25,6 +27,7 @@ i18n.use(LanguageDetector).init({
           "Issued":'Эхлэх хугацаа',
           "Expiration":"Дуусах хугацаа",
           "Insurance type":'Даатгалын төрөл',
+          "Total":'Нийт',
           Advantages: "Les avantages",
             "Flexibility to use other packages":
             "Flexibilité d'utiliser d'autres packages"

@@ -3,22 +3,23 @@ import { CustomModal, InputStyle, Container } from "components/misc/CustomStyle"
 import styled from "styled-components"
 import { RiAddLine, RiEdit2Line } from "react-icons/ri"
 import { VscError } from "react-icons/vsc"
-import Add from "./Add"
-// import Edit from "./indemnity/Edit"
-// import Delete from "./indemnity/Delete"
+import Modals from "./Modals"
+import AccessToken from "context/accessToken"
 import { NumberComma } from "components/misc/NumberComma"
 import { useTranslation } from 'react-i18next';
 import axios from 'axiosbase';
 
 const IndemnityAdd = ({ setModal, setCond, SD }) => {
     const [t] = useTranslation();
+    const [ exCond, setExCond ] = useState(false);
     const [ cName, setName ] = useState('');
+    // const [ years, setYears ] = useState([]);
+    const [ modalHandle, setModalHandle ] = useState('');
     const [ showAdd, setShowAdd ] = useState(false);
-    const [ showEdit, setShowEdit ] = useState(false);
-    const [ showDelete, setShowDelete ] = useState(false);
     const [ selected, setSelected ] = useState({});
-    const [ indemnity, setIndemnity ] = useState([]);
     const [ country, setCountry ] = useState([]);
+    const [ exportData, setExportData ] = useState([]);
+    const [ fCountry, setFCountry ] = useState([]);
 
     const CloseHandle = () =>{
         setName('contentParent2');
@@ -31,33 +32,42 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
         void async function fetch(){
            let res = await axios.get(`countries`);
            setCountry(res.data.data);
+        //    let years = await axios.get('years/true');
         }()
     },[])
 
     useEffect(()=>{
-        setIndemnity(SD?.indemnities);
-        setSelected({...SD.indemnities.filter(item=>item.id===selected.id)});
-    },[SD.indemnities])
+        void async function fetch(){
+            let data = await axios.get(`export-data?userId=${SD?.user_id}`,{ headers: {Authorization: AccessToken()} });
+            data?.data.targ_country.forEach(item=>{
+                axios.get(`countries/${item}`).then(res=>{
+                    setFCountry(prev=>[...prev, res.data.data]);
+                })
+            })
+            setExportData(data?.data.data);
+        }()
+    },[exCond]);
 
     const selectRowHandle = (el) =>{
         setSelected(el);
     }
 
-    const EditHandle = () =>{
-        if(selected?.id){
-            setShowEdit(true);
-        }
-    }
-    
-    const DeleteHandle = () =>{
-        if(selected?.id){
-            setShowDelete(true);
+    const ModalHandle = (type) =>{
+        setModalHandle(type);
+        if(type==="add"){
+            setShowAdd(true);
+        }else{
+            if(selected?.id){
+                setShowAdd(true);
+            }
         }
     }
 
+    console.log(`fCountry++`, fCountry);
+
     return (
         <CustomModal style={{paddingTop:`3rem`}}>
-            {showAdd?<Add setCond={setCond} SD={SD} setModal={setShowAdd} years={years} country={country} />:null}/
+            {showAdd?<Modals handle={modalHandle} selectedEx={selected} setSelectedEx={setSelected} setCond={setExCond} SD={SD} setModal={setShowAdd} years={years} country={country} />:null}
             {/* {showEdit?<Edit setCond={setCond} SD={SD} setModal={setShowEdit} selected={selected}  />:null} */}
             {/* {showDelete?<Delete setCond={setCond} setModal={setShowDelete} selected={selected}  />:null} */}
 
@@ -79,17 +89,6 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
                                 <h6>{SD.companyname}</h6>
                             </InputStyle>
                         </InputsParent>
-
-                        {/* <InputsParent>
-                            <InputStyle >
-                                <div className="label">Issued date <span className="reds">*</span></div>
-                                <h6>{SD.issued_date}</h6>
-                            </InputStyle> 
-                            <InputStyle >
-                                <div className="label">Expiration date <span className="reds">*</span></div>
-                                <h6>{SD.expiration_date}</h6>
-                            </InputStyle>
-                        </InputsParent> */}
                     </div>
 
                     <Container style={{padding:`0px 0px`, boxShadow:`none`}}>
@@ -97,10 +96,10 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
                         <div className="customTable">
                             <div className="headPar ">
                                 {/* <div className="title"></div> */}
-                                <div onClick={()=>setShowAdd(true)} className="addBtn addBtn2"><RiAddLine /><span>Нэмэх</span></div>
+                                <div onClick={_=>ModalHandle('add')} className="addBtn addBtn2"><RiAddLine /><span>Нэмэх</span></div>
                                 <div className={`additions ${selected.id?``:`opacity`}`}>
-                                    <div onClick={EditHandle} className="addBtn addBtn2"><RiEdit2Line /><span>Засах</span></div>
-                                    <div onClick={DeleteHandle} className="addBtn addBtn2"><VscError /><span>Устгах</span></div>
+                                    <div onClick={_=>ModalHandle('edit')} className="addBtn addBtn2"><RiEdit2Line /><span>Засах</span></div>
+                                    <div onClick={_=>ModalHandle('delete')} className="addBtn addBtn2"><VscError /><span>Устгах</span></div>
                                 </div>
                             </div>
 
@@ -114,9 +113,10 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
                                                 <th key={ind}>{el}</th>
                                             )
                                         })}
+                                        <th>{t('Total')}</th>
                                     </tr>
 
-                                    <tr className={`cusorItems ghost`}>
+                                    {exportData.length===0&&<tr className={`cusorItems ghost`}>
                                         <td>example</td>
                                         <td>0.00 ₮</td>
                                         <td className="right">0.00 ₮</td>
@@ -125,22 +125,44 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
                                         <td className="right">0.00 ₮</td>
                                         <td className="right">0.00 ₮</td>
                                         <td className="right">0.00 ₮</td>
-                                        <td className="right">0.00 ₮</td>
-                                    </tr>
-                                    {/* {indemnity.map((el,ind)=>{
+                                    </tr>}
+
+                                    {/* {fCountry.map((el,ind)=>{
                                         return(
-                                            <tr onClick={()=>selectRowHandle(el)} key={ind} className={`cusorItems ${selected.id===el.id?`Selected`:``}`}>
-                                                <td>{el.transaction_number}</td>
-                                                <td>{el.date}</td>
-                                                <td className="right">{NumberComma(el.rate)} ₮</td>
-                                                <td className="right">{NumberComma(el.amount)} $</td>
-                                                <td className="right">{NumberComma(el.amount_mnt)} ₮</td>
-                                            </tr>
+                                            <tr>hahahahah</tr>
                                         )
                                     })} */}
+                                
+                                    {fCountry.map((elem,index)=>{
+                                        return(
+                                            <>
+                                                <tr key={index}><td className="filterCountry">{elem.description_mon}</td></tr>
+                                                {exportData.map((el,ind)=>{
+                                                    if(elem.id===el.countryId){
+                                                        return(
+                                                            <tr onClick={()=>selectRowHandle(el)} key={ind} className={`cusorItems ${selected.id===el.id?`Selected`:``}`}>
+                                                                <td className="bold">{el.product_name}</td>
+                                                                <td className="right">{NumberComma(el.e2016)} ₮</td>
+                                                                <td className="right">{NumberComma(el.e2017)} ₮</td>
+                                                                <td className="right">{NumberComma(el.e2018)} ₮</td>
+                                                                <td className="right">{NumberComma(el.e2019)} ₮</td>
+                                                                <td className="right">{NumberComma(el.e2020)} ₮</td>
+                                                                <td className="right">{NumberComma(el.e2021)} ₮</td>
+                                                                <td className="right bold blue">
+                                                                    {NumberComma(el.e2016+el.e2017+el.e2018+el.e2019+el.e2020+el.e2021)} ₮
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    }
+                                                })}
+                                                
+                                            </>
+                                        )
+                                    })}
 
                                 </tbody>
                             </table>
+                            
                         </div>
                     </Container>
                 </div>
@@ -160,5 +182,5 @@ const InputsParent = styled.div`
 `
 
 const years =  [
-    "2016","2017","2018","2019","2020","2021","2022","2023"
+    "2016","2017","2018","2019","2020","2021"
 ]

@@ -16,7 +16,6 @@ const AddModal = ({ companyInfo, setModal, setCond, setAddCond }) => {
     const [ rate, setRate ] = useState('');
     const [ SumInsured, setSumInsured ] = useState('');
     const [ Premium, setPremium ] = useState('');
-
     const [ addCompany, setAddCompany ] = useState(false);
     const [ selected, setSelected ] = useState({});
 

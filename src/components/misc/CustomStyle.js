@@ -276,6 +276,15 @@ export const Container = styled.div`
                 //     padding:8px 0px;
                 // }
             }
+            .filterCountry{
+                text-align:left !important;
+                padding:5px 10px;
+                padding-top:28px;
+                font-weight:bold;
+                color:rgba(0, 138, 200, 0.7);
+                border-left:1px solid rgba(0,0,0,0.2);
+                border-right:1px solid rgba(0,0,0,0);
+            }
             .cusorItems{
                 transition:all 0.2s ease;
                 cursor:pointer;
@@ -310,6 +319,12 @@ export const Container = styled.div`
             }
             .right{
                 text-align:right;
+            }
+            .bold{
+                font-weight:bold;
+            }
+            .blue{
+                color:rgb(0, 0, 128);
             }
             .center{
                 text-align:center;
