@@ -13,6 +13,9 @@ import OwnershipAttach from './ownershipAttach'
 import PurchasePlanAttach from './purchasePlanAttach'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
+import useQuery from 'components/utilities/useQueryLocation'
+import ProtectionReport from '../contract_reports/protectionReport'
+import PerformanceReport from '../contract_reports/performanceReport'
 
 const contract = {
    1: {
@@ -385,6 +388,24 @@ const currentYear = dateNow.getFullYear()
 const currentMonth = dateNow.getMonth() + 1
 const currentDate = dateNow.getDate()
 
+const initialContract = {
+   year: null,
+   month: null,
+   day: null,
+   contract_number: null,
+   hot_aimag: null,
+   sum_duureg: null,
+   horoo_bag: null,
+   detailed_location: null,
+   state_reg: null,
+   register_no: null,
+   company_name: null,
+   funding: null,
+   funding_verbose: null,
+   location: null,
+   bh_zuvluh: null
+}
+
 const initialSignersEdp = [{
    name: 'Т.ЖАМБАЛЦЭРЭН',
    position: 'Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны Төрийн нарийн бичгийн дарга',
@@ -439,23 +460,9 @@ const descriptions = [
 export default function MakeContract() {
    const AlertCtx = useContext(AlertContext)
 
-   const [info, setInfo] = useState({
-      year: null,
-      month: null,
-      day: null,
-      contract_number: null,
-      hot_aimag: null,
-      sum_duureg: null,
-      horoo_bag: null,
-      detailed_location: null,
-      state_reg: null,
-      register_no: null,
-      company_name: null,
-      funding: null,
-      funding_verbose: null,
-      location: null,
-      bh_zuvluh: null,
-   })
+   const projectId = useQuery().get('projectId')
+
+   const [info, setInfo] = useState(initialContract)
 
    const handleInput = (key, value) => setInfo(prev => ({ ...prev, [key]: value }))
 
@@ -463,7 +470,10 @@ export default function MakeContract() {
    const [signersReceiving, setSignersReceiving] = useState(initialSignersReceiving)
 
    useEffect(() => {
-      axios.get(`contracts?projectId=${2}`, {
+      if (projectId === null || projectId === undefined) {
+         return
+      }
+      axios.get(`contracts?projectId=${projectId}`, {
          headers: { Authorization: getLoggedUserToken() }
       }).then(res => {
          const { signers, ...info } = res.data.data
@@ -486,7 +496,7 @@ export default function MakeContract() {
          }
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээг татаж чадсангүй.' })
       })
-   }, [])
+   }, [projectId])
 
    const componentRef = useRef()
 
@@ -496,7 +506,7 @@ export default function MakeContract() {
 
    const handleSave = () => {
       if (info.id === undefined) {
-         axios.post(`contracts?projectId=${2}`, {
+         axios.post(`contracts?projectId=${projectId}`, {
             contract: info,
             signers: [...signersEdp, ...signersReceiving]
          }, {
@@ -653,6 +663,8 @@ export default function MakeContract() {
 
          <ActivityPlanAttach contractId={info.id} />
          <FinalCostAttach contractId={info.id} />
+         <ProtectionReport contract={info} />
+         <PerformanceReport contract={info} />
          <OwnershipAttach contract={info} />
          <PurchasePlanAttach contractId={info.id} />
          <ContractAttach5 contractId={info.id} />

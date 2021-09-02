@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react'
-import MainWorkPerformance from 'components/workPerformance/MainWorkPerformance'
-import ProtectionReport, { TextareaCell } from './protectionReport'
 import AlertContext from 'components/utilities/alertContext'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { Fill, Signature } from '../make_contract/makeContract'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
+import { TextareaCell } from './protectionReport'
 
 const initialForm = [{
-   work_completed: null
+   work_completed: null,
+   approved: true
+}]
+
+const initialFormAlt = [{
+   work_completed: null,
+   approved: false
 }]
 
 const initialSigners = [{
@@ -55,10 +60,10 @@ const descriptions = {
    6: '/Санхүүгийн дэмжлэг хүртэгч байгууллагын удирдах албан тушаалтан/'
 }
 
-export default function PerformanceReport() {
+export default function PerformanceReport({ contract ={} }) {
    const AlertCtx = useContext(AlertContext)
 
-   const contractId = 3
+   const contractId = contract.id
 
    const [info, setInfo] = useState({
       contract_number: null,
@@ -78,12 +83,13 @@ export default function PerformanceReport() {
    })
 
    const handleAdd = () => setForm(prev => [...prev, {
-      work_completed: null
+      work_completed: null,
+      approved: true
    }])
 
    const handleRemove = (index) => setForm(prev => prev.filter((_, i) => i !== index))
 
-   const [formAlt, setFormAlt] = useState(initialForm)
+   const [formAlt, setFormAlt] = useState(initialFormAlt)
 
    const handleInputFormAlt = (key, value, index) => setFormAlt(prev => {
       const next = [...prev]
@@ -92,15 +98,17 @@ export default function PerformanceReport() {
    })
 
    const handleAddAlt = () => setFormAlt(prev => [...prev, {
-      work_completed: null
+      work_completed: null,
+      approved: false
    }])
 
    const handleRemoveAlt = (index) => setFormAlt(prev => prev.filter((_, i) => i !== index))
 
    const [signers, setSigners] = useState(initialSigners)
 
-   const handleInputSigner = (key, value, index) => setSigners(prev => {
+   const handleInputSigner = (key, value, order) => setSigners(prev => {
       const next = [...prev]
+      const index = next.findIndex(signer => signer.order === order)
       next[index][key] = value
       return next
    })
@@ -112,9 +120,14 @@ export default function PerformanceReport() {
       axios.get(`contracts/${contractId}/performance-report`, {
          headers: { Authorization: getLoggedUserToken() }
       }).then(res => {
-
+         const form = res.data.data.approved
+         const formAlt = res.data.data.disapproved
+         const signers = res.data.data.signers
+         form?.length && setForm(form)
+         formAlt?.length && setFormAlt(formAlt)
+         signers?.length && setSigners(signers)
       })
-   }, [])
+   }, [contractId])
 
    const handleSave = () => {
       if (contractId === null || contractId === undefined) {
@@ -123,11 +136,40 @@ export default function PerformanceReport() {
       }
       if (form[0].id === undefined) {
          axios.post(`contracts/${contractId}/performance-report`, {
-            rows: form,
+            approved: form,
+            disapproved: formAlt,
             signers: signers
+         }, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            const form = res.data.data.approved
+            const formAlt = res.data.data.disapproved
+            const signers = res.data.data.signers
+            form?.length && setForm(form)
+            formAlt?.length && setFormAlt(formAlt)
+            signers?.length && setSigners(signers)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Ажлын гүйцэтгэлийг хадгаллаа.' })
+         }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Ажлын гүйцэтгэлийг хадгалж чадсангүй.' })
          })
       } else {
-
+         axios.put(`contracts/${contractId}/performance-report`, {
+            approved: form,
+            disapproved: formAlt,
+            signers: signers
+         }, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            const form = res.data.data.approved
+            const formAlt = res.data.data.disapproved
+            const signers = res.data.data.signers
+            form?.length && setForm(form)
+            formAlt?.length && setFormAlt(formAlt)
+            signers?.length && setSigners(signers)
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Ажлын гүйцэтгэлийг шинэчиллээ.' })
+         }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Ажлын гүйцэтгэлийг шинэчилж чадсангүй.' })
+         })
       }
    }
 
@@ -135,7 +177,7 @@ export default function PerformanceReport() {
       <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
          <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
             <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
-               ii) ХАМГААЛЛЫН ҮЙЛ АЖИЛЛАГААНЫ ХЯНАЛТЫН ТАЙЛАН
+               iii) АЖЛЫН ГҮЙЦЭТГЭЛ ХҮЛЭЭН АВАХ МАЯГТ
             </div>
 
             <div className="tw-mt-6 tw-mx-2 sm:tw-mx-6">
@@ -249,13 +291,13 @@ export default function PerformanceReport() {
                                     <span className="tw-mr-2">
                                        Нэр:
                                     </span>
-                                    <Fill value={signer.name} name="name" index={i} setter={handleInputSigner} editable defaultLength={20} dotted />
+                                    <Fill value={signer.name} name="name" index={signer.order} setter={handleInputSigner} editable defaultLength={20} dotted />
                                  </div>
                                  <div className="tw-flex tw-items-center tw-mt-1.5">
                                     <span className="tw-mr-2">
                                        Албан тушаал:
                                     </span>
-                                    <Fill value={signer.position} name="position" index={i} setter={handleInputSigner} editable defaultLength={20} dotted />
+                                    <Fill value={signer.position} name="position" index={signer.order} setter={handleInputSigner} editable defaultLength={20} dotted />
                                  </div>
                                  <div className="">
                                     <Signature signer={signer} setter={setSigners} />
@@ -264,7 +306,7 @@ export default function PerformanceReport() {
                                     <span className="tw-mr-3">
                                        Огноо:
                                     </span>
-                                    <input className="focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none" type="date" value={signer.date ?? ''} onChange={e => handleInputSigner('date', e.target.value, i)} />
+                                    <input className="focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none" type="date" value={signer.date ?? ''} onChange={e => handleInputSigner('date', e.target.value, signer.order)} />
                                  </div>
                               </div>
                            )}
@@ -280,9 +322,6 @@ export default function PerformanceReport() {
                </button>
             </div>
          </div>
-
-         <MainWorkPerformance />
-         <ProtectionReport />
       </div>
    )
 }

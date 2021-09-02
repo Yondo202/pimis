@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { TextareaCell } from '../performance_report/protectionReport'
+import { TextareaCell } from '../contract_reports/protectionReport'
 import { Fill, Signature } from './makeContract'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'

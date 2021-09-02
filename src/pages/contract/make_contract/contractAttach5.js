@@ -26,7 +26,7 @@ export default function ContractAttach5() {
       <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
          <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
             <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
-               Хавсралт 5
+               Хавсралт 5.
             </div>
 
             <div className="tw-text-base tw-font-medium tw-text-center tw-mt-4 tw-mx-2 sm:tw-mx-8">
