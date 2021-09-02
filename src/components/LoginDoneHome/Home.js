@@ -6,14 +6,17 @@ import AccessToken from '../../context/accessToken'
 import ActiveComp from './ActiveComp'
 // import InitialComp from './initialComp'
 import useQuery from 'components/utilities/useQueryLocation'
+import { useHistory } from 'react-router-dom';
 // import Start from "components/LoginDoneHome/Start"
 
 function Home() {
     const userId = useQuery().get('userId')
     const projectId = useQuery().get('projectId')
-    const [ infData, setInfData] = useState(null);
-    const [ infCond, setInfCond ] = useState(false);
-    const [ homeC, setHomeC ] = useState(true);
+    const [infData, setInfData] = useState(null);
+    const [infCond, setInfCond] = useState(false);
+    const [homeC, setHomeC] = useState(true);
+    const [projects, setProjects] = useState([])
+    const [selectedIndex, setSelectedIndex] = useState(0)
 
     useEffect(() => {
         if (userId) {
@@ -23,31 +26,34 @@ function Home() {
         }
     }, []);
 
-    const Go = async () =>{
-       await axios.get(`pps-infos/registered-companies`, {
+    const Go = async () => {
+        await axios.get(`pps-infos/registered-companies`, {
             headers: { Authorization: AccessToken() },
             params: projectId ? { userId: userId, projectId: projectId } : { userId: userId },
         }).then((res) => {
             if (res.data.data[0]) { setInfData(res.data.data[0]) }
         })
     }
-    
-    const GoUser = async () =>{
-            let userID = localStorage.getItem("userId");
-           await axios.get(`pps-infos/registered-companies?userId=${userID}`, {
-                headers: { Authorization: AccessToken() }
-            }).then((res) => {
-                if (res.data.data[0]) { 
-                    setInfData(res.data.data[0])
-                    if(!res.data.data[0]?.criteria){
-                        setTimeout(() => {
-                            setHomeC(false);
-                        }, 2900)
-                        setTimeout(() => {
-                            setInfCond(true);
-                        }, 3000)
-                    }
-                }else{
+
+    const GoUser = async () => {
+        let userID = localStorage.getItem("userId");
+        await axios.get(`pps-infos/registered-companies?userId=${userID}`, {
+            headers: { Authorization: AccessToken() }
+        }).then((res) => {
+            if (res.data.data[0]) {
+                // setInfData(res.data.data[0])
+                const projects = res.data.data ?? []
+                const lastIndex = (projects ?? ['']).length - 1
+                setProjects(projects)
+                setSelectedIndex(lastIndex)
+                const projectId = projects[lastIndex].project.id
+                history.push({
+                    pathname: '/',
+                    search: `?projectId=${projectId}`
+                })
+                setInfData(projects[lastIndex])
+
+                if (!res.data.data[0]?.criteria) {
                     setTimeout(() => {
                         setHomeC(false);
                     }, 2900)
@@ -55,44 +61,85 @@ function Home() {
                         setInfCond(true);
                     }, 3000)
                 }
-            }).catch(err=>{
-                console.log(`err`, err.response);
-            })
+            } else {
+                setTimeout(() => {
+                    setHomeC(false);
+                }, 2900)
+                setTimeout(() => {
+                    setInfCond(true);
+                }, 3000)
+            }
+        }).catch(err => {
+            console.log(`err`, err.response);
+        })
+    }
+
+    const history = useHistory()
+
+    const handleSelect = (index) => {
+        setSelectedIndex(index)
+        const projectId = projects[index].project.id
+        history.push({
+            pathname: '/',
+            search: `?projectId=${projectId}`
+        })
+        setInfData(projects[index])
     }
 
     return (
         <HomeComponent style={userId ? { maxWidth: "2000px" } : { maxWidth: "1160px" }} className={`container`}>
             {
-            // !infCond ? 
-            infData?.criteria === 1
-                ? <h3 style={{ marginTop: 50 }}>
-                    Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
-                </h3>
-                : <div
+                // !infCond ? 
+                infData?.criteria === 1
+                    ? <h3 style={{ marginTop: 50 }}>
+                        Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
+                    </h3>
+                    : <div
                     //  className={homeC?"":`Hiding`}
                     >
-                    <div className="headerPar">
-                        {userId ? <div className="header row">
-                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын нэр:</span>{infData?.companyname}</span> </div></div>
-                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Төслийн нэр:</span>{infData?.project?.project_name}</span>  </div></div>
-                            <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын регистр:</span>{infData?.companyregister}</span> </div></div>
+                        <div className="headerPar">
+                            {userId
+                                ? <div className="header row">
+                                    <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын нэр:</span>{infData?.companyname}</span> </div></div>
+                                    <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Төслийн нэр:</span>{infData?.project?.project_name}</span>  </div></div>
+                                    <div className="col-md-4"><div className="headItems"><span className="text"><span className="titlee">Байгууллагын регистр:</span>{infData?.companyregister}</span> </div></div>
+                                </div>
+                                : <div className="header row">
+                                    <div className="col-md-4"><div className="headItems"><span className="text">1. Бүрдүүлэх материал</span> </div></div>
+                                    <div className="col-md-4"><div className="headItems"><span className="text">2. Үнэлгээ, шийдвэр гаргах явц</span> </div></div>
+                                    <div className="col-md-4"><div className="headItems"><span className="text">3. Гэрээ, гүйцэтгэл, санхүүжилт</span></div></div>
+                                </div>
+                            }
+                            {!userId &&
+                                <div className="otherHead row">
+                                    {/* tosol heregjuuleh negjiin unelgee */}
+                                    <div className="col-md-4">
+                                        <div className="headItems">
+                                            <span className="text">1-р шат</span><span className="text">2-р шат</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <div className="headItems">
+                                            <span className="text">Төсөл хэрэгжүүлэх нэгжийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span>
+                                        </div>
+                                    </div>
+                                    <div className="">
+                                        <select className="" value={selectedIndex} onChange={e => handleSelect(e.target.value)}>
+                                            {projects.map((project, i) =>
+                                                <option value={i}>
+                                                    {project.project.project_number} ({project.project.project_type_name})
+                                                </option>
+                                            )}
+                                        </select>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                            : (<div className="header row">
-                                <div className="col-md-4"><div className="headItems"><span className="text">1. Бүрдүүлэх материал</span> </div></div>
-                                <div className="col-md-4"><div className="headItems"><span className="text">2. Үнэлгээ, шийдвэр гаргах явц</span> </div></div>
-                                <div className="col-md-4"><div className="headItems"><span className="text">3. Гэрээ, гүйцэтгэл, санхүүжилт</span></div></div>
-                            </div>)}
-                        {!userId && <div className="otherHead row">
-                        {/* tosol heregjuuleh negjiin unelgee */}
-                            <div className="col-md-4"><div className="headItems" > <span className="text">1-р шат</span> <span className="text">2-р шат</span> </div></div>
-                            <div className="col-md-4"><div className="headItems"><span className="text">Төсөл хэрэгжүүлэх нэгжийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span></div></div>
-                        </div>}
+                        {/* {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />} */}
+                        <ActiveComp userId={userId} data={infData} />
                     </div>
-                    {/* {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />} */}
-                    <ActiveComp prew={userId} data={infData} />
-                </div>
                 // :<Start userId={userId} />
-                }
+            }
         </HomeComponent>
     )
 }
@@ -134,7 +181,6 @@ const HomeComponent = styled.div`
             align-items:center;
             justify-content:space-between;
             margin-top:30px;
-            
             .mains{
                 width:100%;
                 display:flex;
@@ -199,7 +245,6 @@ const HomeComponent = styled.div`
                         border:1px solid rgba(255,0,0,0.6);
                     }
                 }
-
                 .itemsNotWait{
                     border:1px solid rgba(0,255,0,0.6);
                         &::before{
@@ -453,7 +498,6 @@ const HomeComponent = styled.div`
             }
         }
     }
-    
     @media only screen and (max-width:786px){
         .itemsCol{
             .itemsPar{
@@ -470,11 +514,9 @@ const HomeComponent = styled.div`
             } 
         } 
     }
-
     .Hiding{
         transition:all 0.4s ease;
         transform:scale(0.8);
         opacity:0;
-    }
-    
+    }    
 `

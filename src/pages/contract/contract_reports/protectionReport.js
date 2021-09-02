@@ -66,8 +66,10 @@ const initialSigners = [{
    signature: null
 }]
 
-export default function ProtectionReport() {
+export default function ProtectionReport({ contract = {} }) {
    const AlertCtx = useContext(AlertContext)
+
+   const contractId = contract.id
 
    const [report, setReport] = useState(initialState)
 
@@ -78,8 +80,6 @@ export default function ProtectionReport() {
    })
 
    const [signers, setSigners] = useState(initialSigners)
-
-   const contractId = 3 // <-- projectId=2
 
    useEffect(() => {
       if (contractId === null || contractId === undefined) {

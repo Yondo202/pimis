@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { TextareaCell } from '../performance_report/protectionReport'
+import { TextareaCell } from '../contract_reports/protectionReport'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useContext } from 'react'

@@ -12,10 +12,9 @@ import { Route, Switch } from "react-router-dom";
 import UserHandle from 'components/admin/contents/users/UserHandle';
 import ProjectHandle from 'components/admin/contents/projects/ProjectHandle'
 import { UrgudulStore } from 'components/utilities/urgudulContext'
-import UrgudulNavigator from 'pages/urgudul/Navigator'
 import Home from 'components/LoginDoneHome/Home'
-import Request from 'containers/requestComp/mainRequestOld'
-import Check2 from 'components/check/CompCheck2'
+import MainRequest from 'containers/requestComp/mainRequestOld'
+import CompCheck2 from 'components/check/CompCheck2'
 import EvidenceAttachments1 from 'pages/attachments/evidenceAttachments1';
 import EvidenceAttachments2 from 'pages/attachments/evidenceAttachments2';
 import FirstEvaluation from 'pages/decision_making/5a/Page';
@@ -43,7 +42,7 @@ import MakeContract from 'pages/contract/make_contract/makeContract';
 import PerformanceAttachments from 'pages/attachments/performanceAttachements';
 import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
 import FinancialAttachments from 'pages/attachments/financialAttachments';
-import PerformanceReport from 'pages/contract/performance_report/performanceReport';
+import ContractReports from 'pages/contract/contract_reports/contractReports';
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -89,8 +88,8 @@ function Layout({ setLocale }) {
               <Route path="/project-status" component={ProjectStatusHandle} />
               <Route path="/currency-rates" component={CurrencyRateHandle} />
               <Route path="/progress" component={Home} />
-              <Route path="/request/:url" component={Request} />
-              <Route path="/check/:url" component={Check2} />
+              <Route path="/request/:url" component={MainRequest} />
+              <Route path="/check/:url" component={CompCheck2} />
               <Route path="/notify-page/:paramId" component={NotifyPage1} />
               {/* <Route path="/memberdecision" component={MemberDecision} /> */}
               <Route path="/maindecision/:id" component={MainDecision} />
@@ -106,7 +105,7 @@ function Layout({ setLocale }) {
               <Route path="/5b/:id" component={CompilationChecklist} />
               <Route path="/5c/:id" component={AnalystReport} />
               <Route path="/make-contract" component={MakeContract} />
-              <Route path="/performance-report" component={PerformanceReport} />
+              <Route path="/contract-reports" component={ContractReports} />
               <Route path="/trainings" component={TrainingNavigatorAdmin} />
               <Route path="/training-requests" component={TrainingRequestsList} />
               <Route path="/training-questionnaire" component={FeedbackQuestionnaireHandle} />
