@@ -9,7 +9,6 @@ import { NumberComma } from "components/misc/NumberComma"
 import { useTranslation } from 'react-i18next';
 import axios from 'axiosbase';
 
-
 const ExportData = ({setModal, SD, userId}) =>{
     const [t] = useTranslation();
     const [ cName, setName ] = useState('');
@@ -20,6 +19,7 @@ const ExportData = ({setModal, SD, userId}) =>{
             setModal(false);
         }, 370)
     }
+
     return(
         !userId?<CustomModal style={{paddingTop:`3rem`}}>
                 <div className={`contentParent ${cName}`} style={{width:"54rem"}}>
@@ -41,9 +41,7 @@ const ExportData = ({setModal, SD, userId}) =>{
                                 </InputStyle>
                             </InputsParent>
                         </div>}
-
-                        <ExportDataContent  SD={SD} />
-                        
+                        <ExportDataContent SD={SD} />
                     </div>
                 </div>
             </CustomModal>
@@ -138,20 +136,24 @@ const ExportDataContent = ({ SD, userId }) => {
                                 <th>{t('Total')}</th>
                             </tr>
                             
-                            <tr onClick={()=>selectRowHandle(other.total_sales?.id?other.total_sales:{id:'total_sales'}, "total_sales")} className={`cusorItems ${selected.id==='total_sales'?`Selected`:selected.id&&selected.id===other.total_sales?.id?`Selected`:``}`}>
-                                <td className="bold">Нийт борлуулалт</td>
-                                {years.map((e, i)=><td key={i} className="right">{other.total_sales?.id?NumberComma(other.total_sales[`e${e}`]):null}</td>)}
-                                <td className="right bold blue">
-                                        {other.total_sales?.id?NumberComma(other.total_sales.e2016+other.total_sales.e2017+other.total_sales.e2018+other.total_sales.e2019+other.total_sales.e2020+other.total_sales.e2021):null} ₮
-                                </td>
-                            </tr>
-                            <tr onClick={()=>selectRowHandle( other.emp_count?.id?other.emp_count:{id:'emp_count'}, "emp_count")} className={`cusorItems ${selected.id==='emp_count'?`Selected`:selected.id&&selected.id===other.emp_count?.id?`Selected`:``}`}>
-                                <td className="bold">Ажилчдын тоо</td>
-                                {years.map((e, i)=> <td key={i} className="right">{other.emp_count?.id?NumberComma(other.emp_count[`e${e}`]):null}</td> )}
-                                <td className="right bold blue">
-                                    {other.emp_count?.id?NumberComma(other.emp_count.e2016+other.emp_count.e2017+other.emp_count.e2018+other.emp_count.e2019+other.emp_count.e2020+other.emp_count.e2021):null} ₮
-                                </td>
-                            </tr>
+                            {userId?
+                            <>
+                                <tr onClick={()=>selectRowHandle(other.total_sales?.id?other.total_sales:{id:'total_sales'}, "total_sales")} className={`cusorItems ${selected.id==='total_sales'?`Selected`:selected.id&&selected.id===other.total_sales?.id?`Selected`:``}`}>
+                                    <td className="bold">Нийт борлуулалт</td>
+                                    {years.map((e, i)=><td key={i} className="right">{other.total_sales?.id?NumberComma(other.total_sales[`e${e}`]):null}</td>)}
+                                    <td className="right bold blue">
+                                            {other.total_sales?.id?NumberComma(other.total_sales.e2016+other.total_sales.e2017+other.total_sales.e2018+other.total_sales.e2019+other.total_sales.e2020+other.total_sales.e2021):null} ₮
+                                    </td>
+                                </tr>
+                                <tr onClick={()=>selectRowHandle( other.emp_count?.id?other.emp_count:{id:'emp_count'}, "emp_count")} className={`cusorItems ${selected.id==='emp_count'?`Selected`:selected.id&&selected.id===other.emp_count?.id?`Selected`:``}`}>
+                                    <td className="bold">Ажилчдын тоо</td>
+                                    {years.map((e, i)=> <td key={i} className="center">{other.emp_count?.id?NumberComma(other.emp_count[`e${e}`]):null}</td> )}
+                                    <td className="center bold blue">
+                                        {other.emp_count?.id?NumberComma(other.emp_count.e2016+other.emp_count.e2017+other.emp_count.e2018+other.emp_count.e2019+other.emp_count.e2020+other.emp_count.e2021):null}
+                                    </td>
+                                </tr>
+                            </>
+                            :null}
 
                             {exportData.length===0&&<tr className={`cusorItems ghost`}>
                                 <td>example</td>
@@ -190,7 +192,6 @@ const ExportDataContent = ({ SD, userId }) => {
                             })}
                         </tbody>
                     </table>
-                    
                 </div>
             </Container>
     )
@@ -202,6 +203,5 @@ const InputsParent = styled.div`
 `
 
 const years =  [
-    "2016","2017","2018","2019","2020","2021"
+    "2016","2017","2018","2019","2020","2021", "2022"
 ]
-

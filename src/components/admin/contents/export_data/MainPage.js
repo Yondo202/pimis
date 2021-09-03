@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CustomModal, Container, LangSwitch } from "components/misc/CustomStyle";
-import styled from "styled-components"
+import { Container, LangSwitch } from "components/misc/CustomStyle";
 import AccessToken from "context/accessToken"
 import { NumberComma } from "components/misc/NumberComma"
 import { useTranslation } from 'react-i18next';
@@ -9,7 +8,6 @@ import axios from 'axiosbase';
 
 const MainPage = () => {
     const [t, i18n] = useTranslation();
-    const [ exCond, setExCond ] = useState(false);
     // const [ years, setYears ] = useState([]);
     const [ country, setCountry ] = useState([]);
     const [ exportData, setExportData ] = useState([]);
@@ -34,7 +32,7 @@ const MainPage = () => {
             })
             setExportData(data?.data.data);
         }()
-    },[exCond]);
+    },[]);
 
     const handleChange = event => {
         i18n.changeLanguage(event.target.value);
@@ -42,7 +40,6 @@ const MainPage = () => {
 
     return (
         <Container style={{padding:`12px 12px`, boxShadow:`none`}}>
-            {/* <div className="smTitles">Export Data</div> */}
             <div className="TitlePar">
                 <div className="Title">{t('Export Data')}</div>
                 <LangSwitch>
@@ -54,14 +51,6 @@ const MainPage = () => {
             </div>
 
             <div className="customTable T4">
-                {/* <div className="headPar ">
-                    <div onClick={_=>ModalHandle('add')} className="addBtn addBtn2"><RiAddLine /><span>Нэмэх</span></div>
-                    <div className={`additions ${selected.id?``:`opacity`}`}>
-                        <div onClick={_=>ModalHandle('edit')} className="addBtn addBtn2"><RiEdit2Line /><span>Засах</span></div>
-                        <div onClick={_=>ModalHandle('delete')} className="addBtn addBtn2"><VscError /><span>Устгах</span></div>
-                    </div>
-                </div> */}
-
                 <table>
                     <tbody>
 
@@ -112,9 +101,9 @@ const MainPage = () => {
                                 </>
                             )
                         })}
+                        
                     </tbody>
                 </table>
-                
             </div>
         </Container>
     )

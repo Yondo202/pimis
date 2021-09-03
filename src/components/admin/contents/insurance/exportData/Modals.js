@@ -7,7 +7,7 @@ import AccessToken from "context/accessToken";
 import UserContext from "context/UserContext";
 import { VscSave } from "react-icons/vsc";
 import Select from 'react-select';
-import { TiDeleteOutline } from "react-icons/ti"
+import { TiDeleteOutline } from "react-icons/ti";
 
 const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, setSelectedEx, type }) => {
     const { alertText } = useContext(UserContext);
@@ -174,7 +174,6 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                         </div>
                     </div>
                 </form>
-                
             </div>
         </CustomModal>
     )
