@@ -21,6 +21,7 @@ import UrgudulPage7Cluster from './pages/page7_cluster'
 import UrgudulPage7Company from './pages/page7_company'
 import UrgudulPage8 from './pages/page8'
 import UrgudulPreview from './preview/Preview'
+import UrgudulPage5New from './pages/page5_new'
 
 export default function UrgudulNavigator() {
     const history = useHistory()
@@ -164,6 +165,7 @@ export default function UrgudulNavigator() {
 
                         <Route path="/urgudul/5">
                             <UrgudulPage5 />
+                            <UrgudulPage5New />
                         </Route>
 
                         <Route path="/urgudul/6">

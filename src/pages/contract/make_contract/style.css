@@ -1,0 +1,16 @@
+@media print {
+   @page {
+      size: portrait A4;
+      width: 27cm;
+      margin: 1cm 0.7cm;
+   }
+   .print-no-break {
+      break-inside: avoid;
+   }
+   .print-invisbile {
+      visibility: hidden;
+   }
+   .print-break-after {
+      page-break-after: always;
+   }
+}

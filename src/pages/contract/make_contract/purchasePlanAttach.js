@@ -112,67 +112,65 @@ export default function PurchasePlanAttach({ contractId }) {
    }
 
    return (
-      <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
-         <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
-               Хавсралт 4. Худалдан авах ажиллагааны төлөвлөгөө
-            </div>
+      <div className="tw-text-sm tw-text-gray-700 tw-py-6 print-break-after">
+         <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
+            Хавсралт 4. Худалдан авах ажиллагааны төлөвлөгөө
+         </div>
 
-            <div className="tw-mt-10 tw-mx-2 sm:tw-mx-4 tw-relative">
-               <table>
-                  <thead>
-                     <tr>
-                        <th className={`${classCell} tw-text-center`}>№</th>
-                        <th className={`${classCell} tw-text-center`}>Худалдан авах бараа, ажил, үйлчилгээний нэр, төрөл, тоо хэмжээ, хүчин чадал</th>
-                        <th className={`${classCell} tw-text-center`}>Төсөвт өртөг (төгрөг)</th>
-                        <th className={`${classCell} tw-text-center`}>Худалдан авах ажиллагаанд мөрдөх журам</th>
-                        <th className={`${classCell} tw-text-center`}>Худалдан авах ажиллагаанд мөрдөх хугацаа</th>
-                        <th className={`${classCell} tw-text-center`}>Тайлбар, тодруулга</th>
-                        <th></th>
+         <div className="tw-mt-10 tw-mx-2 sm:tw-mx-4 tw-relative">
+            <table>
+               <thead>
+                  <tr>
+                     <th className={`${classCell} tw-text-center`}>№</th>
+                     <th className={`${classCell} tw-text-center`}>Худалдан авах бараа, ажил, үйлчилгээний нэр, төрөл, тоо хэмжээ, хүчин чадал</th>
+                     <th className={`${classCell} tw-text-center`}>Төсөвт өртөг (төгрөг)</th>
+                     <th className={`${classCell} tw-text-center`}>Худалдан авах ажиллагаанд мөрдөх журам</th>
+                     <th className={`${classCell} tw-text-center`}>Худалдан авах ажиллагаанд мөрдөх хугацаа</th>
+                     <th className={`${classCell} tw-text-center`}>Тайлбар, тодруулга</th>
+                     <th></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {plan.map((row, i) =>
+                     <tr key={i}>
+                        <td className={classCell}>{i + 1}</td>
+                        <TextareaCell value={row.purchase} name="purchase" index={i} setter={handleInput} />
+                        <TextareaCell value={row.cost} name="cost" index={i} setter={handleInput} />
+                        <TextareaCell value={row.procedure} name="procedure" index={i} setter={handleInput} />
+                        <td className={classCell}>
+                           <DateField label="Үнэлгээний хороо байгуулах огноо" value={row.evaluation_date} name="evaluation_date" index={i} setter={handleInput} />
+                           <DateField label="Тендер зарлах огноо" value={row.tender_date} name="tender_date" index={i} setter={handleInput} />
+                           <DateField label="Гэрээ байгуулах огноо" value={row.contract_date} name="contract_date" index={i} setter={handleInput} />
+                           <DateField label="Гэрээ дуусгавар болох, дүгнэх" value={row.end_date} name="end_date" index={i} setter={handleInput} />
+                        </td>
+                        <TextareaCell value={row.comment} name="comment" index={i} setter={handleInput} />
+                        <td className="">
+                           <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
+                        </td>
                      </tr>
-                  </thead>
-                  <tbody>
-                     {plan.map((row, i) =>
-                        <tr key={i}>
-                           <td className={classCell}>{i + 1}</td>
-                           <TextareaCell value={row.purchase} name="purchase" index={i} setter={handleInput} />
-                           <TextareaCell value={row.cost} name="cost" index={i} setter={handleInput} />
-                           <TextareaCell value={row.procedure} name="procedure" index={i} setter={handleInput} />
-                           <td className={classCell}>
-                              <DateField label="Үнэлгээний хороо байгуулах огноо" value={row.evaluation_date} name="evaluation_date" index={i} setter={handleInput} />
-                              <DateField label="Тендер зарлах огноо" value={row.tender_date} name="tender_date" index={i} setter={handleInput} />
-                              <DateField label="Гэрээ байгуулах огноо" value={row.contract_date} name="contract_date" index={i} setter={handleInput} />
-                              <DateField label="Гэрээ дуусгавар болох, дүгнэх" value={row.end_date} name="end_date" index={i} setter={handleInput} />
-                           </td>
-                           <TextareaCell value={row.comment} name="comment" index={i} setter={handleInput} />
-                           <td className="">
-                              <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
-                           </td>
-                        </tr>
-                     )}
-                  </tbody>
-               </table>
-               <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
-            </div>
+                  )}
+               </tbody>
+            </table>
+            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
+         </div>
 
-            <div className="tw-mt-10 tw-pb-8 tw-mx-4 sm:tw-mx-12">
-               <div className="">
-                  <span className="tw-mr-2">
-                     Баталсан:
-                  </span>
-                  <Fill value={signers[0].name} name="name" index={0} setter={handleInputSigner} editable defaultLength={20} dotted />
-               </div>
-               <p className="tw-mt-2">
-                  Санхүүгийн дэмжлэг хүртэгч хуулийн этгээдийн захирал
-               </p>
-               <Signature signer={signers[0]} setter={setSigners} />
+         <div className="tw-mt-10 tw-pb-8 tw-mx-4 sm:tw-mx-12 print-no-break">
+            <div className="">
+               <span className="tw-mr-2">
+                  Баталсан:
+               </span>
+               <Fill value={signers[0].name} name="name" index={0} setter={handleInputSigner} editable defaultLength={20} dotted />
             </div>
+            <p className="tw-mt-2">
+               Санхүүгийн дэмжлэг хүртэгч хуулийн этгээдийн захирал
+            </p>
+            <Signature signer={signers[0]} setter={setSigners} />
+         </div>
 
-            <div className="tw-flex tw-justify-center">
-               <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSave}>
-                  Хадгалах
-               </button>
-            </div>
+         <div className="tw-flex tw-justify-center">
+            <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors print-invisible" onClick={handleSave}>
+               Хадгалах
+            </button>
          </div>
       </div>
    )
@@ -183,7 +181,7 @@ const classInputDate = 'focus:tw-outline-none tw-w-32 tw-ml-1 tw-border-b tw-bor
 
 function DateField({ label, value, name, index, setter, classAppend }) {
    return (
-      <div className={`tw-leading-tight tw-text-xs tw-py-0.5 tw-font-medium ${classAppend}`}>
+      <div className={`tw-leading-tight tw-text-xs tw-py-0.5 ${classAppend}`}>
          <div className="">
             {label}:
          </div>

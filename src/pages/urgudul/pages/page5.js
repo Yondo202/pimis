@@ -7,7 +7,7 @@ import UrgudulContext from 'components/utilities/urgudulContext'
 import AlertContext from 'components/utilities/alertContext'
 import { useHistory } from 'react-router-dom'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
-import TreeSelectCompact from 'components/urgudul_components/treeSelectCompact'
+// import TreeSelectCompact from 'components/urgudul_components/treeSelectCompact'
 import { SaveButton, UrgudulHeader } from './page1'
 
 const year = new Date().getFullYear()

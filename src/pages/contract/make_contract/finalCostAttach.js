@@ -152,173 +152,171 @@ export default function FinalCostAttach({ contractId }) {
    }
 
    return (
-      <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
-         <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
-               (i)   Хавсралт 2. Тайлан
-               <div className="">
-                  Явцын/ Эцсийн зардлын тайлан
-               </div>
+      <div className="tw-text-sm tw-text-gray-700 tw-py-6 print-break-after">
+         <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
+            (i)   Хавсралт 2. Тайлан
+            <div className="">
+               Явцын/ Эцсийн зардлын тайлан
             </div>
+         </div>
 
-            <div className="tw-mt-6 tw-mx-2 sm:tw-mx-6">
-               <div className="">
-                  Санхүүгийн дэмжлэг хүртэгчийн нэр: <Fill value={info.name} name="name" setter={handleInput} editable defaultLength={16} dotted />
-               </div>
-               <div className="tw-mt-1">
-                  Гэрээний дугаар: <Fill value={info.contract_number} name="contract_number" setter={handleInput} editable defaultLength={8} dotted />
-               </div>
-               <div className="tw-mt-1">
-                  Санхүүгийн дэмжлэгийн хэмжээ: <Fill value={info.finance_amount} name="finance_amount" setter={handleInput} editable defaultLength={12} dotted />₮
-               </div>
-               <div className="tw-mt-1">
-                  Гэрээний хугацаа: <Fill value={info.contract_duration} name="contract_duration" setter={handleInput} editable defaultLength={12} dotted />
-               </div>
-               <div className="tw-mt-1">
-                  Явцын төлбөрийн хуваарь: <Fill value={info.progress_pay} name="progress_pay" setter={handleInput} editable defaultLength={12} dotted />
-               </div>
-               <div className="tw-mt-1">
-                  Сүүлийн төлбөрийн хуваарь: <Fill value={info.final_pay} name="final_pay" setter={handleInput} editable defaultLength={12} dotted />
-               </div>
+         <div className="tw-mt-6 tw-mx-2 sm:tw-mx-6">
+            <div className="">
+               Санхүүгийн дэмжлэг хүртэгчийн нэр: <Fill value={info.name} name="name" setter={handleInput} editable defaultLength={16} dotted />
             </div>
-
-            <div className="tw-mt-6 tw-mx-2 sm:tw-mx-4 tw-relative">
-               <table>
-                  <thead>
-                     <tr>
-                        <th className={`${classCell} tw-text-center`}>№</th>
-                        <th className={`${classCell} tw-text-center`}>
-                           Үйл ажиллагаа <span className="tw-font-light">(зөвшөөрөгдөх зардал)</span>
-                        </th>
-                        <th className={`${classCell} tw-text-center`}>
-                           Үйл ажиллагааны нийт төсөвт өртөг <span className="tw-font-light">/НӨАТ ороогүй/</span>
-                        </th>
-                        <th className={`${classCell} tw-text-center`}>
-                           Явцын төлбөрийн дүн <span className="tw-font-light">/НӨАТ ороогүй/</span>
-                        </th>
-                        <th className={`${classCell} tw-text-center`}>
-                           Эцсийн төлбөрийн эцсийн дүн <span className="tw-font-light">/НӨАТ ороогүй/</span>
-                        </th>
-                        <th className={`${classCell} tw-text-center`}>Холбогдох баримтууд*</th>
-                        <th className={`${classCell} tw-text-center`}>Санхүүгийн дэмжлэг олгогчийн хянасан дүн</th>
-                        <th className={`${classCell} tw-text-center`}>
-                           Санхүүгийн дэмжлэгийг бууруулсан тохиолдолд шалтгаан <span className="tw-font-light">/үндэслэл/</span>
-                        </th>
-                        <th></th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {report.map((row, i) =>
-                        <tr key={i}>
-                           <td className={classCell}>
-                              {i + 1}
-                           </td>
-                           <TextareaCell value={row.activity} name="activity" index={i} setter={handleInputReport} />
-                           <TextareaCell value={row.budget} name="budget" index={i} setter={handleInputReport} />
-                           <TextareaCell value={row.payment} name="payment" index={i} setter={handleInputReport} />
-                           <TextareaCell value={row.final_cost} name="final_cost" index={i} setter={handleInputReport} />
-                           <td className={classCell}>
-                              file upload
-                           </td>
-                           <TextareaCell value={row.reviewed_amount} name="reviewed_amount" index={i} setter={handleInputReport} />
-                           <TextareaCell value={row.reduction_reason} name="reduction_reason" index={i} setter={handleInputReport} />
-                           <td className="">
-                              <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
-                           </td>
-                        </tr>
-                     )}
-                     <tr>
-                        <td className={classCell}></td>
-                        <td className={classCell}>Нийт зардлын дүн</td>
-                        <td className={classCell}>
-                           <NetAmount sum={netBudget} />
-                        </td>
-                        <td className={classCell}>
-                           <NetAmount sum={netPayment} />
-                        </td>
-                        <td className={classCell}>
-                           <NetAmount sum={netFinalCost} />
-                        </td>
-                        <td className={classCell}></td>
-                        <td className={classCell}>
-                           <NetAmount sum={netReviewedAmount} />
-                        </td>
-                        <td className={classCell}></td>
-                     </tr>
-                     <tr>
-                        <td className={classCell}></td>
-                        <td className={classCell}>Үүнээс: Санхүүгийн дэмжлэгийн дүн</td>
-                        <td className={classCell}>
-                           <NetAmount sum={netBudget / 2} />
-                        </td>
-                        <td className={classCell}>
-                           <NetAmount sum={netPayment / 2} />
-                        </td>
-                        <td className={classCell}>
-                           <NetAmount sum={netFinalCost / 2} />
-                        </td>
-                        <td className={classCell}></td>
-                        <td className={classCell}>
-                           <NetAmount sum={netReviewedAmount / 2} />
-                        </td>
-                        <td className={classCell}></td>
-                     </tr>
-                  </tbody>
-               </table>
-               <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
+            <div className="tw-mt-1">
+               Гэрээний дугаар: <Fill value={info.contract_number} name="contract_number" setter={handleInput} editable defaultLength={8} dotted />
             </div>
+            <div className="tw-mt-1">
+               Санхүүгийн дэмжлэгийн хэмжээ: <Fill value={info.finance_amount} name="finance_amount" setter={handleInput} editable defaultLength={12} dotted />₮
+            </div>
+            <div className="tw-mt-1">
+               Гэрээний хугацаа: <Fill value={info.contract_duration} name="contract_duration" setter={handleInput} editable defaultLength={12} dotted />
+            </div>
+            <div className="tw-mt-1">
+               Явцын төлбөрийн хуваарь: <Fill value={info.progress_pay} name="progress_pay" setter={handleInput} editable defaultLength={12} dotted />
+            </div>
+            <div className="tw-mt-1">
+               Сүүлийн төлбөрийн хуваарь: <Fill value={info.final_pay} name="final_pay" setter={handleInput} editable defaultLength={12} dotted />
+            </div>
+         </div>
 
-            <div className="tw-mt-10 tw-mx-4 sm:tw-mx-12">
-               {[{
-                  minOrder: 1,
-                  maxOrder: 1,
-                  category: 'Баталсан'
-               }, {
-                  minOrder: 2,
-                  maxOrder: 5,
-                  category: 'Хянасан'
-               }, {
-                  minOrder: 6,
-                  maxOrder: 7,
-                  category: 'Бэлтгэсэн'
-               }].map(category =>
-                  <div className="tw-flex tw-flex-wrap lg:tw-flex-nowrap" key={category.category}>
-                     <div className="tw-mt-2 tw-w-44 tw-flex-shrink-0 tw-font-medium">
-                        {category.category}:
-                     </div>
-                     <div className="tw-w-full tw-pl-4 lg:tw-pl-0">
-                        {signers.filter(signer => signer.order >= category.minOrder && signer.order <= category.maxOrder).map(signer =>
-                           <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 tw-gap-x-4" key={signer.order}>
-                              <Signature signer={signer} setter={setSigners} />
-                              <div className="tw-mt-2">
-                                 {signer.position}
-                              </div>
-                           </div>
-                        )}
-                     </div>
+         <div className="tw-mt-6 tw-mx-2 sm:tw-mx-4 tw-relative">
+            <table>
+               <thead>
+                  <tr>
+                     <th className={`${classCell} tw-text-center`}>№</th>
+                     <th className={`${classCell} tw-text-center`}>
+                        Үйл ажиллагаа <span className="tw-font-light">(зөвшөөрөгдөх зардал)</span>
+                     </th>
+                     <th className={`${classCell} tw-text-center`}>
+                        Үйл ажиллагааны нийт төсөвт өртөг <span className="tw-font-light">/НӨАТ ороогүй/</span>
+                     </th>
+                     <th className={`${classCell} tw-text-center`}>
+                        Явцын төлбөрийн дүн <span className="tw-font-light">/НӨАТ ороогүй/</span>
+                     </th>
+                     <th className={`${classCell} tw-text-center`}>
+                        Эцсийн төлбөрийн эцсийн дүн <span className="tw-font-light">/НӨАТ ороогүй/</span>
+                     </th>
+                     <th className={`${classCell} tw-text-center`}>Холбогдох баримтууд*</th>
+                     <th className={`${classCell} tw-text-center`}>Санхүүгийн дэмжлэг олгогчийн хянасан дүн</th>
+                     <th className={`${classCell} tw-text-center`}>
+                        Санхүүгийн дэмжлэгийг бууруулсан тохиолдолд шалтгаан <span className="tw-font-light">/үндэслэл/</span>
+                     </th>
+                     <th></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {report.map((row, i) =>
+                     <tr key={i}>
+                        <td className={classCell}>
+                           {i + 1}
+                        </td>
+                        <TextareaCell value={row.activity} name="activity" index={i} setter={handleInputReport} />
+                        <TextareaCell value={row.budget} name="budget" index={i} setter={handleInputReport} />
+                        <TextareaCell value={row.payment} name="payment" index={i} setter={handleInputReport} />
+                        <TextareaCell value={row.final_cost} name="final_cost" index={i} setter={handleInputReport} />
+                        <td className={classCell}>
+                           file upload
+                        </td>
+                        <TextareaCell value={row.reviewed_amount} name="reviewed_amount" index={i} setter={handleInputReport} />
+                        <TextareaCell value={row.reduction_reason} name="reduction_reason" index={i} setter={handleInputReport} />
+                        <td className="">
+                           <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
+                        </td>
+                     </tr>
+                  )}
+                  <tr>
+                     <td className={classCell}></td>
+                     <td className={classCell}>Нийт зардлын дүн</td>
+                     <td className={classCell}>
+                        <NetAmount sum={netBudget} />
+                     </td>
+                     <td className={classCell}>
+                        <NetAmount sum={netPayment} />
+                     </td>
+                     <td className={classCell}>
+                        <NetAmount sum={netFinalCost} />
+                     </td>
+                     <td className={classCell}></td>
+                     <td className={classCell}>
+                        <NetAmount sum={netReviewedAmount} />
+                     </td>
+                     <td className={classCell}></td>
+                  </tr>
+                  <tr>
+                     <td className={classCell}></td>
+                     <td className={classCell}>Үүнээс: Санхүүгийн дэмжлэгийн дүн</td>
+                     <td className={classCell}>
+                        <NetAmount sum={netBudget / 2} />
+                     </td>
+                     <td className={classCell}>
+                        <NetAmount sum={netPayment / 2} />
+                     </td>
+                     <td className={classCell}>
+                        <NetAmount sum={netFinalCost / 2} />
+                     </td>
+                     <td className={classCell}></td>
+                     <td className={classCell}>
+                        <NetAmount sum={netReviewedAmount / 2} />
+                     </td>
+                     <td className={classCell}></td>
+                  </tr>
+               </tbody>
+            </table>
+            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
+         </div>
+
+         <div className="tw-mt-10 tw-mx-4 sm:tw-mx-12">
+            {[{
+               minOrder: 1,
+               maxOrder: 1,
+               category: 'Баталсан'
+            }, {
+               minOrder: 2,
+               maxOrder: 5,
+               category: 'Хянасан'
+            }, {
+               minOrder: 6,
+               maxOrder: 7,
+               category: 'Бэлтгэсэн'
+            }].map(category =>
+               <div className="tw-flex tw-flex-wrap lg:tw-flex-nowrap" key={category.category}>
+                  <div className="tw-mt-2 tw-w-44 tw-flex-shrink-0 tw-font-medium">
+                     {category.category}:
                   </div>
-               )}
-            </div>
+                  <div className="tw-w-full tw-pl-4 lg:tw-pl-0">
+                     {signers.filter(signer => signer.order >= category.minOrder && signer.order <= category.maxOrder).map(signer =>
+                        <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 tw-gap-x-4 print-no-break" key={signer.order}>
+                           <Signature signer={signer} setter={setSigners} />
+                           <div className="tw-mt-2">
+                              {signer.position}
+                           </div>
+                        </div>
+                     )}
+                  </div>
+               </div>
+            )}
+         </div>
 
-            <div className="tw-mt-10 tw-pb-8 tw-mx-2 sm:tw-mx-8">
-               <p className="" style={{ textIndent: 16 }}>
-                  Холбогдох баримт* Төлбөрийн баримт, бүртгэлийн хураамж төлсөн баримт, түрээс төлсөн тохиолдолд төлбөрийн баримт, үзэсгэлэнд оролцогчдын нисэх тийз (хамгийн бага тарифаар), паспортын хуулбар, зочид буудлын зардал (Сангийн сайдын тушаалаар батлагдсан  төрийн албан хаагчийн зардлаас хэтрэхгүй), аудит хийлгэсэн бол аудитын тайлан, зөвлөх үйлчилгээ авсан бол зөвлөх үйлчилгээний тайлан, лабораторийн шинжилгээ хийлгэсэн бол үр дүн, судалгаа хийлгэсэн бол судалгааны тайлан, гэрчилгээний хуулбар, шаардлагатай бусад баримт бичиг.
-               </p>
+         <div className="tw-mt-10 tw-pb-8 tw-mx-2 sm:tw-mx-8">
+            <p className="" style={{ textIndent: 16 }}>
+               Холбогдох баримт* Төлбөрийн баримт, бүртгэлийн хураамж төлсөн баримт, түрээс төлсөн тохиолдолд төлбөрийн баримт, үзэсгэлэнд оролцогчдын нисэх тийз (хамгийн бага тарифаар), паспортын хуулбар, зочид буудлын зардал (Сангийн сайдын тушаалаар батлагдсан  төрийн албан хаагчийн зардлаас хэтрэхгүй), аудит хийлгэсэн бол аудитын тайлан, зөвлөх үйлчилгээ авсан бол зөвлөх үйлчилгээний тайлан, лабораторийн шинжилгээ хийлгэсэн бол үр дүн, судалгаа хийлгэсэн бол судалгааны тайлан, гэрчилгээний хуулбар, шаардлагатай бусад баримт бичиг.
+            </p>
 
-               <p className="tw-mt-2" style={{ textIndent: 16 }}>
-                  Хэрэв туслан гүйцэтгэгч нь гадаадын компани, хувь хүн бол: холбогдох татварын албанд татвар шилжүүлсэн баримт, компанийн гэрчилгээ, иргэний үнэмлэхийн хуулбар, тухайн улстай байгуулсан давхар татварын гэрээний хуулбар.
-               </p>
+            <p className="tw-mt-2" style={{ textIndent: 16 }}>
+               Хэрэв туслан гүйцэтгэгч нь гадаадын компани, хувь хүн бол: холбогдох татварын албанд татвар шилжүүлсэн баримт, компанийн гэрчилгээ, иргэний үнэмлэхийн хуулбар, тухайн улстай байгуулсан давхар татварын гэрээний хуулбар.
+            </p>
 
-               <p className="tw-mt-2" style={{ textIndent: 16 }}>
-                  Гадаад валютаар хийгдсэн төлбөрүүдийг гүйлгээ хийгдсэн өдрийн өмнөх өдрийн Монголбанкны албан ханшаар төгрөгт хөрвүүлэн тооцож ирүүлэх ба санхүүгийн дэмжлэг нь уг дүнгийн 50 хувь байх бөгөөд Гэрээний Хавсралт 1-д заасан дүнгээс ихгүй байна.
-               </p>
-            </div>
+            <p className="tw-mt-2" style={{ textIndent: 16 }}>
+               Гадаад валютаар хийгдсэн төлбөрүүдийг гүйлгээ хийгдсэн өдрийн өмнөх өдрийн Монголбанкны албан ханшаар төгрөгт хөрвүүлэн тооцож ирүүлэх ба санхүүгийн дэмжлэг нь уг дүнгийн 50 хувь байх бөгөөд Гэрээний Хавсралт 1-д заасан дүнгээс ихгүй байна.
+            </p>
+         </div>
 
-            <div className="tw-flex tw-justify-center">
-               <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSave}>
-                  Хадгалах
-               </button>
-            </div>
+         <div className="tw-flex tw-justify-center">
+            <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors print-invisbile" onClick={handleSave}>
+               Хадгалах
+            </button>
          </div>
       </div>
    )

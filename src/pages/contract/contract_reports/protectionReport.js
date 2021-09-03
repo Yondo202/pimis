@@ -134,76 +134,74 @@ export default function ProtectionReport({ contract = {} }) {
    }
 
    return (
-      <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
-         <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
-               ii) ХАМГААЛЛЫН ҮЙЛ АЖИЛЛАГААНЫ ХЯНАЛТЫН ТАЙЛАН
-            </div>
+      <div className="tw-text-sm tw-text-gray-700 tw-py-6 print-break-after">
+         <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
+            ii) ХАМГААЛЛЫН ҮЙЛ АЖИЛЛАГААНЫ ХЯНАЛТЫН ТАЙЛАН
+         </div>
 
-            <div className="tw-font-medium tw-text-center tw-mt-4 tw-mx-4 sm:tw-mx-12">
-               Санхүүгийн дэмжлэг хүртэгчийн байгаль орчин, нийгмийн удирдлага, хяналт шинжилгээний төлөвлөгөөний хэрэгжилт
-            </div>
+         <div className="tw-font-medium tw-text-center tw-mt-4 tw-mx-4 sm:tw-mx-12">
+            Санхүүгийн дэмжлэг хүртэгчийн байгаль орчин, нийгмийн удирдлага, хяналт шинжилгээний төлөвлөгөөний хэрэгжилт
+         </div>
 
-            <div className="tw-mt-10 tw-mx-2 sm:tw-mx-4">
-               <table className="">
-                  <thead>
-                     <tr>
-                        <th className={`${classCell} tw-text-center`}>№</th>
-                        <th className={`${classCell} tw-text-center`}>Агуулга</th>
-                        <th className={`${classCell} tw-text-center`}>Хэрэгжилтийн байдал/Төлөв</th>
-                        <th className={`${classCell} tw-text-center`}>Тайлбар</th>
+         <div className="tw-mt-10 tw-mx-2 sm:tw-mx-4">
+            <table className="">
+               <thead>
+                  <tr>
+                     <th className={`${classCell} tw-text-center`}>№</th>
+                     <th className={`${classCell} tw-text-center`}>Агуулга</th>
+                     <th className={`${classCell} tw-text-center`}>Хэрэгжилтийн байдал/Төлөв</th>
+                     <th className={`${classCell} tw-text-center`}>Тайлбар</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {report.map((row, i) =>
+                     <tr key={row.order}>
+                        <td className={classCell}>{row.order}</td>
+                        <td className={classCell}>{row.description}</td>
+                        <TextareaCell value={row.status} name="status" index={i} setter={handleInput} />
+                        <TextareaCell value={row.comment} name="comment" index={i} setter={handleInput} />
                      </tr>
-                  </thead>
-                  <tbody>
-                     {report.map((row, i) =>
-                        <tr key={row.order}>
-                           <td className={classCell}>{row.order}</td>
-                           <td className={classCell}>{row.description}</td>
-                           <TextareaCell value={row.status} name="status" index={i} setter={handleInput} />
-                           <TextareaCell value={row.comment} name="comment" index={i} setter={handleInput} />
-                        </tr>
-                     )}
-                  </tbody>
-               </table>
-            </div>
+                  )}
+               </tbody>
+            </table>
+         </div>
 
-            <div className="tw-mt-10 tw-pb-8 tw-mx-4 sm:tw-mx-12">
-               {[{
-                  minOrder: 1,
-                  maxOrder: 1,
-                  category: 'Баталсан'
-               }, {
-                  minOrder: 2,
-                  maxOrder: 5,
-                  category: 'Хянасан'
-               }, {
-                  minOrder: 6,
-                  maxOrder: 7,
-                  category: 'Бэлтгэсэн'
-               }].map(category =>
-                  <div className="tw-flex tw-flex-wrap lg:tw-flex-nowrap" key={category.category}>
-                     <div className="tw-mt-2 tw-w-44 tw-flex-shrink-0 tw-font-medium">
-                        {category.category}:
-                     </div>
-                     <div className="tw-w-full tw-pl-4 lg:tw-pl-0">
-                        {signers.filter(signer => signer.order >= category.minOrder && signer.order <= category.maxOrder).map(signer =>
-                           <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 tw-gap-x-4" key={signer.order}>
-                              <Signature signer={signer} setter={setSigners} />
-                              <div className="tw-mt-2">
-                                 {signer.position}
-                              </div>
-                           </div>
-                        )}
-                     </div>
+         <div className="tw-mt-10 tw-pb-8 tw-mx-4 sm:tw-mx-12">
+            {[{
+               minOrder: 1,
+               maxOrder: 1,
+               category: 'Баталсан'
+            }, {
+               minOrder: 2,
+               maxOrder: 5,
+               category: 'Хянасан'
+            }, {
+               minOrder: 6,
+               maxOrder: 7,
+               category: 'Бэлтгэсэн'
+            }].map(category =>
+               <div className="tw-flex tw-flex-wrap lg:tw-flex-nowrap" key={category.category}>
+                  <div className="tw-mt-2 tw-w-44 tw-flex-shrink-0 tw-font-medium">
+                     {category.category}:
                   </div>
-               )}
-            </div>
+                  <div className="tw-w-full tw-pl-4 lg:tw-pl-0">
+                     {signers.filter(signer => signer.order >= category.minOrder && signer.order <= category.maxOrder).map(signer =>
+                        <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 tw-gap-x-4 print-no-break" key={signer.order}>
+                           <Signature signer={signer} setter={setSigners} />
+                           <div className="tw-mt-2">
+                              {signer.position}
+                           </div>
+                        </div>
+                     )}
+                  </div>
+               </div>
+            )}
+         </div>
 
-            <div className="tw-flex tw-justify-center">
-               <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSave}>
-                  Хадгалах
-               </button>
-            </div>
+         <div className="tw-flex tw-justify-center">
+            <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors print-invisbile" onClick={handleSave}>
+               Хадгалах
+            </button>
          </div>
       </div>
    )
@@ -217,7 +215,7 @@ export function TextareaCell({ value, name, index, setter, placeholder }) {
          <div className="tw-p-2 tw-invisible tw-break-all tw-leading-tight" style={{ minHeight: 60 }}>
             {value ?? ''}
          </div>
-         <textarea className="tw-absolute tw-top-0 tw-left-0 tw-bottom-0 tw-right-0 tw-w-full tw-p-2 tw-resize-none tw-overflow-hidden focus:tw-outline-none tw-bg-transparent" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
+         <textarea className="tw-absolute tw-top-0 tw-left-0 tw-bottom-0 tw-right-0 tw-w-full tw-p-2 tw-resize-none tw-overflow-hidden focus:tw-outline-none tw-bg-transparent tw-placeholder-opacity-30" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
       </td>
    )
 }

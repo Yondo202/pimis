@@ -110,89 +110,87 @@ export default function ActivityPlanAttach({ contractId }) {
    }
 
    return (
-      <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
-         <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-            <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
-               Хавсралт 1. Түншлэлийн гэрээний үйл ажиллагааны төлөвлөгөө
-            </div>
+      <div className="tw-text-sm tw-text-gray-700 tw-py-6 print-break-after">
+         <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
+            Хавсралт 1. Түншлэлийн гэрээний үйл ажиллагааны төлөвлөгөө
+         </div>
 
-            <div className="tw-font-light tw-text-center tw-mt-2 tw-mx-4 sm:tw-mx-12">
-               (Энэхүү Үйл ажиллагааны төлөвлөгөө нь хүсэлт гаргагч этгээдийн Экспорт хөгжүүлэх төлөвлөгөөнд заасан арга хэмжээнүүдийг хэрхэн биелүүлэхийг заасан байх ёстой бөгөөд тэдгээрийг Санхүүгийн дэмжлэг олгогчийн зүгээс санхүүжүүлэх шаардлагатай.)
-            </div>
+         <div className="tw-font-light tw-text-center tw-mt-2 tw-mx-4 sm:tw-mx-12">
+            (Энэхүү Үйл ажиллагааны төлөвлөгөө нь хүсэлт гаргагч этгээдийн Экспорт хөгжүүлэх төлөвлөгөөнд заасан арга хэмжээнүүдийг хэрхэн биелүүлэхийг заасан байх ёстой бөгөөд тэдгээрийг Санхүүгийн дэмжлэг олгогчийн зүгээс санхүүжүүлэх шаардлагатай.)
+         </div>
 
-            <div className="tw-mt-8 tw-mx-2 sm:tw-mx-4 tw-relative">
-               <table>
-                  <thead>
-                     <tr>
-                        <th className={`${classCell} tw-text-center`}>№</th>
-                        <th className={`${classCell} tw-text-center`}>
-                           Зөвшөөрөгдсөн ажлууд <span className="tw-font-light">(Ажлыг чухлаас бусад гэж эрэмбэлэх)</span>
-                        </th>
-                        <th className={`${classCell} tw-text-center`}>Эхлэх огноо</th>
-                        <th className={`${classCell} tw-text-center`}>Дуусах огноо</th>
-                        <th className={`${classCell} tw-text-center`}>
-                           Баталсан зардлын дээд хэмжээ <span className="tw-font-light">/төг/</span>
-                        </th>
-                        <th className={`${classCell} tw-text-center`}>Хариуцах этгээд</th>
-                        <th></th>
+         <div className="tw-mt-8 tw-mx-2 sm:tw-mx-4 tw-relative">
+            <table>
+               <thead>
+                  <tr>
+                     <th className={`${classCell} tw-text-center`}>№</th>
+                     <th className={`${classCell} tw-text-center`}>
+                        Зөвшөөрөгдсөн ажлууд <span className="tw-font-light">(Ажлыг чухлаас бусад гэж эрэмбэлэх)</span>
+                     </th>
+                     <th className={`${classCell} tw-text-center`}>Эхлэх огноо</th>
+                     <th className={`${classCell} tw-text-center`}>Дуусах огноо</th>
+                     <th className={`${classCell} tw-text-center`}>
+                        Баталсан зардлын дээд хэмжээ <span className="tw-font-light">/төг/</span>
+                     </th>
+                     <th className={`${classCell} tw-text-center`}>Хариуцах этгээд</th>
+                     <th></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {plan.map((row, i) =>
+                     <tr key={i}>
+                        <td className={classCell}>{i + 1}</td>
+
+                        <TextareaCell value={row.work} name="work" index={i} setter={handleInput} />
+
+                        <td className={classCell}>
+                           <input className={classInputDate} type="date" value={row.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value, i)} />
+                        </td>
+                        <td className={classCell}>
+                           <input className={classInputDate} type="date" value={row.end_date ?? ''} onChange={e => handleInput('end_date', e.target.value, i)} />
+                        </td>
+
+                        <TextareaCell value={row.budget} name="budget" index={i} setter={handleInput} />
+                        <TextareaCell value={row.in_charge} name="in_charge" index={i} setter={handleInput} />
+                        <td className="">
+                           <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
+                        </td>
                      </tr>
-                  </thead>
-                  <tbody>
-                     {plan.map((row, i) =>
-                        <tr key={i}>
-                           <td className={classCell}>{i + 1}</td>
+                  )}
+               </tbody>
+            </table>
+            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
+         </div>
 
-                           <TextareaCell value={row.work} name="work" index={i} setter={handleInput} />
+         <div className="tw-mt-6 tw-mx-2 sm:tw-mx-8">
+            <div>Тэмдэглэл:</div>
+            <p className="tw-mt-4">
+               -	Бараа, зөвлөхийн бус үйлчилгээ болон зөвлөхийн үйлчилгээ авах аливаа худалдан авалт нь Дэлхийн банкны Худалдан авах ажиллагааны дараах зарчимд нийцсэн байна:  i) мөнгөний үнэ цэнэ;   ii) хэмнэлт;   iii) зохистой байдал;   iv) зорилгод нийцэх;   v) үр ашиг;   vi) ил тод байдал; болон   vii) шударга байдал. (Экспортыг дэмжих төслийн Худалдан авах ажиллагааны хялбарчилсан удирдамж);
+            </p>
+            <p className="tw-mt-4">
+               -	Хэрэв Санхүүгийн дэмжлэг хүртэгч нь дээр дурдсан өндөр ач холбогдол бүхий үр дүнд бодитоор нөлөөлж болзошгүй тэргүүн ээлжийн үйл ажиллагаануудыг хэрэгжүүлээгүй бол санхүүгийн дэмжлэгийг нөхөн олгохгүй.
+            </p>
+         </div>
 
-                           <td className={classCell}>
-                              <input className={classInputDate} type="date" value={row.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value, i)} />
-                           </td>
-                           <td className={classCell}>
-                              <input className={classInputDate} type="date" value={row.end_date ?? ''} onChange={e => handleInput('end_date', e.target.value, i)} />
-                           </td>
-
-                           <TextareaCell value={row.budget} name="budget" index={i} setter={handleInput} />
-                           <TextareaCell value={row.in_charge} name="in_charge" index={i} setter={handleInput} />
-                           <td className="">
-                              <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
-                           </td>
-                        </tr>
-                     )}
-                  </tbody>
-               </table>
-               <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
-            </div>
-
-            <div className="tw-mt-6 tw-mx-2 sm:tw-mx-8">
-               <div>Тэмдэглэл:</div>
-               <p className="tw-mt-4">
-                  -	Бараа, зөвлөхийн бус үйлчилгээ болон зөвлөхийн үйлчилгээ авах аливаа худалдан авалт нь Дэлхийн банкны Худалдан авах ажиллагааны дараах зарчимд нийцсэн байна:  i) мөнгөний үнэ цэнэ;   ii) хэмнэлт;   iii) зохистой байдал;   iv) зорилгод нийцэх;   v) үр ашиг;   vi) ил тод байдал; болон   vii) шударга байдал. (Экспортыг дэмжих төслийн Худалдан авах ажиллагааны хялбарчилсан удирдамж);
-               </p>
-               <p className="tw-mt-4">
-                  -	Хэрэв Санхүүгийн дэмжлэг хүртэгч нь дээр дурдсан өндөр ач холбогдол бүхий үр дүнд бодитоор нөлөөлж болзошгүй тэргүүн ээлжийн үйл ажиллагаануудыг хэрэгжүүлээгүй бол санхүүгийн дэмжлэгийг нөхөн олгохгүй.
-               </p>
-            </div>
-
-            <div className="tw-mt-8 tw-mx-4 sm:tw-mx-12 tw-pb-8">
-               {signers.map((signer, i) =>
-                  <div className="tw-mt-6" key={i}>
-                     <p className="">
-                        {signer.position}:
-                     </p>
-                     <Signature signer={signer} setter={setSigners} />
-                     <div className="tw-mt-2">
-                        <span className="tw-mr-3">Огноо:</span>
-                        <input className={classInputDate} type="date" value={signer.date ?? ''} onChange={e => handleChangeSigner('date', e.target.value, i)} />
-                     </div>
+         <div className="tw-mt-8 tw-mx-4 sm:tw-mx-12 tw-pb-8">
+            {signers.map((signer, i) =>
+               <div className="tw-mt-6 print-no-break" key={i}>
+                  <p className="">
+                     {signer.position}:
+                  </p>
+                  <Signature signer={signer} setter={setSigners} />
+                  <div className="tw-mt-2">
+                     <span className="tw-mr-3">Огноо:</span>
+                     <input className={classInputDate} type="date" value={signer.date ?? ''} onChange={e => handleChangeSigner('date', e.target.value, i)} />
                   </div>
-               )}
-            </div>
+               </div>
+            )}
+         </div>
 
-            <div className="tw-flex tw-justify-center">
-               <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors" onClick={handleSave}>
-                  Хадгалах
-               </button>
-            </div>
+         <div className="tw-flex tw-justify-center">
+            <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors print-invisbile" onClick={handleSave}>
+               Хадгалах
+            </button>
          </div>
       </div>
    )

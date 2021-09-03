@@ -123,14 +123,19 @@ function Home() {
                                             <span className="text">Төсөл хэрэгжүүлэх нэгжийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span>
                                         </div>
                                     </div>
-                                    <div className="">
-                                        <select className="" value={selectedIndex} onChange={e => handleSelect(e.target.value)}>
-                                            {projects.map((project, i) =>
-                                                <option value={i}>
-                                                    {project.project.project_number} ({project.project.project_type_name})
-                                                </option>
-                                            )}
-                                        </select>
+                                    <div className="col-md-4">
+                                        <div className="tw-grid tw-grid-cols-1 tw-gap-y-1 tw-place-items-start">
+                                            <div className="tw-font-medium">
+                                                Түншлэлийн гэрээ байгуулах өргөдлийн маягт сонгох:
+                                            </div>
+                                            <select className="focus:tw-outline-none tw-bg-transparent tw-pr-1 tw-font-medium" value={selectedIndex} onChange={e => handleSelect(e.target.value)}>
+                                                {projects.map((project, i) =>
+                                                    <option className="tw-p-2 tw-font-normal" value={i}>
+                                                        {project.project.project_number} ({project.project.project_type_name})
+                                                    </option>
+                                                )}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             }
