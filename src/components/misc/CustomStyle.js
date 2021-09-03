@@ -231,16 +231,16 @@ export const Container = styled.div`
                 padding:5px 10px;
                 background-color: #fff;
                 border-color: #ddd;
-                color: #333;
+                color: #505050;
                 border-radius: 4px;
                 border-width: 1px;
                 border-style: solid;
                 display:flex;
                 align-items:center;
-                font-size:14px;
+                font-size:13px;
                 svg{
                     margin-right:8px;
-                    font-size:18px;
+                    font-size:17px;
                 }
                 &:hover{
                     background-color:#ddd;
@@ -254,7 +254,6 @@ export const Container = styled.div`
                 }
             }
         }
-        
         table{
             width:100%;
             border-collapse: collapse;
@@ -266,8 +265,8 @@ export const Container = styled.div`
                 &:first-child{
                     text-align:center;
                 }
-                padding:10px 8px;
-                border:1px solid rgba(0,0,0,.2);
+                padding:8px 8px;
+                border:1px solid rgba(0,0,0,.15);
             }
             td{
                 padding:12px 10px;
@@ -282,7 +281,7 @@ export const Container = styled.div`
                 padding-top:28px;
                 font-weight:bold;
                 color:rgba(0, 138, 200, 0.7);
-                border-left:1px solid rgba(0,0,0,0.2);
+                border-left:1px solid rgba(0,0,0,0.15);
                 border-right:1px solid rgba(0,0,0,0);
             }
             .cusorItems{
@@ -302,8 +301,9 @@ export const Container = styled.div`
                     color:green;
                     width:22px;
                     height:22px;
-                    top:8px;
+                    top:50%;
                     left:-10px;
+                    transform:translate(0%, -50%);
                     display:flex;
                     align-items:center;
                     justify-content:center;
@@ -356,7 +356,7 @@ export const Container = styled.div`
                     display:flex;
                     align-items:center;
                     svg{
-                        font-size:17.5px;
+                        font-size:17px;
                     }
                     &:hover{
                         background-color:#ddd;
@@ -376,21 +376,43 @@ export const Container = styled.div`
         .parent{
             font-weight:500;
         }
-        .child{
+        .child{ 
             color: rgba(0, 18, 41, 0.8);
             .title{
                text-align:center;
             }
         }
     }
+    .T5{
+        table{
+          font-size:12px;
+            td{
+                padding:10px 10px;
+            }
+        }
+    }
     .T4{
         table{
-            font-size:12px;
+            font-size:11.5px;
             td{
-                padding: 7px 8px;
+                padding: 5px 7px;
             }
-            .filterCountry{
-                padding-top:20px;
+            .filterCountryRow{
+                border-right:1px solid rgba(0,0,0,0.2);
+                .filterCountry{
+                    padding-top:20px;
+                }
+            }
+            .Selected{
+                &:after{
+                    content:"✔";
+                    position:absolute;
+                    width:18px;
+                    height:18px;
+                    top:50%;
+                    left:-10px;
+                    transform:translate(0%, -50%);
+                }
             }
         }
     }

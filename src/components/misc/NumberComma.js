@@ -10,7 +10,7 @@ export const NumberComma = (el) => {
         let final = commas.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return final
     }else{
-        return 0
+        return ''
     }
 }
 

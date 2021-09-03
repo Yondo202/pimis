@@ -59,7 +59,11 @@ const Insurance = () => {
     },[cond, users])
 
     const selectRowHandle = (el) =>{
-        setSelected(el);
+        if(selected.id===el.id){
+            setSelected({});
+        }else{
+            setSelected(el);
+        }
     }
 
     const EditHandle = () =>{
@@ -101,10 +105,9 @@ const Insurance = () => {
             {showExportData?<ExportData
                 // setCond={setCond}
                 setModal={setShowExportData}
-                // userId={selected?.user_id} 
+                // userId={selected?.user_id}
                 SD={selected}
             />:null}
-
 
             <Container>
                 <div className="TitlePar">
@@ -117,7 +120,7 @@ const Insurance = () => {
                     </LangSwitch>
                 </div>
 
-                <div className="customTable">
+                <div className="customTable T5">
                     <div className="headPar">
                         {/* <div className="title"></div> */}
                         <div onClick={()=>showSetAddModal(true)} className="addBtn"><RiAddLine /><span>Нэмэх</span></div>
@@ -164,8 +167,8 @@ const Insurance = () => {
 
                                         {/* <td>4/7/2018</td>
                                         <td>10/4/2018</td> */}
-                                        
                                         {/* <td>00008</td> */}
+
                                         <td>{el.insurance_type}</td>
 
                                         <td style={{fontWeight:`500`}} className="right">{NumberComma(el.sum_insurance)} $</td>

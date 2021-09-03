@@ -89,18 +89,18 @@ const MainPage = () => {
                         {fCountry.map((elem,index)=>{
                             return(
                                 <>
-                                    <tr style={{borderStyle:`none`}} key={index}><td className="filterCountry">{elem.description_mon}</td></tr>
+                                    <tr className="filterCountryRow" style={{borderBottomStyle:`none`}} key={index}><td className="filterCountry">{elem.description_mon}</td></tr>
                                     {exportData.map((el,ind)=>{
                                         if(elem.id===el.countryId){
                                             return(
                                                 <tr key={ind} >
                                                     <td className="bold">{el.product_name}</td>
-                                                    <td className="right">{NumberComma(el.e2016)} ₮</td>
-                                                    <td className="right">{NumberComma(el.e2017)} ₮</td>
-                                                    <td className="right">{NumberComma(el.e2018)} ₮</td>
-                                                    <td className="right">{NumberComma(el.e2019)} ₮</td>
-                                                    <td className="right">{NumberComma(el.e2020)} ₮</td>
-                                                    <td className="right">{NumberComma(el.e2021)} ₮</td>
+                                                    <td className="right">{NumberComma(el.e2016)} </td>
+                                                    <td className="right">{NumberComma(el.e2017)} </td>
+                                                    <td className="right">{NumberComma(el.e2018)} </td>
+                                                    <td className="right">{NumberComma(el.e2019)} </td>
+                                                    <td className="right">{NumberComma(el.e2020)} </td>
+                                                    <td className="right">{NumberComma(el.e2021)} </td>
                                                     <td className="right bold blue">
                                                         {NumberComma(el.e2016+el.e2017+el.e2018+el.e2019+el.e2020+el.e2021)} ₮
                                                     </td>
