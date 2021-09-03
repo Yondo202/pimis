@@ -6,6 +6,7 @@ import { containerClass, UrgudulHeader } from './page1'
 export default function UrgudulPage5New() {
    const UrgudulCtx = useContext(UrgudulContext)
    const isCluster = UrgudulCtx.data.project_type === 1
+   const userId = UrgudulCtx.data.userId
 
    return (
       <div className={containerClass}>
