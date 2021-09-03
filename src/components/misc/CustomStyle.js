@@ -385,7 +385,7 @@ export const Container = styled.div`
     }
     .T4{
         table{
-            font-size:12.5px;
+            font-size:12px;
             td{
                 padding: 7px 8px;
             }

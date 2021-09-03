@@ -90,7 +90,7 @@ const IndemnityAdd = ({ setModal, setCond, SD, userId }) => {
 
                     <Container style={{padding:`0px 0px`, boxShadow:`none`}}>
                         <div className="smTitles">Export Data</div>
-                        <div className="customTable">
+                        <div className="customTable T4">
                             <div className="headPar ">
                                 {/* <div className="title"></div> */}
                                 <div onClick={_=>ModalHandle('add')} className="addBtn addBtn2"><RiAddLine /><span>Нэмэх</span></div>
