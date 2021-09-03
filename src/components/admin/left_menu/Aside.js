@@ -98,6 +98,12 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               <Link to="/currency-rates">Ханшийн мэдээлэл оруулах</Link>
             </MenuItem>
           </SubMenu>
+
+          <SubMenu title="Экспортын мэдээлэл" icon={<FiBookOpen />}>
+            <MenuItem>
+              <Link to="/export-data">Байгууллагуудын жагсаалт</Link>
+            </MenuItem>
+          </SubMenu>
           {/* {ctxUser.userInfo.role==="edpadmin"?<SubMenu title="Тохиргоо" icon={<MdSettings />}> </SubMenu>
           :<SubMenu ></SubMenu>} */}
         </Menu>

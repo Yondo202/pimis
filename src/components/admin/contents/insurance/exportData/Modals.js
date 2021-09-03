@@ -9,7 +9,7 @@ import { VscSave } from "react-icons/vsc";
 import Select from 'react-select';
 import { TiDeleteOutline } from "react-icons/ti"
 
-const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, setSelectedEx }) => {
+const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, setSelectedEx, type }) => {
     const { alertText } = useContext(UserContext);
     const [ cName, setName ] = useState('');
     const [ err, setErr ] = useState(false);
@@ -48,45 +48,40 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
             }
         });
 
-        if(!selected.id){
+        if(!selected.id&&type==="export_data"){
             setErr(true); setTimeout(_=> setErr(false), 4000);
         }else{
             final["countryId"] = selected.id;
             final["userId"] = SD?.user_id;
+            final["row_type"] = type
+
             if(handle==="add"){
-                axios.post(`export-data`, final,{ headers: {Authorization: AccessToken()} }).then(_=>{
-                    alertText('green','Амжилттай',true );
-                    setName('contentParent2');
-                    setTimeout(() => {
-                        setModal(false);
-                    }, 370)
-                    setCond(prev=>!prev);
-                }).catch(()=>{
-                    alertText('orange','Хадаглахад алдаа гарлаа',true );
-                })
+                axios.post(`export-data`, final,{ headers: {Authorization: AccessToken()} })
+                .then(_=>EndHandle(true))
+                .catch(()=>EndHandle(false));
             }else if(handle==="edit"){
-                axios.put(`export-data/${selectedEx.id}`, final, { headers: {Authorization: AccessToken()} }).then(res=>{
-                    alertText('green','Амжилттай',true );
+                axios.put(`export-data/${selectedEx.id}`, final, { headers: {Authorization: AccessToken()} })
+                .then(res=>{
                     setSelectedEx(res.data.data);
-                    setName('contentParent2');
-                    setTimeout(() => {
-                        setModal(false);
-                    }, 370)
-                    setCond(prev=>!prev);
-                }).catch(()=>{
-                    alertText('orange','Хадаглахад алдаа гарлаа',true );
-                })
+                    EndHandle(true);
+                }).catch(()=>EndHandle(false))
             }else{
-                axios.delete(`export-data/${selectedEx.id}`, { headers: {Authorization: AccessToken()} }).then(_=>{
+                axios.delete(`export-data/${selectedEx.id}`, { headers: {Authorization: AccessToken()} })
+                .then(_=> EndHandle(true) )
+                .catch(()=>EndHandle(false))
+            }
+
+            const EndHandle = (success) =>{
+                if(success){
                     alertText('green','Амжилттай',true );
                     setName('contentParent2');
                     setTimeout(() => {
                         setModal(false);
                     }, 370)
                     setCond(prev=>!prev);
-                }).catch(()=>{
+                }else{
                     alertText('orange','Хадаглахад алдаа гарлаа',true );
-                })
+                }
             }
         }
     }
@@ -99,13 +94,13 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
         <CustomModal>
             <div className={`contentParent ${cName}`} style={{width:"40rem"}}>
                 <div className="head">
-                    <div className="title">{handle} Export Data</div>
+                    <div className="title">{type==="total_sales"?`Нийт борлуулалт`:type==="emp_count"?`Ажилчдын тоо`:`${handle} Export Data`} </div>
                     <div onClick={CloseHandle} className="close">✖</div>
                 </div>
 
                 <form onSubmit={SubmitHandle}>
                     <div className="content">
-                        {handle!=="delete"?<>
+                        {type==="export_data"?handle!=="delete"?<>
                             <InputsParent2 first={true}>
                                 <InputStyle >
                                     <div className="label">Product name<span className="reds">*</span></div>
@@ -118,17 +113,17 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                                         <Select
                                             options={country}
                                             value={selected.id?selected:false}
-                                            // isClearable
                                             menuPortalTarget={document.body}
                                             styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-                                            getOptionValue={option => `${option.id}`}
+                                            getOptionValue={option => `${option?.id}`}
                                             onChange={handleSelect}
                                             placeholder={'Countries'}
-                                            getOptionLabel={option => `${option.description_mon}`}
+                                            getOptionLabel={option => `${option?.description_mon}`}
                                         />
                                     </div>
                                 </InputStyle>
                             </InputsParent2>
+
                             <InputsParent2>
                                 <InputStyle >
                                     <div className="label">HS code<span className="reds">*</span></div>
@@ -142,15 +137,15 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                                     <div className="label">Product name<span className="reds">*</span></div>
                                     <h6>{selectedEx?.product_name}</h6>
                                 </InputStyle> 
+
                                 <InputStyle >
                                     <div className="label">Countries <span className="reds">*</span></div>
                                     <h6>{selected?.description_mon}</h6>
                                 </InputStyle>
                             </InputsParent2>
-                        }
-                        
+                        :null}
 
-                        {handle!=="delete"&&<InsureType contents="Years -> Amount">
+                        {handle!=="delete"&&<YearsType contents="Years -> Amount">
                             <InputsParent>
                                 {years.map((el,ind)=>{
                                     return(
@@ -170,7 +165,7 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                                 })}
 
                             </InputsParent>
-                        </InsureType>}
+                        </YearsType>}
                             
                         <div className="modalbtnPar">
                             <div style={{opacity:`${err?`1`:`0`}`}} className="errText"><span className="red">* </span>Улсаа сонгоно уу...</div>
@@ -204,7 +199,7 @@ const InputsParent2 = styled.div`
     justify-content:space-between;
 `
 
-const InsureType = styled.div`
+const YearsType = styled.div`
     margin-top:15px;
     padding:30px 15px;
     border:1px solid #b5b8c8;

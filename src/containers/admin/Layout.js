@@ -43,6 +43,7 @@ import PerformanceAttachments from 'pages/attachments/performanceAttachements';
 import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
 import FinancialAttachments from 'pages/attachments/financialAttachments';
 import ContractReports from 'pages/contract/contract_reports/contractReports';
+import ExportDataList from "components/admin/contents/export_data/MainPage"
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -111,6 +112,7 @@ function Layout({ setLocale }) {
               <Route path="/training-questionnaire" component={FeedbackQuestionnaireHandle} />
               <Route path="/training-report" component={TrainingsReport} />
               <Route path="/trainer-organizations" component={TrainerOrganizationNavigator} />
+              <Route path="/export-data" component={ExportDataList} />
               <MiddleRoute />
             </Switch>
           </UrgudulStore>

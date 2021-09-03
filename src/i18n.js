@@ -18,6 +18,7 @@ i18n.use(LanguageDetector).init({
         "Flexibility to use other packages": "Flexibility to use other packages",
 
         "Export Data":"Export Data",
+        "Product name":"Product name",
       }
     },
     mn: {
@@ -28,12 +29,15 @@ i18n.use(LanguageDetector).init({
           "Expiration":"Дуусах хугацаа",
           "Insurance type":'Даатгалын төрөл',
           "Total":'Нийт',
+
+          "Export Data":"Экспортын мэдээлэл",
+          "Product name":"Бүтээгдэхүүн",
+
           Advantages: "Les avantages",
             "Flexibility to use other packages":
             "Flexibilité d'utiliser d'autres packages"
-          },
+        },
 
-        "Export Data":"Экспортын мэдээлэл"
     },
     
   },
