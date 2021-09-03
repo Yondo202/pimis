@@ -145,7 +145,7 @@ export default function UrgudulNavigator() {
             </div>
 
             {transitionsPages.map(({ item, props, key }) =>
-                <animated.div key={key} className="tw-pb-10" style={props}>
+                <animated.div key={key} className="tw-pb-20" style={props}>
                     <Switch location={item}>
                         <Route path="/urgudul/1">
                             <UrgudulPage1 projects={projects} />

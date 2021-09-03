@@ -33,11 +33,11 @@ const ExportData = ({setModal, SD, userId}) =>{
                             <InputsParent>
                                 <InputStyle >
                                     <div className="label">Registration number <span className="reds">*</span></div>
-                                    <h6>{SD.companyregister}</h6>
+                                    <h6>{SD?.companyregister}</h6>
                                 </InputStyle>
                                 <InputStyle >
                                     <div className="label">Company name <span className="reds">*</span></div>
-                                    <h6>{SD.companyname}</h6>
+                                    <h6>{SD?.companyname}</h6>
                                 </InputStyle>
                             </InputsParent>
                         </div>}
