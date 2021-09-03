@@ -4,10 +4,8 @@ const instance = axios.create({
   // baseURL: "http://103.50.205.158:3000/api/",
   // baseURL: "http://192.168.88.78:3000/api/",
   // baseURL: "http://124.158.107.34:3000/api/",
-  // baseURL: "http://localhost:3000/api/",
-
-  baseURL: "http://192.168.88.232:3000/api/",
-
+  // baseURL: "http://192.168.88.232:3000/api/",
+  baseURL: "http://localhost:3000/api/",
   // baseURL: "https://pimis.edp.mn/api/",
 });
 
@@ -23,4 +21,3 @@ export const edplanFront = "https://pimis-plan.edp.mn";
 
 // export const FrontUrl = "https://pimis.edp.mn"
 export const FrontUrl = "http://localhost:3000"
-

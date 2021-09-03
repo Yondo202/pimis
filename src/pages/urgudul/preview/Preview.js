@@ -8,11 +8,10 @@ import AlertContext from 'components/utilities/alertContext'
 import Row from './row'
 import RowImage from './rowImage'
 import RowHtml from './rowHtml'
-import { useHistory, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { statusNames } from 'components/admin/contents/projects/ProjectHandle'
 import { activityClass, plannedActivityClass } from '../pages/page1'
 import RowLabel from './rowLabel'
-import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 
 const labels = {
     page1: {
@@ -189,8 +188,6 @@ export default function UrgudulPreview(props) {
 
     const [occupations, setOccupations] = useState([])
     const getOccupationName = (id) => occupations.filter(obj => obj.id === id)[0]?.description_mon
-
-    const history = useHistory()
 
     return (
         <div className="tw-overflow-x-auto tw-overflow-y-hidden">
