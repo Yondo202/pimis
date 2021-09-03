@@ -209,7 +209,7 @@ export const Container = styled.div`
         margin-bottom:10px;
     }
     .opacity{
-        opacity:0.7;
+        opacity:0.6;
     }
     .customTable{
         width:100%;
@@ -380,6 +380,17 @@ export const Container = styled.div`
             color: rgba(0, 18, 41, 0.8);
             .title{
                text-align:center;
+            }
+        }
+    }
+    .T4{
+        table{
+            font-size:12.5px;
+            td{
+                padding: 7px 8px;
+            }
+            .filterCountry{
+                padding-top:20px;
             }
         }
     }

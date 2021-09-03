@@ -9,7 +9,7 @@ import { NumberComma } from "components/misc/NumberComma"
 import { useTranslation } from 'react-i18next';
 import axios from 'axiosbase';
 
-const IndemnityAdd = ({ setModal, setCond, SD }) => {
+const IndemnityAdd = ({ setModal, setCond, SD, userId }) => {
     const [t] = useTranslation();
     const [ exCond, setExCond ] = useState(false);
     const [ cName, setName ] = useState('');
@@ -37,8 +37,9 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
     },[])
 
     useEffect(()=>{
+        setFCountry([])
         void async function fetch(){
-            let data = await axios.get(`export-data?userId=${SD?.user_id}`,{ headers: {Authorization: AccessToken()} });
+            let data = await axios.get(`export-data?userId=${userId?userId:SD?.user_id}`,{ headers: {Authorization: AccessToken()} });
             data?.data.targ_country.forEach(item=>{
                 axios.get(`countries/${item}`).then(res=>{
                     setFCountry(prev=>[...prev, res.data.data]);
@@ -63,13 +64,9 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
         }
     }
 
-    console.log(`fCountry++`, fCountry);
-
     return (
         <CustomModal style={{paddingTop:`3rem`}}>
             {showAdd?<Modals handle={modalHandle} selectedEx={selected} setSelectedEx={setSelected} setCond={setExCond} SD={SD} setModal={setShowAdd} years={years} country={country} />:null}
-            {/* {showEdit?<Edit setCond={setCond} SD={SD} setModal={setShowEdit} selected={selected}  />:null} */}
-            {/* {showDelete?<Delete setCond={setCond} setModal={setShowDelete} selected={selected}  />:null} */}
 
             <div className={`contentParent ${cName}`} style={{width:"54rem"}}>
                 <div className="head">
@@ -78,7 +75,7 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
                 </div>
 
                 <div style={{marginBottom:40}} className="content">
-                    <div style={{opacity:`0.8`, marginBottom:`22px`}}>
+                    {!userId&&<div style={{opacity:`0.8`, marginBottom:`22px`}}>
                         <InputsParent>
                             <InputStyle >
                                 <div className="label">Registration number <span className="reds">*</span></div>
@@ -89,7 +86,7 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
                                 <h6>{SD.companyname}</h6>
                             </InputStyle>
                         </InputsParent>
-                    </div>
+                    </div>}
 
                     <Container style={{padding:`0px 0px`, boxShadow:`none`}}>
                         <div className="smTitles">Export Data</div>
@@ -127,12 +124,6 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
                                         <td className="right">0.00 ₮</td>
                                     </tr>}
 
-                                    {/* {fCountry.map((el,ind)=>{
-                                        return(
-                                            <tr>hahahahah</tr>
-                                        )
-                                    })} */}
-                                
                                     {fCountry.map((elem,index)=>{
                                         return(
                                             <>
@@ -159,16 +150,12 @@ const IndemnityAdd = ({ setModal, setCond, SD }) => {
                                             </>
                                         )
                                     })}
-
                                 </tbody>
                             </table>
                             
                         </div>
                     </Container>
                 </div>
-
-                    
-                
             </div>
         </CustomModal>
     )

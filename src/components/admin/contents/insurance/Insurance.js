@@ -98,12 +98,17 @@ const Insurance = () => {
             {showDeleteModal?<DeleteModal SD={selected} setCond={setCond} setModal={showSetDeleteModal} />:null}
             {showIndemnity?<Indemnity SD={selected} setCond={setCond} setModal={setShowIndemnity} />:null}
 
-            {showExportData?<ExportData setCond={setCond} setModal={setShowExportData} SD={selected}  />:null}
+            {showExportData?<ExportData
+                // setCond={setCond}
+                setModal={setShowExportData}
+                // userId={selected?.user_id} 
+                SD={selected}
+            />:null}
 
 
             <Container>
                 <div className="TitlePar">
-                    <div onClick={handleChange} className="Title">{t('title')}</div>
+                    <div className="Title">{t('title')}</div>
                     <LangSwitch>
                         <select onChange={handleChange}>
                             <option value="en">English</option>
