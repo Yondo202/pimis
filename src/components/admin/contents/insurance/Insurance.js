@@ -103,7 +103,6 @@ const Insurance = () => {
             {showIndemnity?<Indemnity SD={selected} setCond={setCond} setModal={setShowIndemnity} />:null}
 
             {showExportData?<ExportData
-                // setCond={setCond}
                 setModal={setShowExportData}
                 // userId={selected?.user_id}
                 SD={selected}
