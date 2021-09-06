@@ -179,7 +179,7 @@ function UrgudulPage5() {
 
    return (
       <div className="tw-flex tw-justify-center tw-w-full tw-px-4">
-         <div className="tw-mt-8 tw-mb-70 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-max-w-full">
+         <div className="tw-mt-8 tw-rounded-lg tw-shadow-md tw-border-t tw-border-gray-100 tw-bg-white tw-max-w-full">
             <UrgudulHeader
                label="Экспортын мэдээлэл"
                projectNumber={UrgudulCtx.data.project_number}
