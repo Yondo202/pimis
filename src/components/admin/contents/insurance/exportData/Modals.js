@@ -90,6 +90,7 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
         setSelected(val);
     }
 
+
     return (
         <CustomModal>
             <div className={`contentParent ${cName}`} style={{ width: "40rem" }}>
@@ -147,6 +148,7 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
 
                         {handle !== "delete" && <YearsType contents="Years -> Amount">
                             <InputsParent>
+<<<<<<< HEAD
                                 {years.map((el, ind) => {
                                     return (
                                         <InputStyle key={ind} className="itemss">
@@ -161,6 +163,22 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                                                 className="gettInpps"
                                             />
                                         </InputStyle>
+=======
+                                {years.map((el,ind)=>{
+                                    return(
+                                    <InputStyle key={ind} className="itemss">
+                                        <div style={{fontWeight:`500`}} className="label">{el.year}</div>
+                                        <NumberFormat
+                                            defaultValue={handle!=='add'?selectedEx[`e${el.year}`]:``}
+                                            placeholder={`0 ₮`} 
+                                            // value={rate}
+                                            //  onChange={e=>setRate(e.target.value.slice(0, -1).replace(/,/g, ''))}
+                                            style={{textAlign:`right`, paddingRight:`7px`}} thousandSeparator={true} suffix={' ₮'}
+                                            name={el.year}
+                                            className="gettInpps"
+                                        />
+                                    </InputStyle>
+>>>>>>> f8b0aa492fb476d6bbad05f8712e3050a2a75f8c
                                     )
                                 })}
 

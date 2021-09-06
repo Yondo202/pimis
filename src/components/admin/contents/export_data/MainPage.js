@@ -5,26 +5,19 @@ import { NumberComma } from "components/misc/NumberComma"
 import { useTranslation } from 'react-i18next';
 import axios from 'axiosbase';
 
-
 const MainPage = () => {
     const [t, i18n] = useTranslation();
-    // const [ years, setYears ] = useState([]);
-    const [ country, setCountry ] = useState([]);
+    const [ years, setYears ] = useState([]);
+    // const [ country, setCountry ] = useState([]);
     const [ exportData, setExportData ] = useState([]);
     const [ fCountry, setFCountry ] = useState([]);
-
-    useEffect(()=>{
-        // void async function fetch(){
-        //    let res = await axios.get(`countries`);
-        //    setCountry(res.data.data);
-        //    let years = await axios.get('years/true');
-        // }()
-    },[])
 
     useEffect(()=>{
         setFCountry([])
         void async function fetch(){
             let data = await axios.get(`export-data`,{ headers: {Authorization: AccessToken()} });
+            let years = await axios.get('years/true');
+            setYears(years.data.data);
             data?.data.targ_country.forEach(item=>{
                 axios.get(`countries/${item}`).then(res=>{
                     setFCountry(prev=>[...prev, res.data.data]);
@@ -37,6 +30,9 @@ const MainPage = () => {
     const handleChange = event => {
         i18n.changeLanguage(event.target.value);
     };
+
+    console.log(`exportData`, exportData);
+    console.log(`object`, 1+null+20);
 
     return (
         <Container style={{padding:`12px 12px`, boxShadow:`none`}}>
@@ -58,7 +54,7 @@ const MainPage = () => {
                             <th>{t('Product name')}</th>
                             {years.map((el,ind)=>{
                                 return(
-                                    <th key={ind}>{el}</th>
+                                    <th key={ind}>{el.year}</th>
                                 )
                             })}
                             <th>{t('Total')}</th>
@@ -91,7 +87,7 @@ const MainPage = () => {
                                                     <td className="right">{NumberComma(el.e2020)} </td>
                                                     <td className="right">{NumberComma(el.e2021)} </td>
                                                     <td className="right bold blue">
-                                                        {NumberComma(el.e2016+el.e2017+el.e2018+el.e2019+el.e2020+el.e2021)} ₮
+                                                        {NumberComma(el.e2016+el.e2017+el.e2018+el.e2019+el.e2020+el.e2021+el.e2022+el.e2023+el.e2024+el.e2025+el.e2026+el.e2027+el.e2028+el.e2029+el.e2030)} ₮
                                                     </td>
                                                 </tr>
                                             )
@@ -111,6 +107,6 @@ const MainPage = () => {
 
 export default MainPage
 
-const years =  [
-    "2016","2017","2018","2019","2020","2021"
-]
+// const years =  [
+//     "2016","2017","2018","2019","2020","2021"
+// ]

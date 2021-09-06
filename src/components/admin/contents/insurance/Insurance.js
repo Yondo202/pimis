@@ -104,6 +104,7 @@ const Insurance = () => {
 
             {showExportData?<ExportData
                 setModal={setShowExportData}
+                set={true}
                 // userId={selected?.user_id}
                 SD={selected}
             />:null}

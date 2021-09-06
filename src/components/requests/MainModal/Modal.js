@@ -68,12 +68,11 @@ const Background = styled.div`
     width: 100%;
     height: 100%;
     top:0;
-    right:0;
-    bottom:0;
+    left:-100%;
     background: rgba(0,0,0,0.5);
     position:fixed;
     display:flex;
-    justify-content:end;
+    justify-content:start;
     align-items:center;
     z-index:1000;
     .modalPar{
