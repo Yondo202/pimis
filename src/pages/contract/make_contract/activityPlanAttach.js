@@ -7,6 +7,7 @@ import { useContext } from 'react'
 import AlertContext from 'components/utilities/alertContext'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
+import NumberFormat from 'react-number-format'
 
 const initialState = [{
    work: null,
@@ -35,7 +36,7 @@ export default function ActivityPlanAttach({ contractId }) {
 
    const handleInput = (key, value, index) => setPlan(prev => {
       const next = [...prev]
-      next[index][key] = value
+      next[index][key] = value ?? null
       return next
    })
 
@@ -143,20 +144,21 @@ export default function ActivityPlanAttach({ contractId }) {
 
                         <TextareaCell value={row.work} name="work" index={i} setter={handleInput} />
 
-                        <td className={classCell}>
+                        <td className={classCellAlt}>
                            <input className={classInputDate} type="date" value={row.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value, i)} />
                            <span className="tw-hidden print-show">
                               {row.start_date?.replaceAll('-', '.')}
                            </span>
                         </td>
-                        <td className={classCell}>
+                        <td className={classCellAlt}>
                            <input className={classInputDate} type="date" value={row.end_date ?? ''} onChange={e => handleInput('end_date', e.target.value, i)} />
                            <span className="tw-hidden print-show">
                               {row.end_date?.replaceAll('-', '.')}
                            </span>
                         </td>
 
-                        <TextareaCell value={row.budget} name="budget" index={i} setter={handleInput} />
+                        {/* <TextareaCell value={row.budget} name="budget" index={i} setter={handleInput} /> */}
+                        <TableCellCurrency value={row.budget} name="budget" index={i} setter={handleInput} />
                         <TextareaCell value={row.in_charge} name="in_charge" index={i} setter={handleInput} />
                         <td className="">
                            <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
@@ -206,4 +208,13 @@ export default function ActivityPlanAttach({ contractId }) {
 }
 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2'
+const classCellAlt = 'tw-border tw-border-gray-300 tw-p-2 tw-align-top'
 const classInputDate = 'focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none print-hide'
+
+export function TableCellCurrency({ value, name, index, setter }) {
+   return (
+      <td className={classCellAlt}>
+         <NumberFormat className="focus:tw-outline-none tw-rounded-none tw-border-b-2 tw-border-gray-700 tw-border-dotted tw-text-right tw-w-28 tw-float-right print-no-border tw-text-13px" thousandSeparator suffix=" ₮" value={value ?? ''} onValueChange={values => setter(name, values.floatValue, index)} />
+      </td>
+   )
+}

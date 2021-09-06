@@ -7,6 +7,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { Fill, Signature } from './makeContract'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
+import { TableCellCurrency } from './activityPlanAttach'
 
 const initialPlan = [{
    purchase: null,
@@ -34,7 +35,7 @@ export default function PurchasePlanAttach({ contractId }) {
 
    const handleInput = (key, value, index) => setPlan(prev => {
       const next = [...prev]
-      next[index][key] = value
+      next[index][key] = value ?? null
       return next
    })
 
@@ -135,7 +136,7 @@ export default function PurchasePlanAttach({ contractId }) {
                      <tr key={i}>
                         <td className={classCell}>{i + 1}</td>
                         <TextareaCell value={row.purchase} name="purchase" index={i} setter={handleInput} />
-                        <TextareaCell value={row.cost} name="cost" index={i} setter={handleInput} />
+                        <TableCellCurrency value={row.cost} name="cost" index={i} setter={handleInput} />
                         <TextareaCell value={row.procedure} name="procedure" index={i} setter={handleInput} />
                         <td className={classCell}>
                            <DateField label="Үнэлгээний хороо байгуулах огноо" value={row.evaluation_date} name="evaluation_date" index={i} setter={handleInput} />

@@ -215,7 +215,7 @@ export function TextareaCell({ value, name, index, setter, placeholder }) {
          <div className="tw-p-2 tw-invisible tw-break-all tw-leading-tight" style={{ minHeight: 60 }}>
             {value ?? ''}
          </div>
-         <textarea className="tw-absolute tw-top-0 tw-left-0 tw-bottom-0 tw-right-0 tw-w-full tw-p-2 tw-resize-none tw-overflow-hidden focus:tw-outline-none tw-bg-transparent tw-placeholder-opacity-30" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
+         <textarea className="tw-absolute tw-top-0 tw-left-0 tw-bottom-0 tw-right-0 tw-w-full tw-p-2 tw-resize-none tw-overflow-hidden focus:tw-outline-none tw-bg-transparent tw-placeholder-opacity-30 tw-text-13px" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
       </td>
    )
 }

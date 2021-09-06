@@ -10,6 +10,7 @@ import AlertContext from 'components/utilities/alertContext'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import { formatNumberAlt } from 'components/utilities/utilities'
+import { TableCellCurrency } from './activityPlanAttach'
 
 const initialReport = [{
    activity: null,
@@ -69,7 +70,7 @@ export default function FinalCostAttach({ contractId }) {
 
    const handleInputReport = (key, value, index) => setReport(prev => {
       const next = [...prev]
-      next[index][key] = value
+      next[index][key] = value ?? null
       return next
    })
 
@@ -213,13 +214,13 @@ export default function FinalCostAttach({ contractId }) {
                            {i + 1}
                         </td>
                         <TextareaCell value={row.activity} name="activity" index={i} setter={handleInputReport} />
-                        <TextareaCell value={row.budget} name="budget" index={i} setter={handleInputReport} />
-                        <TextareaCell value={row.payment} name="payment" index={i} setter={handleInputReport} />
-                        <TextareaCell value={row.final_cost} name="final_cost" index={i} setter={handleInputReport} />
+                        <TableCellCurrency value={row.budget} name="budget" index={i} setter={handleInputReport} />
+                        <TableCellCurrency value={row.payment} name="payment" index={i} setter={handleInputReport} />
+                        <TableCellCurrency value={row.final_cost} name="final_cost" index={i} setter={handleInputReport} />
                         <td className={classCell}>
                            file upload
                         </td>
-                        <TextareaCell value={row.reviewed_amount} name="reviewed_amount" index={i} setter={handleInputReport} />
+                        <TableCellCurrency value={row.reviewed_amount} name="reviewed_amount" index={i} setter={handleInputReport} />
                         <TextareaCell value={row.reduction_reason} name="reduction_reason" index={i} setter={handleInputReport} />
                         <td className="">
                            <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
@@ -323,10 +324,11 @@ export default function FinalCostAttach({ contractId }) {
 }
 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2'
+const classCellAlt = 'tw-border tw-border-gray-300 tw-p-2 tw-align-top'
 
 function NetAmount({ sum }) {
    return (
-      <span className="tw-font-medium">
+      <span className="tw-float-right">
          {isNaN(sum)
             ? '-'
             : `${formatNumberAlt(sum)} ₮`

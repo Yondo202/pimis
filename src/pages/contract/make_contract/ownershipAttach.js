@@ -170,15 +170,15 @@ export default function OwnershipAttach({ contract = {} }) {
                      <tr key={i}>
                         <td className={classCell} style={{ width: 180 }}>
                            <div className="tw-flex tw-py-0.5">
-                              <Fill value={owner.fullname} name="fullname" index={i} setter={handleInputOwner} editable dotted placeholder="Овог нэр" />
+                              <Fill value={owner.fullname} name="fullname" index={i} setter={handleInputOwner} editable dotted placeholder="Овог нэр" textSmall />
                               <span className="tw-mx-1">,</span>
                            </div>
                            <div className="tw-flex tw-py-0.5">
-                              <Fill value={owner.citizenship} name="citizenship" index={i} setter={handleInputOwner} editable dotted placeholder="Иргэний харьяалал" />
+                              <Fill value={owner.citizenship} name="citizenship" index={i} setter={handleInputOwner} editable dotted placeholder="Иргэний харьяалал" textSmall />
                               <span className="tw-mx-1">,</span>
                            </div>
                            <div className="tw-flex tw-py-0.5">
-                              <Fill value={owner.residence_country} name="residence_country" index={i} setter={handleInputOwner} editable dotted placeholder="Оршин суугаа улс" />
+                              <Fill value={owner.residence_country} name="residence_country" index={i} setter={handleInputOwner} editable dotted placeholder="Оршин суугаа улс" textSmall />
                               <span className="tw-mx-1">,</span>
                            </div>
                         </td>
@@ -290,12 +290,12 @@ function TableCellCheckbox({ checked, name, index, setter, }) {
    return (
       <td className={classCell}>
          <div className="tw-flex tw-items-center tw-px-2">
-            <input className="tw-w-3.5 tw-h-3.5" type="checkbox" checked={typeof (checked) === 'boolean' && checked} onChange={() => setter(name, true, index)} id={`${name}-${index}-true`} />
-            <label className="tw-ml-1 tw-mb-0" htmlFor={`${name}-${index}-true`}>Тийм</label>
+            <input className="tw-w-3 tw-h-3" type="checkbox" checked={typeof (checked) === 'boolean' && checked} onChange={() => setter(name, true, index)} id={`${name}-${index}-true`} />
+            <label className="tw-ml-1 tw-mb-0 tw-text-13px" htmlFor={`${name}-${index}-true`}>Тийм</label>
          </div>
          <div className="tw-flex tw-items-center tw-px-2">
-            <input className="tw-w-3.5 tw-h-3.5" type="checkbox" checked={typeof (checked) === 'boolean' && !checked} onChange={() => setter(name, false, index)} id={`${name}-${index}-false`} />
-            <label className="tw-ml-1 tw-mb-0" htmlFor={`${name}-${index}-false`}>Үгүй</label>
+            <input className="tw-w-3 tw-h-3" type="checkbox" checked={typeof (checked) === 'boolean' && !checked} onChange={() => setter(name, false, index)} id={`${name}-${index}-false`} />
+            <label className="tw-ml-1 tw-mb-0 tw-text-13px" htmlFor={`${name}-${index}-false`}>Үгүй</label>
          </div>
       </td>
    )
