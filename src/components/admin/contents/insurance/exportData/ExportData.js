@@ -151,7 +151,7 @@ const ExportDataContent = ({ SD, userId }) => {
                                 <th>{t('Total')}</th>
                             </tr>
                             
-                            {!userId?
+                            {userId?
                             <>
                                 <tr onClick={()=>selectRowHandle(other.total_sales?.id?other.total_sales:{id:'total_sales'}, "total_sales")} className={`cusorItems ${selected.id==='total_sales'?`Selected`:selected.id&&selected.id===other.total_sales?.id?`Selected`:``}`}>
                                     <td className="bold">Нийт борлуулалт</td>
