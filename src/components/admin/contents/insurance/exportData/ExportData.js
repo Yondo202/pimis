@@ -138,7 +138,6 @@ const ExportDataContent = ({ SD, userId }) => {
                             <div onClick={_=>ModalHandle('delete')} className="addBtn addBtn2"><VscError /><span>Устгах</span></div>
                         </div>
                     </div>
-                    
 
                     <table>
                         <tbody>
