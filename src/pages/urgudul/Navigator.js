@@ -164,7 +164,7 @@ export default function UrgudulNavigator() {
                         </Route>
 
                         <Route path="/urgudul/5">
-                            <UrgudulPage5 />
+                            {/* <UrgudulPage5 /> */}
                             <UrgudulPage5New />
                         </Route>
 
