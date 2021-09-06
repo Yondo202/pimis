@@ -161,7 +161,6 @@ const Insurance = () => {
                                         <td>{el.companyregister}</td>
                                         <td>{el.companyname}</td>
                                         {/* <td className="center">{el.esm}</td> */}
-
                                         <td>{el.issued_date}</td>
                                         <td>{el.expiration_date}</td>
 

@@ -176,7 +176,7 @@ const ExportDataContent = ({ SD, userId }) => {
 
                         {exportData.length === 0 && <tr className={`cusorItems ghost`}>
                             <td>example</td>
-                            <td>0.00 ₮</td>
+                            <td className="right">0.00 ₮</td>
                             <td className="right">0.00 ₮</td>
                             <td className="right">0.00 ₮</td>
                             <td className="right">0.00 ₮</td>
