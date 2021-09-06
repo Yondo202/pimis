@@ -113,7 +113,6 @@ const ExportDataContent = ({ SD, userId }) => {
 
     }
 
-<<<<<<< HEAD
     const ModalHandle = (typeModal) =>{
         setModalHandle(typeModal);
         if(typeModal==="add"){
@@ -124,22 +123,11 @@ const ExportDataContent = ({ SD, userId }) => {
                 if(selected?.id&&typeof selected?.id!=='string'){
                     setShowAdd(true);
                 }
-=======
-    const ModalHandle = (type) => {
-        setModalHandle(type);
-        setType('export_data');
-        if (type === "add") {
-            setShowAdd(true);
-        } else {
-            if (selected?.id && typeof selected?.id !== 'string') {
-                setShowAdd(true);
->>>>>>> 8c5091e353f0086cc2cfa09a873d7c3b53134006
             }
         }
     }
 
     return (
-<<<<<<< HEAD
             <Container style={{padding:`0px 0px`, boxShadow:`none`}}>
                 {showAdd?<Modals type={type} handle={modalHandle} selectedEx={selected} setSelectedEx={setSelected} setCond={setExCond} SD={userId?{user_id:userId}:SD} setModal={setShowAdd} years={years} country={country} />:null}
 
@@ -151,22 +139,8 @@ const ExportDataContent = ({ SD, userId }) => {
                             <div onClick={_=>ModalHandle('edit')} className="addBtn addBtn2"><RiEdit2Line /><span>Засах</span></div>
                             <div onClick={_=>ModalHandle('delete')} className="addBtn addBtn2"><VscError /><span>Устгах</span></div>
                         </div>
-=======
-        <Container style={{ padding: `0px 0px`, boxShadow: `none` }}>
-            {showAdd ? <Modals type={type} handle={modalHandle} selectedEx={selected} setSelectedEx={setSelected} setCond={setExCond} SD={userId ? { user_id: userId } : SD} setModal={setShowAdd} years={years} country={country} /> : null}
-
-            {/* <div className="smTitles">Export Data</div> */}
-            <div className="customTable T4">
-                <div className="headPar ">
-                    <div onClick={_ => ModalHandle('add')} className="addBtn addBtn2"><RiAddLine /><span>Экспорт дата - Нэмэх</span></div>
-                    <div className={`additions ${selected.id ? `` : `opacity`}`}>
-                        <div onClick={_ => ModalHandle('edit')} className="addBtn addBtn2"><RiEdit2Line /><span>Засах</span></div>
-                        <div onClick={_ => ModalHandle('delete')} className="addBtn addBtn2"><VscError /><span>Устгах</span></div>
->>>>>>> 8c5091e353f0086cc2cfa09a873d7c3b53134006
                     </div>
-                </div>
 
-<<<<<<< HEAD
                     <table>
                         <tbody>
                             <tr>
@@ -180,21 +154,6 @@ const ExportDataContent = ({ SD, userId }) => {
                             </tr>
                             
                             {!userId?
-=======
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>Product name</th>
-                            {years.map((el, ind) => {
-                                return (
-                                    <th key={ind}>{el?.year}</th>
-                                )
-                            })}
-                            <th>{t('Total')}</th>
-                        </tr>
-
-                        {userId ?
->>>>>>> 8c5091e353f0086cc2cfa09a873d7c3b53134006
                             <>
                                 <tr onClick={() => selectRowHandle(other.total_sales?.id ? other.total_sales : { id: 'total_sales' }, "total_sales")} className={`cusorItems ${selected.id === 'total_sales' ? `Selected` : selected.id && selected.id === other.total_sales?.id ? `Selected` : ``}`}>
                                     <td className="bold">Нийт борлуулалт</td>
