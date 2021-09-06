@@ -310,7 +310,7 @@ export const Container = styled.div`
                     font-size:14px;
                     border-radius:50%;
                     // border:1px solid red;
-                    background:#fff;
+                    background:rgba(255,255,255,1);
                     box-shadow:0px 0px 10px -6px;
                 }
             }

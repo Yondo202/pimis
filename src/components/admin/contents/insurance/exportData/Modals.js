@@ -16,6 +16,9 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
     const [ selected, setSelected ] = useState({});
 
     const CloseHandle = () =>{
+        if(type==="export_data"&&handle==="add"){
+            setSelectedEx({})
+        }
         setName('contentParent2');
         setTimeout(() => {
             setModal(false);
@@ -89,7 +92,6 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
     const handleSelect=(val)=>{
         setSelected(val);
     }
-
 
     return (
         <CustomModal>
