@@ -113,14 +113,14 @@ const ExportDataContent = ({ SD, userId }) => {
 
     }
 
-    const ModalHandle = (typeModal) =>{
+    const ModalHandle = (typeModal) => {
         setModalHandle(typeModal);
-        if(typeModal==="add"){
+        if (typeModal === "add") {
             setType('export_data');
             setShowAdd(true);
-        }else{
-            if(type==="export_data"){
-                if(selected?.id&&typeof selected?.id!=='string'){
+        } else {
+            if (type === "export_data") {
+                if (selected?.id && typeof selected?.id !== 'string') {
                     setShowAdd(true);
                 }
             }
@@ -128,32 +128,32 @@ const ExportDataContent = ({ SD, userId }) => {
     }
 
     return (
-            <Container style={{padding:`0px 0px`, boxShadow:`none`}}>
-                {showAdd?<Modals type={type} handle={modalHandle} selectedEx={selected} setSelectedEx={setSelected} setCond={setExCond} SD={userId?{user_id:userId}:SD} setModal={setShowAdd} years={years} country={country} />:null}
+        <Container style={{ padding: `0px 0px`, boxShadow: `none` }}>
+            {showAdd ? <Modals type={type} handle={modalHandle} selectedEx={selected} setSelectedEx={setSelected} setCond={setExCond} SD={userId ? { user_id: userId } : SD} setModal={setShowAdd} years={years} country={country} /> : null}
 
-                {/* <div className="smTitles">Export Data</div> */}
-                <div className="customTable T4">
-                    <div className="headPar ">
-                        <div onClick={_=>ModalHandle('add')} className="addBtn addBtn2"><RiAddLine /><span>Экспорт дата - Нэмэх</span></div>
-                        <div className={`additions ${selected.id&&type==="export_data"?``:`opacity`}`}>
-                            <div onClick={_=>ModalHandle('edit')} className="addBtn addBtn2"><RiEdit2Line /><span>Засах</span></div>
-                            <div onClick={_=>ModalHandle('delete')} className="addBtn addBtn2"><VscError /><span>Устгах</span></div>
-                        </div>
+            {/* <div className="smTitles">Export Data</div> */}
+            <div className="customTable T4">
+                <div className="headPar ">
+                    <div onClick={_ => ModalHandle('add')} className="addBtn addBtn2"><RiAddLine /><span>Экспорт дата - Нэмэх</span></div>
+                    <div className={`additions ${selected.id && type === "export_data" ? `` : `opacity`}`}>
+                        <div onClick={_ => ModalHandle('edit')} className="addBtn addBtn2"><RiEdit2Line /><span>Засах</span></div>
+                        <div onClick={_ => ModalHandle('delete')} className="addBtn addBtn2"><VscError /><span>Устгах</span></div>
                     </div>
+                </div>
 
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>Product name</th>
-                                {years.map((el,ind)=>{
-                                    return(
-                                        <th key={ind}>{el?.year}</th>
-                                    )
-                                })}
-                                <th>{t('Total')}</th>
-                            </tr>
-                            
-                            {userId?
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Product name</th>
+                            {years.map((el, ind) => {
+                                return (
+                                    <th key={ind}>{el?.year}</th>
+                                )
+                            })}
+                            <th>{t('Total')}</th>
+                        </tr>
+
+                        {userId ?
                             <>
                                 <tr onClick={() => selectRowHandle(other.total_sales?.id ? other.total_sales : { id: 'total_sales' }, "total_sales")} className={`cusorItems ${selected.id === 'total_sales' ? `Selected` : selected.id && selected.id === other.total_sales?.id ? `Selected` : ``}`}>
                                     <td className="bold">Нийт борлуулалт</td>
