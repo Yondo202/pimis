@@ -706,9 +706,9 @@ export function Fill({ value, name, index, setter, editable, defaultLength, dott
             {value || (placeholder ?? '_'.repeat(defaultLength ?? 10))}
          </span>
 
-         <input className="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-rounded-none tw-border-b-2 tw-border-gray-700 tw-border-dotted focus:tw-outline-none tw-box-border tw-leading-snug tw-text-sm tw-placeholder-opacity-30 tw-mx-0.5" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
+         <input className="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-rounded-none tw-border-b-2 tw-border-gray-700 tw-border-dotted focus:tw-outline-none tw-box-border tw-leading-snug tw-text-sm tw-placeholder-opacity-30 tw-mx-0.5 print-no-border" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
       </span>
-      : <span className={`tw-leading-snug tw-mx-0.5 ${dotted && 'tw-border-b-2 tw-border-gray-700 tw-border-dotted tw-box-border'}`}>
+      : <span className={`tw-leading-snug tw-mx-0.5 ${dotted && 'tw-border-b-2 tw-border-gray-700 tw-border-dotted tw-box-border'} print-no-border`}>
          {value}
       </span>
 }
@@ -740,13 +740,13 @@ function SignReceiving({ signer, description, setter }) {
    return (
       <div className="tw-p-2 tw-h-44 print-no-break">
          <div className="">
-            <span className="tw-mr-2">
+            <span className="tw-mr-2 print-hide">
                Нэр:
             </span>
             <Fill value={signer.name} name="name" setter={handleInput} editable defaultLength={30} dotted />
          </div>
          <div className="mt-1">
-            <span className="tw-mr-2">
+            <span className="tw-mr-2 print-hide">
                Албан тушаал:
             </span>
             <Fill value={signer.position} name="position" setter={handleInput} editable defaultLength={30} dotted />
@@ -786,12 +786,12 @@ export function Signature({ signer, setter }) {
 
    return (
       <div className="tw-flex tw-flex-wrap tw-mt-2">
-         <div className="tw-mr-4">
+         <div className="tw-mr-4 print-hide">
             Гарын үсэг:
          </div>
          <div className="tw-relative">
             {signer.signature
-               ? <img src={signer.signature} alt="Гарын үсэг" className={`${classSignature} tw-object-scale-down`} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => setSigModalOpen(true)} />
+               ? <img src={signer.signature} alt="Гарын үсэг" className={`${classSignature} tw-object-scale-down print-border-bottom`} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => setSigModalOpen(true)} />
                : <div className={classSignature} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => setSigModalOpen(true)} />
             }
             <PenAltSVG className={`tw-absolute tw-top-1/2 tw-left-1/2 tw--translate-x-1/2 tw-w-7 tw-h-7 tw-text-gray-600 tw-transform-gpu ${hovered ? 'tw--translate-y-1/2 tw-opacity-100' : 'tw--translate-y-3/4 tw-opacity-0'} tw-transition-all tw-duration-300 tw-cursor-pointer`} onMouseEnter={() => setHovered(true)} onClick={() => setSigModalOpen(true)} />
@@ -819,4 +819,4 @@ export function Signature({ signer, setter }) {
    )
 }
 
-const classSignature = 'tw-w-52 tw-h-16 tw-border tw-rounded tw-border-gray-400 tw-cursor-pointer'
+const classSignature = 'tw-w-52 tw-h-16 tw-border tw-rounded tw-border-gray-400 tw-cursor-pointer print-border-bottom'

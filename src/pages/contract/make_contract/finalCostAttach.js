@@ -264,7 +264,7 @@ export default function FinalCostAttach({ contractId }) {
                   </tr>
                </tbody>
             </table>
-            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
+            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4 print-invisbile" onClick={handleAdd} />
          </div>
 
          <div className="tw-mt-10 tw-mx-4 sm:tw-mx-12">

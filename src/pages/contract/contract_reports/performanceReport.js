@@ -225,7 +225,7 @@ export default function PerformanceReport({ contract = {} }) {
                      )}
                   </tbody>
                </table>
-               <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
+               <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4 print-invisbile" onClick={handleAdd} />
             </div>
          </div>
 
@@ -260,7 +260,7 @@ export default function PerformanceReport({ contract = {} }) {
                      )}
                   </tbody>
                </table>
-               <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAddAlt} />
+               <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4 print-invisbile" onClick={handleAddAlt} />
             </div>
          </div>
 
@@ -305,7 +305,10 @@ export default function PerformanceReport({ contract = {} }) {
                                  <span className="tw-mr-3">
                                     Огноо:
                                  </span>
-                                 <input className="focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none" type="date" value={signer.date ?? ''} onChange={e => handleInputSigner('date', e.target.value, signer.order)} />
+                                 <input className="focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none print-hide" type="date" value={signer.date ?? ''} onChange={e => handleInputSigner('date', e.target.value, signer.order)} />
+                                 <span className="tw-hidden print-show">
+                                    {signer.date?.replaceAll('-', '.')}
+                                 </span>
                               </div>
                            </div>
                         )}

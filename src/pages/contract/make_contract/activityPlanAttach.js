@@ -145,9 +145,15 @@ export default function ActivityPlanAttach({ contractId }) {
 
                         <td className={classCell}>
                            <input className={classInputDate} type="date" value={row.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value, i)} />
+                           <span className="tw-hidden print-show">
+                              {row.start_date?.replaceAll('-', '.')}
+                           </span>
                         </td>
                         <td className={classCell}>
                            <input className={classInputDate} type="date" value={row.end_date ?? ''} onChange={e => handleInput('end_date', e.target.value, i)} />
+                           <span className="tw-hidden print-show">
+                              {row.end_date?.replaceAll('-', '.')}
+                           </span>
                         </td>
 
                         <TextareaCell value={row.budget} name="budget" index={i} setter={handleInput} />
@@ -159,7 +165,7 @@ export default function ActivityPlanAttach({ contractId }) {
                   )}
                </tbody>
             </table>
-            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
+            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4 print-invisbile" onClick={handleAdd} />
          </div>
 
          <div className="tw-mt-6 tw-mx-2 sm:tw-mx-8">
@@ -182,6 +188,9 @@ export default function ActivityPlanAttach({ contractId }) {
                   <div className="tw-mt-2">
                      <span className="tw-mr-3">Огноо:</span>
                      <input className={classInputDate} type="date" value={signer.date ?? ''} onChange={e => handleChangeSigner('date', e.target.value, i)} />
+                     <span className="tw-hidden print-show">
+                        {signer.date?.replaceAll('-', '.')}
+                     </span>
                   </div>
                </div>
             )}
@@ -197,4 +206,4 @@ export default function ActivityPlanAttach({ contractId }) {
 }
 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2'
-const classInputDate = 'focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none'
+const classInputDate = 'focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none print-hide'
