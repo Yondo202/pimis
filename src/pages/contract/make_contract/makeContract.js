@@ -699,16 +699,16 @@ export function Provision({ order, provision, subLevel }) {
    )
 }
 
-export function Fill({ value, name, index, setter, editable, defaultLength, dotted, placeholder, textSmall = false }) {
+export function Fill({ value, name, index, setter, editable, defaultLength, dotted, placeholder }) {
    return editable
-      ? <span className={`tw-relative tw-inline-block ${textSmall ? 'tw-text-13px' : ''}`}>
+      ? <span className="tw-relative tw-inline-block">
          <span className="tw-invisible tw-leading-snug tw-mx-0.5">
             {value || (placeholder ?? '_'.repeat(defaultLength ?? 10))}
          </span>
 
-         <input className="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-rounded-none tw-border-b-2 tw-border-gray-700 tw-border-dotted focus:tw-outline-none tw-box-border tw-leading-snug tw-text-sm tw-placeholder-opacity-30 tw-mx-0.5 print-no-border" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
+         <input className="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-rounded-none tw-border-b-2 tw-border-gray-700 tw-border-dotted focus:tw-outline-none tw-box-border tw-leading-snug tw-placeholder-opacity-30 tw-mx-0.5 print-no-border" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
       </span>
-      : <span className={`tw-leading-snug tw-mx-0.5 ${dotted && 'tw-border-b-2 tw-border-gray-700 tw-border-dotted tw-box-border'} print-no-border ${textSmall ? 'tw-text-13px' : ''}`}>
+      : <span className={`tw-leading-snug tw-mx-0.5 ${dotted && 'tw-border-b-2 tw-border-gray-700 tw-border-dotted tw-box-border'} print-no-border`}>
          {value}
       </span>
 }

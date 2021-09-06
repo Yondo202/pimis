@@ -27,7 +27,4 @@
    .print-show {
       display: inline;
    }
-   ::placeholder {
-      color: transparent;
-   }
 }

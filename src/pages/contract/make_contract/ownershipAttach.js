@@ -168,17 +168,17 @@ export default function OwnershipAttach({ contract = {} }) {
                <tbody>
                   {owners.map((owner, i) =>
                      <tr key={i}>
-                        <td className={classCell} style={{ width: 180 }}>
+                        <td className={`${classCell} tw-text-13px`} style={{ width: 180 }}>
                            <div className="tw-flex tw-py-0.5">
-                              <Fill value={owner.fullname} name="fullname" index={i} setter={handleInputOwner} editable dotted placeholder="Овог нэр" textSmall />
+                              <Fill value={owner.fullname} name="fullname" index={i} setter={handleInputOwner} editable dotted placeholder="Овог нэр" />
                               <span className="tw-mx-1">,</span>
                            </div>
                            <div className="tw-flex tw-py-0.5">
-                              <Fill value={owner.citizenship} name="citizenship" index={i} setter={handleInputOwner} editable dotted placeholder="Иргэний харьяалал" textSmall />
+                              <Fill value={owner.citizenship} name="citizenship" index={i} setter={handleInputOwner} editable dotted placeholder="Иргэний харьяалал" />
                               <span className="tw-mx-1">,</span>
                            </div>
                            <div className="tw-flex tw-py-0.5">
-                              <Fill value={owner.residence_country} name="residence_country" index={i} setter={handleInputOwner} editable dotted placeholder="Оршин суугаа улс" textSmall />
+                              <Fill value={owner.residence_country} name="residence_country" index={i} setter={handleInputOwner} editable dotted placeholder="Оршин суугаа улс" />
                               <span className="tw-mx-1">,</span>
                            </div>
                         </td>

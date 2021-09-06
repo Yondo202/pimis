@@ -324,7 +324,6 @@ export default function FinalCostAttach({ contractId }) {
 }
 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2'
-const classCellAlt = 'tw-border tw-border-gray-300 tw-p-2 tw-align-top'
 
 function NetAmount({ sum }) {
    return (
