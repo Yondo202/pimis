@@ -131,7 +131,7 @@ function Home() {
                                             <select className="focus:tw-outline-none tw-bg-transparent tw-pr-1 tw-font-medium" value={selectedIndex} onChange={e => handleSelect(e.target.value)}>
                                                 {projects.map((project, i) =>
                                                     <option className="tw-p-2 tw-font-normal" value={i}>
-                                                        {project.project.project_number} ({project.project.project_type_name})
+                                                        {project.project?.project_number} ({project.project?.project_type_name})
                                                     </option>
                                                 )}
                                             </select>
