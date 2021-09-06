@@ -153,7 +153,7 @@ const ExportDataContent = ({ SD, userId }) => {
                                 <th>{t('Total')}</th>
                             </tr>
                             
-                            {!userId?
+                            {userId?
                             <>
                                 <tr onClick={() => selectRowHandle(other.total_sales?.id ? other.total_sales : { id: 'total_sales' }, "total_sales")} className={`cusorItems ${selected.id === 'total_sales' ? `Selected` : selected.id && selected.id === other.total_sales?.id ? `Selected` : ``}`}>
                                     <td className="bold">Нийт борлуулалт</td>
@@ -166,9 +166,9 @@ const ExportDataContent = ({ SD, userId }) => {
                                 <tr onClick={() => selectRowHandle(other.emp_count?.id ? other.emp_count : { id: 'emp_count' }, "emp_count")} className={`cusorItems ${selected.id === 'emp_count' ? `Selected` : selected.id && selected.id === other.emp_count?.id ? `Selected` : ``}`}>
                                     <td className="bold">Ажилчдын тоо</td>
                                     {years.map((e, i) => <td key={i} className="center">{other.emp_count?.id ? NumberComma(other.emp_count[`e${e.year}`]) : null}</td>)}
-                                    <td className="center bold blue">
+                                    <td className="right bold blue">
                                         {other.emp_count?.id ? NumberComma(other.emp_count.e2016 + other.emp_count.e2017 + other.emp_count.e2018 + other.emp_count.e2019 + other.emp_count.e2020 + other.emp_count.e2021 + other.emp_count.e2022 + other.emp_count.e2023 + other.emp_count.e2024 + other.emp_count.e2025
-                                            + other.emp_count.e2026 + other.emp_count.e2027 + other.emp_count.e2028 + other.emp_count.e2029 + other.emp_count.e2030) : null}
+                                            + other.emp_count.e2026 + other.emp_count.e2027 + other.emp_count.e2028 + other.emp_count.e2029 + other.emp_count.e2030) : null} ₮
                                     </td>
                                 </tr>
                             </>
