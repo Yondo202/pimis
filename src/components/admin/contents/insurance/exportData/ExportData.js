@@ -9,7 +9,7 @@ import { NumberComma } from "components/misc/NumberComma"
 import { useTranslation } from 'react-i18next';
 import axios from 'axiosbase';
 
-const ExportData = ({setModal, SD, userId}) =>{
+const ExportData = ({setModal, SD, userId, set}) =>{
     const [t] = useTranslation();
     const [ cName, setName ] = useState('');
 
@@ -21,7 +21,7 @@ const ExportData = ({setModal, SD, userId}) =>{
     }
 
     return(
-        !userId?<CustomModal style={{paddingTop:`3rem`}}>
+        set&&!userId?<CustomModal style={{paddingTop:`3rem`}}>
                 <div className={`contentParent ${cName}`} style={{width:"54rem"}}>
                     <div className="head">
                         <div className="title">{t('Export Data')}</div>
@@ -54,7 +54,6 @@ export default ExportData
 const ExportDataContent = ({ SD, userId }) => {
     const [t] = useTranslation();
     const [ exCond, setExCond ] = useState(false);
-    // const [ years, setYears ] = useState([]);
     const [ modalHandle, setModalHandle ] = useState('');
     const [ showAdd, setShowAdd ] = useState(false);
     const [ selected, setSelected ] = useState({});
@@ -63,13 +62,15 @@ const ExportDataContent = ({ SD, userId }) => {
     const [ fCountry, setFCountry ] = useState([]);
     const [ type, setType ] = useState('export_data');
 
+    const [ years, setYears ] = useState([]);
     const [ other, setOther ] = useState({});
 
     useEffect(()=>{
         void async function fetch(){
            let res = await axios.get(`countries`);
+           let year = await axios.get(`years/true`);
+           setYears(year?.data.data);
            setCountry(res.data.data);
-        //    let years = await axios.get('years/true');
         }()
     },[])
 
@@ -77,7 +78,6 @@ const ExportDataContent = ({ SD, userId }) => {
         setFCountry([])
         void async function fetch(){
             let data = await axios.get(`export-data?userId=${userId?userId:SD?.user_id}`,{ headers: {Authorization: AccessToken()} });
-            console.log(`data`, data);
             data?.data.targ_country.forEach(item=>{
                 axios.get(`countries/${item}`).then(res=>{
                     setFCountry(prev=>[...prev, res.data.data]);
@@ -89,17 +89,33 @@ const ExportDataContent = ({ SD, userId }) => {
     },[exCond]);
 
     const selectRowHandle = (el, type) =>{
-        if(selected.id===el.id){
-            setSelected({});
-            setType('');
+        if(type==="export_data"){
+            if(selected.id===el.id){
+                setSelected({});
+                setType('export_data');
+            }else{
+                setType(type);
+                setSelected(el);
+            }
         }else{
-            setType(type);
-            setSelected(el);
+            if(el.id==="total_sales"||el.id==="emp_count"){
+                setModalHandle('add');
+                setType(type);
+                setSelected(el);
+                setShowAdd(true);
+            }else{
+                setModalHandle('edit');
+                setType(type);
+                setSelected(el);
+                setShowAdd(true);
+            }
         }
+        
     }
 
     const ModalHandle = (type) =>{
         setModalHandle(type);
+        setType('export_data');
         if(type==="add"){
             setShowAdd(true);
         }else{
@@ -113,16 +129,16 @@ const ExportDataContent = ({ SD, userId }) => {
             <Container style={{padding:`0px 0px`, boxShadow:`none`}}>
                 {showAdd?<Modals type={type} handle={modalHandle} selectedEx={selected} setSelectedEx={setSelected} setCond={setExCond} SD={userId?{user_id:userId}:SD} setModal={setShowAdd} years={years} country={country} />:null}
 
-                <div className="smTitles">Export Data</div>
+                {/* <div className="smTitles">Export Data</div> */}
                 <div className="customTable T4">
                     <div className="headPar ">
-                        {/* <div className="title"></div> */}
-                        <div onClick={_=>ModalHandle('add')} className="addBtn addBtn2"><RiAddLine /><span>Нэмэх</span></div>
+                        <div onClick={_=>ModalHandle('add')} className="addBtn addBtn2"><RiAddLine /><span>Экспорт дата - Нэмэх</span></div>
                         <div className={`additions ${selected.id?``:`opacity`}`}>
                             <div onClick={_=>ModalHandle('edit')} className="addBtn addBtn2"><RiEdit2Line /><span>Засах</span></div>
                             <div onClick={_=>ModalHandle('delete')} className="addBtn addBtn2"><VscError /><span>Устгах</span></div>
                         </div>
                     </div>
+                    
 
                     <table>
                         <tbody>
@@ -130,26 +146,28 @@ const ExportDataContent = ({ SD, userId }) => {
                                 <th>Product name</th>
                                 {years.map((el,ind)=>{
                                     return(
-                                        <th key={ind}>{el}</th>
+                                        <th key={ind}>{el?.year}</th>
                                     )
                                 })}
                                 <th>{t('Total')}</th>
                             </tr>
                             
-                            {userId?
+                            {!userId?
                             <>
                                 <tr onClick={()=>selectRowHandle(other.total_sales?.id?other.total_sales:{id:'total_sales'}, "total_sales")} className={`cusorItems ${selected.id==='total_sales'?`Selected`:selected.id&&selected.id===other.total_sales?.id?`Selected`:``}`}>
                                     <td className="bold">Нийт борлуулалт</td>
-                                    {years.map((e, i)=><td key={i} className="right">{other.total_sales?.id?NumberComma(other.total_sales[`e${e}`]):null}</td>)}
+                                    {years.map((e, i)=><td key={i} className="right">{other.total_sales?.id?NumberComma(other.total_sales[`e${e.year}`]):null}</td>)}
                                     <td className="right bold blue">
-                                            {other.total_sales?.id?NumberComma(other.total_sales.e2016+other.total_sales.e2017+other.total_sales.e2018+other.total_sales.e2019+other.total_sales.e2020+other.total_sales.e2021):null} ₮
+                                            {other.total_sales?.id?NumberComma(other.total_sales.e2016+other.total_sales.e2017+other.total_sales.e2018+other.total_sales.e2019+other.total_sales.e2020+other.total_sales.e2021+other.total_sales.e2022+other.total_sales.e2023+other.total_sales.e2024+other.total_sales.e2025
+                                            +other.total_sales.e2026+other.total_sales.e2027+other.total_sales.e2028+other.total_sales.e2029+other.total_sales.e2030):null} ₮
                                     </td>
                                 </tr>
                                 <tr onClick={()=>selectRowHandle( other.emp_count?.id?other.emp_count:{id:'emp_count'}, "emp_count")} className={`cusorItems ${selected.id==='emp_count'?`Selected`:selected.id&&selected.id===other.emp_count?.id?`Selected`:``}`}>
                                     <td className="bold">Ажилчдын тоо</td>
-                                    {years.map((e, i)=> <td key={i} className="center">{other.emp_count?.id?NumberComma(other.emp_count[`e${e}`]):null}</td> )}
+                                    {years.map((e, i)=> <td key={i} className="center">{other.emp_count?.id?NumberComma(other.emp_count[`e${e.year}`]):null}</td> )}
                                     <td className="center bold blue">
-                                        {other.emp_count?.id?NumberComma(other.emp_count.e2016+other.emp_count.e2017+other.emp_count.e2018+other.emp_count.e2019+other.emp_count.e2020+other.emp_count.e2021):null}
+                                        {other.emp_count?.id?NumberComma(other.emp_count.e2016+other.emp_count.e2017+other.emp_count.e2018+other.emp_count.e2019+other.emp_count.e2020+other.emp_count.e2021+other.emp_count.e2022+other.emp_count.e2023+other.emp_count.e2024+other.emp_count.e2025
+                                            +other.emp_count.e2026+other.emp_count.e2027+other.emp_count.e2028+other.emp_count.e2029+other.emp_count.e2030):null}
                                     </td>
                                 </tr>
                             </>
@@ -168,8 +186,8 @@ const ExportDataContent = ({ SD, userId }) => {
 
                             {fCountry.map((elem,index)=>{
                                 return(
-                                    <>
-                                        <tr className="filterCountryRow" key={index}><td className="filterCountry">{elem?.description_mon}</td></tr>
+                                    <React.Fragment key={index}>
+                                        <tr className="filterCountryRow" ><td className="filterCountry">{elem?.description_mon}</td></tr>
                                         {exportData.map((el,ind)=>{
                                             if(elem?.id===el?.countryId){
                                                 return(
@@ -177,17 +195,18 @@ const ExportDataContent = ({ SD, userId }) => {
                                                         <td className="bold">{el.product_name}</td>
                                                         {years.map((e, i)=>{
                                                             return(
-                                                                <td key={i} className="right">{NumberComma(el[`e${e}`])}</td>
+                                                                <td key={i} className="right">{NumberComma(el[`e${e.year}`])}</td>
                                                             )
                                                         })}
                                                         <td className="right bold blue">
-                                                            {NumberComma(el.e2016+el.e2017+el.e2018+el.e2019+el.e2020+el.e2021)} ₮
+                                                            {NumberComma(el.e2016+el.e2017+el.e2018+el.e2019+el.e2020+el.e2021+el.e2022+el.e2023+el.e2024+el.e2025
+                                                                            +el.e2026+el.e2027+el.e2028+el.e2029+el.e2030)} ₮
                                                         </td>
                                                     </tr>
                                                 )
                                             }
                                         })}
-                                    </>
+                                    </React.Fragment>
                                 )
                             })}
                         </tbody>
@@ -202,6 +221,6 @@ const InputsParent = styled.div`
     gap:35px;
 `
 
-const years =  [
-    "2016","2017","2018","2019","2020","2021", "2022"
-]
+// const years =  [
+//     "2016","2017","2018","2019","2020","2021"
+// ]

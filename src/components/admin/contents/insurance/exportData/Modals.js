@@ -90,6 +90,7 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
         setSelected(val);
     }
 
+
     return (
         <CustomModal>
             <div className={`contentParent ${cName}`} style={{width:"40rem"}}>
@@ -150,14 +151,14 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                                 {years.map((el,ind)=>{
                                     return(
                                     <InputStyle key={ind} className="itemss">
-                                        <div style={{fontWeight:`500`}} className="label">{el}</div>
+                                        <div style={{fontWeight:`500`}} className="label">{el.year}</div>
                                         <NumberFormat
-                                            defaultValue={handle!=='add'?selectedEx[`e${el}`]:``}
+                                            defaultValue={handle!=='add'?selectedEx[`e${el.year}`]:``}
                                             placeholder={`0 ₮`} 
                                             // value={rate}
                                             //  onChange={e=>setRate(e.target.value.slice(0, -1).replace(/,/g, ''))}
                                             style={{textAlign:`right`, paddingRight:`7px`}} thousandSeparator={true} suffix={' ₮'}
-                                            name={el}
+                                            name={el.year}
                                             className="gettInpps"
                                         />
                                     </InputStyle>

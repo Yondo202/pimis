@@ -209,7 +209,7 @@ export const Container = styled.div`
         margin-bottom:10px;
     }
     .opacity{
-        opacity:0.6;
+        opacity:0.4;
     }
     .customTable{
         width:100%;
