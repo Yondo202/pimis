@@ -19,7 +19,7 @@ const modulesFull = {
     ]
 }
 
-const modulesSmall = {
+export const modulesSmall = {
     toolbar: [
         [{ 'size': ['small', false, 'large', 'huge'] }],
         [{ 'font': [] }],

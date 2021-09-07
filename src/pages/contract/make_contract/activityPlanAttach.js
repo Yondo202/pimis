@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { TextareaCell } from '../contract_reports/protectionReport'
-import { Signature } from './makeContract'
+import MakeContract, { Signature, Fill } from './makeContract'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useContext } from 'react'
 import AlertContext from 'components/utilities/alertContext'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
+import NumberFormat from 'react-number-format'
 
 const initialState = [{
    work: null,
@@ -18,11 +19,13 @@ const initialState = [{
 
 const initialSigners = [{
    order: 1,
+   name: null,
    position: 'Экспортыг дэмжих төслийн Зохицуулагч',
    signature: null,
    date: null
 }, {
    order: 2,
+   name: null,
    position: 'Санхүүгийн дэмжлэг хүртэгч хуулийн этгээдийн захирал',
    signature: null,
    date: null
@@ -35,7 +38,7 @@ export default function ActivityPlanAttach({ contractId }) {
 
    const handleInput = (key, value, index) => setPlan(prev => {
       const next = [...prev]
-      next[index][key] = value
+      next[index][key] = value ?? null
       return next
    })
 
@@ -143,14 +146,21 @@ export default function ActivityPlanAttach({ contractId }) {
 
                         <TextareaCell value={row.work} name="work" index={i} setter={handleInput} />
 
-                        <td className={classCell}>
+                        <td className={classCellAlt}>
                            <input className={classInputDate} type="date" value={row.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value, i)} />
+                           <span className="tw-hidden tw-text-13px print-show">
+                              {row.start_date?.replaceAll('-', '.')}
+                           </span>
                         </td>
-                        <td className={classCell}>
+                        <td className={classCellAlt}>
                            <input className={classInputDate} type="date" value={row.end_date ?? ''} onChange={e => handleInput('end_date', e.target.value, i)} />
+                           <span className="tw-hidden tw-text-13px print-show">
+                              {row.end_date?.replaceAll('-', '.')}
+                           </span>
                         </td>
 
-                        <TextareaCell value={row.budget} name="budget" index={i} setter={handleInput} />
+                        {/* <TextareaCell value={row.budget} name="budget" index={i} setter={handleInput} /> */}
+                        <TableCellCurrency value={row.budget} name="budget" index={i} setter={handleInput} />
                         <TextareaCell value={row.in_charge} name="in_charge" index={i} setter={handleInput} />
                         <td className="">
                            <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
@@ -159,7 +169,7 @@ export default function ActivityPlanAttach({ contractId }) {
                   )}
                </tbody>
             </table>
-            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
+            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4 print-invisbile" onClick={handleAdd} />
          </div>
 
          <div className="tw-mt-6 tw-mx-2 sm:tw-mx-8">
@@ -175,13 +185,22 @@ export default function ActivityPlanAttach({ contractId }) {
          <div className="tw-mt-8 tw-mx-4 sm:tw-mx-12 tw-pb-8">
             {signers.map((signer, i) =>
                <div className="tw-mt-6 print-no-break" key={i}>
-                  <p className="">
-                     {signer.position}:
+                  <div className="">
+                     <span className="tw-mr-2 print-hide">
+                        Нэр:
+                     </span>
+                     <Fill value={signer.name} name="name" index={i} setter={handleChangeSigner} editable defaultLength={24} />
+                  </div>
+                  <p className="tw-mt-1">
+                     {signer.position}
                   </p>
                   <Signature signer={signer} setter={setSigners} />
-                  <div className="tw-mt-2">
+                  <div className="tw-mt-1">
                      <span className="tw-mr-3">Огноо:</span>
                      <input className={classInputDate} type="date" value={signer.date ?? ''} onChange={e => handleChangeSigner('date', e.target.value, i)} />
+                     <span className="tw-hidden tw-text-13px print-show">
+                        {signer.date?.replaceAll('-', '.')}
+                     </span>
                   </div>
                </div>
             )}
@@ -197,4 +216,13 @@ export default function ActivityPlanAttach({ contractId }) {
 }
 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2'
-const classInputDate = 'focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none'
+const classCellAlt = 'tw-border tw-border-gray-300 tw-p-2 tw-align-top'
+const classInputDate = 'focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none print-hide'
+
+export function TableCellCurrency({ value, name, index, setter }) {
+   return (
+      <td className={classCellAlt}>
+         <NumberFormat className="focus:tw-outline-none tw-rounded-none tw-border-b-2 tw-border-gray-700 tw-border-dotted tw-text-right tw-w-28 tw-float-right print-no-border tw-text-13px" thousandSeparator suffix=" ₮" value={value ?? ''} onValueChange={values => setter(name, values.floatValue, index)} />
+      </td>
+   )
+}

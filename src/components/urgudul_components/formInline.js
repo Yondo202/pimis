@@ -19,7 +19,7 @@ function FormInline({ label, value, type, formats, name, index, setter, placehol
 
             <div className="tw-flex">
                 {type === 'numberFormat'
-                    ? <NumberFormat className={`tw-h-8.5 tw-text-sm tw-bg-transparent tw-border ${invalid ? 'tw-border-red-500' : 'tw-border-gray-400 focus:tw-border-blue-700'} tw-rounded tw-pt-2 tw-pb-1 tw-px-2 tw-outline-none tw-transition-colors tw-duration-700 tw-placeholder-gray-400 tw-text-13px focus:tw-shadow ${classInput}`} {...formats} value={value ?? ''} onValueChange={(values) => setter(name, values, index)} placeholder={placeholder} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
+                    ? <NumberFormat className={`tw-h-8.5 tw-text-sm tw-bg-transparent tw-border ${invalid ? 'tw-border-red-500' : 'tw-border-gray-400 focus:tw-border-blue-700'} tw-rounded tw-pt-2 tw-pb-1 tw-px-2 tw-outline-none tw-transition-colors tw-duration-700 tw-placeholder-gray-400 tw-text-13px focus:tw-shadow ${classInput}`} {...formats} value={value ?? ''} onValueChange={values => setter(name, values, index)} placeholder={placeholder} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
 
                     : <input className={`tw-h-8.5 tw-text-sm tw-bg-transparent tw-border ${invalid ? 'tw-border-red-500' : 'tw-border-gray-400 focus:tw-border-blue-700'} tw-rounded tw-pt-2 tw-pb-1 tw-px-2 tw-outline-none tw-transition-colors tw-duration-700 tw-placeholder-gray-400 tw-text-13px focus:tw-shadow ${classInput}`} type={type} {...formats} value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} onFocus={() => setFocused(true)} onBlur={handleBlur} ref={inputRef} />
                 }

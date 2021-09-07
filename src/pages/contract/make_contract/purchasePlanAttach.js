@@ -7,6 +7,7 @@ import AlertContext from 'components/utilities/alertContext'
 import { Fill, Signature } from './makeContract'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
+import { TableCellCurrency } from './activityPlanAttach'
 
 const initialPlan = [{
    purchase: null,
@@ -34,7 +35,7 @@ export default function PurchasePlanAttach({ contractId }) {
 
    const handleInput = (key, value, index) => setPlan(prev => {
       const next = [...prev]
-      next[index][key] = value
+      next[index][key] = value ?? null
       return next
    })
 
@@ -135,7 +136,7 @@ export default function PurchasePlanAttach({ contractId }) {
                      <tr key={i}>
                         <td className={classCell}>{i + 1}</td>
                         <TextareaCell value={row.purchase} name="purchase" index={i} setter={handleInput} />
-                        <TextareaCell value={row.cost} name="cost" index={i} setter={handleInput} />
+                        <TableCellCurrency value={row.cost} name="cost" index={i} setter={handleInput} />
                         <TextareaCell value={row.procedure} name="procedure" index={i} setter={handleInput} />
                         <td className={classCell}>
                            <DateField label="Үнэлгээний хороо байгуулах огноо" value={row.evaluation_date} name="evaluation_date" index={i} setter={handleInput} />
@@ -151,7 +152,7 @@ export default function PurchasePlanAttach({ contractId }) {
                   )}
                </tbody>
             </table>
-            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4" onClick={handleAdd} />
+            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4 print-invisbile" onClick={handleAdd} />
          </div>
 
          <div className="tw-mt-10 tw-pb-8 tw-mx-4 sm:tw-mx-12 print-no-break">
@@ -159,9 +160,9 @@ export default function PurchasePlanAttach({ contractId }) {
                <span className="tw-mr-2">
                   Баталсан:
                </span>
-               <Fill value={signers[0].name} name="name" index={0} setter={handleInputSigner} editable defaultLength={20} dotted />
+               <Fill value={signers[0].name} name="name" index={0} setter={handleInputSigner} editable defaultLength={20} />
             </div>
-            <p className="tw-mt-2">
+            <p className="tw-mt-1">
                Санхүүгийн дэмжлэг хүртэгч хуулийн этгээдийн захирал
             </p>
             <Signature signer={signers[0]} setter={setSigners} />
@@ -177,7 +178,7 @@ export default function PurchasePlanAttach({ contractId }) {
 }
 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2'
-const classInputDate = 'focus:tw-outline-none tw-w-32 tw-ml-1 tw-border-b tw-border-gray-500 tw-rounded-none'
+const classInputDate = 'focus:tw-outline-none tw-w-32 tw-ml-1 tw-border-b tw-border-gray-500 tw-rounded-none print-hide'
 
 function DateField({ label, value, name, index, setter, classAppend }) {
    return (
@@ -186,6 +187,9 @@ function DateField({ label, value, name, index, setter, classAppend }) {
             {label}:
          </div>
          <input className={classInputDate} type="date" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} />
+         <span className="tw-hidden tw-text-13px print-show">
+            {value?.replaceAll('-', '.')}
+         </span>
       </div>
    )
 }

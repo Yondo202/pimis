@@ -11,7 +11,7 @@ export default function AnalystReportPreview(props) {
     const rows = props.rows || []
     const info = props.info || {}
     const company = props.company || {}
-    const evalautor = props.evalautor || {}
+    const analyst = props.analyst || {}
 
     const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked
 
@@ -22,7 +22,7 @@ export default function AnalystReportPreview(props) {
     })
 
     const handleOpenPdf = async () => {
-        const blob = await pdf(<AnalystReportPreviewPdf rows={rows} info={info} company={company} evalautor={evalautor} htmlImg={htmlImg} />).toBlob()
+        const blob = await pdf(<AnalystReportPreviewPdf rows={rows} info={info} company={company} analyst={analyst} htmlImg={htmlImg} />).toBlob()
         const url = URL.createObjectURL(blob)
         window.open(url, '_blank ')
     }
@@ -30,6 +30,7 @@ export default function AnalystReportPreview(props) {
     const htmlImgRef = useRef()
 
     const [htmlImg, setHtmlImg] = useState()
+
 
     useEffect(() => {
         html2canvas(htmlImgRef.current, {
@@ -87,7 +88,7 @@ export default function AnalystReportPreview(props) {
                 <div className="tw-p-1">
                     Шинжилгээ хийсэн Бизнес шинжээч:
                     <span className="tw-font-medium tw-ml-2">
-                        {evalautor.id && `${evalautor.lastname.substr(0, 1).toUpperCase()}. ${evalautor.firstname}`}
+                        {info.analyst_name}
                     </span>
                 </div>
                 <div className="tw-p-1">
@@ -114,29 +115,71 @@ export default function AnalystReportPreview(props) {
                                 {row.isChecked ? 'Тэнцсэн' : 'Тэнцээгүй'}
                             </div>
                         </div>
-                        {row.comment &&
-                            <div className="tw-px-4 tw-py-2 tw-border tw-border-t-0 tw-border-gray-400 tw-text-right tw-italic" id="no-break">
-                                ({row.comment})
+                        {row.comment && row.comment !== '<p><br></p>' &&
+                            <div className="tw-border tw-border-t-0 tw-border-gray-400 tw-p-2 tw-pl-9">
+                                <div className="tw-py-1 tw-px-2 tw-rounded" style={{ backgroundColor: '#f5faff' }} dangerouslySetInnerHTML={{ __html: row.comment }} />
                             </div>
                         }
                     </Fragment>,
-                }[row.rowcode] || <Fragment key={row.rowcode}>
+                }[row.rowcode] ||
+                    <Fragment key={row.rowcode}>
                         <div className="tw-flex tw-border tw-border-t-0 tw-border-gray-400" id="no-break">
                             <div className={`tw-flex-grow tw-p-2 ${['a', 'b', 'c'].includes(row.rowcode) ? 'tw-pl-3' : 'tw-pl-5'} tw-border-r tw-border-gray-400`}>
+                                {!['a', 'b', 'c'].includes(row.rowcode) &&
+                                    <span className="tw-mr-2 tw-font-normal">
+                                        {row.rowcode.slice(-1)}.
+                                    </span>
+                                }
                                 {row.description}
                             </div>
                             <div className="tw-w-24 tw-py-2 tw-flex tw-justify-center tw-items-center tw-flex-shrink-0">
                                 {row.isChecked ? 'Тийм' : 'Үгүй'}
                             </div>
                         </div>
-                        {row.comment &&
-                            <div className="tw-px-4 tw-py-2 tw-border tw-border-t-0 tw-border-gray-400 tw-text-right tw-italic" id="no-break">
-                                ({row.comment})
+                        {row.comment && row.comment !== '<p><br></p>' &&
+                            <div className="tw-border tw-border-t-0 tw-border-gray-400 tw-p-2 tw-pl-9">
+                                <div className="tw-py-1 tw-px-2 tw-rounded" style={{ backgroundColor: '#f5faff' }} dangerouslySetInnerHTML={{ __html: row.comment }} />
                             </div>
                         }
                     </Fragment>
                 ))}
+
+                <div className="tw-mt-8 tw-p-2 tw-mb-4" style={{ marginLeft: '10%' }}>
+                    <div className="">
+                        Сонгон шалгаруулалтын багийн хуралд танилцуулахыг зөвшөөрсөн:
+                    </div>
+                    <div className="tw-pl-4 tw-mt-2">
+                        <div className="">
+                            {info.ahlah_name}
+                        </div>
+                        <p className="tw-mt-1">
+                            Бизнес хөгжлийн ахлах мэргэжилтэн
+                        </p>
+                        {info.ahlah_signature
+                            ? <img src={info.ahlah_signature} className={classSignature} alt="Гарын үсэг" />
+                            : <div className={classSignature} />
+                        }
+                    </div>
+
+                    <div className="tw-mt-6">
+                        Боловсруулсан:
+                    </div>
+                    <div className="tw-pl-4 tw-mt-2">
+                        <div className="">
+                            {info.zuvluh_name}
+                        </div>
+                        <p className="tw-mt-1">
+                            Бизнес хөгжлийн зөвлөх
+                        </p>
+                        {info.zuvluh_signature
+                            ? <img src={info.zuvluh_signature} className={classSignature} alt="Гарын үсэг" />
+                            : <div className={classSignature} />
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     )
 }
+
+const classSignature = 'tw-w-52 tw-h-16 tw-border-b tw-border-gray-500'

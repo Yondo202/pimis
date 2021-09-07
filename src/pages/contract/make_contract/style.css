@@ -13,4 +13,18 @@
    .print-break-after {
       page-break-after: always;
    }
+   .print-no-border {
+      border: none;
+   }
+   .print-hide {
+      display: none;
+   }
+   .print-border-bottom {
+      border: none;
+      border-radius: 0;
+      border-bottom: 1px solid rgb(49, 49, 49);
+   }
+   .print-show {
+      display: inline;
+   }
 }

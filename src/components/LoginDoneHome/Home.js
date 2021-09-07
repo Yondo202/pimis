@@ -43,16 +43,17 @@ function Home() {
             console.log(`res`, res);
             if (res.data.data[0]) {
                 // setInfData(res.data.data[0])
+
                 const projects = res.data.data ?? []
                 const lastIndex = (projects ?? ['']).length - 1
                 setProjects(projects)
                 setSelectedIndex(lastIndex)
-                const projectId = projects[lastIndex].project.id
-                history.push({
+                const projectId = projects[lastIndex].project?.id
+                setInfData(projects[lastIndex])
+                projectId && history.push({
                     pathname: '/',
                     search: `?projectId=${projectId}`
                 })
-                setInfData(projects[lastIndex])
 
                 if (!res.data.data[0]?.criteria) {
                     setTimeout(() => {
@@ -125,18 +126,25 @@ function Home() {
                                         </div>
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="tw-grid tw-grid-cols-1 tw-gap-y-1 tw-place-items-start">
-                                            <div className="tw-font-medium">
-                                                Түншлэлийн гэрээ байгуулах өргөдлийн маягт сонгох:
+                                        {projects?.length > 1
+                                            ? <div className="tw-grid tw-grid-cols-1 tw-gap-y-1 tw-place-items-start">
+                                                <div className="tw-font-medium">
+                                                    Түншлэлийн гэрээ байгуулах өргөдлийн маягт сонгох:
+                                                </div>
+                                                <select className="focus:tw-outline-none tw-bg-transparent tw-pr-1 tw-font-medium" value={selectedIndex} onChange={e => handleSelect(e.target.value)}>
+                                                    {projects.map((project, i) =>
+                                                        <option className="tw-p-2 tw-font-normal" value={i} key={i}>
+                                                            {project.project?.project_number} ({project.project?.project_type_name})
+                                                        </option>
+                                                    )}
+                                                </select>
                                             </div>
-                                            <select className="focus:tw-outline-none tw-bg-transparent tw-pr-1 tw-font-medium" value={selectedIndex} onChange={e => handleSelect(e.target.value)}>
-                                                {projects.map((project, i) =>
-                                                    <option className="tw-p-2 tw-font-normal" value={i}>
-                                                        {project.project?.project_number} ({project.project?.project_type_name})
-                                                    </option>
-                                                )}
-                                            </select>
-                                        </div>
+                                            : <div className="">
+                                                <div className="headItems">
+                                                    <span className="text">Түншлэлийн гэрээ</span>
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             }
