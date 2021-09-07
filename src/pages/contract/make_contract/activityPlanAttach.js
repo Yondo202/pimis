@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { TextareaCell } from '../contract_reports/protectionReport'
-import { Signature } from './makeContract'
+import MakeContract, { Signature, Fill } from './makeContract'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useContext } from 'react'
@@ -19,11 +19,13 @@ const initialState = [{
 
 const initialSigners = [{
    order: 1,
+   name: null,
    position: 'Экспортыг дэмжих төслийн Зохицуулагч',
    signature: null,
    date: null
 }, {
    order: 2,
+   name: null,
    position: 'Санхүүгийн дэмжлэг хүртэгч хуулийн этгээдийн захирал',
    signature: null,
    date: null
@@ -146,13 +148,13 @@ export default function ActivityPlanAttach({ contractId }) {
 
                         <td className={classCellAlt}>
                            <input className={classInputDate} type="date" value={row.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value, i)} />
-                           <span className="tw-hidden print-show">
+                           <span className="tw-hidden tw-text-13px print-show">
                               {row.start_date?.replaceAll('-', '.')}
                            </span>
                         </td>
                         <td className={classCellAlt}>
                            <input className={classInputDate} type="date" value={row.end_date ?? ''} onChange={e => handleInput('end_date', e.target.value, i)} />
-                           <span className="tw-hidden print-show">
+                           <span className="tw-hidden tw-text-13px print-show">
                               {row.end_date?.replaceAll('-', '.')}
                            </span>
                         </td>
@@ -183,14 +185,20 @@ export default function ActivityPlanAttach({ contractId }) {
          <div className="tw-mt-8 tw-mx-4 sm:tw-mx-12 tw-pb-8">
             {signers.map((signer, i) =>
                <div className="tw-mt-6 print-no-break" key={i}>
-                  <p className="">
-                     {signer.position}:
+                  <div className="">
+                     <span className="tw-mr-2 print-hide">
+                        Нэр:
+                     </span>
+                     <Fill value={signer.name} name="name" index={i} setter={handleChangeSigner} editable defaultLength={24} />
+                  </div>
+                  <p className="tw-mt-1">
+                     {signer.position}
                   </p>
                   <Signature signer={signer} setter={setSigners} />
-                  <div className="tw-mt-2">
+                  <div className="tw-mt-1">
                      <span className="tw-mr-3">Огноо:</span>
                      <input className={classInputDate} type="date" value={signer.date ?? ''} onChange={e => handleChangeSigner('date', e.target.value, i)} />
-                     <span className="tw-hidden print-show">
+                     <span className="tw-hidden tw-text-13px print-show">
                         {signer.date?.replaceAll('-', '.')}
                      </span>
                   </div>

@@ -60,7 +60,7 @@ const descriptions = {
    6: '/Санхүүгийн дэмжлэг хүртэгч байгууллагын удирдах албан тушаалтан/'
 }
 
-export default function PerformanceReport({ contract = {} }) {
+export default function PerformanceReport({ contract = {}, user = {} }) {
    const AlertCtx = useContext(AlertContext)
 
    const contractId = contract.id
@@ -127,7 +127,18 @@ export default function PerformanceReport({ contract = {} }) {
          formAlt?.length && setFormAlt(formAlt)
          signers?.length && setSigners(signers)
       })
+
    }, [contractId])
+
+   useEffect(() => {
+      setInfo(prev => ({
+         ...prev,
+         contract_number: prev.contract_number || (contract.contract_number ?? null),
+         receiver_name: prev.receiver_name || (user.name ?? null),
+         phone: prev.phone || (user.phone ?? null),
+         email: prev.email || (user.email ?? null)
+      }))
+   }, [contractId, user.id])
 
    const handleSave = () => {
       if (contractId === null || contractId === undefined) {
@@ -181,16 +192,16 @@ export default function PerformanceReport({ contract = {} }) {
 
          <div className="tw-mt-6 tw-mx-2 sm:tw-mx-6">
             <div className="">
-               Гэрээний дугаар: <Fill value={info.contract_number} name="contract_number" setter={handleInput} editable defaultLength={12} dotted />
+               Гэрээний дугаар: <Fill value={info.contract_number} name="contract_number" setter={handleInput} editable defaultLength={12} />
             </div>
             <div className="tw-mt-1">
-               Санхүүгийн дэмжлэг хүртэгчийн нэр: <Fill value={info.receiver_name} name="receiver_name" setter={handleInput} editable defaultLength={20} dotted />
+               Санхүүгийн дэмжлэг хүртэгчийн нэр: <Fill value={info.receiver_name} name="receiver_name" setter={handleInput} editable defaultLength={20} />
             </div>
             <div className="tw-mt-1">
-               Утасны дугаар: <Fill value={info.phone} name="phone" setter={handleInput} editable defaultLength={12} dotted />
+               Утасны дугаар: <Fill value={info.phone} name="phone" setter={handleInput} editable defaultLength={12} />
             </div>
             <div className="tw-mt-1">
-               Имэйл: <Fill value={info.email} name="email" setter={handleInput} editable defaultLength={20} dotted />
+               Имэйл: <Fill value={info.email} name="email" setter={handleInput} editable defaultLength={20} />
             </div>
          </div>
 
@@ -279,34 +290,32 @@ export default function PerformanceReport({ contract = {} }) {
                   maxOrder: 6,
                   category: 'Бэлтгэсэн'
                }].map(category =>
-                  <div className="tw-flex flex tw-flex-wrap tw-mt-3" key={category.category}>
+                  <div className="tw-flex flex tw-flex-wrap tw-mt-1" key={category.category}>
                      <div className="tw-pl-2 tw-mt-2 tw-mb-3 tw-w-60 tw-font-medium">
                         {category.category}:
                      </div>
                      <div className="">
                         {signers.filter(signer => signer.order >= category.minOrder && signer.order <= category.maxOrder).map((signer, i) =>
-                           <div className="tw-mb-3 print-no-break">
-                              <div className="tw-flex tw-items-center tw-mt-1.5">
-                                 <span className="tw-mr-2">
+                           <div className="tw-mb-3 print-no-break" key={i}>
+                              <div className="tw-flex tw-items-center tw-mt-1">
+                                 <span className="tw-mr-2 print-hide">
                                     Нэр:
                                  </span>
-                                 <Fill value={signer.name} name="name" index={signer.order} setter={handleInputSigner} editable defaultLength={20} dotted />
+                                 <Fill value={signer.name} name="name" index={signer.order} setter={handleInputSigner} editable defaultLength={20} />
                               </div>
-                              <div className="tw-flex tw-items-center tw-mt-1.5">
-                                 <span className="tw-mr-2">
+                              <div className="tw-flex tw-items-center tw-mt-1">
+                                 <span className="tw-mr-2 print-hide">
                                     Албан тушаал:
                                  </span>
-                                 <Fill value={signer.position} name="position" index={signer.order} setter={handleInputSigner} editable defaultLength={20} dotted />
+                                 <Fill value={signer.position} name="position" index={signer.order} setter={handleInputSigner} editable defaultLength={20} />
                               </div>
-                              <div className="">
-                                 <Signature signer={signer} setter={setSigners} />
-                              </div>
-                              <div className="tw-flex tw-items-center tw-mt-1.5">
+                              <Signature signer={signer} setter={setSigners} />
+                              <div className="tw-flex tw-items-center tw-mt-1">
                                  <span className="tw-mr-3">
                                     Огноо:
                                  </span>
                                  <input className="focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none print-hide" type="date" value={signer.date ?? ''} onChange={e => handleInputSigner('date', e.target.value, signer.order)} />
-                                 <span className="tw-hidden print-show">
+                                 <span className="tw-hidden tw-text-13px print-show">
                                     {signer.date?.replaceAll('-', '.')}
                                  </span>
                               </div>

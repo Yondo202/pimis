@@ -160,9 +160,9 @@ export default function PurchasePlanAttach({ contractId }) {
                <span className="tw-mr-2">
                   Баталсан:
                </span>
-               <Fill value={signers[0].name} name="name" index={0} setter={handleInputSigner} editable defaultLength={20} dotted />
+               <Fill value={signers[0].name} name="name" index={0} setter={handleInputSigner} editable defaultLength={20} />
             </div>
-            <p className="tw-mt-2">
+            <p className="tw-mt-1">
                Санхүүгийн дэмжлэг хүртэгч хуулийн этгээдийн захирал
             </p>
             <Signature signer={signers[0]} setter={setSigners} />
@@ -187,7 +187,7 @@ function DateField({ label, value, name, index, setter, classAppend }) {
             {label}:
          </div>
          <input className={classInputDate} type="date" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} />
-         <span className="tw-hidden print-show">
+         <span className="tw-hidden tw-text-13px print-show">
             {value?.replaceAll('-', '.')}
          </span>
       </div>

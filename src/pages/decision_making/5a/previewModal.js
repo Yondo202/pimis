@@ -1,6 +1,6 @@
 import CloseSVG from 'assets/svgComponents/closeSVG';
 import React, { useEffect, useRef } from 'react'
-import { Transition, config, animated } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops'
 
 
 export default function DecisionMakingPreviewModal(props) {

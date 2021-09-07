@@ -216,7 +216,7 @@ export default function CompilationChecklist() {
                 </div>
 
                 {projectId && canEdit &&
-                    <div className="tw-flex tw-items-center tw-justify-end tw-h-20 tw-mt-2">
+                    <div className="tw-flex tw-items-center tw-justify-end tw-h-20 tw-mt-2 tw-mr-2">
                         <button className="tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
                             Хадгалах
                         </button>

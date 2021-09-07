@@ -82,11 +82,11 @@ function ActiveComp({ userId, data }) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <Link to={projectId ? `/make-contract?projectId=${projectId}` : '/'}>
+                        <Link to={projectId ? `/make-contract?projectId=${projectId}&userId=${data?.userId}` : '/'}>
                             <div className="items arrHelp"><div className="helpArr"></div>1. Түншлэлийн гэрээ байгуулах</div>
                         </Link>
                         <div className="line"></div>
-                        <Link to={projectId ? `/contract-reports?projectId=${projectId}` : '/'}>
+                        <Link to={projectId ? `/contract-reports?projectId=${projectId}&userId=${data?.userId}` : '/'}>
                             <div className="items">2. Түншлэлийн гэрээний гүйцэтгэлийн тайлан</div>
                         </Link>
                         <div className="line"></div>

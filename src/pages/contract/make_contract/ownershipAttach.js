@@ -24,7 +24,7 @@ const initialSigners = [{
    date: null
 }]
 
-export default function OwnershipAttach({ contract = {} }) {
+export default function OwnershipAttach({ contract = {}, user = {} }) {
    const AlertCtx = useContext(AlertContext)
 
    const contractId = contract.id
@@ -48,6 +48,10 @@ export default function OwnershipAttach({ contract = {} }) {
 
    const handleRemove = (index) => setOwners(prev => prev.filter((_, i) => i !== index))
 
+   const [company, setCompany] = useState('')
+
+   const handleInputCompnay = (_, value) => setCompany(value)
+
    const [signers, setSigners] = useState(initialSigners)
 
    const handleInputSigner = (key, value, index) => setSigners(prev => {
@@ -69,6 +73,10 @@ export default function OwnershipAttach({ contract = {} }) {
          signers?.length && setSigners(signers)
       })
    }, [contractId])
+
+   useEffect(() => {
+      setCompany(prev => prev || (user.companyname ?? ''))
+   }, [user.id])
 
    const handleSave = () => {
       if (contractId === null || contractId === undefined) {
@@ -170,15 +178,15 @@ export default function OwnershipAttach({ contract = {} }) {
                      <tr key={i}>
                         <td className={`${classCell} tw-text-13px`} style={{ width: 180 }}>
                            <div className="tw-flex tw-py-0.5">
-                              <Fill value={owner.fullname} name="fullname" index={i} setter={handleInputOwner} editable dotted placeholder="Овог нэр" />
+                              <Fill value={owner.fullname} name="fullname" index={i} setter={handleInputOwner} editable placeholder="Овог нэр" />
                               <span className="tw-mx-1">,</span>
                            </div>
                            <div className="tw-flex tw-py-0.5">
-                              <Fill value={owner.citizenship} name="citizenship" index={i} setter={handleInputOwner} editable dotted placeholder="Иргэний харьяалал" />
+                              <Fill value={owner.citizenship} name="citizenship" index={i} setter={handleInputOwner} editable placeholder="Иргэний харьяалал" />
                               <span className="tw-mx-1">,</span>
                            </div>
                            <div className="tw-flex tw-py-0.5">
-                              <Fill value={owner.residence_country} name="residence_country" index={i} setter={handleInputOwner} editable dotted placeholder="Оршин суугаа улс" />
+                              <Fill value={owner.residence_country} name="residence_country" index={i} setter={handleInputOwner} editable placeholder="Оршин суугаа улс" />
                               <span className="tw-mx-1">,</span>
                            </div>
                         </td>
@@ -245,29 +253,29 @@ export default function OwnershipAttach({ contract = {} }) {
                      <span className="tw-mr-2">
                         Компаний нэр:
                      </span>
-                     <Fill setter={() => { }} editable defaultLength={20} dotted />
+                     <Fill value={company} name="_" setter={handleInputCompnay} editable defaultLength={20} />
                   </div>
-                  <div className="tw-flex tw-items-center tw-mt-1.5">
+                  <div className="tw-flex tw-items-center tw-mt-1">
                      <span className="tw-mr-2">
                         Компанийг төлөөлж гарын үсэг зурах эрх бүхий хүний нэр:
                      </span>
-                     <Fill value={signer.name} name="name" index={i} setter={handleInputSigner} editable defaultLength={20} dotted />
+                     <Fill value={signer.name} name="name" index={i} setter={handleInputSigner} editable defaultLength={20} />
                   </div>
-                  <div className="tw-flex tw-items-center tw-mt-1.5">
+                  <div className="tw-flex tw-items-center tw-mt-1">
                      <span className="tw-mr-2">
                         Албан тушаал:
                      </span>
-                     <Fill value={signer.position} name="position" index={i} setter={handleInputSigner} editable defaultLength={20} dotted />
+                     <Fill value={signer.position} name="position" index={i} setter={handleInputSigner} editable defaultLength={20} />
                   </div>
                   <div className="">
                      <Signature signer={signer} setter={setSigners} />
                   </div>
-                  <div className="tw-flex tw-items-center tw-mt-1.5">
+                  <div className="tw-flex tw-items-center tw-mt-1">
                      <span className="tw-mr-3">
                         Гарын үсэг зурсан огноо:
                      </span>
                      <input className="focus:tw-outline-none tw-w-32 tw-text-13px tw-border-b tw-border-gray-500 tw-rounded-none print-hide" type="date" value={signer.date ?? ''} onChange={e => handleInputSigner('date', e.target.value, i)} />
-                     <span className="tw-hidden print-show">
+                     <span className="tw-hidden tw-text-13px print-show">
                         {signer.date?.replaceAll('-', '.')}
                      </span>
                   </div>

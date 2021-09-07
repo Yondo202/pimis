@@ -8,7 +8,7 @@ import axios from 'axiosbase'
 import ContractAttach5 from './contractAttach5'
 import ContractAttach6 from './contractAttach6'
 import ActivityPlanAttach from './activityPlanAttach'
-import FinalCostAttach from './finalCostAttach'
+import FinalCostAttach from '../contract_reports/finalCostAttach'
 import OwnershipAttach from './ownershipAttach'
 import PurchasePlanAttach from './purchasePlanAttach'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
@@ -394,6 +394,10 @@ const initialContract = {
    month: null,
    day: null,
    contract_number: null,
+   order_year: null,
+   order_month: null,
+   order_day: null,
+   order_number: null,
    hot_aimag: null,
    sum_duureg: null,
    horoo_bag: null,
@@ -462,6 +466,7 @@ export default function MakeContract() {
    const AlertCtx = useContext(AlertContext)
 
    const projectId = useQuery().get('projectId')
+   const userId = useQuery().get('userId')
 
    const [info, setInfo] = useState(initialContract)
 
@@ -470,32 +475,44 @@ export default function MakeContract() {
    const [signersEdp, setSignersEpd] = useState(initialSignersEdp)
    const [signersReceiving, setSignersReceiving] = useState(initialSignersReceiving)
 
+   const [user, setUser] = useState({})
+
    useEffect(() => {
       if (projectId === null || projectId === undefined) {
          return
       }
-      axios.get(`contracts?projectId=${projectId}`, {
+      if (userId === null || userId === undefined) {
+         return
+      }
+      axios.get(`users/${userId}`, {
          headers: { Authorization: getLoggedUserToken() }
       }).then(res => {
-         const { signers, ...info } = res.data.data
-         setInfo(prev => ({ ...prev, ...info }))
-         if ((signers ?? []).length) {
-            setSignersEpd(signers.filter(signer => signer.category === 'edp'))
-            setSignersReceiving(signers.filter(signer => signer.category === 'receiving'))
-         }
-         AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээг нээлээ.' })
-      }).catch(err => {
-         if (err.response.status === 490) {
-            setInfo(prev => ({
-               ...prev,
-               year: prev.year ?? currentYear,
-               month: prev.month ?? currentMonth,
-               day: prev.day ?? currentDate,
-               company_name: localStorage.getItem('companyname')
-            }))
-            return
-         }
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээг татаж чадсангүй.' })
+         setUser(res.data.data)
+
+         axios.get(`contracts?projectId=${projectId}`, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            const { signers, ...info } = res.data.data
+            setInfo(prev => ({ ...prev, ...info }))
+            if ((signers ?? []).length) {
+               setSignersEpd(signers.filter(signer => signer.category === 'edp'))
+               setSignersReceiving(signers.filter(signer => signer.category === 'receiving'))
+            }
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээг нээлээ.' })
+         }).catch(err => {
+            if (err.response.status === 490) {
+               setInfo(prev => ({
+                  ...prev,
+                  year: prev.year || currentYear,
+                  month: prev.month || currentMonth,
+                  day: prev.day || currentDate,
+                  register_no: prev.register_no || (user.companyregister ?? null),
+                  company_name: prev.company_name || (user.companyname ?? null)
+               }))
+               return
+            }
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээг татаж чадсангүй.' })
+         })
       })
    }, [projectId])
 
@@ -563,7 +580,7 @@ export default function MakeContract() {
                      <div className="tw-mx-2 sm:tw-mx-10 tw-mt-6 tw-pb-4">
                         <div className="tw-flex tw-flex-wrap tw-justify-between tw-px-2 sm:tw-px-4">
                            <span className="">
-                              <Fill value={info.year} /> оны <Fill value={info.month} /> дугаар сарын <Fill value={info.day} />-ний өдөр
+                              <Fill value={info.year} name="year" setter={handleInput} editable defaultLength={4} number /> оны <Fill value={info.month} name="month" setter={handleInput} editable defaultLength={2} number /> дугаар сарын <Fill value={info.day} name="day" setter={handleInput} editable defaultLength={2} number />-ний өдөр
                            </span>
                            <span className="tw-mx-2">
                               Гэрээний №: <Fill value={info.contract_number} name="contract_number" setter={handleInput} editable />
@@ -575,16 +592,16 @@ export default function MakeContract() {
 
                         <div className="tw-mt-6 tw-leading-relaxed" style={{ wordSpacing: 2 }}>
                            <p className="" style={{ textIndent: 16 }}>
-                              Энэхүү Түншлэлийн гэрээ (цаашид “Гэрээ” гэх)-г Монгол Улсын Засгийн газар болон Олон Улсын Хөгжлийн ассоциаци нарын хооронд 2016 оны 08 дугаар сарын 26-ны өдөр байгуулсан Санхүүжилтийн гэрээ, Монгол Улсын Иргэний хуулийн 15 дугаар бүлэг, Экспортыг дэмжих төслийн түншлэлийн хөтөлбөрийн сонгон шалгаруулалтын багийн .... оны .... дугаар сарын ....-ны өдрийн .... дугаар шийдвэрийг тус тус үндэслэн,
+                              Энэхүү Түншлэлийн гэрээ (цаашид “Гэрээ” гэх)-г Монгол Улсын Засгийн газар болон Олон Улсын Хөгжлийн ассоциаци нарын хооронд 2016 оны 08 дугаар сарын 26-ны өдөр байгуулсан Санхүүжилтийн гэрээ, Монгол Улсын Иргэний хуулийн 15 дугаар бүлэг, Экспортыг дэмжих төслийн түншлэлийн хөтөлбөрийн сонгон шалгаруулалтын багийн <Fill value={info.order_year} name="order_year" setter={handleInput} editable defaultLength={4} number /> оны <Fill value={info.order_month} name="order_month" setter={handleInput} editable defaultLength={2} number /> дугаар сарын <Fill value={info.order_day} name="order_day" setter={handleInput} editable defaultLength={2} number />-ны өдрийн <Fill value={info.order_number} name="order_number" setter={handleInput} editable defaultLength={4} /> дугаар шийдвэрийг тус тус үндэслэн,
                            </p>
                            <p className="">
                               нэг талаас Монгол Улс, Улаанбаатар хот, Сүхбаатар дүүрэг, 2 дугаар хороо, Гэрэгэ тауэр, 8 дугаар  давхарт байрлах Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны дэргэдэх Экспортыг дэмжих төслийг хэрэгжүүлэх нэгж (цаашид “Санхүүгийн дэмжлэг олгогч” гэх),
                            </p>
                            <p className="">
-                              нөгөө талаас Монгол Улс, <Fill value={info.hot_aimag} name="hot_aimag" setter={handleInput} editable placeholder="хот/аймаг" />, <Fill value={info.sum_duureg} name="sum_duureg" setter={handleInput} editable placeholder="сум/дүүрэг" />, <Fill value={info.horoo_bag} name="horoo_bag" setter={handleInput} editable placeholder="баг/хороо" />, <Fill value={info.detailed_location} name="detailed_location" setter={handleInput} editable placeholder="дэлгэрэнгүй хаяг" /> хаягт байрлах улсын бүртгэлийн <Fill value={info.state_reg} name="state_reg" setter={handleInput} editable defaultLength={12} /> дугаартай, регистрийн <Fill value={info.register_no} name="register_no" setter={handleInput} editable defaultLength={12} /> дугаартай <Fill value={info.company_name} dotted /> (цаашид “Санхүүгийн дэмжлэг хүртэгч” гэх) нар (цаашид хамтад нь “Талууд” гэх) харилцан тохиролцож байгуулав.
+                              нөгөө талаас Монгол Улс, <Fill value={info.hot_aimag} name="hot_aimag" setter={handleInput} editable placeholder="хот/аймаг" />, <Fill value={info.sum_duureg} name="sum_duureg" setter={handleInput} editable placeholder="сум/дүүрэг" />, <Fill value={info.horoo_bag} name="horoo_bag" setter={handleInput} editable placeholder="баг/хороо" />, <Fill value={info.detailed_location} name="detailed_location" setter={handleInput} editable placeholder="дэлгэрэнгүй хаяг" /> хаягт байрлах улсын бүртгэлийн <Fill value={info.state_reg} name="state_reg" setter={handleInput} editable defaultLength={12} /> дугаартай, регистрийн <Fill value={info.register_no} name="register_no" setter={handleInput} editable defaultLength={12} /> дугаартай <Fill value={info.company_name} name="company_name" setter={handleInput} editable defaultLength={16} /> (цаашид “Санхүүгийн дэмжлэг хүртэгч” гэх) нар (цаашид хамтад нь “Талууд” гэх) харилцан тохиролцож байгуулав.
                            </p>
                            <p className="" style={{ textIndent: 16 }}>
-                              Энэхүү Гэрээний зорилго нь <Fill value={info.company_name} dotted />-ийн экспортын үйл ажиллагааг дэмжих зорилгоор энэхүү Гэрээнд заасан нөхцөл, зориулалтаар санхүүжилт олгох, үйл ажиллагааны хэрэгжилтэд хяналт тавих, уг санхүүжилттэй холбоотой бусад харилцаа, талуудын эрх, үүрэг хариуцлагыг тодорхойлон зохицуулахад оршино.
+                              Энэхүү Гэрээний зорилго нь <Fill value={info.company_name} />-ийн экспортын үйл ажиллагааг дэмжих зорилгоор энэхүү Гэрээнд заасан нөхцөл, зориулалтаар санхүүжилт олгох, үйл ажиллагааны хэрэгжилтэд хяналт тавих, уг санхүүжилттэй холбоотой бусад харилцаа, талуудын эрх, үүрэг хариуцлагыг тодорхойлон зохицуулахад оршино.
                            </p>
                         </div>
                      </div>
@@ -598,10 +615,10 @@ export default function MakeContract() {
                                     order={provision.order}
                                     provision={{
                                        '2.8': <span>
-                                          Гэрээний дагуу Санхүүгийн дэмжлэг олгогч нэгж нь батлагдсан үйл ажиллагааны зардлын зөвшөөрсөн хэсэг болох дээд тал нь 50 хувь буюу <Fill value={info.funding} name="funding" setter={handleInput} defaultLength={12} editable dotted />₮ (<Fill value={info.funding_verbose} name="funding_verbose" setter={handleInput} defaultLength={24} editable dotted /> үгээр) /НӨАТ ороогүй/ төгрөгийг Санхүүгийн дэмжлэг хүртэгчид олгоно."
+                                          Гэрээний дагуу Санхүүгийн дэмжлэг олгогч нэгж нь батлагдсан үйл ажиллагааны зардлын зөвшөөрсөн хэсэг болох дээд тал нь 50 хувь буюу <Fill value={info.funding} name="funding" setter={handleInput} defaultLength={12} editable number />₮ (<Fill value={info.funding_verbose} name="funding_verbose" setter={handleInput} defaultLength={24} editable /> үгээр) /НӨАТ ороогүй/ төгрөгийг Санхүүгийн дэмжлэг хүртэгчид олгоно."
                                        </span>,
                                        '6.9.1': <span>
-                                          Санхүүгийн дэмжлэг хүртэгчийн албан ёсны хаяг: <Fill value={info.location} name="location" setter={handleInput} defaultLength={48} editable dotted />
+                                          Санхүүгийн дэмжлэг хүртэгчийн албан ёсны хаяг: <Fill value={info.location} name="location" setter={handleInput} defaultLength={36} editable />
                                        </span>
                                     }[provision.order] || provision.provision}
                                     subLevel={provision.subLevel}
@@ -662,10 +679,10 @@ export default function MakeContract() {
                   </div>
 
                   <ActivityPlanAttach contractId={info.id} />
-                  <FinalCostAttach contractId={info.id} />
+                  <FinalCostAttach contract={info} user={user} />
                   <ProtectionReport contract={info} />
-                  <PerformanceReport contract={info} />
-                  <OwnershipAttach contract={info} />
+                  <PerformanceReport contract={info} user={user} />
+                  <OwnershipAttach contract={info} user={user} />
                   <PurchasePlanAttach contractId={info.id} />
                   <ContractAttach5 contractId={info.id} />
                   <ContractAttach6 contractId={info.id} />
@@ -699,14 +716,14 @@ export function Provision({ order, provision, subLevel }) {
    )
 }
 
-export function Fill({ value, name, index, setter, editable, defaultLength, dotted, placeholder }) {
+export function Fill({ value, name, index, setter, editable = false, defaultLength, dotted = false, placeholder, number = false }) {
    return editable
       ? <span className="tw-relative tw-inline-block">
          <span className="tw-invisible tw-leading-snug tw-mx-0.5">
             {value || (placeholder ?? '_'.repeat(defaultLength ?? 10))}
          </span>
 
-         <input className="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-rounded-none tw-border-b-2 tw-border-gray-700 tw-border-dotted focus:tw-outline-none tw-box-border tw-leading-snug tw-placeholder-opacity-30 tw-mx-0.5 print-no-border" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
+         <input className="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-rounded-none tw-border-b-2 tw-border-gray-700 tw-border-dotted focus:tw-outline-none tw-box-border tw-leading-snug tw-placeholder-opacity-30 tw-mx-0.5 print-no-border" type={number ? 'number' : 'text'} value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />
       </span>
       : <span className={`tw-leading-snug tw-mx-0.5 ${dotted && 'tw-border-b-2 tw-border-gray-700 tw-border-dotted tw-box-border'} print-no-border`}>
          {value}
@@ -719,7 +736,7 @@ function Sign({ signer, setter }) {
          <p className="">
             {signer.name}
          </p>
-         <p className="tw-mt-1 tw-max-w-xs">
+         <p className="tw-mt-1 tw-max-w-sm">
             {signer.position}
          </p>
          <Signature signer={signer} setter={setter} />
@@ -743,13 +760,13 @@ function SignReceiving({ signer, description, setter }) {
             <span className="tw-mr-2 print-hide">
                Нэр:
             </span>
-            <Fill value={signer.name} name="name" setter={handleInput} editable defaultLength={30} dotted />
+            <Fill value={signer.name} name="name" setter={handleInput} editable defaultLength={24} />
          </div>
          <div className="mt-1">
             <span className="tw-mr-2 print-hide">
                Албан тушаал:
             </span>
-            <Fill value={signer.position} name="position" setter={handleInput} editable defaultLength={30} dotted />
+            <Fill value={signer.position} name="position" setter={handleInput} editable defaultLength={24} />
          </div>
          <p className="tw-font-light">
             {description}
@@ -785,10 +802,7 @@ export function Signature({ signer, setter }) {
    }
 
    return (
-      <div className="tw-flex tw-flex-wrap tw-mt-2">
-         <div className="tw-mr-4 print-hide">
-            Гарын үсэг:
-         </div>
+      <div className="tw-flex tw-flex-wrap tw-mt-1">
          <div className="tw-relative">
             {signer.signature
                ? <img src={signer.signature} alt="Гарын үсэг" className={`${classSignature} tw-object-scale-down print-border-bottom`} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => setSigModalOpen(true)} />

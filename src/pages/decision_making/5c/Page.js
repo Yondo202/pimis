@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import FormRichText from 'components/urgudul_components/formRichText'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
 import AnnotationSVG from 'assets/svgComponents/annotationSVG'
@@ -13,6 +13,10 @@ import { useParams } from 'react-router'
 import { todayStr } from 'components/utilities/utilities'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import { useHistory } from 'react-router-dom'
+import ModalWindow from 'components/modal_window/modalWindow'
+import PenAltSVG from 'assets/svgComponents/penAltSVG'
+import SignaturePad from 'react-signature-canvas'
+import { capitalize } from 'components/utilities/utilities'
 
 const rowDescriptions = {
     z: 'Өргөдөл гаргагчийн төслийг дэмжих саналтай эсэх',
@@ -24,7 +28,6 @@ const rowDescriptions = {
     a4: 'Санхүүгийн чадавхитай эсэх (Санхүүгийн үзүүлэлтүүд, ашигт ажиллагаа, санхүүгийн хүчин чадал)',
     a5: 'Чадавхи бүхий хүний нөөц, баг бүрдүүлж чадсан эсэх',
     a6: 'Экспорт хийсэн туршлагатай эсэх (Экспортын мэдээлэлд өгсөн дүн шинжилгээ)',
-    a7: 'Төслийн санхүүжилт дууссаны дараа, экспортын зах зээлдээ үргэлжлүүлэн байр сууриа бататгах санхүүгийн чадавхи, хүсэлтэй эсэх',
 
     b: 'B ХЭСЭГ: Экспорт хөгжлийн төлөвлөгөө нь хэрэгжих боломжтой бөгөөд Монгол улсын экспортонд нөлөө үзүүлэх чадвартай эсэх',
     b1: 'Зорилтот экспорт хийх улсад өрсөлдөх боломжтой эсэх (зах зээлийн багтаамж, зорилтот зах зээлийн хэмжээний талаарх мэдээлэл)',
@@ -32,11 +35,10 @@ const rowDescriptions = {
     b3: 'Экспортын зорилтот зах зээлд өрсөлдөх чадвараа нэмэгдүүлэх төлөвлөгөө, хүчин чадалтай эсэх (өрсөлдөгчдийн судалгаанд үндэслэсэн шинжилгээ)',
     b4: 'Экспортын зах зээлд захиалгыг тасралтгүй ханган, үйлдвэрлэх боломжтой эсэх (үйлдвэрлэлийн төлөвлөгөөнд суурилсан шинжилгээ)',
     b5: 'Экспортын зах зээлд тохирсон чанарын удирдлагыг хангах боломжтой эсэх (тавигдаж буй чанарын удирдлагыг нэвтрүүлэх болон тасралтгүй хангах нөөц боломжийн талаарх шинжилгээ)',
-    b6: 'Экспортын зах зээлд зориулсан өртгийн сүлжээг оновчтой удирдах боломжтой эсэх (өртгийн сүлжээний оролцогчдын шинжилгээ)',
+    b6: 'Экспортын бүтээгдэхүүний өртгийг бодитой тооцож, экспортын нэмэлт зардлуудыг тусгаж тооцсон эсэх',
     b7: 'Зах зээлд нэвтрэх оновчтой стратегитай эсэх',
     b8: 'Түгээлт, ханган нийлүүлэлтийг оновчтой төлөвлөсөн эсэх',
     b9: 'Төслийн өгөөж нь өргөдөл гаргагчид санхүүгийн өгөөжтэй эсэх (төслөөр бий болох санхүүгийн тооцооллын шинжилгээ)',
-    b10: 'Төслөөс гарах үр дүн нь экспортын хэмжээ, экспортлогч улс, экспортлогчдын тоонд шууд нөлөөлөл үзүүлэх боломжтой эсэх (экспортын мэдээлэлтэй харьцуулсан шинжилгээ)',
 
     c: 'C ХЭСЭГ: Хэрэгжүүлэх арга хэмжээ нь урт хугацаанд өгөөж, давуу талыг бий болгож буй эсэх',
     c1: 'Өргөдөл гаргагчийн төлөвлөсөн үйл ажиллагаа нь 9 сарын дотор хэрэгжих боломжтой эсэх',
@@ -54,11 +56,16 @@ const initialState = Object.entries(rowDescriptions).map(([rowcode, description]
     category: rowcode[0].toUpperCase()
 }))
 
-const initialEvaluator = {
+const initialInfo = {
+    analyst_name: '',
     check_start: '',
     check_end: '',
     accept_tips: '',
     decline_reason: '',
+    ahlah_name: '',
+    ahlah_signature: null,
+    zuvluh_name: '',
+    zuvluh_signature: null
 }
 
 const editors = ['edpadmin', 'member', 'ahlah_bhsh']
@@ -66,18 +73,20 @@ const editors = ['edpadmin', 'member', 'ahlah_bhsh']
 export default function AnalystReport() {
     const [rows, setRows] = useState(initialState)
     const [company, setCompany] = useState({})
-    const [evalautor, setEvaluator] = useState({})
+    const [analyst, setAnalyst] = useState({})
 
-    const canEdit = editors.includes(evalautor.role)
+    const canEdit = editors.includes(analyst.role)
 
     const AlertCtx = useContext(AlertContext)
 
     const handleInput = (key, value, rowcode) => {
         if (canEdit) {
-            const index = rows.findIndex(row => row.rowcode === rowcode)
-            const newRows = rows
-            newRows[index][key] = value
-            setRows([...newRows])
+            setRows(prev => {
+                const next = [...prev]
+                const index = next.findIndex(row => row.rowcode === rowcode)
+                next[index][key] = value
+                return next
+            })
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Засвар оруулах эрх байхгүй байна.' })
         }
@@ -94,7 +103,7 @@ export default function AnalystReport() {
                 if (res.data.data?.rows?.length === initialState.length) {
                     setRows(res.data.data.rows)
                 }
-                setInfo(res.data.data.info)
+                setInfo(prev => ({ ...prev, ...res.data.data.info }))
             })
 
             axios.get('pps-infos/registered-companies', {
@@ -107,7 +116,12 @@ export default function AnalystReport() {
             axios.get(`users/${loggedUserId}`, {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
-                setEvaluator(res.data.data)
+                const analyst = res.data.data
+                setAnalyst(analyst)
+                setInfo(prev => ({
+                    ...prev,
+                    analyst_name: prev.analyst_name || `${analyst.lastname?.substr(0, 1)?.toUpperCase()}. ${capitalize(analyst.firstname)}`
+                }))
             })
         }
     }, [])
@@ -119,7 +133,7 @@ export default function AnalystReport() {
     }
 
     const handleSubmit = () => {
-        if (info.check_start && info.check_end) {
+        if (info.analyst_name && info.check_start && info.check_end) {
             axios.post(`projects/${projectId}/bds-evaluation5c`, { rows: rows, info: info }, {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
@@ -133,9 +147,9 @@ export default function AnalystReport() {
         }
     }
 
-    const [info, setInfo] = useState(initialEvaluator)
+    const [info, setInfo] = useState(initialInfo)
 
-    const handleInputEvaluator = (key, value) => {
+    const handleInputInfo = (key, value) => {
         setInfo(prev => ({ ...prev, [key]: value }))
     }
 
@@ -160,7 +174,7 @@ export default function AnalystReport() {
                     Харах
                 </button>
 
-                <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} company={company} evalautor={evalautor} />} />
+                <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} company={company} analyst={analyst} />} />
 
                 <div className="tw-p-3 tw-pb-2 tw-flex tw-items-center">
                     <span className=" tw-pl-2 tw-font-medium tw-text-blue-500 tw-text-base">
@@ -189,12 +203,10 @@ export default function AnalystReport() {
 
                 <div className="tw-ml-4 tw-mr-2 tw-mt-4">
                     <div className="tw-flex tw-items-center">
-                        <label className="tw-mb-0">
+                        <label className="tw-mb-0 tw-mr-4">
                             Шинжилгээ хийсэн Бизнес шинжээч:
                         </label>
-                        <span className="tw-ml-3 tw-bg-gray-50 tw-rounded tw-py-0.5 tw-px-2 tw-text-sm tw-text-blue-600">
-                            {evalautor.id && `${evalautor.lastname.substr(0, 1).toUpperCase()}. ${evalautor.firstname}`}
-                        </span>
+                        <input className={`${classInput} ${validate && !(info.analyst_name) && 'tw-border-dashed tw-border-red-500'}`} value={info.analyst_name} onChange={e => handleInputInfo('analyst_name', e.target.value)} placeholder="Овог нэр" />
                     </div>
 
                     <div className="tw-flex tw-items-center tw-mt-3">
@@ -202,8 +214,8 @@ export default function AnalystReport() {
                             Шинжилгээ, дүгнэлт хийсэн хугацаа:
                         </label>
                         <span>
-                            <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_start) && 'tw-border-dashed tw-border-red-500'}`} type="date" max={todayStr} value={info.check_start} onChange={e => handleInputEvaluator('check_start', e.target.value)} /> -аас
-                            <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_end) && 'tw-border-dashed tw-border-red-500'}`} type="date" max={todayStr} value={info.check_end} onChange={e => handleInputEvaluator('check_end', e.target.value)} /> -ны хооронд.
+                            <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_start) && 'tw-border-dashed tw-border-red-500'} tw-text-13px`} type="date" max={todayStr} value={info.check_start} onChange={e => handleInputInfo('check_start', e.target.value)} /> -аас
+                            <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_end) && 'tw-border-dashed tw-border-red-500'} tw-text-13px`} type="date" max={todayStr} value={info.check_end} onChange={e => handleInputInfo('check_end', e.target.value)} /> -ны хооронд.
                         </span>
                     </div>
 
@@ -220,8 +232,8 @@ export default function AnalystReport() {
                                         modules="small"
                                         value={info.accept_tips}
                                         name="accept_tips"
-                                        setter={handleInputEvaluator}
-                                        classQuill="tw-max-w-3xl"
+                                        setter={handleInputInfo}
+                                        classQuill="tw-max-w-4xl"
                                     />
                                 </animated.div>
                             : anims =>
@@ -231,8 +243,8 @@ export default function AnalystReport() {
                                         modules="small"
                                         value={info.decline_reason}
                                         name="decline_reason"
-                                        setter={handleInputEvaluator}
-                                        classQuill="tw-max-w-3xl"
+                                        setter={handleInputInfo}
+                                        classQuill="tw-max-w-4xl"
                                     />
                                 </animated.div>
                         }
@@ -244,6 +256,11 @@ export default function AnalystReport() {
                         <div key={row.rowcode}>
                             <div className="tw-flex tw-items-center tw-text-sm">
                                 <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "" : "tw-pl-8 tw-font-light"}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
+                                    {!['a', 'b', 'c', 'z'].includes(row.rowcode) &&
+                                        <span className="tw-mr-2 tw-font-normal">
+                                            {row.rowcode.slice(-1)}.
+                                        </span>
+                                    }
                                     {row.description}
                                 </span>
 
@@ -266,13 +283,21 @@ export default function AnalystReport() {
 
                             <Transition
                                 items={commentsOpen[row.rowcode]}
-                                from={{ height: 0, opacity: 0 }}
+                                from={{ height: 0, opacity: 0, }}
                                 enter={{ height: 'auto', opacity: 1 }}
                                 leave={{ height: 0, opacity: 0 }}
                                 config={{ tension: 300, clamp: true }}>
                                 {item => item && (anims =>
-                                    <div className="tw-flex tw-justify-end tw-items-start tw-overflow-hidden" style={anims}>
-                                        <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-px-1.5 tw-py-1 tw-mt-1 tw-mx-3 tw-mb-3 tw-resize-none tw-text-13px" value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />
+                                    <div className="tw-overflow-hidden tw-pl-14 tw-pr-3" style={anims}>
+                                        <FormRichText
+                                            modules="small"
+                                            value={row.comment}
+                                            name="comment"
+                                            index={row.rowcode}
+                                            setter={handleInput}
+                                            classQuill="tw-pb-10"
+                                            height={180}
+                                        />
                                     </div>
                                 )}
                             </Transition>
@@ -280,14 +305,92 @@ export default function AnalystReport() {
                     )}
                 </div>
 
+                <div className="tw-mt-8 tw-p-2 tw-mb-4" style={{ marginLeft: '10%' }}>
+                    <div className="">
+                        Сонгон шалгаруулалтын багийн хуралд танилцуулахыг зөвшөөрсөн:
+                    </div>
+                    <div className="tw-pl-4 tw-mt-2">
+                        <div className="">
+                            <input className={classInput} value={info.ahlah_name} onChange={e => handleInputInfo('ahlah_name', e.target.value)} placeholder="Овог нэр" />
+                        </div>
+                        <p className="tw-mt-1 tw-font-light">
+                            Бизнес хөгжлийн ахлах мэргэжилтэн
+                        </p>
+                        <Signature value={info.ahlah_signature} name="ahlah_signature" setter={handleInputInfo} />
+                    </div>
+
+                    <div className="tw-mt-6">
+                        Боловсруулсан:
+                    </div>
+                    <div className="tw-pl-4 tw-mt-2">
+                        <div className="">
+                            <input className={classInput} value={info.zuvluh_name} onChange={e => handleInputInfo('zuvluh_name', e.target.value)} placeholder="Овог нэр" />
+                        </div>
+                        <p className="tw-mt-1 tw-font-light">
+                            Бизнес хөгжлийн зөвлөх
+                        </p>
+                        <Signature value={info.zuvluh_signature} name="zuvluh_signature" setter={handleInputInfo} />
+                    </div>
+                </div>
+
                 {projectId && canEdit &&
-                    <div className="tw-flex tw-items-center tw-justify-end tw-h-20 tw-mt-2">
+                    <div className="tw-flex tw-items-center tw-justify-end tw-h-20 tw-mt-2 tw-mr-2">
                         <button className="tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
                             Хадгалах
                         </button>
                     </div>
                 }
             </div>
+        </div>
+    )
+}
+
+const classInput = 'tw-border tw-rounded tw-shadow-inner tw-mr-1 tw-w-56 tw-pl-1 tw-py-0.5 focus:tw-outline-none'
+const classSignature = 'tw-w-52 tw-h-16 tw-border tw-rounded tw-border-gray-400 tw-cursor-pointer print-border-bottom'
+
+function Signature({ value, name, index, setter }) {
+    const [sigModalOpen, setSigModalOpen] = useState(false)
+    const [hovered, setHovered] = useState(false)
+
+    const sigCanvasRef = useRef()
+
+    const handleDrawSignature = () => {
+        setter(name, sigCanvasRef.current.getTrimmedCanvas().toDataURL('image/png'), index)
+    }
+
+    const handleClearSignature = () => {
+        sigCanvasRef.current.clear()
+        setter(name, null, index)
+    }
+
+    return (
+        <div className="tw-flex tw-flex-wrap tw-mt-1">
+            <div className="tw-relative">
+                {value
+                    ? <img src={value} alt="Гарын үсэг" className={`${classSignature} tw-object-scale-down print-border-bottom`} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => setSigModalOpen(true)} />
+                    : <div className={classSignature} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => setSigModalOpen(true)} />
+                }
+                <PenAltSVG className={`tw-absolute tw-top-1/2 tw-left-1/2 tw--translate-x-1/2 tw-w-7 tw-h-7 tw-text-gray-600 tw-transform-gpu ${hovered ? 'tw--translate-y-1/2 tw-opacity-100' : 'tw--translate-y-3/4 tw-opacity-0'} tw-transition-all tw-duration-300 tw-cursor-pointer`} onMouseEnter={() => setHovered(true)} onClick={() => setSigModalOpen(true)} />
+            </div>
+
+            <ModalWindow modalOpen={sigModalOpen} setModalOpen={setSigModalOpen}>
+                <div className="tw-p-2 tw-flex tw-flex-col">
+                    <div className="tw-text-sm tw-mb-2">
+                        Гарын үсэг зурах:
+                    </div>
+
+                    <SignaturePad canvasProps={{ className: 'tw-rounded tw-border tw-border-gray-400', width: 624, height: 192 }} ref={sigCanvasRef} onEnd={handleDrawSignature} />
+
+                    <div className="tw-flex tw-justify-center tw-mt-4">
+                        <button className="tw-rounded tw-text-white tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-w-32 tw-py-1 focus:tw-outline-none tw-font-light" onClick={handleClearSignature}>
+                            Арилгах
+                        </button>
+                        <button className="tw-rounded tw-text-white tw-bg-blue-800 active:tw-bg-blue-700 tw-transition-colors tw-w-32 tw-py-1 tw-ml-3 focus:tw-outline-none tw-font-light" onClick={() => setSigModalOpen(false)}>
+                            Болсон
+                        </button>
+                    </div>
+                </div>
+            </ModalWindow>
         </div>
     )
 }

@@ -7,32 +7,45 @@ import useQuery from 'components/utilities/useQueryLocation'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import PrintSVG from 'assets/svgComponents/printSVG'
 import { useReactToPrint } from 'react-to-print'
+import FinalCostAttach from './finalCostAttach'
 
 export default function ContractReports() {
    const AlertCtx = useContext(AlertContext)
 
    const projectId = useQuery().get('projectId')
+   const userId = useQuery().get('userId')
 
    const [contract, setContract] = useState({})
+   const [user, setUser] = useState({})
 
    useEffect(() => {
       if (projectId === null || projectId === undefined) {
          return
       }
-      axios.get(`contracts?projectId=${projectId}`, {
+      if (userId === null || userId === undefined) {
+         return
+      }
+      axios.get(`users/${userId}`, {
          headers: { Authorization: getLoggedUserToken() }
       }).then(res => {
-         const { signers, ...info } = res.data.data
-         setContract(info)
-      }).catch(err => {
-         if (err.response.status === 490) {
-            setContract(prev => ({
-               ...prev,
-               company_name: localStorage.getItem('companyname')
-            }))
-            return
-         }
-         AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээг татаж чадсангүй.' })
+         setUser(res.data.data)
+
+         axios.get(`contracts?projectId=${projectId}`, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            const { signers, ...info } = res.data.data
+            setContract(info)
+         }).catch(err => {
+            if (err.response.status === 490) {
+               setContract(prev => ({
+                  ...prev,
+                  register_no: prev.register_no || (user.companyregister ?? null),
+                  company_name: prev.company_name || (user.companyname ?? null)
+               }))
+               return
+            }
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээг татаж чадсангүй.' })
+         })
       })
    }, [projectId])
 
@@ -53,8 +66,9 @@ export default function ContractReports() {
             </div>
 
             <div className="" ref={componentRef}>
+               <FinalCostAttach contract={contract} user={user} />
                <ProtectionReport contract={contract} />
-               <PerformanceReport contract={contract} />
+               <PerformanceReport contract={contract} user={user} />
             </div>
          </div>
       </div>
