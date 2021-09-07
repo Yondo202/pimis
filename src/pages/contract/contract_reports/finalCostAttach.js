@@ -174,8 +174,8 @@ export default function FinalCostAttach({ contract = {}, user = {} }) {
       <div className="tw-text-sm tw-text-gray-700 tw-py-6 print-break-after">
          <div className="tw-text-base tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
             Хавсралт 2. Тайлан
-            <div className="tw-uppercase tw-mt-4">
-               i) Явцын/ Эцсийн зардлын тайлан
+            <div className="tw-mt-4">
+               i) ЯВЦЫН / ЭЦСИЙН ЗАРДЛЫН ТАЙЛАН
             </div>
          </div>
 
