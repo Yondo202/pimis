@@ -13,22 +13,28 @@ i18n.use(LanguageDetector).init({
         "Expiration":"Expiration",
         "Insurance type":"Insurance type",
         "Total":"Total",
+        "Indemnity":"Indemnity",
+        "Sum insured":"Sum insured",
 
         Advantages: "Advantages",
         "Flexibility to use other packages": "Flexibility to use other packages",
 
         "Export Data":"Export Data",
         "Product name":"Product name",
+
       }
     },
     mn: {
         translations: {
           title: "Байгууллагын жагсаалт",
           "Register number":'Регистрийн дугаар',
+          "Company name":"Байгууллагын нэр",
           "Issued":'Эхлэх хугацаа',
           "Expiration":"Дуусах хугацаа",
           "Insurance type":'Даатгалын төрөл',
           "Total":'Нийт',
+          "Indemnity":"Нөхөн төлбөр",
+          "Sum insured":"Нийт даатгуулсан",
 
           "Export Data":"Экспортын мэдээлэл",
           "Product name":"Бүтээгдэхүүн",

@@ -187,13 +187,16 @@ export const Container = styled.div`
     width:100%;
     background-color: #fff;
     padding:40px 15px;
+    padding-bottom:${props=>props.scroll?`10px`:`40`};
     border-radius:0px 5px 5px 5px;
     box-shadow: -5px 5px 12px -12px black;
+    color:#000 !important;
     @media only screen and (max-width:768px){
-        padding:40px 15px;
+        // overflow-x:scroll;
     }
     @media only screen and (max-width:1400px){
-        padding:30px 60px;
+        // overflow-x:scroll;
+        // padding:30px 60px;
     }
     .smTitles{
         font-weight:500;
@@ -212,9 +215,10 @@ export const Container = styled.div`
         opacity:0.4;
     }
     .customTable{
-        width:100%;
+        // width:100%;
         margin-top:20px;
         .headPar{
+            width:100%;
             display:flex;
             justify-content:space-between;
             align-items:center;
@@ -260,6 +264,7 @@ export const Container = styled.div`
             th{
                 text-align:center;
                 background-color:#E7E9EB;
+                min-width:${props=>props.scroll?`150px`:``};
             }
             td, th{
                 &:first-child{
@@ -270,7 +275,11 @@ export const Container = styled.div`
             }
             td{
                 padding:12px 10px;
+                max-width:${props=>props.scroll?`140px`:``};
                 animation: ${rowAnimation} 0.5s ease;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
                 // &:last-child{
                 //     padding:8px 0px;
                 // }
@@ -298,11 +307,12 @@ export const Container = styled.div`
                 &:after{
                     content:"✔";
                     position:absolute;
+                    z-index:2;
                     color:green;
                     width:22px;
                     height:22px;
                     top:50%;
-                    left:-10px;
+                    left:2px;
                     transform:translate(0%, -50%);
                     display:flex;
                     align-items:center;

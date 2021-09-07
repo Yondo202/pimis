@@ -8,6 +8,8 @@ function ActiveComp({ userId, data }) {
 
     const projectId = data?.project?.id
 
+    console.log(`data?.firstEvalution.value `, data?.firstEvalution.value)
+
     return (
         <div style={{ paddingTop: 20 }} className="row">
             <div className="col-md-2 col-sm-2 itemsCol">

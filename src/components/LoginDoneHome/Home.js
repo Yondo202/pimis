@@ -26,8 +26,8 @@ function Home() {
         }
     }, []);
 
-    const Go = async () => {
-        await axios.get(`pps-infos/registered-companies`, {
+    const Go = () => {
+         axios.get(`pps-infos/registered-companies`, {
             headers: { Authorization: AccessToken() },
             params: projectId ? { userId: userId, projectId: projectId } : { userId: userId },
         }).then((res) => {
@@ -35,11 +35,12 @@ function Home() {
         })
     }
 
-    const GoUser = async () => {
+    const GoUser = () => {
         let userID = localStorage.getItem("userId");
-        await axios.get(`pps-infos/registered-companies?userId=${userID}`, {
+        axios.get(`pps-infos/registered-companies?userId=${userID}`, {
             headers: { Authorization: AccessToken() }
         }).then((res) => {
+            console.log(`res`, res);
             if (res.data.data[0]) {
                 // setInfData(res.data.data[0])
                 const projects = res.data.data ?? []
