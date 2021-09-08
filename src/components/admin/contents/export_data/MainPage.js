@@ -31,9 +31,6 @@ const MainPage = () => {
         i18n.changeLanguage(event.target.value);
     };
 
-    console.log(`exportData`, exportData);
-    console.log(`object`, 1+null+20);
-
     return (
         <Container style={{padding:`12px 12px`, boxShadow:`none`}}>
             <div className="TitlePar">

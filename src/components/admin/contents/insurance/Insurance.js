@@ -132,7 +132,7 @@ const Insurance = () => {
                     <div className="TitlePar">
                         <div className="Title">{t('title')}</div>
                         <LangSwitch>
-                            <select onChange={handleChange}>
+                            <select value={i18n.language} onChange={handleChange}>
                                 <option value="en">English</option>
                                 <option value="mn">Монгол</option>
                             </select>

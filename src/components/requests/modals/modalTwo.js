@@ -19,7 +19,6 @@ function ModalTwo(props) {
 
     const clickHandle = (el) =>{  if(el==="add"){ setMargin(prev => prev + 10); }else{  if(margin < 0){  setMargin(prev =>prev);  }else{ setMargin(prev => prev - 10);  }  }}
 
-
     return (
         <TableTwo style={{marginBottom:margin}} >
             <h6>2. Баталгаа/зөвшөөрөл/тусгай зөвшөөрлийн үнэлгээ *</h6>
