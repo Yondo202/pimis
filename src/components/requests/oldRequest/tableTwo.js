@@ -30,7 +30,7 @@ function TableTwo(props) {
             const finalData = []
             tableData.forEach((el, i) => {
                 props.initialData.forEach((elem, index) => {
-                    if (i === index) { el["name"] = elem.name; el["recentDate"] = elem.recentDate; el["getDate"] = elem.getDate; el["id"] = elem.id; el["files"] = elem.files }
+                    if (i === index) { el["names"] = elem.names; el["recentDate"] = elem.recentDate; el["getDate"] = elem.getDate; el["id"] = elem.id; el["files"] = elem.files }
                 })
                 finalData.push(el);
             });
@@ -162,8 +162,6 @@ function TableTwo(props) {
         }
     }
 
-    console.log(`fileSave`, fileSave);
-
     return (
         <Component2 className="container">
             <form onSubmit={clickHandles}>
@@ -189,7 +187,7 @@ function TableTwo(props) {
                                     <div className="col-md-4 col-sm-12 col-12 ">
                                         <div className="inpChild"><div className="labels"><span>(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага :</span> </div> <div className="name"> <FiUserCheck />
                                             <InputStyle className="newInp">
-                                                <input type="input" id={el.id} value={el.name} placeholder="..." onChange={onChangeHandle} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="name" />
+                                                <input type="input" id={el.id} value={el.names} placeholder="..." onChange={onChangeHandle} className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="names" />
                                                 <div className="line"></div>
                                             </InputStyle>
                                         </div>
@@ -248,7 +246,7 @@ function TableTwo(props) {
                                     <div className="col-md-4 col-sm-12 col-12 ">
                                         <div className="inpChild"><div className="labels"><span>(Зөвшөөрөл, тусгай зөвшөөрөл, албан бичиг гэх мэт) ба батладаг эрх бүхий байгууллага :</span> </div> <div className="name"> <FiUserCheck />
                                             <InputStyle className="newInp">
-                                                <input type="text" placeholder="..." className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="name" />
+                                                <input type="text" placeholder="..." className={`PPS${i + 1} getItems${i + 1} LoginInpName form__field`} name="names" />
                                                 <div className="line"></div>
                                             </InputStyle>
                                         </div>
