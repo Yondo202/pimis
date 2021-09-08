@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useHistory } from 'react-router'
@@ -7,6 +7,7 @@ import { DataGrid, TabPanel } from 'devextreme-react'
 import { Column, HeaderFilter, MasterDetail, Pager, Paging, Scrolling } from 'devextreme-react/data-grid'
 import { Item } from 'devextreme-react/tab-panel'
 import { Link } from 'react-router-dom'
+import AlertContext from 'components/utilities/alertContext'
 
 export const statusRef = {
     0: 'Хүлээгдэж буй',
@@ -14,6 +15,8 @@ export const statusRef = {
 }
 
 export default function EvaluatorsMeetingsList({ projects, evaluators }) {
+    const AlertCtx = useContext(AlertContext)
+
     const [meetings, setMeetings] = useState([])
 
     useEffect(() => {
@@ -21,6 +24,8 @@ export default function EvaluatorsMeetingsList({ projects, evaluators }) {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
             setMeetings(res.data.data)
+        }).catch(err => {
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа, уулзалтуудыг татаж чадсангүй.' })
         })
     }, [])
 

@@ -4,8 +4,6 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import AlertContext from 'components/utilities/alertContext'
 import { DataGrid } from 'devextreme-react'
 import { Column, Editing, HeaderFilter, Paging, Scrolling } from 'devextreme-react/data-grid'
-import './dataGrid.css'
-
 
 export default function CurrencyRateHandle() {
     const [rates, setRates] = useState([])
@@ -65,13 +63,12 @@ export default function CurrencyRateHandle() {
 
     return (
         <div className="tw-text-gray-700 tw-text-sm tw-pb-10">
-            <div className="tw-mt-8 tw-p-4 tw-pt-0 tw-bg-white tw-rounded tw-shadow-md tw-max-w-2xl">
+            <div className="tw-p-4 tw-pt-0 tw-bg-white tw-rounded tw-shadow-md tw-max-w-2xl">
                 <div className="tw-text-lg tw-font-medium tw-p-2 tw-pt-8 tw-text-center">
                     Төслийн тооцоололд хэрэглэгдэх ханшийн мэдээллийг оруулах
                 </div>
 
                 <DataGrid
-                    elementAttr={{ id: 'currency-rates-data-grid' }}
                     dataSource={rates}
                     showBorders={true}
                     onRowInserted={onRowInserted}
