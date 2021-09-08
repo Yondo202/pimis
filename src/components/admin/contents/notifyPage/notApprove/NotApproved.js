@@ -5,9 +5,11 @@ import {VscFilePdf} from 'react-icons/vsc';
 import Content from './Content'
 import axios from 'axiosbase';
 import AuthToken from 'context/accessToken'
+import { useHistory } from "react-router-dom"
 
 
 function NotApproved({projectId }) {
+  const history = useHistory();
   const [ data, setData ] = useState();
   const [ edpInfo ,setEdpInfo ] = useState({});
 
@@ -25,14 +27,13 @@ function NotApproved({projectId }) {
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
     });
-    
       return (
           <MainContainter className="container">
               <div className="containt">
                   <div className="parent" ref={componentRef}>
-                      <Content edpInfo={edpInfo} data={data} projectId={projectId} />
+                      <Content edpInfo={edpInfo} history={history} data={data} projectId={projectId} />
                   </div>
-                  <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
+                  <button className="print" onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
               </div >
           </MainContainter>
         )

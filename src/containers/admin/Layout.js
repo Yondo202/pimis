@@ -44,7 +44,11 @@ import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
 import FinancialAttachments from 'pages/attachments/financialAttachments';
 import ContractReports from 'pages/contract/contract_reports/contractReports';
 import ExportDataList from "components/admin/contents/export_data/MainPage"
+<<<<<<< HEAD
 import InsuranceTypeHandle from 'components/admin/contents/insurance_type/insuranceTypeHandle';
+=======
+import ResultMeasure from 'components/admin/contents/monitoring/ResultMeasure';
+>>>>>>> 219e50aeabd5d97aa1fb0918f69cb1fe818b279a
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -81,6 +85,7 @@ function Layout({ setLocale }) {
               <Route path="/report/" component={ReportLayout} />
               <Route path="/holidays" component={Holidays} />
               <Route path="/insurance" component={Insurance} />
+              <Route path="/result-measure" component={ResultMeasure} />
               {/* <Route path="/urgudul/:page">
                 <UrgudulNavigator preloaded={true} />
               </Route> */}

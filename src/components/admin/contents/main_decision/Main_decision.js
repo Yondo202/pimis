@@ -31,10 +31,13 @@ function Main_decision() {
 
     useEffect(() => {
         axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
+            
+            console.log(`res`, res);
+
             if (res.data.data) {
                 setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
                 setRate(res.data.data?.budgetCost);
-                if(res.data.data.final_decision!==0){
+                if(res.data.data.final_decision!==0&&res.data.data.final_decision!==null){
                     setCond(true);
                 }
                 if (res.data.data.approved === true) { setNotifyShow2(2); } else if (res.data.data.approved === false) { setNotifyShow2(1); } else { setNotifyShow2(0); }
@@ -81,7 +84,7 @@ function Main_decision() {
     return (
         <>
             {notifyShow === 0 ? <FeedBackCont className="container">
-                {mainData ? mainData.rejectedCount === 0 && mainData.approvedCount === 1 ?
+                {mainData ? mainData.rejectedCount === 0 && mainData.approvedCount === 0 ?
                     <div className="NullPar">
                         <div className="nullTitle">
                             <div onClick={() => history.goBack()} className="BackPar"><div className="SvgPar"><MdKeyboardArrowLeft /></div>  <span>Буцах</span> </div>
@@ -183,16 +186,16 @@ function Main_decision() {
                          <div className="reasonPar">
                             <div className="title">Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:</div>
 
-                            {cond?<div>-{mainData?.reason}</div> :<div className="inpPar">
+                            {cond?<div>{mainData?.reason}</div> :<div className="inpPar">
                                 <div className="svg"><IoIosShareAlt /></div>
-                                <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
+                                <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason!==null?mainData?.reason:''} onChange={changeHandleReason} className={`getInpp`} placeholder="Шалтгааныг энд бичнэ үү..." /> <div className="line" /></InputStyle>
                             </div>}
                         </div>
                         : <div className="reasonPar">
                             <div className="title">Нэмэлт тайлбар бичих :</div>
-                            {cond?<div>-{mainData?.reason}</div>:<div className="inpPar">
+                            {cond?<div>{mainData?.reason}</div>:<div className="inpPar">
                                 <div className="svg"><IoIosShareAlt /></div>
-                                <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason} onChange={changeHandleReason} className={`getInpp`} placeholder="Нэмэлт тайлбарыг энд бичнэ үү..." /> <div className="line" /></InputStyle>
+                                <InputStyle className="inpp"><textarea name="reason" value={mainData?.reason!==null?mainData?.reason:''} onChange={changeHandleReason} className={`getInpp`} placeholder="Нэмэлт тайлбарыг энд бичнэ үү..." /> <div className="line" /></InputStyle>
                             </div>}
                         </div>}
 
@@ -352,7 +355,6 @@ export const FeedBackCont = styled.div`
                     }
                 }
             }
-
             background-color:white;
             padding:30px 100px;
             font-size:${fontSize};
@@ -361,12 +363,33 @@ export const FeedBackCont = styled.div`
             .TitlePar{
                 padding:10px 0px;
                 margin-bottom:15px;
+                
                 .title{
+                    display:flex;
+                    justify-content:center;
                     color:${textColor};
                     padding-bottom:10px;
                     font-size:16px;
                     text-align:center;
                     font-weight:500;
+
+                    .customRadio{
+                        display:flex;
+                        gap:25px;
+                        justify-content:center;
+                        .item{
+                            display:flex;
+                            flex-direction:column;
+                            align-items:center;
+                            text-align:center;
+                            .label{
+                                margin-bottom:5px;
+                            }
+                        }
+                    }
+                    .customRadio{
+                        margin-left:20px;
+                    }
                 }
                 .desc{
                     font-size:14px;
@@ -420,6 +443,7 @@ export const FeedBackCont = styled.div`
                         .customRadio{
                             display:flex;
                             gap:25px;
+                            justify-content:center;
                             .item{
                                 display:flex;
                                 flex-direction:column;
@@ -436,6 +460,9 @@ export const FeedBackCont = styled.div`
                     }
                     .right{
                         text-align:right;
+                    }
+                    .bold{
+                        font-weight:bold;
                     }
                     
                 

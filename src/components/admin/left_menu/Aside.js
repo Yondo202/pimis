@@ -66,6 +66,12 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             </MenuItem>
           </SubMenu>
 
+          <SubMenu title="Мониторинг" icon={<FiBookOpen />}>
+            <MenuItem>
+              <Link to="/result-measure">Төслийн үр дүнг хэмжих</Link>
+            </MenuItem>
+          </SubMenu>
+
           <SubMenu title="Тохиргоо" icon={<MdSettings />}>
             <MenuItem>
               <Link to="/users">Хэрэглэгчид</Link>

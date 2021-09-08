@@ -15,7 +15,6 @@ import ExportData from "./exportData/ExportData";
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
-
 function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;
     return {
@@ -113,8 +112,6 @@ const Insurance = () => {
     const handleChange = event => {
         i18n.changeLanguage(event.target.value);
     };
-
-    console.log(`ListData`, ListData);
 
     return (
         <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
