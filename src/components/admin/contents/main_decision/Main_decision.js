@@ -361,12 +361,33 @@ export const FeedBackCont = styled.div`
             .TitlePar{
                 padding:10px 0px;
                 margin-bottom:15px;
+                
                 .title{
+                    display:flex;
+                    justify-content:center;
                     color:${textColor};
                     padding-bottom:10px;
                     font-size:16px;
                     text-align:center;
                     font-weight:500;
+
+                    .customRadio{
+                        display:flex;
+                        gap:25px;
+                        justify-content:center;
+                        .item{
+                            display:flex;
+                            flex-direction:column;
+                            align-items:center;
+                            text-align:center;
+                            .label{
+                                margin-bottom:5px;
+                            }
+                        }
+                    }
+                    .customRadio{
+                        margin-left:20px;
+                    }
                 }
                 .desc{
                     font-size:14px;
@@ -420,6 +441,7 @@ export const FeedBackCont = styled.div`
                         .customRadio{
                             display:flex;
                             gap:25px;
+                            justify-content:center;
                             .item{
                                 display:flex;
                                 flex-direction:column;
@@ -436,6 +458,9 @@ export const FeedBackCont = styled.div`
                     }
                     .right{
                         text-align:right;
+                    }
+                    .bold{
+                        font-weight:bold;
                     }
                     
                 

@@ -24,6 +24,8 @@ function HomePage({ setNotify }) {
         }).catch((err) => console.log(err.response.data.error))
     } 
 
+    console.log(`cardData`, cardData);
+
     return (
         <Memberhome style={{ maxWidth: 1160 }} className="container">
             <div className="header">
@@ -58,14 +60,14 @@ function HomePage({ setNotify }) {
                                         <div className="buttons Active">
                                             <Link
                                             //  onClick={() => setNotify(el)}
-                                             to={el.medegdehHuudas ? el.medegdehHuudas.is_violation === false ? `/notify/${el.projectId}` : `#` : `/notify/${el.projectId}`} >Mэдэгдэх хуудас
+                                             to={`/notify/${el.projectId}`} >Mэдэгдэх хуудас
                                             </Link>
                                             {el.medegdehHuudas ? el.medegdehHuudas.is_violation !== null ? <IoMdCheckmarkCircle /> : null : null}
                                         </div>
                                         <div className="buttons Active">
                                             <Link
                                                //  onClick={() => setNotify(el)}
-                                              to={el.medegdehHuudas ? el.medegdehHuudas.is_violation === false ? `/memberdecision/${el.projectId}` : `#` : `/memberdecision/${el.projectId}`}
+                                              to={el.medegdehHuudas === null ? el.medegdehHuudas?.is_violation === false ? `/memberdecision/${el.projectId}` : `#` : `/memberdecision/${el.projectId}`}
                                               >
                                                 Саналын хуудас
                                               </Link>
