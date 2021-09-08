@@ -119,6 +119,10 @@ export default function EvaluatorsMeetingEdit(props) {
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Уулзалтыг устгалаа.' })
             history.push('/meetings')
         }).catch(err => {
+            if (err.response.status === 490) {
+                const msg = err.response.data.error?.message
+                msg && AlertCtx.setAlert({ open: true, variant: 'normal', msg: msg })
+            }
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Уулзалтыг устгаж чадсангүй.' })
         })
     }

@@ -210,11 +210,11 @@ export default function AcceptPeriodHandle() {
 
     return (
         <div className="tw-text-sm tw-text-gray-700 tw-pb-10">
-            <div className="tw-text-xl tw-font-medium tw-p-2 tw-mt-2">
+            {/* <div className="tw-text-xl tw-font-medium tw-p-2 tw-mt-2">
                 Өргөдөл хүлээн авах нээлттэй хугацааг тохируулах
-            </div>
+            </div> */}
 
-            <div className="tw-inline-flex tw-flex-col">
+            {/* <div className="tw-inline-flex tw-flex-col">
                 <button className="tw-flex tw-items-center tw-self-end" onClick={handleAddPeriod}>
                     <PlusSVG className="tw-w-5 tw-h-5" />
                     Хугацаа нэмэх
@@ -251,9 +251,9 @@ export default function AcceptPeriodHandle() {
                         )}
                     </tbody>
                 </table>
-            </div>
+            </div> */}
 
-            <Transition
+            {/* <Transition
                 items={addEditModal}
                 from={{ opacity: 0 }}
                 enter={{ opacity: 1 }}
@@ -299,9 +299,9 @@ export default function AcceptPeriodHandle() {
                         </div>
                     </animated.div>
                 )}
-            </Transition>
+            </Transition> */}
 
-            <Transition
+            {/* <Transition
                 items={deleteModal}
                 from={{ opacity: 0 }}
                 enter={{ opacity: 1 }}
@@ -323,9 +323,9 @@ export default function AcceptPeriodHandle() {
                         </div>
                     </animated.div>
                 )}
-            </Transition>
+            </Transition> */}
 
-            <div className="tw-mt-8 tw-p-4 tw-pt-0 tw-bg-white tw-rounded tw-shadow-md tw-max-w-2xl">
+            <div className="tw-p-4 tw-pt-0 tw-bg-white tw-rounded tw-shadow-md tw-max-w-2xl">
                 <div className="tw-text-lg tw-font-medium tw-p-2 tw-pt-8 tw-text-center">
                     Өргөдөл хүлээн авах нээлттэй хугацааг тохируулах
                 </div>

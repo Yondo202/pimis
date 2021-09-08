@@ -92,7 +92,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               </MenuItem>
             </SubMenu>
             <SubMenu title="Даатгал">
-              <MenuItem>Тохиргоо -1</MenuItem>
+              <MenuItem>
+                <Link to="/insurance-types">Даатгалын бүтээгдэхүүнүүд тохируулах</Link>
+              </MenuItem>
             </SubMenu>
             <MenuItem>
               <Link to="/holidays">Амралтын өдөр сонгох</Link>
