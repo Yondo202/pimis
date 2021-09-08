@@ -325,8 +325,8 @@ export default function AcceptPeriodHandle() {
                 )}
             </Transition> */}
 
-            <div className="tw-p-4 tw-pt-0 tw-bg-white tw-rounded tw-shadow-md tw-max-w-2xl">
-                <div className="tw-text-lg tw-font-medium tw-p-2 tw-pt-8 tw-text-center">
+            <div className="tw-p-6 tw-bg-white tw-rounded tw-shadow-md tw-max-w-2xl">
+                <div className="tw-text-lg tw-font-medium tw-p-2 tw-pt-4 tw-text-center">
                     Өргөдөл хүлээн авах нээлттэй хугацааг тохируулах
                 </div>
 
