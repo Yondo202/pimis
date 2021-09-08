@@ -10,7 +10,7 @@ export default function FirstEvaluationSendNotice() {
     const projectId = useParams().id
     const qualified = useQuery().get('qualified')
 
-    return qualified
+    return qualified==='true'
         ? <Approved projectId={projectId} />
         : <NotApproved projectId={projectId} />
 }

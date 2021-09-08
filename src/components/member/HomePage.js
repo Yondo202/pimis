@@ -24,8 +24,6 @@ function HomePage({ setNotify }) {
         }).catch((err) => console.log(err.response.data.error))
     } 
 
-    console.log(`cardData`, cardData);
-
     return (
         <Memberhome style={{ maxWidth: 1160 }} className="container">
             <div className="header">
