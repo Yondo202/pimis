@@ -44,11 +44,8 @@ import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
 import FinancialAttachments from 'pages/attachments/financialAttachments';
 import ContractReports from 'pages/contract/contract_reports/contractReports';
 import ExportDataList from "components/admin/contents/export_data/MainPage"
-<<<<<<< HEAD
 import InsuranceTypeHandle from 'components/admin/contents/insurance_type/insuranceTypeHandle';
-=======
 import ResultMeasure from 'components/admin/contents/monitoring/ResultMeasure';
->>>>>>> 219e50aeabd5d97aa1fb0918f69cb1fe818b279a
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
