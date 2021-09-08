@@ -30,7 +30,7 @@ function TableTwo(props) {
             const finalData = []
             tableData.forEach((el, i) => {
                 props.initialData.forEach((elem, index) => {
-                    if (i === index) { el["name"] = elem.names; el["recentDate"] = elem.recentDate; el["getDate"] = elem.getDate; el["id"] = elem.id; el["files"] = elem.files }
+                    if (i === index) { el["names"] = elem.names; el["recentDate"] = elem.recentDate; el["getDate"] = elem.getDate; el["id"] = elem.id; el["files"] = elem.files }
                 })
                 finalData.push(el);
             });

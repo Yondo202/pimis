@@ -11,7 +11,7 @@ function ModalTwo(props) {
     useEffect(()=>{
         if(props.Data2){ const finalData = [];
             tableData.map((el,i)=>{
-                props.Data2.map((elem,index)=>{ if (i  === index){ el["name"] = elem.names; el["files"] = elem.files; el["getDate"] = elem.getDate ; el["recentDate"] = elem.recentDate} });
+                props.Data2.map((elem,index)=>{ if (i  === index){ el["names"] = elem.names; el["files"] = elem.files; el["getDate"] = elem.getDate ; el["recentDate"] = elem.recentDate} });
                 finalData.push(el);
             }); setDataOne(finalData);
         }else{ setDataOne(tableData); }
