@@ -56,7 +56,7 @@ const DataList = [
                 projectId: this.props?.projectId,
                 additionMaterial: this.state.rejectReason,
                 // signatureData:this.state.signature,
-                signatureData:'',
+                signatureData:null,
                 emailBody:EmailHTML(this.state.myData, this.props?.data, this.props?.edpInfo, this.state.username, this.state.rejectReason ),
                 approved : true
                }, { headers: { Authorization: AuthToken() } }).then((res)=>{
