@@ -5,6 +5,8 @@ import { useReactToPrint } from 'react-to-print'
 import './style.css'
 import FirstEvaluationPreviewPdf from './previewPdf'
 
+const headerCodes = ['a', 'b', 'c']
+const emptyEditor = '<p><br></p>'
 
 export default function FirstEvaluationPreview(props) {
     const rows = props.rows || []
@@ -72,24 +74,30 @@ export default function FirstEvaluationPreview(props) {
                                 {row.isChecked ? 'Тэнцсэн' : 'Тэнцээгүй'}
                             </div>
                         </div>
-                        {row.comment &&
-                            <div className="tw-px-4 tw-py-2 tw-border tw-border-t-0 tw-border-gray-400 tw-text-right tw-italic" id="no-break">
-                                ({row.comment})
+                        {row.comment && row.comment !== emptyEditor &&
+                            <div className="tw-border tw-border-t-0 tw-border-gray-400 tw-p-2">
+                                <div className="tw-py-1 tw-px-2 tw-rounded" style={{ backgroundColor: '#f5faff' }} dangerouslySetInnerHTML={{ __html: row.comment }} />
                             </div>
                         }
                     </Fragment>,
-                }[row.rowcode] || <Fragment key={row.rowcode}>
+                }[row.rowcode] ||
+                    <Fragment key={row.rowcode}>
                         <div className="tw-flex tw-border tw-border-t-0 tw-border-gray-400" id="no-break">
-                            <div className={`tw-flex-grow tw-p-2 ${['a', 'b', 'c'].includes(row.rowcode) ? 'tw-pl-3' : 'tw-pl-5'} tw-border-r tw-border-gray-400`}>
+                            <div className={`tw-flex-grow tw-p-2 ${headerCodes.includes(row.rowcode) ? 'tw-pl-3' : 'tw-pl-5'} tw-border-r tw-border-gray-400`}>
+                                {!headerCodes.includes(row.rowcode) &&
+                                    <span className="tw-mr-2 tw-font-normal">
+                                        {row.rowcode.substring(1)}.
+                                    </span>
+                                }
                                 {row.description}
                             </div>
                             <div className="tw-w-24 tw-py-2 tw-flex tw-justify-center tw-items-center tw-flex-shrink-0">
                                 {row.isChecked ? 'Тийм' : 'Үгүй'}
                             </div>
                         </div>
-                        {row.comment &&
-                            <div className="tw-px-4 tw-py-2 tw-border tw-border-t-0 tw-border-gray-400 tw-text-right tw-italic" id="no-break">
-                                ({row.comment})
+                        {row.comment && row.comment !== emptyEditor &&
+                            <div className={`tw-border tw-border-t-0 tw-border-gray-400 tw-p-2 ${!headerCodes.includes(row.rowcode) ? 'tw-pl-5' : ''}`}>
+                                <div className="tw-py-1 tw-px-2 tw-rounded" style={{ backgroundColor: '#f5faff' }} dangerouslySetInnerHTML={{ __html: row.comment }} />
                             </div>
                         }
                     </Fragment>
