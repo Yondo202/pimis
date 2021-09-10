@@ -21,11 +21,12 @@ import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'
 // import Holidays from "components/holidays/Holidays"
 import { UrgudulPreviewForUser } from 'pages/urgudul/preview/previewPages'
 import TrainingFrontPage from 'pages/training/frontPage';
-import MakeContract from 'pages/contract/make_contract/makeContract';
 import PerformanceAttachments from 'pages/attachments/performanceAttachements';
 import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
 import FinancialAttachments from 'pages/attachments/financialAttachments';
-import ContractReports from 'pages/contract/contract_reports/contractReports';
+import { MakeContractForUser } from 'pages/contract/make_contract/makeContractPages';
+import { ContractReportsForUser } from 'pages/contract/contract_reports/contractReportPages';
+import SurveyPimis from 'pages/contract/survery/surveyPimis';
 
 function UsersRoute() {
     return (
@@ -59,11 +60,12 @@ function UsersRoute() {
                     <Route path="/5a" component={FirstEvaluation} />
                     <Route path="/5b" component={CompilationCheck} />
                     <Route path="/5c" component={AnalystReport} />
-                    <Route path="/make-contract" component={MakeContract} />
-                    <Route path="/contract-reports" component={ContractReports} />
+                    <Route path="/make-contract" component={MakeContractForUser} />
+                    <Route path="/contract-reports" component={ContractReportsForUser} />
                     <Route path="/trainings">
                         <TrainingFrontPage user={true} />
                     </Route>
+                    <Route path="/survey-pimis" component={SurveyPimis} />
                     <MiddleRoute />
                 </Switch>
             </UrgudulStore>

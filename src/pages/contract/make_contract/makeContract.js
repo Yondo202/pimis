@@ -561,135 +561,131 @@ export default function MakeContract() {
    }
 
    return (
-      <>
-         <div className="tw-text-sm tw-text-gray-700 tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-pt-6 tw-pb-20">
-            <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-               <div className="tw-flex tw-justify-end">
-                  <button className="tw-mt-2 tw-mr-2 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-transition-shadow tw-font-light" onClick={handlePrint}>
-                     <span className="tw-text-sm">Хэвлэх болон хадгалах</span>
-                     <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
-                  </button>
+      <div className="tw-bg-white tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
+         <div className="tw-flex tw-justify-end">
+            <button className="tw-mt-2 tw-mr-2 tw-flex tw-items-center tw-bg-blue-800 tw-text-white tw-py-1 tw-px-5 tw-rounded hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors tw-transition-shadow tw-font-light" onClick={handlePrint}>
+               <span className="tw-text-sm">Хэвлэх болон хадгалах</span>
+               <PrintSVG className="tw-w-5 tw-h-5 tw-ml-2" />
+            </button>
+         </div>
+
+         <div className="tw-pb-10" ref={componentRef}>
+            <div className="tw-py-6 print-break-after">
+               <div className="tw-text-lg tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
+                  ТҮНШЛЭЛИЙН ГЭРЭЭ
                </div>
 
-               <div className="tw-pb-10" ref={componentRef}>
-                  <div className="tw-py-6 print-break-after">
-                     <div className="tw-text-lg tw-font-medium tw-text-center tw-mt-6 tw-mx-2 sm:tw-mx-8">
-                        ТҮНШЛЭЛИЙН ГЭРЭЭ
-                     </div>
-
-                     <div className="tw-mx-2 sm:tw-mx-10 tw-mt-6 tw-pb-4">
-                        <div className="tw-flex tw-flex-wrap tw-justify-between tw-px-2 sm:tw-px-4">
-                           <span className="">
-                              <Fill value={info.year} name="year" setter={handleInput} editable defaultLength={4} number /> оны <Fill value={info.month} name="month" setter={handleInput} editable defaultLength={2} number /> дугаар сарын <Fill value={info.day} name="day" setter={handleInput} editable defaultLength={2} number />-ний өдөр
-                           </span>
-                           <span className="tw-mx-2">
-                              Гэрээний №: <Fill value={info.contract_number} name="contract_number" setter={handleInput} editable />
-                           </span>
-                           <span className="">
-                              Улаанбаатар хот
-                           </span>
-                        </div>
-
-                        <div className="tw-mt-6 tw-leading-relaxed" style={{ wordSpacing: 2 }}>
-                           <p className="" style={{ textIndent: 16 }}>
-                              Энэхүү Түншлэлийн гэрээ (цаашид “Гэрээ” гэх)-г Монгол Улсын Засгийн газар болон Олон Улсын Хөгжлийн ассоциаци нарын хооронд 2016 оны 08 дугаар сарын 26-ны өдөр байгуулсан Санхүүжилтийн гэрээ, Монгол Улсын Иргэний хуулийн 15 дугаар бүлэг, Экспортыг дэмжих төслийн түншлэлийн хөтөлбөрийн сонгон шалгаруулалтын багийн <Fill value={info.order_year} name="order_year" setter={handleInput} editable defaultLength={4} number /> оны <Fill value={info.order_month} name="order_month" setter={handleInput} editable defaultLength={2} number /> дугаар сарын <Fill value={info.order_day} name="order_day" setter={handleInput} editable defaultLength={2} number />-ны өдрийн <Fill value={info.order_number} name="order_number" setter={handleInput} editable defaultLength={4} /> дугаар шийдвэрийг тус тус үндэслэн,
-                           </p>
-                           <p className="">
-                              нэг талаас Монгол Улс, Улаанбаатар хот, Сүхбаатар дүүрэг, 2 дугаар хороо, Гэрэгэ тауэр, 8 дугаар  давхарт байрлах Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны дэргэдэх Экспортыг дэмжих төслийг хэрэгжүүлэх нэгж (цаашид “Санхүүгийн дэмжлэг олгогч” гэх),
-                           </p>
-                           <p className="">
-                              нөгөө талаас Монгол Улс, <Fill value={info.hot_aimag} name="hot_aimag" setter={handleInput} editable placeholder="хот/аймаг" />, <Fill value={info.sum_duureg} name="sum_duureg" setter={handleInput} editable placeholder="сум/дүүрэг" />, <Fill value={info.horoo_bag} name="horoo_bag" setter={handleInput} editable placeholder="баг/хороо" />, <Fill value={info.detailed_location} name="detailed_location" setter={handleInput} editable placeholder="дэлгэрэнгүй хаяг" /> хаягт байрлах улсын бүртгэлийн <Fill value={info.state_reg} name="state_reg" setter={handleInput} editable defaultLength={12} /> дугаартай, регистрийн <Fill value={info.register_no} name="register_no" setter={handleInput} editable defaultLength={12} /> дугаартай <Fill value={info.company_name} name="company_name" setter={handleInput} editable defaultLength={16} /> (цаашид “Санхүүгийн дэмжлэг хүртэгч” гэх) нар (цаашид хамтад нь “Талууд” гэх) харилцан тохиролцож байгуулав.
-                           </p>
-                           <p className="" style={{ textIndent: 16 }}>
-                              Энэхүү Гэрээний зорилго нь <Fill value={info.company_name} />-ийн экспортын үйл ажиллагааг дэмжих зорилгоор энэхүү Гэрээнд заасан нөхцөл, зориулалтаар санхүүжилт олгох, үйл ажиллагааны хэрэгжилтэд хяналт тавих, уг санхүүжилттэй холбоотой бусад харилцаа, талуудын эрх, үүрэг хариуцлагыг тодорхойлон зохицуулахад оршино.
-                           </p>
-                        </div>
-                     </div>
-
-                     <div className="tw-mx-2 sm:tw-mx-8 tw-mt-8">
-                        {Object.entries(contract).map(([key, value]) =>
-                           <div className="" key={key}>
-                              <Header header={`${key} ДҮГЭЭР ЗҮЙЛ. ${value.category?.toUpperCase()}`} key={key} />
-                              {value.provisions.map((provision, i) =>
-                                 <Provision
-                                    order={provision.order}
-                                    provision={{
-                                       '2.8': <span>
-                                          Гэрээний дагуу Санхүүгийн дэмжлэг олгогч нэгж нь батлагдсан үйл ажиллагааны зардлын зөвшөөрсөн хэсэг болох дээд тал нь 50 хувь буюу <Fill value={info.funding} name="funding" setter={handleInput} defaultLength={12} editable number />₮ (<Fill value={info.funding_verbose} name="funding_verbose" setter={handleInput} defaultLength={24} editable /> үгээр) /НӨАТ ороогүй/ төгрөгийг Санхүүгийн дэмжлэг хүртэгчид олгоно."
-                                       </span>,
-                                       '6.9.1': <span>
-                                          Санхүүгийн дэмжлэг хүртэгчийн албан ёсны хаяг: <Fill value={info.location} name="location" setter={handleInput} defaultLength={36} editable />
-                                       </span>
-                                    }[provision.order] || provision.provision}
-                                    subLevel={provision.subLevel}
-                                    key={i}
-                                 />
-                              )}
-                           </div>
-                        )}
-                     </div>
-
-                     <div className="tw-text-base tw-text-center tw-mt-8 tw-font-medium tw-mx-2 sm:tw-mx-8">
-                        ГЭРЭЭ БАЙГУУЛСАН:
-                     </div>
-
-                     <div className="tw-mt-6 tw-flex tw-flex-wrap tw-mx-2 sm:tw-mx-10">
-                        <div className="sm:tw-w-1/2">
-                           <div className="tw-p-2 tw-font-medium">
-                              Санхүүгийн дэмжлэг олгогчийг төлөөлж:
-                           </div>
-
-                           {signersEdp.map(signer =>
-                              <Sign
-                                 signer={signer}
-                                 setter={setSignersEpd}
-                                 key={signer.order}
-                              />
-                           )}
-                        </div>
-
-                        <div className="sm:tw-w-1/2">
-                           <div className="tw-p-2 tw-font-medium">
-                              Санхүүгийн дэмжлэг хүртэгчийг төлөөлж:
-                           </div>
-
-                           {signersReceiving.map((signer, i) =>
-                              <SignReceiving
-                                 signer={signer}
-                                 setter={setSignersReceiving}
-                                 description={descriptions[i]}
-                                 key={signer.order}
-                              />
-                           )}
-                        </div>
-
-                        <div className="print-no-break">
-                           <Fill value={info.bh_zuvluh} name="bh_zuvluh" setter={handleInput} editable defaultLength={30} />
-                           <p className="">
-                              Экспортыг дэмжих төслийн Бизнес хөгжлийн зөвлөх
-                           </p>
-                        </div>
-                     </div>
-
-                     <div className="tw-flex tw-justify-center">
-                        <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors print-invisbile" onClick={handleSave}>
-                           Хадгалах
-                        </button>
-                     </div>
+               <div className="tw-mx-2 sm:tw-mx-10 tw-mt-6 tw-pb-4">
+                  <div className="tw-flex tw-flex-wrap tw-justify-between tw-px-2 sm:tw-px-4">
+                     <span className="">
+                        <Fill value={info.year} name="year" setter={handleInput} editable defaultLength={4} number /> оны <Fill value={info.month} name="month" setter={handleInput} editable defaultLength={2} number /> дугаар сарын <Fill value={info.day} name="day" setter={handleInput} editable defaultLength={2} number />-ний өдөр
+                     </span>
+                     <span className="tw-mx-2">
+                        Гэрээний №: <Fill value={info.contract_number} name="contract_number" setter={handleInput} editable />
+                     </span>
+                     <span className="">
+                        Улаанбаатар хот
+                     </span>
                   </div>
 
-                  <ActivityPlanAttach contractId={info.id} />
-                  <FinalCostAttach contract={info} user={user} />
-                  <ProtectionReport contract={info} />
-                  <PerformanceReport contract={info} user={user} />
-                  <OwnershipAttach contract={info} user={user} />
-                  <PurchasePlanAttach contractId={info.id} />
-                  <ContractAttach5 contractId={info.id} />
-                  <ContractAttach6 contractId={info.id} />
+                  <div className="tw-mt-6 tw-leading-relaxed" style={{ wordSpacing: 2 }}>
+                     <p className="" style={{ textIndent: 16 }}>
+                        Энэхүү Түншлэлийн гэрээ (цаашид “Гэрээ” гэх)-г Монгол Улсын Засгийн газар болон Олон Улсын Хөгжлийн ассоциаци нарын хооронд 2016 оны 08 дугаар сарын 26-ны өдөр байгуулсан Санхүүжилтийн гэрээ, Монгол Улсын Иргэний хуулийн 15 дугаар бүлэг, Экспортыг дэмжих төслийн түншлэлийн хөтөлбөрийн сонгон шалгаруулалтын багийн <Fill value={info.order_year} name="order_year" setter={handleInput} editable defaultLength={4} number /> оны <Fill value={info.order_month} name="order_month" setter={handleInput} editable defaultLength={2} number /> дугаар сарын <Fill value={info.order_day} name="order_day" setter={handleInput} editable defaultLength={2} number />-ны өдрийн <Fill value={info.order_number} name="order_number" setter={handleInput} editable defaultLength={4} /> дугаар шийдвэрийг тус тус үндэслэн,
+                     </p>
+                     <p className="">
+                        нэг талаас Монгол Улс, Улаанбаатар хот, Сүхбаатар дүүрэг, 2 дугаар хороо, Гэрэгэ тауэр, 8 дугаар  давхарт байрлах Хүнс, хөдөө аж ахуй, хөнгөн үйлдвэрийн яамны дэргэдэх Экспортыг дэмжих төслийг хэрэгжүүлэх нэгж (цаашид “Санхүүгийн дэмжлэг олгогч” гэх),
+                     </p>
+                     <p className="">
+                        нөгөө талаас Монгол Улс, <Fill value={info.hot_aimag} name="hot_aimag" setter={handleInput} editable placeholder="хот/аймаг" />, <Fill value={info.sum_duureg} name="sum_duureg" setter={handleInput} editable placeholder="сум/дүүрэг" />, <Fill value={info.horoo_bag} name="horoo_bag" setter={handleInput} editable placeholder="баг/хороо" />, <Fill value={info.detailed_location} name="detailed_location" setter={handleInput} editable placeholder="дэлгэрэнгүй хаяг" /> хаягт байрлах улсын бүртгэлийн <Fill value={info.state_reg} name="state_reg" setter={handleInput} editable defaultLength={12} /> дугаартай, регистрийн <Fill value={info.register_no} name="register_no" setter={handleInput} editable defaultLength={12} /> дугаартай <Fill value={info.company_name} name="company_name" setter={handleInput} editable defaultLength={16} /> (цаашид “Санхүүгийн дэмжлэг хүртэгч” гэх) нар (цаашид хамтад нь “Талууд” гэх) харилцан тохиролцож байгуулав.
+                     </p>
+                     <p className="" style={{ textIndent: 16 }}>
+                        Энэхүү Гэрээний зорилго нь <Fill value={info.company_name} />-ийн экспортын үйл ажиллагааг дэмжих зорилгоор энэхүү Гэрээнд заасан нөхцөл, зориулалтаар санхүүжилт олгох, үйл ажиллагааны хэрэгжилтэд хяналт тавих, уг санхүүжилттэй холбоотой бусад харилцаа, талуудын эрх, үүрэг хариуцлагыг тодорхойлон зохицуулахад оршино.
+                     </p>
+                  </div>
+               </div>
+
+               <div className="tw-mx-2 sm:tw-mx-8 tw-mt-8">
+                  {Object.entries(contract).map(([key, value]) =>
+                     <div className="" key={key}>
+                        <Header header={`${key} ДҮГЭЭР ЗҮЙЛ. ${value.category?.toUpperCase()}`} key={key} />
+                        {value.provisions.map((provision, i) =>
+                           <Provision
+                              order={provision.order}
+                              provision={{
+                                 '2.8': <span>
+                                    Гэрээний дагуу Санхүүгийн дэмжлэг олгогч нэгж нь батлагдсан үйл ажиллагааны зардлын зөвшөөрсөн хэсэг болох дээд тал нь 50 хувь буюу <Fill value={info.funding} name="funding" setter={handleInput} defaultLength={12} editable number />₮ (<Fill value={info.funding_verbose} name="funding_verbose" setter={handleInput} defaultLength={24} editable /> үгээр) /НӨАТ ороогүй/ төгрөгийг Санхүүгийн дэмжлэг хүртэгчид олгоно."
+                                 </span>,
+                                 '6.9.1': <span>
+                                    Санхүүгийн дэмжлэг хүртэгчийн албан ёсны хаяг: <Fill value={info.location} name="location" setter={handleInput} defaultLength={36} editable />
+                                 </span>
+                              }[provision.order] || provision.provision}
+                              subLevel={provision.subLevel}
+                              key={i}
+                           />
+                        )}
+                     </div>
+                  )}
+               </div>
+
+               <div className="tw-text-base tw-text-center tw-mt-8 tw-font-medium tw-mx-2 sm:tw-mx-8">
+                  ГЭРЭЭ БАЙГУУЛСАН:
+               </div>
+
+               <div className="tw-mt-6 tw-flex tw-flex-wrap tw-mx-2 sm:tw-mx-10">
+                  <div className="sm:tw-w-1/2">
+                     <div className="tw-p-2 tw-font-medium">
+                        Санхүүгийн дэмжлэг олгогчийг төлөөлж:
+                     </div>
+
+                     {signersEdp.map(signer =>
+                        <Sign
+                           signer={signer}
+                           setter={setSignersEpd}
+                           key={signer.order}
+                        />
+                     )}
+                  </div>
+
+                  <div className="sm:tw-w-1/2">
+                     <div className="tw-p-2 tw-font-medium">
+                        Санхүүгийн дэмжлэг хүртэгчийг төлөөлж:
+                     </div>
+
+                     {signersReceiving.map((signer, i) =>
+                        <SignReceiving
+                           signer={signer}
+                           setter={setSignersReceiving}
+                           description={descriptions[i]}
+                           key={signer.order}
+                        />
+                     )}
+                  </div>
+
+                  <div className="print-no-break">
+                     <Fill value={info.bh_zuvluh} name="bh_zuvluh" setter={handleInput} editable defaultLength={30} />
+                     <p className="">
+                        Экспортыг дэмжих төслийн Бизнес хөгжлийн зөвлөх
+                     </p>
+                  </div>
+               </div>
+
+               <div className="tw-flex tw-justify-center">
+                  <button className="tw-my-8 tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-rounded tw-py-2 tw-px-8 hover:tw-shadow-md active:tw-bg-blue-700 focus:tw-outline-none tw-transition-colors print-invisbile" onClick={handleSave}>
+                     Хадгалах
+                  </button>
                </div>
             </div>
+
+            <ActivityPlanAttach contractId={info.id} />
+            <FinalCostAttach contract={info} user={user} />
+            <ProtectionReport contract={info} />
+            <PerformanceReport contract={info} user={user} />
+            <OwnershipAttach contract={info} user={user} />
+            <PurchasePlanAttach contractId={info.id} />
+            <ContractAttach5 contractId={info.id} />
+            <ContractAttach6 contractId={info.id} />
          </div>
-      </>
+      </div>
    )
 }
 
@@ -768,7 +764,7 @@ function SignReceiving({ signer, description, setter }) {
             </span>
             <Fill value={signer.position} name="position" setter={handleInput} editable defaultLength={24} />
          </div>
-         <p className="tw-font-light">
+         <p className="tw-font-light print-hide">
             {description}
          </p>
          <Signature signer={signer} setter={setter} />

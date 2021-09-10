@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Switch, useLocation } from 'react-router'
-import { animated, config, useTransition } from 'react-spring'
+import { animated, useTransition } from 'react-spring'
 import LetterOfInterest from './letter'
 import LetterUpload from './letterUpload'
 
