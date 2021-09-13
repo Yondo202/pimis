@@ -25,6 +25,7 @@ const ProjectResult = () => {
     const [ lang, setLang ] = useState('en');
 
     useEffect(()=>{
+        setLang(i18n.language);
         setTimeout(() => {
             setWait(true);
         }, 1000)
@@ -70,90 +71,57 @@ const ProjectResult = () => {
             {showPdf&&<PDFViewerComponent wait={wait} setModal={setShowPdf} data={resultData} years={years} title={t('Төслийн үр дүнг хэмжих')} lang={lang} />}
             <Container >
                 <div className="TitlePar">
-                    <div className="Title">{t('Төслийн үр дүнг хэмжих шалгуур үзүүлэлтүүд')}</div>
+                    <div className="Title">{t('Project Results Indicators')}</div>
                     <LangSwitch>
+                        {i18n.language==="en"?<div><img src="/us.png" /></div>:<div><img src="/mn.png" /></div>}
                         <select value={i18n.language} onChange={handleChange}>
-                            <option value="en">English</option>
-                            <option value="mn">Монгол</option>
+                            <option value="en"> English</option>
+                            <option value="mn"> Монгол</option>
                         </select>
                     </LangSwitch>
                 </div>
                 <div className="customTable T5 T6">
                     <div className="headPar">
-                        <div className="addBtn"><AiOutlineCalculator /><span>Бодох</span></div>
+                        <div className="addBtn"><AiOutlineCalculator /><span>{t("Calculate")}</span></div>
                         <div className={`additions`}>
-                            <div onClick={()=>setShowPdf(true)} className="addBtn"><AiOutlinePrinter /><span>Хэвлэх</span></div>
+                            {wait?<div onClick={()=>setShowPdf(true)} className="addBtn"><AiOutlinePrinter /><span>{t("Print")}</span></div>:<div />}
                             {/* <div className="addBtn"><AiOutlineDownload /><span>Татах</span></div> */}
 
-                            <PDFDownloadLink document={<ResultMeasurePdf wait={wait2} data={resultData} years={years} lang={lang} />} fileName={t('Төслийн үр дүнг хэмжих')}>
-                                {({ blob, url, loading, error }) => (!wait2 ? <div className="addBtn"><AiOutlineDownload /><span>Loading...</span></div> : <div className="addBtn"><AiOutlineDownload /><span>Татах</span></div>)}
-                            </PDFDownloadLink>
+                            {wait2?<PDFDownloadLink document={<ResultMeasurePdf wait={wait2} data={resultData} years={years} lang={lang} />} fileName={t('Төслийн үр дүнг хэмжих')}>
+                                {({ blob, url, loading, error }) => (!wait2 ? <div className="addBtn"><AiOutlineDownload /><span>Loading...</span></div> : <div className="addBtn"><AiOutlineDownload /><span>{t("Download")}</span></div>)}
+                            </PDFDownloadLink>:<div />}
                         </div>
                     </div>
                         <table>
-                            
                             <tbody>
                                 <tr>
                                     <th rowSpan="2">#</th>
-                                    <th rowSpan="2">Шалгуур үзүүлэлт</th>
-                                    <th rowSpan="2">Хэмжих нэгж</th>
+                                    <th rowSpan="2">{t("Indicator Name")}</th>
+                                    <th rowSpan="2">{t("Measurement")}</th>
                                     {years.map((el,ind)=> <th key={ind} colSpan="2" scope="colgroup">{el.year}</th>)}
                                 </tr>
                                 <tr>
                                     {years.map((el,ind)=>{
                                         return(
                                             <React.Fragment key={ind}>
-                                                <th style={{fontWeight:'normal'}} scope="col">Cumalative</th>
-                                                <th style={{fontWeight:'normal'}} scope="col">Current</th>
+                                                <th style={{fontWeight:'normal'}} scope="col">{t("Cumalative")}</th>
+                                                <th style={{fontWeight:'normal'}} scope="col">{t("Current")}</th>
                                             </React.Fragment>
                                         )
                                     })}
                                 </tr>
+
                                 <tr className="smHead">
-                                    <td colSpan={3+years.length*2}>PDO Level I Results Indicators</td>
+                                    <td colSpan={3+years.length*2}>{t("PDO Level I Results Indicators")}</td>
                                 </tr>
-                                {resultData.sort((a,b)=>a.row_number-b.row_number).map((el,ind)=>{
-                                    if(el.row_type==="level1"){
-                                        return(
-                                            <tr onClick={()=>selectRowHandle(el)} key={ind} className={`cusorItems ${selected.id===el.id?`Selected`:``}`} key={ind}>
-                                                <td className="number">{el.row_number}</td>
-                                                <td className="left" >{el[`description_${lang}`]}</td>
-                                                <td className="center">{el.measure}</td>
-                                                {years.map((elem,index)=>{
-                                                    return(
-                                                        <React.Fragment key={index}>
-                                                            <td className="center bold">{el[`cum${elem.year}`]!==null?el[`cum${elem.year}`]:'-'} {el.measure==="Хувь"&&el[`cum${elem.year}`]?` %`:``}</td>
-                                                            <td className="center bold">{el[`cur${elem.year}`]}</td>
-                                                        </React.Fragment>
-                                                    )
-                                                })}
-                                            </tr>
-                                        )
-                                    }
-                                })}
+                                <FilteredRow resultData={resultData.filter(item=>item.row_type==="level1").sort((a,b)=>a.row_number-b.row_number)} selectRowHandle={selectRowHandle} years={years} selected={selected} lang={lang} />
+
                                 <tr className="smHead">
-                                    <td colSpan={3+years.length*2}>Intermediate Results Indicators</td>
+                                    <td colSpan={3+years.length*2}>
+                                        {t("Intermediate Results Indicators")}
+                                    </td>
                                 </tr>
-                                {resultData.sort((a,b)=>a.row_number-b.row_number).map((el,ind)=>{
-                                    if(el.row_type==="level2"){
-                                        return(
-                                            <tr key={ind} onClick={()=>selectRowHandle(el)} key={ind} className={`cusorItems ${selected.id===el.id?`Selected`:``}`} >
-                                                <td className="number">{el.row_number}</td>
-                                                <td className="left" >{el[`description_${lang}`]}</td>
-                                                <td className="center">{el.measure}</td>
-                                                {years.map((elem,index)=>{
-                                                    return(
-                                                        <React.Fragment key={index}>
-                                                            <td className="center bold">{el[`cum${elem.year}`]!==null?el[`cum${elem.year}`]:'-'} {el.measure==="Хувь"&&el[`cum${elem.year}`]?` %`:``}</td>
-                                                            <td className="center bold">{el[`cur${elem.year}`]}</td>
-                                                        </React.Fragment>
-                                                    )
-                                                })}
-                                            </tr>
-                                        )
-                                    }
-                                })}
-                                
+                                <FilteredRow resultData={resultData.filter(item=>item.row_type==="level2").sort((a,b)=>a.row_number-b.row_number)} selectRowHandle={selectRowHandle} years={years} selected={selected} lang={lang} />
                             </tbody>
                         </table>
                         
@@ -165,11 +133,33 @@ const ProjectResult = () => {
 
 export default ProjectResult;
 
+const FilteredRow = ({ resultData, selectRowHandle, years, selected, lang }) =>{
+    const [t] = useTranslation();
+    return(
+        resultData.map((el,ind)=>{
+            return(
+                <tr key={ind} onClick={()=>selectRowHandle(el)} key={ind} className={`cusorItems ${selected.id===el.id?`Selected`:``}`} >
+                    <td className="number">{el.row_number}</td>
+                    <td className="left" >{el[`description_${lang}`]}</td>
+                    <td className="center">{el.measure==="Хувь"?`${t('percent')}`:el.measure==="Тоо"?`${t('number')}`:`${t('amount')} (USD)`}</td>
+                    {years.map((elem,index)=>{
+                        return(
+                            <React.Fragment key={index}>
+                                <td className="center bold">{el[`cum${elem.year}`]!==null?el[`cum${elem.year}`]:'-'} {el.measure==="Хувь"&&el[`cum${elem.year}`]?` %`:``}</td>
+                                <td className="center bold">{el[`cur${elem.year}`]}</td>
+                            </React.Fragment>
+                        )
+                    })}
+                </tr>
+            )
+        })
+    )
+}
+
 
 const PDFViewerComponent = ({setModal, data, years, wait, title, lang}) =>{
     const [cName, setName] = useState('');
     
-
     const CloseHandle = () =>{
         setName('contentParent2');
         setTimeout(() => {

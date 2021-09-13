@@ -23,6 +23,7 @@ function getWindowDimensions() {
     };
 }
 
+
 const Insurance = () => {
     const [t, i18n] = useTranslation();
     const [ListData, setListData] = useState([]);
@@ -40,6 +41,8 @@ const Insurance = () => {
 
     const [widths, setWidth] = useState(getWindowDimensions());
 
+    const [ lang, setLang ] = useState('en');
+
     useEffect(() => {
         axios.get(`users`, { headers: { Authorization: AccessToken() } }).then(res => {
             setUsers(res.data.data.filter(item => item.role === "user"));
@@ -47,6 +50,7 @@ const Insurance = () => {
     }, [addCond])
 
     useEffect(() => {
+        setLang(i18n.language);
         (async () => {
             try {
                 const insTypes = await axios.get('insurances/insurance-types')
@@ -118,6 +122,7 @@ const Insurance = () => {
     }
 
     const handleChange = event => {
+        setLang(event.target.value);
         i18n.changeLanguage(event.target.value);
     };
 
@@ -142,7 +147,8 @@ const Insurance = () => {
                 <div className="TitlePar">
                     <div className="Title">{t('title')}</div>
                     <LangSwitch>
-                        <select onChange={handleChange}>
+                        {i18n.language==="en"?<div><img src="/us.png" /></div>:<div><img src="/mn.png" /></div>}
+                        <select value={i18n.language} onChange={handleChange}>
                             <option value="en">English</option>
                             <option value="mn">Монгол</option>
                         </select>
