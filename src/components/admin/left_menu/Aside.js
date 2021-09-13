@@ -103,6 +103,9 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
               <Link to="/accept-periods">Нээлттэй хугацаа тохируулах</Link>
             </MenuItem>
             <MenuItem>
+              <Link to="/laboratories">Лаборторууд</Link>
+            </MenuItem>
+            <MenuItem>
               <Link to="/currency-rates">Ханшийн мэдээлэл оруулах</Link>
             </MenuItem>
           </SubMenu>

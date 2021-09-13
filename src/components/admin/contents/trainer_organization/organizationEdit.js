@@ -34,6 +34,7 @@ export default function TrainerOrganizationEdit() {
          }).then(res => {
             setOrganization(res.data.data)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Байгууллагын мэдээллийг шинэчиллээ.' })
+            history.push('/trainer-organizations')
          }).catch(err => {
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Байгууллагын мэдээллийг засаж чадсангүй.' })
          })
@@ -45,6 +46,7 @@ export default function TrainerOrganizationEdit() {
             setOrganization(res.data.data)
             setTrainerOrgId(res.data.data.id)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Байгууллагын мэдээлэл нэмэгдлээ.' })
+            history.push('/trainer-organizations')
          }).catch(err => {
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Байгууллагын мэдээлэл нэмж чадсангүй.' })
          })
@@ -70,7 +72,7 @@ export default function TrainerOrganizationEdit() {
             </div>
 
             <div className="tw-flex tw-justify-center">
-               <button className="tw-rounded tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-py-2 tw-px-6 tw-text-white tw-font-medium tw-my-6 focus:tw-outline-none tw-text-13px" onClick={handleSubmit}>
+               <button className="tw-rounded tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-py-1.5 tw-px-6 tw-text-white tw-font-medium tw-my-6 focus:tw-outline-none tw-text-13px" onClick={handleSubmit}>
                   Хадгалах
                </button>
             </div>
