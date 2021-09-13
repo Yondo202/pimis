@@ -97,7 +97,7 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
         <CustomModal>
             <div className={`contentParent ${cName}`} style={{ width: "40rem" }}>
                 <div className="head">
-                    <div className="title">{type === "total_sales" ? `Нийт борлуулалт` : type === "emp_count" ? `Ажилчдын тоо` : `${handle} Export Data`} </div>
+                    <div className="title">{type === "total_sales" ? `Нийт борлуулалт` : type === "emp_count" ? `Ажилчдын тоо` : `${handle==="add"?`Нэмэх`:handle==="edit"?`Засах`:`Устгах`} Export Data`} </div>
                     <div onClick={CloseHandle} className="close">✖</div>
                 </div>
 
@@ -106,12 +106,12 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                         {type === "export_data" ? handle !== "delete" ? <>
                             <InputsParent2 first={true}>
                                 <InputStyle >
-                                    <div className="label">Product name<span className="reds">*</span></div>
+                                    <div className="label">Бүтээгдэхүүний нэр<span className="reds">*</span></div>
                                     <input defaultValue={handle !== 'add' ? selectedEx?.product_name : ``} type="text" name='product_name' className="gettInpps" required />
                                 </InputStyle>
 
                                 <InputStyle >
-                                    <div className="label">Countries <span className="reds">*</span></div>
+                                    <div className="label">Улс <span className="reds">*</span></div>
                                     <div style={{ width: `100%` }} className="SelectPar">
                                         <Select
                                             options={country}
@@ -120,7 +120,7 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                                             styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
                                             getOptionValue={option => `${option?.id}`}
                                             onChange={handleSelect}
-                                            placeholder={'Countries'}
+                                            placeholder={'Улс'}
                                             getOptionLabel={option => `${option?.description_mon}`}
                                         />
                                     </div>
@@ -129,7 +129,7 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
 
                             <InputsParent2>
                                 <InputStyle >
-                                    <div className="label">HS code<span className="reds">*</span></div>
+                                    <div className="label">HS код<span className="reds">*</span></div>
                                     <input defaultValue={handle !== 'add' ? selectedEx?.hs_code : ``} type="text" name='hs_code' className="gettInpps" required />
                                 </InputStyle>
                                 <InputStyle />
@@ -137,18 +137,18 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                         </>
                             : <InputsParent2 style={{ opacity: `0.8` }} first={true}>
                                 <InputStyle >
-                                    <div className="label">Product name<span className="reds">*</span></div>
+                                    <div className="label">Бүтээгдэхүүний нэр<span className="reds">*</span></div>
                                     <h6>{selectedEx?.product_name}</h6>
                                 </InputStyle>
 
                                 <InputStyle >
-                                    <div className="label">Countries <span className="reds">*</span></div>
+                                    <div className="label">Улс <span className="reds">*</span></div>
                                     <h6>{selected?.description_mon}</h6>
                                 </InputStyle>
                             </InputsParent2>
                             : null}
 
-                        {handle !== "delete" && <YearsType contents="Years -> Amount">
+                        {handle !== "delete" && <YearsType contents="Жилүүд -> Хэмжээ">
                             <InputsParent>
                                 {years.map((el,ind)=>{
                                     return(

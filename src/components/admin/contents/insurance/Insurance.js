@@ -266,7 +266,4 @@ const ScrollTable = styled.div`
 `
 
 // export default (translate("translations")(Insurance))
-
-
-
 // export default withTranslation()(Insurance);

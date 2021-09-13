@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Font ,Image } from '@react-pdf/renderer';
 import Gif from '../../image/edp_logo.png'
 
@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:"space-between",
         alignItems:'center',
-        border:1,
-        borderColor:'grey',
+        border:0.5,
+        borderColor:'#000',
         borderTop:'none',
     },
     borderTop:{
@@ -40,15 +40,15 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:"space-between",
         alignItems:'center',
-        border:1,
-        borderColor:'grey',
+        border:0.5,
+        borderColor:'#000',
     },
     textDesc: {
         fontSize:9,
         padding:'5px 10px',
         width:"80%",
-        borderRight:1,
-        borderColor:'grey',
+        borderRight:0.5,
+        borderColor:'#000',
     },
     textAnswer: {
         textAlign:'center',
@@ -82,13 +82,13 @@ const styles = StyleSheet.create({
         width:36,
         marginRight:15
     }
-  });
+});
 
   // Create Document Component
   const MyDocument = ({wait, data}) => {
 
       return(
-        <Document  >
+        <Document title="testtttttttttt.pdf" >
             {wait?
             <>
                 <Page size="A4" style={styles.page}>
@@ -107,15 +107,15 @@ const styles = StyleSheet.create({
                         {data.slice(0,3).map((el,i)=>{
                             return(
                                 <>
-                                    <View wrap style={[styles.tableRow]}>
-                                        <Text break style={[styles.textDesc, {fontWeight: 'medium'}]} >{el.title}</Text> 
-                                        <Text break style={styles.textAnswer} >{el.value}</Text> 
+                                    <View style={styles.tableRow}>
+                                        <Text style={[styles.textDesc, {fontWeight: 'medium'}]} >{el.title}</Text> 
+                                        <Text style={styles.textAnswer} >{el.value}</Text> 
                                     </View>
                                     {el.items.map(elem=>{
                                         return(
-                                            <View wrap style={styles.tableRow}>
-                                                <Text break style={styles.textDesc}>{elem.name}</Text> 
-                                                <Text break style={styles.textAnswer}>{elem.value?'тийм': "үгүй"}</Text> 
+                                            <View style={styles.tableRow}>
+                                                <Text style={styles.textDesc}>{elem.name}</Text> 
+                                                <Text style={styles.textAnswer}>{elem.value?'тийм': "үгүй"}</Text> 
                                             </View>
                                         )
                                      })}
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
                         })}
                     <Text fixed style={[styles.footerStyle]} >1 / 2</Text>
                 </Page> 
-                <Page size="A4" style={styles.page}>
+                <Page size="A4" type="portrait" style={styles.page}>
                     <View style={styles.headerStyle}>
                         <Image style={styles.headImg} src={Gif} />
                         <Text  fixed>Экспортыг дэмжих төсөл</Text>
@@ -136,15 +136,15 @@ const styles = StyleSheet.create({
                         {data.slice(3,5).map(el=>{
                             return(
                                 <>
-                                    <View break style={[styles.tableRow]}>
-                                        <Text break style={[styles.textDesc, {fontWeight: 'medium'}]} >{el.title}</Text> 
-                                        <Text break style={styles.textAnswer} >{el.value}</Text> 
+                                    <View style={styles.tableRow}>
+                                        <Text style={[styles.textDesc, {fontWeight: 'medium'}]} >{el.title}</Text> 
+                                        <Text style={styles.textAnswer} >{el.value}</Text> 
                                     </View>
                                     {el.items.map(elem=>{
                                     return(
-                                        <View wrap break style={styles.tableRow}>
-                                            <Text break style={styles.textDesc}>{elem.name}</Text> 
-                                            <Text break style={styles.textAnswer}>{elem.value?'тийм': "үгүй"}</Text> 
+                                        <View  style={styles.tableRow}>
+                                            <Text style={styles.textDesc}>{elem.name}</Text> 
+                                            <Text style={styles.textAnswer}>{elem.value?'тийм': "үгүй"}</Text> 
                                         </View>
                                      )
                                     })}
@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
            :<Page size="A4">
                 <Text>Loading...</Text>
             </Page>}
-          
         </Document>
     )
 };

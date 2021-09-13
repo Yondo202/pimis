@@ -14,7 +14,6 @@ const PdfTest = () => {
     const localId = localStorage.getItem("userId");
     void async function fetch() {
       const data = await axios.get(`criterias?userId=${localId}}`, { headers: { Authorization: AccessToken() } });
-      console.log(data, " my data");
       let keys = Object.keys(data.data.data);
       if (keys.length > 1) {
         // setSuccess(data.data.data.approved);
@@ -34,8 +33,8 @@ const PdfTest = () => {
 
   return (
     <div className="container">
-      <PDFstyle className="Nanana">
-        <PDFViewer fileName="somename.pdf" style={{ height: '90vh', width: `100%` }} >
+      <PDFstyle >
+        <PDFViewer style={{ height: '90vh', width: `100%` }} >
           <MyDocument wait={wait} data={initialData} />
         </PDFViewer>
       </PDFstyle>
@@ -48,7 +47,7 @@ const PdfTest = () => {
       </PDFDownloadLink>}  */}
 
 
-      <PDFDownloadLink document={<MyDocument wait={fontwait} data={initialData} />} fileName="somename.pdf">
+      <PDFDownloadLink document={<MyDocument wait={fontwait} data={initialData} />} fileName="test123465.pdf">
         {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
       </PDFDownloadLink>
 

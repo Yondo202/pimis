@@ -68,7 +68,7 @@ const ExportDataContent = ({ SD, userId }) => {
     useEffect(() => {
         void async function fetch() {
             let res = await axios.get(`countries`);
-            let year = await axios.get(`years/true`);
+            let year = await axios.get(`years?type=export_data`);
             setYears(year?.data.data);
             setCountry(res.data.data);
         }()
@@ -144,13 +144,15 @@ const ExportDataContent = ({ SD, userId }) => {
                 <table>
                     <tbody>
                         <tr>
-                            <th>Product name</th>
+                            {/* <th>Product name</th> */}
+                            <th>Бүтээгдэхүүний нэр</th>
                             {years.map((el, ind) => {
                                 return (
                                     <th key={ind}>{el?.year}</th>
                                 )
                             })}
-                            <th>{t('Total')}</th>
+                            {/* <th>{t('Total')}</th> */}
+                            <th>Нийт</th>
                         </tr>
 
                         {userId ?
