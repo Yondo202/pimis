@@ -49,6 +49,7 @@ export default function TrainerOrganizationsList() {
             <HeaderFilter visible={true} />
             <FilterRow visible={true} />
 
+            <Column caption="Д/д" headerCellRender={HeaderCell} cellRender={cellRenderOrder} alignment="right" />
             <Column dataField="organization_name" caption="Байгууллагын нэр" headerCellRender={HeaderCell} />
             <Column dataField="registration_number" caption="Улсын бүртгэлийн дугаар" headerCellRender={HeaderCell} />
             <Column dataField="createdAt" dataType="date" caption="Үүсгэсэн огноо" headerCellRender={HeaderCell} />
@@ -80,4 +81,8 @@ const ButtonNavOrg = ({ data }) => {
          Засах
       </button>
    )
+}
+
+const cellRenderOrder = (data) => {
+   return `${data.rowIndex + 1}.`
 }

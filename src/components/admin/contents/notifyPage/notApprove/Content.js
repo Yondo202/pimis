@@ -45,7 +45,7 @@ class Content extends React.Component {
                 approved : false,
                 additionMaterial: this.state.rejectReason,
                 // signatureData:this.state.signature,
-                signatureData:'',
+                signatureData:null,
                 emailBody:EmailHTML( this.props?.data, this.props?.edpInfo, this.state.username, this.state.rejectReason ),
             }, { headers: { Authorization: AuthToken() } })
             .then((res)=>{ this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true);

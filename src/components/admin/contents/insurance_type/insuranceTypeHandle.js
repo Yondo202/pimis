@@ -65,7 +65,7 @@ export default function InsuranceTypeHandle() {
 
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-pb-10">
-         <div className="tw-p-4 tw-pb-8 tw-bg-white tw-rounded tw-shadow-md tw-max-w-2xl">
+         <div className="tw-p-6 tw-bg-white tw-rounded tw-shadow-md tw-max-w-2xl">
             <div className="tw-text-lg tw-font-medium tw-p-2 tw-pt-4 tw-text-center">
                Даатгалын бүтээгдэхүүнүүд тохируулах
             </div>

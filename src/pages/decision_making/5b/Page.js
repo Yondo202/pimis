@@ -11,6 +11,7 @@ import CompilationChecklistPreview from './preview'
 import { useParams } from 'react-router'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import { useHistory } from 'react-router-dom'
+import FormRichText from 'components/urgudul_components/formRichText'
 
 const rowDescriptions = {
     z: 'Өргөдөл гаргагч нь шалгаруулалтад оролцох бүрэн бүрдүүлбэр, нотлох баримттай эсэх',
@@ -60,11 +61,18 @@ const initialState = Object.entries(rowDescriptions).map(([rowcode, description]
 }))
 
 const editors = ['edpadmin', 'member', 'ahlah_bhsh']
+const rootCodes = ['a', 'b', 'c', 'z']
+const emptyEditor = '<p><br></p>'
 
 export default function CompilationChecklist() {
     const [rows, setRows] = useState(initialState)
     const [company, setCompany] = useState({})
     const [evalautor, setEvaluator] = useState({})
+
+    const isCluster = company.project?.project_type === 1
+    const filteredRows = isCluster
+        ? rows
+        : rows.filter(row => row.rowcode.slice(0, 1) !== 'c')
 
     const canEdit = editors.includes(evalautor.role)
 
@@ -72,10 +80,12 @@ export default function CompilationChecklist() {
 
     const handleInput = (key, value, rowcode) => {
         if (canEdit) {
-            const index = rows.findIndex(row => row.rowcode === rowcode)
-            const newRows = [...rows]
-            newRows[index][key] = value
-            setRows(newRows)
+            setRows(prev => {
+                const next = [...prev]
+                const index = rows.findIndex(row => row.rowcode === rowcode)
+                next[index][key] = value
+                return next
+            })
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Засвар оруулах эрх байхгүй байна.' })
         }
@@ -175,10 +185,15 @@ export default function CompilationChecklist() {
                 </div>
 
                 <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-3 tw-divide-y tw-divide-dashed">
-                    {rows.map(row =>
+                    {filteredRows.map(row =>
                         <div key={row.rowcode}>
                             <div className="tw-flex tw-items-center tw-text-sm">
-                                <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "" : "tw-pl-8 tw-font-light"}`}>
+                                <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${rootCodes.includes(row.rowcode) ? "" : "tw-pl-8 tw-font-light"}`}>
+                                    {!rootCodes.includes(row.rowcode) &&
+                                        <span className="tw-mr-2 tw-font-normal">
+                                            {row.rowcode.substring(1)}.
+                                        </span>
+                                    }
                                     {row.description}
                                 </span>
 
@@ -196,7 +211,7 @@ export default function CompilationChecklist() {
                                     || <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
                                 }
 
-                                <ButtonTooltip tooltip="Тайлбар оруулах" beforeSVG={<AnnotationSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} classAppend={`tw-mr-4 ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === 'z' ? 'tw-mr-7' : ''}`} classButton={`${row.comment ? 'tw-text-blue-600 active:tw-text-blue-500' : 'tw-text-gray-600 active:tw-text-gray-500'} tw-transition-colors tw-p-0.5`} onClick={() => handleCommentOpen(row.rowcode, !commentsOpen[row.rowcode])} />
+                                <ButtonTooltip tooltip="Тайлбар оруулах" beforeSVG={<AnnotationSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} classAppend={rootCodes.includes(row.rowcode) ? 'tw-mr-9' : 'tw-mr-4'} classButton={`${(row.comment && row.comment !== emptyEditor) ? 'tw-text-blue-600 active:tw-text-blue-500' : 'tw-text-gray-600 active:tw-text-gray-500'} tw-transition-colors tw-p-0.5`} onClick={() => handleCommentOpen(row.rowcode, !commentsOpen[row.rowcode])} />
                             </div>
 
                             <Transition
@@ -206,8 +221,16 @@ export default function CompilationChecklist() {
                                 leave={{ height: 0, opacity: 0 }}
                                 config={{ tension: 300, clamp: true }}>
                                 {item => item && (anims =>
-                                    <animated.div className="tw-flex tw-justify-end tw-items-start tw-overflow-hidden" style={anims}>
-                                        <textarea className="tw-w-full tw-max-w-md focus:tw-outline-none tw-border tw-border-gray-400 tw-rounded tw-px-1.5 tw-py-1 tw-mt-1 tw-mx-3 tw-mb-3 tw-resize-none tw-text-13px" value={row.comment} onChange={e => handleInput('comment', e.target.value, row.rowcode)} rows="3" placeholder="Тайлбар ..." />
+                                    <animated.div className={`tw-overflow-hidden ${rootCodes.includes(row.rowcode) ? 'tw-pl-5 tw-pr-8' : 'tw-pl-9 tw-pr-3'}`} style={anims}>
+                                        <FormRichText
+                                            modules="small"
+                                            value={row.comment}
+                                            name="comment"
+                                            index={row.rowcode}
+                                            setter={handleInput}
+                                            classQuill="tw-pb-10"
+                                            height={180}
+                                        />
                                     </animated.div>
                                 )}
                             </Transition>

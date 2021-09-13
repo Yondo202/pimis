@@ -220,7 +220,7 @@ export default function UrgudulPreview(props) {
     const [products, setProducts] = useState([])
     const getProductName = (id) => products.filter(obj => obj.id === id)[0]?.description_mon
 
-    const sumBudgetCost = project.activities?.map(activity => + activity.budget).reduce((acc, cv) => acc + cv, 0)
+    const sumBudgetCost = project.activities?.map(activity => +activity.budget).reduce((acc, cv) => acc + cv, 0)
 
     const getCompanyName = (id) => project.clusters.filter(obj => obj.id === id)[0]?.company_name
 
@@ -571,7 +571,8 @@ export default function UrgudulPreview(props) {
                             </div>
                         )}
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400 tw-font-medium">
-                            <Row label="Үйл ажиллагаануудын нийт төсөв." value={sumBudgetCost?.toLocaleString()} />
+                            <Row label="Үйл ажиллагаануудын нийт төсөв" value={sumBudgetCost?.toLocaleString()} />
+                            <Row label="Экспортыг Дэмжих Төслөөс хүсч буй санхүүжилт" value={(sumBudgetCost / 2)?.toLocaleString()} />
                         </div>
                     </div>
 

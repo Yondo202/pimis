@@ -111,9 +111,9 @@ const PdfTemplate = ({ title, data, years, page, lang }) =>{
                 </View>
 
                 <View style={styles.InfoRow}>
-                    <Text style={styles.InfoCol}>Танилцсан</Text>
+                    <Text style={styles.InfoCol}>Бэлтгэсэн</Text>
                     <Image style={[styles.SigImageStyle, styles.InfoCol]} src={sig} />
-                    <Text  style={styles.InfoCol}>Д.Батмөнх /Төслийн зохицуулагч/</Text>
+                    <Text  style={styles.InfoCol}>Д.Цэнгүүн /Захиргааны туслах ажилтан/</Text>
                 </View>
             </View>
         </Page> 

@@ -80,13 +80,13 @@ export default function TrainingRequestsList() {
             <div className="tw-flex tw-items-center tw-mt-2 tw-pl-1.5">
                <span className="tw-font-medium tw-mr-2">Илгээсэн хугацаа:</span>
                <div className="tw-relative tw-p-0.5">
-                  <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.startDate} onChange={e => handleInputParams('startDate', e.target.value)} />
+                  <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.startDate ?? ''} onChange={e => handleInputParams('startDate', e.target.value)} />
                   {!params.startDate &&
                      <span className="tw-absolute tw-left-1 tw-bg-white tw-py-0.5 tw-pl-2 tw-pr-1 tw-text-gray-500" style={{ width: 102, top: 5 }}>Эхлэх хугацаа:</span>
                   }
                </div>
                <div className="tw-relative tw-p-0.5 tw-ml-2">
-                  <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.endDate} onChange={e => handleInputParams('endDate', e.target.value)} />
+                  <input className="tw-border tw-border-gray-400 tw-rounded tw-w-full tw-p-1 focus:tw-ring-1 tw-ring-blue-500 focus:tw-outline-none" style={{ width: 136 }} type="date" value={params.endDate ?? ''} onChange={e => handleInputParams('endDate', e.target.value)} />
                   {!params.endDate &&
                      <span className="tw-absolute tw-left-1 tw-bg-white tw-py-0.5 tw-pl-2 tw-pr-1 tw-text-gray-500" style={{ top: 5 }}>Дуусах хугацаа:</span>
                   }

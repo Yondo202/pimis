@@ -38,14 +38,15 @@ import FeedbackQuestionnaireHandle from 'components/admin/contents/feedback_ques
 import TrainingsReport from 'pages/training/training_admin/trainingReport';
 import TrainerOrganizationNavigator from 'components/admin/contents/trainer_organization/organizationNavigator';
 import Insurance from 'components/admin/contents/insurance/Insurance';
-import MakeContract from 'pages/contract/make_contract/makeContract';
 import PerformanceAttachments from 'pages/attachments/performanceAttachements';
 import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
 import FinancialAttachments from 'pages/attachments/financialAttachments';
-import ContractReports from 'pages/contract/contract_reports/contractReports';
 import ExportDataList from "components/admin/contents/export_data/MainPage"
 import InsuranceTypeHandle from 'components/admin/contents/insurance_type/insuranceTypeHandle';
 import ResultMeasure from 'components/admin/contents/monitoring/ResultMeasure';
+import { MakeContractForAdmin } from 'pages/contract/make_contract/makeContractPages';
+import { ContractReportsForAdmin } from 'pages/contract/contract_reports/contractReportPages';
+import SurveyPimis from 'pages/contract/survery/surveyPimis';
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -108,8 +109,8 @@ function Layout({ setLocale }) {
               <Route path="/5a/:id/send-notice" component={FirstEvaluationSendNotice} />
               <Route path="/5b/:id" component={CompilationChecklist} />
               <Route path="/5c/:id" component={AnalystReport} />
-              <Route path="/make-contract" component={MakeContract} />
-              <Route path="/contract-reports" component={ContractReports} />
+              <Route path="/make-contract" component={MakeContractForAdmin} />
+              <Route path="/contract-reports" component={ContractReportsForAdmin} />
               <Route path="/trainings" component={TrainingNavigatorAdmin} />
               <Route path="/training-requests" component={TrainingRequestsList} />
               <Route path="/training-questionnaire" component={FeedbackQuestionnaireHandle} />
@@ -117,6 +118,7 @@ function Layout({ setLocale }) {
               <Route path="/trainer-organizations" component={TrainerOrganizationNavigator} />
               <Route path="/export-data" component={ExportDataList} />
               <Route path="/insurance-types" component={InsuranceTypeHandle} />
+              <Route path="/survey-pimis" component={SurveyPimis} />
               <MiddleRoute />
             </Switch>
           </UrgudulStore>

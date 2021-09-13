@@ -69,6 +69,8 @@ const initialInfo = {
 }
 
 const editors = ['edpadmin', 'member', 'ahlah_bhsh']
+const rootCodes = ['a', 'b', 'c', 'z']
+const emptyEditor = '<p><br></p>'
 
 export default function AnalystReport() {
     const [rows, setRows] = useState(initialState)
@@ -255,10 +257,10 @@ export default function AnalystReport() {
                     {rows.map(row =>
                         <div key={row.rowcode}>
                             <div className="tw-flex tw-items-center tw-text-sm">
-                                <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === "z" ? "" : "tw-pl-8 tw-font-light"}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
-                                    {!['a', 'b', 'c', 'z'].includes(row.rowcode) &&
+                                <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${rootCodes.includes(row.rowcode) ? "" : "tw-pl-8 tw-font-light"}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
+                                    {!rootCodes.includes(row.rowcode) &&
                                         <span className="tw-mr-2 tw-font-normal">
-                                            {row.rowcode.slice(-1)}.
+                                            {row.rowcode.substring(1)}.
                                         </span>
                                     }
                                     {row.description}
@@ -278,7 +280,7 @@ export default function AnalystReport() {
                                     || <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
                                 }
 
-                                <ButtonTooltip tooltip="Тайлбар оруулах" beforeSVG={<AnnotationSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} classAppend={`tw-mr-4 ${row.rowcode === "a" || row.rowcode === "b" || row.rowcode === "c" || row.rowcode === 'z' ? 'tw-mr-7' : ''}`} classButton={`${row.comment ? 'tw-text-blue-600 active:tw-text-blue-500' : 'tw-text-gray-600 active:tw-text-gray-500'} tw-transition-colors tw-p-0.5`} onClick={() => handleCommentOpen(row.rowcode, !commentsOpen[row.rowcode])} />
+                                <ButtonTooltip tooltip="Тайлбар оруулах" beforeSVG={<AnnotationSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} classAppend={rootCodes.includes(row.rowcode) ? 'tw-mr-9' : 'tw-mr-4'} classButton={`${(row.comment && row.comment !== emptyEditor) ? 'tw-text-blue-600 active:tw-text-blue-500' : 'tw-text-gray-600 active:tw-text-gray-500'} tw-transition-colors tw-p-0.5`} onClick={() => handleCommentOpen(row.rowcode, !commentsOpen[row.rowcode])} />
                             </div>
 
                             <Transition
@@ -288,7 +290,7 @@ export default function AnalystReport() {
                                 leave={{ height: 0, opacity: 0 }}
                                 config={{ tension: 300, clamp: true }}>
                                 {item => item && (anims =>
-                                    <div className="tw-overflow-hidden tw-pl-14 tw-pr-3" style={anims}>
+                                    <animated.div className={`tw-overflow-hidden ${rootCodes.includes(row.rowcode) ? 'tw-pl-5 tw-pr-8' : 'tw-pl-9 tw-pr-3'}`} style={anims}>
                                         <FormRichText
                                             modules="small"
                                             value={row.comment}
@@ -298,7 +300,7 @@ export default function AnalystReport() {
                                             classQuill="tw-pb-10"
                                             height={180}
                                         />
-                                    </div>
+                                    </animated.div>
                                 )}
                             </Transition>
                         </div>
