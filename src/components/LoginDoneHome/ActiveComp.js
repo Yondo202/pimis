@@ -8,8 +8,6 @@ function ActiveComp({ userId, data }) {
 
     const projectId = data?.project?.id
 
-    console.log(`data?.firstEvalution.value `, data?.firstEvalution.value)
-
     return (
         <div style={{ paddingTop: 20 }} className="row">
             <div className="col-md-2 col-sm-2 itemsCol">
@@ -35,7 +33,7 @@ function ActiveComp({ userId, data }) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <a href={userId ? `/` : `${edplanFront}/${data?.userId}`} rel="noreferrer" target={userId ? "_self" : "_blank"} className={data?.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
+                        <a href={userId ? `${edplanFront}/${data?.userId}/edp-admin` : `${edplanFront}/${data?.userId}`} rel="noreferrer" target={userId ? "_self" : "_blank"} className={data?.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
                         <div className="line"></div>
                         <Link to={userId ? `/attachments/evidence-2/${userId}` : '/attachments/evidence-2'} className={data?.evidence2 === true ? `itemsActive` : `items`}>
                             2.Нотлох бичиг баримтууд II

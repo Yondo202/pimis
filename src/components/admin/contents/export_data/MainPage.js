@@ -16,7 +16,7 @@ const MainPage = () => {
         setFCountry([])
         void async function fetch(){
             let data = await axios.get(`export-data`,{ headers: {Authorization: AccessToken()} });
-            let years = await axios.get('years/true');
+            let years = await axios.get('years?type=export_data');
             setYears(years.data.data);
             data?.data.targ_country.forEach(item=>{
                 axios.get(`countries/${item}`).then(res=>{
@@ -36,7 +36,7 @@ const MainPage = () => {
             <div className="TitlePar">
                 <div className="Title">{t('Export Data')}</div>
                 <LangSwitch>
-                    <select onChange={handleChange}>
+                    <select value={i18n.language} onChange={handleChange}>
                         <option value="en">English</option>
                         <option value="mn">Монгол</option>
                     </select>

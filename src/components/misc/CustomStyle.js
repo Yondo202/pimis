@@ -271,7 +271,7 @@ export const Container = styled.div`
                     text-align:center;
                 }
                 padding:8px 8px;
-                border:1px solid rgba(0,0,0,.15);
+                border:1px solid rgba(0,0,0,.2);
             }
             td{
                 padding:12px 10px;
@@ -297,13 +297,20 @@ export const Container = styled.div`
                 transition:all 0.2s ease;
                 cursor:pointer;
                 &:hover{
-                    background-color:#eaecf1;
+                    background-color:#eaecf1ab;
                 }
             }
             .Selected{
+                td{
+                    border:1px solid rgba(0,0,0,0.4);
+                    border-top:1px solid rgba(0,0,0,0.4);
+                }
                 position:relative;
                 transition:all 0.2s ease;
                 background-color:#d8dce6;
+                &:hover{
+                    background-color:#d8dce6;
+                }
                 &:after{
                     content:"✔";
                     position:absolute;
@@ -426,6 +433,51 @@ export const Container = styled.div`
             }
         }
     }
+    .T6{
+        .headPar{
+            .addBtn{
+                font-weight:500;
+                padding:5px 20px;
+                svg{
+                    font-size:20px;
+                }
+            }
+        }
+        table{
+            tbody{
+                tr{
+                    th, td{
+                        max-width:150px;
+                        border:1px solid rgba(0,0,0,0.25);
+                    }
+                    td{
+                        text-overflow: unset;
+                        white-space: unset;
+                        overflow: visible;
+                    }
+                    .left{
+                        min-width:430px;
+                        text-align:left;
+                        padding: 6px 10px;
+                    }
+                    .number{
+                        width:10px !important;
+                    }
+                   
+                }
+                .smHead{
+                    border-left:1px solid rgba(0,0,0,0.2);
+                    border-right:1px solid rgba(0,0,0,0.2);
+                    td{
+                        text-align:left !important;
+                        font-weight:bold;
+                        padding:14px 18px;
+                        font-size:13px;
+                    }
+                }
+            }
+        }
+    }
     .pageRender{
        page-break-inside: avoid;
        margin-bottom:30px;
@@ -475,7 +527,6 @@ export const InputStyle = styled.div`
         overflow:hidden;
         width:100%;
         margin-bottom:20px;
-        
         .label{
             opacity:0.9;
             margin-bottom:8px;
@@ -670,14 +721,14 @@ export const CustomModal = styled.div`
         box-shadow:1px 1px 18px -10px;
         position:relative;
         .head{
-            color:#333333;
+            color:#000;
             padding:10px 20px;
+            margin-bottom:10px;
             display:flex;
             align-items:center;
             justify-content:space-between;
             font-size:20px;
             border-bottom:1px solid rgba(0,0,0,0.1);
-            margin-bottom:10px;
             .close{
                 top:-15px;
                 right:-15px;
@@ -758,6 +809,16 @@ export const CustomModal = styled.div`
                 .inputt{
                     width:22%;
                 }
+            }
+        }
+    }
+    .contentParentPdf{
+        .head{
+            padding:8px 20px;
+            margin-bottom:5px;
+            .close{
+                top:8px;
+                right:8px;
             }
         }
     }

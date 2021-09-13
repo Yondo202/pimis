@@ -72,6 +72,12 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             </MenuItem>
           </SubMenu>
 
+          <SubMenu title="Экспортын мэдээлэл" icon={<FiBookOpen />}>
+            <MenuItem>
+              <Link to="/export-data">Байгууллагуудын жагсаалт</Link>
+            </MenuItem>
+          </SubMenu>
+
           <SubMenu title="Тохиргоо" icon={<MdSettings />}>
             <MenuItem>
               <Link to="/users">Хэрэглэгчид</Link>
@@ -110,11 +116,6 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
             </MenuItem>
           </SubMenu>
 
-          <SubMenu title="Экспортын мэдээлэл" icon={<FiBookOpen />}>
-            <MenuItem>
-              <Link to="/export-data">Байгууллагуудын жагсаалт</Link>
-            </MenuItem>
-          </SubMenu>
           {/* {ctxUser.userInfo.role==="edpadmin"?<SubMenu title="Тохиргоо" icon={<MdSettings />}> </SubMenu>
           :<SubMenu ></SubMenu>} */}
         </Menu>
