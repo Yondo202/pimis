@@ -127,8 +127,6 @@ const ExportDataContent = ({ SD, userId }) => {
         }
     }
 
-    console.log(`object++++`, exportData)
-
     return (
         <Container style={{ padding: `0px 0px`, boxShadow: `none` }}>
             {showAdd ? <Modals type={type} handle={modalHandle} selectedEx={selected} setSelectedEx={setSelected} setCond={setExCond} SD={userId ? { user_id: userId } : SD} setModal={setShowAdd} years={years} country={country} /> : null}
@@ -204,8 +202,9 @@ const ExportDataContent = ({ SD, userId }) => {
                                                         )
                                                     })}
                                                     <td className="right bold blue">
-                                                        {NumberComma(el.e2016 + el.e2017 + el.e2018 + el.e2019 + el.e2020 + el.e2021 + el.e2022 + el.e2023 + el.e2024 + el.e2025
-                                                            + el.e2026 + el.e2027 + el.e2028 + el.e2029 + el.e2030)} ₮
+                                                        {NumberComma(years.reduce((curr, item)=>el[`e${item.year}`]+curr, 0))} ₮
+                                                        {/* {NumberComma(el.e2016 + el.e2017 + el.e2018 + el.e2019 + el.e2020 + el.e2021 + el.e2022 + el.e2023 + el.e2024 + el.e2025
+                                                            + el.e2026 + el.e2027 + el.e2028 + el.e2029 + el.e2030)} */}
                                                     </td>
                                                 </tr>
                                             )

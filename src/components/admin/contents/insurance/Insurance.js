@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axiosbase'
 import { motion } from "framer-motion";
-import { Container, LangSwitch } from "components/misc/CustomStyle"
+import { Container } from "components/misc/CustomStyle"
 import { RiAddLine, RiEdit2Line } from "react-icons/ri"
 import { VscError } from "react-icons/vsc"
 import { RiBillLine } from "react-icons/ri"
@@ -14,6 +14,7 @@ import { NumberComma } from "./NumberComma";
 import ExportData from "./exportData/ExportData";
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import LangSwitch from "components/misc/LangSwitch";
 
 function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;
@@ -22,7 +23,6 @@ function getWindowDimensions() {
         height
     };
 }
-
 
 const Insurance = () => {
     const [t, i18n] = useTranslation();
@@ -41,7 +41,7 @@ const Insurance = () => {
 
     const [widths, setWidth] = useState(getWindowDimensions());
 
-    const [ lang, setLang ] = useState('en');
+    // const [ lang, setLang ] = useState('en');
 
     useEffect(() => {
         axios.get(`users`, { headers: { Authorization: AccessToken() } }).then(res => {
@@ -50,7 +50,7 @@ const Insurance = () => {
     }, [addCond])
 
     useEffect(() => {
-        setLang(i18n.language);
+        // setLang(i18n.language);
         (async () => {
             try {
                 const insTypes = await axios.get('insurances/insurance-types')
@@ -122,7 +122,7 @@ const Insurance = () => {
     }
 
     const handleChange = event => {
-        setLang(event.target.value);
+        // setLang(event.target.value);
         i18n.changeLanguage(event.target.value);
     };
 
@@ -146,13 +146,7 @@ const Insurance = () => {
             <Container scroll={true}>
                 <div className="TitlePar">
                     <div className="Title">{t('title')}</div>
-                    <LangSwitch>
-                        {i18n.language==="en"?<div><img src="/us.png" /></div>:<div><img src="/mn.png" /></div>}
-                        <select value={i18n.language} onChange={handleChange}>
-                            <option value="en">English</option>
-                            <option value="mn">Монгол</option>
-                        </select>
-                    </LangSwitch>
+                    <LangSwitch language={i18n.language} handleChange={handleChange} />
                 </div>
 
                 <div className="customTable T5">
