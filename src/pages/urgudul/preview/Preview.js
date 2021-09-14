@@ -84,8 +84,48 @@ const labels = {
     }
 }
 
+const notices = {
+    cluster: {
+        header: 'Өргөдөл гаргагч болон хамтран хүсэлт гаргаж буй аж ахуйн нэгжүүд нь дараах зүйлсийг мэдэгдэж байна:',
+        list: [
+            'Өргөдөл гаргагч нь шалгуур үзүүлэлтийг бүрэн хангасан бөгөөд хориотой зардал, хориотой үйл ажиллагааны чиглэлийг энэхүү санхүүжилтийн төсөлд хамруулаагүй.',
+            'Өргөдөл гаргагч нь кластерын бусад гишүүдийг бүрэн төлөөлж, төслийн бэлтгэл ажил, хэрэгжилтэд шууд хариуцлага хүлээнэ.',
+            'Өргөдөл гаргагч нь байгаль орчны шалгуур, өргөдөл гаргагчийн шалгуур, зардлын шалгуурыг бүрэн хангасан бөгөөд аль нэг гишүүн нь эдгээр шалгуурыг хангаагүй тохиолдолд энэ нь санхүүжилтийн хүсэлтээс бүрэн татгалзах үндэслэл болно.',
+            'Өргөдөл гаргагч нь санал болгосон үйл ажиллагааны төлөвлөгөөг хэрэгжүүлэхэд санхүүгийн болон үйл ажиллагааны хувьд хүчин чадалтай бөгөөд үүнийг нотлох баримтуудыг бүрэн хавсаргасан.',
+            'Кластерын гишүүд нь өргөдөл гаргагчид Экспортыг дэмжих төслөөс олгогдох Үр дүнтэй түншлэлийн санхүүжилтийн гэрээнд гарын үсэг зурах бүрэн эрхийг олгосон.',
+            'Кластерын гишүүд нь энэхүү төслийн дэмжлэгийг хамтран хүртэх, төслийг хэрэгжүүлэхэд шаардлагатай удирдлага, санхүүжилтийн зардлыг хамтран гаргахаар тохиролцсон.',
+            'Өргөдөл гаргагч болон кластерын гишүүн аж ахуйн нэгжүүд нь шаардлагатай тохиолдолд экспортын үйл ажиллагаатай холбоотой туршлага, мэдлэг, мэдээллээ Экспортыг дэмжих төсөлд хамрагдаж буй болон хамрагдах хүсэлт гаргасан бусад аж ахуйн нэгжүүдтэй нээлттэй, үнэ төлбөргүйгээр хуваалцаж, төслийн зүгээс зохион байгуулж буй албан ёсны сургалт, сурталчилгааны арга хэмжээнд оролцоно.',
+            'Өргөдөл гаргагч болон кластерын гишүүн аж ахуйн нэгжүүд нь Экспортыг дэмжих төслийн зүгээс гаргах аливаа сурталчилгаа, мэдээллийн чанартай контентүүдэд тухайн аж ахуйн нэгжүүдийн талаарх мэдээллийг тусгаж, олон нийтэд мэдээлэхийг хүлээн зөвшөөрч байна.'
+        ],
+        subList2: [
+            'Өргөдөл гаргагч нь кластерын гишүүн байгууллагуудтай дараах чиглэлээр нягт уялдаа холбоотой ажиллана: Бүх гишүүд энэхүү өргөдлийн маягтад бичсэн мэдээлэлтэй танилцсан бөгөөд өөр өөрсдийн үүргийг ойлгож байгаа.',
+            'Өргөдөл гаргагч нь кластерын бусад гишүүдийг уг төслийн хэрэгжилтийн талаар тогтмол мэдээллээр хангаж ажиллана.',
+            'Бүх гишүүд Экспортыг дэмжих төсөлд илгээж буй өргөдөл гаргагч аж ахуйн нэгжийн тайлан, мэдээлэлтэй танилцсан байна.Экспортыг дэмжих төсөлд илгээх төслийн өөрчлөлтүүд нь кластерын гишүүн байгууллага хооронд хэлэлцэгдэж, зөвшилцөлд хүрсэн санал байна.'
+        ],
+        footer: 'Өргөдөл гаргагчаас шалтгаалан мэдээлэл буруу бөглөх, материал дутуу илгээх, дэмжих чиглэлийн бус өргөдлийн материал хүргүүлэх тохиолдолд энэ нь төслийн нэгжийн зүгээс татгалзах шалтгаан болох бөгөөд дараагийн цонх нээгдэх хүртэл дахин материал авч судлах, тайлбар хүргүүлэх боломжгүйг хүлээн зөвшөөрөв. Энэхүү өргөдлийн маягтад орсон бүх мэдээллийг үнэн зөвөөр мэдүүлсэн бөгөөд санаатай болон санаандгүйгээр мэдээллийг хооронд нь зөрүүлэх, мэдээллийг нотлох баримт нь мэдээллээс зөрөх, нотлох баримтгүй байх нь уг санхүүжилтийг олгохоос татгалзах, цаашид өргөдөл хүлээн авахгүй байх хүртэлх шийдвэр гаргах шалтгаан болохыг бүрэн ойлгож, гарын үсэг зурсан:'
+    },
+    company: {
+        header: 'Өргөдөл гаргагч болон уг төсөлд хамаарах түлхүүр албан тушаалтнууд нь дараах зүйлсийг мэдэгдэж байна:',
+        list: [
+            'Өргөдөл гаргагч нь шалгуур үзүүлэлтийг бүрэн хангасныг мэдэгдэж буй бөгөөд хориотой зардал, хориотой үйл ажиллагааны чиглэлийг энэхүү санхүүжилтийн төсөлд төлөвлөөгүй болно.',
+            'Өргөдөл гаргагч аж ахуйн нэгжийг төлөөлөгч нь энэхүү өргөдөлд тусгасан түлхүүр албан тушаалтнуудтай нягт уялдаа холбоотой ажиллана.',
+            'Өргөдөл гаргагч нь төслийн бэлтгэл ажил, хэрэгжилтэд шууд хариуцлага хүлээнэ.',
+            'Өргөдөл гаргагч нь байгаль орчны шалгуур, өргөдөл гаргагчийн шалгуур, зардлын шалгуурыг бүрэн хангасан бөгөөд аль нэг шалгуурыг хангаагүй тохиолдолд энэ нь  санхүүжилтийн хүсэлтээс бүрэн татгалзах үндэслэл болно.',
+            'Өргөдөл гаргагч нь санал болгосон үйл ажиллагааны төлөвлөгөөг хэрэгжүүлэхэд санхүүгийн болон үйл ажиллагааны хувьд хүчин чадалтай бөгөөд үүнийг нотлох баримтуудыг бүрэн хавсаргасан. Өргөдөл гаргагч аж ахуйн нэгж нь шаардлагатай тохиолдолд экспортын үйл ажиллагаатай холбоотой туршлага, мэдлэг, мэдээллээ Экспортыг дэмжих төсөлд хамрагдаж буй болон хамрагдах хүсэлт гаргасан бусад аж ахуйн нэгжүүдтэй нээлттэй, үнэ төлбөргүйгээр хуваалцаж, төслийн зүгээс зохион байгуулж буй албан ёсны сургалт, сурталчилгааны арга хэмжээнд оролцоно.',
+            'Өргөдөл гаргагч нь Экспортыг дэмжих төслийн зүгээс гаргах аливаа сурталчилгаа, мэдээллийн чанартай контентүүдэд тухайн аж ахуйн нэгжийн талаарх мэдээллийг тусгаж, олон нийтэд мэдээлэхийг хүлээн зөвшөөрч байна.'
+        ],
+        subList2: [
+            'Бүх түлхүүр албан тушаалтнууд энэхүү өргөдлийн маягтад бичсэн мэдээлэлтэй танилцсан бөгөөд өөр өөрсдийн үүргийг ойлгож байгаа.',
+            'Өргөдөл гаргагч нь түлхүүр албан тушаалтнуудыг уг төслийн хэрэгжилтийн талаар тогтмол мэдээллээр хангаж ажиллана.',
+            'Бүх түлхүүр албан тушаалтнууд Экспортыг дэмжих төсөлд илгээж буй өргөдөл гаргагч аж ахуйн нэгжийн тайлан, мэдээлэлтэй танилцсан байна.',
+            'Экспортыг дэмжих төсөлд илгээх төслийн өөрчлөлтүүд нь байгууллагын дотоодод мөн түлхүүр албан тушаалтнуудын хооронд хэлэлцэгдэж, зөвшилцөлд хүрсэн санал байна.'
+        ],
+        footer: 'Өргөдөл гаргагчаас шалтгаалан мэдээлэл буруу бөглөх, материал дутуу илгээх, дэмжих чиглэлийн бус өргөдлийн материал хүргүүлэх тохиолдолд энэ нь төслийн нэгжийн зүгээс татгалзах шалтгаан болох бөгөөд дараагийн цонх нээгдэх хүртэл дахин материал авч судлах, тайлбар хүргүүлэх боломжгүйг хүлээн зөвшөөрөв. Энэхүү өргөдлийн маягтад орсон бүх мэдээллийг үнэн зөвөөр мэдүүлсэн бөгөөд санаатай болон санаандгүйгээр мэдээллийг хооронд нь зөрүүлэх, мэдээллийг нотлох баримт нь мэдээллээс зөрөх, нотлох баримтгүй байх нь уг санхүүжилтийг олгохоос татгалзах, цаашид өргөдөл хүлээн авахгүй байх хүртэлх шийдвэр гаргах шалтгаан болохыг бүрэн ойлгож, гарын үсэг зурсан:'
+    }
+}
+
 const currentYear = new Date().getFullYear()
-const exportYears = Array.from({ length: currentYear - 2016 + 2 }, (x, i) => 2016 + i)
+const initialExportYears = Array.from({ length: currentYear - 2016 + 3 }, (_, i) => 2016 + i)
 
 export default function UrgudulPreview(props) {
     const componentRef = useRef()
@@ -203,6 +243,13 @@ export default function UrgudulPreview(props) {
         axios.get('countries').then(res => setCountries(res.data.data))
         axios.get('products').then(res => setProducts(res.data.data.docs))
         axios.get('occupations').then(res => setOccupations(res.data.data))
+        axios.get('/years', {
+            params: { type: 'export_data' }
+        }).then(res => {
+            const higestYear = res.data.data.reduce((higestYear, cv) => cv.year > higestYear ? cv.year : higestYear, 2016)
+            const exportYears = Array.from({ length: higestYear - 2016 + 1 }, (_, i) => 2016 + i)
+            setExportYears(exportYears)
+        })
     }, [])
 
     const [productsOther, setProductsOther] = useState([])
@@ -226,6 +273,10 @@ export default function UrgudulPreview(props) {
 
     const [occupations, setOccupations] = useState([])
     const getOccupationName = (id) => occupations.filter(obj => obj.id === id)[0]?.description_mon
+
+    const noticeFinal = isCluster ? notices.cluster : notices.company
+
+    const [exportYears, setExportYears] = useState(initialExportYears)
 
     return (
         <div className="tw-overflow-x-auto tw-overflow-y-hidden">
@@ -504,9 +555,9 @@ export default function UrgudulPreview(props) {
                             <table className="">
                                 <thead>
                                     <tr>
-                                        <th className={classTableCell}></th>
+                                        <th className={classTableCell} style={{ minWidth: 120 }} />
                                         {exportYears.map(year =>
-                                            <th className={`${classTableCell} tw-text-center`} style={{ minWidth: 50 }} key={year}>
+                                            <th className={`${classTableCell} tw-text-center`} style={{ minWidth: 60 }} key={year}>
                                                 {year}
                                             </th>
                                         )}
@@ -563,16 +614,21 @@ export default function UrgudulPreview(props) {
                         <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                             Үйл ажиллагаа
                         </div>
-                        {project.activities?.map((item, i) =>
-                            <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
-                                <Row label={`${labels.page6.activity} ${i + 1}`} value={getActivityName(item.activityId)} />
-                                <RowHtml label={labels.page6.explanation} html={item.explanation} />
-                                <Row label={labels.page6.budget} value={item.budget.toLocaleString()} classAppend="tw-border-t tw-border-gray-400" />
+                        {project.activities?.length > 0
+                            ? project.activities?.map((item, i) =>
+                                <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
+                                    <Row label={`${labels.page6.activity} ${i + 1}`} value={getActivityName(item.activityId)} />
+                                    <RowHtml label={labels.page6.explanation} html={item.explanation} />
+                                    <Row label={labels.page6.budget} value={item.budget.toLocaleString()} classAppend="tw-border-t tw-border-gray-400" />
+                                </div>
+                            )
+                            : <div className="tw-border tw-border-t-0 tw-border-gray-400 tw-px-2 tw-py-2">
+                                Үйл ажиллагааны мэдээллээ оруулаагүй байна.
                             </div>
-                        )}
+                        }
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400 tw-font-medium">
                             <Row label="Үйл ажиллагаануудын нийт төсөв" value={sumBudgetCost?.toLocaleString()} />
-                            <Row label="Экспортыг Дэмжих Төслөөс хүсч буй санхүүжилт" value={(sumBudgetCost / 2)?.toLocaleString()} />
+                            <Row label="Экспортыг дэмжих төслөөс хүсч буй санхүүжилт" value={(sumBudgetCost / 2)?.toLocaleString()} />
                         </div>
                     </div>
 
@@ -580,22 +636,57 @@ export default function UrgudulPreview(props) {
                         <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                             Мэдэгдэл
                         </div>
-                        {isCluster ?
-                            project.noticeClusters?.map((item, i) =>
-                                <div className="tw-border tw-border-t-0 tw-border-gray-400" key={i}>
-                                    <Row label={labels.page7.noticeCluster.companyId} value={item.applicant ? project.user?.companyname : getCompanyName(item.companyId)} />
-                                    <Row label={labels.page7.noticeCluster.representative_positionId} value={getOccupationName(item.id)} />
-                                    <Row label={labels.page7.noticeCluster.representative_name} value={item.representative_name} />
-                                    <RowImage label={labels.page7.noticeCluster.representative_signature} src={item.representative_signature} />
-                                    <Row label={labels.page7.noticeCluster.submitDate} value={item.submitDate} />
+
+                        <div className="tw-border tw-border-t-0 tw-border-gray-400 tw-p-2">
+                            <div className="tw-font-medium">
+                                {noticeFinal.header}
+                            </div>
+                            <ul className="tw-mt-3 tw-list-disc tw-list-inside tw-pl-2">
+                                {noticeFinal.list.map((notice, i) =>
+                                    i === 2
+                                        ? <div className="tw-pl-4 tw-py-2" key={i}>
+                                            {noticeFinal.subList2.map((subNotice, j) =>
+                                                <div className="" key={j}>
+                                                    <span className="tw-mr-2.5">∘</span>{subNotice}
+                                                </div>
+                                            )}
+                                        </div>
+                                        : <li className="" key={i}>
+                                            {notice}
+                                        </li>
+                                )}
+                            </ul>
+                            <div className="tw-mt-3" style={{ textIndent: 12 }}>
+                                {noticeFinal.footer}
+                            </div>
+                        </div>
+
+                        {isCluster
+                            ? (project.noticeClusters?.length > 0
+                                ? project.noticeClusters?.map((item, i) =>
+                                    <div className="tw-border tw-border-t-0 tw-border-gray-400" key={i}>
+                                        <Row label={labels.page7.noticeCluster.companyId} value={item.applicant ? project.user?.companyname : getCompanyName(item.companyId)} />
+                                        <Row label={labels.page7.noticeCluster.representative_positionId} value={getOccupationName(item.id)} />
+                                        <Row label={labels.page7.noticeCluster.representative_name} value={item.representative_name} />
+                                        <RowImage label={labels.page7.noticeCluster.representative_signature} src={item.representative_signature} />
+                                        <Row label={labels.page7.noticeCluster.submitDate} value={item.submitDate} />
+                                    </div>
+                                )
+                                : <div className="tw-border tw-border-t-0 tw-border-gray-400 tw-px-2 tw-py-2">
+                                    Мэдэгдэлд гарын үсэг зураагүй байна.
                                 </div>
-                            ) :
-                            project.noticeCompany?.map((item, i) =>
-                                <div className="tw-border tw-border-t-0 tw-border-gray-400" key={i}>
-                                    <Row label={labels.page7.noticeCompany.representative_positionId} value={getOccupationName(item.id)} />
-                                    <Row label={labels.page7.noticeCompany.representative_name} value={item.representative_name} />
-                                    <RowImage label={labels.page7.noticeCompany.representative_signature} src={item.representative_signature} />
-                                    <Row label={labels.page7.noticeCompany.submitDate} value={item.submitDate} />
+                            )
+                            : (project.noticeCompany?.length > 0
+                                ? project.noticeCompany?.map((item, i) =>
+                                    <div className="tw-border tw-border-t-0 tw-border-gray-400" key={i}>
+                                        <Row label={labels.page7.noticeCompany.representative_positionId} value={getOccupationName(item.id)} />
+                                        <Row label={labels.page7.noticeCompany.representative_name} value={item.representative_name} />
+                                        <RowImage label={labels.page7.noticeCompany.representative_signature} src={item.representative_signature} />
+                                        <Row label={labels.page7.noticeCompany.submitDate} value={item.submitDate} />
+                                    </div>
+                                )
+                                : <div className="tw-border tw-border-t-0 tw-border-gray-400 tw-px-2 tw-py-2">
+                                    Мэдэгдэлд гарын үсэг зураагүй байна.
                                 </div>
                             )
                         }
