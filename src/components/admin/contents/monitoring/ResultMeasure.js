@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, LangSwitch, InputStyle, CustomModal } from "components/misc/CustomStyle"
+import { Container, InputStyle, CustomModal } from "components/misc/CustomStyle"
 import { useTranslation } from 'react-i18next';
 import axios from 'axiosbase';
 import styled from "styled-components";
@@ -8,6 +8,7 @@ import { VscSave } from "react-icons/vsc"
 import { AiOutlineDownload, AiOutlinePrinter, AiOutlineCalculator } from "react-icons/ai"
 import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
 import ResultMeasurePdf from "./ResultMeasurePdf"
+import LangSwitch from "components/misc/LangSwitch"
 
 const ProjectResult = () => {
     const [t, i18n] = useTranslation();
@@ -72,13 +73,7 @@ const ProjectResult = () => {
             <Container >
                 <div className="TitlePar">
                     <div className="Title">{t('Project Results Indicators')}</div>
-                    <LangSwitch>
-                        {i18n.language==="en"?<div><img src="/us.png" /></div>:<div><img src="/mn.png" /></div>}
-                        <select value={i18n.language} onChange={handleChange}>
-                            <option value="en"> English</option>
-                            <option value="mn"> Монгол</option>
-                        </select>
-                    </LangSwitch>
+                    <LangSwitch language={i18n.language} handleChange={handleChange} />
                 </div>
                 <div className="customTable T5 T6">
                     <div className="headPar">

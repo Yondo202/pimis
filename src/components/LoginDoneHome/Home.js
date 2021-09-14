@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { ColorRgb } from '../theme'
-import axios from '../../axiosbase';
-import AccessToken from '../../context/accessToken'
+import axios, { edplan } from 'axiosbase';
+import AccessToken from 'context/accessToken'
 import ActiveComp from './ActiveComp'
 // import InitialComp from './initialComp'
 import useQuery from 'components/utilities/useQueryLocation'
@@ -13,8 +13,6 @@ function Home() {
     const userId = useQuery().get('userId')
     const projectId = useQuery().get('projectId')
     const [infData, setInfData] = useState(null);
-    const [infCond, setInfCond] = useState(false);
-    const [homeC, setHomeC] = useState(true);
     const [projects, setProjects] = useState([])
     const [selectedIndex, setSelectedIndex] = useState(0)
 
@@ -40,10 +38,7 @@ function Home() {
         axios.get(`pps-infos/registered-companies?userId=${userID}`, {
             headers: { Authorization: AccessToken() }
         }).then((res) => {
-            console.log(`res`, res);
-            if (res.data.data[0]) {
-                // setInfData(res.data.data[0])
-
+            if (res.data.data.length!==0) {
                 const projects = res.data.data ?? []
                 const lastIndex = (projects ?? ['']).length - 1
                 setProjects(projects)
@@ -55,25 +50,20 @@ function Home() {
                     search: `?projectId=${projectId}`
                 })
 
-                if (!res.data.data[0]?.criteria) {
-                    setTimeout(() => {
-                        setHomeC(false);
-                    }, 2900)
-                    setTimeout(() => {
-                        setInfCond(true);
-                    }, 3000)
-                }
-            } else {
-                setTimeout(() => {
-                    setHomeC(false);
-                }, 2900)
-                setTimeout(() => {
-                    setInfCond(true);
-                }, 3000)
-            }
-        }).catch(err => {
-            console.log(`err`, err.response);
+                // if (!res.data.data[0]?.criteria) {
+                //     setTimeout(() => {
+                //         setHomeC(false);
+                //     }, 2900)
+                //     setTimeout(() => {
+                //         setInfCond(true);
+                //     }, 3000)
+                // }
+            } 
         })
+
+        // edplan.get(`totals?idd=${userID}`).then(res=>{
+        //     console.log(`++++-+res`, res);
+        // })
     }
 
     const history = useHistory()

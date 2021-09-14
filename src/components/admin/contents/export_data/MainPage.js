@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Container, LangSwitch } from "components/misc/CustomStyle";
+import { Container } from "components/misc/CustomStyle";
 import AccessToken from "context/accessToken"
 import { NumberComma } from "components/misc/NumberComma"
 import { useTranslation } from 'react-i18next';
 import axios from 'axiosbase';
+import LangSwitch from "components/misc/LangSwitch";
 
 const MainPage = () => {
     const [t, i18n] = useTranslation();
@@ -35,12 +36,7 @@ const MainPage = () => {
         <Container style={{padding:`12px 12px`, boxShadow:`none`}}>
             <div className="TitlePar">
                 <div className="Title">{t('Export Data')}</div>
-                <LangSwitch>
-                    <select value={i18n.language} onChange={handleChange}>
-                        <option value="en">English</option>
-                        <option value="mn">Монгол</option>
-                    </select>
-                </LangSwitch>
+                <LangSwitch language={i18n.language} handleChange={handleChange} />
             </div>
 
             <div className="customTable T4">
@@ -83,7 +79,8 @@ const MainPage = () => {
                                                         )
                                                     })}
                                                     <td className="right bold blue">
-                                                        {NumberComma(el.e2016+el.e2017+el.e2018+el.e2019+el.e2020+el.e2021+el.e2022+el.e2023+el.e2024+el.e2025+el.e2026+el.e2027+el.e2028+el.e2029+el.e2030)} ₮
+                                                        {NumberComma(years.reduce((curr, item)=>el[`e${item.year}`]+curr, 0))} ₮
+                                                        {/* {NumberComma(el.e2016+el.e2017+el.e2018+el.e2019+el.e2020+el.e2021+el.e2022+el.e2023+el.e2024+el.e2025+el.e2026+el.e2027+el.e2028+el.e2029+el.e2030)} ₮ */}
                                                     </td>
                                                 </tr>
                                             )
