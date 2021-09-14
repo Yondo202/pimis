@@ -11,8 +11,10 @@ import { useHistory } from 'react-router-dom';
 
 function Home() {
     const userId = useQuery().get('userId')
-    const projectId = useQuery().get('projectId')
+    const projectId = useQuery().get('projectId');
     const [infData, setInfData] = useState(null);
+    const [ edPlan, setEdPlan ] = useState(0);
+    const [ edPlanFinal, setEdPlanFinal ] = useState(false);
     const [projects, setProjects] = useState([])
     const [selectedIndex, setSelectedIndex] = useState(0)
 
@@ -31,6 +33,7 @@ function Home() {
         }).then((res) => {
             if (res.data.data[0]) { setInfData(res.data.data[0]) }
         })
+        GetEdPlan(userId);
     }
 
     const GoUser = () => {
@@ -49,21 +52,19 @@ function Home() {
                     pathname: '/',
                     search: `?projectId=${projectId}`
                 })
-
-                // if (!res.data.data[0]?.criteria) {
-                //     setTimeout(() => {
-                //         setHomeC(false);
-                //     }, 2900)
-                //     setTimeout(() => {
-                //         setInfCond(true);
-                //     }, 3000)
-                // }
             } 
         })
+        GetEdPlan(userID);
+    }
 
-        // edplan.get(`totals?idd=${userID}`).then(res=>{
-        //     console.log(`++++-+res`, res);
-        // })
+    const GetEdPlan = (userIDs)=>{
+        edplan.get(`totals?idd=${userIDs}`).then(res=>{
+            if(res.data.length!==0){
+                const keys = Object.keys(res.data[0]);
+                setEdPlan(parseInt(((keys.length-7) * 100)/25));
+                setEdPlanFinal(res.data.firstpage===true)
+            }
+        })
     }
 
     const history = useHistory()
@@ -140,7 +141,7 @@ function Home() {
                             }
                         </div>
                         {/* {infData === null ? <InitialComp prew={userId} /> : <ActiveComp prew={userId} data={infData} />} */}
-                        <ActiveComp userId={userId} data={infData} />
+                        <ActiveComp userId={userId} data={infData} edPlan={edPlan} edPlanFinal={edPlanFinal} />
                     </div>
                 // :<Start userId={userId} />
             }

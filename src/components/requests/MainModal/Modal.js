@@ -12,7 +12,6 @@ import { useReactToPrint } from "react-to-print";
 
 export const Modal = ({ showModal, setShowModal, initialData, param, na3 }) => {
     const history = useHistory();
-    const [DataOne, setDataOne] = useState([]);
     const modalRef = useRef();
     const animation = useSpring({
         config: { duration: 250 },
@@ -27,7 +26,6 @@ export const Modal = ({ showModal, setShowModal, initialData, param, na3 }) => {
 
     useEffect(() => {
         document.addEventListener('keydown', keyPress);
-        setDataOne(initialData);
         return () => document.removeEventListener('keydown', keyPress);
     }, [keyPress]);
 

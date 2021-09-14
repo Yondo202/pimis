@@ -26,7 +26,7 @@ const ProjectResult = () => {
     const [ lang, setLang ] = useState('en');
 
     useEffect(()=>{
-        setLang(i18n.language);
+        setLang(i18n.language==="en"||i18n.language==="mn"?i18n.language:"en");
         setTimeout(() => {
             setWait(true);
         }, 1000)

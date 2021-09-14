@@ -2,12 +2,13 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import DocumentTitle from 'containers/document/DocumentTitle';
 import { edplanFront } from "axiosbase"
+import styled from 'styled-components';
 
-function ActiveComp({ userId, data }) {
+function ActiveComp({ userId, data, edPlan, edPlanFinal }) {
     DocumentTitle("EDP");
-
     const projectId = data?.project?.id
 
+    console.log(`edPlan++`, edPlan)
     return (
         <div style={{ paddingTop: 20 }} className="row">
             <div className="col-md-2 col-sm-2 itemsCol">
@@ -33,7 +34,14 @@ function ActiveComp({ userId, data }) {
             <div className="col-md-2 col-sm-2 itemsCol">
                 <div className="itemsPar">
                     <div className="mains">
-                        <a href={userId ? `${edplanFront}/${data?.userId}/edp-admin` : `${edplanFront}/${data?.userId}`} rel="noreferrer" target={userId ? "_self" : "_blank"} className={data?.edpPlan === true ? `itemsActive arrHelp arrHelpActive` : `items arrHelp`}><div className="helpArr"></div> 1.Экспорт хөгжлийн төлөвлөгөө</a>
+                            {edPlan!==0?<EdPlanStyle final={edPlan}  href={userId ? `${edplanFront}/${data?.userId}/edp-admin` : `${edplanFront}/${data?.userId}`} rel="noreferrer" target={userId ? "_self" : "_blank"} className={edPlanFinal !== false ? `itemsActive ` : `items`}>
+                                1.Экспорт хөгжлийн төлөвлөгөө
+                            </EdPlanStyle>
+                            :<a href={userId ? `${edplanFront}/${data?.userId}/edp-admin` : `${edplanFront}/${data?.userId}`} rel="noreferrer" target={userId ? "_self" : "_blank"} className={edPlanFinal !== false ? `itemsActive ` : `items`}>
+                                1.Экспорт хөгжлийн төлөвлөгөө
+                            </a>}
+                        
+
                         <div className="line"></div>
                         <Link to={userId ? `/attachments/evidence-2/${userId}` : '/attachments/evidence-2'} className={data?.evidence2 === true ? `itemsActive` : `items`}>
                             2.Нотлох бичиг баримтууд II
@@ -133,3 +141,23 @@ function ActiveComp({ userId, data }) {
 }
 
 export default ActiveComp
+
+
+const EdPlanStyle = styled.a`
+    &::before{
+        content:"${props=>props.final} %" !important;
+        font-size:10.5px !important;
+        font-weight:600 !important;
+        position:absolute;
+        display:flex;
+        top:-18px !important;
+        right:-18px !important;
+        border:1px solid green !important;
+        background-color:white;
+        color:#000 !important;
+        width:32px !important;
+        height:32px !important;
+        border-radius:50%;
+        padding:2px 2px;
+    }
+`

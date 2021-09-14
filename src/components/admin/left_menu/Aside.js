@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
 import Ctx from "context/UserContext"
 import { Link } from "react-router-dom";
-import { MenuColor, MainFontSize, fontFamily } from "../ThemeAdmin";
-import { useIntl } from "react-intl";
+// import { MenuColor, MainFontSize, fontFamily } from "../ThemeAdmin";
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from "react-pro-sidebar";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FiBookOpen } from "react-icons/fi";
@@ -14,7 +13,7 @@ import sidebarBg from "./bg_image/bg1.jpg";
 const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
   const { userInfo } = useContext(Ctx);
 
-  console.log(`userInfo+++`, userInfo);
+  console.log(`userInfo+++`, userInfo?.role);
 
   return (
     <ProSidebar image={image ? sidebarBg : false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
@@ -26,33 +25,39 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
 
       <SidebarContent >
         <Menu iconShape="circle">
+
             {MenuData.map((el,ind)=>{
-              
-              return(
-                <SubMenu key={ind} title={el.title} icon={el.icon}>
-                  {el.MenuChild?.map((elem,ind)=>{
-                    return(
-                      <MenuItem key={ind}>
-                        <Link to={elem.link}>{elem.text}</Link>
-                      </MenuItem>
-                    )
-                  })}
-                  {el.SubMenu?.map((elem,ind)=>{
-                    return(
-                      <SubMenu key={ind} title={elem.text}>
-                        {elem.subChild?.map((elChild, indx)=>{
-                          return(
-                            <MenuItem key={indx}>
-                              <Link to={elChild.link}>{elChild.text}</Link>
-                            </MenuItem>
-                          )
-                        })}
-                      </SubMenu>
-                    )
-                  })}
-                </SubMenu>
-              )
+              if(userInfo?.role==="edpadmin")
+                return <FilterMenu el={el} ind={ind} />
+
+              if(userInfo?.role==="holbootoi_yamd") //zugeer harna
+                return el.title==="Мониторинг"?<FilterMenu el={el} ind={ind} />:<div />
+                
+              if(userInfo?.role==="monitoring") // bugdiin hiine 
+                return el.title==="Мониторинг"?<FilterMenu el={el} ind={ind} />:<div />
+
+              if(userInfo?.role==="tosliin_zohitsuulagch") // zugeer harna
+                return <FilterMenu el={el} ind={ind} />
+
+              if(userInfo?.role==="ahlah_bhsh")
+                return <FilterMenu el={el} ind={ind} />
+
+              if(userInfo?.role==="bh_zovloh")
+                return el.title==="Түншлэлийн хөтөлбөр"?<FilterMenu el={el} ind={ind} />:<div />
+
+              if(userInfo?.role==="vdd_zovloh")
+                return el.title==="Даатгал"?<FilterMenu el={el} ind={ind} />:<div />
+
+              //huuliin_zowloh todorhoigui
+              //Санхүү - sanhuujilt gesen tsesiig harna,
+              //hudaldanavah_ajillagaa /todorhoigui
+
+              if(userInfo?.role==="trainer")
+              return el.title==="Сургалт"?<FilterMenu el={el} ind={ind} />:<div />
+                
+              return <div />
             })}
+
         </Menu>
       </SidebarContent>
 
@@ -66,8 +71,31 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
 export default Aside;
 
 
-const FilterMenu = () =>{
-
+const FilterMenu = ({ el, ind }) =>{
+  return(
+      <SubMenu key={ind} title={el.title} icon={el.icon}>
+          {el.MenuChild?.map((elem,ind)=>{
+            return(
+              <MenuItem key={ind}>
+                <Link to={elem.link}>{elem.text}</Link>
+              </MenuItem>
+            )
+          })}
+          {el.SubMenu?.map((elem,ind)=>{
+            return(
+              <SubMenu key={ind} title={elem.text}>
+                {elem.subChild?.map((elChild, indx)=>{
+                  return(
+                    <MenuItem key={indx}>
+                      <Link to={elChild.link}>{elChild.text}</Link>
+                    </MenuItem>
+                  )
+                })}
+              </SubMenu>
+            )
+          })}
+      </SubMenu>
+  )
 }
 
 const MenuData = [
