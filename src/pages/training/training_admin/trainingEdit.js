@@ -246,7 +246,7 @@ const initialState = {
    scope: null,
 }
 
-export const FormElement = ({ label, children, type, width, value, keyName, onChange, height, childrenAppend }) => (
+export const FormElement = ({ label, children, type, width, value, keyName, index, onChange, height, childrenAppend }) => (
    <div className="tw-relative tw-pt-4 tw-pl-4 tw-pr-6 tw-pb-2 tw-w-full tw-flex tw-flex-wrap sm:tw-flex-nowrap odd:tw-bg-gray-50">
       <div className="tw-font-medium tw-w-full sm:tw-w-2/5 tw-mb-2 tw-text-gray-600">
          {label}:
@@ -260,7 +260,7 @@ export const FormElement = ({ label, children, type, width, value, keyName, onCh
                type={type ?? 'text'}
                style={{ width: width ?? '100%' }}
                value={value ?? ''}
-               onChange={e => onChange(keyName, e.target.value)} />
+               onChange={e => onChange(keyName, e.target.value, index)} />
          }
       </div>
    </div>

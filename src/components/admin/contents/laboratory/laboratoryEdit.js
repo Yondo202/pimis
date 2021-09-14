@@ -8,26 +8,46 @@ import { FormElement } from 'pages/training/training_admin/trainingEdit'
 
 const intialState = {
    lab_name: null,
+   year_given: null,
    cert_given: null
 }
 
 export default function LaboratoryEdit() {
    const AlertCtx = useContext(AlertContext)
 
-   const [laboratory, setLaboratory] = useState(intialState)
+   const [laboratory, setLaboratory] = useState([])
 
-   const handleInput = (key, value) => setLaboratory(prev => ({ ...prev, [key]: value }))
+   const handleInputIndex = (key, value, index) => setLaboratory(prev => {
+      const next = [...prev]
+      next[index][key] = value
+      return next
+   })
+
+   const handleInputYear = (key, value, year) => setLaboratory(prev => {
+      const next = [...prev]
+      const index = laboratory.findIndex(lab => lab.year_given === year)
+      next[index][key] = value
+      return next
+   })
+
+   const netCertsGiven = laboratory.reduce((acc, cv) => acc += +cv.cert_given, 0)
+
+   const handleRemove = (year) => setLaboratory(prev => prev.filter(row => row.year_given !== year))
+
+   const handleAdd = () => {
+
+   }
 
    const [laboratoryId, setLaboratoryId] = useState(useParams().id)
 
    useEffect(() => {
-      if (laboratoryId !== undefined && laboratoryId !== null) {
-         axios.get(`laboratories/${laboratoryId}`, {
-            headers: { Authorization: getLoggedUserToken() }
-         }).then(res => {
-            setLaboratory(res.data.data)
-         })
-      }
+      // if (laboratoryId !== undefined && laboratoryId !== null) {
+      //    axios.get(`laboratories/${laboratoryId}`, {
+      //       headers: { Authorization: getLoggedUserToken() }
+      //    }).then(res => {
+      //       setLaboratory(res.data.data)
+      //    })
+      // }
    }, [])
 
    const history = useHistory()
@@ -71,6 +91,13 @@ export default function LaboratoryEdit() {
       })
    }
 
+   const [form, setForm] = useState({
+      year: null,
+      count: null
+   })
+
+   const handleInputForm = (key, value) => setForm(prev => ({ ...prev, [key]: value }))
+
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-absolute tw-w-full">
          <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.push('/laboratories')}>
@@ -84,9 +111,34 @@ export default function LaboratoryEdit() {
             </div>
 
             <div className="tw-flex tw-flex-col tw-w-full">
-               <FormElement label="Лабораторын нэр" value={laboratory.lab_name} keyName="lab_name" onChange={handleInput} />
+               <FormElement label="Лабораторын нэр" value={laboratory.lab_name} keyName="lab_name" index={0} onChange={handleInputIndex} />
 
-               <FormElement label="Чанарын баталгаажуулалт өгсөн тоо" type="number" width={70} value={laboratory.cert_given} keyName="cert_given" onChange={handleInput} />
+               <FormElement label="Чанарын баталгаажуулалт өгсөн тоо">
+                  {laboratory
+                     .sort((a, b) => a.year_given > b.year_given)
+                     .map(lab =>
+                        <div className="">
+                           <span className="">{lab.year_given}</span>
+                           <input className={classInput} type="number" value={lab.cert_given} onChange={e => handleInputYear('cert_given', e.target.value, lab.year_given)} />
+                           <button onClick={() => handleRemove(lab.year_given)}>
+                              Хасах
+                           </button>
+                        </div>
+                     )
+                  }
+
+                  <div className="">
+                     <input className={classInput} type="number" value={form.year} onChange={e => handleInputForm('year', e.target.value)} placeholder="Он" />
+                     <input className={classInput} type="number" value={form.count} onChange={e => handleInputForm('count', e.target.value)} placeholder="Тоо" />
+                     <button onClick={handleAdd}>
+                        Нэмэх
+                     </button>
+                  </div>
+               </FormElement>
+
+               <FormElement label="">
+                  <span className="">{netCertsGiven}</span>
+               </FormElement>
             </div>
 
             <div className="tw-flex tw-justify-center tw-items-center tw-relative">
@@ -104,3 +156,5 @@ export default function LaboratoryEdit() {
       </div>
    )
 }
+
+const classInput = 'focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-400 tw-border tw-border-gray-400 tw-rounded tw-px-2 tw-py-1 tw-transition-colors tw-bg-transparent tw-w-24'
