@@ -27,7 +27,7 @@ export default function LaboratoryNavigator() {
       id: null,
       lab_name: null,
       year: null,
-      certs_count: null
+      count: null
    })
 
    const handleInputModal = (key, value) => setModalForm(prev => ({ ...prev, [key]: value }))
@@ -45,7 +45,7 @@ export default function LaboratoryNavigator() {
             id: null,
             lab_name: null,
             year: null,
-            certs_count: null
+            count: null
          })
          setModalOpen(false)
       }).catch(err => {
@@ -83,10 +83,10 @@ export default function LaboratoryNavigator() {
             <span className="tw-mr-2">
                Нэмэх тоо:
             </span>
-            <input className={classInput} type="number" value={modalForm.certs_count ?? ''} onChange={e => handleInputModal('certs_count', e.target.value)} />
+            <input className={classInput} type="number" value={modalForm.count ?? ''} onChange={e => handleInputModal('count', e.target.value)} />
          </div>
          <div className="tw-flex tw-justify-center">
-            <button className="tw-py-1.5 tw-px-6 tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-text-13px tw-mt-6 tw-mb-3" onClick={() => { }}>
+            <button className="tw-py-1.5 tw-px-6 tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-text-13px tw-mt-6 tw-mb-3" onClick={handleSubmit}>
                Нэмэх
             </button>
          </div>
