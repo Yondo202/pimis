@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.6942b11a.chunk.css",
-    "main.js": "/static/js/main.9055e802.chunk.js",
-    "main.js.map": "/static/js/main.9055e802.chunk.js.map",
+    "main.css": "/static/css/main.917112f5.chunk.css",
+    "main.js": "/static/js/main.d3da2c3b.chunk.js",
+    "main.js.map": "/static/js/main.d3da2c3b.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.e9d6624f.js",
     "runtime-main.js.map": "/static/js/runtime-main.e9d6624f.js.map",
     "static/css/2.5fcf9bfb.chunk.css": "/static/css/2.5fcf9bfb.chunk.css",
-    "static/js/2.9f5b2caa.chunk.js": "/static/js/2.9f5b2caa.chunk.js",
-    "static/js/2.9f5b2caa.chunk.js.map": "/static/js/2.9f5b2caa.chunk.js.map",
+    "static/js/2.2badb0aa.chunk.js": "/static/js/2.2badb0aa.chunk.js",
+    "static/js/2.2badb0aa.chunk.js.map": "/static/js/2.2badb0aa.chunk.js.map",
     "static/js/3.87a656da.chunk.js": "/static/js/3.87a656da.chunk.js",
     "static/js/3.87a656da.chunk.js.map": "/static/js/3.87a656da.chunk.js.map",
     "static/js/4.86cf52e5.chunk.js": "/static/js/4.86cf52e5.chunk.js",
@@ -16,19 +16,20 @@
     "static/js/5.4827b54f.chunk.js.map": "/static/js/5.4827b54f.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.5fcf9bfb.chunk.css.map": "/static/css/2.5fcf9bfb.chunk.css.map",
-    "static/css/main.6942b11a.chunk.css.map": "/static/css/main.6942b11a.chunk.css.map",
-    "static/js/2.9f5b2caa.chunk.js.LICENSE.txt": "/static/js/2.9f5b2caa.chunk.js.LICENSE.txt",
+    "static/css/main.917112f5.chunk.css.map": "/static/css/main.917112f5.chunk.css.map",
+    "static/js/2.2badb0aa.chunk.js.LICENSE.txt": "/static/js/2.2badb0aa.chunk.js.LICENSE.txt",
     "static/js/3.87a656da.chunk.js.LICENSE.txt": "/static/js/3.87a656da.chunk.js.LICENSE.txt",
     "static/js/4.86cf52e5.chunk.js.LICENSE.txt": "/static/js/4.86cf52e5.chunk.js.LICENSE.txt",
     "static/media/dx.material.blue-light-compact.css": "/static/media/dxiconsmaterial.9bea124e.woff2",
+    "static/media/TimesRoman.c0956945.ttf": "/static/media/TimesRoman.c0956945.ttf",
     "static/media/bg1.93d19a24.jpg": "/static/media/bg1.93d19a24.jpg",
     "static/media/edp_logo.135f515f.png": "/static/media/edp_logo.135f515f.png"
   },
   "entrypoints": [
     "static/js/runtime-main.e9d6624f.js",
     "static/css/2.5fcf9bfb.chunk.css",
-    "static/js/2.9f5b2caa.chunk.js",
-    "static/css/main.6942b11a.chunk.css",
-    "static/js/main.9055e802.chunk.js"
+    "static/js/2.2badb0aa.chunk.js",
+    "static/css/main.917112f5.chunk.css",
+    "static/js/main.d3da2c3b.chunk.js"
   ]
 }

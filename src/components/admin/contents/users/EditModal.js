@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { textColor, ButtonStyle } from '../../../theme'
 import { useSpring, animated } from 'react-spring';
@@ -6,7 +6,6 @@ import axios from '../../../../axiosbase'
 import UserContext from '../../../../context/UserContext'
 
 export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEdit, trainers }) => {
-    const modalRef = useRef();
     const ctx = useContext(UserContext);
     const [per, setPer] = useState(Role);
     const [errText, setErrText] = useState("0");
@@ -26,7 +25,6 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
         transform: showModal ? `translateY(10%)` : `translateY(30%)`
     });
 
-    const closeModal = e => { if (modalRef.current === e.target) { setShowModal(false); } }
 
     const clickHandle = (e) => {
         setBtnSpin(true);
@@ -47,7 +45,8 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
         if (final.role === 'trainer') {
             final.trainerOrganizationId = trainerId ?? null
         }
-        console.log(cond.length, " my cond");
+
+
         if (cond.length < 6) {
             setBtnSpin(false);
             setErrText("1");
@@ -87,14 +86,26 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
                             <div className="InputPar">
                                 <div className="rowss">
                                     <div className="inputItem">
-                                        <span className="title">Овог:</span>
+                                        <span className="title">Овог ( mn ):</span>
                                         <input onChange={editHandle} value={parent.lastname} name="lastname" className="getMainInp22 form-control" type="text" />
                                     </div>
                                     <div className="inputItem">
-                                        <span className="title">Нэр :</span>
+                                        <span className="title">Нэр ( mn ):</span>
                                         <input onChange={editHandle} value={parent.firstname} name="firstname" className="getMainInp22 form-control" type="text" />
                                     </div>
                                 </div>
+
+                                <div className="rowss">
+                                    <div className="inputItem">
+                                        <span className="title">Овог ( eng ):</span>
+                                        <input onChange={editHandle} value={parent.lastname_eng} name="lastname_eng" className="getMainInp22 form-control" type="text" />
+                                    </div>
+                                    <div className="inputItem">
+                                        <span className="title">Нэр ( eng ):</span>
+                                        <input onChange={editHandle} value={parent.firstname_eng} name="firstname_eng" className="getMainInp22 form-control" type="text" />
+                                    </div>
+                                </div>
+
                                 <div className="rowss">
                                     <div className="inputItem">
                                         <span className="title">Email :</span>
@@ -315,7 +326,7 @@ const Background = styled.div`
 
 const Role = [
     { title: "Холбоотой Яамд", value: "holbootoi_yamd", },
-    { title: "Төслийн Захирал", value: "tosliin_zahiral", },
+    // { title: "Төслийн Захирал", value: "tosliin_zahiral", },
     { title: "Төслийн зохицуулагч", value: "tosliin_zohitsuulagch", },
     { title: "Ахлах БХШ", value: "ahlah_bhsh", },
     { title: "БХЗ", value: "bh_zovloh", },

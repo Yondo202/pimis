@@ -26,7 +26,7 @@ export default function TrainerOrganizationsList() {
    const handleAddOrg = () => history.push('/trainer-organizations/id')
 
    return (
-      <div className="tw-text-gray-700 tw-text-sm tw-absolute tw-rounded tw-shadow-md tw-bg-white tw-w-full tw-p-2">
+      <div className="tw-text-gray-700 tw-text-sm tw-absolute tw-rounded tw-shadow-md tw-bg-white tw-w-full tw-p-2 tw-max-w-5xl">
          <div className="tw-text-lg tw-font-medium tw-p-2 tw-text-center tw-mt-4 tw-mb-6">
             Сургалт зохион байгуулагч байгууллагууд
          </div>
@@ -49,15 +49,15 @@ export default function TrainerOrganizationsList() {
             <HeaderFilter visible={true} />
             <FilterRow visible={true} />
 
-            <Column caption="Д/д" headerCellRender={HeaderCell} cellRender={cellRenderOrder} alignment="right" />
-            <Column dataField="organization_name" caption="Байгууллагын нэр" headerCellRender={HeaderCell} />
-            <Column dataField="registration_number" caption="Улсын бүртгэлийн дугаар" headerCellRender={HeaderCell} />
-            <Column dataField="createdAt" dataType="date" caption="Үүсгэсэн огноо" headerCellRender={HeaderCell} />
+            <Column caption="Д/д" headerCellRender={HeaderCell} cellRender={cellRenderOrder} alignment="left" />
+            <Column dataField="organization_name" caption="Байгууллагын нэр" headerCellRender={HeaderCell} alignment="left" />
+            <Column dataField="registration_number" caption="Улсын бүртгэлийн дугаар" headerCellRender={HeaderCell} alignment="left" />
+            <Column dataField="createdAt" dataType="date" caption="Үүсгэсэн огноо" headerCellRender={HeaderCell} alignment="left" />
             <Column caption="Байгуулагын мэдээллийг засварлах" cellRender={data => <ButtonNavOrg data={data} />} alignment="center" headerCellRender={HeaderCell} />
          </DataGrid>
 
          <div className="tw-flex tw-justify-center">
-            <button className="tw-py-2 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-12 tw-mb-6 tw-text-13px" onClick={handleAddOrg}>
+            <button className="tw-py-1.5 tw-px-6 tw-font-medium tw-bg-gray-600 tw-text-white tw-rounded focus:tw-outline-none active:tw-bg-gray-700 tw-transition-colors hover:tw-shadow-md tw-mt-12 tw-mb-6 tw-text-13px" onClick={handleAddOrg}>
                Сургалтын байгууллага нэмэх
             </button>
          </div>
@@ -70,7 +70,7 @@ const ButtonNavOrg = ({ data }) => {
    const history = useHistory()
    const handleClick = () => {
       if (trainingId !== null && trainingId !== undefined) {
-         history.push(`/trainer-organizations/id/${data.data.id}`)
+         history.push(`/trainer-organizations/id/${trainingId}`)
       }
    }
    return (

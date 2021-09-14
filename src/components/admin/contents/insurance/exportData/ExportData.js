@@ -127,6 +127,8 @@ const ExportDataContent = ({ SD, userId }) => {
         }
     }
 
+    console.log(`object++++`, exportData)
+
     return (
         <Container style={{ padding: `0px 0px`, boxShadow: `none` }}>
             {showAdd ? <Modals type={type} handle={modalHandle} selectedEx={selected} setSelectedEx={setSelected} setCond={setExCond} SD={userId ? { user_id: userId } : SD} setModal={setShowAdd} years={years} country={country} /> : null}

@@ -40,7 +40,7 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
         if (per === 'trainer') {
             final.trainerOrganizationId = trainerId ?? null
         }
-        if (cond.length < 6) {
+        if (cond.length < 8) {
             seBtnSpin(false);
             setErrText("1");
         } else if (per === 'trainer' && final.trainerOrganizationId === null) {
@@ -69,47 +69,59 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
                             <div className="InputPar">
                                 <div className="rowss">
                                     <div className="inputItem">
-                                        <span className="title">Овог :</span>
-                                        <input name="lastname" className="getMainInp22 form-control" type="text" />
+                                        <span className="title">Овог ( mn ) :</span>
+                                        <input name="lastname" className="getMainInp22 form-control" type="text" required />
                                     </div>
                                     <div className="inputItem">
-                                        <span className="title">Нэр :</span>
-                                        <input name="firstname" className="getMainInp22 form-control" type="text" />
+                                        <span className="title">Нэр ( mn ) :</span>
+                                        <input name="firstname" className="getMainInp22 form-control" type="text" required />
                                     </div>
                                 </div>
+
+                                <div className="rowss">
+                                    <div className="inputItem">
+                                        <span className="title">Овог ( eng ) :</span>
+                                        <input name="lastname_eng" className="getMainInp22 form-control" type="text"  required/>
+                                    </div>
+                                    <div className="inputItem">
+                                        <span className="title">Нэр ( eng ) :</span>
+                                        <input name="firstname_eng" className="getMainInp22 form-control" type="text" required />
+                                    </div>
+                                </div>
+
                                 <div className="rowss">
                                     <div className="inputItem">
                                         <span className="title">Email :</span>
-                                        <input name="email" className="getMainInp22 form-control" type="email" />
+                                        <input name="email" className="getMainInp22 form-control" type="email" required />
                                     </div>
                                     <div className="inputItem">
                                         <span className="title">Утасны дугаар :</span>
-                                        <input name="phone" className="getMainInp22 form-control" type="number" />
+                                        <input name="phone" className="getMainInp22 form-control" type="number" required />
                                     </div>
                                 </div>
                                 <div style={{ paddingBottom: 20, borderBottom: `1px solid rgba(0,0,0,0.08)` }} className="rowss">
                                     <div className="inputItem">
                                         <span className="title">Нэвтрэх нэр :</span>
-                                        <input name="name" className="getMainInp22 form-control" type="text" />
+                                        <input required name="name" className="getMainInp22 form-control" type="text" />
                                     </div>
                                 </div>
                             </div>
 
                             <div className="otherPar">
                                 <div className="HeadCheck">
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="holbootoi_yamd" /> <span>Холбоотой Яамд</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="tosliin_zahiral" /> <span>Төслийн Захирал</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="tosliin_zohitsuulagch" /> <span>Төслийн зохицуулагч</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="ahlah_bhsh" /> <span>Ахлах БХШ</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="bh_zovloh" /> <span>БХЗ</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="vdd_zovloh" /> <span>ҮДД-ын зөвлөх</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="huuliin_zowloh" /> <span>Хуулийн зөвлөх</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="sanhuu" /> <span>Санхүү</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="hudaldanavah_ajillagaa" /> <span>Худалдаан авах ажиллагаа</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" value="trainer" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" value="member" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" value="monitoring" name="role" type="radio" /> <span>Мониторинг</span></div>
-                                    <div className="title"> <input onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="holbootoi_yamd" /> <span>Холбоотой Яамд</span></div>
+                                    {/* <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="tosliin_zahiral" /> <span>Төслийн Захирал</span></div> */}
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="tosliin_zohitsuulagch" /> <span>Төслийн зохицуулагч</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="ahlah_bhsh" /> <span>Ахлах БХШ</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="bh_zovloh" /> <span>БХЗ</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="vdd_zovloh" /> <span>ҮДД-ын зөвлөх</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="huuliin_zowloh" /> <span>Хуулийн зөвлөх</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="sanhuu" /> <span>Санхүү</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="hudaldanavah_ajillagaa" /> <span>Худалдаан авах ажиллагаа</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" value="trainer" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" value="member" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" value="monitoring" name="role" type="radio" /> <span>Мониторинг</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div>
                                 </div>
 
                                 {per === "edpuser" && (<div className="edpUsers">
