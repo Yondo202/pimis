@@ -41,13 +41,13 @@ export default function LaboratoryEdit() {
    const [laboratoryId, setLaboratoryId] = useState(useParams().id)
 
    useEffect(() => {
-      if (laboratoryId !== undefined && laboratoryId !== null) {
-         axios.get(`laboratories/${laboratoryId}`, {
-            headers: { Authorization: getLoggedUserToken() }
-         }).then(res => {
-            setLaboratory(res.data.data)
-         })
-      }
+      // if (laboratoryId !== undefined && laboratoryId !== null) {
+      //    axios.get(`laboratories/${laboratoryId}`, {
+      //       headers: { Authorization: getLoggedUserToken() }
+      //    }).then(res => {
+      //       setLaboratory(res.data.data)
+      //    })
+      // }
    }, [])
 
    const history = useHistory()
