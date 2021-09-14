@@ -7,7 +7,7 @@ import { Column, FilterRow, HeaderFilter, Pager, Paging, Scrolling, SearchPanel 
 import { useHistory } from 'react-router'
 import { HeaderCell } from 'pages/training/training_admin/trainingsList'
 
-export default function LaboratoriesList() {
+export default function LaboratoriesList({ setModalOpen, setter }) {
    const AlertCtx = useContext(AlertContext)
 
    const [laboratories, setLaboratories] = useState([])
@@ -51,8 +51,9 @@ export default function LaboratoriesList() {
 
             <Column caption="Д/д" headerCellRender={HeaderCell} cellRender={cellRenderOrder} alignment="left" />
             <Column dataField="lab_name" caption="Лабораторын нэр" headerCellRender={HeaderCell} alignment="left" />
-            <Column dataField="cert_given" caption="Чанарын гэрчилгээ өгсөн тоо" headerCellRender={HeaderCell} alignment="left" />
-            <Column caption="Лабораторын мэдээлэл засварлах" cellRender={data => <ButtonNavLab data={data} />} alignment="center" headerCellRender={HeaderCell} />
+            <Column dataField="cert_given" caption="Чанарын баталгаажуулалт өгсөн тоо" headerCellRender={HeaderCell} alignment="left" />
+            <Column caption="Чанарын баталгаажуулалт өгсөн тоог нэмэх" cellRender={data => <ButtonOpenModal data={data} setModalOpen={setModalOpen} setter={setter} />} headerCellRender={HeaderCell} alignment="center" />
+            <Column caption="Лабораторын мэдээлэл засах" cellRender={data => <ButtonNavLab data={data} />} alignment="center" headerCellRender={HeaderCell} />
          </DataGrid>
 
          <div className="tw-flex tw-justify-center">
@@ -82,6 +83,23 @@ const ButtonNavLab = ({ data }) => {
          onClick={handleClick}
          title="Лабораторын мэдээлэл засах">
          Засах
+      </button>
+   )
+}
+
+const ButtonOpenModal = ({ data, setModalOpen, setter }) => {
+   const handleClick = () => {
+      setModalOpen(true)
+      setter('id', data.data?.id)
+      setter('lab_name', data.data?.lab_name)
+   }
+
+   return (
+      <button
+         className="tw-rounded-sm tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-px-2 tw-py-1 focus:tw-outline-none"
+         onClick={handleClick}
+         title="Чанарын баталгаажуулалт өгсөн тоог нэмэх">
+         Нэмэх
       </button>
    )
 }
