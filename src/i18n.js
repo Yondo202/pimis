@@ -16,11 +16,26 @@ i18n.use(LanguageDetector).init({
         "Indemnity":"Indemnity",
         "Sum insured":"Sum insured",
 
-        Advantages: "Advantages",
-        "Flexibility to use other packages": "Flexibility to use other packages",
-
         "Export Data":"Export Data",
         "Product name":"Product name",
+
+        // Төслийн үр дүнг хэмжих
+        "Project Results Indicators":"Project Results Indicators",
+        "Indicator Name":"Indicator Name",
+        "Measurement":"Measurement",
+        "Cumalative":"Cumalative",
+        "Current":"Current",
+
+        "percent":"percent",
+        "number":"number",
+        "amount":"amount",
+
+        "Print":"Print",
+        "Download":"Download",
+        "Calculate":"Calculate",
+
+        "PDO Level I Results Indicators":"PDO Level I Results Indicators",
+        "Intermediate Results Indicators":"Intermediate Results Indicators",
 
       }
     },
@@ -39,9 +54,24 @@ i18n.use(LanguageDetector).init({
           "Export Data":"Экспортын мэдээлэл",
           "Product name":"Бүтээгдэхүүн",
 
-          Advantages: "Les avantages",
-            "Flexibility to use other packages":
-            "Flexibilité d'utiliser d'autres packages"
+
+          // Төслийн үр дүнг хэмжих
+          "Project Results Indicators":"Төслийн үр дүнг хэмжих шалгуур үзүүлэлтүүд",
+          "Indicator Name":"Шалгуур үзүүлэлт",
+          "Measurement":"Хэмжүүр",
+          "Cumalative":"Зорилтот",
+          "Current":"Одоогийн",
+
+          "percent":"Хувь",
+          "number":"Тоо",
+          "amount":"Дүн",
+
+          "Print":"Хэвлэх",
+          "Download":"Татах",
+          "Calculate":"Бодох",
+
+          "PDO Level I Results Indicators":"Эхний шатны шалгуур үзүүлэлт",
+          "Intermediate Results Indicators":"Дунд шатны шалгуур үзүүлэлт",
         },
 
     },

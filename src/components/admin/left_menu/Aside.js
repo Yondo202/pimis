@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useContext } from "react";
+import Ctx from "context/UserContext"
 import { Link } from "react-router-dom";
 import { MenuColor, MainFontSize, fontFamily } from "../ThemeAdmin";
 import { useIntl } from "react-intl";
@@ -10,8 +10,11 @@ import { MdSettings } from "react-icons/md";
 import { GiProgression } from "react-icons/gi";
 import sidebarBg from "./bg_image/bg1.jpg";
 
+
 const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
-  const intl = useIntl();
+  const { userInfo } = useContext(Ctx);
+
+  console.log(`userInfo+++`, userInfo);
 
   return (
     <ProSidebar image={image ? sidebarBg : false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
@@ -22,102 +25,34 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
       </SidebarHeader>
 
       <SidebarContent >
-        {/* <Menu iconShape="circle">
-          <MenuItem icon={<FaTachometerAlt />} suffix={<span className="badge red">{intl.formatMessage({ id: "new" })}</span>}>
-            {intl.formatMessage({ id: "dashboard" })}
-          </MenuItem>
-          <MenuItem icon={<FaGem />}> {intl.formatMessage({ id: "components" })}</MenuItem>
-        </Menu> */}
         <Menu iconShape="circle">
-          <SubMenu title="Түншлэлийн хөтөлбөр" icon={<GiProgression />}>
-            <MenuItem>
-              <Link to="/projects"> Бүртгүүлсэн байгууллагууд</Link>
-            </MenuItem>
-            <MenuItem>Санхүүжилт</MenuItem>
-            <MenuItem>
-              <Link to="/meetings">Үнэлгээний хорооны уулзалт</Link>
-            </MenuItem>
-            {/* <MenuItem>
-              <Link to="/insurance">Даатгал</Link>
-            </MenuItem> */}
-            <MenuItem>
-              <Link to="/maindecision">Үнэлгээний хорооны шийдвэр</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/report">Тайлан</Link>
-            </MenuItem>
-          </SubMenu>
-          {/* prefix={<span className="badge gray">3</span>} */}
-          <SubMenu title="Сургалт" icon={<FaChalkboardTeacher />}>
-            <MenuItem>
-              <Link to="/trainings">Сургалтууд</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/training-requests">Захиалгат сургалтын хүсэлтүүд</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/training-report">Тайлан</Link>
-            </MenuItem>
-          </SubMenu>
-
-          <SubMenu title="Даатгал" icon={<FiBookOpen />}>
-            <MenuItem>
-              <Link to="/insurance">Байгууллагуудын жагсаалт</Link>
-            </MenuItem>
-          </SubMenu>
-
-          <SubMenu title="Мониторинг" icon={<FiBookOpen />}>
-            <MenuItem>
-              <Link to="/result-measure">Төслийн үр дүнг хэмжих</Link>
-            </MenuItem>
-          </SubMenu>
-
-          <SubMenu title="Экспортын мэдээлэл" icon={<FiBookOpen />}>
-            <MenuItem>
-              <Link to="/export-data">Байгууллагуудын жагсаалт</Link>
-            </MenuItem>
-          </SubMenu>
-
-          <SubMenu title="Тохиргоо" icon={<MdSettings />}>
-            <MenuItem>
-              <Link to="/users">Хэрэглэгчид</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/epd-information" >Төслийн нэгжийн мэдээлэл</Link>
-            </MenuItem>
-            <SubMenu title="Түншлэлийн хөтөлбөр">
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.1 </MenuItem>
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.2 </MenuItem>
-            </SubMenu>
-            <SubMenu title="Сургалт">
-              <MenuItem>
-                <Link to="/trainer-organizations">Сургалт зохион байгуулагч байгууллагууд</Link>
-              </MenuItem>
-              <MenuItem>
-                <Link to="/training-questionnaire">Сургалтын үнэлгээний асуумжууд</Link>
-              </MenuItem>
-            </SubMenu>
-            <SubMenu title="Даатгал">
-              <MenuItem>
-                <Link to="/insurance-types">Даатгалын бүтээгдэхүүнүүд тохируулах</Link>
-              </MenuItem>
-            </SubMenu>
-            <MenuItem>
-              <Link to="/holidays">Амралтын өдөр сонгох</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/accept-periods">Нээлттэй хугацаа тохируулах</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/laboratories">Лаборторууд</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/currency-rates">Ханшийн мэдээлэл оруулах</Link>
-            </MenuItem>
-          </SubMenu>
-
-          {/* {ctxUser.userInfo.role==="edpadmin"?<SubMenu title="Тохиргоо" icon={<MdSettings />}> </SubMenu>
-          :<SubMenu ></SubMenu>} */}
+            {MenuData.map((el,ind)=>{
+              
+              return(
+                <SubMenu key={ind} title={el.title} icon={el.icon}>
+                  {el.MenuChild?.map((elem,ind)=>{
+                    return(
+                      <MenuItem key={ind}>
+                        <Link to={elem.link}>{elem.text}</Link>
+                      </MenuItem>
+                    )
+                  })}
+                  {el.SubMenu?.map((elem,ind)=>{
+                    return(
+                      <SubMenu key={ind} title={elem.text}>
+                        {elem.subChild?.map((elChild, indx)=>{
+                          return(
+                            <MenuItem key={indx}>
+                              <Link to={elChild.link}>{elChild.text}</Link>
+                            </MenuItem>
+                          )
+                        })}
+                      </SubMenu>
+                    )
+                  })}
+                </SubMenu>
+              )
+            })}
         </Menu>
       </SidebarContent>
 
@@ -130,11 +65,67 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
 
 export default Aside;
 
-const LeftMenuParent = styled.div`
-  font-size: ${MainFontSize};
-  width: 270px;
-  height: 100vh;
-  background-color: ${MenuColor};
-  font-family: ${fontFamily};
-  position: relative;
-`;
+
+const FilterMenu = () =>{
+
+}
+
+const MenuData = [
+  { title:"Түншлэлийн хөтөлбөр", 
+    icon:<GiProgression />,
+    MenuChild:[ 
+    { link:"/projects", text:"Бүртгүүлсэн байгууллагууд" },
+    { link:"/meetings", text:"Үнэлгээний хорооны уулзалт" },
+    { link:"/maindecision", text:"Үнэлгээний хорооны шийдвэр" },
+    { link:"/report", text:"Тайлан" },
+    ] 
+  },
+
+  { title:"Сургалт", 
+    icon:<FaChalkboardTeacher />,
+    MenuChild:[ 
+      { link:"/trainings", text:"Сургалтууд" },
+      { link:"/training-requests", text:"Захиалгат сургалтын хүсэлтүүд" },
+      { link:"/training-report", text:"Тайлан" },
+    ] 
+  },
+  { title:"Даатгал", 
+    icon:<FiBookOpen />,
+    MenuChild:[ 
+      { link:"/insurance", text:"Байгууллагуудын жагсаалт" },
+    ],
+    SubMenu:[
+      { text:"Даатгал", subChild:[ { link:"/insurance-types", text:"Даатгалын бүтээгдэхүүнүүд тохируулах"  } ] }
+    ]
+  },
+  { title:"Мониторинг", 
+    icon:<FiBookOpen />,
+    MenuChild:[ 
+      { link:"/result-measure", text:"Төслийн үр дүнг хэмжих" },
+    ],
+  },
+  { title:"Экспортын мэдээлэл", 
+    icon:<FiBookOpen />,
+    MenuChild:[ 
+      { link:"/export-data", text:"Байгууллагуудын жагсаалт" },
+    ],
+  },
+  { title:"Тохиргоо", 
+    icon: <MdSettings />,
+    MenuChild:[
+      { link:"/users", text:"Хэрэглэгчид" },
+      { link:"/epd-information", text:"Төслийн нэгжийн мэдээлэл" },
+      { link:"/", text:"Түншлэлийн хөтөлбөр" },
+      { link:"/holidays", text:"Амралтын өдөр сонгох" },
+      { link:"/accept-periods", text:"Нээлттэй хугацаа тохируулах" },
+      { link:"/laboratories", text:"Лаборторууд" },
+      { link:"/currency-rates", text:"Ханшийн мэдээлэл оруулах" },
+    ],
+    SubMenu:[
+      { text:"Сургалт", subChild:[
+         { link:"/trainer-organizations", text:"Сургалт зохион байгуулагч байгууллагууд" },
+         { link:"/training-questionnaire", text:"Сургалтын үнэлгээний асуумжууд" },
+      ] }
+    ]
+  },
+]

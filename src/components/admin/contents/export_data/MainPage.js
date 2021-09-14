@@ -59,13 +59,13 @@ const MainPage = () => {
 
                         {exportData.length===0&&<tr className={`cusorItems ghost`}>
                             <td>example</td>
+                            <td className="right"></td>
+                            {years.map((e,i)=>{
+                                return(
+                                    <td key={i} className="right">0.00 ₮</td>
+                                )
+                            })}
                             <td>0.00 ₮</td>
-                            <td className="right">0.00 ₮</td>
-                            <td className="right">0.00 ₮</td>
-                            <td className="right">0.00 ₮</td>
-                            <td className="right">0.00 ₮</td>
-                            <td className="right">0.00 ₮</td>
-                            <td className="right">0.00 ₮</td>
                         </tr>}
 
                         {fCountry.map((elem,index)=>{
@@ -77,12 +77,11 @@ const MainPage = () => {
                                             return(
                                                 <tr key={ind} >
                                                     <td className="bold">{el.product_name}</td>
-                                                    <td className="right">{NumberComma(el.e2016)} </td>
-                                                    <td className="right">{NumberComma(el.e2017)} </td>
-                                                    <td className="right">{NumberComma(el.e2018)} </td>
-                                                    <td className="right">{NumberComma(el.e2019)} </td>
-                                                    <td className="right">{NumberComma(el.e2020)} </td>
-                                                    <td className="right">{NumberComma(el.e2021)} </td>
+                                                    {years.map((e,i)=>{
+                                                        return(
+                                                            <td key={i} className="right">{NumberComma(el[`e${e.year}`]) } </td>
+                                                        )
+                                                    })}
                                                     <td className="right bold blue">
                                                         {NumberComma(el.e2016+el.e2017+el.e2018+el.e2019+el.e2020+el.e2021+el.e2022+el.e2023+el.e2024+el.e2025+el.e2026+el.e2027+el.e2028+el.e2029+el.e2030)} ₮
                                                     </td>

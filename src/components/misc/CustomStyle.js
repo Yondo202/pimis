@@ -178,7 +178,16 @@ const rowAnimation = keyframes`
 `
 
 export const LangSwitch = styled.div`
-
+    display:flex;
+    align-items:center;
+    gap:8px;
+    select{
+        border:1px solid rgba(0,0,0,0.3);
+        border-radius:3px;
+    }
+    img{
+        width:22px;
+    }
 ` 
 
 export const Container = styled.div`
