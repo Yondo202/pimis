@@ -24,7 +24,7 @@ export default function LaboratoryNavigator() {
    const [modalOpen, setModalOpen] = useState(false)
 
    const [modalForm, setModalForm] = useState({
-      id: null,
+      labId: null,
       lab_name: null,
       year: null,
       count: null
@@ -32,17 +32,20 @@ export default function LaboratoryNavigator() {
 
    const handleInputModal = (key, value) => setModalForm(prev => ({ ...prev, [key]: value }))
 
+   const [refetchToggle, setRefetchToggle] = useState(false)
+
    const handleSubmit = () => {
-      if (modalForm.id === null || modalForm.id === undefined) {
+      if (modalForm.labId === null || modalForm.labId === undefined) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Лаборатор сонгоогүй байна.' })
          return
       }
-      axios.put(`laboratories/${modalForm.id}/add`, modalForm, {
+      axios.put(`laboratories/${modalForm.labId}/add`, modalForm, {
          headers: { Authorization: getLoggedUserToken() }
       }).then(res => {
+         setRefetchToggle(prev => !prev)
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Чанарын баталгаажуулалтын тоог нэмлээ.' })
          setModalForm({
-            id: null,
+            labId: null,
             lab_name: null,
             year: null,
             count: null
@@ -58,7 +61,7 @@ export default function LaboratoryNavigator() {
          <animated.div className="tw-relative" key={key} style={props}>
             <Switch location={item}>
                <Route exact path="/laboratories">
-                  <LaboratoriesList setModalOpen={setModalOpen} setter={handleInputModal} />
+                  <LaboratoriesList setModalOpen={setModalOpen} setter={setModalForm} refetchToggle={refetchToggle} />
                </Route>
                <Route exact path="/laboratories/id/">
                   <LaboratoryEdit />
@@ -81,7 +84,7 @@ export default function LaboratoryNavigator() {
          </div>
          <div className="tw-mt-2 tw-flex tw-justify-between tw-items-center tw-pl-4 tw-pr-20">
             <span className="tw-mr-2">
-               Нэмэх тоо:
+               Нэмэх баталгаажуулалтын тоо:
             </span>
             <input className={classInput} type="number" value={modalForm.count ?? ''} onChange={e => handleInputModal('count', e.target.value)} />
          </div>

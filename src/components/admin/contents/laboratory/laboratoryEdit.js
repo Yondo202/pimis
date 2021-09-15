@@ -6,22 +6,10 @@ import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import ChevronDownSVG from 'assets/svgComponents/chevronDownSVG'
 import { FormElement } from 'pages/training/training_admin/trainingEdit'
 
-const intialState = {
-   lab_name: null,
-   year_given: null,
-   cert_given: null
-}
-
 export default function LaboratoryEdit() {
    const AlertCtx = useContext(AlertContext)
 
    const [laboratory, setLaboratory] = useState([])
-
-   const handleInputIndex = (key, value, index) => setLaboratory(prev => {
-      const next = [...prev]
-      next[index][key] = value
-      return next
-   })
 
    const handleInputYear = (key, value, year) => setLaboratory(prev => {
       const next = [...prev]
@@ -30,44 +18,72 @@ export default function LaboratoryEdit() {
       return next
    })
 
-   const netCertsGiven = laboratory.reduce((acc, cv) => acc += +cv.cert_given, 0)
+   const netCertGiven = laboratory.reduce((acc, cv) => acc += +cv.cert_given, 0)
 
    const handleRemove = (year) => setLaboratory(prev => prev.filter(row => row.year_given !== year))
 
    const handleAdd = () => {
+      const find = laboratory.findIndex(lab => lab.year_given === form.year)
+      if (find !== -1) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Он давхцаж байна.' })
+         return
+      }
 
+      const row = {
+         labId: labId,
+         lab_name: form.name,
+         year_given: form.year,
+         cert_given: form.count
+      }
+      setLaboratory(prev => [...prev, row])
+      setForm(prev => ({
+         ...prev,
+         year: null,
+         count: null
+      }))
    }
 
-   const [laboratoryId, setLaboratoryId] = useState(useParams().id)
+   const [labId, setLabId] = useState(useParams().id)
 
    useEffect(() => {
-      // if (laboratoryId !== undefined && laboratoryId !== null) {
-      //    axios.get(`laboratories/${laboratoryId}`, {
-      //       headers: { Authorization: getLoggedUserToken() }
-      //    }).then(res => {
-      //       setLaboratory(res.data.data)
-      //    })
-      // }
+      if (labId !== undefined && labId !== null) {
+         axios.get(`laboratories/${labId}`, {
+            headers: { Authorization: getLoggedUserToken() }
+         }).then(res => {
+            const laboratory = (res.data.data ?? []).sort((a, b) => a.year_given > b.year_given)
+            setLaboratory(laboratory)
+            setForm(prev => ({ ...prev, name: laboratory[0].lab_name }))
+         })
+      }
    }, [])
 
    const history = useHistory()
 
    const handleSubmit = () => {
-      if (laboratoryId !== null && laboratoryId !== undefined) {
-         axios.put(`laboratories/${laboratoryId}`, laboratory, {
+      let body = [...laboratory]
+      body = body.filter(row => !['', null, undefined].includes(row.cert_given))
+      if (body.length === 0) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Чанарын баталгаажуулалт өгсөн тоо нэмнэ үү.' })
+         return
+      }
+
+      if (labId !== null && labId !== undefined) {
+         axios.put(`laboratories/${labId}`, body, {
             headers: { Authorization: getLoggedUserToken() }
          }).then(res => {
-            setLaboratory(res.data.data)
+            const laboratory = (res.data.data ?? []).sort((a, b) => a.year_given > b.year_given)
+            setLaboratory(laboratory)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Лабораторын мэдээллийг шинэчиллээ.' })
             history.push('/laboratories')
          }).catch(err => {
             AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Лабораторын мэдээллийг засаж чадсангүй.' })
          })
       } else {
-         axios.post(`laboratories`, laboratory, {
+         axios.post(`laboratories`, body, {
             headers: { Authorization: getLoggedUserToken() }
          }).then(res => {
-            setLaboratory(res.data.data)
+            const laboratory = (res.data.data ?? []).sort((a, b) => a.year_given > b.year_given)
+            setLaboratory(laboratory)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Лабораторын мэдээлэл нэмэгдлээ.' })
             history.push('/laboratories')
          }).catch(err => {
@@ -77,11 +93,11 @@ export default function LaboratoryEdit() {
    }
 
    const handleDelete = () => {
-      if (laboratoryId === null || laboratoryId === undefined) {
+      if (labId === null || labId === undefined) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Лаборатор сонгоогүй байна.' })
          return
       }
-      axios.delete(`laboratories/${laboratoryId}`, {
+      axios.delete(`laboratories/${labId}`, {
          headers: { authorization: getLoggedUserToken() }
       }).then(res => {
          AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Лабораторыг устгалаа.' })
@@ -92,6 +108,7 @@ export default function LaboratoryEdit() {
    }
 
    const [form, setForm] = useState({
+      name: null,
       year: null,
       count: null
    })
@@ -111,38 +128,44 @@ export default function LaboratoryEdit() {
             </div>
 
             <div className="tw-flex tw-flex-col tw-w-full">
-               <FormElement label="Лабораторын нэр" value={laboratory.lab_name} keyName="lab_name" index={0} onChange={handleInputIndex} />
+               <FormElement label="Лабораторын нэр" value={form.name} keyName="name" onChange={handleInputForm} />
 
-               <FormElement label="Чанарын баталгаажуулалт өгсөн тоо">
-                  {laboratory
-                     .sort((a, b) => a.year_given > b.year_given)
-                     .map(lab =>
-                        <div className="">
-                           <span className="">{lab.year_given}</span>
-                           <input className={classInput} type="number" value={lab.cert_given} onChange={e => handleInputYear('cert_given', e.target.value, lab.year_given)} />
-                           <button onClick={() => handleRemove(lab.year_given)}>
-                              Хасах
-                           </button>
-                        </div>
-                     )
+               <FormElement label="Чанарын баталгаажуулалт өгсөн тоо" height="auto">
+                  {laboratory.length
+                     ? laboratory
+                        .sort((a, b) => a.year_given > b.year_given)
+                        .map(lab =>
+                           <div className="tw-mb-2 tw-flex tw-items-center" key={lab.year_given}>
+                              <span className="">{lab.year_given}</span>
+                              <span className="tw-mx-2">онд</span>
+                              <input className={classInput} type="number" value={lab.cert_given ?? ''} onChange={e => handleInputYear('cert_given', e.target.value, lab.year_given)} />
+                              <button className={`${classButton} tw-ml-auto`} onClick={() => handleRemove(lab.year_given)}>
+                                 Хасах
+                              </button>
+                           </div>
+                        )
+                     : <div className="tw-mb-2 tw-flex tw-items-center tw-text-gray-500 tw-italic" style={{ height: 27 }}>
+                        Чанарын баталгаажуулалт өгсөн тоо оруулаагүй байна.
+                     </div>
                   }
 
-                  <div className="">
-                     <input className={classInput} type="number" value={form.year} onChange={e => handleInputForm('year', e.target.value)} placeholder="Он" />
-                     <input className={classInput} type="number" value={form.count} onChange={e => handleInputForm('count', e.target.value)} placeholder="Тоо" />
-                     <button onClick={handleAdd}>
+                  <div className="tw-flex tw-items-center tw-pt-6">
+                     <input className={classInput} style={{ width: 64 }} type="number" value={form.year ?? ''} onChange={e => handleInputForm('year', e.target.value)} placeholder="Он" />
+                     <span className="tw-mx-2">онд</span>
+                     <input className={classInput} type="number" value={form.count ?? ''} onChange={e => handleInputForm('count', e.target.value)} placeholder="Тоо" />
+                     <button className={`${classButton} tw-ml-auto`} onClick={handleAdd}>
                         Нэмэх
                      </button>
                   </div>
                </FormElement>
 
-               <FormElement label="">
-                  <span className="">{netCertsGiven}</span>
+               <FormElement label="Нийт чанарын баталгаажуулалт өгсөн тоо" childrenAppend="tw-font-medium">
+                  <span className="">{netCertGiven}</span>
                </FormElement>
             </div>
 
             <div className="tw-flex tw-justify-center tw-items-center tw-relative">
-               {laboratoryId &&
+               {labId &&
                   <button className="tw-absolute tw-left-4 tw-rounded tw-bg-red-500 active:tw-bg-red-500 tw-transition-colors hover:tw-shadow-md tw-py-1.5 tw-px-6 tw-text-white tw-font-medium focus:tw-outline-none tw-text-13px" onClick={handleDelete}>
                      Устгах
                   </button>
@@ -158,3 +181,5 @@ export default function LaboratoryEdit() {
 }
 
 const classInput = 'focus:tw-outline-none focus:tw-ring-2 tw-ring-blue-400 tw-border tw-border-gray-400 tw-rounded tw-px-2 tw-py-1 tw-transition-colors tw-bg-transparent tw-w-24'
+
+const classButton = 'tw-rounded tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-px-2 tw-py-0.5 focus:tw-outline-none'
