@@ -43,11 +43,12 @@ import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
 import FinancialAttachments from 'pages/attachments/financialAttachments';
 import ExportDataList from "components/admin/contents/export_data/MainPage"
 import InsuranceTypeHandle from 'components/admin/contents/insurance_type/insuranceTypeHandle';
-import ResultMeasure from 'components/admin/contents/monitoring/ResultMeasure';
+import ResultMeasure from 'components/admin/contents/monitoring/resultReport/ResultMeasure';
 import { MakeContractForAdmin } from 'pages/contract/make_contract/makeContractPages';
 import { ContractReportsForAdmin } from 'pages/contract/contract_reports/contractReportPages';
 import SurveyPimis from 'pages/contract/survery/surveyPimis';
 import LaboratoryNavigator from 'components/admin/contents/laboratory/laboratoryNavigator';
+import MonitoringReport from "components/admin/contents/monitoring/mainReports/container/MonitoringReports"
 import ReportResult from 'pages/report/reportResult';
 
 function Layout({ setLocale }) {
@@ -86,6 +87,8 @@ function Layout({ setLocale }) {
               <Route path="/holidays" component={Holidays} />
               <Route path="/insurance" component={Insurance} />
               <Route path="/result-measure" component={ResultMeasure} />
+
+              <Route path="/monitoring-report" component={MonitoringReport} />
               {/* <Route path="/urgudul/:page">
                 <UrgudulNavigator preloaded={true} />
               </Route> */}

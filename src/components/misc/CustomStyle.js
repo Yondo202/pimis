@@ -836,3 +836,168 @@ export const CustomModal = styled.div`
     }
     
 `
+export const HeaderTwo = styled.div`
+    font-size:13px;
+    margin-top:10px;
+    margin-bottom:100px;
+    .Title{
+        font-weight: 500;
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+    .smMenuPar{
+        display:flex;
+        .itemsPar{
+            font-size:12px;
+            text-decoration:none;
+            border-style:none;
+            font-weight:500;
+            cursor:pointer;
+            background-color:#e4e6eb;
+            margin-right:5px;
+            padding:10px 24px;
+            border-radius: 5px 5px 0px 0px;
+            outline: none;
+            color: rgba(${props=>props.theme.textColor},0.6);
+            display:flex;
+            text-align:left;
+            svg{
+                font-size:17px;
+            }
+        }
+        .itemsPar22{
+            border-style:none;
+            color: rgba(${props=>props.theme.textColor},1);
+            background-color:#fff;
+            outline: none;
+            box-shadow:-4px -5px 13px -11px black;
+        }
+        .Active{
+            border-top:2px solid green;
+            position:relative;
+        }
+        .dd{
+            margin-left:0px;
+            border-left:1px solid rgba(0,0,0,0);
+        }
+    }
+    @media only screen and (max-width:768px){
+        .smMenuPar{
+            flex-direction:column;
+        }
+    }
+`
+export const ButtonStyle2 = styled.div`
+        padding:30px 0px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        .errTxt{
+            transition:all 0.4s ease;
+            text-align:center;
+            background-color: #f6c343;
+            border-radius:5px;
+            font-size:15px !important;
+            font-weight:400;
+            color:black !important;
+            line-height:34px;
+            padding:0px 20px;
+        }
+        .myBtn{
+            border-radius:5px;
+            padding:8px 40px;
+            // background-color:#0A6599;
+            background-color:#337ab7;
+            border-style:none;
+            color:white;
+            font-weight:500;
+            transition:all 0.2s ease;
+            outline: none !important;
+            
+            img{
+                width:20px;
+            }
+            &:hover{
+                background-color:rgba(0, 51, 102,0.9);
+                box-shadow:1px 1px 6px -2px black;
+                outline: none;
+            }
+            &[disabled]{
+                opacity:0.7;
+                &:hover{
+                    box-shadow:1px 1px 10px -2px white;
+                    background-color:#0A6599;
+                }
+            }
+        }
+`
+
+const bigAnimation2 = keyframes`
+    0% { opacity:0; transform:translateY(-12px); }
+    100% { opacity:1; transform:translateY(0px); }
+`
+
+export const ReportContainer = styled.div`
+    page-break-inside: avoid;
+    animation: ${bigAnimation2} 0.6s ease;
+    width:100%;
+    background-color: #fff;
+    padding:40px 40px;
+    border-radius:0px 5px 5px 5px;
+    box-shadow: -5px 5px 12px -12px black;
+    .Reporthome{
+        
+    }
+    .EditorParent{
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        gap:30px;
+    }
+    .pageRender{
+       page-break-inside: avoid;
+       margin-bottom:30px;
+        width:100%;
+        .bigTitle{
+            font-size:20px;
+            margin-bottom:10px;
+            text-align:center;
+        }
+        .headPar{
+            justify-content:center;
+            .title{
+                margin-bottom:5px;
+                font-size:16px;
+                color:rgb(60,60,60);
+            }
+            .addBtn{
+                display:none;
+            } 
+        }
+        table{
+            th, td{
+                &:last-child{
+                    display:none;
+                }
+                padding:10px;
+            }
+            .showing{
+                display:table-cell !important;
+            }
+        }
+        @media print{
+            table{
+                th{
+                    font-weight:400 !important;
+                }
+                font-size:15px !important;
+            }
+        }
+    }
+    .LastRotate{
+        // margin-top:1200px;
+        page-break-inside: avoid;
+        // transform:rotate(-90deg);
+        // transform-origin: top left;
+    }
+`
