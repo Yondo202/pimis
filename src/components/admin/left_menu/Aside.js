@@ -25,7 +25,6 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
 
       <SidebarContent >
         <Menu iconShape="circle">
-
             {MenuData.map((el,ind)=>{
               if(userInfo?.role==="edpadmin")
                 return <FilterMenu el={el} ind={ind} />
@@ -57,7 +56,6 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
                 
               return <div />
             })}
-
         </Menu>
       </SidebarContent>
 
@@ -131,6 +129,14 @@ const MenuData = [
     MenuChild:[ 
       { link:"/result-measure", text:"Төслийн үр дүнг хэмжих" },
     ],
+    SubMenu:[
+      { text:"Үндсэн тайлангууд", subChild:[
+         { link:"/monitoring-report/0", text:"Хяналт-шинжилгээний тайлан" },
+         { link:"/progress-report", text:"Явцын үнэлгээний тайлан" },
+         { link:"/evaluation-report", text:"Үнэлгээний тайлан" },
+         { link:"/completion-report", text:"Эцсийн тайлан" },
+      ] }
+    ]
   },
   { title:"Экспортын мэдээлэл", 
     icon:<FiBookOpen />,
