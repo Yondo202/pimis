@@ -48,7 +48,11 @@ import { MakeContractForAdmin } from 'pages/contract/make_contract/makeContractP
 import { ContractReportsForAdmin } from 'pages/contract/contract_reports/contractReportPages';
 import SurveyPimis from 'pages/contract/survery/surveyPimis';
 import LaboratoryNavigator from 'components/admin/contents/laboratory/laboratoryNavigator';
+<<<<<<< HEAD
 import MonitoringReport from "components/admin/contents/monitoring/mainReports/container/MonitoringReports"
+=======
+import ReportResult from 'pages/report/reportResult';
+>>>>>>> 4a1c24ebfbe2c32bfb3834d72aa52cb29062547d
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -124,6 +128,7 @@ function Layout({ setLocale }) {
               <Route path="/insurance-types" component={InsuranceTypeHandle} />
               <Route path="/survey-pimis" component={SurveyPimis} />
               <Route path="/laboratories" component={LaboratoryNavigator} />
+              <Route path="/report-result" component={ReportResult} />
               <MiddleRoute />
             </Switch>
           </UrgudulStore>
