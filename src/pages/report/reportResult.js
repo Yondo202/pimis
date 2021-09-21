@@ -6,8 +6,6 @@ export default function ReportResult() {
    const [exportDataGrowth, setExportDataGrowth] = useState({})
 
    useEffect(() => {
-      return
-
       axios.get('/reports/export-data-growth', {
          headers: { Authorization: getLoggedUserToken() }
       }).then(res => {
