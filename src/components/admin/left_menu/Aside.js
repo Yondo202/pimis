@@ -55,7 +55,6 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
                 return el.title==="Сургалт"?<FilterMenu el={el} ind={ind} />:<div />
                   
                 return <div />
-             
             })}
         </Menu>
       </SidebarContent>
@@ -135,7 +134,7 @@ const MenuData = [
          { link:"/monitoring-report/0", text:"Хяналт-шинжилгээний тайлан" },
          { link:"/progress-report/0", text:"Явцын үнэлгээний тайлан" },
          { link:"/evaluation-report/0", text:"Үнэлгээний тайлан" },
-         { link:"/completion-report/0", text:"Эцсийн тайлан" },
+         { link:"/completion-report/1", text:"Эцсийн тайлан" },
       ] }
     ]
   },

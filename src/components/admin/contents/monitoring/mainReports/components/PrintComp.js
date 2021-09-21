@@ -4,7 +4,7 @@ import { useReactToPrint } from "react-to-print";
 import { AiOutlinePrinter } from "react-icons/ai"
 import ReportComp from './ReportComp';
 
-const PrintComp = ({setShowModal, dataChild}) => {
+const PrintComp = ({setShowModal, dataParent}) => {
     const [ cssName, setCssName ] = useState('');
     const modalRef = useRef(null);
     const componentRef = useRef();
@@ -34,17 +34,15 @@ const PrintComp = ({setShowModal, dataChild}) => {
             <div className={`Content ${cssName}`}>
                 <div className="header">
                     {/* {admin===true&&<div className="addBtn" onClick={()=>window.history.back()}><AiOutlineArrowLeft /> <span>Буцах</span></div>} */}
-                    <div className="addBtn" onClick={handlePrint}><AiOutlinePrinter /> <span> Хэвлэх болон pdf - татах</span></div>
+                    <div className="addBtn" onClick={handlePrint}><AiOutlinePrinter /> <span> Хэвлэх болон татах</span></div>
                     <div onClick={CloseHandle2} className="close">✖</div>
                 </div>
                 <div ref={componentRef}>
-                    {dataChild.map((el,ind)=>{
+                    {dataParent?.childs.map((el,ind)=>{
                         return(
-                            <ReportComp key={ind} title={el.title} />
+                            <ReportComp modal={true} key={ind} detail={el} dataParent={dataParent}  title={el.title} />
                         )
                     })}
-                    {/* {ttl?.firstpage&&<FirstPage modal={true} />}
-                    {ttl?.projectinfo&&<InfoProject modal={true} />} */}
                 </div>
             </div>
         </ModalStyle>
@@ -68,21 +66,18 @@ const ModalStyle = styled.div`
     z-index:1000;
     display:flex;
     justify-content: center;
-    .A1{
-        transition:all 0.3s ease;
-        opacity:0;
-        transform:translateY(200px);
-    }
+   
     .Content{
         box-shadow:none !important;
-        width:${props=>props.admin?`1000px`:`854px`};
+        width:854px;
+        // width:1000px;
         overflow-y:scroll;
         transition:all 0.4s ease;
         animation: ${animation} 0.3s ease;
-        // width:40%;
-        height:100vh;
+        margin-top:0.4vh;
+        height:97vh;
         background-color:#fff;
-        padding: ${props=>props.admin?`0px 93px`:`0px 20px`};
+        padding:0px 93px;
         .header{
             position:sticky;
             top:0;
@@ -134,13 +129,13 @@ const ModalStyle = styled.div`
             }
         }
     }
+    .A1{
+        transition:all 0.3s ease;
+        opacity:0;
+        transform:translateY(200px);
+    }
     @page {
         size: A4;
         margin: 17mm 17mm 17mm 17mm;
-        // img{
-        //     max-width:100px;
-        //     height:auto;
-        //     object-fit:contain;
-        // }
     }
 `

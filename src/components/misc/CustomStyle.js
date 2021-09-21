@@ -886,7 +886,7 @@ export const HeaderTwo = styled.div`
             font-size:12px;
             text-decoration:none;
             border-style:none;
-            font-weight:500;
+            font-weight:450;
             cursor:pointer;
             background-color:#e4e6eb;
             margin-right:5px;
@@ -898,6 +898,9 @@ export const HeaderTwo = styled.div`
             text-align:left;
             svg{
                 font-size:17px;
+            }
+            span{
+
             }
         }
         .itemsPar22{

@@ -1,54 +1,83 @@
 import React, { useEffect, useState, useContext } from 'react'
 import UserCtx from "context/UserContext"
 import { useHistory } from "react-router-dom"
+import ContentParser from 'components/misc/ContentParser'
 import { ReportContainer, ButtonStyle2 } from "components/misc/CustomStyle"
 import CkEditor from 'components/misc/CkEditor'
 import Select from 'react-select';
 import useQuery from 'components/utilities/useQueryLocation'
 import axios from 'axiosbase'
 
-const ReportComp = ({ dataParent, errText, detail, clickHanlde }) => {
-    const { loadFunc } = useContext(UserCtx)
+const ReportComp = ({ dataParent, errText, detail, clickHanlde, modal }) => {
+    const { loadFunc, alertText } = useContext(UserCtx)
     const years = useQuery().get('year');
     const season = useQuery().get('season');
+    const half = useQuery().get('half');
+
+    const [ DataId, setDataId ] = useState(null); 
 
     const [ errTxt, setErrTxt ] = useState('');
-    const [ data, setData ] = useState('');
+    const [ dataMn, setDataMn ] = useState('');
     const [ dataEng, setDataEng ] = useState('');
 
+    useEffect(()=>{
+        if(detail?.code!==0){
+            fetchOne();
+        }
+    },[])
+
+    const fetchOne = async() =>{
+        const res = await axios.get(`main-report?reporttype=${dataParent?.type}&childcode=${detail?.code}&year=${years??0}&season=${season??0}&year_half=${half??0}`)
+        setDataMn(res?.data?.data?.body_mn);
+        setDataEng(res?.data?.data?.body_en);
+        setDataId(res?.data?.data?.id);
+    }
+
     const clickHandle = () =>{
-        if(data===''&&dataEng===''){
+        const Success =_=>{
+            alertText('green',"Амжилттай",true);
+            loadFunc(false);
+        }
+        if(dataMn===''&&dataEng===''){
             setErrTxt('Мэдээллээ оруулна уу'); setTimeout(() => setErrTxt(''), 3000);
         }else{
+            loadFunc(true);
             const data = {
-                reporttype: dataParent.type,
-                childCode: detail?.code,
-                year: parseInt(years),
-                season: parseInt(season),
-                year_half: parseInt(season),
-                body_mn: data,
+                reporttype: dataParent?.type,
+                childcode: detail?.code,
+                year: years?parseInt(years):0,
+                season: season?parseInt(season):0,
+                year_half: half?parseInt(half):0,
+                body_mn: dataMn,
                 body_en: dataEng,
             }
-            axios.post('main-report', {  })
+            if(DataId){
+                axios.put(`main-report/${DataId}`, data).then(_=>{
+                    Success();
+                }).catch(_=>alertText('orange',"Алдаа гарлаа",true))
+            }else{
+                axios.post('main-report', data).then(_=>{
+                    Success()
+                }).catch(_=>alertText('orange',"Алдаа гарлаа",true))
+            }
         }
     }
 
-    // console.log(`code`, loadFunc);
-
     return (
         <>
-            {/* {modal? <ContentParser data={data} titleSm={`${title}`} titleBig={modalPar?`VI. Маркетингийн стратеги`:``} />: */}
-            <ReportContainer>
+            {modal?
+            DataId&&detail?.code!==0?<ContentParser data={dataMn} titleSm={''} titleBig={detail?.title} />:null
+            :<ReportContainer>
                 {detail?.code!==0?
                     <>
                         <div className="EditorParent">
-                            <CkEditor data={data} title={detail?.title} lang="mn" setData={setData} />
+                            <CkEditor data={dataMn} title={detail?.title} lang="mn" setData={setDataMn} />
                             <CkEditor data={dataEng} title={detail?.title} lang="en" setData={setDataEng} />
                         </div>
 
                         <ButtonStyle2 >
                             {errTxt!==""?<div className="errTxt">{errTxt}</div>:<div />}
-                            <button onClick={clickHandle}  className="myBtn">Хадгалах</button>
+                            <button onClick={clickHandle} className="myBtn">Хадгалах</button>
                         </ButtonStyle2>
                     </>
                     :<div className="Reporthome">
@@ -59,43 +88,12 @@ const ReportComp = ({ dataParent, errText, detail, clickHanlde }) => {
                         />
                     </div>
                 }
-            </ReportContainer>
-            {/* } */}
+            </ReportContainer>}
         </>
     )
 }
 
 export default ReportComp;
-
-const Seasons = [
-    { id:1, season:"1-р улирал"},
-    { id:2, season:"2-р улирал"},
-    { id:3, season:"3-р улирал"},
-    { id:4, season:"4-р улирал"},
-]
-
-const yearsData = [
-    { id:1, year:"2016"},
-    { id:3, year:"2017"},
-    { id:4, year:"2018"},
-    { id:5, year:"2019"},
-    { id:6, year:"2020"},
-    { id:7, year:"2021"},
-    { id:8, year:"2022"},
-    { id:9, year:"2023"},
-    { id:10, year:"2024"},
-    { id:11, year:"2025"},
-    { id:12, year:"2026"},
-    { id:13, year:"2027"},
-    { id:14, year:"2028"},
-    { id:15, year:"2029"},
-    { id:16, year:"2030"},
-]
-
-const half_year = [
-    { id:1, text:"1-р хагас"  },
-    { id:2, text:"2-р хагас"  }
-]
 
 const SelectComponent =  ({dataParent , errText, clickHanlde}) =>{
     const years = useQuery().get('year');
@@ -105,37 +103,30 @@ const SelectComponent =  ({dataParent , errText, clickHanlde}) =>{
     const { push } = useHistory();
     const [ selected, setSelected ] = useState({});
     const [ selectSeason, setSelectSeason ] = useState({});
-
     const [ selectHalfYear, setSelectHalfYear ] = useState({});
-    
-    
 
     useEffect(()=>{
-        if(years&&season){
+        const pushYear = () =>{
             yearsData.forEach(item=>{
-                if(item.year===years)setSelected(item);
+                if(item.year===years) setSelected(item);
             })
+        } 
+
+        if(years&&season){
+            pushYear();
             Seasons.forEach(item=>{
                 if(item.id=== parseInt(season)) setSelectSeason(item);
             })
-        }else{
-            setSelected({})
-            setSelectSeason({});
-        }
-        // end zasna
-        if(years&&half){
-            yearsData.forEach(item=>{
-                if(item.year===years) setSelected(item);
-            })
+        }else if(years&&half){
+            pushYear();
             half_year.forEach(item=>{
                 if(item.id===parseInt(half)) setSelectHalfYear(item);
             })
-        }
-
-        if(years){
-            yearsData.forEach(item=>{
-                if(item.year===years) setSelected(item);
-            })
+        }else if(years){
+            pushYear();
+        }else{
+            setSelected({})
+            setSelectSeason({});
         }
     },[dataParent?.route])
 
@@ -210,7 +201,6 @@ const SelectComponent =  ({dataParent , errText, clickHanlde}) =>{
                         getOptionLabel={option => `${option?.text}`}
                     />
                 </div>}
-                
             </div>
             <ButtonStyle2 >
                 {errText!==''?<div className="errTxt">{`${errText}`}</div>:<div />}
@@ -220,5 +210,32 @@ const SelectComponent =  ({dataParent , errText, clickHanlde}) =>{
     )
 }
 
+const Seasons = [
+    { id:1, season:"1-р улирал"},
+    { id:2, season:"2-р улирал"},
+    { id:3, season:"3-р улирал"},
+    { id:4, season:"4-р улирал"},
+]
 
+const yearsData = [
+    { id:1, year:"2016"},
+    { id:3, year:"2017"},
+    { id:4, year:"2018"},
+    { id:5, year:"2019"},
+    { id:6, year:"2020"},
+    { id:7, year:"2021"},
+    { id:8, year:"2022"},
+    { id:9, year:"2023"},
+    { id:10, year:"2024"},
+    { id:11, year:"2025"},
+    { id:12, year:"2026"},
+    { id:13, year:"2027"},
+    { id:14, year:"2028"},
+    { id:15, year:"2029"},
+    { id:16, year:"2030"},
+]
 
+const half_year = [
+    { id:1, text:"1-р хагас"  },
+    { id:2, text:"2-р хагас"  }
+]
