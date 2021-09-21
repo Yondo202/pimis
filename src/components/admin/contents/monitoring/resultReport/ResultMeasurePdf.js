@@ -3,17 +3,19 @@ import { Document, Page, Text, View, StyleSheet, Font ,Image } from '@react-pdf/
 import { styles, HeadImage } from "components/misc/PdfStyle"
 
 
-const ResultMeasurePdf = ({ wait, data, years, lang, title }) => {
+const ResultMeasurePdf = ({ wait, data, years, lang, LangText }) => {
     // useEffect(()=>{
     //     GlobalFont();
     // },[])
 
+    console.log(`data`, data)
+
     return (
-        <Document title={title} >
+        <Document title={LangText.title} >
             {wait?
             <>
-                <PdfTemplate wait={wait} title={title} data={data.filter(item=>item.row_type==="level1").sort((a,b)=>a.row_number-b.row_number)} years={years} page="1" lang={lang} />
-                <PdfTemplate wait={wait} title={title} data={data.filter(item=>item.row_type==="level2").sort((a,b)=>a.row_number-b.row_number)} years={years} page="2" lang={lang} />
+                <PdfTemplate wait={wait} data={data.filter(item=>item.row_type==="level1").sort((a,b)=>a.row_number-b.row_number)} years={years} page="1" lang={lang} LangText={LangText} />
+                <PdfTemplate wait={wait} data={data.filter(item=>item.row_type==="level2").sort((a,b)=>a.row_number-b.row_number)} years={years} page="2" lang={lang} LangText={LangText} />
             </>
            :<Page wrap={false} size="A4">
                 <Text>Loading...</Text>
@@ -31,7 +33,7 @@ let yyyy = today.getFullYear();
 
 today = yyyy + '/' + dd + '/' + mm;
 
-const PdfTemplate = ({ title, data, years, page, lang }) =>{
+const PdfTemplate = ({ data, years, page, lang, LangText }) =>{
     return( 
        
         <Page orientation="landscape" wrap size="A4" style={styles.page}>
@@ -43,7 +45,7 @@ const PdfTemplate = ({ title, data, years, page, lang }) =>{
                 <Text >ЭКСПОРТЫГ ДЭМЖИХ ТӨСӨЛ</Text> 
             </View>
             <View style={styles.headTitle}>
-                <Text >ТӨСЛИЙН ҮР ДҮНГ ХЭМЖИХ</Text> 
+                <Text style={{textTransform:"uppercase"}}>{LangText?.title}</Text> 
                 <Text style={{fontWeight:'light'}}>ТАЙЛАНТ ХУГАЦАА: 2017/01/01 - {today}</Text> 
             </View>
             <View style={styles.tableParent}>
@@ -70,16 +72,16 @@ const PdfTemplate = ({ title, data, years, page, lang }) =>{
                             <Text >№</Text> 
                         </View>
                         <View style={[styles.tableCol, {width:'20%', borderColor:'#fff'}]}>
-                            <Text>ШАЛГУУР ҮЗҮҮЛЭЛТ</Text> 
+                            <Text>{LangText?.Indicator}</Text> 
                         </View>
                         <View style={styles.tableCol}>
-                        <Text>Хэмжүүр</Text> 
+                        <Text>{LangText?.Measurement}</Text> 
                         </View>
                         {years.map((el,ind)=>{
                         return(
                             <React.Fragment key={ind}>
-                                <View style={styles.tableCol}><Text break>Cumalative</Text></View>
-                                <View style={[styles.tableCol, ind===years.length - 1?{borderColor:'#fff'}:{borderColor:'#000'}]}><Text break>Current</Text></View>
+                                <View style={styles.tableCol}><Text break>{LangText?.Cumalative}</Text></View>
+                                <View style={[styles.tableCol, ind===years.length - 1?{borderColor:'#fff'}:{borderColor:'#000'}]}><Text break>{LangText?.Current}</Text></View>
                             </React.Fragment>
                         )
                         })}
@@ -89,7 +91,13 @@ const PdfTemplate = ({ title, data, years, page, lang }) =>{
                         <View style={[styles.tableRow, ind===data.length - 1?{borderColor:'#fff'}:{borderColor:'#000'}]} key={ind}>
                             <View style={[styles.tableCol, ,{width:'2%'}]}><Text>{el.row_number}</Text></View>
                             <View style={[styles.tableCol,{width:'20%', textAlign:'left'}]}><Text break >{el[`description_${lang}`]}</Text></View>
-                            <View style={styles.tableCol}><Text>{el.measure}</Text></View>
+                            <View style={styles.tableCol}>
+                            <Text>
+                                {el.measure==="Хувь"?`${LangText?.percent}`:``}
+                                {el.measure==="Тоо"?`${LangText?.number}`:``} 
+                                {el.measure==="Дүн (USD)"?`${LangText?.amount}`:``} 
+                             </Text>
+                             </View>
                             {years.map((elem,index)=>{
                                 return(
                                     <React.Fragment key={index}>

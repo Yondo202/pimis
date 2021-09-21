@@ -8,6 +8,7 @@ const initialUserInfo = { userId: null, token: null, expireDate: null, name: nul
 export const UserStore = (props) => {
   const [userInfo, setUserInfo] = useState(initialUserInfo);
   const [alert, setAlert] = useState({ color: 'white', text: '', cond: false });
+  const [ loading, setLoading ] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [errMsgSignup, setErrMsgSignUp] = useState({ msg: "", cond: false });
   const [GlobalStyle, setGlobalStyle] = useState(initialStyle);
@@ -110,6 +111,14 @@ export const UserStore = (props) => {
 
   };
 
+  const loadFunc = (cond) =>{
+      setLoading(cond);
+      setTimeout(() => {
+          setLoading(false);
+      }, 3000)
+      
+  }
+
   const alertText = (color, text, cond) => {
     setAlert({ color: color, text: text, cond: cond });
     setTimeout(() => { setAlert({ cond: false }); }, 4000);
@@ -131,6 +140,8 @@ export const UserStore = (props) => {
         reqID,
         alertText,
         alert,
+        loadFunc,
+        loading
       }}
     >
       {props.children}

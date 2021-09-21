@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AlertStyle } from 'components/theme'
+import { Loading } from "components/misc/CustomComp"
 import Aside from '../../components/admin/left_menu/Aside';
 import Main from '../../components/admin/left_menu/TopMain';
 import UserContext from '../../context/UserContext'
@@ -48,7 +49,7 @@ import { MakeContractForAdmin } from 'pages/contract/make_contract/makeContractP
 import { ContractReportsForAdmin } from 'pages/contract/contract_reports/contractReportPages';
 import SurveyPimis from 'pages/contract/survery/surveyPimis';
 import LaboratoryNavigator from 'components/admin/contents/laboratory/laboratoryNavigator';
-import MonitoringReport from "components/admin/contents/monitoring/mainReports/container/MonitoringReports"
+import MainReports from "components/admin/contents/monitoring/mainReports/container/Reports"
 import ReportResult from 'pages/report/reportResult';
 
 function Layout({ setLocale }) {
@@ -62,6 +63,7 @@ function Layout({ setLocale }) {
   const handleRtlChange = (checked) => { setRtl(checked); setLocale(checked ? 'ar' : 'en'); };
   const handleImageChange = (checked) => { setImage(checked); };
   const handleToggleSidebar = (value) => { setToggled(value); };
+  
 
   return (
     <AdminApp className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
@@ -87,8 +89,13 @@ function Layout({ setLocale }) {
               <Route path="/holidays" component={Holidays} />
               <Route path="/insurance" component={Insurance} />
               <Route path="/result-measure" component={ResultMeasure} />
-
-              <Route path="/monitoring-report" component={MonitoringReport} />
+              {MainReportsData.map((el,ind)=>{
+                return(
+                    <Route key={ind} path={`/${el.route}/:childcode`}>
+                        <MainReports data={el} />
+                    </Route>
+                )
+              })}
               {/* <Route path="/urgudul/:page">
                 <UrgudulNavigator preloaded={true} />
               </Route> */}
@@ -136,11 +143,76 @@ function Layout({ setLocale }) {
         {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}
         <span>{ctx.alert.text}</span>
       </AlertStyle>
+      {ctx.loading&&<Loading />}
     </AdminApp>
   );
 }
 
 export default Layout;
+
+const MainReportsData = [
+  {
+    route:"monitoring-report",
+    type:1,
+    title:"Хяналт-шинжилгээний тайлан", 
+    childs: [
+      { code:0, title: "icon", },
+      { code:1, title: "1.Хураангуй", },
+      { code:2, title: "2.Төсөлд оруулах шаардлагатай өөрчлөлт, түүний үндэслэл" },
+      { code:3, title: "3.Үйл ажиллагааны үнэлгээ" },
+      { code:4, title: "4.Төслийн орчны өөрчлөлт, таамаглал ба эрсдэл үүсэх магадлал, тэдгээрийн төсөлд үзүүлэх нөлөө" },
+      { code:5, title: "5.Нийцтэй байдал ба тогтвортой байдал" },
+      { code:6, title: "6.Хэрэгжилтийн үр ашгийн үнэлгээ" },
+    ],
+  },
+  {
+    route:"progress-report",
+    type:2,
+    title:"Явцын үнэлгээний тайлан", 
+    childs: [
+      { code:0, title: "icon", },
+      { code:1, title: "1.lessons learned and recommendations", },
+      { code:2, title: "2.detailed project progress report" },
+    ],
+  },
+  {
+    route:"evaluation-report",
+    type:3,
+    title:"Үнэлгээний тайлан", 
+    childs: [
+      { code:0, title: "icon", },
+      { code:1, title: "1.Хураангуй", },
+      { code:2, title: "2.Төслийн үйл ажиллагааны товч түүх, төслийн орчны өөрчлөлт, тэдгээрийн төсөлд үзүүлсэн нөлөө", },
+      { code:3, title: "3.Үнэлгээний зорилго, хэрэглэсэн арга зүй, сул тал", },
+      { code:4, title: "4.Үнэлгээ", },
+      { code:5, title: "5.Нийцтэй байдал ба тогтвортой байдал", },
+      { code:6, title: "6.Дүгнэлт ба зөвлөмж: үйл ажиллагааг сайжруулах саналууд, сургамж", },
+    ],
+  },
+  {
+    route:"completion-report",
+    type:4,
+    title:"Эцсийн тайлан", 
+    childs: [
+      { code:0, title: "icon", },
+      { code:1, title: "1.Хураангуй ба сургамж ", },
+      { code:2, title: "2.Төслийн суурь мэдээлэл ", },
+      { code:3, title: "3.Төслийн дизайн ", },
+      { code:4, title: "4.Нөөцүүд", },
+      { code:5, title: "5.Үйл ажиллагаа ", },
+      { code:6, title: "6.Үр дүн", },
+      { code:7, title: "7.Зорилгын биелэлт", },
+      { code:8, title: "8.Тогтвортой байдал", },
+      { code:9, title: "9.Төслийн алтернативыг тодорхойлох ", },
+      { code:10, title: "10.Хийгдэж болох нэмэлт шинжилгээ ", },
+      { code:11, title: "11.Нэмэлт зээлийн хэрэгцээ", },
+      { code:12, title: "12.Бодлогын хамааралтай байдал ", },
+      { code:13, title: "13.Хуримтлуулсан туршлага, сургамж", },
+    ],
+  },
+]
+
+
 
 const cardAnimate = keyframes`
   0% { transform:translateY(30px);opacity:0; }
@@ -337,3 +409,4 @@ export const AdminApp = styled.div`
         }
     }
 `
+

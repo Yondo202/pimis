@@ -17,7 +17,7 @@ function CkEditor({title, data, setData, height, lang}) {
   useEffect(()=>{
       if(data){ setCustomData(data)}
   },[data])
-    
+
   return (
     <Container className="CkEditor">
       {title&&<div className="title"><span className="lang"><img src={lang==="mn"?"/mn.png":"/us.png"} /> </span><span>{title}</span></div>} 
@@ -25,7 +25,7 @@ function CkEditor({title, data, setData, height, lang}) {
         <CKEditor
               height={100}
               editor={ ClassicEditor }
-              // config={ editorConfiguration }
+              config={ configuration }
               data={customData}
               onReady={ editor => {
                   // You can store the "editor" and use when it is needed.
@@ -51,6 +51,30 @@ function CkEditor({title, data, setData, height, lang}) {
 }
 
 export default CkEditor;
+
+const configuration = {
+  toolbar: [
+    'heading',
+    '|',
+    'fontColor',
+    'fontSize',
+    '|',
+    'bold',
+    'italic',
+    'link',
+    'bulletedList',
+    'numberedList',
+    '|',
+    'blockQuote',
+    'insertTable',
+    // 'mediaEmbed',
+    'undo',
+    'redo',
+    '|',
+  //   ''
+  ],
+};
+
 
 const Container = styled.div`
   width:100%;
@@ -124,4 +148,16 @@ const Container = styled.div`
       margin-top: 1px;
       margin-bottom: 1px;
   }
+  .ck.ck-content ul, .ck.ck-content ul li{
+      list-style-type: inherit;
+  }
+
+  .ck.ck-content ol li{
+    list-style-type: decimal;
+  }
+
+    .ck.ck-content ul, ol {
+      /* Default user agent stylesheet, you can change it to your needs. */
+      padding-left: 40px;
+    }
 `

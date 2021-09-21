@@ -28,7 +28,7 @@ i18n.use(LanguageDetector).init({
 
         "percent":"percent",
         "number":"number",
-        "amount":"amount",
+        "amount (USD)":"amount (USD)",
 
         "Print":"Print",
         "Download":"Download",
@@ -56,7 +56,7 @@ i18n.use(LanguageDetector).init({
 
 
           // Төслийн үр дүнг хэмжих
-          "Project Results Indicators":"Төслийн үр дүнг хэмжих шалгуур үзүүлэлтүүд",
+          "Project Results Indicators":"Төслийн үр дүнг хэмжих", // шалгуур үзүүлэлтүүд
           "Indicator Name":"Шалгуур үзүүлэлт",
           "Measurement":"Хэмжүүр",
           "Cumalative":"Зорилтот",
@@ -64,7 +64,7 @@ i18n.use(LanguageDetector).init({
 
           "percent":"Хувь",
           "number":"Тоо",
-          "amount":"Дүн",
+          "amount (USD)":"Дүн (USD)",
 
           "Print":"Хэвлэх",
           "Download":"Татах",
@@ -77,7 +77,8 @@ i18n.use(LanguageDetector).init({
     },
     
   },
-  fallbackLng: "en",
+  lng:"mn",
+  fallbackLng: "mn",
   debug: true,
 
   // have a common namespace used around the full app

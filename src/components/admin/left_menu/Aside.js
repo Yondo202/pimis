@@ -26,35 +26,36 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
       <SidebarContent >
         <Menu iconShape="circle">
             {MenuData.map((el,ind)=>{
-              if(userInfo?.role==="edpadmin")
-                return <FilterMenu el={el} ind={ind} />
+               if(userInfo?.role==="edpadmin")
+               return <FilterMenu el={el} ind={ind} />
 
-              if(userInfo?.role==="holbootoi_yamd") //zugeer harna
-                return el.title==="Мониторинг"?<FilterMenu el={el} ind={ind} />:<div />
-                
-              if(userInfo?.role==="monitoring") // bugdiin hiine 
-                return el.title==="Мониторинг"?<FilterMenu el={el} ind={ind} />:<div />
+                if(userInfo?.role==="holbootoi_yamd") //zugeer harna
+                  return el.title==="Мониторинг"?<FilterMenu el={el} ind={ind} />:<div />
+                  
+                if(userInfo?.role==="monitoring") // bugdiin hiine 
+                  return el.title==="Мониторинг"?<FilterMenu el={el} ind={ind} />:<div />
 
-              if(userInfo?.role==="tosliin_zohitsuulagch") // zugeer harna
-                return <FilterMenu el={el} ind={ind} />
+                if(userInfo?.role==="tosliin_zohitsuulagch") // zugeer harna
+                  return <FilterMenu el={el} ind={ind} />
 
-              if(userInfo?.role==="ahlah_bhsh")
-                return <FilterMenu el={el} ind={ind} />
+                if(userInfo?.role==="ahlah_bhsh")
+                  return <FilterMenu el={el} ind={ind} />
 
-              if(userInfo?.role==="bh_zovloh")
-                return el.title==="Түншлэлийн хөтөлбөр"?<FilterMenu el={el} ind={ind} />:<div />
+                if(userInfo?.role==="bh_zovloh")
+                  return el.title==="Түншлэлийн хөтөлбөр"?<FilterMenu el={el} ind={ind} />:<div />
 
-              if(userInfo?.role==="vdd_zovloh")
-                return el.title==="Даатгал"?<FilterMenu el={el} ind={ind} />:<div />
+                if(userInfo?.role==="vdd_zovloh")
+                  return el.title==="Даатгал"?<FilterMenu el={el} ind={ind} />:<div />
 
-              //huuliin_zowloh todorhoigui
-              //Санхүү - sanhuujilt gesen tsesiig harna,
-              //hudaldanavah_ajillagaa /todorhoigui
+                //huuliin_zowloh todorhoigui
+                //Санхүү - sanhuujilt gesen tsesiig harna,
+                //hudaldanavah_ajillagaa /todorhoigui
 
-              if(userInfo?.role==="trainer")
-              return el.title==="Сургалт"?<FilterMenu el={el} ind={ind} />:<div />
-                
-              return <div />
+                if(userInfo?.role==="trainer")
+                return el.title==="Сургалт"?<FilterMenu el={el} ind={ind} />:<div />
+                  
+                return <div />
+             
             })}
         </Menu>
       </SidebarContent>
@@ -132,9 +133,9 @@ const MenuData = [
     SubMenu:[
       { text:"Үндсэн тайлангууд", subChild:[
          { link:"/monitoring-report/0", text:"Хяналт-шинжилгээний тайлан" },
-         { link:"/progress-report", text:"Явцын үнэлгээний тайлан" },
-         { link:"/evaluation-report", text:"Үнэлгээний тайлан" },
-         { link:"/completion-report", text:"Эцсийн тайлан" },
+         { link:"/progress-report/0", text:"Явцын үнэлгээний тайлан" },
+         { link:"/evaluation-report/0", text:"Үнэлгээний тайлан" },
+         { link:"/completion-report/0", text:"Эцсийн тайлан" },
       ] }
     ]
   },

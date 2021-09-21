@@ -840,11 +840,46 @@ export const HeaderTwo = styled.div`
     font-size:13px;
     margin-top:10px;
     margin-bottom:100px;
-    .Title{
-        font-weight: 500;
-        font-size: 20px;
-        margin-bottom: 30px;
+    .TitlePar{
+        display:flex;
+        align-items:start;
+        justify-content:space-between;
+        .Title{
+            font-weight: 500;
+            font-size: 20px;
+            margin-bottom: 30px;
+            .datePick{
+                margin-left:20px;
+                font-weight:400;
+                font-size:14px;
+            }
+        }
+        .PrintButton{
+            cursor: pointer;
+            padding: 5px 40px;
+            background-color: rgb(255, 255, 255);
+            border-color: rgb(221, 221, 221);
+            color: rgb(51, 51, 51);
+            border-radius: 4px;
+            border-width: 1px;
+            border-style: solid;
+            display: flex;
+            align-items: center;
+            font-weight:500;
+            &:hover{
+                background-color: rgb(0, 0, 0, 0.1);
+            }
+            svg{
+                margin-right: 15px;
+                font-size: 20px;
+            }
+            .text{
+                font-weight: 500;
+                font-size: 14px;
+            }
+        }
     }
+    
     .smMenuPar{
         display:flex;
         .itemsPar{
@@ -873,7 +908,7 @@ export const HeaderTwo = styled.div`
             box-shadow:-4px -5px 13px -11px black;
         }
         .Active{
-            border-top:2px solid green;
+            border-top:2px solid #337ab7;
             position:relative;
         }
         .dd{
@@ -946,7 +981,22 @@ export const ReportContainer = styled.div`
     border-radius:0px 5px 5px 5px;
     box-shadow: -5px 5px 12px -12px black;
     .Reporthome{
-        
+        width:40%;
+        .SelectParent{
+            display:flex;
+            gap:20px;
+            justify-content:space-between;
+            margin-bottom:20px;
+            .selectItem{
+                width:50%;
+                min-width:200px;
+                .title{
+                    font-size:14px;
+                    margin-bottom:15px;
+                }
+            }
+            
+        }
     }
     .EditorParent{
         width:100%;

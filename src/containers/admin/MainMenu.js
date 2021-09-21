@@ -12,15 +12,15 @@ function Main() {
   const [locale, setLocale] = useState('en');
 
   return (
-    <Switch>
+    // <Switch>
       <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <Route path="/" >
+        {/* <Route path="/" > */}
           <IntlProvider locale={locale} messages={messages[locale]}>
             <Layout setLocale={setLocale} />
           </IntlProvider>
-        </Route>
+        {/* </Route> */}
       </motion.div>
-    </Switch>
+    // </Switch>
   );
 }
 

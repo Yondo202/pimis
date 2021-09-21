@@ -24,6 +24,7 @@ const ProjectResult = () => {
 
     const [ cond, setCond ] = useState(false);
     const [ lang, setLang ] = useState('en');
+    
 
     useEffect(()=>{
         setLang(i18n.language==="en"||i18n.language==="mn"?i18n.language:"en");
@@ -66,7 +67,19 @@ const ProjectResult = () => {
     return (
         <>
             {modal&&<Modal setModal={setModal} selected={selected} years={years} i18n={i18n} setCond={setCond}  />}
-            {showPdf&&<PDFViewerComponent wait={wait} setModal={setShowPdf} data={resultData} years={years} title={t('Төслийн үр дүнг хэмжих')} lang={lang} />}
+            {showPdf&&<PDFViewerComponent wait={wait} setModal={setShowPdf} data={resultData} years={years} 
+            LangText={
+                { title:t('Project Results Indicators'),
+                  Indicator:t('Indicator Name'),
+                  Measurement:t('Measurement'),
+                  Cumalative:t('Cumalative'),
+                  Current:t('Current'),
+                  percent:t('percent'),
+                  number:t('number'),
+                  amount:t('amount (USD)'),
+                }
+            }
+            lang={lang} />}
             <Container >
                 <div className="TitlePar">
                     <div className="Title">{t('Project Results Indicators')}</div>
@@ -77,9 +90,24 @@ const ProjectResult = () => {
                         <div className="addBtn"><AiOutlineCalculator /><span>{t("Calculate")}</span></div>
                         <div className={`additions`}>
                             {wait?<div onClick={()=>setShowPdf(true)} className="addBtn"><AiOutlinePrinter /><span>{t("Print")}</span></div>:<div />}
-                            {/* <div className="addBtn"><AiOutlineDownload /><span>Татах</span></div> */}
-
-                            {wait2?<PDFDownloadLink document={<ResultMeasurePdf wait={wait2} data={resultData} years={years} lang={lang} />} fileName={t('Төслийн үр дүнг хэмжих')}>
+                            {wait2?<PDFDownloadLink document={
+                            <ResultMeasurePdf
+                             wait={wait2}
+                             data={resultData}
+                             years={years} lang={lang}
+                                LangText={
+                                    { title:t('Project Results Indicators'),
+                                    Indicator:t('Indicator Name'),
+                                    Measurement:t('Measurement'),
+                                    Cumalative:t('Cumalative'),
+                                    Current:t('Current'),
+                                    percent:t('percent'),
+                                    number:t('number'),
+                                    amount:t('amount (USD)'),
+                                    }
+                                }
+                              />} fileName={t('Project Results Indicators')}
+                              >
                                 {({ blob, url, loading, error }) => (!wait2 ? <div className="addBtn"><AiOutlineDownload /><span>Loading...</span></div> : <div className="addBtn"><AiOutlineDownload /><span>{t("Download")}</span></div>)}
                             </PDFDownloadLink>:<div />}
                         </div>
@@ -106,6 +134,7 @@ const ProjectResult = () => {
                                 <tr className="smHead">
                                     <td colSpan={3+years.length*2}>{t("PDO Level I Results Indicators")}</td>
                                 </tr>
+
                                 <FilteredRow resultData={resultData.filter(item=>item.row_type==="level1").sort((a,b)=>a.row_number-b.row_number)} selectRowHandle={selectRowHandle} years={years} selected={selected} lang={lang} />
 
                                 <tr className="smHead">
@@ -149,7 +178,7 @@ const FilteredRow = ({ resultData, selectRowHandle, years, selected, lang }) =>{
 }
 
 
-const PDFViewerComponent = ({setModal, data, years, wait, title, lang}) =>{
+const PDFViewerComponent = ({setModal, data, years, wait, lang, LangText}) =>{
     const [cName, setName] = useState('');
     
     const CloseHandle = () =>{
@@ -163,14 +192,14 @@ const PDFViewerComponent = ({setModal, data, years, wait, title, lang}) =>{
         <CustomModal style={{paddingTop:'0.45rem' }} >
             <div className={`container-fluid contentParent contentParentPdf ${cName}`} style={{ width: "100%" }}>
                 <div className="head">
-                    <div className="title">Төслийн үр дүнг хэмжих</div>
+                    <div className="title">{LangText?.title}</div>
                     <div onClick={CloseHandle} className="close">✖</div>
                 </div>
-
+                
                 <PDFViewerStyle>
                     <div className="content">
                         <PDFViewer style={{ height: '90vh', width: `100%` }} >
-                            <ResultMeasurePdf wait={wait} data={data} years={years} title={title} lang={lang} />
+                            <ResultMeasurePdf wait={wait} data={data} years={years} lang={lang} LangText={LangText} />
                         </PDFViewer>
                     </div>
                 </PDFViewerStyle>
