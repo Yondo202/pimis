@@ -738,6 +738,7 @@ export const CustomModal = styled.div`
             justify-content:space-between;
             font-size:20px;
             border-bottom:1px solid rgba(0,0,0,0.1);
+            position:relative;
             .close{
                 top:-15px;
                 right:-15px;
@@ -840,6 +841,8 @@ export const HeaderTwo = styled.div`
     font-size:13px;
     margin-top:10px;
     margin-bottom:100px;
+    max-wdth:100%;
+    position:relative;
     .TitlePar{
         display:flex;
         align-items:start;
@@ -848,8 +851,12 @@ export const HeaderTwo = styled.div`
             font-weight: 500;
             font-size: 20px;
             margin-bottom: 30px;
+            .arrow{
+                margin-right:12px;
+                margin-left:12px;
+            }
             .datePick{
-                margin-left:20px;
+                // margin-left:15px;
                 font-weight:400;
                 font-size:14px;
             }
@@ -882,7 +889,13 @@ export const HeaderTwo = styled.div`
     
     .smMenuPar{
         display:flex;
+        flex-wrap:wrap;
+        gap:5px;
+        width:100%;
+        max-wdth:100%;
+        // overflow-x:scroll;
         .itemsPar{
+            // max-width:300px;
             font-size:12px;
             text-decoration:none;
             border-style:none;
@@ -893,7 +906,7 @@ export const HeaderTwo = styled.div`
             padding:10px 24px;
             border-radius: 5px 5px 0px 0px;
             outline: none;
-            color: rgba(${props=>props.theme.textColor},0.6);
+            color: rgba(${props=>props.theme.textColor},0.4);
             display:flex;
             text-align:left;
             svg{
@@ -976,31 +989,59 @@ const bigAnimation2 = keyframes`
 `
 
 export const ReportContainer = styled.div`
+
     page-break-inside: avoid;
     animation: ${bigAnimation2} 0.6s ease;
     width:100%;
     background-color: #fff;
-    padding:40px 40px;
+    padding:25px 40px;
     border-radius:0px 5px 5px 5px;
     box-shadow: -5px 5px 12px -12px black;
-    .Reporthome{
-        width:40%;
-        .SelectParent{
-            display:flex;
-            gap:20px;
-            justify-content:space-between;
-            margin-bottom:20px;
-            .selectItem{
-                width:50%;
-                min-width:200px;
-                .title{
+    font-size:12px;
+    .ReporthomePar{
+        display:flex;
+        justify-content:start;
+        gap:40px;
+        .Reporthome{
+            padding-right:40px;
+            border-right:1px solid rgba(0,0,0,0.1);
+            width:300px;
+            min-width:300px;
+            .SelectParent{
+                display:flex;
+                flex-direction:column;
+                gap:20px;
+                margin-bottom:20px;
+                .titleBig{
                     font-size:14px;
-                    margin-bottom:15px;
+                    font-weight:500;
+                    margin-bottom:10px;
+                    border-bottom:1px solid rgba(0,0,0,0.1);
+                    padding-bottom:10px;
+                }
+                .selectItem{
+                    width:100%;
+                    // min-width:100px;
+                    .title{
+                        font-size:12px;
+                        margin-bottom:15px;
+                    }
+                }
+            }
+            .buttons{
+                padding: 20px 0px;
+                flex-direction:column;
+                align-items:end;
+                font-size:12px;
+                .errTxt{
+                    font-size:12px !important;
+                    margin-bottom:10px;
                 }
             }
             
         }
     }
+   
     .EditorParent{
         width:100%;
         display:flex;

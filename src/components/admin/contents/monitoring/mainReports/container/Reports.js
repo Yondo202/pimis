@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HeaderTwo } from "components/misc/CustomStyle"
 import { Route, useLocation, useHistory } from "react-router-dom";
 import ReportComp from "components/admin/contents/monitoring/mainReports/components/ReportComp";
@@ -6,6 +6,7 @@ import { IoHomeSharp } from "react-icons/io5";
 import useQuery from 'components/utilities/useQueryLocation';
 import { AiOutlinePrinter } from "react-icons/ai"
 import PrintComp from '../components/PrintComp';
+import axios from 'axiosbase';
  
 function MonitoringReports({ data }) {
     const years = useQuery().get('year');
@@ -14,10 +15,45 @@ function MonitoringReports({ data }) {
 
     const [ showModal, setShowModal ] = useState(false);
     const [ errText, setErrText ] = useState('');
-    
     const { push } = useHistory();
-    // const { childcode } = useParams();
-    let loc = useLocation(); 
+
+    const [ listData, setListData ] = useState([]);
+    let loc = useLocation();
+    const [ userName, setUserName ] = useState(null);
+
+    const Fetch = () =>{
+        axios.get(`main-report?reporttype=${data.type}`).then(res=>{
+            if(res.data.data.length!==0){
+                setListData(res.data.data);
+                if(data.type===1||data.type===2){
+                    res.data.data.forEach(item=>{
+                        if(item.year===parseInt(years)){
+                            item.details.forEach(el=>{
+                                if(el.season===parseInt(season)){
+                                    setUserName(el.user_name??null);
+                                }
+                            })
+                        }
+                    })
+                }else if(data.type===3){
+                    res.data.data.forEach(item=>{
+                        if(item.year===parseInt(years)){
+                            if(item.user_name){
+                                setUserName(item.user_name);
+                            }else{
+                                setUserName(null);
+                            }
+                        }
+                    })
+                }
+               
+            }
+        })
+    }
+
+    useEffect(()=>{
+        Fetch();
+    },[loc.pathname])
 
     const clickHanlde = (element, modal) => {
         const ErrMsg = text =>{
@@ -58,13 +94,14 @@ function MonitoringReports({ data }) {
                 <div className="Title">
                     {data.title}
                     {data.type!==4?
-                        <> →
+                        <><span className="arrow">→</span>
                         <span className="datePick">
                             {years!==null?years:`....`} оны
                             {season!==null?` ${season}-р улирал`:``}
                             {half!==null?` ${half}-р хагас`:``}
                         </span></>:null
                     }
+                     {userName&&years?<><span className="arrow">→</span><span className="datePick">{`оруулсан: ${userName}`}</span></>:``}
                 </div>
                 <div onClick={()=>clickHanlde(null, true)} className="PrintButton">
                     <AiOutlinePrinter /> <span>Хэвлэх болон татах</span>  
@@ -83,10 +120,13 @@ function MonitoringReports({ data }) {
                 return(
                     <Route key={ind} path={`/${data.route}/${el.code}`}>
                         <ReportComp
+                            userName={userName}
+                            setUserName={setUserName}
                             dataParent={data}
                             detail={el}
                             errText={errText}
                             clickHanlde={clickHanlde}
+                            listData={listData}
                         />
                     </Route>
                 )

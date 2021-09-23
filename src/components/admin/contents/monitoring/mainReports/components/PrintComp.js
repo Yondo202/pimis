@@ -32,12 +32,12 @@ const PrintComp = ({setShowModal, dataParent}) => {
     return (
         <ModalStyle ref={modalRef} onClick={CloseHandle}>
             <div className={`Content ${cssName}`}>
-                <div className="header">
+                <div className="head">
                     {/* {admin===true&&<div className="addBtn" onClick={()=>window.history.back()}><AiOutlineArrowLeft /> <span>Буцах</span></div>} */}
                     <div className="addBtn" onClick={handlePrint}><AiOutlinePrinter /> <span> Хэвлэх болон татах</span></div>
                     <div onClick={CloseHandle2} className="close">✖</div>
                 </div>
-                <div ref={componentRef}>
+                <div className="MainBody" ref={componentRef}>
                     {dataParent?.childs.map((el,ind)=>{
                         return(
                             <ReportComp modal={true} key={ind} detail={el} dataParent={dataParent}  title={el.title} />
@@ -70,25 +70,30 @@ const ModalStyle = styled.div`
     .Content{
         box-shadow:none !important;
         width:854px;
-        // width:1000px;
-        overflow-y:scroll;
+        overflow-y: auto;
         transition:all 0.4s ease;
         animation: ${animation} 0.3s ease;
-        margin-top:0.4vh;
-        height:97vh;
+        margin-top:1.5rem;
+        height:95vh;
         background-color:#fff;
-        padding:0px 93px;
-        .header{
+        .MainBody{
+            width:100%;
+            padding:30px 93px;
+        }
+        .head{
             position:sticky;
             top:0;
-            z-index:3;
-            background-color:#fff;
+            left:0;
+            color:#000;
+            padding:7px 20px;
             margin-bottom:10px;
-            padding:15px 0px 15px 0px;
             display:flex;
-            text-align:center;
+            align-items:center;
             justify-content:space-between;
+            font-size:17px;
             border-bottom:1px solid rgba(0,0,0,0.1);
+            max-width:100%;
+            background-color:#fff;
             .addBtn{
                 cursor:pointer;
                 padding:5px 40px;
@@ -102,7 +107,7 @@ const ModalStyle = styled.div`
                 align-items:center;
                 span{
                     font-weight:500;
-                    font-size:14px;
+                    font-size:13px;
                 }
                 svg{
                     margin-right:15px;
@@ -113,21 +118,56 @@ const ModalStyle = styled.div`
                 }
             }
             .close{
+                top:7px;
+                right:20px;
+                position:absolute;
                 transition:all 0.15s ease;
-                border-radius:3px;
                 width:30px;
                 height:30px;
                 display:flex;
                 align-items:center;
                 justify-content:center;
-                background-color: rgba(0,0,0,.0);
+                border-radius:50%;
                 cursor:pointer;
-                padding:8px;
+                padding:10px;
+                font-size:16px;
+                background: #fff;
+                opacity:1;
+                z-index:10010;
                 &:hover{
-                    background-color: rgba(0,0,0,.055);
+                    background-color:#666;
+                    color:#fff;
                 }
             }
         }
+        // .header{
+        //     position:sticky;
+        //     top:0;
+        //     z-index:3;
+        //     background-color:#fff;
+        //     margin-bottom:10px;
+        //     padding:15px 0px 15px 0px;
+        //     display:flex;
+        //     text-align:center;
+        //     justify-content:space-between;
+        //     border-bottom:1px solid rgba(0,0,0,0.1);
+           
+        //     .close{
+        //         transition:all 0.15s ease;
+        //         border-radius:3px;
+        //         width:30px;
+        //         height:30px;
+        //         display:flex;
+        //         align-items:center;
+        //         justify-content:center;
+        //         background-color: rgba(0,0,0,.0);
+        //         cursor:pointer;
+        //         padding:8px;
+        //         &:hover{
+        //             background-color: rgba(0,0,0,.055);
+        //         }
+        //     }
+        // }
     }
     .A1{
         transition:all 0.3s ease;

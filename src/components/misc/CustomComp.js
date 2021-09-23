@@ -7,7 +7,7 @@ export const Loading = () => {
     return (
         <LoadingStyle>
             <div>
-                <img src="/img/gif.gif" alt="gif" />
+                <img src="/gifff.gif" alt="gif" />
             </div>
         </LoadingStyle>
     )
@@ -25,8 +25,8 @@ const LoadingStyle = styled.div`
     align-items:center;
     justify-content:center;
     img{
-        margin-top:-200px;
-        width:120px;
+        margin-top:-150px;
+        width:30px;
         height:auto;
     }
 `
