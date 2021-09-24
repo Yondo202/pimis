@@ -140,34 +140,6 @@ const ModalStyle = styled.div`
                 }
             }
         }
-        // .header{
-        //     position:sticky;
-        //     top:0;
-        //     z-index:3;
-        //     background-color:#fff;
-        //     margin-bottom:10px;
-        //     padding:15px 0px 15px 0px;
-        //     display:flex;
-        //     text-align:center;
-        //     justify-content:space-between;
-        //     border-bottom:1px solid rgba(0,0,0,0.1);
-           
-        //     .close{
-        //         transition:all 0.15s ease;
-        //         border-radius:3px;
-        //         width:30px;
-        //         height:30px;
-        //         display:flex;
-        //         align-items:center;
-        //         justify-content:center;
-        //         background-color: rgba(0,0,0,.0);
-        //         cursor:pointer;
-        //         padding:8px;
-        //         &:hover{
-        //             background-color: rgba(0,0,0,.055);
-        //         }
-        //     }
-        // }
     }
     .A1{
         transition:all 0.3s ease;

@@ -19,7 +19,6 @@ const ReportComp = ({ dataParent, errText, detail, clickHanlde, modal, listData,
     const half = useQuery().get('half');
 
     const [ DataId, setDataId ] = useState(null);
-
     const [ nameModal, setNameModal ] = useState(false);
     // const [ userName, setUserName ] = useState(null);
 
