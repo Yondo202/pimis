@@ -21,7 +21,6 @@ const ProjectResult = () => {
 
     const [ showPdf, setShowPdf ] = useState(false);
     const [ wait, setWait ] = useState(false);
-
     const [ wait2, setWait2 ] = useState(false);
 
     const [ cond, setCond ] = useState(false);

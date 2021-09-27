@@ -212,17 +212,17 @@ const SelectComponent =  ({dataParent , errText, clickHanlde, listData, setCond}
 
     // end
     const clickHandleLink = (reporttype, childcode, year, season, year_half) =>{
-        if(reporttype===1){
+        if(parseInt(reporttype)===1){
             push({
                 pathname: `/${dataParent.route}/${userInfo?.role==="holbootoi_yamd"?`0`:childcode}`,
                 search: `?year=${year}&season=${season}`
             })
-        }else if(reporttype===2){
+        }else if(parseInt(reporttype)===2){
             push({
                 pathname: `/${dataParent.route}/${userInfo?.role==="holbootoi_yamd"?`0`:childcode}`,
                 search: `?year=${year}&half=${year_half}`
             })
-        }else if(reporttype===3){
+        }else if(parseInt(reporttype)===3){
             push({
                 pathname: `/${dataParent.route}/${userInfo?.role==="holbootoi_yamd"?`0`:childcode}`,
                 search: `?year=${year}`
