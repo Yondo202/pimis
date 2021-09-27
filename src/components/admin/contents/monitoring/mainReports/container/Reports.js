@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import Ctx from "context/UserContext"
 import { HeaderTwo } from "components/misc/CustomStyle"
 import { Route, useLocation, useHistory } from "react-router-dom";
 import ReportComp from "components/admin/contents/monitoring/mainReports/components/ReportComp";
@@ -9,9 +10,11 @@ import PrintComp from '../components/PrintComp';
 import axios from 'axiosbase';
  
 function MonitoringReports({ data }) {
+    const { userInfo } = useContext(Ctx)
     const years = useQuery().get('year');
     const season = useQuery().get('season');
     const half = useQuery().get('half');
+    const [ cond, setCond ] = useState(false);
 
     const [ showModal, setShowModal ] = useState(false);
     const [ errText, setErrText ] = useState('');
@@ -52,7 +55,21 @@ function MonitoringReports({ data }) {
     }
 
     useEffect(()=>{
+        if(userInfo?.role==="holbootoi_yamd"){
+            if(years){
+                setShowModal(prev=>!prev);
+            }
+        }
+    },[years,season,half, cond])
+
+    useEffect(()=>{
         Fetch();
+        if(userInfo?.role==="holbootoi_yamd"&&loc.pathname==="/completion-report/0"){
+            setShowModal(prev=>!prev);
+        }
+        if(userInfo?.role!=="holbootoi_yamd"&&loc.pathname==="/completion-report/0"){
+            push({pathname:'/completion-report/1'})
+        }
     },[loc.pathname])
 
     const clickHanlde = (element, modal) => {
@@ -62,6 +79,9 @@ function MonitoringReports({ data }) {
         }
         const HandlePush = (elem, url) =>{
             if(modal) return setShowModal(prev=>!prev);
+
+            
+
             push({
                 pathname: `/${data.route}/${element}`,
                 search: `${data.type!==4?`?year=${years}${url!==null?`&${url}=${elem}`:``}`:``}`,
@@ -107,14 +127,15 @@ function MonitoringReports({ data }) {
                     <AiOutlinePrinter /> <span>Хэвлэх болон татах</span>  
                 </div>
             </div>
-            
-            <div className="smMenuPar">
+
+            {userInfo?.role!=="holbootoi_yamd"&&<div className="smMenuPar">
                 {data?.childs.map((el,ind)=>{
                     return(
                         data.type!==4||el.code!==0?<button key={ind} onClick={()=>clickHanlde(el.code)} className={`itemsPar ${loc.pathname===`/${data.route}/${el.code}`&&`itemsPar22 Active`}`}><span>{el.code!==0?el.title:<IoHomeSharp />}</span></button>:null
                     )
                 })}
-            </div>
+            </div>}
+            
 
             {data?.childs.map((el,ind)=>{
                 return(
@@ -127,6 +148,7 @@ function MonitoringReports({ data }) {
                             errText={errText}
                             clickHanlde={clickHanlde}
                             listData={listData}
+                            setCond={setCond}
                         />
                     </Route>
                 )

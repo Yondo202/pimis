@@ -13,8 +13,6 @@ import sidebarBg from "./bg_image/bg1.jpg";
 const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
   const { userInfo } = useContext(Ctx);
 
-  console.log(`userInfo+++`, userInfo?.role);
-
   return (
     <ProSidebar image={image ? sidebarBg : false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
       <SidebarHeader>
@@ -99,7 +97,7 @@ const FilterMenu = ({ el, ind }) =>{
 const MenuData = [
   { title:"Түншлэлийн хөтөлбөр", 
     icon:<GiProgression />,
-    MenuChild:[ 
+    MenuChild:[
     { link:"/projects", text:"Бүртгүүлсэн байгууллагууд" },
     { link:"/meetings", text:"Үнэлгээний хорооны уулзалт" },
     { link:"/maindecision", text:"Үнэлгээний хорооны шийдвэр" },
@@ -134,7 +132,7 @@ const MenuData = [
          { link:"/monitoring-report/0", text:"Хяналт-шинжилгээний тайлан" },
          { link:"/progress-report/0", text:"Явцын үнэлгээний тайлан" },
          { link:"/evaluation-report/0", text:"Үнэлгээний тайлан" },
-         { link:"/completion-report/1", text:"Эцсийн тайлан" },
+         { link:"/completion-report/0", text:"Эцсийн тайлан" },
       ] }
     ]
   },

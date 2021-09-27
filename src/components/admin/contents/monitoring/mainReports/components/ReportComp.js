@@ -8,12 +8,12 @@ import Select from 'react-select';
 import useQuery from 'components/utilities/useQueryLocation'
 import axios from 'axiosbase'
 import styled, { keyframes } from "styled-components"
-import { FiCheck } from "react-icons/fi"
+// import { FiCheck } from "react-icons/fi"
 import { VscSave } from "react-icons/vsc"
 import { RiCheckboxBlankCircleFill } from "react-icons/ri"
 
-const ReportComp = ({ dataParent, errText, detail, clickHanlde, modal, listData, userName, setUserName }) => {
-    const { loadFunc, alertText } = useContext(UserCtx)
+const ReportComp = ({ dataParent, errText, detail, clickHanlde, modal, listData, userName, setUserName, setCond }) => {
+    const { loadFunc, alertText } = useContext(UserCtx);
     const years = useQuery().get('year');
     const season = useQuery().get('season');
     const half = useQuery().get('half');
@@ -102,6 +102,7 @@ const ReportComp = ({ dataParent, errText, detail, clickHanlde, modal, listData,
                             errText={errText}
                             clickHanlde={clickHanlde}
                             listData={listData}
+                            setCond={setCond}
                         />
                 }
             </ReportContainer>}
@@ -156,7 +157,8 @@ const UserNameModal = ({ userName, setUserName, setNameModal }) =>{
         )
 }
 
-const SelectComponent =  ({dataParent , errText, clickHanlde, listData}) =>{
+const SelectComponent =  ({dataParent , errText, clickHanlde, listData, setCond}) =>{
+    const { userInfo } = useContext(UserCtx);
     const years = useQuery().get('year');
     const season = useQuery().get('season');
     const half = useQuery().get('half');
@@ -208,25 +210,25 @@ const SelectComponent =  ({dataParent , errText, clickHanlde, listData}) =>{
 
     },[selected, selectSeason, selectHalfYear])
 
-
+    // end
     const clickHandleLink = (reporttype, childcode, year, season, year_half) =>{
         if(reporttype===1){
             push({
-                pathname: `/${dataParent.route}/${childcode}`,
+                pathname: `/${dataParent.route}/${userInfo?.role==="holbootoi_yamd"?`0`:childcode}`,
                 search: `?year=${year}&season=${season}`
             })
         }else if(reporttype===2){
             push({
-                pathname: `/${dataParent.route}/${childcode}`,
+                pathname: `/${dataParent.route}/${userInfo?.role==="holbootoi_yamd"?`0`:childcode}`,
                 search: `?year=${year}&half=${year_half}`
             })
         }else if(reporttype===3){
             push({
-                pathname: `/${dataParent.route}/${childcode}`,
+                pathname: `/${dataParent.route}/${userInfo?.role==="holbootoi_yamd"?`0`:childcode}`,
                 search: `?year=${year}`
             })
         }
-        
+        setCond(prev=>!prev);
     }
 
     const clickHandle = () =>{
@@ -242,7 +244,7 @@ const SelectComponent =  ({dataParent , errText, clickHanlde, listData}) =>{
     return(
         <>
         <div className="ReporthomePar">
-            <div className="Reporthome">
+            {userInfo?.role!=="holbootoi_yamd"&&<div className="Reporthome">
                 <div className="SelectParent">
                         <div className="titleBig">Шинээр тайлан оруулах</div>
                         {dataParent.type!==4&&<div className="selectItem">
@@ -294,7 +296,8 @@ const SelectComponent =  ({dataParent , errText, clickHanlde, listData}) =>{
                     {<div className="errTxt">{`${errText}`}</div>}
                     <button onClick={clickHandle}  className="myBtn">Цааш → </button>
                 </ButtonStyle2>
-            </div>
+            </div>}
+            
 
             <ReportListComp dataParent={dataParent} clickHandle={clickHandleLink} list={list} listData={listData} />
             

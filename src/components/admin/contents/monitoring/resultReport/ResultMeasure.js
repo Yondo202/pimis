@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { Container, InputStyle, CustomModal } from "components/misc/CustomStyle"
+import React, { useEffect, useState, useContext } from 'react';
+import Ctx from "context/UserContext";
+import { Container, InputStyle, CustomModal } from "components/misc/CustomStyle";
 import { useTranslation } from 'react-i18next';
 import axios from 'axiosbase';
 import styled from "styled-components";
 import NumberFormat from "react-number-format";
-import { VscSave } from "react-icons/vsc"
-import { AiOutlineDownload, AiOutlinePrinter, AiOutlineCalculator } from "react-icons/ai"
+import { VscSave } from "react-icons/vsc";
+import { AiOutlineDownload, AiOutlinePrinter, AiOutlineCalculator } from "react-icons/ai";
 import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
-import ResultMeasurePdf from "./ResultMeasurePdf"
-import LangSwitch from "components/misc/LangSwitch"
+import ResultMeasurePdf from "./ResultMeasurePdf";
+import LangSwitch from "components/misc/LangSwitch";
 
 const ProjectResult = () => {
+    const { userInfo } = useContext(Ctx)
     const [t, i18n] = useTranslation();
     const [ years, setYears ] = useState([]);
     const [ resultData, setResultData ] = useState([]);
@@ -56,13 +58,21 @@ const ProjectResult = () => {
     };
 
     const selectRowHandle = (el) =>{
-        if(selected.id===el.id){
-            setSelected({});
-        }else{
-            setSelected(el);
-            setModal(true);
+        if(userInfo?.role!=="monitoring"){
+            if(selected.id===el.id){
+                setSelected({});
+            }else{
+                setSelected(el);
+                setModal(true);
+            }
         }
     }
+
+    useEffect(()=>{
+        if(wait&&userInfo?.role==="holbootoi_yamd"){
+            setShowPdf(true);
+        }
+    },[wait])
 
     return (
         <>
@@ -87,7 +97,7 @@ const ProjectResult = () => {
                 </div>
                 <div className="customTable T5 T6">
                     <div className="headPar">
-                        <div className="addBtn"><AiOutlineCalculator /><span>{t("Calculate")}</span></div>
+                        {userInfo?.role!=="holbootoi_yamd"&&<div className="addBtn"><AiOutlineCalculator /><span>{t("Calculate")}</span></div>}
                         <div className={`additions`}>
                             {wait?<div onClick={()=>setShowPdf(true)} className="addBtn"><AiOutlinePrinter /><span>{t("Print")}</span></div>:<div />}
                             {wait2?<PDFDownloadLink document={
@@ -112,7 +122,7 @@ const ProjectResult = () => {
                             </PDFDownloadLink>:<div />}
                         </div>
                     </div>
-                        <table>
+                        {userInfo?.role!=="holbootoi_yamd"&&<table>
                             <tbody>
                                 <tr>
                                     <th rowSpan="2">#</th>
@@ -144,7 +154,7 @@ const ProjectResult = () => {
                                 </tr>
                                 <FilteredRow resultData={resultData.filter(item=>item.row_type==="level2").sort((a,b)=>a.row_number-b.row_number)} selectRowHandle={selectRowHandle} years={years} selected={selected} lang={lang} />
                             </tbody>
-                        </table>
+                        </table>}
                         
                 </div>
             </Container>
