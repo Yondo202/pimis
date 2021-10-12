@@ -8,7 +8,6 @@ function ActiveComp({ userId, data, edPlan, edPlanFinal }) {
     DocumentTitle("EDP");
     const projectId = data?.project?.id
 
-    console.log(`edPlan++`, edPlan)
     return (
         <div style={{ paddingTop: 20 }} className="row">
             <div className="col-md-2 col-sm-2 itemsCol">
@@ -145,7 +144,7 @@ export default ActiveComp
 
 const EdPlanStyle = styled.a`
     &::before{
-        content:"${props=>props.final} %" !important;
+        content:"${props=>props.final}%" !important;
         font-size:10.5px !important;
         font-weight:600 !important;
         position:absolute;

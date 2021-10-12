@@ -27,7 +27,7 @@ import EvaluatorsMeetingNavigator from 'components/admin/contents/evaluators_mee
 import EdpInformationHome from 'components/admin/contents/edpInformation/EdpInformation';
 import FirstEvaluationSendNotice from 'pages/decision_making/5a/sendNotice'
 import AcceptPeriodHandle from 'components/admin/contents/accept_period/acceptPeriodHandle'
-import ReportLayout from 'components/admin/contents/Report/ReportLayout';
+import ReportLayout from 'components/admin/contents/Report/container/ReportLayout';
 import ProjectStatusHandle from 'components/admin/contents/project_status/projectStatusHandle'
 import CurrencyRateHandle from 'components/admin/contents/currency_rate/currencyRateHandle'
 import LetterNavigator from 'pages/letter_of_interest/LetterNavigator'

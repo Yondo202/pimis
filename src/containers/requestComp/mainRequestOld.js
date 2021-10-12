@@ -11,7 +11,7 @@ import TableThree from "../../components/requests/oldRequest/tableThree";
 import TableFour from '../../components/requests/oldRequest/tableFour';
 import TableFive from "../../components/requests/oldRequest/tableFive";
 import TableSix from '../../components/requests/oldRequest/tableSix';
-import { motion } from 'framer-motion'
+// import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import HelpContext from '../../context/HelperContext'
 import { Modal } from '../../components/requests/MainModal/Modal'
@@ -93,9 +93,9 @@ function MainRequest() {
                         <Modal initialData={initialData && initialData} showModal={showModal} setShowModal={setShowModal} param={param} na3={na3} />
                         <ParentComp style={{ height: `${helpCtx.GlobalStyle.tableheight}vh` }} className="container">
                             <div style={{ left: `${One}`, opacity: `${One === "0%" ? `1` : `0`}` }} className="handleSlidePAr1">
-                                <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
+                                {/* <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}> */}
                                     <TableOne initialData={initialData && initialData.ppsRequest1Details} initialName={initialData && initialData.name1} initialDate={initialData && initialData.date1} id={userID} token={tokens} />
-                                </motion.div>
+                                {/* </motion.div> */}
                             </div>
                             <div style={{ left: `${Two}`, opacity: `${Two === "0%" ? `1` : `0`}` }} className="handleSlidePAr1">
                                 <TableTwo initialData={initialData && initialData.ppsRequest2Details} initialName={initialData && initialData.name2} initialDate={initialData && initialData.date2} id={userID} token={tokens} />
@@ -127,11 +127,11 @@ function MainRequest() {
 
 export default MainRequest
 
-let easing = [0, 0, 0.56, 0.95];
+{/* let easing = [0, 0, 0.56, 0.95];
 const textVariants2 = {
     exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
     enter: { y: 0, opacity: 1, transition: { delay: 0.2, duration: 0.6, ease: easing } }
-};
+}; */}
 
 const NotApprovedComp = styled.div`
     background-color:white;

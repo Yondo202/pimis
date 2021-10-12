@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axiosbase'
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import { Container } from "components/misc/CustomStyle"
 import { RiAddLine, RiEdit2Line } from "react-icons/ri"
 import { VscError } from "react-icons/vsc"
@@ -129,8 +129,8 @@ const Insurance = () => {
     const getInsuranceType = (id) => insuranceTypes.find(insType => insType.id === id)?.[i18n.language === 'en' ? 'description' : 'description_mon'] ?? ''
 
     return (
-        <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-
+        // <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <>
             {showAddModal ? <AddModal setAddCond={setAddCond} setCond={setCond} companyInfo={users} setModal={showSetAddModal} insuranceTypes={insuranceTypes} language={i18n.language} /> : null}
             {showEditModal ? <EditModal SD={selected} setAddCond={setAddCond} setCond={setCond} companyInfo={users} setModal={showSetEditModal} insuranceTypes={insuranceTypes} language={i18n.language} /> : null}
             {showDeleteModal ? <DeleteModal SD={selected} setCond={setCond} setModal={showSetDeleteModal} /> : null}
@@ -233,8 +233,8 @@ const Insurance = () => {
                     </ScrollTable>
                 </div>
             </Container>
-
-        </motion.div>
+            </>
+        // </motion.div>
     )
 }
 

@@ -61,8 +61,9 @@ function Home() {
         edplan.get(`totals?idd=${userIDs}`).then(res=>{
             if(res.data.length!==0){
                 const keys = Object.keys(res.data[0]);
-                setEdPlan(parseInt(((keys.length-7) * 100)/25));
-                setEdPlanFinal(res.data.firstpage===true)
+                setEdPlan(parseInt(((keys.length-7) * 100)/24));
+                console.log(`res.data.firstpage`, res.data)
+                setEdPlanFinal(res.data[0]?.firstpage===true)
             }
         })
     }

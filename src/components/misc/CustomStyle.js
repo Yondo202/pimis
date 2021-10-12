@@ -199,7 +199,7 @@ export const Container = styled.div`
     padding-bottom:${props=>props.scroll?`10px`:`40`};
     border-radius:0px 5px 5px 5px;
     box-shadow: -5px 5px 12px -12px black;
-    color:#000 !important;
+    color:rgba(0,0,0,0.9) !important;
     @media only screen and (max-width:768px){
         // overflow-x:scroll;
     }
@@ -280,7 +280,7 @@ export const Container = styled.div`
                     text-align:center;
                 }
                 padding:8px 8px;
-                border:1px solid rgba(0,0,0,.2);
+                border:1px solid rgba(0,0,0,.3);
             }
             td{
                 padding:12px 10px;
@@ -351,6 +351,9 @@ export const Container = styled.div`
             }
             .blue{
                 color:rgb(0, 0, 128);
+            }
+            .grey{
+                background-color: #f6f8fa;
             }
             .center{
                 text-align:center;

@@ -30,10 +30,11 @@ function Main_decision() {
     const [rate, setRate ] = useState('');
 
     useEffect(() => {
-        axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
-            
-            console.log(`res`, res);
+        GoFetch();
+    }, [update]);
 
+    const GoFetch = () =>{
+        axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
             if (res.data.data) {
                 setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
                 setRate(res.data.data?.budgetCost);
@@ -42,8 +43,9 @@ function Main_decision() {
                 }
                 if (res.data.data.approved === true) { setNotifyShow2(2); } else if (res.data.data.approved === false) { setNotifyShow2(1); } else { setNotifyShow2(0); }
             }
-        }).catch((err) => console.log(err.response, "aldaa garsaaaa"));
-    }, [update]);
+        })
+    }
+
 
     const clickHandle = () => {
         axios.post(`evaluation-results/hurliin-negtgel`, { ...mainData, approved:mainData.final_decision===0?null:mainData.approved, budget_cost: parseFloat(rate), final_decision:0}, { headers: { Authorization: Token() } }).then(res=> {

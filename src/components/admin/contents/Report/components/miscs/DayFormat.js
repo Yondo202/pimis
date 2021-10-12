@@ -1,4 +1,3 @@
-import React from 'react'
 
 export const DayFormat = (pickDay)=> {
     const month = (pickDay.getMonth()+1); 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import { Switch, Route } from "react-router-dom";
 import Menu from "containers/menu/menu";
 import { HelpStore } from "context/HelperContext";
@@ -36,9 +36,9 @@ function UsersRoute() {
             <UrgudulStore>
                 <Switch>
                     <Route path="/" exact>
-                        <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}> */}
                             <LoginDoneHome2 />
-                        </motion.div>
+                        {/* </motion.div> */}
                     </Route>
                     <Route path="/check/:url" component={CheckComp2} />
                     <Route path="/checks/test" component={PdfTest} />

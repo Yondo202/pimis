@@ -12,7 +12,7 @@ import AccessToken from '../../context/accessToken'
 import axios, {FrontUrl} from '../../axiosbase'
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import Modal from 'react-awesome-modal';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import DocumentTitle from 'containers/document/DocumentTitle';
 import FileUpload from "components/check/FileUpload"
 import{  CustomFileUpload } from "components/misc/CustomStyle";
@@ -52,28 +52,45 @@ function CompCheck2() {
   let [ trimmedDataURL, setTrimmedDataURL] = useState(null);
   const [ selectLogo, setSelectLogo ] = useState({});
 
+  useEffect(()=>{
+    if(updateMount===1){
+      TargetAnother(target)
+    }
+  },[updateMount])
+
   useEffect(() => {
+    void async function fetch() {
+      const data = await axios.get(`users/${localId}`, { headers: { Authorization: AccessToken() } });
+      setUsersInfo(data.data.data);
+      setTarget(data.data.data?.project_type);
+      setImgData(data.data.data?.signature);
+      setSelectLogo({ fileUrl: data.data.data?.company_stamp });
+    }()
+
     void async function fetch() {
       const data = await axios.get(`criterias${param !== "user" ? `?userId=${param}` : `?userId=${localId}`}`, { headers: { Authorization: AccessToken() } });
       let keys = Object.keys(data.data.data);
       if (keys.length > 1) {
         setSuccess(data.data.data.approved);
         let filterArr = []; let value = Object.values(data.data.data);
-        keys.forEach((el, i) => { let obj1 = {}; value.forEach((elem, ind) => { if (i === ind) { obj1["keys"] = el; obj1["values"] = elem; } }); filterArr.push(obj1); });
+        keys.forEach((el, i) => { 
+          let obj1 = {}; 
+          value.forEach((elem, ind) => {
+            if (i === ind) {
+                obj1["keys"] = el; obj1["values"] = elem; 
+              } 
+          });
+          filterArr.push(obj1); 
+        });
+        
         allData.forEach(el => { el.items.forEach((elem, ind) => { filterArr.forEach(element => { if (el.group + (ind + 1) === element.keys) { elem["value"] = element.values }; }); }); });
-        setInitialData(allData); setUpdateMount(1);
+        setInitialData(allData); 
+        setUpdateMount(1);
       } else { 
         console.log("^^data alga");
       }
     }()
-    void async function fetch() {
-      const data = await axios.get(`users/${localId}`, { headers: { Authorization: AccessToken() } });
-      console.log(`res`, data);
-      setUsersInfo(data.data.data);
-      setTarget(data.data.data?.project_type);
-      setImgData(data.data.data?.signature);
-      setSelectLogo({ fileUrl: data.data.data?.company_stamp });
-    }()
+    
   }, [updateMount]);
   const NextPageHandle = (el) => { history.push(el); };
 
@@ -183,6 +200,7 @@ function CompCheck2() {
   }
 
   const TargetHandle= (e) =>{
+    console.log(`e++++`, e)
     if(updateMount===0 && param === "user"){
       setTarget(e);
       let arr = [];
@@ -209,8 +227,30 @@ function CompCheck2() {
   const clear = () => sigCanvas.clear();
   const trim = () =>{ setTrimmedDataURL(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); setImgData(sigCanvas.getTrimmedCanvas().toDataURL('image/png')); setVisibleSig(false);};
 
+  const TargetAnother = (e) =>{
+    let arr = [];
+      allData.forEach(el=>{
+        if(el.group === "a"){
+          el.items.forEach(elem=>{
+            if(elem.cond){
+              if(e===2){
+                elem.name = "Кластерын ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар кластерын тэргүүлэгч аж ахуйн нэгж доод тал нь 300 сая, дээд тал нь 150 тэрбум, кластерын гишүүн аж ахуйн нэгж тус бүр доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
+              }
+              if(e===1){
+                elem.name = "Аж ахуйн нэгжийн ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
+              }
+            }
+          })
+          arr.push(el);
+        }else{
+          arr.push(el);
+        }
+      });
+      setInitialData(arr);
+  }
+
   return (
-    <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
+    // <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
       <Component1 className="container" >
       <form onSubmit={e => clickHandles( e, btnCond)}>
         {param !== "user"
@@ -473,7 +513,7 @@ function CompCheck2() {
                 </div>
             </Modal>
       </Component1>
-    </motion.div>
+    // </motion.div>
 
   )
 }
@@ -496,11 +536,11 @@ const NullParent = styled.div`
     }
 `
 
-let easing = [0, 0, 0.56, 0.95];
-const textVariants2 = {
-  exit: { y: -50, opacity: 0, transition: { duration: 0.6, ease: easing } },
-  enter: { y: 0, opacity: 1, transition: { delay: 0.2, duration: 0.6, ease: easing } }
-};
+// let easing = [0, 0, 0.56, 0.95];
+// const textVariants2 = {
+//   exit: { y: -50, opacity: 0, transition: { duration: 0.6, ease: easing } },
+//   enter: { y: 0, opacity: 1, transition: { delay: 0.2, duration: 0.6, ease: easing } }
+// };
 
 const animate = keyframes`
   0% { transform:translateX(100px); opacity:0; }

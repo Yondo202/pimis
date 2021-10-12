@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import HomeLogin from "./components/home/homeLogin";
 import MainForm from "./containers/checkComp/MainForm";
 import ResetPassword from "./components/home/ResetPassword";
@@ -12,24 +12,24 @@ const UnAuthContent = () => {
   return (
     <Switch>
       <Route path="/" exact>
-        <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}> */}
           <HomeLogin />
-        </motion.div>
+        {/* </motion.div> */}
       </Route>
       <Route path="/comp-check">
-        <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}> */}
           <MainForm />
-        </motion.div>
+        {/* </motion.div> */}
       </Route>
       <Route path="/users/confirm/:id">
-        <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}> */}
           <Email />
-        </motion.div>
+        {/* </motion.div> */}
       </Route>
       <Route path="/changepassword/:id" children={<ResetPassword />}>
-        <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        {/* <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}> */}
           <ResetPassword />
-        </motion.div>
+        {/* </motion.div> */}
       </Route>
       <Route path="/sector" component={SEctor} exact />
       <Route path="/trainings" component={TrainingFrontPage} />

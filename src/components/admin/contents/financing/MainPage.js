@@ -2,7 +2,7 @@ import React,{useEffect, useState} from 'react'
 import styled,{ keyframes } from 'styled-components'
 import { IoMdAdd } from 'react-icons/io'
 import axios from '../../../../axiosbase'
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import AddModal from "./AddModal"
 
 
@@ -37,7 +37,7 @@ function MainPage() {
     const filterHanlde = (event) =>{ setFilter(event.target.value); }
 
     return (
-        <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        // <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <Users>
             {showModal&&<AddModal setUpdate={setUpdate} showModal={showModal} setShowModal={setShowModal} />} 
             {/* <DeleteModal setUpdate={setUpdate} showModal={showModal2} setShowModal={setShowModal2} parent={targetElement} /> */}
@@ -87,8 +87,7 @@ function MainPage() {
                     </div>
                 </div>
         </Users>
-        </motion.div>
-        
+        // </motion.div>
     )
 }
 

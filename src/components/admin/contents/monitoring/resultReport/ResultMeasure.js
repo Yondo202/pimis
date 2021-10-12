@@ -38,18 +38,17 @@ const ProjectResult = () => {
     },[])
 
     useEffect(()=>{
-        try{
-            void async function Fetch(){
+        void async function Fetch(){
+            try{
                 const result = await axios.get(`result-measure`);
                 setResultData(result?.data.data);
                 const year = await axios.get(`years?type=result_measure`);
                 setYears(year?.data.data);
-            }()
-        }catch(err){
-            console.log(`err`, err);
-        }
+            }catch(err){
+                console.log(`err`, err);
+            }
+        }()
     },[cond])
-
 
     const handleChange = event => {
         setLang(event.target.value);
@@ -175,7 +174,7 @@ const FilteredRow = ({ resultData, selectRowHandle, years, selected, lang }) =>{
                     {years.map((elem,index)=>{
                         return(
                             <React.Fragment key={index}>
-                                <td className="center bold">{el[`cum${elem.year}`]!==null?el[`cum${elem.year}`]:'-'} {el.measure==="Хувь"&&el[`cum${elem.year}`]?` %`:``}</td>
+                                <td className={`center bold ${selected?.id===el.id?``:`grey`}`}>{el[`cum${elem.year}`]!==null?el[`cum${elem.year}`]:'-'} {el.measure==="Хувь"&&el[`cum${elem.year}`]?` %`:``}</td>
                                 <td className="center bold">{el[`cur${elem.year}`]}</td>
                             </React.Fragment>
                         )
@@ -227,11 +226,9 @@ const PDFViewerStyle = styled.div`
     }
 `
 
-
-
 const Modal = ({ setModal, selected, years, i18n, setCond }) =>{
     const [cName, setName] = useState('');
-
+    
     const CloseHandle = () =>{
         setName('contentParent2');
         setTimeout(() => {

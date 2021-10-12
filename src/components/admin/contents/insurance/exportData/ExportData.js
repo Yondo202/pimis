@@ -185,6 +185,8 @@ const ExportDataContent = ({ SD, userId }) => {
                             <td className="right">0.00 ₮</td>
                             <td className="right">0.00 ₮</td>
                             <td className="right">0.00 ₮</td>
+                            <td className="right">0.00 ₮</td>
+                            <td className="right">0.00 ₮</td>
                         </tr>}
 
                         {fCountry.map((elem, index) => {

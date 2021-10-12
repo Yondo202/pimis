@@ -6,15 +6,17 @@ import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, Side
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FiBookOpen } from "react-icons/fi";
 import { MdSettings } from "react-icons/md";
+import { AiOutlineMonitor } from "react-icons/ai";
+import { BiExport } from "react-icons/bi";
+import { IoSettingsOutline } from "react-icons/io5";
 import { GiProgression } from "react-icons/gi";
-import sidebarBg from "./bg_image/bg1.jpg";
-
+// import sidebarBg from "./bg_image/bg1.jpg";
 
 const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
   const { userInfo } = useContext(Ctx);
 
   return (
-    <ProSidebar image={image ? sidebarBg : false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
+    <ProSidebar image={image ?? false} rtl={rtl} collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
       <SidebarHeader>
         <div className="headPar" >
           <Link to="/"> Экспортыг дэмжих төсөл</Link>
@@ -69,28 +71,28 @@ export default Aside;
 
 const FilterMenu = ({ el, ind }) =>{
   return(
-      <SubMenu key={ind} title={el.title} icon={el.icon}>
-          {el.MenuChild?.map((elem,ind)=>{
-            return(
-              <MenuItem key={ind}>
-                <Link to={elem.link}>{elem.text}</Link>
-              </MenuItem>
-            )
-          })}
-          {el.SubMenu?.map((elem,ind)=>{
-            return(
-              <SubMenu key={ind} title={elem.text}>
-                {elem.subChild?.map((elChild, indx)=>{
-                  return(
-                    <MenuItem key={indx}>
-                      <Link to={elChild.link}>{elChild.text}</Link>
-                    </MenuItem>
-                  )
-                })}
-              </SubMenu>
-            )
-          })}
-      </SubMenu>
+        <SubMenu title={el.title} icon={el.icon}>
+            {el.MenuChild?.map((elem,ind)=>{
+              return(
+                <MenuItem key={ind}>
+                  <Link to={elem.link}>{elem.text}</Link>
+                </MenuItem>
+              )
+            })}
+            {el.SubMenu?.map((elem,ind)=>{
+              return(
+                <SubMenu key={ind} title={elem.text}>
+                  {elem.subChild?.map((elChild, indx)=>{
+                    return(
+                      <MenuItem key={indx}>
+                        <Link to={elChild.link}>{elChild.text}</Link>
+                      </MenuItem>
+                    )
+                  })}
+                </SubMenu>
+              )
+            })}
+        </SubMenu>
   )
 }
 
@@ -123,7 +125,7 @@ const MenuData = [
     ]
   },
   { title:"Мониторинг", 
-    icon:<FiBookOpen />,
+    icon:<AiOutlineMonitor />,
     MenuChild:[ 
       { link:"/result-measure", text:"Төслийн үр дүнг хэмжих" },
     ],
@@ -137,13 +139,13 @@ const MenuData = [
     ]
   },
   { title:"Экспортын мэдээлэл", 
-    icon:<FiBookOpen />,
+    icon:<BiExport />,
     MenuChild:[ 
       { link:"/export-data", text:"Байгууллагуудын жагсаалт" },
     ],
   },
   { title:"Тохиргоо", 
-    icon: <MdSettings />,
+    icon: <IoSettingsOutline />,
     MenuChild:[
       { link:"/users", text:"Хэрэглэгчид" },
       { link:"/epd-information", text:"Төслийн нэгжийн мэдээлэл" },

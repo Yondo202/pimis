@@ -4,27 +4,11 @@ import { RiArrowLeftSFill } from "react-icons/ri"
 import { BiMenuAltLeft } from "react-icons/bi"
 import { Link } from "react-router-dom"
 
-export const DetailHome = () => {
- 
-    return (
-        <Container>
-            <h1></h1>
-        </Container>
-    )
-}
-
-const animateHome = keyframes`
-    0% { transform:translateY(100px); opacity:0;  }
-    100% { transform:translateY(0px); opacity:1;  }
-`
-const Container = styled.div`
-    animation:${animateHome} 0.5s ease;
-    
-`
 export const HideMenu = ({childData, setRightMenu}) => {
     const modalRef = useRef(null);
     const clickHandle = () =>{ setRightMenu(false);}
-    const closeModal = e =>{ if(modalRef.current === e.target){ setRightMenu(false);}}
+    const closeModal = e =>{ if(modalRef.current === e.target){ setRightMenu(false) }}
+
     return (
         <Ghost ref={modalRef} onClick={closeModal}>
             <div className="ContPar ">
@@ -32,7 +16,7 @@ export const HideMenu = ({childData, setRightMenu}) => {
                 <div className="LeftMenu ">
                     {childData?.items.map(el=>{
                         return(
-                            <Link to={`/report/${el?.comp}`} onClick={()=>setRightMenu(false)} className="menuBtn"><RiArrowLeftSFill /> {el.titles}</Link>
+                            <Link to={`/report/${el?.url}`} onClick={()=>setRightMenu(false)} className="menuBtn"><RiArrowLeftSFill /> {el.titles}</Link>
                         )
                     })}
                 </div>
@@ -55,6 +39,7 @@ const Ghost = styled.div`
     top:0;
     display:flex;
     justify-content:flex-end;
+
     .ContPar{
        padding:15px 15px;
        width:30%;

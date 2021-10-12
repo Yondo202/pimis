@@ -166,7 +166,6 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                                     </InputStyle>
                                     )
                                 })}
-
                             </InputsParent>
                         </YearsType>}
 

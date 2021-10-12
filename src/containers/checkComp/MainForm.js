@@ -6,7 +6,7 @@ import {RiMailSendLine} from 'react-icons/ri'
 import { animateScroll as scroll } from "react-scroll";
 import Axios from '../../axiosbase'
 // import Ghost from '../../components/Ghost'
-import { motion } from 'framer-motion'
+// import { motion } from 'framer-motion'
 import {fontFamily} from '../../components/theme'
 import {Link} from 'react-router-dom'
 import HelperMenu from "../menu/HelperMenu"
@@ -112,7 +112,7 @@ function MainForm() {
       {userId ? null : <HelperMenu />}
       <Component className="container" >
           {/* <Ghost /> */}
-          <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}>
+          {/* <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}> */}
             <div className="headPar">
               <span className="headText">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ энэ асуулгаар шалгаж үзнэ үү </span>
             </div>
@@ -125,7 +125,7 @@ function MainForm() {
                 {/* </Link> */}
               </div>
             </form>
-          </motion.div>
+          {/* </motion.div> */}
           <div className="homeButtonPar" style={{transform:`scale(${resScale})`}}>
             <Link to="/"><span className="homeBtn" >Буцах</span></Link>
             <div className="resPar" ><RiMailSendLine /> <h5 className="finalText">{resText}</h5> </div>

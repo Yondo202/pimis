@@ -4,12 +4,12 @@ import styled, { keyframes } from "styled-components"
 import { RiArrowRightSFill } from "react-icons/ri"
 import { BiMenuAltRight } from "react-icons/bi"
 import { MdKeyboardArrowRight } from "react-icons/md"
-import { DetailHome, HideMenu } from "./DetailHome"
-import SectorsOne from "./DetailCompOne/HandsanBaiguullaga/SectorsOne"
-import TotalApproach from "./DetailCompOne/ShalguurHangasan/TotalApproach"
-import NersiinJagsaaltaar from "./DetailCompOne/HandsanBaiguullaga/NersiinJagsaaltaar"
+import {  HideMenu } from "./RightMenu.js"
+import SectorsOne from "../components/HandsanBaiguullaga/SectorsOne"
+import TotalApproach from "../DetailCompOne/ShalguurHangasan/TotalApproach"
+import NersiinJagsaaltaar from "../components/HandsanBaiguullaga/NersiinJagsaaltaar"
 
-export const TopMenu = ({childData,cond}) => {
+export const TopMenu = ({childData, cond}) => {
     const history = useHistory();
     const [ rightMenu, setRightMenu ] = useState(false);
     const [ homeShow, setHomeShow ] = useState(false);
@@ -26,25 +26,21 @@ export const TopMenu = ({childData,cond}) => {
             setTimeout(()=>{ setHomeShow(true); history.push(`report/${el}`) },300)
          }
     }
-    const menuHandle = () =>{ setRightMenu(true); }
-     
+
     return (
         <Container>
             <div className="TitlePar">
             <div className="title">{childData?.title} <MdKeyboardArrowRight /> {titleHead}</div>  
-               {homeShow&&<div onClick={menuHandle} className="SmMenu"><BiMenuAltRight /></div>}   
+               {homeShow&&<div onClick={()=>setRightMenu(true)} className="SmMenu"><BiMenuAltRight /></div>}
             </div>
 
             {!homeShow&&<div className={classShow?`buttonsPar Animate`:`buttonsPar`}>
-                {childData?.items.map(el=>{
-                    return(  <Link onClick={()=>clickHandle(el.comp,el.titles)} className={el.comp?`menuBtn`:`menuBtn desable`}>{el.titles}<RiArrowRightSFill /></Link>  )
+                {childData?.items.map((el, ind)=>{
+                    return( <Link key={ind} onClick={()=>clickHandle(el.url, el.titles)} className={el.url?`menuBtn`:`menuBtn desable`}>{el.titles}<RiArrowRightSFill /></Link>  )
                 })}
             </div>}
 
            <Switch>
-                <Route path="/report" exact>
-                     {homeShow&&<DetailHome />}
-                </Route>
                 <Route path="/report/step-one/sectors" exact>
                     <SectorsOne />
                 </Route>
@@ -55,6 +51,7 @@ export const TopMenu = ({childData,cond}) => {
                      <TotalApproach />
                 </Route>
             </Switch>
+           
 
            {rightMenu&&<HideMenu setRightMenu={setRightMenu} childData={childData} />}
         </Container>

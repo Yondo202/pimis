@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import styled, { keyframes } from "styled-components" 
 import 'components/admin/left_menu/styles/ReportStyle.scss';
 import { IntlProvider } from 'react-intl';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { Link,Switch, Route, useHistory } from 'react-router-dom'
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarContent } from "react-pro-sidebar";
 import { GiBackForth } from "react-icons/gi";
+import { AiOutlineSelect } from "react-icons/ai";
 import { CgRowFirst,CgRowLast } from "react-icons/cg";
 import  { TopMenu } from "./TopMenu"
 
@@ -14,31 +16,33 @@ const ReportLayout = ({ collapsed, toggled, handleToggleSidebar }) => {
     const clickHandle = el =>{ setChildData(el); setCond(prev=>!prev) }
 
     return (
-        <Container className="ReportLayout">
-            <div className="leftMenu">
-                <IntlProvider >
-                    <ProSidebar collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
-                            <SidebarHeader>
-                                <div className="headPar"><Link to="/report" >Тайлагнал</Link></div>
-                            </SidebarHeader>
-                            <SidebarContent >
-                                <Menu iconShape="circle">
-                                    {data.map(el=>{
-                                        return(
-                                            <SubMenu title={el.title} icon={el.icon}>
-                                                {el.child.map(el=> <MenuItem><Link onClick={()=>clickHandle(el)} to="/report">{el.title}</Link> </MenuItem>)}
-                                            </SubMenu> 
-                                        )
-                                    })}
-                                </Menu>
-                            </SidebarContent>
-                    </ProSidebar>
-                </IntlProvider>
-            </div>
-            <div className="MainPar">
-               <TopMenu childData={childData} cond={cond} />
-            </div>
-        </Container>
+        <>
+            <Container className="ReportLayout">
+                <div className="leftMenu">
+                    <IntlProvider >
+                        <ProSidebar collapsed={collapsed} toggled={toggled} breakPoint="md" onToggle={handleToggleSidebar}>
+                                <SidebarHeader>
+                                    <div className="headPar"><Link to="/report" >Тайлагнал</Link></div>
+                                </SidebarHeader>
+                                <SidebarContent >
+                                    <Menu iconShape="circle">
+                                        {data.map((el, ind)=>{
+                                            return(
+                                                <SubMenu key={ind} title={el.title} icon={el.icon}>
+                                                    {el.child.map((el,ind)=> <MenuItem key={ind}><Link onClick={()=>clickHandle(el)} to="/report">{el.title}</Link> </MenuItem>)}
+                                                </SubMenu> 
+                                            )
+                                        })}
+                                    </Menu>
+                                </SidebarContent>
+                        </ProSidebar>
+                    </IntlProvider>
+                </div>
+                <div className="MainPar">
+                <TopMenu childData={childData} cond={cond} />
+                </div>
+            </Container>
+        </>
     )
 }
 
@@ -78,38 +82,21 @@ const Container = styled.div`
 `
 
 const data = [
-    // { title: "Эхний асуулга уулзалтууд", icon: <IoIosBookmarks /> , child : [
-    //     { title: "Нийт", items: [ 
-    //         { titles: "Хэдэн байгууллага хандсан", comp:"hedenbaiguullaga" },
-    //         { titles: "Салбараар", comp:"sectors" },
-    //         { titles: "Ажилчдын тоогоор" },
-    //         { titles: "Борлуулалтын хэмжээгээр" },
-    //         { titles: "Сонирхож буй санхүүжилтийн чиглэлээр" },
-    //         { titles: "Хэдэн жил санхүүгийн тайлан гарган ажилласан" },
-    //         { titles: "Экспортын хэмжээгээр" },
-    //         { titles: "Экспортын гол нэрийн бүтээгдэхүүнээр" },
-    //         { titles: "Экспортын улсуудаар" },
-    //         { titles: "Хүсэлт гаргасан хүний албан тушаалаар" },
-    //         { titles: "Хүсэлт гаргасан огноогоор ялгах" },
-    //      ]  
-    //     },  
-    //  ] },
-    { title: "1-р шат",  icon: <CgRowFirst /> , child : [
-        { title: "Хандсан байгууллагууд", //Хэдэн байгууллага хандсанг ААН, Кластераар харуулах
+   
+    { title: "Хандсан байгууллагууд",  icon: <AiOutlineSelect /> , child : [
+        { title: "Байгууллагууд", //Хэдэн байгууллага хандсанг ААН, Кластераар харуулах
             items: [
-                { titles: "Нэрсийн жагсаалтаар", comp: "step-one/nersiinjagsaaltaar" },
-                { titles: "Салбараар", comp:"step-one/sectors"  },
-                { titles: "Ажилчдын тоогоор"  },
-                { titles: "Борлуулалтын хэмжээгээр"  },
-                { titles: "Экспортын хэмжээгээр"  },
-                { titles: "Санхүүжилтийн хүсэлтийн хэмжээгээр"  },
-                { titles: "Үйл ажиллагаа явуулсан хугацаагаар"  },
+                { titles: "Нэрсийн жагсаалтаар", url: "step-one/nersiinjagsaaltaar" , },
+                { titles: "Салбараар", url:"step-one/sectors", },
             ]
         },
+      ]
+    },
 
+    { title: "1-р шат",  icon: <CgRowFirst /> , child : [
         { title: "Шалгуур хангасан байгууллагууд", //Хэдэн байгууллага шалгуур хангасныг ААН, кластераар харуулах
             items: [
-                { titles: "Нэрсийн жагсаалтаар" , comp:"hedenbaiguullaga"  },
+                { titles: "Нэрсийн жагсаалтаар" , url:"hedenbaiguullaga", },
                 { titles: "Салбараар" },
                 { titles: "Ажилчдын тооны ангиллаар"  },
                 { titles: "Борлуулалтын хэмжээгээр"  },

@@ -5,7 +5,7 @@ import { AddModal } from './AddModal'
 import { DeleteModal } from './DeleteModal'
 import { EditModal } from './EditModal'
 import axios from '../../../../axiosbase'
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 
 function UserHandle() {
@@ -39,7 +39,7 @@ function UserHandle() {
     const filterHanlde = (event) => { setFilter(event.target.value); }
 
     return (
-        <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        // <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Users>
                 <AddModal setUpdate={setUpdate} showModal={showModal} setShowModal={setShowModal} trainers={trainers} />
                 <DeleteModal setUpdate={setUpdate} showModal={showModal2} setShowModal={setShowModal2} parent={targetElement} />
@@ -109,7 +109,7 @@ function UserHandle() {
                         }))}
                 </div>
             </Users>
-        </motion.div>
+        // </motion.div>
     )
 }
 
