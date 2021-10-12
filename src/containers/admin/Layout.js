@@ -50,7 +50,6 @@ import { ContractReportsForAdmin } from 'pages/contract/contract_reports/contrac
 import SurveyPimis from 'pages/contract/survery/surveyPimis';
 import LaboratoryNavigator from 'components/admin/contents/laboratory/laboratoryNavigator';
 import MainReports from "components/admin/contents/monitoring/mainReports/container/Reports"
-import ReportResult from 'pages/report/reportResult';
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -63,7 +62,7 @@ function Layout({ setLocale }) {
   const handleRtlChange = (checked) => { setRtl(checked); setLocale(checked ? 'ar' : 'en'); };
   const handleImageChange = (checked) => { setImage(checked); };
   const handleToggleSidebar = (value) => { setToggled(value); };
-  
+
 
   return (
     <AdminApp className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
@@ -89,11 +88,11 @@ function Layout({ setLocale }) {
               <Route path="/holidays" component={Holidays} />
               <Route path="/insurance" component={Insurance} />
               <Route path="/result-measure" component={ResultMeasure} />
-              {MainReportsData.map((el,ind)=>{
-                return(
-                    <Route key={ind} path={`/${el.route}/:childcode`}>
-                        <MainReports data={el} />
-                    </Route>
+              {MainReportsData.map((el, ind) => {
+                return (
+                  <Route key={ind} path={`/${el.route}/:childcode`}>
+                    <MainReports data={el} />
+                  </Route>
                 )
               })}
               {/* <Route path="/urgudul/:page">
@@ -132,7 +131,6 @@ function Layout({ setLocale }) {
               <Route path="/insurance-types" component={InsuranceTypeHandle} />
               <Route path="/survey-pimis" component={SurveyPimis} />
               <Route path="/laboratories" component={LaboratoryNavigator} />
-              <Route path="/report-result" component={ReportResult} />
               <MiddleRoute />
             </Switch>
           </UrgudulStore>
@@ -143,7 +141,7 @@ function Layout({ setLocale }) {
         {ctx.alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${ctx.alert.color}` }} className="true" /> : <CgDanger style={{ color: `${ctx.alert.color}` }} className="true" />}
         <span>{ctx.alert.text}</span>
       </AlertStyle>
-      {ctx.loading&&<Loading />}
+      {ctx.loading && <Loading />}
     </AdminApp>
   );
 }
@@ -152,62 +150,62 @@ export default Layout;
 
 const MainReportsData = [
   {
-    route:"monitoring-report",
-    type:1,
-    title:"Хяналт-шинжилгээний тайлан", 
+    route: "monitoring-report",
+    type: 1,
+    title: "Хяналт-шинжилгээний тайлан",
     childs: [
-      { code:0, title: "icon", },
-      { code:1, title: "1.Хураангуй", },
-      { code:2, title: "2.Төсөлд оруулах шаардлагатай өөрчлөлт, түүний үндэслэл" },
-      { code:3, title: "3.Үйл ажиллагааны үнэлгээ" },
-      { code:4, title: "4.Төслийн орчны өөрчлөлт, таамаглал ба эрсдэл үүсэх магадлал, тэдгээрийн төсөлд үзүүлэх нөлөө" },
-      { code:5, title: "5.Нийцтэй байдал ба тогтвортой байдал" },
-      { code:6, title: "6.Хэрэгжилтийн үр ашгийн үнэлгээ" },
+      { code: 0, title: "icon", },
+      { code: 1, title: "1.Хураангуй", },
+      { code: 2, title: "2.Төсөлд оруулах шаардлагатай өөрчлөлт, түүний үндэслэл" },
+      { code: 3, title: "3.Үйл ажиллагааны үнэлгээ" },
+      { code: 4, title: "4.Төслийн орчны өөрчлөлт, таамаглал ба эрсдэл үүсэх магадлал, тэдгээрийн төсөлд үзүүлэх нөлөө" },
+      { code: 5, title: "5.Нийцтэй байдал ба тогтвортой байдал" },
+      { code: 6, title: "6.Хэрэгжилтийн үр ашгийн үнэлгээ" },
     ],
   },
   {
-    route:"progress-report",
-    type:2,
-    title:"Явцын үнэлгээний тайлан", 
+    route: "progress-report",
+    type: 2,
+    title: "Явцын үнэлгээний тайлан",
     childs: [
-      { code:0, title: "icon", },
-      { code:1, title: "1.lessons learned and recommendations", },
-      { code:2, title: "2.detailed project progress report" },
+      { code: 0, title: "icon", },
+      { code: 1, title: "1.lessons learned and recommendations", },
+      { code: 2, title: "2.detailed project progress report" },
     ],
   },
   {
-    route:"evaluation-report",
-    type:3,
-    title:"Үнэлгээний тайлан", 
+    route: "evaluation-report",
+    type: 3,
+    title: "Үнэлгээний тайлан",
     childs: [
-      { code:0, title: "icon", },
-      { code:1, title: "1.Хураангуй", },
-      { code:2, title: "2.Төслийн үйл ажиллагааны товч түүх, төслийн орчны өөрчлөлт, тэдгээрийн төсөлд үзүүлсэн нөлөө", },
-      { code:3, title: "3.Үнэлгээний зорилго, хэрэглэсэн арга зүй, сул тал", },
-      { code:4, title: "4.Үнэлгээ", },
-      { code:5, title: "5.Нийцтэй байдал ба тогтвортой байдал", },
-      { code:6, title: "6.Дүгнэлт ба зөвлөмж: үйл ажиллагааг сайжруулах саналууд, сургамж", },
+      { code: 0, title: "icon", },
+      { code: 1, title: "1.Хураангуй", },
+      { code: 2, title: "2.Төслийн үйл ажиллагааны товч түүх, төслийн орчны өөрчлөлт, тэдгээрийн төсөлд үзүүлсэн нөлөө", },
+      { code: 3, title: "3.Үнэлгээний зорилго, хэрэглэсэн арга зүй, сул тал", },
+      { code: 4, title: "4.Үнэлгээ", },
+      { code: 5, title: "5.Нийцтэй байдал ба тогтвортой байдал", },
+      { code: 6, title: "6.Дүгнэлт ба зөвлөмж: үйл ажиллагааг сайжруулах саналууд, сургамж", },
     ],
   },
   {
-    route:"completion-report",
-    type:4,
-    title:"Эцсийн тайлан", 
+    route: "completion-report",
+    type: 4,
+    title: "Эцсийн тайлан",
     childs: [
-      { code:0, title: "icon", },
-      { code:1, title: "1.Хураангуй ба сургамж ", },
-      { code:2, title: "2.Төслийн суурь мэдээлэл ", },
-      { code:3, title: "3.Төслийн дизайн ", },
-      { code:4, title: "4.Нөөцүүд", },
-      { code:5, title: "5.Үйл ажиллагаа ", },
-      { code:6, title: "6.Үр дүн", },
-      { code:7, title: "7.Зорилгын биелэлт", },
-      { code:8, title: "8.Тогтвортой байдал", },
-      { code:9, title: "9.Төслийн алтернативыг тодорхойлох ", },
-      { code:10, title: "10.Хийгдэж болох нэмэлт шинжилгээ ", },
-      { code:11, title: "11.Нэмэлт зээлийн хэрэгцээ", },
-      { code:12, title: "12.Бодлогын хамааралтай байдал ", },
-      { code:13, title: "13.Хуримтлуулсан туршлага, сургамж", },
+      { code: 0, title: "icon", },
+      { code: 1, title: "1.Хураангуй ба сургамж ", },
+      { code: 2, title: "2.Төслийн суурь мэдээлэл ", },
+      { code: 3, title: "3.Төслийн дизайн ", },
+      { code: 4, title: "4.Нөөцүүд", },
+      { code: 5, title: "5.Үйл ажиллагаа ", },
+      { code: 6, title: "6.Үр дүн", },
+      { code: 7, title: "7.Зорилгын биелэлт", },
+      { code: 8, title: "8.Тогтвортой байдал", },
+      { code: 9, title: "9.Төслийн алтернативыг тодорхойлох ", },
+      { code: 10, title: "10.Хийгдэж болох нэмэлт шинжилгээ ", },
+      { code: 11, title: "11.Нэмэлт зээлийн хэрэгцээ", },
+      { code: 12, title: "12.Бодлогын хамааралтай байдал ", },
+      { code: 13, title: "13.Хуримтлуулсан туршлага, сургамж", },
     ],
   },
 ]
