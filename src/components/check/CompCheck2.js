@@ -45,25 +45,18 @@ function CompCheck2() {
   const [opacity2, setOpacity2] = useState("0");
   const [procent, setProcent] = useState('0');
   const [FinalErrorText, setFinalErrorText] = useState("");
-  const [ target, setTarget ] = useState(null);
+  const [target, setTarget ] = useState(null);
   const [imgData, setImgData ] = useState(null);
   const [visibleSig, setVisibleSig] = useState(false);
   let [ sigCanvas, setSigCanvas] = useState({});
   let [ trimmedDataURL, setTrimmedDataURL] = useState(null);
   const [ selectLogo, setSelectLogo ] = useState({});
 
-  useEffect(()=>{
-    if(updateMount===1){
-      console.log("targret")
-      TargetAnother(target)
-    }
-  },[updateMount])
-
-  console.log(`param`, param)
+ 
 
   useEffect(() => {
     void async function fetch() {
-      const data = await axios.get(`users/${param !== "user" ? param: localId}`, { headers: { Authorization: AccessToken() } });
+      const data = await axios.get(`users/${param !== "user" ? param : localId}`, { headers: { Authorization: AccessToken() } });
       setUsersInfo(data.data.data);
       setTarget(data.data.data?.project_type);
       setImgData(data.data.data?.signature);
@@ -89,12 +82,20 @@ function CompCheck2() {
         allData.forEach(el => { el.items.forEach((elem, ind) => { filterArr.forEach(element => { if (el.group + (ind + 1) === element.keys) { elem["value"] = element.values }; }); }); });
         setInitialData(allData); 
         setUpdateMount(1);
-      } else { 
-        console.log("^^data alga");
-      }
+
+        TargetAnother(target)
+      } 
     }()
     
   }, [updateMount]);
+
+  // useEffect(()=>{
+  //   // if(updateMount===1){
+  //     // console.log("targret")
+  //     TargetAnother(target)
+  //   // }
+  // },[updateMount])
+
   const NextPageHandle = (el) => { history.push(el); };
 
   const OneBack = () => {
@@ -134,8 +135,10 @@ function CompCheck2() {
     });
 
     userInfos["signature"] = imgData;
-    userInfos["project_type"] = target === "Аж ахуйн нэгж"?0:1;
+    // userInfos["project_type"] = target===1 ? 0:1;
+    userInfos["project_type"] = target;
     userInfos["company_stamp"] = FrontUrl + selectLogo.fileUrl?.replace("public", "");
+
 
     if(keys.length < 14) {
       setOpacity("1");
@@ -174,6 +177,9 @@ function CompCheck2() {
     }
   }
 
+  console.log(`target`, target)
+
+
   const SendData = (soloObject2, cond, userInfos) =>{
     axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(_=> {
 
@@ -211,10 +217,10 @@ function CompCheck2() {
         if(el.group === "a"){
           el.items.forEach(elem=>{
             if(elem.cond){
-              if(e===2){
+              if(e===1){
                 elem.name = "Кластерын ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар кластерын тэргүүлэгч аж ахуйн нэгж доод тал нь 300 сая, дээд тал нь 150 тэрбум, кластерын гишүүн аж ахуйн нэгж тус бүр доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
               }
-              if(e===1){
+              if(e===0){
                 elem.name = "Аж ахуйн нэгжийн ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
               }
             }
@@ -236,10 +242,10 @@ function CompCheck2() {
         if(el.group === "a"){
           el.items.forEach(elem=>{
             if(elem.cond){
-              if(e===2){
+              if(e===1){
                 elem.name = "Кластерын ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар кластерын тэргүүлэгч аж ахуйн нэгж доод тал нь 300 сая, дээд тал нь 150 тэрбум, кластерын гишүүн аж ахуйн нэгж тус бүр доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
               }
-              if(e===1){
+              if(e===0){
                 elem.name = "Аж ахуйн нэгжийн ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх"
               }
             }
@@ -249,8 +255,6 @@ function CompCheck2() {
           arr.push(el);
         }
       });
-
-      console.log(`arr`, arr)
       setInitialData(arr);
   }
 
@@ -293,7 +297,16 @@ function CompCheck2() {
           </div>
           <div className="Success">
             <NextBtn onClick={() => OneBack()} className="NextPageBtn" type="button"><div className="flexchild"><IoIosArrowBack /><IoIosArrowBack className="hide" /> <IoIosArrowBack className="hide1" /></div>Буцах</NextBtn>
-            {success === 1 ? <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> : success === 2 ? <div className="item"><IoMdCheckmarkCircle />Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна.</div> : null}
+            {success === 1 ? <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> : success === 2 ? 
+            // <div className="item"><IoMdCheckmarkCircle />Түншлэлийн хөтөлбөрт ААН-ээр тэнцэж байна.</div>
+              <div className="Success">
+                <div className="item"><IoMdCheckmarkCircle />
+                    {target===0&&`Түншлэлийн хөтөлбөрийн аж ахуйн нэгжийн ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
+                    {target===1&&`Түншлэлийн хөтөлбөрийн кластерын ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
+                </div>
+                {/* <NextBtn onClick={() => NextPageHandle('/request/user')} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn> */}
+              </div>
+          : null}
           </div>
         </div> : (<NullParent className="BtnPar"><button onClick={() => OneBack()}><RiArrowGoBackFill /> Буцах</button> <h2 style={{ textAlign: "center" }}>Мэдээлэл оруулаагүй байна</h2> </NullParent>))
           : (<div className="boxShadow">
@@ -302,13 +315,13 @@ function CompCheck2() {
             <div className="TargetParent">
               <div className="title">Та аль ангилалд өргөдөл гаргаж байна вэ?</div>
               <div className="Target">
-                <div onClick={()=>TargetHandle(1)} className={`items ${target===1?`A11`:``}`}><span>Аж ахуйн нэгж</span><RiArrowDownSLine /></div>
-                <div onClick={()=>TargetHandle(2)}  className={`items ${target===2?`A11`:``}`}><span>Кластер</span> <RiArrowDownSLine /></div>
+                <div onClick={()=>TargetHandle(0)} className={`items ${target===0?`A11`:``}`}><span>Аж ахуйн нэгж</span><RiArrowDownSLine /></div>
+                <div onClick={()=>TargetHandle(1)}  className={`items ${target===1?`A11`:``}`}><span>Кластер</span> <RiArrowDownSLine /></div>
               </div>
             </div>
 
 
-            {target?initialData.map((el, i) => {
+            {target!==null?initialData.map((el, i) => {
               return (
                 <div key={i} className="formTwoParent ">
                   <div className="headerPar">
@@ -340,7 +353,7 @@ function CompCheck2() {
             </div>
 
 
-            {target?<div className="CompanyInformation">
+            {target!==null?<div className="CompanyInformation">
                 <div className="title">Мэдүүлэг бөглөсөн:</div>
                 <div className="roww">
                     <div className="coll">
@@ -421,12 +434,12 @@ function CompCheck2() {
             {updateMount === 1 ? success === 1 ? <div className="Success"> <div className="item not"><IoMdCheckmarkCircle />Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.</div> </div>
               : <div className="Success">
                 <div className="item"><IoMdCheckmarkCircle />
-                    {target===1&&`Түншлэлийн хөтөлбөрийн аж ахуйн нэгжийн ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
-                    {target===2&&`Түншлэлийн хөтөлбөрийн кластерын ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
+                    {target===0&&`Түншлэлийн хөтөлбөрийн аж ахуйн нэгжийн ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
+                    {target===1&&`Түншлэлийн хөтөлбөрийн кластерын ангилалд өргөдөл гаргах шалгуур үзүүлэлтийг хангаж байна.`}
                 </div>
                 <NextBtn onClick={() => NextPageHandle('/request/user')} className="NextPageBtn" type="button">Байгаль орчны үнэлгээний асуумж<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>
               </div>
-              : (target&&<div className="buttonPar">
+              : (target!==null&&<div className="buttonPar">
                 <div style={{ opacity: `${opacity2}` }} className="errtext"><CgDanger /> {FinalErrorText}</div>
                 <NextBtn  style={BtnSpin === false ? { width: "40%" } : { width: "10%" }} className="SubmitButton" type="submit"> {BtnSpin === false ? <>Цааш <div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div> </> : <img src="/gifff.gif" alt="" />} </NextBtn>
               </div>)}
@@ -450,7 +463,7 @@ function CompCheck2() {
                       {secondChance.a5 && <li>Экспортыг дэмжих төслийн санхүүгийн дэмжлэгтэйгээр хийхээр төлөвлөсөн ажлуудын санхүүжилтийг урьдчилан гаргах боломжтой бөгөөд түүнийгээ нотлох баримттай эсэх /сүүлийн 2 жилийн мөнгөн урсгалын тайлан, 1 жилийн мөнгөн урсгалын төлөвлөгөө, банкны хуулга гм/</li>}
                       {secondChance.a6 && <li>Аж ахуйн нэгжийн эцсийн өмчлөгч нь улс төрийн нөлөө бүхий этгээд биш эсэх</li>}
 
-                      {secondChance.a7 && <li>{target===1
+                      {secondChance.a7 && <li>{target===0
                       ?`Аж ахуйн нэгжийн ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх`
                       :`Кластерын ангилалд өргөдөл гаргаж байгаа бол сүүлийн хоёр жилийн дунджаар кластерын тэргүүлэгч аж ахуйн нэгж доод тал нь 300 сая, дээд тал нь 150 тэрбум, кластерын гишүүн аж ахуйн нэгж тус бүр доод тал нь 150 сая, дээд тал нь 150 тэрбум төгрөгийн борлуулалттай ажилласан эсэх`
                       }</li>}
@@ -478,8 +491,8 @@ function CompCheck2() {
                 {showFinal && <div onClick={() => setVisible(false)} className="headPar"><span >✖</span></div>}
                 <div style={showFinal ? { opacity: 0.4 } : { opacity: 1 }} className="ModalTextPar">
                   <div className="redPAr">
-                    {target==="Аж ахуйн нэгж"&&<div className="redDesc">Түншлэлийн хөтөлбөрийн аж ахуйн нэгжийн ангилалд өргөдөл гаргах  шалгуур үзүүлэлтийг хангаж байна.</div>}
-                    {target==="Кластер"&&<div className="redDesc">Түншлэлийн хөтөлбөрийн кластерын ангилалд өргөдөл гаргах  шалгуур үзүүлэлтийг хангаж байна.</div>}
+                    {target===0&&<div className="redDesc">Түншлэлийн хөтөлбөрийн аж ахуйн нэгжийн ангилалд өргөдөл гаргах  шалгуур үзүүлэлтийг хангаж байна.</div>}
+                    {target===1&&<div className="redDesc">Түншлэлийн хөтөлбөрийн кластерын ангилалд өргөдөл гаргах  шалгуур үзүүлэлтийг хангаж байна.</div>}
                   </div>
                   <div className="mainText">
                     <div className="title">Жилийн борлуулалтын орлого нь 100 мянган ам.доллароос их бол  <span style={{ fontWeight: "400" }}> ( тийм ) </span>
