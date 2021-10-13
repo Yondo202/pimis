@@ -54,13 +54,16 @@ function CompCheck2() {
 
   useEffect(()=>{
     if(updateMount===1){
+      console.log("targret")
       TargetAnother(target)
     }
   },[updateMount])
 
+  console.log(`param`, param)
+
   useEffect(() => {
     void async function fetch() {
-      const data = await axios.get(`users/${localId}`, { headers: { Authorization: AccessToken() } });
+      const data = await axios.get(`users/${param !== "user" ? param: localId}`, { headers: { Authorization: AccessToken() } });
       setUsersInfo(data.data.data);
       setTarget(data.data.data?.project_type);
       setImgData(data.data.data?.signature);
@@ -198,9 +201,9 @@ function CompCheck2() {
       }
     }
   }
+  
 
   const TargetHandle= (e) =>{
-    console.log(`e++++`, e)
     if(updateMount===0 && param === "user"){
       setTarget(e);
       let arr = [];
@@ -246,6 +249,8 @@ function CompCheck2() {
           arr.push(el);
         }
       });
+
+      console.log(`arr`, arr)
       setInitialData(arr);
   }
 
