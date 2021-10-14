@@ -7,23 +7,26 @@ import { CgProfile } from 'react-icons/cg'
 import { GoMail } from 'react-icons/go'
 import { BiLockOpen } from 'react-icons/bi'
 import { AiOutlineSend } from 'react-icons/ai'
-import { MdKeyboardArrowDown } from 'react-icons/md'
+// import { MdKeyboardArrowDown } from 'react-icons/md'
 import UserContext from '../../context/UserContext'
 import PasswordInducator from './PasswordIndicator'
 import axios from '../../axiosbase';
-import SEctor from 'containers/users/Sector'
+// import SEctor from 'containers/users/Sector'
+
+import Select from 'react-select'
 
 const isNumberRegx = /\d/;
 const specialCharacterRegx = /[ ~@#$!%^&*()_+\-=[\]{;':\\|,.<>/?]/;
 
 function Signup() {
   const signUpCtx = useContext(UserContext);
-  const [showSectors, setShowSectors] = useState(false);
-  const [selectSectors, setSelectSectors] = useState("- Сонго -");
-  const [sectorId, setSectorId] = useState(null);
+  // const [showSectors, setShowSectors] = useState(false);
+  // const [selectSectors, setSelectSectors] = useState("- Сонго -");
+  // const [selectSectors, setSelectSectors] = useState("- Сонго -");
+  const [sectorId, setSectorId] = useState({});
+  const [sectorData, setSectorData] = useState([]);
   const [Show, setShow] = useState(false);
   const [Show2, setShow2] = useState(false);
-  const [sectorData, setSectorData] = useState([]);
   const [PassText, setPassText] = useState("");
   const [scale, setScale] = useState("1");
   const [visible, setVisible] = useState(false);
@@ -86,8 +89,9 @@ function Signup() {
         setPassText("Гүйцэд бөгөлнө үү"); setScale("1"); setTimeout(() => { setScale("0"); setPassText(null);  }, 3000);
       }else if(reg.length !== 7){
         setPassText("Регистрийн дугаараа дахин шалгана уу"); setScale("1"); setTimeout(() => { setScale("0"); setPassText(null);  }, 3000);
-      }else if (selectSectors === "- Сонго -") {
-        setPassText("Салбараа сонгоно уу"); setScale("1"); setShowSectors(true); setTimeout(() => { setScale("0"); setPassText(null); }, 3000);
+      }else if (!sectorId.id) {
+        setPassText("Салбараа сонгоно уу"); setScale("1"); 
+        // setShowSectors(true); setTimeout(() => { setScale("0"); setPassText(null); }, 3000);
         // if(selectSectors!=="- Сонго -"){
         //   setPassText("");setScale("0");
         // }
@@ -96,14 +100,14 @@ function Signup() {
       } else if (finalOne.password !== finalOne.passwordagain) {
         setPassText("Нууц үг адил биш байна..."); setScale("1"); setTimeout(() => { setScale("0"); setPassText(null); }, 3000);
       } else {
-        finalOne["business_sectorId"] = sectorId; setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1");
+        finalOne["business_sectorId"] = sectorId.id; setPassText(""); signUpCtx.signUpUser(finalOne); setScale("1");
       }
   }
   const cond = signUpCtx.errMsgSignup.cond;
 
   return (
     <Component className="SignUp">
-      {showSectors && <GhostPar><div onClick={() => setShowSectors(false)} className="Ghost"></div> <div className="Sectorpar"><SEctor data={sectorData} setSectorId={setSectorId} setSelectSectors={setSelectSectors} setShowSectors={setShowSectors} /></div></GhostPar>}
+      {/* {showSectors && <GhostPar><div onClick={() => setShowSectors(false)} className="Ghost"></div> <div className="Sectorpar"><SEctor data={sectorData} setSectorId={setSectorId} setSelectSectors={setSelectSectors} setShowSectors={setShowSectors} /></div></GhostPar>} */}
       <span >Та бүртгэл үүсгээгүй бол
             {/* <Switch>
                 <Link to="/signup"><a><span className="SignBtn"> Бүртгүүлэх </span></a></Link>
@@ -130,8 +134,6 @@ function Signup() {
                 <li>Өдөр тутмын үйл ажиллагааны санхүүжилт (цалин, түрээс, түүхий эдийн худалдан авалт, дотоодын зар сурталчилгаа цацах, өр цуглуулах үйлчилгээ, үл хөдлөх агентын үйлчилгээ, архитекторын үйлчилгээ, оффис болон үйлдвэрийн үйлчилгээ, өдөр тутмын бизнесийн үйл ажиллагаанд шаардлагатай хэвлэх болон график дизайн, бохирдлын хянах үйл ажиллагаа, хөдөлмөр эрхлэлтийн журам, бүсчлэлийн шаардлага болон болон гүйцэтгэлийн төлбөр, банкны хүү, хураамж, бусдад төлөх өр болон хүү, валютын ханшийн алдагдал, хураамж, торгууль, хандив, тусламж)</li>
                 <li>Өргөдөл гаргагчийн төлөвлөсөн үйл ажиллагааг гүйцэтгэх сургалт, судалгааны зөвлөх үйлчилгээ үзүүлэгч нь өргөдөл гаргагчтай хамаарал бүхий этгээд байх эсхүл ур чадварын хувьд хангалтгүй байх (тухайн салбартаа дор хаяж 10 жил ажилласан туршлагатай байх шаардлагатай); </li>
                 <li>Олон Улсын Хөгжлийн Ассоциаци (ОУХА)-аас хориглосон бусад үйл ажиллагаа</li>
-               
-                
               </ul>
             </div>
 
@@ -193,14 +195,26 @@ function Signup() {
                 <div className="inpChild sectorChild">
                   <div className="labels"><span>Салбарууд : </span> </div>
                   <div className="name">
-                    <div onClick={() => setShowSectors(prev => !prev)} className="sectors" ><span>{selectSectors} </span>  <MdKeyboardArrowDown /> </div>
+                    {/* <div onClick={() => setShowSectors(prev => !prev)} className="sectors" ><span>{selectSectors} </span>  <MdKeyboardArrowDown /> </div> */}
+                    <Select
+                        className="SelectPar"
+                        value={sectorId.id?sectorId:false}
+                        // isClearable 
+                        // menuPortalTarget={document.body}
+                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                        options={sectorData}
+                        getOptionValue={option => `${option.id}`}
+                        onChange={e=>setSectorId(e)}
+                        placeholder={'Сонгоно уу...'}
+                        getOptionLabel={option => `${option.bdescription_mon}`}
+                    />
                   </div>
                 </div>
               </div>
 
               <div className="UserSection">
                 <div className="inpChild">
-                  <div className="labels"><span>Нэр :</span> </div>
+                  <div className="labels"><span>Нэвтрэх нэр  :</span> </div>
                   <div className="name">
                     <CgProfile />
                     <InputStyle className="newInp">
@@ -277,48 +291,50 @@ function Signup() {
 
 export default Signup
 
-const sectorAnimate = keyframes`
-  0%{ transform:translateY(120px); opacity:0; }
-  80%{ transform:translateY(-20px); opacity:0.8; }
-  100%{ transform:translateY(0); opacity:1; }
-`
+// const sectorAnimate = keyframes`
+//   0%{ transform:translateY(120px); opacity:0; }
+//   80%{ transform:translateY(-20px); opacity:0.8; }
+//   100%{ transform:translateY(0); opacity:1; }
+// `
 
-const GhostPar = styled.div`
-  position:fixed;
-  top:0;
-  left:0;
-  height:100vh;
-  width:100vw;
-  z-index:10010;
-  .Ghost{
-    background-color:rgba(250,250,250,0.3);
-    backdrop-filter: blur(4px);
-    position:fixed;
-    height:100%;
-    width:100%;
-  }
-  .Sectorpar{
-    box-shadow:1px 1px 17px -6px rgba(0,51,102,1);
-    animation: ${sectorAnimate} 0.6s ease;
-    transition:all 0.3s ease;
-    transform:scale(1);
-    top:10%;
-    left:25%;
-    position:absolute;
-    z-index:10;
-  }
-  @media only screen and (max-width:768px){
-    .Sectorpar{
-      top:10%;
-      left:5%;
-    }
-  }
-`
+// const GhostPar = styled.div`
+//   position:fixed;
+//   top:0;
+//   left:0;
+//   height:100vh;
+//   width:100vw;
+//   z-index:10010;
+//   .Ghost{
+//     background-color:rgba(250,250,250,0.3);
+//     backdrop-filter: blur(4px);
+//     position:fixed;
+//     height:100%;
+//     width:100%;
+//   }
+//   .Sectorpar{
+//     box-shadow:1px 1px 17px -6px rgba(0,51,102,1);
+//     animation: ${sectorAnimate} 0.6s ease;
+//     transition:all 0.3s ease;
+//     transform:scale(1);
+//     top:10%;
+//     left:25%;
+//     position:absolute;
+//     z-index:10;
+//   }
+//   @media only screen and (max-width:768px){
+//     .Sectorpar{
+//       top:10%;
+//       left:5%;
+//     }
+//   }
+// `
 
 const Component = styled.div`
-    
     margin-top:15px;
     text-align:center;
+    .SelectPar{
+      width:100% !important;
+    }
     .Modaltest{
       width:100%;
       height:100%;
@@ -525,13 +541,14 @@ const Component = styled.div`
                    align-items:flex-end;
                    justify-content:flex-end;
                    width:100%;
-                   svg{
-                     color:rgba(${ColorRgb},0.7);
-                     font-size:24px;
-                     margin-right:15px;
-                     margin-bottom:5px;
-                   }
-                   .pass{
+                   
+                    svg{
+                        color:rgba(${ColorRgb},0.7);
+                        font-size:24px;
+                        margin-right:15px;
+                        margin-bottom:5px;
+                      }
+                    .pass{
                         svg{
                           position:absolute;
                           right:0;

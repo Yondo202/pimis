@@ -269,6 +269,10 @@ export const InputStyle = styled.div`
                     width:100%;
                     left:0;
                 }
+                ::placeholder {
+                    font-weight:normal;
+                    font-style:italic;
+                }
             }
             .RedPar{
                 border-bottom:1px solid red;
