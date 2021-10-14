@@ -93,7 +93,8 @@ export const UserStore = (props) => {
     axios.post("users/register", userinfos)
       .then((res) => {
         // edplan.post(`approves`, { idd: res.data.user.id, approve: false, seen:false })
-        setErrMsgSignUp({ msg: `Таны бүртгүүлсэн "${res.data.user.email}" имэйл хаягаар бид имэйл илгээсэн тул та шалгаж БАТАЛГААЖУУЛАЛТ дээр дарна уу.`, cond: true });;
+        setErrMsgSignUp({ msg: `Таны бүртгүүлсэн "${res.data.user.email}" имэйл хаягаар бид имэйл илгээсэн тул та шалгаж БАТАЛГААЖУУЛАЛТ дээр дарна уу. Таны и-мэйл хаягт баталгаажуулах холбоос очоогүй бол
+        И-мэйл хаягныхаа INBOX -хэсгээ шалгаж хэрвээ мэйл очоогүй бол SPAM -аа шалгана уу.`, cond: true });;
       })
       .catch((e) => {
         setErrMsgSignUp({ msg: e.response?.data.error.message, cond: false });
