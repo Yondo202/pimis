@@ -102,7 +102,7 @@ export default function ProjectHandle() {
                     <Column caption="Явцыг харах" cellRender={data => <ButtonNavProgress data={data} />} headerCellRender={HeaderCell} alignment="left" width={115} />
                     <Column dataField="companyname" caption="ААН нэр" headerCellRender={HeaderCell} alignment="left" minWidth={120} />
                     <Column dataField="companyregister" caption="ААН регистерийн дугаар" headerCellRender={HeaderCell} alignment="left" />
-                    <Column dataField="criteria" caption="Байгаль орчны шалгуур хангалт" headerCellRender={HeaderCell} customizeText={customizeTextCriteria} cellRender={cellRenderCriteria} alignment="left" minwidth={100} />
+                    <Column dataField="criteria" caption="Шалгуур хангалт" headerCellRender={HeaderCell} customizeText={customizeTextCriteria} cellRender={cellRenderCriteria} alignment="left" minwidth={100} />
                     <Column dataField="esm" name="esm" caption="БОҮ Асуумж" headerCellRender={HeaderCell} customizeText={customizeTextEsq} cellRender={cellRenderEsq} alignment="left" minWidth={100} />
                     <Column dataField="esm" name="esm1" caption="Ангилал" headerCellRender={HeaderCell} alignment="center" minWidth={100} />
                     <Column dataField="letterOfInterst" caption="Сонирхол илэрхийлэх албан тоот" headerCellRender={HeaderCell} calculateCellValue={calculateCellValueLetterOI} alignment="left" />

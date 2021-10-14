@@ -177,9 +177,6 @@ function CompCheck2() {
     }
   }
 
-  console.log(`target`, target)
-
-
   const SendData = (soloObject2, cond, userInfos) =>{
     axios.post(`criterias`, soloObject2, { headers: { Authorization: AccessToken() } }).then(_=> {
 

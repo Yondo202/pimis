@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import { Color, ColorRgb, InputStyle, NextBtn } from "../theme"
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa'
 import Modal from 'react-awesome-modal';

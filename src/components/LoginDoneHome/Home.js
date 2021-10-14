@@ -62,7 +62,6 @@ function Home() {
             if(res.data.length!==0){
                 const keys = Object.keys(res.data[0]);
                 setEdPlan(parseInt(((keys.length-7) * 100)/24));
-                console.log(`res.data.firstpage`, res.data)
                 setEdPlanFinal(res.data[0]?.firstpage===true)
             }
         })
@@ -80,14 +79,28 @@ function Home() {
         setInfData(projects[index])
     }
 
+    const DeleteCriteria = () =>{
+        axios.delete(`criterias/${userId}`).then(_=>{
+            history.goBack();
+        })
+    }
+
+
     return (
         <HomeComponent style={userId ? { maxWidth: "2000px" } : { maxWidth: "1160px" }} className={`container`}>
             {
                 // !infCond ? 
                 infData?.criteria === 1
-                    ? <h3 style={{ marginTop: 50 }}>
-                        Таны асуулгаас харахад байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт аж ахуйн нэгжийн шаардлагыг хангахгүй байна. Гэвч танай компани кластерын бүрэлдэхүүний гишүүний шаардлагыг хангавал манайд хандаж болно.
-                    </h3>
+                    ?
+                    <FinalTextParent>
+                        <h3 className="text">
+                            Таны асуулгаас харахад танай байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт хүсэлт гаргахад аж ахуйн нэгжийн шаардлагыг хангахгүй байна.
+                        </h3>
+                        {userId&&<div className="delete">
+                            <div className="buttons" onClick={DeleteCriteria} >Устгах</div> 
+                        </div>}
+                    </FinalTextParent>
+                   
                     : <div
                     //  className={homeC?"":`Hiding`}
                     >
@@ -151,6 +164,28 @@ function Home() {
 }
 
 export default Home
+
+const FinalTextParent = styled.div`
+    margin-top:50px;
+    .delete{
+        margin-top:30px;
+        display:flex;
+        justify-content:end;
+        .buttons{
+            font-weight:500;
+            font-size:13px;
+            border-radius:6px;
+            cursor:pointer;
+            padding:6px 30px;
+            border:1px solid rgba #fff;
+            color:#fff;
+            background-color:#dc3545;
+            &:hover{
+               opacity:0.9;
+            }
+        }
+    }
+`
 
 const animate2 = keyframes`
     0% { margin-top:-15px; opacity:0; }
