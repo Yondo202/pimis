@@ -32,7 +32,7 @@ export default function TrainingFrontPage({ user }) {
                   <div className="tw-mt-2 tw-mb-1 sm:tw-my-0 tw-text-xl tw-flex tw-justify-center tw-flex-grow tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-blue-500 tw-to-green-500 tw-uppercase tw-font-bold tw-px-4 tw-whitespace-nowrap tw-tracking-wide">
                      Сургалтын хөтөлбөр
                   </div>
-                  <img className="tw-h-12 tw-object-contain" src="/head.jpg" alt="logo-big" />
+                  <img className="tw-h-12 tw-object-contain" src="/head_logo.png" alt="logo-big" />
                </div>
 
                <div className="sm:tw-hidden tw-relative tw-flex tw-mt-4 tw-rounded-lg tw-shadow-md tw-py-2.5 tw-px-2">

@@ -109,6 +109,7 @@ const ComponentHome = styled.div`
             padding-top:10vh;
             background-color: white;
             padding:12vh 45px;
+            padding-top:9vh;
             width:30%;
             height:100vh;
             align-items:center;

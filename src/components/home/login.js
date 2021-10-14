@@ -40,7 +40,7 @@ function Login() {
   return (
     <Component>
       <div className="imgPar">
-        <img src="/head.jpg" alt="edp_logo" />
+        <img src="/head_logo.png" alt="edp_logo" />
         <div className="text">Экспортыг дэмжих төсөл</div>
       </div>
       <form onSubmit={handleClick}>
@@ -109,6 +109,7 @@ const Component = styled.div`
     .imgPar{
         text-align:center;
         padding:15px 0px;
+        padding-bottom:15px;
         img{
           animation: ${imageAnimate} 1s ease;
           width:100%;
