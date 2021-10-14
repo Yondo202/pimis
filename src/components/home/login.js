@@ -113,7 +113,7 @@ const Component = styled.div`
         img{
           animation: ${imageAnimate} 1s ease;
           width:100%;
-          margin-bottom:10px;
+          margin-bottom:16px;
         }
         .text{
           font-size:14px;
