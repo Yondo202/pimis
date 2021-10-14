@@ -80,7 +80,7 @@ function Home() {
     }
 
     const DeleteCriteria = () =>{
-        axios.delete(`criterias/${userId}`).then(_=>{
+        axios.delete(`criterias/${userId}`, { headers: { Authorization: AccessToken() } }).then(_=>{
             history.goBack();
         })
     }
