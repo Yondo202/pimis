@@ -98,7 +98,7 @@ const ExportDataContent = ({ SD, userId }) => {
                 setSelected(el);
             }
         } else {
-            if (el.id === "total_sales" || el.id === "emp_count") {
+            if (el.id === "total_sales" || el.id === "emp_count" || el.id === "total_export") {
                 setModalHandle('add');
                 setType(type);
                 setSelected(el);
@@ -126,6 +126,10 @@ const ExportDataContent = ({ SD, userId }) => {
             }
         }
     }
+
+    console.log(`fCountry`, fCountry)
+
+    console.log(`exportData`, exportData)
 
     return (
         <Container style={{ padding: `0px 0px`, boxShadow: `none` }}>
@@ -165,19 +169,21 @@ const ExportDataContent = ({ SD, userId }) => {
                                             + other.total_sales.e2026 + other.total_sales.e2027 + other.total_sales.e2028 + other.total_sales.e2029 + other.total_sales.e2030) : null} ₮
                                     </td>
                                 </tr>
-                                <tr onClick={() => selectRowHandle(other.emp_count?.id ? other.emp_count : { id: 'emp_count' }, "emp_count")} className={`cusorItems ${selected.id === 'emp_count' ? `Selected` : selected.id && selected.id === other.emp_count?.id ? `Selected` : ``}`}>
-                                    <td className="bold">Ажилчдын тоо</td>
-                                    {years.map((e, i) => <td key={i} className="center">{other.emp_count?.id ? NumberComma(other.emp_count[`e${e.year}`]) : null}</td>)}
+
+                                <tr onClick={() => selectRowHandle(other.total_export?.id ? other.total_export : { id: 'total_export' }, "total_export")} className={`cusorItems ${selected.id === 'total_export' ? `Selected` : selected.id && selected.id === other.total_export?.id ? `Selected` : ``}`}>
+                                    <td className="bold">Нийт экспортын дүн</td>
+                                    {years.map((e, i) => <td key={i} className="center">{other.total_export?.id ? NumberComma(other.total_export[`e${e.year}`]) : null}</td>)}
                                     <td className="right bold blue">
-                                        {other.emp_count?.id ? NumberComma(other.emp_count.e2016 + other.emp_count.e2017 + other.emp_count.e2018 + other.emp_count.e2019 + other.emp_count.e2020 + other.emp_count.e2021 + other.emp_count.e2022 + other.emp_count.e2023 + other.emp_count.e2024 + other.emp_count.e2025
-                                            + other.emp_count.e2026 + other.emp_count.e2027 + other.emp_count.e2028 + other.emp_count.e2029 + other.emp_count.e2030) : null}
+                                        {other.total_export?.id ? NumberComma(other.total_export.e2016 + other.total_export.e2017 + other.total_export.e2018 + other.total_export.e2019 + other.total_export.e2020 + other.total_export.e2021 + other.total_export.e2022 + other.total_export.e2023 + other.total_export.e2024 + other.total_export.e2025
+                                            + other.total_export.e2026 + other.total_export.e2027 + other.total_export.e2028 + other.total_export.e2029 + other.total_export.e2030) : null}
                                     </td>
                                 </tr>
+
                             </>
                             : null}
 
-                        {exportData.length === 0 && <tr className={`cusorItems ghost`}>
-                            <td>example</td>
+                        {exportData.length === 0 && <tr onClick={_ => ModalHandle('add')} className={`cusorItems ghost`}>
+                            <td>Экспорт дата</td>
                             <td className="right">0.00 ₮</td>
                             <td className="right">0.00 ₮</td>
                             <td className="right">0.00 ₮</td>
@@ -205,8 +211,6 @@ const ExportDataContent = ({ SD, userId }) => {
                                                     })}
                                                     <td className="right bold blue">
                                                         {NumberComma(years.reduce((curr, item)=>el[`e${item.year}`]+curr, 0))} ₮
-                                                        {/* {NumberComma(el.e2016 + el.e2017 + el.e2018 + el.e2019 + el.e2020 + el.e2021 + el.e2022 + el.e2023 + el.e2024 + el.e2025
-                                                            + el.e2026 + el.e2027 + el.e2028 + el.e2029 + el.e2030)} */}
                                                     </td>
                                                 </tr>
                                             )
@@ -215,6 +219,18 @@ const ExportDataContent = ({ SD, userId }) => {
                                 </React.Fragment>
                             )
                         })}
+                        {userId ?
+                            <>
+                                <tr onClick={() => selectRowHandle(other.emp_count?.id ? other.emp_count : { id: 'emp_count' }, "emp_count")} className={`cusorItems ${selected.id === 'emp_count' ? `Selected` : selected.id && selected.id === other.emp_count?.id ? `Selected` : ``}`}>
+                                    <td className="bold">Ажилчдын тоо</td>
+                                    {years.map((e, i) => <td key={i} className="center">{other.emp_count?.id ? NumberComma(other.emp_count[`e${e.year}`]) : null}</td>)}
+                                    <td className="right bold blue">
+                                        {other.emp_count?.id ? NumberComma(other.emp_count.e2016 + other.emp_count.e2017 + other.emp_count.e2018 + other.emp_count.e2019 + other.emp_count.e2020 + other.emp_count.e2021 + other.emp_count.e2022 + other.emp_count.e2023 + other.emp_count.e2024 + other.emp_count.e2025
+                                            + other.emp_count.e2026 + other.emp_count.e2027 + other.emp_count.e2028 + other.emp_count.e2029 + other.emp_count.e2030) : null}
+                                    </td>
+                                </tr>
+                            </>
+                            : null}
                     </tbody>
                 </table>
             </div>

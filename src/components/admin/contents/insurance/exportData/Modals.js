@@ -97,7 +97,7 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
         <CustomModal>
             <div className={`contentParent ${cName}`} style={{ width: "40rem" }}>
                 <div className="head">
-                    <div className="title">{type === "total_sales" ? `Нийт борлуулалт` : type === "emp_count" ? `Ажилчдын тоо` : `Экспортын мэдээ ${handle==="add"?`Нэмэх`:handle==="edit"?`Засах`:`Устгах`} `} </div>
+                    <div className="title">{type === "total_sales" ? `Нийт борлуулалт` : type === "emp_count" ? `Ажилчдын тоо` : type ==="total_export"? `Нийт экспортын дүн ` : `Экспортын мэдээ ${handle==="add"?`Нэмэх`:handle==="edit"?`Засах`:`Устгах`} `} </div>
                     <div onClick={CloseHandle} className="close">✖</div>
                 </div>
 
