@@ -37,7 +37,6 @@ const ReportComp = ({ dataParent, errText, detail, clickHanlde, modal, listData,
         setDataMn(res?.data?.data?.body_mn);
         setDataEng(res?.data?.data?.body_en);
         setDataId(res?.data?.data?.id);
-        
         // setUserName(res?.data?.data?.user_name);
     }
 

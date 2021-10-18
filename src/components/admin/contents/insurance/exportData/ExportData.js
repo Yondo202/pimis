@@ -170,7 +170,7 @@ const ExportDataContent = ({ SD, userId }) => {
                                     {years.map((e, i) => <td key={i} className="center">{other.emp_count?.id ? NumberComma(other.emp_count[`e${e.year}`]) : null}</td>)}
                                     <td className="right bold blue">
                                         {other.emp_count?.id ? NumberComma(other.emp_count.e2016 + other.emp_count.e2017 + other.emp_count.e2018 + other.emp_count.e2019 + other.emp_count.e2020 + other.emp_count.e2021 + other.emp_count.e2022 + other.emp_count.e2023 + other.emp_count.e2024 + other.emp_count.e2025
-                                            + other.emp_count.e2026 + other.emp_count.e2027 + other.emp_count.e2028 + other.emp_count.e2029 + other.emp_count.e2030) : null} ₮
+                                            + other.emp_count.e2026 + other.emp_count.e2027 + other.emp_count.e2028 + other.emp_count.e2029 + other.emp_count.e2030) : null}
                                     </td>
                                 </tr>
                             </>

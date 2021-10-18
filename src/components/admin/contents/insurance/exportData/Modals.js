@@ -159,7 +159,7 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                                             placeholder={`0 ₮`} 
                                             // value={rate}
                                             //  onChange={e=>setRate(e.target.value.slice(0, -1).replace(/,/g, ''))}
-                                            style={{textAlign:`right`, paddingRight:`7px`}} thousandSeparator={true} suffix={' ₮'}
+                                            style={{textAlign:`right`, paddingRight:`7px`}} thousandSeparator={true} suffix={type === "emp_count" ?'':' ₮'}
                                             name={el.year}
                                             className="gettInpps"
                                         />
