@@ -191,7 +191,7 @@ export default function CompilationChecklist() {
                                 <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${rootCodes.includes(row.rowcode) ? "" : "tw-pl-8 tw-font-light"}`}>
                                     {!rootCodes.includes(row.rowcode) &&
                                         <span className="tw-mr-2 tw-font-normal">
-                                            {row.rowcode.substring(1)}.
+                                            {row.rowcode?.substring(1)}.
                                         </span>
                                     }
                                     {row.description}

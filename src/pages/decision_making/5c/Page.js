@@ -260,7 +260,7 @@ export default function AnalystReport() {
                                 <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${rootCodes.includes(row.rowcode) ? "" : "tw-pl-8 tw-font-light"}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
                                     {!rootCodes.includes(row.rowcode) &&
                                         <span className="tw-mr-2 tw-font-normal">
-                                            {row.rowcode.substring(1)}.
+                                            {row.rowcode?.substring(1)}.
                                         </span>
                                     }
                                     {row.description}
