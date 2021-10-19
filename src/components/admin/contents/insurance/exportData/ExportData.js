@@ -136,7 +136,7 @@ const ExportDataContent = ({ SD, userId }) => {
             {showAdd ? <Modals type={type} handle={modalHandle} selectedEx={selected} setSelectedEx={setSelected} setCond={setExCond} SD={userId ? { user_id: userId } : SD} setModal={setShowAdd} years={years} country={country} /> : null}
 
             {/* <div className="smTitles">Export Data</div> */}
-            <div className="customTable T4">
+            <div className="customTable T4 Tuniq">
                 <div className="headPar ">
                     <div onClick={_ => ModalHandle('add')} className="addBtn addBtn2"><RiAddLine /><span>Экспорт дата - Нэмэх</span></div>
                     <div className={`additions ${selected.id && type === "export_data" ? `` : `opacity`}`}>
@@ -172,7 +172,7 @@ const ExportDataContent = ({ SD, userId }) => {
 
                                 <tr onClick={() => selectRowHandle(other.total_export?.id ? other.total_export : { id: 'total_export' }, "total_export")} className={`cusorItems ${selected.id === 'total_export' ? `Selected` : selected.id && selected.id === other.total_export?.id ? `Selected` : ``}`}>
                                     <td className="bold">Нийт экспортын дүн</td>
-                                    {years.map((e, i) => <td key={i} className="center">{other.total_export?.id ? NumberComma(other.total_export[`e${e.year}`]) : null}</td>)}
+                                    {years.map((e, i) => <td key={i} className="right">{other.total_export?.id ? NumberComma(other.total_export[`e${e.year}`]) : null}</td>)}
                                     <td className="right bold blue">
                                         {other.total_export?.id ? NumberComma(other.total_export.e2016 + other.total_export.e2017 + other.total_export.e2018 + other.total_export.e2019 + other.total_export.e2020 + other.total_export.e2021 + other.total_export.e2022 + other.total_export.e2023 + other.total_export.e2024 + other.total_export.e2025
                                             + other.total_export.e2026 + other.total_export.e2027 + other.total_export.e2028 + other.total_export.e2029 + other.total_export.e2030) : null}

@@ -156,7 +156,7 @@ const Modals = ({ setModal, SD, setCond, years, country, handle, selectedEx, set
                                         <div style={{fontWeight:`500`}} className="label">{el.year}</div>
                                         <NumberFormat
                                             defaultValue={handle!=='add'?selectedEx[`e${el.year}`]:``}
-                                            placeholder={`0 ₮`} 
+                                            placeholder={ type === "emp_count" ?'0':' 0 ₮'} 
                                             // value={rate}
                                             //  onChange={e=>setRate(e.target.value.slice(0, -1).replace(/,/g, ''))}
                                             style={{textAlign:`right`, paddingRight:`7px`}} thousandSeparator={true} suffix={type === "emp_count" ?'':' ₮'}
