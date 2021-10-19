@@ -29,7 +29,7 @@ const FirstEvaluation = () => {
   const handleInput = (key, value, rowcode) => {
     if (canEdit) {
       setRows(prev => {
-        const next = [prev]
+        const next = [...prev]
         const index = rows.findIndex(row => row.rowcode === rowcode)
         next[index][key] = value
         return next
@@ -149,7 +149,7 @@ const FirstEvaluation = () => {
                 <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${rootCodes.includes(row.rowcode) ? "" : "tw-pl-8 tw-font-light"}`}>
                   {!rootCodes.includes(row.rowcode) &&
                     <span className="tw-mr-2 tw-font-normal">
-                      {row.rowcode.substring(1)}.
+                      {row.rowcode?.substring(1)}.
                     </span>
                   }
                   {row.description}
