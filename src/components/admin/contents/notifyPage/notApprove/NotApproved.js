@@ -12,6 +12,7 @@ function NotApproved({projectId }) {
   const history = useHistory();
   const [ data, setData ] = useState();
   const [ edpInfo ,setEdpInfo ] = useState({});
+  const [ userData, setUserData ] = useState({})
 
   const componentRef = useRef();
     useEffect(()=>{
@@ -22,16 +23,24 @@ function NotApproved({projectId }) {
       axios.get(`edp-info`,{ headers: { Authorization: AuthToken() } }).then(res=>{
         if(res.data.data?.id){ setEdpInfo(res.data.data);   }
       }).catch(err=>console.log(`err`, err));
+
+      axios.get(`users/${localStorage.getItem("userId")}`,{ headers: { Authorization: AuthToken() } }).then(res=>{
+        if(res.data?.data?.id){
+          setUserData(res.data.data)
+        }
+      })
+      
     },[])
 
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
     });
+
       return (
           <MainContainter className="container">
               <div className="containt">
                   <div className="parent" ref={componentRef}>
-                      <Content edpInfo={edpInfo} history={history} data={data} projectId={projectId} />
+                      <Content edpInfo={edpInfo} history={history} data={data} projectId={projectId} userData={userData} />
                   </div>
                   <button className="print" onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
               </div >

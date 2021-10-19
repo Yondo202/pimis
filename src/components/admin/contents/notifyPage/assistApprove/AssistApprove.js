@@ -17,9 +17,13 @@ function AssistApprove({projectId, approve, setNotifyShow}) {
       axios.get(`edp-info`,{ headers: { Authorization: AuthToken() } }).then(res=>{
         if(res.data.data?.id){ setEdpInfo(res.data.data); }
       }).catch(err=>console.log(`err`, err));
+
+      
       axios.get(`users?role=tosliin_zohitsuulagch`,{ headers: { Authorization: AuthToken() } }).then(res=>{
         if(res.data.data.length){ setSignature(res.data.data[0]) }
       }).catch(err=>console.log(`err`, err));
+      
+
     },[])
       return (
             <MainContainter>
