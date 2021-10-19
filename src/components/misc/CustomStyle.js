@@ -393,6 +393,22 @@ export const Container = styled.div`
                 }
             }
         }
+        T
+    }
+    .Tuniq{
+        table{
+            th{
+                text-align:center;
+            }
+            td, th{
+                &:first-child{
+                    padding-left:20px;
+                    text-align:left;
+                }
+                // padding:8px 8px;
+                padding-left:12px;
+            }
+        }
     }
     .T3{
         width:100%;
