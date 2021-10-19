@@ -125,7 +125,7 @@ const DataList = [
                     <div className="nameTitle A2"><span className="smtitle">Хүндэтгэсэн, </span></div>
                     <div className="nameTitle A2" ><span className="smtitle">{userData?.firstname}</span><span className="MemeberInfo"></span></div>
                     <div className="nameTitle A2" ><span className="smtitle">Бизнес хөгжлийн зөвлөх </span></div>
-                    <div className="nameTitle A2"><span className="smtitle">Холбоо барих: </span><span className="MemeberInfo">{userData?.phone}</span></div>
+                    <div className="nameTitle A2"><span className="smtitle">Холбоо барих: <span style={{fontWeight:`400`}}>{userData?.phone}</span> </span><span className="MemeberInfo"></span></div>
 
                     {/* <div style={{marginTop:"10px"}} className="nameTitle A2">
                         <span className="smtitle">Гарын үсэг : </span> 
@@ -177,8 +177,8 @@ const EmailHTML = (stateData, data, edpInfo, rejectReason, userData) => renderEm
                         <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Бизнес хөгжлийн зөвлөх </Span>
                     </Item>
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
-                        <Span style={{color:"#222222", width:"50%",fontWeight:"600", fontSize:'13px'}}>Холбоо барих: </Span>
-                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} >{userData?.phone}</Span>
+                        <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Холбоо барих: {userData?.phone}</Span>
+                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} ></Span>
                     </Item>
                     
                 </Item>

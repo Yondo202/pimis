@@ -20,7 +20,6 @@ function Approved({ projectId }) {
     }).catch(err=>console.log(`err`, err));
 
     axios.get(`users/${localStorage.getItem("userId")}`,{ headers: { Authorization: AuthToken() } }).then(res=>{
-      console.log(`res.data`, res.data.data)
       if(res.data?.data?.id){
         setUserData(res.data.data)
       }
