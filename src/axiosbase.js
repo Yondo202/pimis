@@ -4,13 +4,8 @@ const instance = axios.create({
   // baseURL: "http://103.50.205.158:3000/api/",
   // baseURL: "http://192.168.88.78:3000/api/",
   // baseURL: "http://124.158.107.34:3000/api/",
-<<<<<<< HEAD
   // baseURL: "http://192.168.88.232:3000/api/",
   baseURL: "http://localhost:3000/api/",
-=======
-  baseURL: "http://192.168.88.232:3000/api/",
-  // baseURL: "http://localhost:3000/api/",
->>>>>>> 1a59ba079b4920d5fa14f509b5ad0686f374a797
   // baseURL: "https://pimis.edp.mn/api/",
 });
 
