@@ -12,7 +12,7 @@ import { useHistory, useParams } from "react-router"
 import ChevronDownSVG from "assets/svgComponents/chevronDownSVG"
 import FormRichText from "components/urgudul_components/formRichText"
 
-const editors = ['edpadmin', 'member', 'ahlah_bhsh']
+const editors = ['edpadmin', 'member', 'ahlah_bhsh', 'bh_zovloh']
 const rootCodes = ['a', 'b', 'c', 'z']
 const emptyEditor = '<p><br></p>'
 

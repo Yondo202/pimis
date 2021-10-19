@@ -12,7 +12,7 @@ function FormOptions({ label, options, values, value, name, index, setter, class
     return (
         <div className={`tw-px-3 tw-pt-2 tw-pb-3 ${classAppend}`}>
             {label &&
-                <label className={`${invalid && 'tw-text-red-500'} tw-transition-colors ${classLabel} tw-text-sm tw-flex tw-items-center tw-mb-1`}>
+                <label className={`${invalid && 'tw-text-red-500'} tw-font-normal tw-text-gray-600 tw-transition-colors ${classLabel} tw-text-sm tw-flex tw-items-center tw-mb-1`}>
                     {label}
                     {HelpPopup && HelpPopup}
                 </label>

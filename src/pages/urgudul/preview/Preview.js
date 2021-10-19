@@ -21,7 +21,7 @@ const labels = {
         activity_direction: 'Үйл ажиллагааны чиглэл',
         main_export: 'Экспортын гол бүтээгдэхүүний ангилал',
         export_products: 'Экспортийн бүтээгдэхүүнүүд',
-        export_country: 'Экспортын зорилтот орны нэр',
+        export_countries: 'Экспортын зорилтот орны нэр',
         planned_activity: 'Төлөвлөсөн үйл ажиллагааны чиглэл',
         planned_activity_budget: 'Төлөвлөсөн үйл ажиллагааны нийт төсөв'
     },
@@ -57,7 +57,7 @@ const labels = {
     page5: {
         sales: 'Борлуулалт',
         fullTime_workplace: 'Ажлын байр',
-        export_details: 'Экспортын задаргаа',
+        export_details: 'Экспортын задаргаа'
     },
     page6: {
         activity: 'Үйл ажиллагаа',
@@ -201,11 +201,11 @@ export default function UrgudulPreview(props) {
 
     const getActivityDirection = (id) => activityClass[id - 1]
     const getMainExport = (id, other) => id === -1
-        ? `Бусад:  ${other}`
+        ? `Бусад - ${other}`
         : getProductNameOther(id)
 
     const getExportCountry = (id, other) => id === -1
-        ? `Бусад:  ${other}`
+        ? `Бусад - ${other}`
         : getCountryNameOther(id)
 
     const getPlannedActivity = (id, cost) => cost
@@ -326,9 +326,18 @@ export default function UrgudulPreview(props) {
                                 )}
                             </div>
 
-                            <RowLabel label={labels.page1.export_country} style={{ borderTop: 'none' }} />
-                            <Row label="Одоогийн байдлаар" value={getExportCountry(project.export_country, project.export_country_other)} labelClass="tw-pl-4" />
-                            <Row label="Уг өргөдлийн хувьд төлөвлөсөн" value={getExportCountry(project.export_country_planned, project.export_country_planned_other)} labelClass="tw-pl-4" classAppend="tw-border-b tw-border-gray-400" />
+                            <RowLabel label={labels.page1.export_countries} style={{ borderTop: 'none' }} />
+                            <div className="tw-border-b tw-border-gray-400 tw-pl-2">
+                                {project.exportCountries?.map((country, i) =>
+                                    <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-border-t-0 tw-grid tw-grid-cols-2">
+                                        <span className="">
+                                            <span className="tw-mr-1.5">{i + 1}.</span>
+                                            Одоогийн байдлаар: {getExportCountry(country.current, country.current_other)}
+                                        </span>
+                                        <span className="tw-pl-2">Уг өргөдлийн хувьд төлөвлөсөн: {getExportCountry(country.planned, country.planned_other)}</span>
+                                    </div>
+                                )}
+                            </div>
 
                             <Row label={labels.page1.planned_activity} value={getPlannedActivity(project.planned_activity, project.planned_activity_cost)} />
                             <Row label={labels.page1.planned_activity_budget} value={toCurrencyString(project.planned_activity_budget)} />
@@ -549,7 +558,7 @@ export default function UrgudulPreview(props) {
 
                     <div className="no-break">
                         <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-b-0 tw-border-gray-800 tw-mt-8">
-                            Экспортын мэдээлэл
+                            Экспортын мэдээлэл, ₮
                         </div>
                         <div className="tw-w-full tw-overflow-x-auto">
                             <table className="">
@@ -561,6 +570,9 @@ export default function UrgudulPreview(props) {
                                                 {year}
                                             </th>
                                         )}
+                                        <th className={classTableCell}>
+                                            Нийт
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -570,17 +582,23 @@ export default function UrgudulPreview(props) {
                                         </td>
                                         {exportYears.map(year =>
                                             <td className={`${classTableCell} tw-text-right`} key={year}>
-                                                {toCurrencyString(exportData?.types?.total_sales?.[`e${year}`])}
+                                                {/* {toCurrencyString(exportData?.types?.total_sales?.[`e${year}`])} */}
+                                                {exportData?.types?.total_sales?.[`e${year}`]?.toLocaleString()}
                                             </td>
                                         )}
+                                        {/* <td className={classTableCell}>
+                                            {Object.entries(exportData?.types?.total_sales ?? {}).reduce((acc, cv) => exportYears.includes(cv[0].substring(1)
+                                            ? acc +  ))}
+                                        </td> */}
                                     </tr>
                                     <tr className="">
                                         <td className={classTableCell}>
-                                            Ажилчдын тоо
+                                            Нийт экспортын дүн
                                         </td>
                                         {exportYears.map(year =>
                                             <td className={`${classTableCell} tw-text-right`} key={year}>
-                                                {exportData?.types?.emp_count?.[`e${year}`]}
+                                                {/* {toCurrencyString(exportData?.types?.total_sales?.[`e${year}`])} */}
+                                                {exportData?.types?.total_export?.[`e${year}`]?.toLocaleString()}
                                             </td>
                                         )}
                                     </tr>
@@ -598,13 +616,25 @@ export default function UrgudulPreview(props) {
                                                     </td>
                                                     {exportYears.map(year =>
                                                         <td className={`${classTableCell} tw-text-right`} key={year}>
-                                                            {toCurrencyString(country[`e${year}`])}
+                                                            {/* {toCurrencyString(country[`e${year}`])} */}
+                                                            {country[`e${year}`]?.toLocaleString()}
                                                         </td>
                                                     )}
                                                 </tr>
                                             )}
                                         </Fragment>
                                     )}
+                                    <tr className="">
+                                        <td className={classTableCell}>
+                                            Ажилчдын тоо
+                                        </td>
+                                        {exportYears.map(year =>
+                                            <td className={`${classTableCell} tw-text-right`} key={year}>
+                                                {/* {exportData?.types?.emp_count?.[`e${year}`]} */}
+                                                {exportData?.types?.emp_count?.[`e${year}`]?.toLocaleString()}
+                                            </td>
+                                        )}
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

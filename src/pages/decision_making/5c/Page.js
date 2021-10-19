@@ -68,7 +68,7 @@ const initialInfo = {
     zuvluh_signature: null
 }
 
-const editors = ['edpadmin', 'member', 'ahlah_bhsh']
+const editors = ['edpadmin', 'member', 'ahlah_bhsh', 'bh_zovloh']
 const rootCodes = ['a', 'b', 'c', 'z']
 const emptyEditor = '<p><br></p>'
 
