@@ -4,7 +4,7 @@ import HelpPopup from 'components/help_popup/helpPopup'
 import LoadFromOtherProject from '../loadFromOtherProject'
 import AlertContext from 'components/utilities/alertContext'
 import FormOptions from 'components/urgudul_components/formOptions'
-import { animated, Transition } from 'react-spring/renderprops'
+import { animated, Transition, config } from 'react-spring/renderprops'
 import axios from 'axiosbase'
 import FormInline from 'components/urgudul_components/formInline'
 import ButtonTooltip from 'components/button_tooltip/buttonTooltip'
@@ -22,8 +22,8 @@ export default function UrgudulPage1({ projects = [] }) {
    const history = useHistory()
 
    const [form, setForm] = useState(initialState)
-   const [products, setProducts] = useState(initialProducts)
-   const [exportCountries, setExportCountries] = useState(initialExportCountries)
+   const [products, setProducts] = useState([...initialProducts])
+   const [exportCountries, setExportCountries] = useState([...initialExportCountries])
    const [companyName, setCompanyName] = useState(localStorage.getItem('companyname') ?? UrgudulCtx.data.user?.companyname)
    const [validate, setValidate] = useState(false)
 
@@ -53,14 +53,14 @@ export default function UrgudulPage1({ projects = [] }) {
       if (value instanceof Array && value?.length) {
          setProducts(value)
       } else {
-         setProducts(initialProducts)
+         setProducts([...initialProducts])
       }
 
       const value1 = UrgudulCtx.data.exportCountries
       if (value1 instanceof Array && value1?.length) {
          setExportCountries(value1)
       } else {
-         setExportCountries(initialExportCountries)
+         setExportCountries([...initialExportCountries])
       }
    }, [projectId])
 
@@ -73,7 +73,7 @@ export default function UrgudulPage1({ projects = [] }) {
       setValidate(true)
       let allValid = true
       Object.keys(initialState)
-         .filter(key => !['main_export_other', 'main_export_planned_other'].includes(key))
+         .filter(key => !validateArr.includes(key))
          .forEach(key => {
             switch (key) {
                case 'main_export':
@@ -85,6 +85,21 @@ export default function UrgudulPage1({ projects = [] }) {
                   form[key] === -1
                      ? allValid = allValid && !checkInvalid(form.main_export_planned_other)
                      : allValid = allValid && !checkInvalid(form[key])
+                  break
+               case 'export_marketing':
+                  if (form[key] === 1) {
+                     allValid = allValid && !checkInvalid(form[`${key}_cost`])
+                  }
+                  break
+               case 'quality_control':
+                  if (form[key] === 1) {
+                     allValid = allValid && !checkInvalid(form[`${key}_cost`])
+                  }
+                  break
+               case 'tech_control':
+                  if (form[key] === 1) {
+                     allValid = allValid && !checkInvalid(form[`${key}_cost`])
+                  }
                   break
                default:
                   allValid = allValid && !checkInvalid(form[key])
@@ -121,7 +136,7 @@ export default function UrgudulPage1({ projects = [] }) {
       setValidate(true)
       let allValid = true
       Object.keys(initialState)
-         .filter(key => !['main_export_other', 'main_export_planned_other'].includes(key))
+         .filter(key => !validateArr.includes(key))
          .forEach(key => {
             switch (key) {
                case 'main_export':
@@ -133,6 +148,21 @@ export default function UrgudulPage1({ projects = [] }) {
                   form[key] === -1
                      ? allValid = allValid && !checkInvalid(form.main_export_planned_other)
                      : allValid = allValid && !checkInvalid(form[key])
+                  break
+               case 'export_marketing':
+                  if (form[key] === 1) {
+                     allValid = allValid && !checkInvalid(form[`${key}_cost`])
+                  }
+                  break
+               case 'quality_control':
+                  if (form[key] === 1) {
+                     allValid = allValid && !checkInvalid(form[`${key}_cost`])
+                  }
+                  break
+               case 'tech_control':
+                  if (form[key] === 1) {
+                     allValid = allValid && !checkInvalid(form[`${key}_cost`])
+                  }
                   break
                default:
                   allValid = allValid && !checkInvalid(form[key])
@@ -283,9 +313,18 @@ export default function UrgudulPage1({ projects = [] }) {
 
                <ExportCountries label="Экспортын зорилтот орны нэр" list={exportCountries} setter={setExportCountries} validate={validate} countriesOther={countriesOther} />
 
-               <PlannedActivity label="Төлөвлөсөн үйл ажиллагааны чиглэл" value={form.planned_activity} valueCost={form.planned_activity_cost} setter={handleInput} validate={validate} />
-
-               <FormInline label="Төлөвлөсөн үйл ажиллагааны нийт төсөв" type="numberFormat" formats={{ prefix: '₮ ', decimalScale: 2, thousandSeparator: true }} value={form.planned_activity_budget} name="planned_activity_budget" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(form.planned_activity_budget)} />
+               <PlannedActivity label="Төлөвлөсөн үйл ажиллагааны чиглэл" setter={handleInput} validate={validate}
+                  values={[{
+                     check: form.export_marketing,
+                     cost: form.export_marketing_cost
+                  }, {
+                     check: form.quality_control,
+                     cost: form.quality_control_cost
+                  }, {
+                     check: form.tech_control,
+                     cost: form.tech_control_cost
+                  }]}
+               />
             </div>
 
             <div className="tw-flex tw-justify-end">
@@ -301,7 +340,7 @@ export default function UrgudulPage1({ projects = [] }) {
             from={{ transform: 'scale(0)' }}
             enter={{ transform: 'scale (1)' }}
             leave={{ transform: 'scale (0)' }}
-            config={{ clamp: true }}
+            config={config.stiff}
          >
             {item => item && (anims =>
                <animated.div className="tw-mt-8 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white" style={anims}>
@@ -356,13 +395,12 @@ const initialState = {
    main_export_other: null,
    main_export_planned: null,
    main_export_planned_other: null,
-   // export_country: null,
-   // export_country_other: null,
-   // export_country_planned: null,
-   // export_country_planned_other: null,
-   planned_activity: null,
-   planned_activity_cost: null,
-   planned_activity_budget: null,
+   export_marketing: null,
+   export_marketing_cost: null,
+   quality_control: null,
+   quality_control_cost: null,
+   tech_control: null,
+   tech_control_cost: null
 }
 
 const initialProducts = [{
@@ -383,13 +421,21 @@ export const activityClass = [
    'Соёлын бүтээлч үйлдвэрэл, мэдээллийн технологи',
 ]
 
-export const plannedActivityClass = [
-   'Экспортын маркетинг',
-   'Экспортын бүтээгдэхүүний чанарын удирдлага, гэрчилгээжүүлэлт',
-   'Экспортын бүтээгдэхүүний үйлдвэрлэл, технологийн удирдлага',
-]
+export const plannedActivityClass = {
+   export_marketing: 'Экспортын маркетинг',
+   quality_control: 'Экспортын бүтээгдэхүүний чанарын удирдлага, гэрчилгээжүүлэлт',
+   tech_control: 'Экспортын бүтээгдэхүүний үйлдвэрлэл, технологийн удирдлага'
+}
 
 export const containerClass = 'tw-mt-8 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed'
+
+const validateArr = [
+   'main_export_other',
+   'main_export_planned_other',
+   'export_marketing_cost',
+   'quality_control_cost',
+   'tech_control_cost'
+]
 
 export const UrgudulHeader = ({ label, HelpPopup, LoadFromOtherProject, projectNumber }) => (
    <div className="">
@@ -419,7 +465,7 @@ function OthersInline({ value, name, index, setter, invalid, valueEffect }) {
          from={{ opacity: 0, height: 0 }}
          enter={{ opacity: 1, height: 'auto' }}
          leave={{ opacity: 0, height: 0 }}
-         config={{ clamp: true }}
+         config={config.stiff}
       >
          {item => item && (anims =>
             <animated.div className="tw-pl-3 tw-overflow-hidden tw-flex tw-items-center" style={anims}>
@@ -541,7 +587,7 @@ function ExportCountries({ label, HelpPopup, list, setter, validate, countriesOt
                      </div>
                      <div className="tw-w-full">
                         <FormSelect
-                           data={countriesOther}
+                           data={countriesOther.filter(country => country.id !== -2)}
                            setter={handleInput}
                            name="planned"
                            index={i}
@@ -576,50 +622,61 @@ function ExportCountries({ label, HelpPopup, list, setter, validate, countriesOt
    )
 }
 
-function PlannedActivity({ label, HelpPopup, value, valueCost, setter, validate }) {
-   const handleChange = (id) => {
-      setter('planned_activity', id)
-      setter('planned_activity_cost', null)
+function PlannedActivity({ label, HelpPopup, values, setter, validate }) {
+   const handleChange = (name, index) => {
+      if (values[index].check === 1) {
+         setter(name, 0)
+         setter(`${name}_cost`, null)
+      } else {
+         setter(name, 1)
+      }
    }
+
+   const sumActivityCost = values.reduce((acc, cv) => acc + (+cv.cost || 0), 0)
 
    return (
       <div className="md:tw-col-span-2 tw-w-full tw-mt-2">
          <div className="tw-text-sm tw-p-2 tw-flex tw-items-center">
-            <span className={(validate && checkInvalid(value)) ? 'tw-text-red-500 tw-transition-colors' : ''}>
+            <span className="">
                {label}
             </span>
             {HelpPopup && HelpPopup}
          </div>
 
          <div className="tw-pl-3">
-            {plannedActivityClass.map((option, i) =>
+            {Object.entries(plannedActivityClass).map(([name, label], i) =>
                <div className="tw-flex tw-flex-col tw-items-start" key={i}>
-                  <div className="tw-cursor-pointer tw-flex tw-items-center tw-pl-2 tw-py-1" onClick={() => handleChange(i + 1)}>
-                     <span className={`tw-rounded-full tw-w-4 tw-h-4 tw-border-2 ${value === i + 1 ? 'tw-border-blue-700' : 'tw-border-gray-500'} tw-transition-colors tw-flex tw-justify-center tw-items-center`}>
-                        <span className={`tw-rounded-full tw-w-2 tw-h-2 ${value === i + 1 ?
+                  <div className="tw-cursor-pointer tw-flex tw-items-center tw-pl-2 tw-py-1" onClick={() => handleChange(name, i)}>
+                     <span className={`tw-rounded-full tw-w-4 tw-h-4 tw-border-2 ${values[i].check === 1 ? 'tw-border-blue-700' : 'tw-border-gray-500'} tw-transition-colors tw-flex tw-justify-center tw-items-center`}>
+                        <span className={`tw-rounded-full tw-w-2 tw-h-2 ${values[i].check === 1 ?
                            'tw-bg-blue-700' : 'tw-bg-transparent'} tw-transition-colors`} />
                      </span>
                      <span className="tw-ml-1.5">
-                        {option}
+                        {label}
                      </span>
                   </div>
                   <Transition
-                     items={value === i + 1}
+                     items={values[i].check === 1}
                      from={{ opacity: 0, height: 0 }}
                      enter={{ opacity: 1, height: 'auto' }}
                      leave={{ opacity: 0, height: 0 }}
-                     config={{ clamp: true }}
+                     config={config.stiff}
                   >
                      {item => item && (anims =>
                         <animated.span className="tw-pl-8 tw-flex tw-items-center tw-py-1" style={anims}>
                            Үнийн дүн:
-                           <NumberFormat className={`${basicInputClass} tw-ml-2 ${validate && checkInvalid(valueCost) && 'tw-border-red-500'} tw-transition-colors`} value={valueCost ?? ''} prefix="₮ " decimalScale={2} thousandSeparator onValueChange={values => setter('planned_activity_cost', values.floatValue)} />
+                           <NumberFormat className={`${basicInputClass} tw-ml-2 ${validate && checkInvalid(values[i].cost) && 'tw-border-red-500'} tw-transition-colors`} value={values[i].cost} prefix="₮ " decimalScale={2} thousandSeparator onValueChange={values => setter(`${name}_cost`, values.floatValue)} />
                         </animated.span>
                      )}
                   </Transition>
                </div>
             )}
          </div>
+
+         <StaticText
+            label="Төлөвлөсөн үйл ажиллагааны нийт төсөв"
+            text={`₮ ${sumActivityCost.toLocaleString()}`}
+         />
       </div>
    )
 }

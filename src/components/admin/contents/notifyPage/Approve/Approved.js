@@ -9,6 +9,8 @@ import AuthToken from 'context/accessToken'
 function Approved({ projectId }) {
   const [ data, setData ] = useState({});
   const [ edpInfo ,setEdpInfo ] = useState({});
+  const [ userData, setUserData ] = useState({})
+
   useEffect(()=>{
     axios.get(`pps-infos/registered-companies?projectId=${projectId}`, { headers: { Authorization: AuthToken() } }).then(res=>{
       if(res.data.data.length){ setData(res.data.data[0]) }
@@ -16,21 +18,28 @@ function Approved({ projectId }) {
     axios.get(`edp-info`,{ headers: { Authorization: AuthToken() } }).then(res=>{
       if(res.data.data?.id){ setEdpInfo(res.data.data); }
     }).catch(err=>console.log(`err`, err));
+
+    axios.get(`users/${localStorage.getItem("userId")}`,{ headers: { Authorization: AuthToken() } }).then(res=>{
+      if(res.data?.data?.id){
+        setUserData(res.data.data)
+      }
+    })
   },[])
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
     });
-      return (
-          <MainContainter className="container">
-              <div className="containt">
-                  <div className="parent" ref={componentRef}>
-                      <Content edpInfo={edpInfo} data={data} projectId={projectId} />
-                  </div>
-                  <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
-              </div >
-          </MainContainter>
-        )
+
+    return (
+        <MainContainter className="container">
+            <div className="containt">
+                <div className="parent" ref={componentRef}>
+                    <Content edpInfo={edpInfo} data={data} projectId={projectId} userData={userData} />
+                </div>
+                <button className="print"  onClick={handlePrint}><VscFilePdf />  Хэвлэх болон Pdf - ээр татах</button>
+            </div >
+        </MainContainter>
+    )
 }
 
 export default Approved

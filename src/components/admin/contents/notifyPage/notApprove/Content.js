@@ -46,7 +46,7 @@ class Content extends React.Component {
                 additionMaterial: this.state.rejectReason,
                 // signatureData:this.state.signature,
                 signatureData:null,
-                emailBody:EmailHTML( this.props?.data, this.props?.edpInfo, this.state.username, this.state.rejectReason ),
+                emailBody:EmailHTML( this.props?.data, this.props?.edpInfo, this.state.username, this.state.rejectReason, this.props?.userData ),
             }, { headers: { Authorization: AuthToken() } })
             .then((res)=>{ this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true);
                 setTimeout(()=>{
@@ -63,8 +63,9 @@ class Content extends React.Component {
     // signatureVerify = () =>{  this.props.history.push(`/signature`) }
 
     render() {
-        const data = this.props?.data
-        const edpInfo = this.props?.edpInfo
+        const data = this.props?.data;
+        const edpInfo = this.props?.edpInfo;
+        const userData = this.props?.userData;
 
         return (
             <>
@@ -79,7 +80,7 @@ class Content extends React.Component {
                 <div className="title">Урьдчилсан мэдүүлэгт тэнцээгүй тухай мэдэгдэл</div>
 
                 <div className="contentPar">
-                    <div className="items">Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрийн {data?.project?.project_number?.slice(4,6)} оны {data?.project?.project_number?.slice(7,9)} дугаар цонхонд өргөдлөө ирүүлсэнд баярлалаа. Танай байгууллагын ирүүлсэн материалтай бид танилцаж, доорх шалтгаанаар дараагийн шатанд шалгараагүйг мэдэгдэж байна.</div> <br />
+                    <div className="items">Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрийн 20{data?.project?.project_number?.slice(4,6)} оны {data?.project?.project_number?.slice(7,9)} дугаар цонхонд өргөдлөө ирүүлсэнд баярлалаа. Танай байгууллагын ирүүлсэн материалтай бид танилцаж, доорх шалтгаанаар дараагийн шатанд шалгараагүйг мэдэгдэж байна.</div> <br />
                     <div className="betweenItem">
                             <div className="titless">Татгалзсан шалтгаан:</div><br/>
                             <InputStyle><textarea onChange={this.changHanlder} id="getInp" placeholder="Татгалзсан шалтгааныг бичнэ үү..." /> <div className="line"/></InputStyle>
@@ -89,9 +90,9 @@ class Content extends React.Component {
                 </div>
                 
                 <div className="nameTitle A2"><span className="smtitle">Хүндэтгэсэн, </span><span className="MemeberInfo"></span></div>
-                <div className="nameTitle A2" ><span className="smtitle">Нэр: </span><span className="MemeberInfo">{this.state.username}</span></div>
+                <div className="nameTitle A2" ><span className="smtitle">{userData.firstname}</span><span className="MemeberInfo"></span></div>
                 <div className="nameTitle A2" ><span className="smtitle">Бизнес хөгжлийн зөвлөх: </span></div>
-                <div className="nameTitle A2"><span className="smtitle">Холбоо барих: </span><span className="MemeberInfo">{edpInfo?.phone}</span></div>
+                <div className="nameTitle A2"><span className="smtitle">Холбоо барих: {userData?.phone}</span><span className="MemeberInfo"></span></div>
 
                 {/* <div style={{marginTop:"10px"}} className="nameTitle A2">
                     <span className="smtitle">Гарын үсэг : </span> 
@@ -111,12 +112,12 @@ class Content extends React.Component {
 
 export default withRouter(Content);
 
-const EmailHTML = ( data, edpInfo, username, rejectReason ) => renderEmail(
+const EmailHTML = ( data, edpInfo, username, rejectReason, userData ) => renderEmail(
     <Email style={{border:"1px solid rgba(0,0,0,0.2)",padding:'30px 70px', paddingTop:"15px",  width:"830px", backgroundColor:"rgba(220,220,220,0.2)"}} title="EDP">
-        <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
+        <Image style={{width:"100%"}} src="https://pimis.edp.mn/head_logo.png" />
             <Item style={{color:"#222222", padding:'20px 20px', height:"100%"}} align="end">
                 <Box style={{textAlign:"center",width:"100%", marginBottom:'30px',marginTop:'18px',fontWeight:'500', fontSize:'16px', backgroundColor:"rgba(220,220,220,0.2)"}} >Урьдчилсан мэдүүлэгт тэнцээгүй тухай мэдэгдэл</Box>
-                <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрийн {data?.project?.project_number?.slice(4,6)} оны {data?.project?.project_number?.slice(7,9)} дугаар цонхонд өргөдлөө ирүүлсэнд баярлалаа. Танай байгууллагын ирүүлсэн материалтай бид танилцаж, доорх шалтгаанаар дараагийн шатанд шалгараагүйг мэдэгдэж байна. </Box>
+                <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрийн 20{data?.project?.project_number?.slice(4,6)} оны {data?.project?.project_number?.slice(7,9)} дугаар цонхонд өргөдлөө ирүүлсэнд баярлалаа. Танай байгууллагын ирүүлсэн материалтай бид танилцаж, доорх шалтгаанаар дараагийн шатанд шалгараагүйг мэдэгдэж байна. </Box>
                 <Box style={{textAlign:"start",width:"100%", marginTop:'15px',marginBottom:'5px',  fontSize:'13px', fontWeight:"500"}}>Татгалзсан шалтгаан:</Box>
                 <Box style={{textAlign:"start",width:"100%", marginBottom:'15px', fontSize:'13px',}}>{rejectReason}</Box>
                 <Box style={{textAlign:"start",width:"100%", marginTop:'5px',marginBottom:'25px', fontSize:'13px'}}>Хэрэв та дээрх шалтгаануудыг засварлан, хүсэлт илгээхийг хүсвэл дараачийн удаа нээгдэх сонгон шалгаруулалтанд дахин оролцох боломжтой.</Box>
@@ -127,21 +128,18 @@ const EmailHTML = ( data, edpInfo, username, rejectReason ) => renderEmail(
                 </Item>
 
                 <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
-                    <Span style={{color:"#222222",width:"50%",fontWeight:"600", fontSize:'13px'}}>Нэр: </Span>
-                    <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} > {username}</Span>
+                    <Span style={{color:"#222222",width:"50%",fontWeight:"600", fontSize:'13px'}}>{userData.firstname} </Span>
+                    <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} ></Span>
                 </Item>
 
                 <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
-                    <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Бизнес хөгжлийн зөвлөх </Span>
+                    <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Бизнес хөгжлийн зөвлөх</Span>
                 </Item>
 
                 <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
-                    <Span style={{color:"#222222",width:"50%",fontWeight:"600", fontSize:'13px'}}>Холбоо барих: </Span>
-                    <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} > {edpInfo?.phone}</Span>
+                    <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Холбоо барих: {userData?.phone}</Span>
+                    <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} ></Span>
                 </Item>
-
-                
-
             </Item>
         </Email>
 )

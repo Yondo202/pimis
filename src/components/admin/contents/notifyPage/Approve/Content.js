@@ -25,7 +25,7 @@ const DataList = [
     constructor(props) {
         super(props)
         this.state = {
-        color: "orange",  text: "dd", cond: false,   Btn: "1", 
+         color: "orange",  text: "dd", cond: false,   Btn: "1", 
          rejectReason: "",
          myData : DataList,
          visible: false,
@@ -57,7 +57,7 @@ const DataList = [
                 additionMaterial: this.state.rejectReason,
                 // signatureData:this.state.signature,
                 signatureData:null,
-                emailBody:EmailHTML(this.state.myData, this.props?.data, this.props?.edpInfo, this.state.username, this.state.rejectReason ),
+                emailBody:EmailHTML(this.state.myData, this.props?.data, this.props?.edpInfo, this.state.rejectReason, this.props.userData ),
                 approved : true
                }, { headers: { Authorization: AuthToken() } }).then((res)=>{
                     console.log(res.data.success, "my Response");
@@ -83,11 +83,13 @@ const DataList = [
     }
 
     closeModal = () =>{  this.setState({  visible : false }) }
-    signatureVerify = () =>{  this.props.history.push(`/signature`) }
+    // signatureVerify = () =>{  this.props.history.push(`/signature`) }
+
 
     render() {
         const data = this.props?.data;
         const edpInfo = this.props?.edpInfo;
+        const userData = this.props?.userData;
 
         return (
 
@@ -103,9 +105,9 @@ const DataList = [
                     <div className="title"> Үндсэн мэдүүлэгт урих тухай мэдэгдэл</div>
 
                     <div className="contentPar">
-                        <div className="items">Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрийн {data.project?.project_number.slice(4,6)} оны {data.project?.project_number.slice(7,9)} дугаар цонхонд ирүүлсэн танай
-                        {data.project?.project_number} дугаартай өргөдөл нь анхан шатны шалгаруулалтад тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна. Та дараагийн шатны материалаа 
-                         <span style={{fontWeight:"500"}}> {data.project?.final_date.slice(0,4)}оны  {data.project?.final_date.slice(5,7)}сарын {data.project?.final_date.slice(8,10)}өдрийн 18 цагаас өмнө </span> <a href={`mailto:${edpInfo?.email}`}>{edpInfo.email}</a> хаягаар ирүүлнэ үү. 
+                        <div className="items">Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрийн 20{data.project?.project_number.slice(4,6)} оны {data.project?.project_number.slice(7,9)} дугаар цонхонд ирүүлсэн танай  
+                        {` ${data.project?.project_number}`} дугаартай өргөдөл нь анхан шатны шалгаруулалтад тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна. Та дараагийн шатны материалаа 
+                         <span style={{fontWeight:"500"}}> {data.project?.final_date.slice(0,4)} оны  {data.project?.final_date.slice(5,7)} сарын {data.project?.final_date.slice(8,10)} өдрийн 18 цагаас өмнө </span> <a href={`mailto:${edpInfo?.email}`}>{edpInfo.email}</a> хаягаар ирүүлнэ үү. 
                         </div> <br />
                         <div className="items">Хэрэв дээрх хугацаанд материалаа ирүүлээгүй тохиолдолд танай байгууллагыг Түншлэлийн хөтөлбөрт оролцохоос татгалзсан гэж үзэх бөгөөд ирүүлсэн өргөдлийг хүчингүйд тооцно.</div> <br />
                     </div>
@@ -116,15 +118,14 @@ const DataList = [
                             {this.state.myData.map((el)=>{
                                 return( <div className="items"><div><HiMinusCircle onClick={()=>this.DeleteHandle(el)} /></div><span>{el}</span> </div> )
                             })}
-                        </div>
-                        {this.state.addInp.map(el=> <InputStyle  className="btnStyle"><textarea onChange={this.changeHandle} name={`title`} className="getInp" name="addition" placeholder="Нэмэлтээр оруулах..." /><div className="line"></div> </InputStyle> )}   
-                        
-                        {this.state.addInp.length===0?<div onClick={()=>this.addBtn(1)} className="addBtn"><RiAddCircleFill /> <span>Бусад нэмэлт шаардлагатай баримт бичиг</span></div>:null} <br /><br />
+                        </div><br /><br /> 
+                        {/* {this.state.addInp.map(el=> <InputStyle  className="btnStyle"><textarea onChange={this.changeHandle} name={`title`} className="getInp" name="addition" placeholder="Нэмэлтээр оруулах..." /><div className="line"></div> </InputStyle> )}    */}
+                        {/* {this.state.addInp.length===0?<div onClick={()=>this.addBtn(1)} className="addBtn"><RiAddCircleFill /> <span>Бусад нэмэлт шаардлагатай баримт бичиг</span></div>:null} <br /><br /> */}
 
                     <div className="nameTitle A2"><span className="smtitle">Хүндэтгэсэн, </span></div>
-                    <div className="nameTitle A2" ><span className="smtitle">Нэр: </span><span className="MemeberInfo">{this.state.username}</span></div>
+                    <div className="nameTitle A2" ><span className="smtitle">{userData?.firstname}</span><span className="MemeberInfo"></span></div>
                     <div className="nameTitle A2" ><span className="smtitle">Бизнес хөгжлийн зөвлөх </span></div>
-                    <div className="nameTitle A2"><span className="smtitle">Холбоо барих: </span><span className="MemeberInfo">{edpInfo?.phone}</span></div>
+                    <div className="nameTitle A2"><span className="smtitle">Холбоо барих: <span style={{fontWeight:`400`}}>{userData?.phone}</span> </span><span className="MemeberInfo"></span></div>
 
                     {/* <div style={{marginTop:"10px"}} className="nameTitle A2">
                         <span className="smtitle">Гарын үсэг : </span> 
@@ -144,24 +145,24 @@ const DataList = [
 
 export default withRouter(Content);
 
-const EmailHTML = (stateData, data, edpInfo, userName, rejectReason) => renderEmail(
+const EmailHTML = (stateData, data, edpInfo, rejectReason, userData) => renderEmail(
     <Email style={{border:"1px solid rgba(0,0,0,0.2)",padding:'30px 70px', paddingTop:"15px",  width:"830px", backgroundColor:"rgba(220,220,220,0.2)"}} title="EDP">
-            <Image style={{width:"100%"}} src="http://www.edp.mn/Content/Images/mn-MN/head.jpg" />
+            <Image style={{width:"100%"}} src="https://pimis.edp.mn/head_logo.png" />
                 <Item style={{color:"#222222", padding:'20px 20px', height:"100%"}} align="end">
                     <Box style={{textAlign:"center",width:"100%", marginBottom:'30px',marginTop:'18px',fontWeight:'500', fontSize:'16px', backgroundColor:"rgba(220,220,220,0.2)"}} >Үндсэн мэдүүлэгт урих тухай мэдэгдэл</Box>
 
-                    <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрийн {data.project?.project_number.slice(4,6)} оны {data.project?.project_number.slice(7,9)} дугаар цонхонд ирүүлсэн танай
-                        <Span style={{fontWeight:"600", fontSize:'13px'}}> {data.project?.project_number} </Span> дугаартай өргөдөл нь анхан шатны шалгаруулалтад тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна. Та дараагийн шатны материалаа 
-                        <Span style={{fontWeight:"600", fontSize:'13px'}}> ажлын 10 хоногийн дотор буюу {data.project?.final_date.slice(0,4)}оны  {data.project?.final_date.slice(5,7)}сарын {data.project?.final_date.slice(8,10)}өдрийн 18 цагаас өмнө </Span> 
+                    <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрийн 20{data.project?.project_number.slice(4,6)} оны {data.project?.project_number.slice(7,9)} дугаар цонхонд ирүүлсэн танай
+                        <Span style={{fontWeight:"600", fontSize:'13px'}}> {` ${data.project?.project_number}`} </Span> дугаартай өргөдөл нь анхан шатны шалгаруулалтад тэнцсэнд баяр хүргэж, дараагийн шатанд материалаа илгээхийг энэхүү захидлаар урьж байна. Та дараагийн шатны материалаа 
+                        <Span style={{fontWeight:"600", fontSize:'13px'}}> ажлын 10 хоногийн дотор буюу {data.project?.final_date.slice(0,4)} оны  {data.project?.final_date.slice(5,7)} сарын {data.project?.final_date.slice(8,10)} өдрийн 18 цагаас өмнө </Span> 
                         {edpInfo?.email} хаягаар ирүүлнэ үү.
                     </Box>
                     <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Хэрэв дээрх хугацаанд материалаа ирүүлээгүй тохиолдолд танай байгууллагыг Түншлэлийн хөтөлбөрт оролцохоос татгалзсан гэж үзэх бөгөөд ирүүлсэн өргөдлийг хүчингүйд тооцно.</Box>
                 
                     <Box style={{textAlign:"start", width:"100%",marginTop:'5px',marginBottom:'10px', fontSize:'13px', fontWeight:"500"}}>Дараагийн шатанд ирүүлэх материалын жагсаалт:</Box>
 
-                    <Box style={{width:"100%",marginBottom:'32px', marginLeft:"30px", fontSize:'13px'}}>
+                    <Box style={{width:"100%",marginBottom:'50px', marginLeft:"30px", fontSize:'13px'}}>
                              {stateData.map((el)=> <Item style={{textAlign:"start", color:"#222222", width:"100%", fontSize:'13px', padding:"3px 0px"}}>• {el}</Item>)}
-                             {rejectReason!==""?<Item style={{textAlign:"start", color:"#222222", width:"100%", fontSize:'13px', padding:"3px 0px"}}>• {rejectReason}</Item>: null}  
+                             {/* {rejectReason!==""?<Item style={{textAlign:"start", color:"#222222", width:"100%", fontSize:'13px', padding:"3px 0px"}}>• {rejectReason}</Item>: null}   */}
                     </Box>
 
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
@@ -169,15 +170,15 @@ const EmailHTML = (stateData, data, edpInfo, userName, rejectReason) => renderEm
                         {/* <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} > {userName}</Span> */}
                     </Item>
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
-                        <Span style={{color:"#222222",width:"50%",fontWeight:"600", fontSize:'13px'}}>Нэр : </Span>
-                        <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} > {userName} </Span>
+                        <Span style={{color:"#222222",width:"50%",fontWeight:"600", fontSize:'13px'}}>{userData.firstname} </Span>
+                        <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} ></Span>
                     </Item>
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
                         <Span style={{color:"#222222",width:"50%", fontSize:'13px'}}>Бизнес хөгжлийн зөвлөх </Span>
                     </Item>
                     <Item style={{display:"flex", textAlign:"start",width:"100%",padding:"6px 0px",  fontSize:'13px'}}>
-                        <Span style={{color:"#222222",width:"50%",fontWeight:"600", fontSize:'13px'}}>Холбоо барих: </Span>
-                        <Span style={{color:"#222222",marginLeft:30, fontSize:'13px'}} >{edpInfo?.phone}</Span>
+                        <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Холбоо барих: {userData?.phone}</Span>
+                        <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} ></Span>
                     </Item>
                     
                 </Item>
