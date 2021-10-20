@@ -185,7 +185,7 @@ function CompCheck2() {
             if(cond){ ctx.alertText('green, Амжилттай илгээгдлээ', true); setVisible(true); }
             else{ ctx.alertText('orange, Өргөдөл гаргах боломжгүй бөгөөд цааш дамжлагад тэнцэхгүй байна.', true); }
             setBtnSpin(false);
-            setTimeout(() => { history.push('/'); }, 20000);
+            setTimeout(() => { history.push('/'); }, 4000);
           })
 
     }).catch(_=> { setFinalErrorText("Алдаа гарлаа."); setBtnSpin(false); });
@@ -491,26 +491,26 @@ function CompCheck2() {
                     {target===0&&<div className="redDesc">Түншлэлийн хөтөлбөрийн аж ахуйн нэгжийн ангилалд өргөдөл гаргах  шалгуур үзүүлэлтийг хангаж байна.</div>}
                     {target===1&&<div className="redDesc">Түншлэлийн хөтөлбөрийн кластерын ангилалд өргөдөл гаргах  шалгуур үзүүлэлтийг хангаж байна.</div>}
                   </div>
-                  <div className="mainText">
+                  {/* <div className="mainText">
                     <div className="title">Жилийн борлуулалтын орлого нь 100 мянган ам.доллароос их бол  <span style={{ fontWeight: "400" }}> ( тийм ) </span>
                                          гэсэн хариултыг сонгоно уу?
                                         </div>
                     <span className="Nemelts"> ( Хэрэв цар тахлын үед борлуулалт огцом буурсан бол 2018, 2019 оны борлуулалтын орлогыг мэдээлэлд орлуулж болно )</span>
 
-                  </div>
-                  <div className="btnPar">
+                  </div> */}
+                  {/* <div className="btnPar">
                     <button className="btn btn-primary" onClick={() => FinalClick(true)}>Тийм </button>
                     <button className="btn btn-primary" onClick={() => FinalClick(false)}>Үгүй </button>
-                  </div>
+                  </div> */}
                 </div>
 
-                {showFinal && <div className="correctPar">
+                {/* {showFinal && <div className="correctPar">
                   <AiOutlineCheckCircle />
                   <span>
                     Таны асуулгаас харахад танай байгууллага Экспортыг дэмжих төслийн Түншлэлийн хөтөлбөрт ААН-ээр тэнцэхээс
                     гадна кластерын толгой компаниар тэнцэх боломжтой байна.
                                       </span>
-                </div>}
+                </div>} */}
 
               </div>
             </Modal>

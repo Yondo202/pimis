@@ -278,7 +278,7 @@ function Signup() {
               </div>
             </div>)
               : (<div className="success">
-                <h3 className="title">Тавтай морил</h3>
+                <h3 className="title">Тавтай морилно уу</h3>
                 <span className="desc">{signUpCtx.errMsgSignup.msg}</span>
               </div>)}
 
