@@ -205,13 +205,16 @@ export default function UrgudulPreview(props) {
         ? `Бусад - ${other}`
         : getProductNameOther(id)
 
-    const getExportCountry = (id, other) => id === -1
-        ? `Бусад - ${other}`
-        : getCountryNameOther(id)
-
-    const getPlannedActivity = (id, cost) => cost
-        ? `${plannedActivityClass[id - 1]} - ${toCurrencyString(cost)}`
-        : plannedActivityClass[id - 1]
+    const getExportCountry = (id, other) => {
+        switch (id) {
+            case -1:
+                return `Бусад - ${other}`
+            case -2:
+                return 'Экспорт хийдэггүй'
+            default:
+                return getCountryNameOther(id)
+        }
+    }
 
     const salesDataYears = Object.keys(project.salesData?.net || []).sort()
     const salesDataNet = project.salesData?.net
@@ -268,7 +271,7 @@ export default function UrgudulPreview(props) {
     const [products, setProducts] = useState([])
     const getProductName = (id) => products.filter(obj => obj.id === id)[0]?.description_mon
 
-    const sumBudgetCost = project.activities?.map(activity => +activity.budget).reduce((acc, cv) => acc + cv, 0)
+    const sumBudgetCost = project.activities?.reduce((acc, cv) => acc + (+cv.budget || 0), 0) ?? 0
 
     const getCompanyName = (id) => project.clusters.filter(obj => obj.id === id)[0]?.company_name
 
@@ -285,6 +288,19 @@ export default function UrgudulPreview(props) {
             : acc
             , 0
         )
+
+    const plannedActivities = ['export_marketing', 'quality_control', 'tech_control'].reduce((acc, cv) => {
+        if (project[cv] === 1) {
+            return [...acc, {
+                label: plannedActivityClass[cv],
+                cost: project[`${cv}_cost`]
+            }]
+        } else {
+            return acc
+        }
+    }, [])
+
+    const sumPlannedActivities = plannedActivities.reduce((acc, cv) => acc + (+cv.cost || 0), 0)
 
     return (
         <div className="tw-overflow-x-auto tw-overflow-y-hidden">
@@ -324,41 +340,61 @@ export default function UrgudulPreview(props) {
                             <Row label="Уг өргөдлийн хувьд төлөвлөсөн" value={getMainExport(project.main_export_planned, project.main_export_planned_other)} labelClass="tw-pl-4" />
 
                             <RowLabel label={labels.page1.export_products} />
-                            <div className="tw-border-b tw-border-gray-400 tw-pl-2">
+                            <div className="tw-pl-2">
                                 {project.exportProducts?.length
                                     ? project.exportProducts?.map((product, i) =>
-                                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center tw-border-t-0" key={i}>
+                                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center" key={i}>
                                             <span className="tw-mr-1.5">{i + 1}.</span>
                                             {product.product_name},
                                             <span className="tw-ml-3">HS код: {product.hs_code}</span>
                                         </div>
                                     )
-                                    : <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center tw-border-t-0 tw-text-gray-400 tw-italic">
+                                    : <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center tw-italic tw-text-gray-400">
                                         Бүтээглэхүүн оруулаагүй байна.
                                     </div>
                                 }
                             </div>
 
-                            <RowLabel label={labels.page1.export_countries} style={{ borderTop: 'none' }} />
-                            <div className="tw-border-b tw-border-gray-400 tw-pl-2">
+                            <RowLabel label={labels.page1.export_countries} />
+                            <div className="tw-pl-2">
                                 {project.exportCountries?.length
                                     ? project.exportCountries?.map((country, i) =>
-                                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-border-t-0 tw-grid tw-grid-cols-2">
+                                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-grid tw-grid-cols-2">
                                             <span className="">
                                                 <span className="tw-mr-1.5">{i + 1}.</span>
                                                 Одоогийн байдлаар: {getExportCountry(country.current, country.current_other)}
                                             </span>
-                                            <span className="tw-pl-2">Уг өргөдлийн хувьд төлөвлөсөн: {getExportCountry(country.planned, country.planned_other)}</span>
+                                            <span className="tw-pl-2">
+                                                Уг өргөдлийн хувьд төлөвлөсөн: {getExportCountry(country.planned, country.planned_other)}
+                                            </span>
                                         </div>
                                     )
-                                    : <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center tw-border-t-0 tw-text-gray-400 tw-italic">
+                                    : <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center tw-italic tw-text-gray-400">
                                         Улс оруулаагүй байна.
                                     </div>
                                 }
                             </div>
 
-                            <Row label={labels.page1.planned_activity} value={getPlannedActivity(project.planned_activity, project.planned_activity_cost)} />
-                            <Row label={labels.page1.planned_activity_budget} value={toCurrencyString(project.planned_activity_budget)} />
+                            <RowLabel label={labels.page1.planned_activity} />
+                            <div className="tw-pl-2 tw-border-b tw-border-gray-400">
+                                {plannedActivities.length
+                                    ? plannedActivities.map((activity, i) =>
+                                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-grid tw-grid-cols-2">
+                                            <span className="">
+                                                {i + 1}. {activity.label}
+                                            </span>
+                                            <span className="tw-pl-2">
+                                                Үнийн дүн: {activity.cost}
+                                            </span>
+                                        </div>
+                                    )
+                                    : <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center tw-italic tw-text-gray-400">
+                                        Үйл ажиллагааны чиглэл сонгоогүй байна.
+                                    </div>
+                                }
+                            </div>
+
+                            <Row label={labels.page1.planned_activity_budget} value={toCurrencyString(sumPlannedActivities)} classAppend="tw-font-medium" />
                         </div>
                     </div>
 
@@ -423,15 +459,20 @@ export default function UrgudulPreview(props) {
                         <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                             Түлхүүр албан тушаалтнууд
                         </div>
-                        {project.directors?.map((item, i) =>
-                            <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
-                                <Row label={labels.page3.directors.fullname} value={item.fullname} />
-                                <Row label={labels.page3.directors.position} value={item.position} />
-                                <Row label={labels.page3.directors.phone} value={item.phone} />
-                                <Row label={labels.page3.directors.email} value={item.email} />
-                                <RowHtml label={labels.page3.directors.project_role} html={item.project_role} />
+                        {project.directors?.length
+                            ? project.directors?.map((item, i) =>
+                                <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
+                                    <Row label={labels.page3.directors.fullname} value={item.fullname} />
+                                    <Row label={labels.page3.directors.position} value={item.position} />
+                                    <Row label={labels.page3.directors.phone} value={item.phone} />
+                                    <Row label={labels.page3.directors.email} value={item.email} />
+                                    <RowHtml label={labels.page3.directors.project_role} html={item.project_role} />
+                                </div>
+                            )
+                            : <div className="tw-border tw-border-t-0 tw-border-gray-400 tw-p-2 tw-text-gray-400 tw-italic">
+                                Мэдээлэл оруулаагүй байна.
                             </div>
-                        )}
+                        }
                     </div>
 
                     {isCluster &&
@@ -439,46 +480,51 @@ export default function UrgudulPreview(props) {
                             <div className="tw-px-3 tw-pt-1.5 tw-pb-1 tw-bg-blue-900 tw-text-white tw-border tw-border-gray-800 tw-mt-8">
                                 Кластерын гишүүн байгууллагууд
                             </div>
-                            {project.clusters?.map((item, i) => {
-                                const sales = item.sales
-                                const years = Object.keys(sales).sort()
+                            {project.clusters?.length
+                                ? project.clusters?.map((item, i) => {
+                                    const sales = item.sales
+                                    const years = Object.keys(sales).sort()
 
-                                return <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
-                                    <Row label={labels.page3.clusters.company_name} value={item.company_name} />
-                                    <Row label={labels.page3.clusters.company_register} value={item.company_register} />
-                                    <Row label={labels.page3.clusters.main_activity} value={item.main_activity} />
-                                    <Row label={labels.page3.clusters.director_name} value={item.director_name} />
-                                    <Row label={labels.page3.clusters.director_phone} value={item.director_phone} />
-                                    <Row label={labels.page3.clusters.director_email} value={item.director_email} />
+                                    return <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400" key={i}>
+                                        <Row label={labels.page3.clusters.company_name} value={item.company_name} />
+                                        <Row label={labels.page3.clusters.company_register} value={item.company_register} />
+                                        <Row label={labels.page3.clusters.main_activity} value={item.main_activity} />
+                                        <Row label={labels.page3.clusters.director_name} value={item.director_name} />
+                                        <Row label={labels.page3.clusters.director_phone} value={item.director_phone} />
+                                        <Row label={labels.page3.clusters.director_email} value={item.director_email} />
 
-                                    <div className="tw-border-t tw-border-gray-400 tw-px-2 tw-py-3">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th className={classTableCell}></th>
-                                                    {years.map(year =>
-                                                        <th className={`${classTableCell} tw-text-center`} key={year}>
-                                                            {year}
-                                                        </th>
-                                                    )}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td className={classTableCell}>
-                                                        Аж ахуйн нэгжийн борлуулалт
-                                                    </td>
-                                                    {years.map(year =>
-                                                        <td className={`${classTableCell} tw-text-right tw-w-32`} key={year}>
-                                                            {toCurrencyString(sales[year])}
+                                        <div className="tw-border-t tw-border-gray-400 tw-px-2 tw-py-3">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th className={classTableCell}></th>
+                                                        {years.map(year =>
+                                                            <th className={`${classTableCell} tw-text-center`} key={year}>
+                                                                {year}
+                                                            </th>
+                                                        )}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className={classTableCell}>
+                                                            Аж ахуйн нэгжийн борлуулалт
                                                         </td>
-                                                    )}
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                        {years.map(year =>
+                                                            <td className={`${classTableCell} tw-text-right tw-w-32`} key={year}>
+                                                                {toCurrencyString(sales[year])}
+                                                            </td>
+                                                        )}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
+                                })
+                                : <div className="tw-border tw-border-t-0 tw-border-gray-400 tw-p-2 tw-text-gray-400 tw-italic">
+                                    Мэдээлэл оруулаагүй байна.
                                 </div>
-                            })}
+                            }
                         </div>
                     }
 
@@ -698,8 +744,8 @@ export default function UrgudulPreview(props) {
                             </div>
                         }
                         <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400 tw-font-medium">
-                            <Row label="Үйл ажиллагаануудын нийт төсөв" value={sumBudgetCost?.toLocaleString()} />
-                            <Row label="Экспортыг дэмжих төслөөс хүсч буй санхүүжилт" value={(sumBudgetCost / 2)?.toLocaleString()} />
+                            <Row label="Үйл ажиллагаануудын нийт төсөв" value={toCurrencyString(sumBudgetCost)} />
+                            <Row label="Экспортыг дэмжих төслөөс хүсч буй санхүүжилт" value={toCurrencyString(sumBudgetCost / 2)} />
                         </div>
                     </div>
 
