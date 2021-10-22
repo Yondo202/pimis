@@ -282,13 +282,6 @@ export default function UrgudulPreview(props) {
 
     const [exportYears, setExportYears] = useState(initialExportYears)
 
-    const sumExportDataRow = (row) => Object.entries(row ?? {})
-        .reduce((acc, cv) => exportYears.includes(+cv[0].substring(1))
-            ? acc + cv[1]
-            : acc
-            , 0
-        )
-
     const plannedActivities = ['export_marketing', 'quality_control', 'tech_control'].reduce((acc, cv) => {
         if (project[cv] === 1) {
             return [...acc, {
@@ -301,6 +294,8 @@ export default function UrgudulPreview(props) {
     }, [])
 
     const sumPlannedActivities = plannedActivities.reduce((acc, cv) => acc + (+cv.cost || 0), 0)
+
+    const sumCountryExports = exportYears.map(year => exportData.data?.reduce((acc, cv) => acc + (+cv[`e${year}`] || 0), 0) ?? 0)
 
     return (
         <div className="tw-overflow-x-auto tw-overflow-y-hidden">
@@ -637,9 +632,6 @@ export default function UrgudulPreview(props) {
                                                 {year}
                                             </th>
                                         )}
-                                        <th className={`${classTableCell} tw-text-center`}>
-                                            Нийт
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -656,9 +648,6 @@ export default function UrgudulPreview(props) {
                                                 {exportData?.types?.total_sales?.[`e${year}`]?.toLocaleString()}
                                             </td>
                                         )}
-                                        <td className={`${classTableCell} tw-text-right`}>
-                                            {sumExportDataRow(exportData?.types?.total_sales)?.toLocaleString()}
-                                        </td>
                                     </tr>
                                     <tr className="">
                                         <td className={classTableCell}>
@@ -673,9 +662,6 @@ export default function UrgudulPreview(props) {
                                                 {exportData?.types?.total_export?.[`e${year}`]?.toLocaleString()}
                                             </td>
                                         )}
-                                        <td className={`${classTableCell} tw-text-right`}>
-                                            {sumExportDataRow(exportData?.types?.total_export)?.toLocaleString()}
-                                        </td>
                                     </tr>
                                     {exportData.targ_country?.map(countryId =>
                                         <Fragment key={countryId}>
@@ -698,13 +684,23 @@ export default function UrgudulPreview(props) {
                                                             {country[`e${year}`]?.toLocaleString()}
                                                         </td>
                                                     )}
-                                                    <td className={`${classTableCell} tw-text-right`}>
-                                                        {sumExportDataRow(country)?.toLocaleString()}
-                                                    </td>
                                                 </tr>
                                             )}
                                         </Fragment>
                                     )}
+                                    <tr className="">
+                                        <td className={classTableCell} style={{ fontWeight: 500 }}>
+                                            Нийт
+                                        </td>
+                                        <td className={classTableCell} style={{ fontSize: 10, fontWeight: 500 }}>
+                                            Төгрөг
+                                        </td>
+                                        {exportYears.map((year, i) =>
+                                            <td className={`${classTableCell} tw-text-right`} style={{ fontWeight: 500 }} key={year}>
+                                                {sumCountryExports[i]?.toLocaleString()}
+                                            </td>
+                                        )}
+                                    </tr>
                                     <tr className="">
                                         <td className={classTableCell}>
                                             Ажилчдын тоо
@@ -718,9 +714,6 @@ export default function UrgudulPreview(props) {
                                                 {exportData?.types?.emp_count?.[`e${year}`]?.toLocaleString()}
                                             </td>
                                         )}
-                                        <td className={`${classTableCell} tw-text-right`}>
-                                            {sumExportDataRow(exportData?.types?.emp_count)?.toLocaleString()}
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
