@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { CustomModal, InputStyle, Container } from "components/misc/CustomStyle";
 import styled from "styled-components"
-import { RiAddLine, RiEdit2Line } from "react-icons/ri"
+import { RiAddLine, RiEdit2Line, RiFileEditLine } from "react-icons/ri"
 import { VscError } from "react-icons/vsc"
 import Modals from "./Modals"
 import AccessToken from "context/accessToken"
-import { NumberComma, NumberComma2 } from "components/misc/NumberComma"
+import { NumberComma } from "components/misc/NumberComma"
 import { useTranslation } from 'react-i18next';
 import axios from 'axiosbase';
 
@@ -61,9 +61,12 @@ const ExportDataContent = ({ SD, userId }) => {
     const [exportData, setExportData] = useState([]);
     const [fCountry, setFCountry] = useState([]);
     const [type, setType] = useState('export_data');
+    const [ hsCodes, setHsCodes ] = useState([]);
+    const [ showList , setShowList ] = useState(false);
 
     const [years, setYears] = useState([]);
     const [other, setOther] = useState({});
+
 
     useEffect(() => {
         void async function fetch() {
@@ -78,6 +81,7 @@ const ExportDataContent = ({ SD, userId }) => {
         setFCountry([])
         void async function fetch() {
             let data = await axios.get(`export-data?userId=${userId ? userId : SD?.user_id}`, { headers: { Authorization: AccessToken() } });
+            setHsCodes(data?.data.hs_code)
             data?.data.targ_country.forEach(item => {
                 axios.get(`countries/${item}`).then(res => {
                     setFCountry(prev => [...prev, res.data.data]);
@@ -134,7 +138,13 @@ const ExportDataContent = ({ SD, userId }) => {
             {/* <div className="smTitles">Export Data</div> */}
             <div className="customTable T4 Tuniq">
                 <div className="headPar ">
-                    <div onClick={_ => ModalHandle('add')} className="addBtn addBtn2"><RiAddLine /><span>Экспорт дата - Нэмэх</span></div>
+                    <div className="additions">
+                        {exportData.length!==0
+                        ?<div onClick={_ =>( setShowList(prev=>!prev), setSelected({}) )} className="addBtn addBtn2"><RiFileEditLine /><span>{showList?`Жагсаалт харах`:`Засварлах`} </span></div>
+                        :null}
+                        <div onClick={_ => ModalHandle('add')} className="addBtn addBtn2"><RiAddLine /><span>Экспорт дата - Нэмэх</span></div>
+                    </div>
+                   
                     <div className={`additions ${selected.id && type === "export_data" ? `` : `opacity`}`}>
                         <div onClick={_ => ModalHandle('edit')} className="addBtn addBtn2"><RiEdit2Line /><span>Засах</span></div>
                         <div onClick={_ => ModalHandle('delete')} className="addBtn addBtn2"><VscError /><span>Устгах</span></div>
@@ -144,7 +154,7 @@ const ExportDataContent = ({ SD, userId }) => {
                 <table>
                     <tbody>
                         <tr>
-                            <th>Бүтээгдэхүүний нэр</th>
+                            <th>Экспортын мэдээлэл</th>
                             {years.map((el, ind) => {
                                 return (
                                     <th key={ind}>{el?.year}</th>
@@ -179,50 +189,83 @@ const ExportDataContent = ({ SD, userId }) => {
                             <td className="right">0.00 ₮</td>
                         </tr>}
 
-                        {fCountry.map((elem, index) => {
-                            return (
-                                <React.Fragment key={index}>
-                                    <tr className="filterCountryRow" ><td className="filterCountry">{elem?.description_mon}</td></tr>
-                                    {exportData.map((el, ind) => {
-                                        if (elem?.id === el?.countryId) {
-                                            return (
-                                                <tr onClick={() => selectRowHandle(el, "export_data")} key={ind} className={`cusorItems ${selected.id === el.id ? `Selected` : ``}`}>
-                                                    <td className="bold">{el.product_name}</td>
-                                                    {years.map((e, i) => {
-                                                        return (
-                                                            <td key={i} className="right">{NumberComma(el[`e${e.year}`])}</td>
-                                                        )
-                                                    })}
-                                                </tr>
-                                            )
-                                        }
-                                    })}
-                                </React.Fragment>
-                            )
-                        })}
-
-                        {exportData.length!==0?<tr >
-                            <th className="bold blue">Нийт</th>
-                            {years.map((elem, i) =>{
-                                return(
-                                    <th key={i} className="right bold blue">
-                                        {/* {other.emp_count?.id ? NumberComma(other.emp_count[`e${e.year}`]) : null} */}
-                                        {NumberComma(exportData.reduce((curr, item)=>item[`e${elem.year}`]+curr,0))} ₮
-                                    </th>
+                        {showList?<>
+                            {fCountry.map((elem, index) => {
+                                return (
+                                    <React.Fragment key={index}>
+                                        <tr className="filterCountryRow" >
+                                            <td className="filterCountry">{elem?.description_mon}</td>
+                                        </tr>
+                                        {exportData.map((el, ind) => {
+                                            if (elem?.id === el?.countryId) {
+                                                return (
+                                                    <tr onClick={() => selectRowHandle(el, "export_data")} key={ind} className={`cusorItems ${selected.id === el.id ? `Selected` : ``}`}>
+                                                        <td className="bold">{el.product_name}</td>
+                                                        {years.map((e, i) => {
+                                                            return (
+                                                                <td key={i} className="right">{NumberComma(el[`e${e.year}`])}</td>
+                                                            )
+                                                        })}
+                                                    </tr>
+                                                )
+                                            }
+                                        })}
+                                    </React.Fragment>
                                 )
                             })}
-                        </tr>:null}
+                            <Total exportData={exportData} years={years} title="Нийт" />
+                            </>
+                            :
+                            <>
+                                <Total exportData={exportData} years={years} title="Борлуулалт /экспорт хийгдсэн улсаар/" />
+                                {fCountry.map((elem, index) => {
+                                    return (
+                                        <React.Fragment key={index}>
+                                            <tr  >
+                                                <td >{elem?.description_mon}</td>
+                                                {years.map((el,ind)=>{
+                                                    return(
+                                                        <td key={ind} className="right">
+                                                            {NumberComma(exportData.filter(item=>elem.id===item.countryId ? item[`e${el.year}`] : 0).reduce((total, item)=>total+item[`e${el.year}`],0) )}
+                                                        </td>
+                                                    )
+                                                })}
+                                            </tr>
+                                        </React.Fragment>
+                                    )
+                                })}
+
+                                <Total exportData={exportData} years={years} title="Борлуулалт /экспорт хийгдсэн бүтээгдэхүүнээр/" />
+                                {hsCodes.map((elem, index) => {
+                                    return (
+                                        <React.Fragment key={index}>
+                                            <tr  >
+                                                <td >
+                                                <p style={{marginBottom:8}}>Бүтээгдэхүүний нэр: {elem.product_name} </p> 
+                                                    HS code: {elem.hs_code}
+                                                </td>
+                                                {years.map((el,ind)=>{
+                                                    return(
+                                                        <td key={ind} className="right">
+                                                            {NumberComma(exportData.filter(item=>elem.hs_code===item.hs_code ? item[`e${el.year}`] : 0).reduce((total, item)=>total+item[`e${el.year}`],0) )}
+                                                        </td>
+                                                    )
+                                                })}
+                                            </tr>
+                                        </React.Fragment>
+                                    )
+                                })}
+                            </>
+                        }
 
                         {userId ?
-                            <>
-                                <tr onClick={() => selectRowHandle(other.emp_count?.id ? other.emp_count : { id: 'emp_count' }, "emp_count")} className={`cusorItems ${selected.id === 'emp_count' ? `Selected` : selected.id && selected.id === other.emp_count?.id ? `Selected` : ``}`}>
-                                    <td className="bold">Ажилчдын тоо</td>
-                                    {years.map((e, i) => <td key={i} className="center">{other.emp_count?.id ? NumberComma(other.emp_count[`e${e.year}`]) : null}</td>)}
-                                </tr>
-                            </>
+                                <>
+                                    <tr onClick={() => selectRowHandle(other.emp_count?.id ? other.emp_count : { id: 'emp_count' }, "emp_count")} className={`cusorItems ${selected.id === 'emp_count' ? `Selected` : selected.id && selected.id === other.emp_count?.id ? `Selected` : ``}`}>
+                                        <td className="bold">Ажилчдын тоо</td>
+                                        {years.map((e, i) => <td key={i} className="center">{other.emp_count?.id ? NumberComma(other.emp_count[`e${e.year}`]) : null}</td>)}
+                                    </tr>
+                                </>
                             : null}
-
-                        
 
                     </tbody>
                 </table>
@@ -239,3 +282,22 @@ const InputsParent = styled.div`
 // const years =  [
 //     "2016","2017","2018","2019","2020","2021"
 // ]
+
+export const Total = ({exportData, years, title}) =>{
+    const handleR = (elem) =>{
+       return exportData.reduce((curr, item)=>item[`e${elem.year}`]+curr,0)
+    }
+    return(
+        exportData.length!==0?<tr >
+            <th className="bold blue"> {title}</th>
+            {years.map((elem, i) =>{
+                return(
+                    <th key={i} className="right bold blue">
+                        {handleR(elem)!==0?`${NumberComma(handleR(elem))} ₮`:null} 
+                        {/* {0} */}
+                    </th>
+                )
+            })}
+        </tr>:null
+    )
+}
