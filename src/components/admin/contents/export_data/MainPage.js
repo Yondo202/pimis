@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from "components/misc/CustomStyle";
 import AccessToken from "context/accessToken"
-import { NumberComma } from "components/misc/NumberComma"
+import { NumberComma, NumberComma2 } from "components/misc/NumberComma"
 import { useTranslation } from 'react-i18next';
 import axios from 'axiosbase';
 import LangSwitch from "components/misc/LangSwitch";
@@ -32,6 +32,8 @@ const MainPage = () => {
         i18n.changeLanguage(event.target.value);
     };
 
+    // console.log(`exportData`, exportData)
+
     return (
         <Container style={{padding:`12px 12px`, boxShadow:`none`}}>
             <div className="TitlePar">
@@ -50,7 +52,7 @@ const MainPage = () => {
                                     <th key={ind}>{el.year}</th>
                                 )
                             })}
-                            <th>{t('Total')}</th>
+                            {/* <th>{t('Total')}</th> */}
                         </tr>
 
                         {exportData.length===0&&<tr className={`cusorItems ghost`}>
@@ -80,10 +82,9 @@ const MainPage = () => {
                                                             <td key={i} className="right">{NumberComma(el[`e${e.year}`]) } </td>
                                                         )
                                                     })}
-                                                    <td className="right bold blue">
+                                                    {/* <td className="right bold blue">
                                                         {NumberComma(years.reduce((curr, item)=>el[`e${item.year}`]+curr, 0))} ₮
-                                                        {/* {NumberComma(el.e2016+el.e2017+el.e2018+el.e2019+el.e2020+el.e2021+el.e2022+el.e2023+el.e2024+el.e2025+el.e2026+el.e2027+el.e2028+el.e2029+el.e2030)} ₮ */}
-                                                    </td>
+                                                    </td> */}
                                                 </tr>
                                             )
                                         }
@@ -92,6 +93,16 @@ const MainPage = () => {
                                 </>
                             )
                         })}
+                        {exportData.length!==0?<tr>
+                            <td className="bold blue">Нийт</td>
+                            {years.map((elem, i) =>{
+                                return(
+                                    <td key={i} className="right bold blue">
+                                        {NumberComma(exportData.reduce((curr, item)=>item[`e${elem.year}`]+curr,0))} ₮
+                                    </td>
+                                )
+                            })}
+                        </tr>:null}
                         
                     </tbody>
                 </table>

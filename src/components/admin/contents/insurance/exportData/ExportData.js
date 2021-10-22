@@ -5,7 +5,7 @@ import { RiAddLine, RiEdit2Line } from "react-icons/ri"
 import { VscError } from "react-icons/vsc"
 import Modals from "./Modals"
 import AccessToken from "context/accessToken"
-import { NumberComma } from "components/misc/NumberComma"
+import { NumberComma, NumberComma2 } from "components/misc/NumberComma"
 import { useTranslation } from 'react-i18next';
 import axios from 'axiosbase';
 
@@ -127,10 +127,6 @@ const ExportDataContent = ({ SD, userId }) => {
         }
     }
 
-    console.log(`fCountry`, fCountry)
-
-    console.log(`exportData`, exportData)
-
     return (
         <Container style={{ padding: `0px 0px`, boxShadow: `none` }}>
             {showAdd ? <Modals type={type} handle={modalHandle} selectedEx={selected} setSelectedEx={setSelected} setCond={setExCond} SD={userId ? { user_id: userId } : SD} setModal={setShowAdd} years={years} country={country} /> : null}
@@ -148,15 +144,12 @@ const ExportDataContent = ({ SD, userId }) => {
                 <table>
                     <tbody>
                         <tr>
-                            {/* <th>Product name</th> */}
                             <th>Бүтээгдэхүүний нэр</th>
                             {years.map((el, ind) => {
                                 return (
                                     <th key={ind}>{el?.year}</th>
                                 )
                             })}
-                            {/* <th>{t('Total')}</th> */}
-                            <th>Нийт</th>
                         </tr>
 
                         {userId ?
@@ -164,19 +157,11 @@ const ExportDataContent = ({ SD, userId }) => {
                                 <tr onClick={() => selectRowHandle(other.total_sales?.id ? other.total_sales : { id: 'total_sales' }, "total_sales")} className={`cusorItems ${selected.id === 'total_sales' ? `Selected` : selected.id && selected.id === other.total_sales?.id ? `Selected` : ``}`}>
                                     <td className="bold">Нийт борлуулалт</td>
                                     {years.map((e, i) => <td key={i} className="right">{other.total_sales?.id ? NumberComma(other.total_sales[`e${e.year}`]) : null}</td>)}
-                                    <td className="right bold blue">
-                                        {other.total_sales?.id ? NumberComma(other.total_sales.e2016 + other.total_sales.e2017 + other.total_sales.e2018 + other.total_sales.e2019 + other.total_sales.e2020 + other.total_sales.e2021 + other.total_sales.e2022 + other.total_sales.e2023 + other.total_sales.e2024 + other.total_sales.e2025
-                                            + other.total_sales.e2026 + other.total_sales.e2027 + other.total_sales.e2028 + other.total_sales.e2029 + other.total_sales.e2030) : null} ₮
-                                    </td>
                                 </tr>
 
                                 <tr onClick={() => selectRowHandle(other.total_export?.id ? other.total_export : { id: 'total_export' }, "total_export")} className={`cusorItems ${selected.id === 'total_export' ? `Selected` : selected.id && selected.id === other.total_export?.id ? `Selected` : ``}`}>
                                     <td className="bold">Нийт экспортын дүн</td>
                                     {years.map((e, i) => <td key={i} className="right">{other.total_export?.id ? NumberComma(other.total_export[`e${e.year}`]) : null}</td>)}
-                                    <td className="right bold blue">
-                                        {other.total_export?.id ? NumberComma(other.total_export.e2016 + other.total_export.e2017 + other.total_export.e2018 + other.total_export.e2019 + other.total_export.e2020 + other.total_export.e2021 + other.total_export.e2022 + other.total_export.e2023 + other.total_export.e2024 + other.total_export.e2025
-                                            + other.total_export.e2026 + other.total_export.e2027 + other.total_export.e2028 + other.total_export.e2029 + other.total_export.e2030) : null}
-                                    </td>
                                 </tr>
 
                             </>
@@ -184,7 +169,6 @@ const ExportDataContent = ({ SD, userId }) => {
 
                         {exportData.length === 0 && <tr onClick={_ => ModalHandle('add')} className={`cusorItems ghost`}>
                             <td>Экспорт дата</td>
-                            <td className="right">0.00 ₮</td>
                             <td className="right">0.00 ₮</td>
                             <td className="right">0.00 ₮</td>
                             <td className="right">0.00 ₮</td>
@@ -209,9 +193,6 @@ const ExportDataContent = ({ SD, userId }) => {
                                                             <td key={i} className="right">{NumberComma(el[`e${e.year}`])}</td>
                                                         )
                                                     })}
-                                                    <td className="right bold blue">
-                                                        {NumberComma(years.reduce((curr, item)=>el[`e${item.year}`]+curr, 0))} ₮
-                                                    </td>
                                                 </tr>
                                             )
                                         }
@@ -219,18 +200,30 @@ const ExportDataContent = ({ SD, userId }) => {
                                 </React.Fragment>
                             )
                         })}
+
+                        {exportData.length!==0?<tr >
+                            <th className="bold blue">Нийт</th>
+                            {years.map((elem, i) =>{
+                                return(
+                                    <th key={i} className="right bold blue">
+                                        {/* {other.emp_count?.id ? NumberComma(other.emp_count[`e${e.year}`]) : null} */}
+                                        {NumberComma(exportData.reduce((curr, item)=>item[`e${elem.year}`]+curr,0))} ₮
+                                    </th>
+                                )
+                            })}
+                        </tr>:null}
+
                         {userId ?
                             <>
                                 <tr onClick={() => selectRowHandle(other.emp_count?.id ? other.emp_count : { id: 'emp_count' }, "emp_count")} className={`cusorItems ${selected.id === 'emp_count' ? `Selected` : selected.id && selected.id === other.emp_count?.id ? `Selected` : ``}`}>
                                     <td className="bold">Ажилчдын тоо</td>
                                     {years.map((e, i) => <td key={i} className="center">{other.emp_count?.id ? NumberComma(other.emp_count[`e${e.year}`]) : null}</td>)}
-                                    <td className="right bold blue">
-                                        {other.emp_count?.id ? NumberComma(other.emp_count.e2016 + other.emp_count.e2017 + other.emp_count.e2018 + other.emp_count.e2019 + other.emp_count.e2020 + other.emp_count.e2021 + other.emp_count.e2022 + other.emp_count.e2023 + other.emp_count.e2024 + other.emp_count.e2025
-                                            + other.emp_count.e2026 + other.emp_count.e2027 + other.emp_count.e2028 + other.emp_count.e2029 + other.emp_count.e2030) : null}
-                                    </td>
                                 </tr>
                             </>
                             : null}
+
+                        
+
                     </tbody>
                 </table>
             </div>
