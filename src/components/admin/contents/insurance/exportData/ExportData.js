@@ -190,13 +190,13 @@ const ExportDataContent = ({ SD, userId }) => {
                         </tr>}
 
                         {showList?<>
-                            {fCountry.map((elem, index) => {
+                            {fCountry?.map((elem, index) => {
                                 return (
                                     <React.Fragment key={index}>
                                         <tr className="filterCountryRow" >
                                             <td className="filterCountry">{elem?.description_mon}</td>
                                         </tr>
-                                        {exportData.map((el, ind) => {
+                                        {exportData?.map((el, ind) => {
                                             if (elem?.id === el?.countryId) {
                                                 return (
                                                     <tr onClick={() => selectRowHandle(el, "export_data")} key={ind} className={`cusorItems ${selected.id === el.id ? `Selected` : ``}`}>
@@ -218,7 +218,7 @@ const ExportDataContent = ({ SD, userId }) => {
                             :
                             <>
                                 <Total exportData={exportData} years={years} title="Борлуулалт /экспорт хийгдсэн улсаар/" />
-                                {fCountry.map((elem, index) => {
+                                {fCountry?.map((elem, index) => {
                                     return (
                                         <React.Fragment key={index}>
                                             <tr  >
@@ -236,7 +236,7 @@ const ExportDataContent = ({ SD, userId }) => {
                                 })}
 
                                 <Total exportData={exportData} years={years} title="Борлуулалт /экспорт хийгдсэн бүтээгдэхүүнээр/" />
-                                {hsCodes.map((elem, index) => {
+                                {hsCodes?.map((elem, index) => {
                                     return (
                                         <React.Fragment key={index}>
                                             <tr  >

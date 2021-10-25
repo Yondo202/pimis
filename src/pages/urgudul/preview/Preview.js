@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import './style.css'
 import PrintSVG from 'assets/svgComponents/printSVG'
@@ -142,6 +142,36 @@ export default function UrgudulPreview(props) {
 
     const [exportData, setExportData] = useState({})
 
+    const loadExportData = (exportData) => {
+        const sumExportYears = exportYears.map(
+            year => exportData.data?.reduce((acc, cv) => acc + (+cv[`e${year}`] || 0), 0) ?? 0
+        )
+        const sumExportCountries = exportData.data?.reduce((acc, cv) => {
+            if (cv.countryId in acc) {
+                exportYears.forEach(year => acc[cv.countryId][year] += +cv[`e${year}`] || 0)
+            } else {
+                acc[cv.countryId] = {}
+                exportYears.forEach(year => acc[cv.countryId][year] = +cv[`e${year}`] || 0)
+            }
+            return acc
+        }, {})
+        const sumExportProducts = exportData.data?.reduce((acc, cv) => {
+            if (cv.hs_code in acc) {
+                exportYears.forEach(year => acc[cv.hs_code][year] += +cv[`e${year}`] || 0)
+            } else {
+                acc[cv.hs_code] = {
+                    product_name: cv.product_name
+                }
+                exportYears.forEach(year => acc[cv.hs_code][year] = +cv[`e${year}`] || 0)
+            }
+            return acc
+        }, {})
+        setExportData(exportData)
+        setSumExportYears(sumExportYears)
+        setSumExportCountries(sumExportCountries)
+        setSumExportProducts(sumExportProducts)
+    }
+
     useEffect(() => {
         if (props.id) {
             axios.get(`projects/${props.id}`, {
@@ -155,7 +185,7 @@ export default function UrgudulPreview(props) {
                 axios.get(`export-data?userId=${project.userId}`, {
                     headers: { Authorization: getLoggedUserToken() }
                 }).then(res => {
-                    setExportData(res.data)
+                    loadExportData(res.data)
                 }).catch(err => {
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Экспортын мэдээллийг татаж чадсангүй.' })
                 })
@@ -174,7 +204,7 @@ export default function UrgudulPreview(props) {
                 axios.get(`export-data?userId=${project.userId}`, {
                     headers: { Authorization: getLoggedUserToken() }
                 }).then(res => {
-                    setExportData(res.data)
+                    loadExportData(res.data)
                 }).catch(err => {
                     AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Экспортын мэдээллийг татаж чадсангүй.' })
                 })
@@ -190,7 +220,7 @@ export default function UrgudulPreview(props) {
             axios.get(`export-data?userId=${userId}`, {
                 headers: { Authorization: getLoggedUserToken() }
             }).then(res => {
-                setExportData(res.data)
+                loadExportData(res.data)
             }).catch(err => {
                 AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Экспортын мэдээллийг татаж чадсангүй.' })
             })
@@ -220,25 +250,24 @@ export default function UrgudulPreview(props) {
     const salesDataNet = project.salesData?.net
     const salesDataExport = project.salesData?.export
 
-    const dates = Object.keys(project.exportDatas?.sales ?? []).sort()
-    const sliceIndex = Math.floor(dates.length / 2) + dates.length % 2
-    const datesFirstHalf = dates.slice(0, sliceIndex)
-    const datesSecondHalf = dates.slice(sliceIndex)
-    const dateHalves = [datesFirstHalf, datesSecondHalf]
+    // const dates = Object.keys(project.exportDatas?.sales ?? []).sort()
+    // const sliceIndex = Math.floor(dates.length / 2) + dates.length % 2
+    // const datesFirstHalf = dates.slice(0, sliceIndex)
+    // const datesSecondHalf = dates.slice(sliceIndex)
+    // const dateHalves = [datesFirstHalf, datesSecondHalf]
 
-    const exportSums = dates.reduce((acc, cur) => ({ ...acc, [cur]: null }), {})
-
-    if (project.exportDatas?.export_details && project.exportDatas?.export_details?.length) {
-        for (const country of project.exportDatas?.export_details) {
-            if (country?.export_products && country?.export_products?.length) {
-                for (const product of country?.export_products) {
-                    Object.keys(exportSums).forEach(key => {
-                        exportSums[key] = +exportSums[key] + +product[key]
-                    })
-                }
-            }
-        }
-    }
+    // const exportSums = dates.reduce((acc, cur) => ({ ...acc, [cur]: null }), {})
+    // if (project.exportDatas?.export_details && project.exportDatas?.export_details?.length) {
+    //     for (const country of project.exportDatas?.export_details) {
+    //         if (country?.export_products && country?.export_products?.length) {
+    //             for (const product of country?.export_products) {
+    //                 Object.keys(exportSums).forEach(key => {
+    //                     exportSums[key] = +exportSums[key] + +product[key]
+    //                 })
+    //             }
+    //         }
+    //     }
+    // }
 
     useEffect(() => {
         axios.get('/urgudul-datas/products-other').then(res => setProductsOther(res.data.data))
@@ -280,8 +309,6 @@ export default function UrgudulPreview(props) {
 
     const noticeFinal = isCluster ? notices.cluster : notices.company
 
-    const [exportYears, setExportYears] = useState(initialExportYears)
-
     const plannedActivities = ['export_marketing', 'quality_control', 'tech_control'].reduce((acc, cv) => {
         if (project[cv] === 1) {
             return [...acc, {
@@ -292,10 +319,12 @@ export default function UrgudulPreview(props) {
             return acc
         }
     }, [])
-
     const sumPlannedActivities = plannedActivities.reduce((acc, cv) => acc + (+cv.cost || 0), 0)
 
-    const sumCountryExports = exportYears.map(year => exportData.data?.reduce((acc, cv) => acc + (+cv[`e${year}`] || 0), 0) ?? 0)
+    const [exportYears, setExportYears] = useState(initialExportYears)
+    const [sumExportYears, setSumExportYears] = useState([])
+    const [sumExportCountries, setSumExportCountries] = useState({})
+    const [sumExportProducts, setSumExportProducts] = useState({})
 
     return (
         <div className="tw-overflow-x-auto tw-overflow-y-hidden">
@@ -663,44 +692,62 @@ export default function UrgudulPreview(props) {
                                             </td>
                                         )}
                                     </tr>
-                                    {exportData.targ_country?.map(countryId =>
-                                        <Fragment key={countryId}>
-                                            <tr>
-                                                <td className={classTableCell} colSpan={exportYears.length + 3}>
-                                                    {getCountryName(countryId)}
-                                                </td>
-                                            </tr>
-                                            {exportData.data?.filter(country => country.countryId === countryId).map((country, i) =>
-                                                <tr key={i}>
-                                                    <td className={`${classTableCell} tw-pl-4`}>
-                                                        {country.product_name}
-                                                    </td>
-                                                    <td className={classTableCell} style={{ fontSize: 10 }}>
-                                                        Төгрөг
-                                                    </td>
-                                                    {exportYears.map(year =>
-                                                        <td className={`${classTableCell} tw-text-right`} key={year}>
-                                                            {/* {toCurrencyString(country[`e${year}`])} */}
-                                                            {country[`e${year}`]?.toLocaleString()}
-                                                        </td>
-                                                    )}
-                                                </tr>
-                                            )}
-                                        </Fragment>
-                                    )}
                                     <tr className="">
                                         <td className={classTableCell} style={{ fontWeight: 500 }}>
-                                            Нийт
+                                            Экспорт /улсаар/
                                         </td>
                                         <td className={classTableCell} style={{ fontSize: 10, fontWeight: 500 }}>
                                             Төгрөг
                                         </td>
                                         {exportYears.map((year, i) =>
                                             <td className={`${classTableCell} tw-text-right`} style={{ fontWeight: 500 }} key={year}>
-                                                {sumCountryExports[i]?.toLocaleString()}
+                                                {sumExportYears[i]?.toLocaleString()}
                                             </td>
                                         )}
                                     </tr>
+                                    {Object.entries(sumExportCountries).map(([countryId, countryData]) =>
+                                        <tr className="" key={countryId}>
+                                            <td className={`${classTableCell} tw-pl-4`}>
+                                                {getCountryName(+countryId)}
+                                            </td>
+                                            <td className={classTableCell} style={{ fontSize: 10 }}>
+                                                Төгрөг
+                                            </td>
+                                            {exportYears.map(year =>
+                                                <td className={`${classTableCell} tw-text-right`} key={year}>
+                                                    {countryData[year]?.toLocaleString()}
+                                                </td>
+                                            )}
+                                        </tr>
+                                    )}
+                                    <tr className="">
+                                        <td className={classTableCell} style={{ fontWeight: 500 }}>
+                                            Экспорт /бүтээгдэхүүнээр/
+                                        </td>
+                                        <td className={classTableCell} style={{ fontSize: 10, fontWeight: 500 }}>
+                                            Төгрөг
+                                        </td>
+                                        {exportYears.map((year, i) =>
+                                            <td className={`${classTableCell} tw-text-right`} style={{ fontWeight: 500 }} key={year}>
+                                                {sumExportYears[i]?.toLocaleString()}
+                                            </td>
+                                        )}
+                                    </tr>
+                                    {Object.entries(sumExportProducts).map(([hs_code, productData]) =>
+                                        <tr className="" key={hs_code}>
+                                            <td className={`${classTableCell} tw-pl-4`}>
+                                                {productData.product_name}
+                                            </td>
+                                            <td className={classTableCell} style={{ fontSize: 10 }}>
+                                                Төгрөг
+                                            </td>
+                                            {exportYears.map(year =>
+                                                <td className={`${classTableCell} tw-text-right`} key={year}>
+                                                    {productData[year]?.toLocaleString()}
+                                                </td>
+                                            )}
+                                        </tr>
+                                    )}
                                     <tr className="">
                                         <td className={classTableCell}>
                                             Ажилчдын тоо
@@ -814,8 +861,8 @@ export default function UrgudulPreview(props) {
                     <div className="tw-text-center tw-text-15px tw-p-4 tw-pt-8 tw-font-medium">
                         {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : ' '}
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
         </div >
     )
 }
@@ -828,3 +875,30 @@ const toCurrencyString = (number) => {
         ? `${localeString} ₮`
         : ' '
 }
+
+// commented out exoport products by countries
+// {exportData.targ_country?.map(countryId =>
+//     <Fragment key={countryId}>
+//         <tr>
+//             <td className={classTableCell} colSpan={exportYears.length + 3}>
+//                 {getCountryName(countryId)}
+//             </td>
+//         </tr>
+//         {exportData.data?.filter(country => country.countryId === countryId).map((country, i) =>
+//             <tr key={i}>
+//                 <td className={`${classTableCell} tw-pl-4`}>
+//                     {country.product_name}
+//                 </td>
+//                 <td className={classTableCell} style={{ fontSize: 10 }}>
+//                     Төгрөг
+//                 </td>
+//                 {exportYears.map(year =>
+//                     <td className={`${classTableCell} tw-text-right`} key={year}>
+//                         {/* {toCurrencyString(country[`e${year}`])} */}
+//                         {country[`e${year}`]?.toLocaleString()}
+//                     </td>
+//                 )}
+//             </tr>
+//         )}
+//     </Fragment>
+// )}
