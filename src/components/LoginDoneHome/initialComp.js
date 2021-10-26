@@ -47,7 +47,7 @@ function InitialComp(props) {
                         <Link to="/" className="items"><div className="helpArr"></div>1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link>
                     </div>
                     <div className="lineFull" ></div>
-                    <div className="resultDesable">2.Үнэлгээний хорооны шийдвэрийн хуудас</div>
+                    <div className="resultDesable">2. Сонгон шалгаруулалтын багийн хурлын шийдвэрийн хуудас</div>
                 </div>
             </div>
             <div className="col-md-2 col-sm-2 itemsCol">

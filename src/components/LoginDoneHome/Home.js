@@ -127,7 +127,7 @@ function Home() {
                                     </div>
                                     <div className="col-md-4">
                                         <div className="headItems">
-                                            <span className="text">Төсөл хэрэгжүүлэх нэгжийн үнэлгээ</span><span className="text">Үнэлгээний хорооны шийдвэр</span>
+                                            <span className="text">Төсөл хэрэгжүүлэх нэгжийн үнэлгээ</span><span className="text"> Сонгон шалгаруулалтын багийн хурлын шийдвэр</span>
                                         </div>
                                     </div>
                                     <div className="col-md-4">

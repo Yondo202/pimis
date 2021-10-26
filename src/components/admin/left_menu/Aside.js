@@ -101,7 +101,7 @@ const MenuData = [
     icon:<GiProgression />,
     MenuChild:[
     { link:"/projects", text:"Бүртгүүлсэн байгууллагууд" },
-    { link:"/meetings", text:"Үнэлгээний хорооны уулзалт" },
+    { link:"/meetings", text:"Сонгон шалгаруулалтын багийн хурал гэснээр солих" },
     { link:"/maindecision", text:"Үнэлгээний хорооны шийдвэр" },
     { link:"/report", text:"Тайлан" },
     ] 
