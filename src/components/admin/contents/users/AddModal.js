@@ -114,6 +114,7 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="tosliin_zohitsuulagch" /> <span>Төслийн зохицуулагч</span></div>
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="ahlah_bhsh" /> <span>Ахлах БХШ</span></div>
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="bh_zovloh" /> <span>БХЗ</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="bh_ded_zovloh" /> <span>БХ дэд зөвлөх</span></div>
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="vdd_zovloh" /> <span>ҮДД-ын зөвлөх</span></div>
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="huuliin_zowloh" /> <span>Хуулийн зөвлөх</span></div>
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="sanhuu" /> <span>Санхүү</span></div>

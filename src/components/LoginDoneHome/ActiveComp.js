@@ -77,7 +77,15 @@ function ActiveComp({ userId, data, edPlan, edPlanFinal }) {
                 <div className="itemsPar">
                     <div className="mains">
                         {/* <Link to={pathname} className={props?.data?.lastEvalution.value === 0 ? `items arrHelp` : props?.data?.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} ><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</Link> */}
-                        <div className={data?.lastEvalution.value === 0 ? `items arrHelp` : data?.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} ><div className="helpArr"></div> 1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас</div>
+                        {/* <Link 
+                            to={userId ? `/member-interest/${projectId}` : ``}
+                            className={data?.lastEvalution.value === 0 ? `items arrHelp` : data?.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} >
+                             1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас
+                        </Link> */}
+                        <div 
+                            className={data?.lastEvalution.value === 0 ? `items arrHelp` : data?.lastEvalution.value === 1 ? `itemsActive` : `itemsActive`} >
+                             1. Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас
+                        </div>
                         <div className="line" />
                         <Link to={userId ? `/maindecision/${projectId}` : ``} className={data?.lastEvalution.value === 0 ? `items` : data?.lastEvalution.value === 1 ? `resultWaiting` : `itemsActive`} >2.Сонгон шалгаруулалтын багийн хурлын шийдвэрийн хуудас</Link>
                     </div>

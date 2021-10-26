@@ -50,6 +50,7 @@ import { ContractReportsForAdmin } from 'pages/contract/contract_reports/contrac
 import SurveyPimis from 'pages/contract/survery/surveyPimis';
 import LaboratoryNavigator from 'components/admin/contents/laboratory/laboratoryNavigator';
 import MainReports from "components/admin/contents/monitoring/mainReports/container/Reports"
+import Member_interest from 'components/admin/contents/evaluation_results/Member_interest';
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -108,7 +109,9 @@ function Layout({ setLocale }) {
               <Route path="/check/:url" component={CompCheck2} />
               <Route path="/notify-page/:paramId" component={NotifyPage1} />
               {/* <Route path="/memberdecision" component={MemberDecision} /> */}
+              <Route path="/member-interest/:id" component={Member_interest} />
               <Route path="/maindecision/:id" component={MainDecision} />
+              
               <Route path="/letter-of-interest" component={LetterNavigator} />
               <Route path="/urgudul-preview/:id" component={UrgudulPreviewForAdmin} />
               <Route path="/attachments/evidence-1/:id" component={EvidenceAttachments1} />

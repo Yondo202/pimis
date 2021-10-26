@@ -41,7 +41,10 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
                 if(userInfo?.role==="ahlah_bhsh")
                   return <FilterMenu el={el} ind={ind} />
 
-                if(userInfo?.role==="bh_zovloh")
+                if(userInfo?.role==="bh_zovloh") // zowhon harna
+                  return el.title==="Түншлэлийн хөтөлбөр"?<FilterMenu el={el} ind={ind} />:<div />
+
+                if(userInfo?.role==="bh_ded_zovloh") // zowhon harna
                   return el.title==="Түншлэлийн хөтөлбөр"?<FilterMenu el={el} ind={ind} />:<div />
 
                 if(userInfo?.role==="vdd_zovloh")
