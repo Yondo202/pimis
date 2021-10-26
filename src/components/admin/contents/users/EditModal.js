@@ -332,7 +332,7 @@ const Role = [
     { title: "БХЗ", value: "bh_zovloh", },
     { title: "БХ дэд зөвлөх", value: "bh_ded_zovloh", },
     { title: "ҮДД-ын зөвлөх", value: "vdd_zovloh", },
-    { title: "Хуулийн зөвлөх", value: "huuliin_zowloh", },
+    { title: "Хуулийн зөвлөх", value: "huuliin_zowloh", },  
     { title: "Санхүү", value: "sanhuu", },
     { title: "Худалдаан авах ажиллагаа", value: "hudaldanavah_ajillagaa", },
     { title: "Сургалт зохион байгуулагч", value: "trainer", },
