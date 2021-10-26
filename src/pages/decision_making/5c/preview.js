@@ -57,7 +57,7 @@ export default function AnalystReportPreview(props) {
                 {({ blob, url, loading, error }) => (loading ? 'Loading' : 'Download')}
             </PDFDownloadLink> */}
 
-            <button onClick={handleOpenPdf}>Open</button>
+            {/* <button onClick={handleOpenPdf}>Open</button> */}
 
             <div className="tw-fixed tw-top-0 tw-py-1 tw-px-2 tw-rounded" style={{ left: -840, width: 831, backgroundColor: '#f5faff' }} ref={htmlImgRef}>
                 <div dangerouslySetInnerHTML={{ __html: (isCheckedZ ? info.accept_tips : info.decline_reason) || emptyEditor }} style={{ minHeight: 20 }} />
@@ -65,7 +65,7 @@ export default function AnalystReportPreview(props) {
 
             <div className="tw-mx-auto" ref={componentRef}>
                 <div className="tw-text-center tw-text-base tw-font-medium tw-mt-4 tw-mb-0.5">
-                    Бизнес шинжээчийн шинжилгээний тайлан
+                    Шинжилгээний тайлан
                 </div>
 
                 <div className="tw-text-13px tw-leading-snug tw-text-right tw-pb-1 tw-px-2">

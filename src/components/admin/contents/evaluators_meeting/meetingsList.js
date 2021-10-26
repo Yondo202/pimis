@@ -33,7 +33,7 @@ export default function EvaluatorsMeetingsList({ projects, evaluators }) {
         <div className="tw-text-sm tw-text-gray-700 tw-absolute tw-top-0 tw-w-full tw-pb-10">
             <div className="tw-bg-white tw-rounded tw-shadow-md tw-w-full tw-p-2 tw-max-w-5xl">
                 <div className="tw-text-lg tw-font-medium tw-p-2 tw-text-center tw-mt-6 tw-mb-6">
-                    Үнэлгээний хорооны уулзалт
+                    Сонгон шалгаруулалтын багийн хурлууд
                 </div>
 
                 <DataGrid

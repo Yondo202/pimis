@@ -92,7 +92,7 @@ export default function AnalystReportPreviewPdf(props) {
         <Document>
             <Page style={styles.page} wrap>
                 <Text style={styles.title}>
-                    Бизнес шинжээчийн тайлан
+                    Шинжилгээний тайлан
                 </Text>
 
                 <View style={styles.info}>

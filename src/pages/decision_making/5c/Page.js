@@ -17,6 +17,7 @@ import ModalWindow from 'components/modal_window/modalWindow'
 import PenAltSVG from 'assets/svgComponents/penAltSVG'
 import SignaturePad from 'react-signature-canvas'
 import { capitalize } from 'components/utilities/utilities'
+import FormRichTextCKE from 'components/urgudul_components/formRichTextCKE'
 
 const rowDescriptions = {
     z: 'Өргөдөл гаргагчийн төслийг дэмжих саналтай эсэх',
@@ -24,25 +25,22 @@ const rowDescriptions = {
     a: 'A ХЭСЭГ: Өргөдөл гаргагч экспорт хийх чадавхитай эсэх',
     a1: 'Шалгуур үзүүлэлтийг бүрэн хангасан эсэх (Шалгууруудыг хэрхэн хангасан талаарх мэдээлэл)',
     a2: 'Дотоодын зах зээл дээр байр сууриа олсон эсэх (Дотоодын зах зээл дээрх байр суурь, зорилтот зах зээлийн мэдээлэл)',
-    a3: 'Одоогийн компанийн борлуулалт, ашигт гол нөлөө бүхий бүтээгдэхүүн, үйлчилгээ нь урт хугацааны өрсөлдөх чадвар бүхий бүтээгдэхүүн эсэх',
-    a4: 'Санхүүгийн чадавхитай эсэх (Санхүүгийн үзүүлэлтүүд, ашигт ажиллагаа, санхүүгийн хүчин чадал)',
-    a5: 'Чадавхи бүхий хүний нөөц, баг бүрдүүлж чадсан эсэх',
-    a6: 'Экспорт хийсэн туршлагатай эсэх (Экспортын мэдээлэлд өгсөн дүн шинжилгээ)',
+    a3: 'Санхүүгийн чадавхитай эсэх (Санхүүгийн үзүүлэлтүүд, ашигт ажиллагаа, санхүүгийн хүчин чадал)',
+    a4: 'Чадавхи бүхий хүний нөөц, баг бүрдүүлж чадсан эсэх',
+    a5: 'Экспорт хийсэн туршлагатай эсэх (Экспортын мэдээлэлд өгсөн дүн шинжилгээ)',
 
     b: 'B ХЭСЭГ: Экспорт хөгжлийн төлөвлөгөө нь хэрэгжих боломжтой бөгөөд Монгол улсын экспортонд нөлөө үзүүлэх чадвартай эсэх',
     b1: 'Зорилтот экспорт хийх улсад өрсөлдөх боломжтой эсэх (зах зээлийн багтаамж, зорилтот зах зээлийн хэмжээний талаарх мэдээлэл)',
-    b2: 'Экспортын зорилтот зах зээлийн зорилтот хэрэглэгчдийн бүлэгт тохирсон бүтээгдэхүүн, үйлчилгээг нийлүүлэх боломжтой эсэх (хэрэглэгчдийн зан төлөв, сонирхлын талаар судалгаанд үндэслэсэн)',
-    b3: 'Экспортын зорилтот зах зээлд өрсөлдөх чадвараа нэмэгдүүлэх төлөвлөгөө, хүчин чадалтай эсэх (өрсөлдөгчдийн судалгаанд үндэслэсэн шинжилгээ)',
-    b4: 'Экспортын зах зээлд захиалгыг тасралтгүй ханган, үйлдвэрлэх боломжтой эсэх (үйлдвэрлэлийн төлөвлөгөөнд суурилсан шинжилгээ)',
-    b5: 'Экспортын зах зээлд тохирсон чанарын удирдлагыг хангах боломжтой эсэх (тавигдаж буй чанарын удирдлагыг нэвтрүүлэх болон тасралтгүй хангах нөөц боломжийн талаарх шинжилгээ)',
-    b6: 'Экспортын бүтээгдэхүүний өртгийг бодитой тооцож, экспортын нэмэлт зардлуудыг тусгаж тооцсон эсэх',
-    b7: 'Зах зээлд нэвтрэх оновчтой стратегитай эсэх',
-    b8: 'Түгээлт, ханган нийлүүлэлтийг оновчтой төлөвлөсөн эсэх',
-    b9: 'Төслийн өгөөж нь өргөдөл гаргагчид санхүүгийн өгөөжтэй эсэх (төслөөр бий болох санхүүгийн тооцооллын шинжилгээ)',
+    b2: 'Экспортын зорилтот зах зээлд өрсөлдөх чадвараа нэмэгдүүлэх төлөвлөгөө, хүчин чадалтай эсэх (өрсөлдөгчдийн судалгаанд үндэслэсэн шинжилгээ)',
+    b3: 'Экспортын зах зээлд захиалгыг тасралтгүй ханган, үйлдвэрлэх боломжтой эсэх (үйлдвэрлэлийн төлөвлөгөөнд суурилсан шинжилгээ)',
+    b4: 'Экспортын зах зээлд зориулсан өртгийн сүлжээг оновчтой удирдах боломжтой эсэх (өртгийн сүлжээний оролцогчдын шинжилгээ)',
+    b5: 'Зах зээлд нэвтрэх оновчтой стратегитай эсэх',
+    b6: 'Түгээлт, ханган нийлүүлэлтийг оновчтой төлөвлөсөн эсэх',
+    b7: 'Төслөөс гарах үр дүн нь экспортын хэмжээ, экспортлогч улс, экспортлогчдын тоонд шууд нөлөөлөл үзүүлэх боломжтой эсэх (экспортын мэдээлэлтэй харьцуулсан шинжилгээ)',
 
     c: 'C ХЭСЭГ: Хэрэгжүүлэх арга хэмжээ нь урт хугацаанд өгөөж, давуу талыг бий болгож буй эсэх',
     c1: 'Өргөдөл гаргагчийн төлөвлөсөн үйл ажиллагаа нь 9 сарын дотор хэрэгжих боломжтой эсэх',
-    c2: 'Уг үйл ажиллагаа нь Экспорт хөгжлийн төлөвлөгөөтэй уялдаж, үр дүнтэй байх чадах эсэх',
+    c2: 'Уг үйл ажиллагаа нь Экспорт хөгжлийн төлөвлөгөөтэй уялдаж, үр дүнтэй байж чадах эсэх'
 }
 
 const initialCommentsOpen = Object.keys(rowDescriptions).reduce((a, c) => ({ ...a, [c]: false }), {})
@@ -155,6 +153,22 @@ export default function AnalystReport() {
         setInfo(prev => ({ ...prev, [key]: value }))
     }
 
+    const handleInputAhlah = (key, value) => {
+        if (analyst.role === 'ahlah_bhsh') {
+            setInfo(prev => ({ ...prev, [key]: value }))
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Бизнес хөгжлийн ахлах мэргэжилтэн засах боломжтой' })
+        }
+    }
+
+    const handleInputZuvluh = (key, value) => {
+        if (analyst.role === 'bh_zovloh') {
+            setInfo(prev => ({ ...prev, [key]: value }))
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Бизнес хөгжлийн зөвлөх засах боломжтой' })
+        }
+    }
+
     const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked
 
     const [previewModalOpen, setPreviewModalOpen] = useState(false)
@@ -180,7 +194,7 @@ export default function AnalystReport() {
 
                 <div className="tw-p-3 tw-pb-2 tw-flex tw-items-center">
                     <span className=" tw-pl-2 tw-font-medium tw-text-blue-500 tw-text-base">
-                        Бизнес шинжээчийн шинжилгээний тайлан
+                        Шинжилгээний тайлан
                     </span>
                 </div>
 
@@ -229,24 +243,36 @@ export default function AnalystReport() {
                         {item => item
                             ? anims =>
                                 <animated.div className="tw-mt-1.5" style={anims}>
-                                    <FormRichText
+                                    {/* <FormRichText
                                         label="Төслийг дэмжиж буй бол хэрэгжүүлэх явцад анхаарах зөвлөмж:"
                                         modules="small"
                                         value={info.accept_tips}
                                         name="accept_tips"
                                         setter={handleInputInfo}
                                         classQuill="tw-max-w-4xl"
+                                    /> */}
+                                    <FormRichTextCKE
+                                        label="Төслийг дэмжиж буй бол хэрэгжүүлэх явцад анхаарах зөвлөмж:"
+                                        value={info.accept_tips}
+                                        name="accept_tips"
+                                        setter={handleInputInfo}
                                     />
                                 </animated.div>
                             : anims =>
                                 <animated.div className="tw-mt-1.5" style={anims}>
-                                    <FormRichText
+                                    {/* <FormRichText
                                         label="Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:"
                                         modules="small"
                                         value={info.decline_reason}
                                         name="decline_reason"
                                         setter={handleInputInfo}
                                         classQuill="tw-max-w-4xl"
+                                    /> */}
+                                    <FormRichTextCKE
+                                        label="Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:"
+                                        value={info.decline_reason}
+                                        name="decline_reason"
+                                        setter={handleInputInfo}
                                     />
                                 </animated.div>
                         }
@@ -291,7 +317,7 @@ export default function AnalystReport() {
                                 config={{ tension: 300, clamp: true }}>
                                 {item => item && (anims =>
                                     <animated.div className={`tw-overflow-hidden ${rootCodes.includes(row.rowcode) ? 'tw-pl-5 tw-pr-8' : 'tw-pl-9 tw-pr-3'}`} style={anims}>
-                                        <FormRichText
+                                        {/* <FormRichText
                                             modules="small"
                                             value={row.comment}
                                             name="comment"
@@ -299,6 +325,12 @@ export default function AnalystReport() {
                                             setter={handleInput}
                                             classQuill="tw-pb-10"
                                             height={180}
+                                        /> */}
+                                        <FormRichTextCKE
+                                            value={row.comment}
+                                            name="comment"
+                                            index={row.rowcode}
+                                            setter={handleInput}
                                         />
                                     </animated.div>
                                 )}
@@ -318,7 +350,7 @@ export default function AnalystReport() {
                         <p className="tw-mt-1 tw-font-light">
                             Бизнес хөгжлийн ахлах мэргэжилтэн
                         </p>
-                        <Signature value={info.ahlah_signature} name="ahlah_signature" setter={handleInputInfo} />
+                        <Signature value={info.ahlah_signature} name="ahlah_signature" setter={handleInputAhlah} />
                     </div>
 
                     <div className="tw-mt-6">
@@ -331,7 +363,7 @@ export default function AnalystReport() {
                         <p className="tw-mt-1 tw-font-light">
                             Бизнес хөгжлийн зөвлөх
                         </p>
-                        <Signature value={info.zuvluh_signature} name="zuvluh_signature" setter={handleInputInfo} />
+                        <Signature value={info.zuvluh_signature} name="zuvluh_signature" setter={handleInputZuvluh} />
                     </div>
                 </div>
 

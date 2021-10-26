@@ -1,0 +1,11 @@
+.ck .ck-sticky-panel__content {
+   zoom: 0.9
+}
+
+.ck.ck-editor {
+   max-width: 768px;
+}
+
+.ck .ck-editor__editable {
+   min-height: 90px;
+}

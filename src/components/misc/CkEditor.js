@@ -1,50 +1,50 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react'
-import  ClassicEditor  from '@ckeditor/ckeditor5-build-classic';
+// import  ClassicEditor  from '@ckeditor/ckeditor5-build-classic'
+import Editor from 'ckeditor5-custom-build/build/ckeditor'
 import styled from "styled-components";
 import { useEffect, useState } from 'react';
-
 
 // console.log(ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName ));
 
 const editorConfiguration = {
-  toolbar: ['heading', '|', 'bold', 'italic', "blockQuote", '|', 'bulletedList', 'numberedList', 'Indent', "Table", "TableToolbar",   'undo', 'redo', ],
+  toolbar: ['heading', '|', 'bold', 'italic', "blockQuote", '|', 'bulletedList', 'numberedList', 'Indent', "Table", "TableToolbar", 'undo', 'redo',],
 };
 
-function CkEditor({title, data, setData, height, lang}) {
-  const [ customData, setCustomData ] = useState("");
-  const [ Nyll, setNyll ] = useState(false);
+function CkEditor({ title, data, setData, height, lang }) {
+  const [customData, setCustomData] = useState("");
+  const [Nyll, setNyll] = useState(false);
 
-  useEffect(()=>{
-      if(data){ setCustomData(data)}
-  },[data])
+  useEffect(() => {
+    if (data) { setCustomData(data) }
+  }, [data])
 
   return (
     <Container className="CkEditor">
-      {title&&<div className="title"><span className="lang"><img src={lang==="mn"?"/mn.png":"/us.png"} /> </span><span>{title}</span></div>} 
-      <div className={height?Nyll? `redCustom`:`activeCustom`:Nyll? `red`:`active`}>
+      {title && <div className="title"><span className="lang"><img src={lang === "mn" ? "/mn.png" : "/us.png"} /> </span><span>{title}</span></div>}
+      <div className={height ? Nyll ? `redCustom` : `activeCustom` : Nyll ? `red` : `active`}>
         <CKEditor
-              height={100}
-              editor={ ClassicEditor }
-              config={ configuration }
-              data={customData}
-              onReady={ editor => {
-                  // You can store the "editor" and use when it is needed.
-                  // console.log( 'Editor is ready to use!', editor );
-              } }
-              onChange={ ( event, editor ) => {
-                  const data = editor.getData();
-                    setData(data);
-                  // console.log( { event, editor, data } );
-              }}
-              onBlur={ ( event, editor ) => {
-                  const data = editor.getData();
-                  if(data === ""){ setNyll(true) }else { setNyll(false) }
-              }}
-              onFocus={ ( event, editor ) => {
-                  // console.log( 'Focus.', editor );
-                  setNyll(false);
-              }}
-          />
+          height={100}
+          editor={Editor}
+          config={configuration}
+          data={customData}
+          onReady={editor => {
+            // You can store the "editor" and use when it is needed.
+            // console.log( 'Editor is ready to use!', editor );
+          }}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            setData(data);
+            // console.log( { event, editor, data } );
+          }}
+          onBlur={(event, editor) => {
+            const data = editor.getData();
+            if (data === "") { setNyll(true) } else { setNyll(false) }
+          }}
+          onFocus={(event, editor) => {
+            // console.log( 'Focus.', editor );
+            setNyll(false);
+          }}
+        />
       </div>
     </Container>
   );
@@ -71,7 +71,7 @@ const configuration = {
     'undo',
     'redo',
     '|',
-  //   ''
+    //   ''
   ],
 };
 
