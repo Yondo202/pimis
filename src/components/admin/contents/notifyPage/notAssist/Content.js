@@ -62,7 +62,7 @@ class Content extends React.Component {
                 <div className="nameTitle"><span className="smtitle">Он сар өдөр: </span><span className="MemeberInfo">{app?.meetingDate}</span></div>
                 <div className="toname">Эрхэм хүндэт <span className="name">{app?.company?.representative_name}</span> Танд,</div><br/>
                 <div className="contentPar">
-                    <div className="items">Экспортыг дэмжих төсөлд материалаа илгээж, шалгаруулалтанд оролцсонд баярлалаа. Экспортыг нэмэгдүүлэх талаар танай байгууллагын илгээсэн материалтай {year} Оны {month} Сарын {day} Өдөр болсон үнэлгээний хорооны шийдвэрээр энэ удаад танай төсөлд дэмжлэг олгохоос татгалзсаныг дуулгахад харамсалтай байна. </div> <br />
+                    <div className="items">Экспортыг дэмжих төсөлд материалаа илгээж, шалгаруулалтанд оролцсонд баярлалаа. Экспортыг нэмэгдүүлэх талаар танай байгууллагын илгээсэн материалтай {year} Оны {month} Сарын {day} Өдөр болсон сонгон шалгаруулалтын багийн хурлын шийдвэрээр энэ удаад танай төсөлд дэмжлэг олгохоос татгалзсаныг дуулгахад харамсалтай байна. </div> <br />
                     
                     <div className="betweenItem">
                                 <div  className="titless">Татгалзсан шалтгаан:</div><br/>
@@ -119,7 +119,7 @@ const EmailHTML = (app, edpInfo, username, signature) => renderEmail(
                 <Box style={{textAlign:"start",width:"100%", margin:'16px 0px', fontSize:'13px'}}>Эрхэм хүндэт {app?.company?.representative_name} Танд,</Box>
 
 
-                <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Экспортыг дэмжих төсөлд материалаа илгээж, шалгаруулалтанд оролцсонд баярлалаа. Экспортыг нэмэгдүүлэх талаар танай байгууллагын илгээсэн материалтай <Span style={{color:"#222222",fontWeight:"500", fontSize:'13px'}}>{year}оны {month}сарын {day}өдөр</Span> болсон үнэлгээний хорооны шийдвэрээр энэ удаад танай төсөлд дэмжлэг олгохоос татгалзсаныг дуулгахад харамсалтай байна. </Box>
+                <Box style={{textAlign:"start",width:"100%", margin:'15px 0px', fontSize:'13px'}}>Экспортыг дэмжих төсөлд материалаа илгээж, шалгаруулалтанд оролцсонд баярлалаа. Экспортыг нэмэгдүүлэх талаар танай байгууллагын илгээсэн материалтай <Span style={{color:"#222222",fontWeight:"500", fontSize:'13px'}}>{year}оны {month}сарын {day}өдөр</Span> болсон сонгон шалгаруулалтын багийн хурлын шийдвэрээр энэ удаад танай төсөлд дэмжлэг олгохоос татгалзсаныг дуулгахад харамсалтай байна. </Box>
                 <Box style={{textAlign:"start",width:"100%", marginTop:'15px',marginBottom:'5px',  fontSize:'13px', fontWeight:"600"}}>Татгалзсан шалтгаан:</Box>
                 <Box style={{textAlign:"start",width:"100%", marginBottom:'15px', fontSize:'13px'}}>{app?.reason}</Box>
                 <Box style={{textAlign:"start",width:"100%", marginTop:'5px',marginBottom:'22px', fontSize:'13px'}}>Бидэнд хандсанд баярлалаа. Хэрэв та дээрхи шалтгаануудыг засварлан, хүсэлт илгээхийг хүсвэл дараачийн удаа нээгдэх сонгон шалгаруулалтанд дахин оролцох боломжтой.</Box>
