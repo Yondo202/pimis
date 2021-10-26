@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^12.1.10",
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
+    "ckeditor5-custom-build": "file:ckeditor5",
     "devextreme": "20.2.5",
     "devextreme-react": "^20.2.5",
     "exceljs": "^4.2.1",

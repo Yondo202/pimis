@@ -38,7 +38,7 @@ export default function FirstEvaluationPreview(props) {
                 {({ blob, url, loading, error }) => (loading ? 'Loading' : 'Download')}
             </PDFDownloadLink> */}
 
-            <button onClick={handleOpenPdf}>Open</button>
+            {/* <button onClick={handleOpenPdf}>Open</button> */}
 
             <div className="tw-mx-auto" ref={componentRef}>
                 <div className="tw-text-center tw-text-base tw-font-medium tw-mt-4 tw-mb-0.5">

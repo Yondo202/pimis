@@ -136,7 +136,7 @@ export default function EvaluatorsMeetingEdit(props) {
 
             <div className="tw-bg-white tw-rounded tw-shadow-md tw-p-2 tw-mt-6 tw-w-full tw-max-w-5xl">
                 <div className="tw-text-lg tw-font-medium tw-text-center tw-p-2 tw-mt-6">
-                    Үнэлгээний хорооны уулзалт
+                    Сонгон шалгаруулалтын багийн хурал
                 </div>
 
                 <div className="tw-flex tw-flex-wrap tw-justify-between tw-mt-5">

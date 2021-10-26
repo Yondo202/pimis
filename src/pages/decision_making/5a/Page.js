@@ -11,6 +11,7 @@ import FirstEvaluationPreview from './preview'
 import { useHistory, useParams } from "react-router"
 import ChevronDownSVG from "assets/svgComponents/chevronDownSVG"
 import FormRichText from "components/urgudul_components/formRichText"
+import FormRichTextCKE from "components/urgudul_components/formRichTextCKE"
 
 const editors = ['edpadmin', 'member', 'ahlah_bhsh', 'bh_zovloh']
 const rootCodes = ['a', 'b', 'c', 'z']
@@ -180,7 +181,7 @@ const FirstEvaluation = () => {
                 config={{ tension: 300, clamp: true }}>
                 {item => item && (anims =>
                   <animated.div className={`tw-overflow-hidden ${rootCodes.includes(row.rowcode) ? 'tw-pl-5 tw-pr-8' : 'tw-pl-9 tw-pr-3'}`} style={anims}>
-                    <FormRichText
+                    {/* <FormRichText
                       modules="small"
                       value={row.comment}
                       name="comment"
@@ -188,6 +189,12 @@ const FirstEvaluation = () => {
                       setter={handleInput}
                       classQuill="tw-pb-10"
                       height={180}
+                    /> */}
+                    <FormRichTextCKE
+                      value={row.comment}
+                      name="comment"
+                      index={row.rowcode}
+                      setter={handleInput}
                     />
                   </animated.div>
                 )}
