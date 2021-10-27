@@ -6,10 +6,15 @@ import axios from 'axiosbase';
 import Token from 'context/accessToken';
 import DocumentTitle from 'containers/document/DocumentTitle'
 import { IoMdCheckmarkCircle } from 'react-icons/io'
+import DecisionPage from 'pages/decision_making/5c/Page'
+// import DecisionMakingPreviewModal from 'pages/decision_making/5a/previewModal'
+// import AnalystReportPreview from 'pages/decision_making/5a/preview'
 
 function HomePage({}) {
     DocumentTitle("EDP - Үнэлгээний хорооны гишүүн");
     const [cardData, setCardData] = useState([]);
+    const [open, setOpen] = useState(false)
+    const [ projId, setProjId ] = useState(null);
     // const [showModal, setShowModal] = useState(false);
     // const [parent, setParent] = useState({});
     // const ClickHandle = e => { setParent(e); setShowModal(true); }
@@ -23,6 +28,11 @@ function HomePage({}) {
             if (res.data.data.length!==0) { setCardData(res.data.data); };
         }).catch((err) => console.log(err.response.data.error))
     } 
+
+    const showHandle = (el) =>{
+        setProjId(el)
+        setOpen(prev=>!prev)
+    }
 
     return (
         <Memberhome style={{ maxWidth: 1160 }} className="container">
@@ -39,6 +49,7 @@ function HomePage({}) {
                         <div key={i}
                         //  onClick={() => ClickHandle(el)}
                          className="Ghost">
+                            {open?<DecisionPage seeMember={projId} setOpen={setOpen} />:null}
                             <div className="cardItems">
                                 <div className="titleBig">{el.company_name}</div>
                                 <div className="contents">
@@ -58,7 +69,7 @@ function HomePage({}) {
                                     <div className="contItem">
                                         {/* <span className="title">Санхүүжилтийн хэмжээ :</span> */}
                                         {/* <span className="desc">{el.budgetCost} $</span> */}
-                                        <div className="link">Шинжилгээний тайлан - харах</div>
+                                        <div onClick={()=>showHandle(el.projectId)} className="link">Шинжилгээний тайлан - харах</div>
                                     </div>
 
                                     <div className="mains">
@@ -114,7 +125,8 @@ const Memberhome = styled.div`
         margin-top:20px;
         display:flex;
         flex-wrap:wrap;
-        justify-content:space-between;
+        gap:30px;
+        // justify-content:space-between;
         .Ghost{
             transition:all 0.2s ease;
             width:31.5%;

@@ -57,7 +57,7 @@ function AlertDialog() {
                             {alert.msg}
                         </p>
                         <button className={`tw-ml-2 tw-rounded-lg focus:tw-outline-none ${classTheme.btnColor[alert.variant]} active:${classTheme.btnActiveColor[alert.variant]} tw-transition-colors`} onClick={closeAlert}>
-                            <CloseSVG className={`tw-w-6 tw-h-6 ${classTheme.svgColor[alert.variant]} tw-transition-colors`} />
+                            <CloseSVG className={`tw-w-5 tw-h-5 ${classTheme.svgColor[alert.variant]} tw-transition-colors`} />
                         </button>
                     </div>
                 </animated.div >

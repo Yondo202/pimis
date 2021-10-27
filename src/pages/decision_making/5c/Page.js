@@ -18,6 +18,11 @@ import PenAltSVG from 'assets/svgComponents/penAltSVG'
 import SignaturePad from 'react-signature-canvas'
 import { capitalize } from 'components/utilities/utilities'
 import FormRichTextCKE from 'components/urgudul_components/formRichTextCKE'
+import NumberFormat from 'react-number-format'
+import { TextareaCell } from 'pages/contract/contract_reports/protectionReport'
+import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
+import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
+import { toCurrencyString } from 'pages/urgudul/preview/Preview'
 
 const rowDescriptions = {
     z: 'Өргөдөл гаргагчийн төслийг дэмжих саналтай эсэх',
@@ -55,11 +60,12 @@ const initialState = Object.entries(rowDescriptions).map(([rowcode, description]
 }))
 
 const initialInfo = {
+    requested_funding: '',
+    available_funding: '',
     analyst_name: '',
     check_start: '',
     check_end: '',
-    accept_tips: '',
-    decline_reason: '',
+    info: '',
     ahlah_name: '',
     ahlah_signature: null,
     zuvluh_name: '',
@@ -68,9 +74,24 @@ const initialInfo = {
 
 const editors = ['edpadmin', 'member', 'ahlah_bhsh', 'bh_zovloh']
 const rootCodes = ['a', 'b', 'c', 'z']
-const emptyEditor = '<p><br></p>'
+// const emptyEditor = '<p><br></p>'
+const emptyEditor = ''
 
-export default function AnalystReport() {
+const rowFundingDeals = {
+    planned_activity: null,
+    requested_funding: null,
+    proposal_funding: null,
+    approved_funding: null
+}
+
+export const headersFundingDeals = [
+    '№',
+    'Төлөвлөсөн үйл ажиллагаа',
+    'Хүссэн санхүүжилт /төгрөг/',
+    'Зөвлөхийн санал /төгрөг/'
+]
+
+export default function AnalystReport({ seeMember, setOpen }) {
     const [rows, setRows] = useState(initialState)
     const [company, setCompany] = useState({})
     const [analyst, setAnalyst] = useState({})
@@ -93,38 +114,48 @@ export default function AnalystReport() {
     }
 
     const projectId = useParams().id
+
     const loggedUserId = localStorage.getItem('userId')
 
     useEffect(() => {
         if (projectId) {
-            axios.get(`projects/${projectId}/bds-evaluation5c`, {
-                headers: { Authorization: getLoggedUserToken() },
-            }).then(res => {
-                if (res.data.data?.rows?.length === initialState.length) {
-                    setRows(res.data.data.rows)
-                }
-                setInfo(prev => ({ ...prev, ...res.data.data.info }))
-            })
-
-            axios.get('pps-infos/registered-companies', {
-                headers: { Authorization: getLoggedUserToken() },
-                params: { projectId: projectId },
-            }).then(res => {
-                setCompany(res.data.data[0] ?? {})
-            })
-
-            axios.get(`users/${loggedUserId}`, {
-                headers: { Authorization: getLoggedUserToken() },
-            }).then(res => {
-                const analyst = res.data.data
-                setAnalyst(analyst)
-                setInfo(prev => ({
-                    ...prev,
-                    analyst_name: prev.analyst_name || `${analyst.lastname?.substr(0, 1)?.toUpperCase()}. ${capitalize(analyst.firstname)}`
-                }))
-            })
+            fetchData(projectId)
+        }
+        if(seeMember){
+            fetchData(seeMember)
+            setPreviewModalOpen(true)
         }
     }, [])
+
+    const fetchData = (projectId) =>{
+        axios.get(`projects/${projectId}/bds-evaluation5c`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            if (res.data.data?.rows?.length === initialState.length) {
+                setRows(res.data.data.rows)
+            }
+            setInfo(prev => ({ ...prev, ...res.data.data?.info }))
+            if (res.data.data?.deals?.length) {
+                setFundingDeals(res.data.data.deals)
+            }
+        })
+        axios.get('pps-infos/registered-companies', {
+            headers: { Authorization: getLoggedUserToken() },
+            params: { projectId: projectId },
+        }).then(res => {
+            setCompany(res.data.data[0] ?? {})
+        })
+        axios.get(`users/${loggedUserId}`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            const analyst = res.data.data
+            setAnalyst(analyst)
+            setInfo(prev => ({
+                ...prev,
+                analyst_name: prev.analyst_name || `${analyst.lastname?.substr(0, 1)?.toUpperCase()}. ${capitalize(analyst.firstname)}`
+            }))
+        })
+    }
 
     const [commentsOpen, setCommentsOpen] = useState(initialCommentsOpen)
 
@@ -133,8 +164,8 @@ export default function AnalystReport() {
     }
 
     const handleSubmit = () => {
-        if (info.analyst_name && info.check_start && info.check_end) {
-            axios.post(`projects/${projectId}/bds-evaluation5c`, { rows: rows, info: info }, {
+        if (info.requested_funding && info.analyst_name && info.check_start && info.check_end) {
+            axios.post(`projects/${projectId}/bds-evaluation5c`, { rows: rows, info: info, deals: fundingDeals }, {
                 headers: { Authorization: getLoggedUserToken() },
             }).then(res => {
                 AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Шинжээчийн тайланг хадгаллаа.' })
@@ -148,9 +179,14 @@ export default function AnalystReport() {
     }
 
     const [info, setInfo] = useState(initialInfo)
+    const [fundingDeals, setFundingDeals] = useState([{ ...rowFundingDeals }])
 
     const handleInputInfo = (key, value) => {
-        setInfo(prev => ({ ...prev, [key]: value }))
+        if (canEdit) {
+            setInfo(prev => ({ ...prev, [key]: value }))
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Засвар оруулах эрх байхгүй байна.' })
+        }
     }
 
     const handleInputAhlah = (key, value) => {
@@ -169,7 +205,34 @@ export default function AnalystReport() {
         }
     }
 
-    const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked
+    const hanleInputFunding = (key, value, index) => {
+        if (canEdit) {
+            setFundingDeals(prev => {
+                const next = [...prev]
+                next[index][key] = value
+                return next
+            })
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Засвар оруулах эрх байхгүй байна.' })
+        }
+    }
+
+    const rowAddFunding = () => {
+        if (canEdit) {
+            setFundingDeals(prev => [...prev, { ...rowFundingDeals }])
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Засвар оруулах эрх байхгүй байна.' })
+        }
+    }
+
+    const rowRemoveFunding = (index) => {
+        if (canEdit) {
+            if (fundingDeals.length <= 1) return
+            setFundingDeals(prev => prev.filter((_, i) => i !== index))
+        } else {
+            AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Засвар оруулах эрх байхгүй байна.' })
+        }
+    }
 
     const [previewModalOpen, setPreviewModalOpen] = useState(false)
 
@@ -178,7 +241,9 @@ export default function AnalystReport() {
     const history = useHistory()
 
     return (
-        <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700">
+        <>
+        <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={seeMember?setOpen:setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} deals={fundingDeals} company={company} analyst={analyst} />} />
+        {!seeMember&&<div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700">
             <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.goBack()}>
                 <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
                 Буцах
@@ -190,7 +255,6 @@ export default function AnalystReport() {
                     Харах
                 </button>
 
-                <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} company={company} analyst={analyst} />} />
 
                 <div className="tw-p-3 tw-pb-2 tw-flex tw-items-center">
                     <span className=" tw-pl-2 tw-font-medium tw-text-blue-500 tw-text-base">
@@ -200,11 +264,11 @@ export default function AnalystReport() {
 
                 <div className="tw-border-b tw-border-dashed tw-text-13px tw-pl-5 tw-pr-3 tw-pb-1 tw-leading-snug">
                     <div className="tw-relative">
-                        Дугаар:
+                        Өргөдлийн дугаар:
                         <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_number}</span>
                     </div>
                     <div className="tw-relative">
-                        Төрөл:
+                        Өргөдлийн төрөл:
                         <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_type_name}</span>
                     </div>
                     <div className="tw-relative">
@@ -219,6 +283,23 @@ export default function AnalystReport() {
 
                 <div className="tw-ml-4 tw-mr-2 tw-mt-4">
                     <div className="tw-flex tw-items-center">
+                        <label className="tw-mb-0 tw-mr-4">
+                            Хүсэж буй санхүүжилтийн дүн:
+                        </label>
+                        <NumberFormat className={`${classInputNumber} ${validate && !(info.requested_funding) && 'tw-border-dashed tw-border-red-500'}`} value={info.requested_funding} onValueChange={values => handleInputInfo('requested_funding', values.floatValue)} thousandSeparator decimalScale={2} suffix=' ₮' />
+                    </div>
+
+                    <div className="tw-flex tw-items-center tw-mt-3">
+                        <label className="tw-mb-0 tw-mr-4">
+                            Хүсэж болох санхүүжилтийн дүн:
+                        </label>
+                        <NumberFormat className={`${classInputNumber} `} value={info.available_funding} onValueChange={values => handleInputInfo('available_funding', values.floatValue)} thousandSeparator decimalScale={2} suffix=' ₮' />
+                        <span className="tw-ml-3">
+                            /Өмнө нь санхүүжилт {info.available_funding ? 'авсан' : 'аваагүй'}/
+                        </span>
+                    </div>
+
+                    <div className="tw-flex tw-items-center tw-mt-3">
                         <label className="tw-mb-0 tw-mr-4">
                             Шинжилгээ хийсэн Бизнес шинжээч:
                         </label>
@@ -235,51 +316,63 @@ export default function AnalystReport() {
                         </span>
                     </div>
 
-                    <Transition
-                        items={isCheckedZ}
-                        from={{ opacity: 0 }}
-                        enter={{ opacity: 1 }}
-                        leave={{ opacity: 0, display: 'none' }}>
-                        {item => item
-                            ? anims =>
-                                <animated.div className="tw-mt-1.5" style={anims}>
-                                    {/* <FormRichText
-                                        label="Төслийг дэмжиж буй бол хэрэгжүүлэх явцад анхаарах зөвлөмж:"
-                                        modules="small"
-                                        value={info.accept_tips}
-                                        name="accept_tips"
-                                        setter={handleInputInfo}
-                                        classQuill="tw-max-w-4xl"
-                                    /> */}
-                                    <FormRichTextCKE
-                                        label="Төслийг дэмжиж буй бол хэрэгжүүлэх явцад анхаарах зөвлөмж:"
-                                        value={info.accept_tips}
-                                        name="accept_tips"
-                                        setter={handleInputInfo}
-                                    />
-                                </animated.div>
-                            : anims =>
-                                <animated.div className="tw-mt-1.5" style={anims}>
-                                    {/* <FormRichText
-                                        label="Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:"
-                                        modules="small"
-                                        value={info.decline_reason}
-                                        name="decline_reason"
-                                        setter={handleInputInfo}
-                                        classQuill="tw-max-w-4xl"
-                                    /> */}
-                                    <FormRichTextCKE
-                                        label="Хэрэв төслийг дэмжихээс татгалзсан бол татгалзсан шалтгаан:"
-                                        value={info.decline_reason}
-                                        name="decline_reason"
-                                        setter={handleInputInfo}
-                                    />
-                                </animated.div>
-                        }
-                    </Transition>
+                    <div className="tw-mt-4 tw-mr-8">
+                        <FormRichTextCKE
+                            value={info.info}
+                            name="info"
+                            setter={handleInputInfo}
+                            placeholder="Компаний танилцуулга, бүтээгдэхүүн, төслийн тухай"
+                        />
+                    </div>
+
+                    <div className="tw-inline-block tw-relative tw-mt-4 tw-mr-8">
+                        <table>
+                            <thead>
+                                <tr>
+                                    {headersFundingDeals.map(header =>
+                                        <th className={`${classCell} tw-py-1 tw-font-medium`} key={header}>
+                                            {header}
+                                        </th>
+                                    )}
+                                    <th style={{ width: 29 }} />
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {fundingDeals.map((row, i) =>
+                                    <tr key={i}>
+                                        <td className={classCell}>
+                                            {i + 1}.
+                                        </td>
+                                        <TextareaCell value={row.planned_activity} name="planned_activity" index={i} setter={hanleInputFunding} height={40} />
+                                        <td className={classCell}>
+                                            <NumberFormat className={classCellInputNumber} value={row.requested_funding} onValueChange={values => hanleInputFunding('requested_funding', values.floatValue, i)} thousandSeparator decimalScale={2} />
+                                        </td>
+                                        <td className={classCell}>
+                                            <NumberFormat className={classCellInputNumber} value={row.proposal_funding} onValueChange={values => hanleInputFunding('proposal_funding', values.floatValue, i)} thousandSeparator decimalScale={2} />
+                                        </td>
+                                        <td className="">
+                                            <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => rowRemoveFunding(i)} />
+                                        </td>
+                                    </tr>
+                                )}
+                                <tr>
+                                    <td className={`${classCell} tw-pl-2.5`} colSpan={2}>
+                                        Нийт
+                                    </td>
+                                    <td className={`${classCell} tw-text-right`}>
+                                        {toCurrencyString(fundingDeals.reduce((acc, cv) => acc + (+cv.requested_funding || 0), 0))}
+                                    </td>
+                                    <td className={`${classCell} tw-text-right`}>
+                                        {toCurrencyString(fundingDeals.reduce((acc, cv) => acc + (+cv.proposal_funding || 0), 0))}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4 print-invisbile" onClick={rowAddFunding} />
+                    </div>
                 </div>
 
-                <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-6 tw-divide-y tw-divide-dashed">
+                <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-8 tw-divide-y tw-divide-dashed">
                     {rows.map(row =>
                         <div key={row.rowcode}>
                             <div className="tw-flex tw-items-center tw-text-sm">
@@ -348,7 +441,7 @@ export default function AnalystReport() {
                             <input className={classInput} value={info.ahlah_name} onChange={e => handleInputInfo('ahlah_name', e.target.value)} placeholder="Овог нэр" />
                         </div>
                         <p className="tw-mt-1 tw-font-light">
-                            Бизнес хөгжлийн ахлах мэргэжилтэн
+                            /Бизнес хөгжлийн ахлах мэргэжилтэн/
                         </p>
                         <Signature value={info.ahlah_signature} name="ahlah_signature" setter={handleInputAhlah} />
                     </div>
@@ -361,7 +454,7 @@ export default function AnalystReport() {
                             <input className={classInput} value={info.zuvluh_name} onChange={e => handleInputInfo('zuvluh_name', e.target.value)} placeholder="Овог нэр" />
                         </div>
                         <p className="tw-mt-1 tw-font-light">
-                            Бизнес хөгжлийн зөвлөх
+                            /Бизнес хөгжлийн зөвлөх/
                         </p>
                         <Signature value={info.zuvluh_signature} name="zuvluh_signature" setter={handleInputZuvluh} />
                     </div>
@@ -375,12 +468,16 @@ export default function AnalystReport() {
                     </div>
                 }
             </div>
-        </div>
+        </div>}
+        </>
     )
 }
 
-const classInput = 'tw-border tw-rounded tw-shadow-inner tw-mr-1 tw-w-56 tw-pl-1 tw-py-0.5 focus:tw-outline-none'
+const classInput = 'tw-border tw-rounded tw-shadow-inner tw-mr-1 tw-w-56 tw-px-1.5 tw-py-0.5 focus:tw-outline-none'
+const classInputNumber = 'tw-border tw-rounded tw-shadow-inner tw-mr-1 tw-w-40 tw-px-1.5 tw-py-0.5 focus:tw-outline-none tw-text-right'
 const classSignature = 'tw-w-52 tw-h-16 tw-border tw-rounded tw-border-gray-400 tw-cursor-pointer print-border-bottom'
+const classCell = 'tw-border tw-border-gray-300 tw-px-2 tw-text-13px'
+const classCellInputNumber = 'focus:tw-outline-none tw-text-right tw-w-full tw-py-4 tw-text-13px'
 
 function Signature({ value, name, index, setter }) {
     const [sigModalOpen, setSigModalOpen] = useState(false)
@@ -426,5 +523,6 @@ function Signature({ value, name, index, setter }) {
                 </div>
             </ModalWindow>
         </div>
+        
     )
 }

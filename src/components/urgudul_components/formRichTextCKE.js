@@ -44,7 +44,7 @@ const config = {
    licenseKey: '',
 }
 
-export default function FormRichTextCKE({ label, HelpPopup, value, name, index, setter, invalid, classAppend, classLabel, height }) {
+export default function FormRichTextCKE({ label, HelpPopup, value, name, index, setter, invalid, classAppend, classLabel, height, placeholder }) {
    const handleInput = (editor) => {
       setter(name, editor.getData(), index)
    }
@@ -63,14 +63,15 @@ export default function FormRichTextCKE({ label, HelpPopup, value, name, index, 
          <div className="tw-pr-2 tw-pt-2 tw-pb-4">
             <CKEditor
                editor={Editor}
-               config={config}
+               config={placeholder ? { ...config, placeholder } : config}
                onReady={editor => {
                   editor.editing.view.change(writer => {
-                     height && writer.setStyle('minHeight', `${height}px`, editor.editing.view.document.getRoot())
+                     height && writer.setStyle('min-height', `${height}px`, editor.editing.view.document.getRoot())
                   })
                }}
-               data={value}
+               data={value ?? ''}
                onChange={(event, editor) => handleInput(editor)}
+
             />
          </div>
       </div>

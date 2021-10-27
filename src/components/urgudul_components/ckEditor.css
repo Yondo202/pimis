@@ -1,9 +1,11 @@
 .ck .ck-sticky-panel__content {
    zoom: 0.9
+   /* transform: scale(0.9); */
+   /* transform-origin: 0 0; */
 }
 
 .ck.ck-editor {
-   max-width: 768px;
+   /* max-width: 768px; */
 }
 
 .ck .ck-editor__editable {

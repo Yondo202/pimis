@@ -1,21 +1,23 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react'
+import React, { Fragment, useRef } from 'react'
 import PrintSVG from 'assets/svgComponents/printSVG'
 import { useReactToPrint } from "react-to-print"
 import '../5a/style.css'
-import { PDFDownloadLink, pdf } from "@react-pdf/renderer"
+import { PDFDownloadLink, pdf } from '@react-pdf/renderer'
 import AnalystReportPreviewPdf from './previewPdf'
 import html2canvas from 'html2canvas'
+import { headersFundingDeals } from './Page'
+import { toCurrencyString } from 'pages/urgudul/preview/Preview'
 
 const headerCodes = ['a', 'b', 'c']
-const emptyEditor = '<p><br></p>'
+// const emptyEditor = '<p><br></p>'
+const emptyEditor = ''
 
 export default function AnalystReportPreview(props) {
     const rows = props.rows ?? []
     const info = props.info ?? {}
+    const deals = props.deals ?? []
     const company = props.company ?? {}
     const analyst = props.analyst ?? {}
-
-    const isCheckedZ = rows.filter(row => row.rowcode === 'z')[0]?.isChecked
 
     const componentRef = useRef()
 
@@ -23,25 +25,24 @@ export default function AnalystReportPreview(props) {
         content: () => componentRef.current,
     })
 
-    const handleOpenPdf = async () => {
-        const blob = await pdf(<AnalystReportPreviewPdf rows={rows} info={info} company={company} analyst={analyst} htmlImg={htmlImg} />).toBlob()
-        const url = URL.createObjectURL(blob)
-        window.open(url, '_blank ')
-    }
+    // const handleOpenPdf = async () => {
+    //     const blob = await pdf(<AnalystReportPreviewPdf rows={rows} info={info} company={company} analyst={analyst} htmlImg={htmlImg} />).toBlob()
+    //     const url = URL.createObjectURL(blob)
+    //     window.open(url, '_blank ')
+    // }
 
-    const htmlImgRef = useRef()
+    // const htmlImgRef = useRef()
 
-    const [htmlImg, setHtmlImg] = useState()
+    // const [htmlImg, setHtmlImg] = useState()
 
-
-    useEffect(() => {
-        html2canvas(htmlImgRef.current, {
-            proxy: true,
-            useCORS: true,
-        }).then(canvas => {
-            setHtmlImg(canvas.toDataURL())
-        })
-    }, [])
+    // useEffect(() => {
+    //     html2canvas(htmlImgRef.current, {
+    //         proxy: true,
+    //         useCORS: true,
+    //     }).then(canvas => {
+    //         setHtmlImg(canvas.toDataURL())
+    //     })
+    // }, [])
 
     return (
         <div className="tw-text-gray-700 text-sm">
@@ -59,9 +60,9 @@ export default function AnalystReportPreview(props) {
 
             {/* <button onClick={handleOpenPdf}>Open</button> */}
 
-            <div className="tw-fixed tw-top-0 tw-py-1 tw-px-2 tw-rounded" style={{ left: -840, width: 831, backgroundColor: '#f5faff' }} ref={htmlImgRef}>
-                <div dangerouslySetInnerHTML={{ __html: (isCheckedZ ? info.accept_tips : info.decline_reason) || emptyEditor }} style={{ minHeight: 20 }} />
-            </div>
+            {/* <div className="tw-fixed tw-top-0 tw-py-1 tw-px-2 tw-rounded" style={{ left: -840, width: 831, backgroundColor: '#f5faff' }} ref={htmlImgRef}>
+                <div dangerouslySetInnerHTML={{ __html: info.info || emptyEditor }} style={{ minHeight: 20 }} />
+            </div> */}
 
             <div className="tw-mx-auto" ref={componentRef}>
                 <div className="tw-text-center tw-text-base tw-font-medium tw-mt-4 tw-mb-0.5">
@@ -70,11 +71,11 @@ export default function AnalystReportPreview(props) {
 
                 <div className="tw-text-13px tw-leading-snug tw-text-right tw-pb-1 tw-px-2">
                     <div className="">
-                        Дугаар:
+                        Өргөдлийн дугаар:
                         <span className="tw-ml-2 tw-font-medium">{company.project?.project_number}</span>
                     </div>
                     <div className="">
-                        Төрөл:
+                        Өргөдлийн төрөл:
                         <span className="tw-ml-2 tw-font-medium">{company.project?.project_type_name}</span>
                     </div>
                     <div className="">
@@ -88,6 +89,21 @@ export default function AnalystReportPreview(props) {
                 </div>
 
                 <div className="tw-p-1">
+                    Хүсэж буй санхүүжилтийн дүн:
+                    <span className="tw-font-medium tw-ml-2">
+                        {info.requested_funding ? toCurrencyString(info.requested_funding) : `0 ₮`}
+                    </span>
+                </div>
+                <div className="tw-p-1">
+                    Хүсэж болох санхүүжилтийн дүн:
+                    <span className="tw-font-medium tw-ml-2">
+                        {info.available_funding ? toCurrencyString(info.available_funding) : `0 ₮`}
+                    </span>
+                    <span className="tw-ml-2">
+                        /Өмнө нь санхүүжилт {info.available_funding ? 'авсан' : 'аваагүй'}/
+                    </span>
+                </div>
+                <div className="tw-p-1">
                     Шинжилгээ хийсэн Бизнес шинжээч:
                     <span className="tw-font-medium tw-ml-2">
                         {info.analyst_name}
@@ -100,11 +116,50 @@ export default function AnalystReportPreview(props) {
                     <span className="tw-font-medium tw-mx-1">{info.check_end?.replaceAll('-', '.')}</span>
                     -ны хооронд.
                 </div>
-                <div className="tw-p-1">
-                    {isCheckedZ ? 'Төслийг хэрэгжүүлэх явцад анхаарах зөвлөмж:' : 'Төслийг дэмжихээс татгалзсан шалтгаан:'}
+                <div className="tw-py-1 tw-px-2 tw-mb-3 tw-bg-blue-50 tw-bg-opacity-50 tw-rounded tw-mx-1 tw-mt-2">
+                    <div dangerouslySetInnerHTML={{ __html: info.info }} style={{ minHeight: 20 }} />
                 </div>
-                <div className="tw-py-1 tw-px-2 tw-mb-4 tw-bg-blue-50 tw-rounded tw-mx-2">
-                    <div dangerouslySetInnerHTML={isCheckedZ ? { __html: info.accept_tips } : { __html: info.decline_reason }} style={{ minHeight: 20 }} />
+                <div className="tw-pb-5 tw-px-1 tw-pt-2">
+                    <table>
+                        <thead>
+                            <tr>
+                                {headersFundingDeals.map(header =>
+                                    <th className={`${classCell} tw-font-medium`} key={header}>
+                                        {header}
+                                    </th>
+                                )}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {deals.map((deal, i) =>
+                                <tr key={i}>
+                                    <td className={classCell}>
+                                        {i + 1}.
+                                    </td>
+                                    <td className={classCell}>
+                                        {deal.planned_activity}
+                                    </td>
+                                    <td className={`${classCell} tw-text-right`}>
+                                        {deal.requested_funding?.toLocaleString()}
+                                    </td>
+                                    <td className={`${classCell} tw-text-right`}>
+                                        {deal.proposal_funding?.toLocaleString()}
+                                    </td>
+                                </tr>
+                            )}
+                            <tr>
+                                <td className={`${classCell} tw-pl-2.5`} colSpan={2}>
+                                    Нийт
+                                </td>
+                                <td className={`${classCell} tw-text-right`}>
+                                    {toCurrencyString(deals.reduce((acc, cv) => acc + (+cv.requested_funding || 0), 0))}
+                                </td>
+                                <td className={`${classCell} tw-text-right`}>
+                                    {toCurrencyString(deals.reduce((acc, cv) => acc + (+cv.proposal_funding || 0), 0))}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 {rows.map(row => ({
@@ -185,3 +240,4 @@ export default function AnalystReportPreview(props) {
 }
 
 const classSignature = 'tw-w-52 tw-h-16 tw-border-b tw-border-gray-500'
+const classCell = 'tw-border tw-border-gray-300 tw-px-2 tw-text-13px'
