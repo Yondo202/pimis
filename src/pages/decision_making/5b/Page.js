@@ -63,7 +63,8 @@ const initialState = Object.entries(rowDescriptions).map(([rowcode, description]
 
 const editors = ['edpadmin', 'member', 'ahlah_bhsh', 'bh_zovloh']
 const rootCodes = ['a', 'b', 'c', 'z']
-const emptyEditor = '<p><br></p>'
+// const emptyEditor = '<p><br></p>'
+const emptyEditor = ''
 
 export default function CompilationChecklist() {
     const [rows, setRows] = useState(initialState)
@@ -168,11 +169,11 @@ export default function CompilationChecklist() {
 
                 <div className="tw-border-b tw-border-dashed tw-text-13px tw-pl-5 tw-pr-3 tw-pb-2 tw-leading-snug">
                     <div className="tw-relative">
-                        Дугаар:
+                        Өргөдлийн дугаар:
                         <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_number}</span>
                     </div>
                     <div className="tw-relative">
-                        Төрөл:
+                        Өргөдлийн төрөл:
                         <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_type_name}</span>
                     </div>
                     <div className="tw-relative">

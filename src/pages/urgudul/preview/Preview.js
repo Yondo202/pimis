@@ -869,7 +869,7 @@ export default function UrgudulPreview(props) {
 
 const classTableCell = 'tw-border tw-border-gray-400 tw-px-2 tw-font-normal'
 
-const toCurrencyString = (number) => {
+export const toCurrencyString = (number) => {
     const localeString = number?.toLocaleString()
     return localeString
         ? `${localeString} ₮`

@@ -231,10 +231,10 @@ export default function ProtectionReport({ contract = {} }) {
 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2 tw-relative'
 
-export function TextareaCell({ value, name, index, setter, placeholder }) {
+export function TextareaCell({ value, name, index, setter, placeholder, height = 60 }) {
    return (
       <td className={`${classCell}`} style={{ padding: 0, minWidth: 120 }}>
-         <div className="tw-p-2 tw-invisible tw-break-all tw-leading-tight tw-text-13px" style={{ minHeight: 60 }}>
+         <div className="tw-p-2 tw-invisible tw-break-all tw-leading-tight tw-text-13px" style={{ minHeight: height }}>
             {value ?? ''}
          </div>
          <textarea className="tw-absolute tw-top-0 tw-left-0 tw-bottom-0 tw-right-0 tw-w-full tw-p-2 tw-resize-none tw-overflow-hidden focus:tw-outline-none tw-bg-transparent tw-placeholder-opacity-30 tw-text-13px" value={value ?? ''} onChange={e => setter(name, e.target.value, index)} placeholder={placeholder} />

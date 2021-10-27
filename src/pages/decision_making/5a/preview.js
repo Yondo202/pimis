@@ -6,7 +6,8 @@ import './style.css'
 import FirstEvaluationPreviewPdf from './previewPdf'
 
 const headerCodes = ['a', 'b', 'c']
-const emptyEditor = '<p><br></p>'
+// const emptyEditor = '<p><br></p>'
+const emptyEditor = ''
 
 export default function FirstEvaluationPreview(props) {
     const rows = props.rows || []
@@ -47,11 +48,11 @@ export default function FirstEvaluationPreview(props) {
 
                 <div className="tw-text-13px tw-leading-snug tw-text-right tw-mb-2 tw-px-2" id="web-to-img">
                     <div className="">
-                        Дугаар:
+                        Өргөдлийн дугаар:
                         <span className="tw-ml-2 tw-font-medium">{company.project?.project_number}</span>
                     </div>
                     <div className="">
-                        Төрөл:
+                        Өргөдлийн төрөл:
                         <span className="tw-ml-2 tw-font-medium">{company.project?.project_type_name}</span>
                     </div>
                     <div className="">
