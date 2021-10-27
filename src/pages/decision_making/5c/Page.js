@@ -23,6 +23,7 @@ import { TextareaCell } from 'pages/contract/contract_reports/protectionReport'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import { toCurrencyString } from 'pages/urgudul/preview/Preview'
+import useClickOutside from 'components/utilities/useClickOutside'
 
 const rowDescriptions = {
     z: 'Өргөдөл гаргагчийн төслийг дэмжих саналтай эсэх',
@@ -95,8 +96,7 @@ export default function AnalystReport() {
     const [rows, setRows] = useState(initialState)
     const [company, setCompany] = useState({})
     const [analyst, setAnalyst] = useState({})
-
-    const canEdit = editors.includes(analyst.role)
+    const [canEdit, setCanEdit] = useState(true)
 
     const AlertCtx = useContext(AlertContext)
 
@@ -146,6 +146,7 @@ export default function AnalystReport() {
                     ...prev,
                     analyst_name: prev.analyst_name || `${analyst.lastname?.substr(0, 1)?.toUpperCase()}. ${capitalize(analyst.firstname)}`
                 }))
+                setCanEdit(editors.includes(analyst.role))
             })
         }
     }, [])
@@ -308,6 +309,13 @@ export default function AnalystReport() {
                         </span>
                     </div>
 
+                    <div className="tw-flex tw-items-center tw-mt-3">
+                        <label className="tw-mb-0 tw-mr-4">
+                            Дэмжих, эсэх талаарх санал:
+                        </label>
+                        <Select options={options} value={rows.find(row => row.rowcode === 'z').isChecked} name="isChecked" index="z" setter={handleInput} />
+                    </div>
+
                     <div className="tw-mt-4 tw-mr-8">
                         <FormRichTextCKE
                             value={info.info}
@@ -365,7 +373,7 @@ export default function AnalystReport() {
                 </div>
 
                 <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-8 tw-divide-y tw-divide-dashed">
-                    {rows.map(row =>
+                    {rows.filter(row => row.rowcode !== 'z').map(row =>
                         <div key={row.rowcode}>
                             <div className="tw-flex tw-items-center tw-text-sm">
                                 <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${rootCodes.includes(row.rowcode) ? "" : "tw-pl-8 tw-font-light"}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
@@ -513,6 +521,55 @@ function Signature({ value, name, index, setter }) {
                     </div>
                 </div>
             </ModalWindow>
+        </div>
+    )
+}
+
+const options = [{
+    label: 'Тийм',
+    value: true
+}, {
+    label: 'Үгүй',
+    value: false
+}]
+
+function Select({ options = [], value, name, index, setter, classAppend }) {
+    const [open, setOpen] = useState(false)
+
+    const buttonRef = useRef()
+    const dropdownRef = useRef()
+
+    const handleSelect = (value) => {
+        setter(name, value, index)
+        setOpen(false)
+    }
+
+    useClickOutside([buttonRef, dropdownRef], open, () => setOpen(false))
+
+    return (
+        <div className={`tw-relative tw-text-13px ${classAppend}`}>
+            <button className="tw-py-0.5 tw-pr-1 tw-pl-2 tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none tw-inline-flex tw-items-center" ref={buttonRef} onClick={() => setOpen(prev => !prev)}>
+                {options.find(option => option.value === value)?.label ?? <span className="tw-text-gray-500">Сонгох</span>}
+                <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-1 tw-text-gray-500" />
+            </button>
+
+            <Transition
+                items={open}
+                from={{ height: 0, opacity: 0 }}
+                enter={{ height: 'auto', opacity: 1 }}
+                leave={{ height: 0, opacity: 0 }}
+                config={{ tension: 300, clamp: true }}
+            >
+                {item => item && (anims =>
+                    <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-400 tw-rounded tw-overflow-hidden tw-w-full tw-top-8 tw-bg-white" style={anims} ref={dropdownRef}>
+                        {options.map((option, i) =>
+                            <div className="tw-cursor-pointer tw-py-0.5 tw-pl-2 tw-pr-1" key={i} onClick={() => handleSelect(option.value)}>
+                                {option.label}
+                            </div>
+                        )}
+                    </animated.div>
+                )}
+            </Transition>
         </div>
     )
 }

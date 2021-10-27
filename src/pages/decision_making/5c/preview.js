@@ -162,7 +162,7 @@ export default function AnalystReportPreview(props) {
                     </table>
                 </div>
 
-                {rows.map(row => ({
+                {rows.filter(row => row.rowcode !== 'z').map(row => ({
                     'z': <Fragment key={row.rowcode}>
                         <div className="tw-bg-blue-900 tw-text-white tw-flex tw-border tw-border-gray-400" id="no-break">
                             <div className="tw-flex-grow tw-p-2 tw-pl-3 tw-border-r tw-border-gray-400">
@@ -180,7 +180,7 @@ export default function AnalystReportPreview(props) {
                     </Fragment>,
                 }[row.rowcode] ||
                     <Fragment key={row.rowcode}>
-                        <div className="tw-flex tw-border tw-border-t-0 tw-border-gray-400" id="no-break">
+                        <div className={`tw-flex tw-border ${row.rowcode === 'a' ? '' : 'tw-border-t-0'} tw-border-gray-400`} id="no-break">
                             <div className={`tw-flex-grow tw-p-2 ${headerCodes.includes(row.rowcode) ? 'tw-pl-3' : 'tw-pl-5'} tw-border-r tw-border-gray-400`}>
                                 {!headerCodes.includes(row.rowcode) &&
                                     <span className="tw-mr-2 tw-font-normal">
