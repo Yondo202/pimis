@@ -98,15 +98,70 @@ function Main_decision() {
                         <div className="TitlePar">
                             <div className="title">
                                 {/* ҮНЭЛГЭЭНИЙ ХОРООНЫ ШИЙДВЭРИЙН ХУУДАС */}
-                                ЭКСПОРТЫГ ДЭМЖИХ ТӨСЛИЙН .... ОНЫ .... ДУГААР ЦОНХНЫ
+                                ЭКСПОРТЫГ ДЭМЖИХ ТӨСЛИЙН 20{mainData?.project_number.slice(4,6)} ОНЫ {mainData?.project_number.slice(7,9)}  ДУГААР ЦОНХНЫ
                                 СОНГОН ШАЛГАРУУЛАЛТЫН БАГИЙН ХУРЛЫН ШИЙДВЭР
                             </div>
                             <div className="desc">
                                 {/* Төсөл бүрт өгсөн нэгтгэсэн санал */}
-                               Дугаар: {mainData?.project_number}
+                                Шийдвэрийн дугаар: {mainData?.project_number}
                             </div>
                         </div>
+
+                        <div className="list_parent">
+                            <div className="my_row">
+                                <div className="field">Өргөдлийн дугаар:</div>
+                                <div className="value">..........</div>
+                            </div>
+
+                            <div className="my_row">
+                                <div className="field">Аж ахуйн нэгжийн нэр:</div>
+                                <div className="value">..........</div>
+                            </div>
+                            <div className="my_row">
+                                <div className="field">Төслийн нэр:</div>
+                                <div className="value">..........</div>
+                            </div>
+                            <div className="my_row">
+                                <div className="field">Эхэлсэн цаг:</div>
+                                <div className="value">..........</div>
+                            </div>
+
+                            <div className="my_row">
+                                <div className="field">Дууссан цаг:</div>
+                                <div className="value">..........</div>
+                            </div>
+                        </div>
+
                         <div className="infoWhere">
+                            <table id="customers">
+                                <tr>
+                                    <th >№</th>
+                                    <th>Төлөвлөсөн үйл ажиллагаа</th>
+                                    <th>Хүссэн санхүүжилт /төгрөг/</th>
+                                    <th>Зөвлөхийн санал /төгрөг/</th>
+                                    <th>Баталсан санхүүжилт /төгрөг/</th>
+                                </tr>
+                                <tr className="getTable1">
+                                    <td></td>
+                                    <td>N/A</td>
+                                    <td className="right">N/A</td>
+                                    <td className="right">N/A</td>
+                                    <td className="right">N/A</td>
+                                </tr>
+                              
+                                <tr className="getTable1 bold">
+                                    <td></td>
+
+                                    <td >Нийт</td>
+                                    <td className="right"></td>
+                                    <td className="right"></td>
+                                    <td className="right"></td>
+                                    
+                                </tr>
+                            </table>
+                        </div>
+
+                        {/* <div className="infoWhere">
                             <table id="customers">
                                 <tr>
                                     <th >Талбар</th>
@@ -123,17 +178,14 @@ function Main_decision() {
                                 <tr className="getTable1">
                                     <td>Дэмжих санхүүжилтийн дүн:</td>
                                     <td className="right">
-                                       
                                        {cond? <div style={{fontWeight:`500`}}>{NumberComma(rate)} ₮</div>:<InputStyle >
                                                 <NumberFormat placeholder={`0 ₮`} value={rate} onChange={e=>setRate(e.target.value.slice(0, -1).replace(/,/g, ''))} style={{textAlign:`right`, paddingRight:`7px`}} thousandSeparator={true} suffix={' ₮'} name="rate" />
                                                 <div className="line" />
                                             </InputStyle>} 
                                     </td>
-                                    
                                 </tr>
-                               
                             </table>
-                        </div>
+                        </div> */}
 
                         <div className="infoWhere">
                             <table id="customers">
@@ -174,7 +226,7 @@ function Main_decision() {
                                     <td></td>
                                 </tr>
                                 <tr className="getTable1 B2">
-                                    <td>ЭЦСИЙН ДҮН</td>
+                                    <td>ШИЙДВЭР</td>
                                     <td></td>
                                     <td className="center"><div className="input">{mainData ? mainData.approved === true ? `Зөвшөөрсөн` : mainData.approved === false ? `Татгалзсан` : null : null}</div></td>
                                     <td></td>
@@ -297,6 +349,21 @@ export const FeedBackCont = styled.div`
             }
         }
         .contentPar{
+            .list_parent{
+                margin-top:10px;
+                margin-bottom:40px;
+                .my_row{
+                    padding:5px 0px;
+                    display:flex;
+                    gap:20px;
+                    .field{
+                        font-weight:500;
+                    }
+                    .value{
+
+                    }
+                }
+            }
             .reasonPar{
                 margin:20px 0px;
                 .title{
