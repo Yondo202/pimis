@@ -116,9 +116,17 @@ export default function AnalystReportPreview(props) {
                     <span className="tw-font-medium tw-mx-1">{info.check_end?.replaceAll('-', '.')}</span>
                     -ны хооронд.
                 </div>
+                <div className="tw-p-1">
+                    Дэмжих, эсэх талаарх санал:
+                    <span className="tw-font-medium tw-ml-2">
+                        {rows.find(row => row.rowcode === 'z').isChecked ? 'Тийм' : 'Үгүй'}
+                    </span>
+                </div>
+
                 <div className="tw-py-1 tw-px-2 tw-mb-3 tw-bg-blue-50 tw-bg-opacity-50 tw-rounded tw-mx-1 tw-mt-2">
                     <div dangerouslySetInnerHTML={{ __html: info.info }} style={{ minHeight: 20 }} />
                 </div>
+
                 <div className="tw-pb-5 tw-px-1 tw-pt-2">
                     <table>
                         <thead>
