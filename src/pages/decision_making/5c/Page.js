@@ -20,11 +20,9 @@ import { capitalize } from 'components/utilities/utilities'
 import FormRichTextCKE from 'components/urgudul_components/formRichTextCKE'
 import NumberFormat from 'react-number-format'
 import { TextareaCell } from 'pages/contract/contract_reports/protectionReport'
-import { TableCellCurrency } from 'pages/contract/make_contract/activityPlanAttach'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import { toCurrencyString } from 'pages/urgudul/preview/Preview'
-import FormSelect from 'components/urgudul_components/formSelect'
 
 const rowDescriptions = {
     z: 'Өргөдөл гаргагчийн төслийг дэмжих саналтай эсэх',
