@@ -47,10 +47,11 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
         }
 
 
-        if (cond.length < 6) {
-            setBtnSpin(false);
-            setErrText("1");
-        } else if (final.role === 'trainer' && final.trainerOrganizationId === null) {
+        // if (cond.length < 9) {
+        //     setBtnSpin(false);
+        //     setErrText("1");
+        // } else 
+        if (final.role === 'trainer' && final.trainerOrganizationId === null) {
             setBtnSpin(false);
             setErrText("1");
         } else {
@@ -59,7 +60,6 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
                 console.log(res, "^ ress"); setUpdate(prev => !prev); ctx.alertText("green", "Амжилттай", true); setBtnSpin(false); setShowModal(prev => !prev);
             }).catch(error => { console.error(error, "^err"); ctx.alertText("orange", "Алдаа гарлаа", true); setBtnSpin(false); });
         }
-        console.log(final, "^final");
     }
 
     const roleHandle = (event) => {
@@ -87,41 +87,55 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
                                 <div className="rowss">
                                     <div className="inputItem">
                                         <span className="title">Овог ( mn ):</span>
-                                        <input onChange={editHandle} value={parent.lastname} name="lastname" className="getMainInp22 form-control" type="text" />
+                                        <input onChange={editHandle} value={parent.lastname} name="lastname" className="getMainInp22 form-control" type="text" required/>
                                     </div>
                                     <div className="inputItem">
                                         <span className="title">Нэр ( mn ):</span>
-                                        <input onChange={editHandle} value={parent.firstname} name="firstname" className="getMainInp22 form-control" type="text" />
+                                        <input onChange={editHandle} value={parent.firstname} name="firstname" className="getMainInp22 form-control" type="text" required/>
                                     </div>
                                 </div>
 
                                 <div className="rowss">
                                     <div className="inputItem">
                                         <span className="title">Овог ( eng ):</span>
-                                        <input onChange={editHandle} value={parent.lastname_eng} name="lastname_eng" className="getMainInp22 form-control" type="text" />
+                                        <input onChange={editHandle} value={parent.lastname_eng} name="lastname_eng" className="getMainInp22 form-control" type="text" required/>
                                     </div>
                                     <div className="inputItem">
                                         <span className="title">Нэр ( eng ):</span>
-                                        <input onChange={editHandle} value={parent.firstname_eng} name="firstname_eng" className="getMainInp22 form-control" type="text" />
+                                        <input onChange={editHandle} value={parent.firstname_eng} name="firstname_eng" className="getMainInp22 form-control" type="text" required/>
                                     </div>
                                 </div>
 
                                 <div className="rowss">
                                     <div className="inputItem">
                                         <span className="title">Email :</span>
-                                        <input onChange={editHandle} value={parent.email} name="email" className="getMainInp22 form-control" type="email" />
+                                        <input onChange={editHandle} value={parent.email} name="email" className="getMainInp22 form-control" type="email" required/>
                                     </div>
                                     <div className="inputItem">
                                         <span className="title">Утасны дугаар :</span>
-                                        <input onChange={editHandle} value={parent.phone} name="phone" className="getMainInp22 form-control" type="number" />
+                                        <input onChange={editHandle} value={parent.phone} name="phone" className="getMainInp22 form-control" type="number" required/>
                                     </div>
                                 </div>
+
                                 <div style={{ paddingBottom: 20, borderBottom: `1px solid rgba(0,0,0,0.08)` }} className="rowss">
                                     <div className="inputItem">
                                         <span className="title">Нэвтрэх нэр :</span>
-                                        <input onChange={editHandle} value={parent.name} name="name" className="getMainInp22 form-control" type="text" />
+                                        <input onChange={editHandle} value={parent.name} name="name" className="getMainInp22 form-control" type="text" required/>
+                                    </div>
+
+                                    <div className="inputItem">
+                                        <span className="title">Албан тушаал:</span>
+                                        <input name="position" value={parent.position} className="getMainInp22 form-control" type="text" required/>
                                     </div>
                                 </div>
+
+                                {parent?.role==="member"?<div style={{ paddingBottom: 20, borderBottom: `1px solid rgba(0,0,0,0.08)` }} className="rowss">
+                                    <div className="inputItem">
+                                        <span className="title">Байгууллагын нэр:</span>
+                                        <input required name="companyname" className="getMainInp22 form-control" type="text" />
+                                    </div>
+                                </div>:null}
+
                             </div>
 
                             <div className="otherPar">
@@ -144,7 +158,7 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
                                         <div className="title">
                                             Сургалт зохион байгуулагч байгууллагууд:
                                         </div>
-                                        <select className="trainer" value={trainerId ?? 'none'} onChange={e => setTrainerId(+e.target.value)}>
+                                        <select className="trainer" value={trainerId ?? 'none'} onChange={e => setTrainerId(+e.target.value)} required>
                                             <option value="none" disabled>- Сонгох -</option>
                                             {trainers.map(trainer =>
                                                 <option value={trainer.id} key={trainer.id}>

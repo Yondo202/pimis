@@ -19,7 +19,7 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
         transform: showModal ? `translateY(10%)` : `translateY(30%)`
     });
 
-    const closeModal = e => { if (modalRef.current === e.target) { setShowModal(false); } }
+    // const closeModal = e => { if (modalRef.current === e.target) { setShowModal(false); } }
 
     const clickHandle = (e) => {
         seBtnSpin(true);
@@ -40,7 +40,7 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
         if (per === 'trainer') {
             final.trainerOrganizationId = trainerId ?? null
         }
-        if (cond.length < 8) {
+        if (cond.length < 9) {
             seBtnSpin(false);
             setErrText("1");
         } else if (per === 'trainer' && final.trainerOrganizationId === null) {
@@ -99,12 +99,24 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
                                         <input name="phone" className="getMainInp22 form-control" type="number" required />
                                     </div>
                                 </div>
+
                                 <div style={{ paddingBottom: 20, borderBottom: `1px solid rgba(0,0,0,0.08)` }} className="rowss">
                                     <div className="inputItem">
                                         <span className="title">Нэвтрэх нэр :</span>
                                         <input required name="name" className="getMainInp22 form-control" type="text" />
                                     </div>
+                                    <div className="inputItem">
+                                        <span className="title">Албан тушаал:</span>
+                                        <input required name="position" className="getMainInp22 form-control" type="text" />
+                                    </div>
                                 </div>
+
+                                {per==="member"?<div style={{ paddingBottom: 20, borderBottom: `1px solid rgba(0,0,0,0.08)` }} className="rowss">
+                                    <div className="inputItem">
+                                        <span className="title">Байгууллагын нэр:</span>
+                                        <input required name="companyname" className="getMainInp22 form-control" type="text" />
+                                    </div>
+                                </div>:null}
                             </div>
 
                             <div className="otherPar">
