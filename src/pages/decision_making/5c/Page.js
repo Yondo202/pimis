@@ -23,6 +23,7 @@ import { TextareaCell } from 'pages/contract/contract_reports/protectionReport'
 import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
 import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import { toCurrencyString } from 'pages/urgudul/preview/Preview'
+import useClickOutside from 'components/utilities/useClickOutside'
 
 const rowDescriptions = {
     z: 'Өргөдөл гаргагчийн төслийг дэмжих саналтай эсэх',
@@ -95,8 +96,7 @@ export default function AnalystReport({ seeMember, setOpen }) {
     const [rows, setRows] = useState(initialState)
     const [company, setCompany] = useState({})
     const [analyst, setAnalyst] = useState({})
-
-    const canEdit = editors.includes(analyst.role)
+    const [canEdit, setCanEdit] = useState(true)
 
     const AlertCtx = useContext(AlertContext)
 
@@ -120,14 +120,24 @@ export default function AnalystReport({ seeMember, setOpen }) {
     useEffect(() => {
         if (projectId) {
             fetchData(projectId)
+            axios.get(`users/${loggedUserId}`, {
+                headers: { Authorization: getLoggedUserToken() },
+            }).then(res => {
+                const analyst = res.data.data
+                setAnalyst(analyst)
+                setInfo(prev => ({
+                    ...prev,
+                    analyst_name: prev.analyst_name || `${analyst.lastname?.substr(0, 1)?.toUpperCase()}. ${capitalize(analyst.firstname)}`
+                }))
+            })
         }
-        if(seeMember){
+        if (seeMember) {
             fetchData(seeMember)
             setPreviewModalOpen(true)
         }
     }, [])
 
-    const fetchData = (projectId) =>{
+    const fetchData = (projectId) => {
         axios.get(`projects/${projectId}/bds-evaluation5c`, {
             headers: { Authorization: getLoggedUserToken() },
         }).then(res => {
@@ -145,16 +155,7 @@ export default function AnalystReport({ seeMember, setOpen }) {
         }).then(res => {
             setCompany(res.data.data[0] ?? {})
         })
-        axios.get(`users/${loggedUserId}`, {
-            headers: { Authorization: getLoggedUserToken() },
-        }).then(res => {
-            const analyst = res.data.data
-            setAnalyst(analyst)
-            setInfo(prev => ({
-                ...prev,
-                analyst_name: prev.analyst_name || `${analyst.lastname?.substr(0, 1)?.toUpperCase()}. ${capitalize(analyst.firstname)}`
-            }))
-        })
+
     }
 
     const [commentsOpen, setCommentsOpen] = useState(initialCommentsOpen)
@@ -242,175 +243,183 @@ export default function AnalystReport({ seeMember, setOpen }) {
 
     return (
         <>
-        <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={seeMember?setOpen:setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} deals={fundingDeals} company={company} analyst={analyst} />} />
-        {!seeMember&&<div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700">
-            <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.goBack()}>
-                <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
-                Буцах
-            </button>
+            <DecisionMakingPreviewModal previewModalOpen={previewModalOpen} setPreviewModalOpen={seeMember ? setOpen : setPreviewModalOpen} previewComponent={<AnalystReportPreview rows={rows} info={info} deals={fundingDeals} company={company} analyst={analyst} />} />
 
-            <div className="tw-bg-white tw-mt-6 tw-mb-16 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
-                <button className="tw-float-right tw-mt-2 tw-mr-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center tw-font-light" onClick={() => setPreviewModalOpen(true)}>
-                    <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
-                    Харах
-                </button>
+            {!seeMember &&
+                <div className="tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-text-sm tw-text-gray-700">
+                    <button className="tw-flex tw-items-center tw-pl-2 tw-pr-4 tw-py-0.5 tw-rounded tw-bg-gray-600 tw-text-white focus:tw-outline-none active:tw-bg-gray-700 hover:tw-shadow-md tw-transition-colors tw-uppercase tw-text-13px" onClick={() => history.goBack()}>
+                        <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90 tw-mr-1" />
+                        Буцах
+                    </button>
 
+                    <div className="tw-bg-white tw-mt-6 tw-mb-16 tw-rounded-lg tw-shadow-md tw-p-2 tw-border-t tw-border-gray-100">
+                        <button className="tw-float-right tw-mt-2 tw-mr-2 tw-py-1 tw-pl-3 tw-pr-5 tw-bg-blue-800 active:tw-bg-blue-700 tw-rounded tw-text-white hover:tw-shadow-md focus:tw-outline-none tw-transition-colors tw-flex tw-items-center tw-font-light" onClick={() => setPreviewModalOpen(true)}>
+                            <SearchSVG className="tw-w-4 tw-h-4 tw-mr-1" />
+                            Харах
+                        </button>
 
-                <div className="tw-p-3 tw-pb-2 tw-flex tw-items-center">
-                    <span className=" tw-pl-2 tw-font-medium tw-text-blue-500 tw-text-base">
-                        Шинжилгээний тайлан
-                    </span>
-                </div>
+                        <div className="tw-p-3 tw-pb-2 tw-flex tw-items-center">
+                            <span className=" tw-pl-2 tw-font-medium tw-text-blue-500 tw-text-base">
+                                Шинжилгээний тайлан
+                            </span>
+                        </div>
 
-                <div className="tw-border-b tw-border-dashed tw-text-13px tw-pl-5 tw-pr-3 tw-pb-1 tw-leading-snug">
-                    <div className="tw-relative">
-                        Өргөдлийн дугаар:
-                        <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_number}</span>
-                    </div>
-                    <div className="tw-relative">
-                        Өргөдлийн төрөл:
-                        <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_type_name}</span>
-                    </div>
-                    <div className="tw-relative">
-                        Байгууллагын нэр:
-                        <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.companyname}</span>
-                    </div>
-                    <div className="tw-relative">
-                        Төслийн нэр:
-                        <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_name}</span>
-                    </div>
-                </div>
+                        <div className="tw-border-b tw-border-dashed tw-text-13px tw-pl-5 tw-pr-3 tw-pb-1 tw-leading-snug">
+                            <div className="tw-relative">
+                                Өргөдлийн дугаар:
+                                <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_number}</span>
+                            </div>
+                            <div className="tw-relative">
+                                Өргөдлийн төрөл:
+                                <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_type_name}</span>
+                            </div>
+                            <div className="tw-relative">
+                                Байгууллагын нэр:
+                                <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.companyname}</span>
+                            </div>
+                            <div className="tw-relative">
+                                Төслийн нэр:
+                                <span className="tw-absolute tw-left-32 tw-text-blue-500 tw-font-medium">{company.project?.project_name}</span>
+                            </div>
+                        </div>
 
-                <div className="tw-ml-4 tw-mr-2 tw-mt-4">
-                    <div className="tw-flex tw-items-center">
-                        <label className="tw-mb-0 tw-mr-4">
-                            Хүсэж буй санхүүжилтийн дүн:
-                        </label>
-                        <NumberFormat className={`${classInputNumber} ${validate && !(info.requested_funding) && 'tw-border-dashed tw-border-red-500'}`} value={info.requested_funding} onValueChange={values => handleInputInfo('requested_funding', values.floatValue)} thousandSeparator decimalScale={2} suffix=' ₮' />
-                    </div>
-
-                    <div className="tw-flex tw-items-center tw-mt-3">
-                        <label className="tw-mb-0 tw-mr-4">
-                            Хүсэж болох санхүүжилтийн дүн:
-                        </label>
-                        <NumberFormat className={`${classInputNumber} `} value={info.available_funding} onValueChange={values => handleInputInfo('available_funding', values.floatValue)} thousandSeparator decimalScale={2} suffix=' ₮' />
-                        <span className="tw-ml-3">
-                            /Өмнө нь санхүүжилт {info.available_funding ? 'авсан' : 'аваагүй'}/
-                        </span>
-                    </div>
-
-                    <div className="tw-flex tw-items-center tw-mt-3">
-                        <label className="tw-mb-0 tw-mr-4">
-                            Шинжилгээ хийсэн Бизнес шинжээч:
-                        </label>
-                        <input className={`${classInput} ${validate && !(info.analyst_name) && 'tw-border-dashed tw-border-red-500'}`} value={info.analyst_name} onChange={e => handleInputInfo('analyst_name', e.target.value)} placeholder="Овог нэр" />
-                    </div>
-
-                    <div className="tw-flex tw-items-center tw-mt-3">
-                        <label className="tw-mb-0">
-                            Шинжилгээ, дүгнэлт хийсэн хугацаа:
-                        </label>
-                        <span>
-                            <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_start) && 'tw-border-dashed tw-border-red-500'} tw-text-13px`} type="date" max={todayStr} value={info.check_start} onChange={e => handleInputInfo('check_start', e.target.value)} /> -аас
-                            <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_end) && 'tw-border-dashed tw-border-red-500'} tw-text-13px`} type="date" max={todayStr} value={info.check_end} onChange={e => handleInputInfo('check_end', e.target.value)} /> -ны хооронд.
-                        </span>
-                    </div>
-
-                    <div className="tw-mt-4 tw-mr-8">
-                        <FormRichTextCKE
-                            value={info.info}
-                            name="info"
-                            setter={handleInputInfo}
-                            placeholder="Компаний танилцуулга, бүтээгдэхүүн, төслийн тухай"
-                        />
-                    </div>
-
-                    <div className="tw-inline-block tw-relative tw-mt-4 tw-mr-8">
-                        <table>
-                            <thead>
-                                <tr>
-                                    {headersFundingDeals.map(header =>
-                                        <th className={`${classCell} tw-py-1 tw-font-medium`} key={header}>
-                                            {header}
-                                        </th>
-                                    )}
-                                    <th style={{ width: 29 }} />
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {fundingDeals.map((row, i) =>
-                                    <tr key={i}>
-                                        <td className={classCell}>
-                                            {i + 1}.
-                                        </td>
-                                        <TextareaCell value={row.planned_activity} name="planned_activity" index={i} setter={hanleInputFunding} height={40} />
-                                        <td className={classCell}>
-                                            <NumberFormat className={classCellInputNumber} value={row.requested_funding} onValueChange={values => hanleInputFunding('requested_funding', values.floatValue, i)} thousandSeparator decimalScale={2} />
-                                        </td>
-                                        <td className={classCell}>
-                                            <NumberFormat className={classCellInputNumber} value={row.proposal_funding} onValueChange={values => hanleInputFunding('proposal_funding', values.floatValue, i)} thousandSeparator decimalScale={2} />
-                                        </td>
-                                        <td className="">
-                                            <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => rowRemoveFunding(i)} />
-                                        </td>
-                                    </tr>
-                                )}
-                                <tr>
-                                    <td className={`${classCell} tw-pl-2.5`} colSpan={2}>
-                                        Нийт
-                                    </td>
-                                    <td className={`${classCell} tw-text-right`}>
-                                        {toCurrencyString(fundingDeals.reduce((acc, cv) => acc + (+cv.requested_funding || 0), 0))}
-                                    </td>
-                                    <td className={`${classCell} tw-text-right`}>
-                                        {toCurrencyString(fundingDeals.reduce((acc, cv) => acc + (+cv.proposal_funding || 0), 0))}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4 print-invisbile" onClick={rowAddFunding} />
-                    </div>
-                </div>
-
-                <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-8 tw-divide-y tw-divide-dashed">
-                    {rows.map(row =>
-                        <div key={row.rowcode}>
-                            <div className="tw-flex tw-items-center tw-text-sm">
-                                <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${rootCodes.includes(row.rowcode) ? "" : "tw-pl-8 tw-font-light"}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
-                                    {!rootCodes.includes(row.rowcode) &&
-                                        <span className="tw-mr-2 tw-font-normal">
-                                            {row.rowcode?.substring(1)}.
-                                        </span>
-                                    }
-                                    {row.description}
-                                </span>
-
-                                {{
-                                    'z': <button className="tw-relative tw-flex tw-items-center tw-leading-tight tw-bg-gray-300 focus:tw-outline-none tw-rounded-full tw-mr-4 tw-shadow-inner" style={{ fontSize: '13px', height: '22px' }} onClick={() => handleInput('isChecked', !row.isChecked, 'z')}>
-                                        <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
-                                            Тийм
-                                        </span>
-                                        <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
-                                            Үгүй
-                                        </span>
-                                        <span className={`tw-w-1/2 tw-h-6 tw-rounded-full tw-absolute ${row.isChecked ? 'tw-bg-green-500' : 'tw-transform-gpu tw-translate-x-20 tw-bg-red-500'} tw-transition-transform tw-duration-300 tw-ease-out`} style={{ height: '26px' }} />
-                                    </button>,
-                                }[row.rowcode]
-                                    || <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
-                                }
-
-                                <ButtonTooltip tooltip="Тайлбар оруулах" beforeSVG={<AnnotationSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} classAppend={rootCodes.includes(row.rowcode) ? 'tw-mr-9' : 'tw-mr-4'} classButton={`${(row.comment && row.comment !== emptyEditor) ? 'tw-text-blue-600 active:tw-text-blue-500' : 'tw-text-gray-600 active:tw-text-gray-500'} tw-transition-colors tw-p-0.5`} onClick={() => handleCommentOpen(row.rowcode, !commentsOpen[row.rowcode])} />
+                        <div className="tw-ml-4 tw-mr-2 tw-mt-4">
+                            <div className="tw-flex tw-items-center">
+                                <label className="tw-mb-0 tw-mr-4">
+                                    Хүсэж буй санхүүжилтийн дүн:
+                                </label>
+                                <NumberFormat className={`${classInputNumber} ${validate && !(info.requested_funding) && 'tw-border-dashed tw-border-red-500'}`} value={info.requested_funding} onValueChange={values => handleInputInfo('requested_funding', values.floatValue)} thousandSeparator decimalScale={2} suffix=' ₮' />
                             </div>
 
-                            <Transition
-                                items={commentsOpen[row.rowcode]}
-                                from={{ height: 0, opacity: 0, }}
-                                enter={{ height: 'auto', opacity: 1 }}
-                                leave={{ height: 0, opacity: 0 }}
-                                config={{ tension: 300, clamp: true }}>
-                                {item => item && (anims =>
-                                    <animated.div className={`tw-overflow-hidden ${rootCodes.includes(row.rowcode) ? 'tw-pl-5 tw-pr-8' : 'tw-pl-9 tw-pr-3'}`} style={anims}>
-                                        {/* <FormRichText
+                            <div className="tw-flex tw-items-center tw-mt-3">
+                                <label className="tw-mb-0 tw-mr-4">
+                                    Хүсэж болох санхүүжилтийн дүн:
+                                </label>
+                                <NumberFormat className={`${classInputNumber} `} value={info.available_funding} onValueChange={values => handleInputInfo('available_funding', values.floatValue)} thousandSeparator decimalScale={2} suffix=' ₮' />
+                                <span className="tw-ml-3">
+                                    /Өмнө нь санхүүжилт {info.available_funding ? 'авсан' : 'аваагүй'}/
+                                </span>
+                            </div>
+
+                            <div className="tw-flex tw-items-center tw-mt-3">
+                                <label className="tw-mb-0 tw-mr-4">
+                                    Шинжилгээ хийсэн Бизнес шинжээч:
+                                </label>
+                                <input className={`${classInput} ${validate && !(info.analyst_name) && 'tw-border-dashed tw-border-red-500'}`} value={info.analyst_name} onChange={e => handleInputInfo('analyst_name', e.target.value)} placeholder="Овог нэр" />
+                            </div>
+
+                            <div className="tw-flex tw-items-center tw-mt-3">
+                                <label className="tw-mb-0">
+                                    Шинжилгээ, дүгнэлт хийсэн хугацаа:
+                                </label>
+                                <span>
+                                    <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-4 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_start) && 'tw-border-dashed tw-border-red-500'} tw-text-13px`} type="date" max={todayStr} value={info.check_start} onChange={e => handleInputInfo('check_start', e.target.value)} /> -аас
+                                    <input className={`tw-border tw-rounded tw-shadow-inner tw-ml-2 tw-mr-1 tw-w-36 tw-pl-1 tw-py-0.5 focus:tw-outline-none ${validate && !(info.check_end) && 'tw-border-dashed tw-border-red-500'} tw-text-13px`} type="date" max={todayStr} value={info.check_end} onChange={e => handleInputInfo('check_end', e.target.value)} /> -ны хооронд.
+                                </span>
+                            </div>
+
+                            <div className="tw-flex tw-items-center tw-mt-3">
+                                <label className="tw-mb-0 tw-mr-4">
+                                    Дэмжих, эсэх талаарх санал:
+                                </label>
+                                <Select options={options} value={rows.find(row => row.rowcode === 'z').isChecked} name="isChecked" index="z" setter={handleInput} />
+                            </div>
+
+                            <div className="tw-mt-4 tw-mr-8">
+                                <FormRichTextCKE
+                                    value={info.info}
+                                    name="info"
+                                    setter={handleInputInfo}
+                                    placeholder="Компаний танилцуулга, бүтээгдэхүүн, төслийн тухай"
+                                />
+                            </div>
+
+                            <div className="tw-inline-block tw-relative tw-mt-4 tw-mr-8">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            {headersFundingDeals.map(header =>
+                                                <th className={`${classCell} tw-py-1 tw-font-medium`} key={header}>
+                                                    {header}
+                                                </th>
+                                            )}
+                                            <th style={{ width: 29 }} />
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {fundingDeals.map((row, i) =>
+                                            <tr key={i}>
+                                                <td className={classCell}>
+                                                    {i + 1}.
+                                                </td>
+                                                <TextareaCell value={row.planned_activity} name="planned_activity" index={i} setter={hanleInputFunding} height={40} />
+                                                <td className={classCell}>
+                                                    <NumberFormat className={classCellInputNumber} value={row.requested_funding} onValueChange={values => hanleInputFunding('requested_funding', values.floatValue, i)} thousandSeparator decimalScale={2} />
+                                                </td>
+                                                <td className={classCell}>
+                                                    <NumberFormat className={classCellInputNumber} value={row.proposal_funding} onValueChange={values => hanleInputFunding('proposal_funding', values.floatValue, i)} thousandSeparator decimalScale={2} />
+                                                </td>
+                                                <td className="">
+                                                    <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => rowRemoveFunding(i)} />
+                                                </td>
+                                            </tr>
+                                        )}
+                                        <tr>
+                                            <td className={`${classCell} tw-pl-2.5`} colSpan={2}>
+                                                Нийт
+                                            </td>
+                                            <td className={`${classCell} tw-text-right`}>
+                                                {toCurrencyString(fundingDeals.reduce((acc, cv) => acc + (+cv.requested_funding || 0), 0))}
+                                            </td>
+                                            <td className={`${classCell} tw-text-right`}>
+                                                {toCurrencyString(fundingDeals.reduce((acc, cv) => acc + (+cv.proposal_funding || 0), 0))}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4 print-invisbile" onClick={rowAddFunding} />
+                            </div>
+                        </div>
+
+                        <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-8 tw-divide-y tw-divide-dashed">
+                            {rows.filter(row => row.rowcode !== 'z').map(row =>
+                                <div key={row.rowcode}>
+                                    <div className="tw-flex tw-items-center tw-text-sm">
+                                        <span className={`tw-px-4 tw-py-2.5 tw-flex-grow ${rootCodes.includes(row.rowcode) ? "" : "tw-pl-8 tw-font-light"}`} style={row.rowcode === 'z' ? { fontSize: '15px' } : {}}>
+                                            {!rootCodes.includes(row.rowcode) &&
+                                                <span className="tw-mr-2 tw-font-normal">
+                                                    {row.rowcode?.substring(1)}.
+                                                </span>
+                                            }
+                                            {row.description}
+                                        </span>
+
+                                        {{
+                                            'z': <button className="tw-relative tw-flex tw-items-center tw-leading-tight tw-bg-gray-300 focus:tw-outline-none tw-rounded-full tw-mr-4 tw-shadow-inner" style={{ fontSize: '13px', height: '22px' }} onClick={() => handleInput('isChecked', !row.isChecked, 'z')}>
+                                                <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
+                                                    Тийм
+                                                </span>
+                                                <span className="tw-w-20 tw-text-center tw-z-10 tw-text-white tw-antialiased">
+                                                    Үгүй
+                                                </span>
+                                                <span className={`tw-w-1/2 tw-h-6 tw-rounded-full tw-absolute ${row.isChecked ? 'tw-bg-green-500' : 'tw-transform-gpu tw-translate-x-20 tw-bg-red-500'} tw-transition-transform tw-duration-300 tw-ease-out`} style={{ height: '26px' }} />
+                                            </button>,
+                                        }[row.rowcode]
+                                            || <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={row.isChecked} name={row.rowcode} onChange={e => handleInput('isChecked', e.target.checked, row.rowcode)} />
+                                        }
+
+                                        <ButtonTooltip tooltip="Тайлбар оруулах" beforeSVG={<AnnotationSVG className="tw-w-5 tw-h-5 tw-transition-colors" />} classAppend={rootCodes.includes(row.rowcode) ? 'tw-mr-9' : 'tw-mr-4'} classButton={`${(row.comment && row.comment !== emptyEditor) ? 'tw-text-blue-600 active:tw-text-blue-500' : 'tw-text-gray-600 active:tw-text-gray-500'} tw-transition-colors tw-p-0.5`} onClick={() => handleCommentOpen(row.rowcode, !commentsOpen[row.rowcode])} />
+                                    </div>
+
+                                    <Transition
+                                        items={commentsOpen[row.rowcode]}
+                                        from={{ height: 0, opacity: 0, }}
+                                        enter={{ height: 'auto', opacity: 1 }}
+                                        leave={{ height: 0, opacity: 0 }}
+                                        config={{ tension: 300, clamp: true }}>
+                                        {item => item && (anims =>
+                                            <animated.div className={`tw-overflow-hidden ${rootCodes.includes(row.rowcode) ? 'tw-pl-5 tw-pr-8' : 'tw-pl-9 tw-pr-3'}`} style={anims}>
+                                                {/* <FormRichText
                                             modules="small"
                                             value={row.comment}
                                             name="comment"
@@ -419,56 +428,57 @@ export default function AnalystReport({ seeMember, setOpen }) {
                                             classQuill="tw-pb-10"
                                             height={180}
                                         /> */}
-                                        <FormRichTextCKE
-                                            value={row.comment}
-                                            name="comment"
-                                            index={row.rowcode}
-                                            setter={handleInput}
-                                        />
-                                    </animated.div>
-                                )}
-                            </Transition>
+                                                <FormRichTextCKE
+                                                    value={row.comment}
+                                                    name="comment"
+                                                    index={row.rowcode}
+                                                    setter={handleInput}
+                                                />
+                                            </animated.div>
+                                        )}
+                                    </Transition>
+                                </div>
+                            )}
                         </div>
-                    )}
+
+                        <div className="tw-mt-8 tw-p-2 tw-mb-4" style={{ marginLeft: '10%' }}>
+                            <div className="">
+                                Сонгон шалгаруулалтын багийн хуралд танилцуулахыг зөвшөөрсөн:
+                            </div>
+                            <div className="tw-pl-4 tw-mt-2">
+                                <div className="">
+                                    <input className={classInput} value={info.ahlah_name} onChange={e => handleInputInfo('ahlah_name', e.target.value)} placeholder="Овог нэр" />
+                                </div>
+                                <p className="tw-mt-1 tw-font-light">
+                                    /Бизнес хөгжлийн ахлах мэргэжилтэн/
+                                </p>
+                                <Signature value={info.ahlah_signature} name="ahlah_signature" setter={handleInputAhlah} />
+                            </div>
+
+                            <div className="tw-mt-6">
+                                Боловсруулсан:
+                            </div>
+                            <div className="tw-pl-4 tw-mt-2">
+                                <div className="">
+                                    <input className={classInput} value={info.zuvluh_name} onChange={e => handleInputInfo('zuvluh_name', e.target.value)} placeholder="Овог нэр" />
+                                </div>
+                                <p className="tw-mt-1 tw-font-light">
+                                    /Бизнес хөгжлийн зөвлөх/
+                                </p>
+                                <Signature value={info.zuvluh_signature} name="zuvluh_signature" setter={handleInputZuvluh} />
+                            </div>
+                        </div>
+
+                        {projectId && canEdit &&
+                            <div className="tw-flex tw-items-center tw-justify-end tw-h-20 tw-mt-2 tw-mr-2">
+                                <button className="tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
+                                    Хадгалах
+                                </button>
+                            </div>
+                        }
+                    </div>
                 </div>
-
-                <div className="tw-mt-8 tw-p-2 tw-mb-4" style={{ marginLeft: '10%' }}>
-                    <div className="">
-                        Сонгон шалгаруулалтын багийн хуралд танилцуулахыг зөвшөөрсөн:
-                    </div>
-                    <div className="tw-pl-4 tw-mt-2">
-                        <div className="">
-                            <input className={classInput} value={info.ahlah_name} onChange={e => handleInputInfo('ahlah_name', e.target.value)} placeholder="Овог нэр" />
-                        </div>
-                        <p className="tw-mt-1 tw-font-light">
-                            /Бизнес хөгжлийн ахлах мэргэжилтэн/
-                        </p>
-                        <Signature value={info.ahlah_signature} name="ahlah_signature" setter={handleInputAhlah} />
-                    </div>
-
-                    <div className="tw-mt-6">
-                        Боловсруулсан:
-                    </div>
-                    <div className="tw-pl-4 tw-mt-2">
-                        <div className="">
-                            <input className={classInput} value={info.zuvluh_name} onChange={e => handleInputInfo('zuvluh_name', e.target.value)} placeholder="Овог нэр" />
-                        </div>
-                        <p className="tw-mt-1 tw-font-light">
-                            /Бизнес хөгжлийн зөвлөх/
-                        </p>
-                        <Signature value={info.zuvluh_signature} name="zuvluh_signature" setter={handleInputZuvluh} />
-                    </div>
-                </div>
-
-                {projectId && canEdit &&
-                    <div className="tw-flex tw-items-center tw-justify-end tw-h-20 tw-mt-2 tw-mr-2">
-                        <button className="tw-bg-blue-800 tw-text-white tw-font-light tw-text-15px tw-px-8 tw-py-2 tw-rounded hover:tw-shadow-md focus:tw-outline-none active:tw-bg-blue-700 tw-transition-colors" onClick={handleSubmit}>
-                            Хадгалах
-                        </button>
-                    </div>
-                }
-            </div>
-        </div>}
+            }
         </>
     )
 }
@@ -523,6 +533,55 @@ function Signature({ value, name, index, setter }) {
                 </div>
             </ModalWindow>
         </div>
-        
+
+    )
+}
+
+const options = [{
+    label: 'Тийм',
+    value: true
+}, {
+    label: 'Үгүй',
+    value: false
+}]
+
+function Select({ options = [], value, name, index, setter, classAppend }) {
+    const [open, setOpen] = useState(false)
+
+    const buttonRef = useRef()
+    const dropdownRef = useRef()
+
+    const handleSelect = (value) => {
+        setter(name, value, index)
+        setOpen(false)
+    }
+
+    useClickOutside([buttonRef, dropdownRef], open, () => setOpen(false))
+
+    return (
+        <div className={`tw-relative tw-text-13px ${classAppend}`}>
+            <button className="tw-py-0.5 tw-pr-1 tw-pl-2 tw-border tw-border-gray-400 tw-rounded focus:tw-outline-none tw-inline-flex tw-items-center" ref={buttonRef} onClick={() => setOpen(prev => !prev)}>
+                {options.find(option => option.value === value)?.label ?? <span className="tw-text-gray-500">Сонгох</span>}
+                <ChevronDownSVG className="tw-w-4 tw-h-4 tw-ml-1 tw-text-gray-500" />
+            </button>
+
+            <Transition
+                items={open}
+                from={{ height: 0, opacity: 0 }}
+                enter={{ height: 'auto', opacity: 1 }}
+                leave={{ height: 0, opacity: 0 }}
+                config={{ tension: 300, clamp: true }}
+            >
+                {item => item && (anims =>
+                    <animated.div className="tw-absolute tw-z-10 tw-border tw-border-gray-400 tw-rounded tw-overflow-hidden tw-w-full tw-top-8 tw-bg-white" style={anims} ref={dropdownRef}>
+                        {options.map((option, i) =>
+                            <div className="tw-cursor-pointer tw-py-0.5 tw-pl-2 tw-pr-1" key={i} onClick={() => handleSelect(option.value)}>
+                                {option.label}
+                            </div>
+                        )}
+                    </animated.div>
+                )}
+            </Transition>
+        </div>
     )
 }
