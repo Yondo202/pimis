@@ -26,7 +26,7 @@ function HomePage({}) {
     const GetData = () =>{
         axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token() } }).then((res) => {
             if (res.data.data.length!==0) { setCardData(res.data.data); };
-        }).catch((err) => console.log(err.response.data.error))
+        }).catch((err) => console.log(err?.response))
     } 
 
     const showHandle = (el) =>{
