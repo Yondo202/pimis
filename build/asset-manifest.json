@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/static/css/main.74ad443d.chunk.css",
-    "main.js": "/static/js/main.b7e428a4.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.b1c4e486.js",
+    "main.css": "/static/css/main.0fa0fcb5.chunk.css",
+    "main.js": "/static/js/main.f33b3545.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.e1443f91.js",
     "static/css/2.7daf23d2.chunk.css": "/static/css/2.7daf23d2.chunk.css",
-    "static/js/2.30754a27.chunk.js": "/static/js/2.30754a27.chunk.js",
-    "static/js/3.7718d901.chunk.js": "/static/js/3.7718d901.chunk.js",
-    "static/js/4.24f1ca4f.chunk.js": "/static/js/4.24f1ca4f.chunk.js",
-    "static/js/5.e430955b.chunk.js": "/static/js/5.e430955b.chunk.js",
+    "static/js/2.08ba1a40.chunk.js": "/static/js/2.08ba1a40.chunk.js",
+    "static/js/3.5f0b95c6.chunk.js": "/static/js/3.5f0b95c6.chunk.js",
+    "static/js/4.ddb967fb.chunk.js": "/static/js/4.ddb967fb.chunk.js",
+    "static/js/5.82f8af8c.chunk.js": "/static/js/5.82f8af8c.chunk.js",
     "index.html": "/index.html",
-    "static/js/2.30754a27.chunk.js.LICENSE.txt": "/static/js/2.30754a27.chunk.js.LICENSE.txt",
-    "static/js/3.7718d901.chunk.js.LICENSE.txt": "/static/js/3.7718d901.chunk.js.LICENSE.txt",
-    "static/js/4.24f1ca4f.chunk.js.LICENSE.txt": "/static/js/4.24f1ca4f.chunk.js.LICENSE.txt",
-    "static/js/main.b7e428a4.chunk.js.LICENSE.txt": "/static/js/main.b7e428a4.chunk.js.LICENSE.txt",
+    "static/js/2.08ba1a40.chunk.js.LICENSE.txt": "/static/js/2.08ba1a40.chunk.js.LICENSE.txt",
+    "static/js/3.5f0b95c6.chunk.js.LICENSE.txt": "/static/js/3.5f0b95c6.chunk.js.LICENSE.txt",
+    "static/js/4.ddb967fb.chunk.js.LICENSE.txt": "/static/js/4.ddb967fb.chunk.js.LICENSE.txt",
+    "static/js/main.f33b3545.chunk.js.LICENSE.txt": "/static/js/main.f33b3545.chunk.js.LICENSE.txt",
     "static/media/dx.material.blue-light-compact.css": "/static/media/dxiconsmaterial.9bea124e.woff2",
     "static/media/TimesRoman.c0956945.ttf": "/static/media/TimesRoman.c0956945.ttf",
     "static/media/edp_logo.135f515f.png": "/static/media/edp_logo.135f515f.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.b1c4e486.js",
+    "static/js/runtime-main.e1443f91.js",
     "static/css/2.7daf23d2.chunk.css",
-    "static/js/2.30754a27.chunk.js",
-    "static/css/main.74ad443d.chunk.css",
-    "static/js/main.b7e428a4.chunk.js"
+    "static/js/2.08ba1a40.chunk.js",
+    "static/css/main.0fa0fcb5.chunk.css",
+    "static/js/main.f33b3545.chunk.js"
   ]
 }
