@@ -7,7 +7,7 @@ import Token from 'context/accessToken';
 import DocumentTitle from 'containers/document/DocumentTitle'
 import { IoMdCheckmarkCircle } from 'react-icons/io'
 
-function HomePage({ setNotify }) {
+function HomePage({}) {
     DocumentTitle("EDP - Үнэлгээний хорооны гишүүн");
     const [cardData, setCardData] = useState([]);
     // const [showModal, setShowModal] = useState(false);
@@ -54,6 +54,13 @@ function HomePage({ setNotify }) {
                                         <span className="title">Санхүүжилтийн хэмжээ :</span>
                                         <span className="desc">{el.budgetCost} $</span>
                                     </div>
+
+                                    <div className="contItem">
+                                        {/* <span className="title">Санхүүжилтийн хэмжээ :</span> */}
+                                        {/* <span className="desc">{el.budgetCost} $</span> */}
+                                        <div className="link">Шинжилгээний тайлан - харах</div>
+                                    </div>
+
                                     <div className="mains">
                                         <div className="buttons Active">
                                             <Link
@@ -94,6 +101,8 @@ const cardAnimate = keyframes`
     30% { transform:scale(1.037);opacity:0.7;  }
     100% { transform:scale(1);opacity:1;  }
 `
+
+// #03a9f4
 
 const Memberhome = styled.div`
     font-family:${fontFamily};
@@ -140,6 +149,14 @@ const Memberhome = styled.div`
                         align-items:center;
                         justify-content:start;
                         padding:5px 0px;
+                        .link{
+                            cursor:pointer;
+                            color: #03a9f4;
+                            font-weight:500;
+                            &:hover{
+                                text-decoration:underline;
+                            }
+                        }
                         .title{
                             color:rgba(${textColor},1);
                             font-weight:500;

@@ -25,7 +25,6 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
         transform: showModal ? `translateY(10%)` : `translateY(30%)`
     });
 
-
     const clickHandle = (e) => {
         setBtnSpin(true);
         e.preventDefault();
