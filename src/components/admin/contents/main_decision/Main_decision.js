@@ -29,9 +29,15 @@ function Main_decision() {
     const [members, setMembers] = useState([]);
     const [rate, setRate ] = useState('');
 
+    const [ evaluation, setEvaluation ] = useState([]);
+    const [ info, setInfo ] = useState([])
+
+
     useEffect(() => {
         GoFetch();
     }, [update]);
+
+    // console.log(`mainData`,parseInt(mainData.projectId) )
 
     const GoFetch = () =>{
         axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
@@ -44,8 +50,30 @@ function Main_decision() {
                 if (res.data.data.approved === true) { setNotifyShow2(2); } else if (res.data.data.approved === false) { setNotifyShow2(1); } else { setNotifyShow2(0); }
             }
         })
+
+        axios.get(`projects/${mainData?.projectId}/bds-evaluation5c`, { headers: { Authorization: Token() } }).then(res=>{
+            console.log(`-->res`, res)
+            setEvaluation(res.data?.data?.deals)
+            setInfo(res.data?.data?.info)
+        })
     }
 
+    const HandleSubmit = (e) =>{
+        e.preventDefault()
+        if(evaluation.length===0){
+            ctx.alertText('orange', "Төлөвлөсөн үйл ажиллагааны мэдээлэл ороогүй байна", true)
+        }else{
+            axios.put(`projects/${mainData?.projectId}/bds-evaluation5c/${parseInt(mainData.projectId)}`, 
+            { info:info, deals: evaluation },
+            { headers: { Authorization: Token() } }).then(res=>{
+                if(cond){
+                    clickHandle2()
+                }else{
+                    clickHandle()
+                }
+            }).catch(_=>ctx.alertText('orange', "Алдаа гарлаа", true))
+        }
+    }
 
     const clickHandle = () => {
         axios.post(`evaluation-results/hurliin-negtgel`, { ...mainData, approved:mainData.final_decision===0?null:mainData.approved, budget_cost: parseFloat(rate), final_decision:0}, { headers: { Authorization: Token() } }).then(res=> {
@@ -95,6 +123,7 @@ function Main_decision() {
                         </div>
                     </div>
                     : <div className="contentPar">
+                        <form onSubmit={HandleSubmit}>
                         <div className="TitlePar">
                             <div className="title">
                                 {/* ҮНЭЛГЭЭНИЙ ХОРООНЫ ШИЙДВЭРИЙН ХУУДАС */}
@@ -110,25 +139,25 @@ function Main_decision() {
                         <div className="list_parent">
                             <div className="my_row">
                                 <div className="field">Өргөдлийн дугаар:</div>
-                                <div className="value">..........</div>
+                                <div className="value">{mainData?.project_number}</div>
                             </div>
 
                             <div className="my_row">
                                 <div className="field">Аж ахуйн нэгжийн нэр:</div>
-                                <div className="value">..........</div>
+                                <div className="value">{mainData?.company?.company_name}</div>
                             </div>
                             <div className="my_row">
                                 <div className="field">Төслийн нэр:</div>
-                                <div className="value">..........</div>
+                                <div className="value">{mainData?.project_name}</div>
                             </div>
                             <div className="my_row">
                                 <div className="field">Эхэлсэн цаг:</div>
-                                <div className="value">..........</div>
+                                <div className="value">{mainData?.meetingDate}</div>
                             </div>
 
                             <div className="my_row">
                                 <div className="field">Дууссан цаг:</div>
-                                <div className="value">..........</div>
+                                <div className="value">{mainData?.final_date.slice(0,10)}</div>
                             </div>
                         </div>
 
@@ -141,23 +170,52 @@ function Main_decision() {
                                     <th>Зөвлөхийн санал /төгрөг/</th>
                                     <th>Баталсан санхүүжилт /төгрөг/</th>
                                 </tr>
-                                <tr className="getTable1">
-                                    <td></td>
-                                    <td>N/A</td>
-                                    <td className="right">N/A</td>
-                                    <td className="right">N/A</td>
-                                    <td className="right">N/A</td>
-                                </tr>
-                              
-                                <tr className="getTable1 bold">
-                                    <td></td>
 
+                                {evaluation.map((el,ind)=>{
+                                    return(
+                                        <tr key={ind} className="getTable1">
+                                            <td>{ind+1}</td>
+                                            <td>{el.planned_activity}</td>
+                                            <td className="right">{NumberComma(el.requested_funding)}</td>
+                                            <td className="right">{NumberComma(el.proposal_funding)}</td>
+                                            <td >
+                                                <InputStyle className="inpp">
+                                                    <NumberFormat 
+                                                        required
+                                                        placeholder={`0 ₮`} 
+                                                        style={{textAlign:`right`, paddingRight:`7px`}} 
+                                                        thousandSeparator={true} 
+                                                        suffix={' ₮'}
+                                                        name="approved_funding"
+                                                        value={el.approved_funding}
+                                                        onValueChange={values => setEvaluation(prev => {
+                                                            const next = [...prev]
+                                                            next[ind].approved_funding = values.floatValue
+                                                            return next
+                                                        })}
+                                                    />
+                                                    <div className="line" />
+                                                </InputStyle>
+                                             </td>
+                                        </tr>
+                                    )
+                                })}
+                              
+                                {evaluation.length!==0?<tr className="getTable1 bold">
+                                    <td></td>
                                     <td >Нийт</td>
                                     <td className="right"></td>
                                     <td className="right"></td>
                                     <td className="right"></td>
-                                    
-                                </tr>
+                                </tr>:<tr className="getTable1">
+                                    <td></td>
+                                    <td>N/A</td>
+                                    <td className="right">N/A</td>
+                                    <td className="right">N/A</td>
+                                    <td className="right"> N/A</td>
+                                    {/* approved_funding */}
+                                </tr>}
+
                             </table>
                         </div>
 
@@ -258,9 +316,17 @@ function Main_decision() {
                         </div>
                         <div className="buttonPar">
                             {/* <div style={{opacity:`${opacity2}`}} className="errtext">{FinalErrorText}</div> */}
-                            {cond ? <NextBtn className="SubmitButton" onClick={clickHandle2} style={{width:`36%`}} type="button">Эцсийн байдлаар илгээх<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>: <div />}
-                            {!cond && <NextBtn className="SubmitButton" onClick={clickHandle} type="button">Хадгалах<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div></NextBtn>}
+                            {cond ? <NextBtn className="SubmitButton" 
+                            // onClick={clickHandle2} style={{width:`36%`}} 
+                            type="submit">Эцсийн байдлаар илгээх<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>
+                            </NextBtn>: <div />}
+
+                            {!cond && <NextBtn className="SubmitButton" 
+                            // onClick={clickHandle} 
+                            type="submit">Хадгалах<div className="flexchild"><AiOutlineSend /><AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>
+                            </NextBtn>}
                         </div>
+                        </form>
                     </div>
                     : <div className="NullPar">
                         <div className="nullTitle">
