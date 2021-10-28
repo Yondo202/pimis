@@ -79,7 +79,7 @@ function Main_decision() {
     }
 
     const clickHandle = () => {
-        axios.post(`evaluation-results/hurliin-negtgel`, { ...mainData, decision_number:decisionNumber, approved:mainData.final_decision===0?null:mainData.approved, budget_cost: parseFloat(rate), final_decision:0}, { headers: { Authorization: Token() } }).then(res=> {
+        axios.post(`evaluation-results/hurliin-negtgel`, { ...mainData, decision_number: decisionNumber, approved:mainData.final_decision===0?null:mainData.approved, budget_cost: parseFloat(rate), final_decision:0 }, { headers: { Authorization: Token() } }).then(res=> {
             ctx.alertText('green', "Амжилттай хадаглалаа", true);
             setCond(true);
             setUpdate(prev=>!prev);
@@ -91,12 +91,12 @@ function Main_decision() {
     const clickHandle2 = () => {
         if (cond) {
             if (notifyShow2 === 2) {
-                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData, budget_cost: parseFloat(rate), final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
+                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData, decision_number: decisionNumber, budget_cost: parseFloat(rate), final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
                     ctx.alertText('green', "Амжилттай хадаглалаа", true);
                     setNotifyShow(1);
                 });
             } else if (notifyShow2 === 1) {
-                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData, budget_cost: parseFloat(rate), final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
+                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData,  decision_number: decisionNumber, budget_cost: parseFloat(rate), final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
                     ctx.alertText('green', "Амжилттай хадаглалаа", true);
                     setNotifyShow(2);
                 });
@@ -114,6 +114,8 @@ function Main_decision() {
         setMainData({ ...mainData });
     }
 
+
+    console.log(`decisionNumber`, decisionNumber)
 
     return (
         <>
