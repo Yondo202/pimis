@@ -28,33 +28,33 @@ function Main_decision() {
     const [mainData, setMainData] = useState(null);
     const [members, setMembers] = useState([]);
     const [rate, setRate ] = useState('');
+    const [ decisionNumber, setDecisionNumber ] = useState('')
 
     const [ evaluation, setEvaluation ] = useState([]);
     const [ info, setInfo ] = useState([])
-
 
     useEffect(() => {
         GoFetch();
     }, [update]);
 
-    // console.log(`mainData`,parseInt(mainData.projectId) )
+    useEffect(()=>{
+        axios.get(`projects/${mainData?.projectId}/bds-evaluation5c`, { headers: { Authorization: Token() } }).then(res=>{
+            setEvaluation(res.data?.data?.deals)
+            setInfo(res.data?.data?.info)
+        })
+    },[mainData?.projectId])
 
     const GoFetch = () =>{
         axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
             if (res.data.data) {
                 setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
                 setRate(res.data.data?.budgetCost);
+                setDecisionNumber(res.data.data?.decision_number)
                 if(res.data.data.final_decision!==0&&res.data.data.final_decision!==null){
                     setCond(true);
                 }
                 if (res.data.data.approved === true) { setNotifyShow2(2); } else if (res.data.data.approved === false) { setNotifyShow2(1); } else { setNotifyShow2(0); }
             }
-        })
-
-        axios.get(`projects/${mainData?.projectId}/bds-evaluation5c`, { headers: { Authorization: Token() } }).then(res=>{
-            console.log(`-->res`, res)
-            setEvaluation(res.data?.data?.deals)
-            setInfo(res.data?.data?.info)
         })
     }
 
@@ -63,7 +63,7 @@ function Main_decision() {
         if(evaluation.length===0){
             ctx.alertText('orange', "Төлөвлөсөн үйл ажиллагааны мэдээлэл ороогүй байна", true)
         }else{
-            axios.put(`projects/${mainData?.projectId}/bds-evaluation5c/${parseInt(mainData.projectId)}`, 
+            axios.put(`projects/${mainData?.projectId}/bds-evaluation5c`, 
             { info:info, deals: evaluation },
             { headers: { Authorization: Token() } }).then(res=>{
                 if(cond){
@@ -71,12 +71,15 @@ function Main_decision() {
                 }else{
                     clickHandle()
                 }
-            }).catch(_=>ctx.alertText('orange', "Алдаа гарлаа", true))
+            }).catch(err=>{
+                console.log(`err.response`, err.response)
+                ctx.alertText('orange', "Алдаа гарлаа", true)
+            })
         }
     }
 
     const clickHandle = () => {
-        axios.post(`evaluation-results/hurliin-negtgel`, { ...mainData, approved:mainData.final_decision===0?null:mainData.approved, budget_cost: parseFloat(rate), final_decision:0}, { headers: { Authorization: Token() } }).then(res=> {
+        axios.post(`evaluation-results/hurliin-negtgel`, { ...mainData, decision_number:decisionNumber, approved:mainData.final_decision===0?null:mainData.approved, budget_cost: parseFloat(rate), final_decision:0}, { headers: { Authorization: Token() } }).then(res=> {
             ctx.alertText('green', "Амжилттай хадаглалаа", true);
             setCond(true);
             setUpdate(prev=>!prev);
@@ -111,6 +114,7 @@ function Main_decision() {
         setMainData({ ...mainData });
     }
 
+
     return (
         <>
             {notifyShow === 0 ? <FeedBackCont className="container">
@@ -132,7 +136,12 @@ function Main_decision() {
                             </div>
                             <div className="desc">
                                 {/* Төсөл бүрт өгсөн нэгтгэсэн санал */}
-                                Шийдвэрийн дугаар: {mainData?.project_number}
+                                Шийдвэрийн дугаар:
+                                {/* {mainData?.project_number} */}
+                                <InputStyle >
+                                    <input defaultValue={mainData?.decision_number} value={decisionNumber} onChange={e=>setDecisionNumber(e.target.value)} type="text" placeholder="дугаарыг оруулна уу" required />
+                                    <div className="line" />
+                                </InputStyle>
                             </div>
                         </div>
 
@@ -204,9 +213,9 @@ function Main_decision() {
                                 {evaluation.length!==0?<tr className="getTable1 bold">
                                     <td></td>
                                     <td >Нийт</td>
-                                    <td className="right"></td>
-                                    <td className="right"></td>
-                                    <td className="right"></td>
+                                    <td className="right">{NumberComma(evaluation.reduce(( current, item )=> current + item.requested_funding ,0))}</td>
+                                    <td className="right">{NumberComma(evaluation.reduce(( current, item )=> current + item.proposal_funding ,0))}</td>
+                                    <td className="right">{NumberComma(evaluation.reduce(( current, item )=> current + item.approved_funding ,0))}</td>
                                 </tr>:<tr className="getTable1">
                                     <td></td>
                                     <td>N/A</td>
@@ -530,6 +539,10 @@ export const FeedBackCont = styled.div`
                     font-size:14px;
                     text-align:center;
                     font-style: italic;
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    gap:20px;
                 }
             }
             .infoWhere{

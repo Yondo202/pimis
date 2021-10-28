@@ -105,7 +105,7 @@ const MenuData = [
     MenuChild:[
     { link:"/projects", text:"Бүртгүүлсэн байгууллагууд" },
     { link:"/meetings", text:"Сонгон шалгаруулалтын багийн хурал гэснээр солих" },
-    { link:"/maindecision", text:"Үнэлгээний хорооны шийдвэр" },
+    { link:"/maindecision", text:"Сонгон шалгаруулалтын багийн хурлын шийдвэр" },
     { link:"/report", text:"Тайлан" },
     ] 
   },
