@@ -27,7 +27,7 @@ function Main_decision() {
     const [opacity2, setOpacity2] = useState("0");
     const [mainData, setMainData] = useState(null);
     const [members, setMembers] = useState([]);
-    const [rate, setRate ] = useState('');
+    // const [rate, setRate ] = useState('');
     const [ decisionNumber, setDecisionNumber ] = useState('')
 
     const [ evaluation, setEvaluation ] = useState([]);
@@ -48,7 +48,7 @@ function Main_decision() {
         axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
             if (res.data.data) {
                 setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
-                setRate(res.data.data?.budgetCost);
+                // setRate(res.data.data?.budgetCost);
                 setDecisionNumber(res.data.data?.decision_number)
                 if(res.data.data.final_decision!==0&&res.data.data.final_decision!==null){
                     setCond(true);
@@ -79,7 +79,7 @@ function Main_decision() {
     }
 
     const clickHandle = () => {
-        axios.post(`evaluation-results/hurliin-negtgel`, { ...mainData, decision_number: decisionNumber, approved:mainData.final_decision===0?null:mainData.approved, budget_cost: parseFloat(rate), final_decision:0 }, { headers: { Authorization: Token() } }).then(res=> {
+        axios.post(`evaluation-results/hurliin-negtgel`, { ...mainData, decision_number: decisionNumber, approved:mainData.final_decision===0?null:mainData.approved, final_decision:0 }, { headers: { Authorization: Token() } }).then(res=> {
             ctx.alertText('green', "Амжилттай хадаглалаа", true);
             setCond(true);
             setUpdate(prev=>!prev);
@@ -91,12 +91,12 @@ function Main_decision() {
     const clickHandle2 = () => {
         if (cond) {
             if (notifyShow2 === 2) {
-                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData, decision_number: decisionNumber, budget_cost: parseFloat(rate), final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
+                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData, decision_number: decisionNumber,  final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
                     ctx.alertText('green', "Амжилттай хадаглалаа", true);
                     setNotifyShow(1);
                 });
             } else if (notifyShow2 === 1) {
-                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData,  decision_number: decisionNumber, budget_cost: parseFloat(rate), final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
+                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData,  decision_number: decisionNumber, final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
                     ctx.alertText('green', "Амжилттай хадаглалаа", true);
                     setNotifyShow(2);
                 });
