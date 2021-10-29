@@ -476,6 +476,8 @@ export default function MakeContract() {
    const [signersReceiving, setSignersReceiving] = useState(initialSignersReceiving)
 
    const [user, setUser] = useState({})
+   const [project, setProject] = useState({})
+   const [evaluation5c, setEvaluation5c] = useState({})
 
    useEffect(() => {
       if (projectId === null || projectId === undefined) {
@@ -484,36 +486,63 @@ export default function MakeContract() {
       if (userId === null || userId === undefined) {
          return
       }
-      axios.get(`users/${userId}`, {
-         headers: { Authorization: getLoggedUserToken() }
-      }).then(res => {
-         setUser(res.data.data)
-
-         axios.get(`contracts?projectId=${projectId}`, {
-            headers: { Authorization: getLoggedUserToken() }
-         }).then(res => {
-            const { signers, ...info } = res.data.data
-            setInfo(prev => ({ ...prev, ...info }))
-            if ((signers ?? []).length) {
-               setSignersEpd(signers.filter(signer => signer.category === 'edp'))
-               setSignersReceiving(signers.filter(signer => signer.category === 'receiving'))
-            }
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээг нээлээ.' })
-         }).catch(err => {
-            if (err.response.status === 490) {
+      (async () => {
+         try {
+            const res = await axios.get(`users/${userId}`, {
+               headers: { Authorization: getLoggedUserToken() }
+            })
+            setUser(res.data.data)
+            const res1 = await axios.get(`projects/${projectId}`, {
+               headers: { Authorization: getLoggedUserToken() },
+            })
+            setProject(res1.data.data)
+            const res2 = await axios.get(`projects/${projectId}/bds-evaluation5c`, {
+               headers: { Authorization: getLoggedUserToken() },
+            })
+            setEvaluation5c(res2.data.data)
+            try {
+               const res3 = await axios.get(`contracts?projectId=${projectId}`, {
+                  headers: { Authorization: getLoggedUserToken() }
+               })
+               const { signers, ...info } = res3.data.data
+               const evaluation5c = res2.data.data ?? {}
+               const deals = evaluation5c.deals ?? []
+               const funding = deals.reduce((acc, cv) => acc + (+cv.approved_funding || 0), 0)
                setInfo(prev => ({
-                  ...prev,
-                  year: prev.year || currentYear,
-                  month: prev.month || currentMonth,
-                  day: prev.day || currentDate,
-                  register_no: prev.register_no || (user.companyregister ?? null),
-                  company_name: prev.company_name || (user.companyname ?? null)
+                  ...prev, ...info,
+                  funding: prev.funding || funding
                }))
-               return
+               if ((signers ?? []).length) {
+                  setSignersEpd(signers.filter(signer => signer.category === 'edp'))
+                  setSignersReceiving(signers.filter(signer => signer.category === 'receiving'))
+               }
+               AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Гэрээг нээлээ.' })
+            } catch (err) {
+               if (err.response.status === 490) {
+                  const user = res.data.data ?? {}
+                  const project = res1.data.data ?? {}
+                  const evaluation5c = res2.data.data ?? {}
+                  const deals = evaluation5c.deals ?? []
+                  const funding = deals.reduce((acc, cv) => acc + (+cv.approved_funding || 0), 0)
+                  setInfo(prev => ({
+                     ...prev,
+                     year: prev.year || currentYear,
+                     month: prev.month || currentMonth,
+                     day: prev.day || currentDate,
+                     contract_number: prev.contract_number || (project.project_number ?? null),
+                     register_no: prev.register_no || (user.companyregister ?? null),
+                     company_name: prev.company_name || (user.companyname ?? null),
+                     funding: prev.funding || funding,
+                     location: prev.location || (project.company_address ?? null)
+                  }))
+                  return
+               }
+               AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээг татаж чадсангүй.' })
             }
-            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээг татаж чадсангүй.' })
-         })
-      })
+         } catch {
+            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Алдаа гарлаа.' })
+         }
+      })()
    }, [projectId])
 
    const componentRef = useRef()
@@ -676,7 +705,7 @@ export default function MakeContract() {
                </div>
             </div>
 
-            <ActivityPlanAttach contractId={info.id} />
+            <ActivityPlanAttach contractId={info.id} evaluation5c={evaluation5c} />
             <FinalCostAttach contract={info} user={user} />
             <ProtectionReport contract={info} />
             <PerformanceReport contract={info} user={user} />

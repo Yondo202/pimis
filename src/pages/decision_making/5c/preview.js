@@ -123,11 +123,7 @@ export default function AnalystReportPreview(props) {
                     </span>
                 </div>
 
-                <div className="tw-py-1 tw-px-2 tw-mb-3 tw-bg-blue-50 tw-bg-opacity-50 tw-rounded tw-mx-1 tw-mt-2">
-                    <div dangerouslySetInnerHTML={{ __html: info.info }} style={{ minHeight: 20 }} />
-                </div>
-
-                <div className="tw-pb-5 tw-px-1 tw-pt-2">
+                <div className="tw-px-1 tw-pt-2">
                     <table>
                         <thead>
                             <tr>
@@ -168,6 +164,10 @@ export default function AnalystReportPreview(props) {
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <div className="tw-py-1 tw-px-2 tw-bg-blue-50 tw-bg-opacity-50 tw-rounded tw-mx-1 tw-mt-4 tw-mb-4">
+                    <div dangerouslySetInnerHTML={{ __html: info.info }} style={{ minHeight: 20 }} />
                 </div>
 
                 {rows.filter(row => row.rowcode !== 'z').map(row => ({
