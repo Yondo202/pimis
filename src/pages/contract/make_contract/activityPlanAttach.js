@@ -55,7 +55,7 @@ export default function ActivityPlanAttach({ contractId, evaluation5c = {} }) {
 
    useEffect(() => {
       const deals = evaluation5c.deals ?? []
-      deals && setDeals(deals.filter(deal => !!deal.approved_funding))
+      deals && setDeals(deals.filter(deal => !!deal?.approved_funding))
    }, [evaluation5c.deals])
 
    const handleInput = (key, value, index) => setDeals(prev => {

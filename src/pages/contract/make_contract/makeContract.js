@@ -522,6 +522,10 @@ export default function MakeContract() {
                   const user = res.data.data ?? {}
                   const project = res1.data.data ?? {}
                   const evaluation5c = res2.data.data ?? {}
+                  const checkStart = new Date(evaluation5c.info.check_start)
+                  const orderYear = checkStart.getFullYear()
+                  const orderMonth = checkStart.getMonth() + 1
+                  const orderDate = checkStart.getDate()
                   const deals = evaluation5c.deals ?? []
                   const funding = deals.reduce((acc, cv) => acc + (+cv.approved_funding || 0), 0)
                   setInfo(prev => ({
@@ -529,7 +533,10 @@ export default function MakeContract() {
                      year: prev.year || currentYear,
                      month: prev.month || currentMonth,
                      day: prev.day || currentDate,
-                     contract_number: prev.contract_number || (project.project_number ?? null),
+                     order_year: prev.order_year || (orderYear || null),
+                     order_month: prev.order_month || (orderMonth || null),
+                     order_day: prev.order_day || (orderDate || null),
+                     order_number: prev.order_number || (project.project_number ?? null),
                      register_no: prev.register_no || (user.companyregister ?? null),
                      company_name: prev.company_name || (user.companyname ?? null),
                      funding: prev.funding || funding,
@@ -540,7 +547,7 @@ export default function MakeContract() {
                AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Гэрээг татаж чадсангүй.' })
             }
          } catch {
-            AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Алдаа гарлаа.' })
+            AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Алдаа гарлаа.' })
          }
       })()
    }, [projectId])

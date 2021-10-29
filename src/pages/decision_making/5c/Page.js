@@ -298,9 +298,6 @@ export default function AnalystReport({ seeMember, setOpen }) {
                                     Хүсэж болох санхүүжилтийн дүн:
                                 </label>
                                 <NumberFormat className={`${classInputNumber} `} value={info.available_funding} onValueChange={values => handleInputInfo('available_funding', values.floatValue)} thousandSeparator decimalScale={2} suffix=' ₮' />
-                                <span className="tw-ml-3">
-                                    /Өмнө нь санхүүжилт {info.available_funding ? 'авсан' : 'аваагүй'}/
-                                </span>
                             </div>
 
                             <div className="tw-flex tw-items-center tw-mt-3">

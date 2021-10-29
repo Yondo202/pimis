@@ -99,9 +99,6 @@ export default function AnalystReportPreview(props) {
                     <span className="tw-font-medium tw-ml-2">
                         {info.available_funding ? toCurrencyString(info.available_funding) : `0 ₮`}
                     </span>
-                    <span className="tw-ml-2">
-                        /Өмнө нь санхүүжилт {info.available_funding ? 'авсан' : 'аваагүй'}/
-                    </span>
                 </div>
                 <div className="tw-p-1">
                     Шинжилгээ хийсэн Бизнес шинжээч:
