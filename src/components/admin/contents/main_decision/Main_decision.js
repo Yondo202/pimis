@@ -33,6 +33,8 @@ function Main_decision() {
     const [ evaluation, setEvaluation ] = useState([]);
     const [ info, setInfo ] = useState([])
 
+    const [ timeData, setTimeData ] = useState({ end_time:null, start_time:null })
+
     useEffect(() => {
         GoFetch();
     }, [update]);
@@ -46,14 +48,17 @@ function Main_decision() {
 
     const GoFetch = () =>{
         axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
-            if (res.data.data) {
-                setMainData(res.data.data); setMembers(res.data.data.memberEvaluations);
-                // setRate(res.data.data?.budgetCost);
-                setDecisionNumber(res.data.data?.decision_number)
-                if(res.data.data.final_decision!==0&&res.data.data.final_decision!==null){
+            const datas = res.data.data
+            if (datas) {
+
+                setMainData(datas); setMembers(datas.memberEvaluations);
+                // setRate(datas?.budgetCost);
+                setDecisionNumber(datas?.decision_number)
+                setTimeData({ start_time: datas.start_time, end_time: datas.end_time  })
+                if(datas.final_decision!==0&&datas.final_decision!==null){
                     setCond(true);
                 }
-                if (res.data.data.approved === true) { setNotifyShow2(2); } else if (res.data.data.approved === false) { setNotifyShow2(1); } else { setNotifyShow2(0); }
+                if (datas.approved === true) { setNotifyShow2(2); } else if (datas.approved === false) { setNotifyShow2(1); } else { setNotifyShow2(0); }
             }
         })
     }
@@ -79,7 +84,7 @@ function Main_decision() {
     }
 
     const clickHandle = () => {
-        axios.post(`evaluation-results/hurliin-negtgel`, { ...mainData, decision_number: decisionNumber, approved:mainData.final_decision===0?null:mainData.approved, final_decision:0 }, { headers: { Authorization: Token() } }).then(res=> {
+        axios.post(`evaluation-results/hurliin-negtgel`, { ...mainData, ...timeData, decision_number: decisionNumber, approved:mainData.final_decision===0?null:mainData.approved, final_decision:0 }, { headers: { Authorization: Token() } }).then(res=> {
             ctx.alertText('green', "Амжилттай хадаглалаа", true);
             setCond(true);
             setUpdate(prev=>!prev);
@@ -91,12 +96,12 @@ function Main_decision() {
     const clickHandle2 = () => {
         if (cond) {
             if (notifyShow2 === 2) {
-                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData, decision_number: decisionNumber,  final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
+                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData, ...timeData, decision_number: decisionNumber,  final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
                     ctx.alertText('green', "Амжилттай хадаглалаа", true);
                     setNotifyShow(1);
                 });
             } else if (notifyShow2 === 1) {
-                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData,  decision_number: decisionNumber, final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
+                axios.post(`evaluation-results/hurliin-negtgel`, {...mainData, ...timeData,  decision_number: decisionNumber, final_decision:1}, { headers: { Authorization: Token() } }).then(res=> {
                     ctx.alertText('green', "Амжилттай хадаглалаа", true);
                     setNotifyShow(2);
                 });
@@ -114,8 +119,13 @@ function Main_decision() {
         setMainData({ ...mainData });
     }
 
-
-    console.log(`decisionNumber`, decisionNumber)
+    const TimeHandle = (e) =>{
+        const value = e.target.value
+        const names = e.target.name
+        if(value.length <= 2 && value <= 24){
+            setTimeData(prev=>({ ...prev, [names]: parseInt(value) }))
+        }
+    }
 
     return (
         <>
@@ -163,12 +173,23 @@ function Main_decision() {
                             </div>
                             <div className="my_row">
                                 <div className="field">Эхэлсэн цаг:</div>
-                                <div className="value">{mainData?.meetingDate}</div>
+                                <div className="value">
+                                    {/* {mainData?.meetingDate} */}
+                                    <InputStyle >
+                                        <input placeholder="10" type="number" name="start_time" required value={timeData.start_time} onChange={TimeHandle} />
+                                        <div className="line" />
+                                    </InputStyle>
+                                </div>
                             </div>
 
                             <div className="my_row">
                                 <div className="field">Дууссан цаг:</div>
-                                <div className="value">{mainData?.final_date.slice(0,10)}</div>
+                                <div className="value">
+                                    <InputStyle >
+                                        <input placeholder="18" type="number" required name="end_time" value={timeData.end_time} onChange={TimeHandle} />
+                                        <div className="line" />
+                                    </InputStyle>
+                                </div>
                             </div>
                         </div>
 
@@ -433,6 +454,7 @@ export const FeedBackCont = styled.div`
                     padding:5px 0px;
                     display:flex;
                     gap:20px;
+                    align-items:center;
                     .field{
                         font-weight:500;
                     }

@@ -41,7 +41,6 @@ function PageOne({ NotifyData }) {
           }
         };
       }
-      
     })
   }
 
@@ -51,6 +50,7 @@ function PageOne({ NotifyData }) {
   });
 
   const clickHandle = () => {
+    
     let inp = document.querySelectorAll('.getInputt'); let arr = Array.from(inp); let final = {};
     arr.forEach(el => {
       if (el.name === "is_violation") {
