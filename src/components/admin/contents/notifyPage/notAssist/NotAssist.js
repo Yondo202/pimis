@@ -6,7 +6,7 @@ import Content from './Content'
 import axios from 'axiosbase';
 import AuthToken from 'context/accessToken'
 
-function NotAssist({approve, projectId, setNotifyShow}) {
+function NotAssist({ projectId, setNotifyShow, approve}) {
   const [ edpInfo ,setEdpInfo ] = useState({});
   const [ Signature, setSignature ] = useState(null);
 
@@ -23,6 +23,8 @@ function NotAssist({approve, projectId, setNotifyShow}) {
         if(res.data.data.length){ setSignature(res.data.data[0]) }
       }).catch(err=>console.log(`err`, err));
     },[])
+
+    console.log(`approve`, approve)
 
       return (
             <MainContainter>

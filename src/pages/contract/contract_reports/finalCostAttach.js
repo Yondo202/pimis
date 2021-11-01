@@ -349,7 +349,7 @@ export default function FinalCostAttach({ contract = {}, user = {} }) {
 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2'
 
-function NetAmount({ sum }) {
+export function NetAmount({ sum }) {
    return (
       <span className="tw-float-right">
          {isNaN(sum)

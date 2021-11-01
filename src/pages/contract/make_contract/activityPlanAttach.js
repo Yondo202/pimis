@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { TextareaCell } from '../contract_reports/protectionReport'
-import MakeContract, { Signature, Fill } from './makeContract'
+import { Signature, Fill } from './makeContract'
 import axios from 'axiosbase'
 import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import { useContext } from 'react'
 import AlertContext from 'components/utilities/alertContext'
-import MinusCircleSVG from 'assets/svgComponents/minusCircleSVG'
-import PlusCircleSVG from 'assets/svgComponents/plusCircleSVG'
 import NumberFormat from 'react-number-format'
+import { NetAmount } from '../contract_reports/finalCostAttach'
 
-const initialState = [{
-   work: null,
-   start_date: null,
-   end_date: null,
-   budget: null,
-   in_charge: null
-}]
+// const initialState = [{
+//    work: null,
+//    start_date: null,
+//    end_date: null,
+//    budget: null,
+//    in_charge: null
+// }]
 
 const initialSigners = [{
    order: 1,
@@ -31,26 +30,39 @@ const initialSigners = [{
    date: null
 }]
 
-export default function ActivityPlanAttach({ contractId }) {
+export default function ActivityPlanAttach({ contractId, evaluation5c = {} }) {
    const AlertCtx = useContext(AlertContext)
 
-   const [plan, setPlan] = useState(initialState)
+   // const [plan, setPlan] = useState(initialState)
 
-   const handleInput = (key, value, index) => setPlan(prev => {
+   // const handleInput = (key, value, index) => setPlan(prev => {
+   //    const next = [...prev]
+   //    next[index][key] = value ?? null
+   //    return next
+   // })
+
+   // const handleAdd = () => setPlan(prev => [...prev, {
+   //    work: null,
+   //    start_date: null,
+   //    end_date: null,
+   //    budget: null,
+   //    in_charge: null
+   // }])
+
+   // const handleRemove = (index) => setPlan(prev => prev.filter((plan, i) => i !== index))
+
+   const [deals, setDeals] = useState([])
+
+   useEffect(() => {
+      const deals = evaluation5c.deals ?? []
+      deals && setDeals(deals.filter(deal => !!deal?.approved_funding))
+   }, [evaluation5c.deals])
+
+   const handleInput = (key, value, index) => setDeals(prev => {
       const next = [...prev]
       next[index][key] = value ?? null
       return next
    })
-
-   const handleAdd = () => setPlan(prev => [...prev, {
-      work: null,
-      start_date: null,
-      end_date: null,
-      budget: null,
-      in_charge: null
-   }])
-
-   const handleRemove = (index) => setPlan(prev => prev.filter((plan, i) => i !== index))
 
    const [signers, setSigners] = useState(initialSigners)
 
@@ -67,9 +79,9 @@ export default function ActivityPlanAttach({ contractId }) {
       axios.get(`contracts/${contractId}/attach-1`, {
          headers: { Authorization: getLoggedUserToken() }
       }).then(res => {
-         const plan = res.data.data.rows
+         // const plan = res.data.data.rows
          const signers = res.data.data.signers
-         plan?.length && setPlan(plan)
+         // plan?.length && setPlan(plan)
          signers?.length && setSigners(signers)
       })
    }, [contractId])
@@ -79,16 +91,20 @@ export default function ActivityPlanAttach({ contractId }) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Эхлээд гэрээгээ үүсгэнэ үү.' })
          return
       }
-      if (plan[0].id === undefined) {
+      if (deals[0]?.bdsEvaluation5cInfoId === undefined || deals[0]?.bdsEvaluation5cInfoId === null) {
+         AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Эхлээд шинжилгээний тайланг оруулна уу.' })
+         return
+      }
+      if (signers[0]?.id === undefined) {
          axios.post(`contracts/${contractId}/attach-1`, {
-            rows: plan,
+            deals: deals,
             signers: signers
          }, {
             headers: { Authorization: getLoggedUserToken() }
          }).then(res => {
-            const plan = res.data.data.rows
+            const deals = res.data.data.deals
             const signers = res.data.data.signers
-            plan?.length && setPlan(plan)
+            deals?.length && setDeals(deals)
             signers?.length && setSigners(signers)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт 1-ийг хадгаллаа.' })
          }).catch(err => {
@@ -96,14 +112,14 @@ export default function ActivityPlanAttach({ contractId }) {
          })
       } else {
          axios.put(`contracts/${contractId}/attach-1`, {
-            rows: plan,
+            deals: deals,
             signers: signers
          }, {
             headers: { Authorization: getLoggedUserToken() }
          }).then(res => {
-            const plan = res.data.data.rows
+            const deals = res.data.data.deals
             const signers = res.data.data.signers
-            plan?.length && setPlan(plan)
+            deals?.length && setDeals(deals)
             signers?.length && setSigners(signers)
             AlertCtx.setAlert({ open: true, variant: 'success', msg: 'Хавсралт 1-ийг шинэчиллээ.' })
          }).catch(err => {
@@ -136,15 +152,14 @@ export default function ActivityPlanAttach({ contractId }) {
                         Баталсан зардлын дээд хэмжээ <span className="tw-font-light">/төг/</span>
                      </th>
                      <th className={`${classCell} tw-text-center`}>Хариуцах этгээд</th>
-                     <th></th>
                   </tr>
                </thead>
                <tbody>
-                  {plan.map((row, i) =>
+                  {deals.map((row, i) =>
                      <tr key={i}>
                         <td className={classCell}>{i + 1}</td>
 
-                        <TextareaCell value={row.work} name="work" index={i} setter={handleInput} />
+                        <TextareaCell value={row.planned_activity} name="planned_activity" index={i} setter={handleInput} />
 
                         <td className={classCellAlt}>
                            <input className={classInputDate} type="date" value={row.start_date ?? ''} onChange={e => handleInput('start_date', e.target.value, i)} />
@@ -158,18 +173,24 @@ export default function ActivityPlanAttach({ contractId }) {
                               {row.end_date?.replaceAll('-', '.')}
                            </span>
                         </td>
-
-                        {/* <TextareaCell value={row.budget} name="budget" index={i} setter={handleInput} /> */}
-                        <TableCellCurrency value={row.budget} name="budget" index={i} setter={handleInput} />
-                        <TextareaCell value={row.in_charge} name="in_charge" index={i} setter={handleInput} />
-                        <td className="">
-                           <MinusCircleSVG className="tw-w-7 tw-h-7 tw-text-red-500 active:tw-text-red-600 tw-opacity-0 hover:tw-opacity-100 tw-transition-opacity tw-transition-colors tw-cursor-pointer" onClick={() => handleRemove(i)} />
-                        </td>
+                        <TableCellCurrency value={row.approved_funding} name="approved_funding" index={i} setter={handleInput} />
+                        <TextareaCell value={row.person_incharge} name="person_incharge" index={i} setter={handleInput} />
                      </tr>
                   )}
+                  <tr>
+                     <td className={classCell} />
+                     <td className={classCell}>
+                        Нийт
+                     </td>
+                     <td className={classCell} />
+                     <td className={classCell} />
+                     <td className={classCell}>
+                        <NetAmount sum={deals.reduce((acc, cv) => acc + (+cv.approved_funding || 0), 0)} />
+                     </td>
+                     <td className={classCell} />
+                  </tr>
                </tbody>
             </table>
-            <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4 print-invisbile" onClick={handleAdd} />
          </div>
 
          <div className="tw-mt-6 tw-mx-2 sm:tw-mx-8">

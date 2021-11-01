@@ -117,6 +117,26 @@ export default function AnalystReport({ seeMember, setOpen }) {
 
     const loggedUserId = localStorage.getItem('userId')
 
+    const fetchData = (projectId) => {
+        axios.get(`projects/${projectId}/bds-evaluation5c`, {
+            headers: { Authorization: getLoggedUserToken() },
+        }).then(res => {
+            if (res.data.data?.rows?.length === initialState.length) {
+                setRows(res.data.data.rows)
+            }
+            setInfo(prev => ({ ...prev, ...res.data.data?.info }))
+            if (res.data.data?.deals?.length) {
+                setFundingDeals(res.data.data.deals)
+            }
+        })
+        axios.get('pps-infos/registered-companies', {
+            headers: { Authorization: getLoggedUserToken() },
+            params: { projectId: projectId },
+        }).then(res => {
+            setCompany(res.data.data[0] ?? {})
+        })
+    }
+
     useEffect(() => {
         if (projectId) {
             fetchData(projectId)
@@ -136,27 +156,6 @@ export default function AnalystReport({ seeMember, setOpen }) {
             setPreviewModalOpen(true)
         }
     }, [])
-
-    const fetchData = (projectId) => {
-        axios.get(`projects/${projectId}/bds-evaluation5c`, {
-            headers: { Authorization: getLoggedUserToken() },
-        }).then(res => {
-            if (res.data.data?.rows?.length === initialState.length) {
-                setRows(res.data.data.rows)
-            }
-            setInfo(prev => ({ ...prev, ...res.data.data?.info }))
-            if (res.data.data?.deals?.length) {
-                setFundingDeals(res.data.data.deals)
-            }
-        })
-        axios.get('pps-infos/registered-companies', {
-            headers: { Authorization: getLoggedUserToken() },
-            params: { projectId: projectId },
-        }).then(res => {
-            setCompany(res.data.data[0] ?? {})
-        })
-
-    }
 
     const [commentsOpen, setCommentsOpen] = useState(initialCommentsOpen)
 
@@ -190,21 +189,24 @@ export default function AnalystReport({ seeMember, setOpen }) {
         }
     }
 
-    const handleInputAhlah = (key, value) => {
+    const openConditionAhlah = () => {
         if (analyst.role === 'ahlah_bhsh') {
-            setInfo(prev => ({ ...prev, [key]: value }))
+            return true
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Бизнес хөгжлийн ахлах мэргэжилтэн засах боломжтой' })
+            return false
         }
     }
 
-    const handleInputZuvluh = (key, value) => {
+    const openConditionZuvluh = () => {
         if (analyst.role === 'bh_zovloh') {
-            setInfo(prev => ({ ...prev, [key]: value }))
+            return true
         } else {
             AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Бизнес хөгжлийн зөвлөх засах боломжтой' })
+            return false
         }
     }
+
 
     const hanleInputFunding = (key, value, index) => {
         if (canEdit) {
@@ -296,9 +298,6 @@ export default function AnalystReport({ seeMember, setOpen }) {
                                     Хүсэж болох санхүүжилтийн дүн:
                                 </label>
                                 <NumberFormat className={`${classInputNumber} `} value={info.available_funding} onValueChange={values => handleInputInfo('available_funding', values.floatValue)} thousandSeparator decimalScale={2} suffix=' ₮' />
-                                <span className="tw-ml-3">
-                                    /Өмнө нь санхүүжилт {info.available_funding ? 'авсан' : 'аваагүй'}/
-                                </span>
                             </div>
 
                             <div className="tw-flex tw-items-center tw-mt-3">
@@ -325,17 +324,8 @@ export default function AnalystReport({ seeMember, setOpen }) {
                                 <Select options={options} value={rows.find(row => row.rowcode === 'z').isChecked} name="isChecked" index="z" setter={handleInput} />
                             </div>
 
-                            <div className="tw-mt-4 tw-mr-8">
-                                <FormRichTextCKE
-                                    value={info.info}
-                                    name="info"
-                                    setter={handleInputInfo}
-                                    placeholder="Компаний танилцуулга, бүтээгдэхүүн, төслийн тухай"
-                                />
-                            </div>
-
                             <div className="tw-inline-block tw-relative tw-mt-4 tw-mr-8">
-                                <table>
+                                <table className="">
                                     <thead>
                                         <tr>
                                             {headersFundingDeals.map(header =>
@@ -352,7 +342,7 @@ export default function AnalystReport({ seeMember, setOpen }) {
                                                 <td className={classCell}>
                                                     {i + 1}.
                                                 </td>
-                                                <TextareaCell value={row.planned_activity} name="planned_activity" index={i} setter={hanleInputFunding} height={40} />
+                                                <TextareaCell value={row.planned_activity} name="planned_activity" index={i} setter={hanleInputFunding} height={50} />
                                                 <td className={classCell}>
                                                     <NumberFormat className={classCellInputNumber} value={row.requested_funding} onValueChange={values => hanleInputFunding('requested_funding', values.floatValue, i)} thousandSeparator decimalScale={2} />
                                                 </td>
@@ -379,9 +369,18 @@ export default function AnalystReport({ seeMember, setOpen }) {
                                 </table>
                                 <PlusCircleSVG className="tw-w-7 tw-h-7 tw-text-green-500 active:tw-text-green-600 tw-transition-colors tw-cursor-pointer tw-absolute tw--bottom-4 tw-right-4 print-invisbile" onClick={rowAddFunding} />
                             </div>
+
+                            <div className="tw-mt-4 tw-mr-8">
+                                <FormRichTextCKE
+                                    value={info.info}
+                                    name="info"
+                                    setter={handleInputInfo}
+                                    placeholder="Компаний танилцуулга, бүтээгдэхүүн, төслийн тухай"
+                                />
+                            </div>
                         </div>
 
-                        <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-8 tw-divide-y tw-divide-dashed">
+                        <div className="tw-rounded-sm tw-shadow-md tw-border-t tw-border-gray-100 tw-mx-2 tw-mt-4 tw-divide-y tw-divide-dashed">
                             {rows.filter(row => row.rowcode !== 'z').map(row =>
                                 <div key={row.rowcode}>
                                     <div className="tw-flex tw-items-center tw-text-sm">
@@ -452,7 +451,7 @@ export default function AnalystReport({ seeMember, setOpen }) {
                                 <p className="tw-mt-1 tw-font-light">
                                     /Бизнес хөгжлийн ахлах мэргэжилтэн/
                                 </p>
-                                <Signature value={info.ahlah_signature} name="ahlah_signature" setter={handleInputAhlah} />
+                                <Signature value={info.ahlah_signature} name="ahlah_signature" setter={handleInputInfo} openCondition={openConditionAhlah} />
                             </div>
 
                             <div className="tw-mt-6">
@@ -465,7 +464,7 @@ export default function AnalystReport({ seeMember, setOpen }) {
                                 <p className="tw-mt-1 tw-font-light">
                                     /Бизнес хөгжлийн зөвлөх/
                                 </p>
-                                <Signature value={info.zuvluh_signature} name="zuvluh_signature" setter={handleInputZuvluh} />
+                                <Signature value={info.zuvluh_signature} name="zuvluh_signature" setter={handleInputInfo} openCondition={openConditionZuvluh} />
                             </div>
                         </div>
 
@@ -489,11 +488,16 @@ const classSignature = 'tw-w-52 tw-h-16 tw-border tw-rounded tw-border-gray-400 
 const classCell = 'tw-border tw-border-gray-300 tw-px-2 tw-text-13px'
 const classCellInputNumber = 'focus:tw-outline-none tw-text-right tw-w-full tw-py-4 tw-text-13px'
 
-function Signature({ value, name, index, setter }) {
+function Signature({ value, name, index, setter, openCondition = () => true }) {
     const [sigModalOpen, setSigModalOpen] = useState(false)
     const [hovered, setHovered] = useState(false)
 
     const sigCanvasRef = useRef()
+
+    const handleOpen = () => {
+        const toOpen = openCondition()
+        toOpen && setSigModalOpen(true)
+    }
 
     const handleDrawSignature = () => {
         setter(name, sigCanvasRef.current.getTrimmedCanvas().toDataURL('image/png'), index)
@@ -508,10 +512,10 @@ function Signature({ value, name, index, setter }) {
         <div className="tw-flex tw-flex-wrap tw-mt-1">
             <div className="tw-relative">
                 {value
-                    ? <img src={value} alt="Гарын үсэг" className={`${classSignature} tw-object-scale-down print-border-bottom`} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => setSigModalOpen(true)} />
-                    : <div className={classSignature} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => setSigModalOpen(true)} />
+                    ? <img src={value} alt="Гарын үсэг" className={`${classSignature} tw-object-scale-down print-border-bottom`} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={handleOpen} />
+                    : <div className={classSignature} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={handleOpen} />
                 }
-                <PenAltSVG className={`tw-absolute tw-top-1/2 tw-left-1/2 tw--translate-x-1/2 tw-w-7 tw-h-7 tw-text-gray-600 tw-transform-gpu ${hovered ? 'tw--translate-y-1/2 tw-opacity-100' : 'tw--translate-y-3/4 tw-opacity-0'} tw-transition-all tw-duration-300 tw-cursor-pointer`} onMouseEnter={() => setHovered(true)} onClick={() => setSigModalOpen(true)} />
+                <PenAltSVG className={`tw-absolute tw-top-1/2 tw-left-1/2 tw--translate-x-1/2 tw-w-7 tw-h-7 tw-text-gray-600 tw-transform-gpu ${hovered ? 'tw--translate-y-1/2 tw-opacity-100' : 'tw--translate-y-3/4 tw-opacity-0'} tw-transition-all tw-duration-300 tw-cursor-pointer`} onMouseEnter={() => setHovered(true)} onClick={handleOpen} />
             </div>
 
             <ModalWindow modalOpen={sigModalOpen} setModalOpen={setSigModalOpen}>
@@ -533,7 +537,6 @@ function Signature({ value, name, index, setter }) {
                 </div>
             </ModalWindow>
         </div>
-
     )
 }
 

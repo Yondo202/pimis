@@ -1,32 +1,91 @@
-import React from 'react'
-import { useHistory } from 'react-router-dom';
-import { Container } from "components/misc/CustomStyle"
+import React, { useState, useEffect } from 'react'
+import { useHistory, useParams } from 'react-router-dom';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
+import Token from 'context/accessToken';
+import axios from "axiosbase"
 import styled, { keyframes } from 'styled-components';
 import { fontSize, textColor } from 'components/theme';
+import { FeedBackCont } from "components/admin/contents/main_decision/Main_decision"
 
 const Member_interest = () => {
+    const [ mainData, setMainData ] = useState({})
+    const param = useParams().id;
     const history = useHistory();
+
+    useEffect(()=>{
+        GoFetch()
+    },[])
+
+    const GoFetch = () =>{
+        axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
+            if (res.data.data) {
+                setMainData(res.data.data); 
+            }
+        })
+    }
+
     return (
-        <Container className="container">
-            {/* <NullParent className="NullPar">
+        <FeedBackCont>
+            
+            <div className="contentPar">
+                <div className="TitlePar">
+                    <div className="title"> Ашиг сонирхлын зөрчилгүй гэдгээ илэрхийлэх, Зөрчил үүссэн тухай мэдэгдэл</div>
+                </div>
+                <div className="list_parent">
+                    <div className="my_row">
+                        <div className="field">Өргөдлийн дугаар:</div>
+                        <div className="value">{mainData?.project_number}</div>
+                    </div>
+                    <div className="my_row">
+                        <div className="field">Аж ахуйн нэгжийн нэр:</div>
+                        <div className="value">{mainData?.company?.company_name}</div>
+                    </div>
+                </div>
+
+                <div className="infoWhere">
+                            <table id="customers">
+                                <tr>
+                                    <th >№</th>
+                                    <th >Сонгон шалгаруулалтын багийн гишүүдийн овог нэр</th>
+                                    <th  className="center">Сонирхлын зөрчилтэй эсэх</th>
+                                    <th  className="center">Сонирхлын зөрчил</th>
+                                    {/* <th  className="center">Гарын үсэг</th> */}
+                                </tr>
+                                {mainData?.memberEvaluations?.length?mainData?.memberEvaluations.map((el, i) => {
+                                    return (
+                                        <tr key={i} className="getTable1">
+                                            <td className="center">{i+1}</td>
+                                            <td className="">{el.firstname} {el.lastname}</td>
+                                            <td className="center">
+                                                <div className="input">
+                                                    {
+                                                    el.approved === "waiting" ? `Хүлээгдсэн...` 
+                                                    :el.approved=== "violation"
+                                                    ? `АС зөрчилтэй`:`Үгүй`
+                                                    }
+                                                    {/* {el.approved === "violation" ? `АС зөрчилтэй` : ``} */}
+                                                    {/* {el.approved === "approved" ? `Тийм` : ``}
+                                                    {el.approved === "rejected" ? `Үгүй` : ``} */}
+                                                </div>
+                                            </td>
+                                            <td  className="center"></td>
+                                        </tr>
+                                    )
+                                }):null}
+                              
+                            </table>
+                        </div>
+
+            </div>
+            
+            <div className="NullPar">
                 <div className="nullTitle">
                     <div onClick={() => history.goBack()} className="BackPar"><div className="SvgPar"><MdKeyboardArrowLeft /></div>  <span>Буцах</span> </div>
-                    <h2 className="title">Мэдээлэл ороогүй байна</h2>
+                    {/* <h2 className="title">Мэдээлэл ороогүй байна</h2> */}
                     <div className="desc"></div>
                 </div>
-            </NullParent> */}
-
-            <TitlePar className="TitlePar">
-                <div className="title">
-                    Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас
-                </div>
-                <div className="desc">
-                    {/* Төсөл бүрт өгсөн нэгтгэсэн санал */}
-                    {/* Дугаар: {mainData?.project_number} */}
-                </div>
-            </TitlePar>
-        </Container>
+            </div>
+        </FeedBackCont>
     )
 }
 
@@ -48,7 +107,6 @@ const TitlePar = styled.div`
         font-size:16px;
         text-align:center;
         font-weight:500;
-
         .customRadio{
             display:flex;
             gap:25px;
@@ -73,6 +131,26 @@ const TitlePar = styled.div`
         font-style: italic;
     }
 `
+
+//  <Container className="container">
+            {/* <NullParent className="NullPar">
+                <div className="nullTitle">
+                    <div onClick={() => history.goBack()} className="BackPar"><div className="SvgPar"><MdKeyboardArrowLeft /></div>  <span>Буцах</span> </div>
+                    <h2 className="title">Мэдээлэл ороогүй байна</h2>
+                    <div className="desc"></div>
+                </div>
+            </NullParent> */}
+
+            {/* <TitlePar className="TitlePar">
+                <div className="title">
+                    Ашиг сонирхлын зөрчилгүйг мэдэгдэх хуудас
+                </div>
+                <div className="desc">
+                </div>
+            </TitlePar> */}
+
+
+        // {/* </Container> */}
 
 const NullParent = styled.div`
     .nullTitle{
