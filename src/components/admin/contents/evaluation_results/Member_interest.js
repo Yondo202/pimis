@@ -26,7 +26,6 @@ const Member_interest = () => {
 
     return (
         <FeedBackCont>
-            
             <div className="contentPar">
                 <div className="TitlePar">
                     <div className="title"> Ашиг сонирхлын зөрчилгүй гэдгээ илэрхийлэх, Зөрчил үүссэн тухай мэдэгдэл</div>
@@ -68,7 +67,7 @@ const Member_interest = () => {
                                                     {el.approved === "rejected" ? `Үгүй` : ``} */}
                                                 </div>
                                             </td>
-                                            <td  className="center"></td>
+                                            <td  className="center">{el.approved=== "violation"?el.conflict?JSON.parse(el.conflict)[0]?.description:``:``}</td>
                                         </tr>
                                     )
                                 }):null}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useHistory, useParams } from 'react-router-dom';
-import { fontSize, textColor, InputStyle, NextBtn, ColorRgb } from '../../theme';
+import { fontSize, textColor, InputStyle } from '../../theme';
 import { animateScroll as scroll } from "react-scroll";
 import Signature from './Signature';
 import axios from '../../../axiosbase';
@@ -95,8 +95,11 @@ function Decision_main() {
         } else {
             setSpin(true);
             setOpacity2("0");
-            axios.post(`evaluation-results/member-vote`, final, { headers: { Authorization: Token() } }).then((res) => { alertHandle("green", "Амжилттай илгээлээ", true); setTimeout(() => { history.push("/"); setSpin(false); }, 2000); console.log(`res`, res) })
-                .catch((err) => { setSpin(false); alertHandle("orange", "Алдаа гарлааа", true); console.log(`err`, err) });
+            axios.post(`evaluation-results/member-vote`, final, { headers: { Authorization: Token() } }).then((res) => { alertHandle("green", "Амжилттай илгээлээ", true); setTimeout(() => { history.push("/"); setSpin(false); }, 2000); })
+                .catch((err) => { setSpin(false);
+                    alertHandle("orange", "Алдаа гарлааа", true);
+                    console.log(`err`, err)
+                });
         }
     }
 

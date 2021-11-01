@@ -27,12 +27,14 @@ function HomePage({}) {
         axios.get(`evaluation-meetings/scheduled-projects`, { headers: { Authorization: Token() } }).then((res) => {
             if (res.data.data.length!==0) { setCardData(res.data.data); };
         }).catch((err) => console.log(err?.response))
-    } 
+    }
 
     const showHandle = (el) =>{
         setProjId(el)
         setOpen(prev=>!prev)
     }
+
+    console.log(`cardData`, cardData)
 
     return (
         <Memberhome style={{ maxWidth: 1160 }} className="container">

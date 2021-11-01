@@ -3,14 +3,17 @@ import UserCtx from "context/UserContext"
 import { useHistory, useParams } from 'react-router-dom';
 import { FeedBackCont } from "components/admin/contents/main_decision/Main_decision";
 import { InputStyle} from 'components/theme';
+import styled from "styled-components"
 import Signature from "components/member/member_decision/Signature";
 import { IoIosShareAlt } from 'react-icons/io';
 import axios from 'axiosbase';
 import Token from 'context/accessToken';
 import { NumberComma } from "components/admin/contents/insurance/NumberComma"
+import { IoMdCheckmarkCircle } from 'react-icons/io';
+import { CgDanger } from 'react-icons/cg';
   
 const Decision_main2 = () => {
-    const { alertText } = useContext(UserCtx);
+    const { alertText, alert } = useContext(UserCtx);
     const { slug } = useParams();
     const history = useHistory();
     const [Data, setData] = useState(null);
@@ -88,7 +91,10 @@ const Decision_main2 = () => {
             setSpin(true);
             axios.post(`evaluation-results/member-vote`, Final, { headers: { Authorization: Token() } }).then((res) => {
                  alertText("green", "Амжилттай илгээлээ", true); setTimeout(() => { history.push("/"); setSpin(false); }, 3000) })
-                .catch((err) => { setSpin(false); alertText("orange", "Алдаа гарлааа", true); console.log(`err`, err) });
+                .catch((err) => { 
+                    setSpin(false); 
+                    alertText("orange", err.response?.data?.error?.message, true); console.log(`err -->`, err.response?.data?.error?.message)
+                });
         }
     }
 
@@ -319,8 +325,39 @@ const Decision_main2 = () => {
                     </div>:null}
               </form>     
             </div>
+
+            <AlertStyle style={alert.cond === true ? { bottom: `100px`, opacity: `1`, borderLeft: `4px solid ${alert.color}` } : { bottom: `50px`, opacity: `0` }} >
+                {alert.color === "green" ? <IoMdCheckmarkCircle style={{ color: `${alert.color}` }} className="true" /> : <CgDanger style={{ color: `${alert.color}` }} className="true" />}
+                <span>{alert.text}</span>
+            </AlertStyle>
         </FeedBackCont>
     )
 }
 
 export default Decision_main2
+
+
+const AlertStyle = styled.div`
+    z-index:1010;  
+    transition:all 0.5s ease;
+    position:fixed;
+    // height:80px;
+    bottom:100px;
+    left:5%;
+    display:flex;
+    align-items:center;
+    border:1px solid rgba(0,255,0,0.8);
+    // border-left:4px solid green;
+    background-color:white;
+    padding:10px 40px; 
+    font-weight:400;
+    color:black;
+    border-radius:6px;
+    font-size:17px;
+    opacity:1;
+    font-weight:600;
+    .true{
+        margin-right:14px;
+        font-size:24px;
+    }
+`
