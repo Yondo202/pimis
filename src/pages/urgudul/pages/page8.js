@@ -94,7 +94,7 @@ export default function UrgudulPage8() {
             />
 
             <div>
-               <div className="tw-px-5 tw-pt-3 tw-text-sm">
+               <div className="tw-px-5 tw-pt-3 tw-text-sm tw-font-medium tw-text-blue-900">
                   Өргөдлийг илгээхийн өмнө дараах шалгууруудыг бүрэн хангасан эсэхийг шалгана уу. Зөвлөсөн тэмдгээр арын нүдэнд тэмдэглэнэ үү:
                </div>
 
@@ -201,7 +201,7 @@ export default function UrgudulPage8() {
                   </div>
 
                   <div className="">
-                     <div className="tw-px-5 tw-pt-3 tw-text-sm">
+                     <div className="tw-px-5 tw-pt-3 tw-text-sm tw-font-medium tw-text-blue-900">
                         Урьдчилсан мэдүүлгээр эхний шатанд тэнцсэн өргөдөл гаргагч нь тэнцсэн хариу авснаас хойш 14 хоногийн дотор дараах материалуудыг бүрдүүлж ирүүлэхийг анхаарна уу. Үүнд:
                      </div>
 

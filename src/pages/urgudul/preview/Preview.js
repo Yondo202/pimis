@@ -18,10 +18,15 @@ const labels = {
         project_type: 'Өргөдлийн төрөл:',
         project_name: 'Төслийн нэр',
         register_number: 'Регистрийн дугаар',
+        female_shareholder: 'Эмэгтэй хувьцаа эзэмшигчтэй эсэх',
+        female_executive: 'Эмэгтэй удирдах албан тушаалтантай эсэх',
         activity_direction: 'Үйл ажиллагааны чиглэл',
         main_export: 'Экспортын гол бүтээгдэхүүний ангилал',
         export_products: 'Экспортийн бүтээгдэхүүнүүд',
-        export_countries: 'Экспортын зорилтот орны нэр',
+        export_experience: 'Экспорт хийж байсан туршлагатай эсэх',
+        entering_new_market: 'Энэхүү төслийн хүрээнд экспортын шинэ зах зээлд нэвтрэх эсэх',
+        export_countries: 'Шинэ зах зээл болох орнууд',
+        export_countries1: 'Экспортын зорилтот орнууд',
         planned_activity: 'Төлөвлөсөн үйл ажиллагааны чиглэл',
         planned_activity_budget: 'Төлөвлөсөн үйл ажиллагааны нийт төсөв'
     },
@@ -46,7 +51,8 @@ const labels = {
             sales: 'Аж ахуйн нэгжийн борлуулалт',
             director_name: 'Гүйцэтгэх захирлын нэр',
             director_phone: 'Гүйцэтгэх захирлын утасны дугаар',
-            director_email: 'Гүйцэтгэх захирлын имэйл'
+            director_email: 'Гүйцэтгэх захирлын имэйл',
+            cluster_net_sales: 'Кластерын гишүүдийн нийт борлуулалт'
         }
     },
     page4: {
@@ -160,6 +166,7 @@ export default function UrgudulPreview(props) {
                 exportYears.forEach(year => acc[cv.hs_code][year] += +cv[`e${year}`] || 0)
             } else {
                 acc[cv.hs_code] = {
+                    hs_code: cv.hs_code,
                     product_name: cv.product_name
                 }
                 exportYears.forEach(year => acc[cv.hs_code][year] = +cv[`e${year}`] || 0)
@@ -358,13 +365,15 @@ export default function UrgudulPreview(props) {
                             <Row label={labels.page1.project_name} value={project.project_name} />
                             <Row label={isCluster ? 'Кластерын тэргүүлэгч ААН' : 'Аж ахуйн нэгж'} value={project.user?.companyname} />
                             <Row label={labels.page1.register_number} value={project.register_number} />
+                            <Row label={labels.page1.female_shareholder} value={toYesNoAnswer(project.female_shareholder)} />
+                            <Row label={labels.page1.female_executive} value={toYesNoAnswer(project.female_executive)} />
                             <Row label={labels.page1.activity_direction} value={getActivityDirection(project.activity_direction)} />
                             <RowLabel label={labels.page1.main_export} />
                             <Row label="Одоогийн байдлаар" value={getMainExport(project.main_export, project.main_export_other)} labelClass="tw-pl-4" />
                             <Row label="Уг өргөдлийн хувьд төлөвлөсөн" value={getMainExport(project.main_export_planned, project.main_export_planned_other)} labelClass="tw-pl-4" />
 
                             <RowLabel label={labels.page1.export_products} />
-                            <div className="tw-pl-2">
+                            <div className="tw-pl-2 tw-border-b tw-border-gray-400">
                                 {project.exportProducts?.length
                                     ? project.exportProducts?.map((product, i) =>
                                         <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center" key={i}>
@@ -379,10 +388,36 @@ export default function UrgudulPreview(props) {
                                 }
                             </div>
 
-                            <RowLabel label={labels.page1.export_countries} />
+                            <Row label={labels.page1.export_experience} value={toYesNoAnswer(project.export_experience)} />
+                            <Row label={labels.page1.entering_new_market} value={toYesNoAnswer(project.entering_new_market)} />
+                            {project.entering_new_market === 1 &&
+                                <>
+                                    <RowLabel label={labels.page1.export_countries} />
+                                    <div className="tw-pl-2">
+                                        {project.exportCountries?.length
+                                            ? project.exportCountries?.map((country, i) =>
+                                                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-grid tw-grid-cols-2">
+                                                    <span className="">
+                                                        <span className="tw-mr-1.5">{i + 1}.</span>
+                                                        Одоогийн байдлаар: {getExportCountry(country.current, country.current_other)}
+                                                    </span>
+                                                    <span className="tw-pl-2">
+                                                        Уг өргөдлийн хувьд төлөвлөсөн: {getExportCountry(country.planned, country.planned_other)}
+                                                    </span>
+                                                </div>
+                                            )
+                                            : <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-flex tw-items-center tw-italic tw-text-gray-400">
+                                                Улс оруулаагүй байна.
+                                            </div>
+                                        }
+                                    </div>
+                                </>
+                            }
+
+                            <RowLabel label={labels.page1.export_countries1} />
                             <div className="tw-pl-2">
-                                {project.exportCountries?.length
-                                    ? project.exportCountries?.map((country, i) =>
+                                {project.exportCountries1?.length
+                                    ? project.exportCountries1?.map((country, i) =>
                                         <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-grid tw-grid-cols-2">
                                             <span className="">
                                                 <span className="tw-mr-1.5">{i + 1}.</span>
@@ -549,6 +584,9 @@ export default function UrgudulPreview(props) {
                                     Мэдээлэл оруулаагүй байна.
                                 </div>
                             }
+                            <div className="tw-border-l tw-border-r tw-border-b tw-border-gray-400 tw-font-medium">
+                                <Row label={labels.page3.clusters.cluster_net_sales} value={toCurrencyString(project.cluster_net_sales)} />
+                            </div>
                         </div>
                     }
 
@@ -736,7 +774,12 @@ export default function UrgudulPreview(props) {
                                     {Object.entries(sumExportProducts).map(([hs_code, productData]) =>
                                         <tr className="" key={hs_code}>
                                             <td className={`${classTableCell} tw-pl-4`}>
-                                                {productData.product_name}
+                                                <div className="tw-flex tw-flex-col">
+                                                    {productData.product_name ?? '____'},
+                                                    <div className="">
+                                                        HS код: {productData.hs_code ?? '___'}
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td className={classTableCell} style={{ fontSize: 10 }}>
                                                 Төгрөг
@@ -875,6 +918,8 @@ export const toCurrencyString = (number) => {
         ? `${localeString} ₮`
         : ' '
 }
+
+const toYesNoAnswer = (value) => value === 1 ? 'Тийм' : (value === 0 && 'Үгүй')
 
 // commented out exoport products by countries
 // {exportData.targ_country?.map(countryId =>

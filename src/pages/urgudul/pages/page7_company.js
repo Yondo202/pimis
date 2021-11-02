@@ -180,7 +180,7 @@ export default function UrgudulPage7Company({ projects = [] }) {
             />
 
             <div>
-               <div className="tw-p-1 tw-mt-2 tw-text-center">
+               <div className="tw-p-1 tw-mt-2 tw-text-center tw-font-medium tw-text-blue-900">
                   Өргөдөл гаргагч болон уг төсөлд хамаарах түлхүүр албан тушаалтнууд нь дараах зүйлсийг мэдэгдэж байна:
                </div>
 

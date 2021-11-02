@@ -194,7 +194,7 @@ export default function UrgudulPage7Cluster({ projects = [] }) {
             />
 
             <div>
-               <div className="tw-p-1 tw-mt-2 tw-text-center">
+               <div className="tw-p-1 tw-mt-2 tw-text-center tw-font-medium tw-text-blue-900">
                   Өргөдөл гаргагч болон хамтран хүсэлт гаргаж буй аж ахуйн нэгжүүд нь дараах зүйлсийг мэдэгдэж байна:
                </div>
 

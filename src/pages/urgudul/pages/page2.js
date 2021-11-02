@@ -105,7 +105,7 @@ export default function UrgudulPage2() {
          />
 
          <div className="tw-pb-4 tw-pl-2.5 tw-pr-2">
-            <div className="tw-p-2 tw-mt-2 tw-text-sm">
+            <div className="tw-p-2 tw-mt-2 tw-text-sm tw-font-medium tw-text-blue-900">
                Борлуулалт болон экпортын хэмжээ
             </div>
 

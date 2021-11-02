@@ -401,7 +401,7 @@ function ClusterMembers({ otherProjects }) {
          </div>
 
          <div className="tw-p-3 tw-pl-5">
-            <div className="tw-flex tw-items-center">
+            <div className="tw-flex tw-items-center tw-font-medium tw-text-blue-900">
                Кластерын гишүүдийн нийт борлуулалт
                <HelpPopup classAppend="tw-ml-2" main="Тэргүүлэх ААН-ийг оролцуулаад сүүлийн жилээр тооцон оруулна уу." />
             </div>
