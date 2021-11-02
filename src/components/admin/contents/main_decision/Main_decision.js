@@ -50,7 +50,6 @@ function Main_decision() {
         axios.get(`evaluation-results/hurliin-negtgel?projectId=${param}`, { headers: { Authorization: Token() } }).then((res) => {
             const datas = res.data.data
             if (datas) {
-
                 setMainData(datas); setMembers(datas.memberEvaluations);
                 // setRate(datas?.budgetCost);
                 setDecisionNumber(datas?.decision_number)
@@ -122,9 +121,9 @@ function Main_decision() {
     const TimeHandle = (e) =>{
         const value = e.target.value
         const names = e.target.name
-        if(value.length <= 2 && value <= 24){
-            setTimeData(prev=>({ ...prev, [names]: parseInt(value) }))
-        }
+        // if(value.length <= 2 && value <= 24){
+            setTimeData(prev=>({ ...prev, [names]: value }))
+        // }
     }
 
     return (
@@ -176,7 +175,7 @@ function Main_decision() {
                                 <div className="value">
                                     {/* {mainData?.meetingDate} */}
                                     <InputStyle >
-                                        <input placeholder="10" type="number" name="start_time" required value={timeData.start_time} onChange={TimeHandle} />
+                                        <input placeholder="эхэлсэн..." type="text" name="start_time" required value={timeData.start_time} onChange={TimeHandle} />
                                         <div className="line" />
                                     </InputStyle>
                                 </div>
@@ -186,7 +185,7 @@ function Main_decision() {
                                 <div className="field">Дууссан цаг:</div>
                                 <div className="value">
                                     <InputStyle >
-                                        <input placeholder="18" type="number" required name="end_time" value={timeData.end_time} onChange={TimeHandle} />
+                                        <input placeholder="дууссан..." type="text" required name="end_time" value={timeData.end_time} onChange={TimeHandle} />
                                         <div className="line" />
                                     </InputStyle>
                                 </div>

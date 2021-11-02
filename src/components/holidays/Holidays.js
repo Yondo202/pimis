@@ -17,7 +17,6 @@ const Holidays = () => {
 
     React.useEffect(()=>{
         fetchDate();
-        console.log("----------------");
     },[reRender])
 
     const fetchDate = async () =>{
