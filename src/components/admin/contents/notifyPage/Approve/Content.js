@@ -102,6 +102,7 @@ const DataList = [
                     </ModalStyle>
                 </Modal> */}
                 <MainPar className="MainPar" >
+                    <img className="img2" src="https://pimis.edp.mn/head_logo.png" />
                     <div className="title"> Үндсэн мэдүүлэгт урих тухай мэдэгдэл</div>
 
                     <div className="contentPar">
@@ -235,6 +236,11 @@ const SendBtn = styled.div`
 
 
 const MainPar = styled.div`
+    .img2{
+        width:100%;
+        height:auto;
+        margin-bottom:10px;
+    }
         color:#000;
         margin-bottom:20px;
         background-color:white;

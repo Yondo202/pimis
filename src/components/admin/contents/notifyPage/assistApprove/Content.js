@@ -63,6 +63,7 @@ class Content extends React.Component {
                     </ModalStyle>
                 </Modal>
                 <MainPar className="MainPar" >
+                    <img className="img2" src="https://pimis.edp.mn/head_logo.png" />
                     <div className="title"> Түншлэлийн дэмжлэг олгох тухай мэдэгдэл </div>
                     <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч аж ахуйн нэгжийн нэр:</span> <span className="MemeberInfo">{app?.company?.company_name}</span></div>
                     <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч албан тушаалтны нэр: </span> <span className="MemeberInfo">{app?.company?.representative_name}</span></div>
@@ -233,6 +234,11 @@ const SendBtn = styled.div`
 `
 
 const MainPar = styled.div`
+        .img2{
+            width:100%;
+            height:auto;
+            margin-bottom:10px;
+        }
       margin-bottom:20px;
       max-width:700px;
       margin-top:20px;

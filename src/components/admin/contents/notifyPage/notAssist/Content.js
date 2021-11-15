@@ -43,7 +43,7 @@ class Content extends React.Component {
 
     render() {
         const app = this.props?.approve
-        const edpInfo = this.props?.edpInfo
+        // const edpInfo = this.props?.edpInfo
         return (
             <>
             <Modal visible={this.state.visible} width="620" height="280" effect="fadeInDown" onClickAway={this.closeModal}   >
@@ -55,6 +55,7 @@ class Content extends React.Component {
                 </ModalStyle>
             </Modal>
             <MainPar className="MainPar" >
+                <img className="img2" src="https://pimis.edp.mn/head_logo.png" />
                 <div className="title">Түншлэлийн дэмжлэг олгохоос татгалзах тухай мэдэгдэл</div>
                 <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч аж ахуйн нэгжийн нэр:</span> <span className="MemeberInfo"> {app?.company?.company_name} </span></div>
                 <div className="nameTitle"><span className="smtitle">Өргөдөл гаргагч албан тушаалтны нэр: </span> <span className="MemeberInfo">{app?.company?.representative_name}</span></div>
@@ -215,6 +216,11 @@ const SendBtn = styled.div`
 `
 
 const MainPar = styled.div`
+    .img2{
+        width:100%;
+        height:auto;
+        margin-bottom:10px;
+    }
       margin-bottom:20px;
       background-color:white;
       max-width:700px;

@@ -64,7 +64,7 @@ class Content extends React.Component {
 
     render() {
         const data = this.props?.data;
-        const edpInfo = this.props?.edpInfo;
+        // const edpInfo = this.props?.edpInfo;
         const userData = this.props?.userData;
 
         return (
@@ -77,6 +77,7 @@ class Content extends React.Component {
                 </ModalStyle>
             </Modal> */}
             <MainPar className="MainPar" >
+                <img className="img2" src="https://pimis.edp.mn/head_logo.png" />
                 <div className="title">Урьдчилсан мэдүүлэгт тэнцээгүй тухай мэдэгдэл</div>
 
                 <div className="contentPar">
@@ -180,21 +181,26 @@ const EmailHTML = ( data, edpInfo, username, rejectReason, userData ) => renderE
 // `
 
 const MainPar = styled.div`
-      margin-bottom:20px;
-      background-color:white;
-      max-width:850px;
-      margin-top:20px;
-      font-size:13px;
-      padding:30px 70px;
-      border:1px solid rgba(0,0,0,.3);
-      .title{
-          font-size:15px;
-          font-weight:500;
-          margin-bottom:30px;
-          text-align:center;
-          padding: 15px 30px;
-        }
-      .nameTitle{
+    .img2{
+        width:100%;
+        height:auto;
+        margin-bottom:10px;
+    }
+    margin-bottom:20px;
+    background-color:white;
+    max-width:850px;
+    margin-top:20px;
+    font-size:13px;
+    padding:30px 70px;
+    border:1px solid rgba(0,0,0,.3);
+    .title{
+        font-size:15px;
+        font-weight:500;
+        margin-bottom:30px;
+        text-align:center;
+        padding: 15px 30px;
+    }
+    .nameTitle{
           display:flex;
           align-items:center;
           padding:5px 0px;
@@ -225,7 +231,7 @@ const MainPar = styled.div`
               font-weight:500;
               padding:0px 10px;
           }
-      }
+    }
      
     @media only screen and (max-width:768px){
         padding: 15px 15px;

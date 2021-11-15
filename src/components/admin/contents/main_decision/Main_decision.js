@@ -142,7 +142,7 @@ function Main_decision() {
                         <div className="TitlePar">
                             <div className="title">
                                 {/* ҮНЭЛГЭЭНИЙ ХОРООНЫ ШИЙДВЭРИЙН ХУУДАС */}
-                                ЭКСПОРТЫГ ДЭМЖИХ ТӨСЛИЙН 20{mainData?.project_number.slice(4,6)} ОНЫ {mainData?.project_number.slice(7,9)}  ДУГААР ЦОНХНЫ
+                                ТҮНШЛЭЛИЙН ХӨТӨЛБӨРИЙН 20{mainData?.project_number.slice(4,6)} ОНЫ {mainData?.project_number.slice(7,9)}  ДУГААР ЦОНХНЫ
                                 СОНГОН ШАЛГАРУУЛАЛТЫН БАГИЙН ХУРЛЫН ШИЙДВЭР
                             </div>
                             <div className="desc">
@@ -279,6 +279,7 @@ function Main_decision() {
                         <div className="infoWhere">
                             <table id="customers">
                                 <tr>
+                                    <th className="center" style={{width:`100px`}}>№</th>
                                     <th >Сонгон шалгаруулалтын багийн гишүүдийн овог нэр</th>
                                     <th  className="center">Ирц /тоо/</th>
                                     <th  className="center">Санал</th>
@@ -287,7 +288,9 @@ function Main_decision() {
                                 {members.length?members.map((el, i) => {
                                     return (
                                         <tr key={i} className="getTable1">
-                                            <td>{el.firstname} {el.lastname}</td>
+                                            
+                                            <td className="center">{i + 1}</td>
+                                            <td >{el.firstname} {el.lastname}</td>
                                             <td className="center">{el.irts}</td>
                                             {/* <td><InputStyle><input className={`input tableItem${i+1}`} placeholder="..." type="input" /> <div className="line" /></InputStyle></td> */}
                                             <td className="center">
