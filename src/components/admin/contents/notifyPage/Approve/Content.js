@@ -181,7 +181,6 @@ const EmailHTML = (stateData, data, edpInfo, rejectReason, userData) => renderEm
                         <Span style={{color:"#222222", width:"50%", fontSize:'13px'}}>Холбоо барих: {userData?.phone}</Span>
                         <Span style={{color:"#222222", marginLeft:30, fontSize:'13px'}} ></Span>
                     </Item>
-                    
                 </Item>
     </Email>
 )
