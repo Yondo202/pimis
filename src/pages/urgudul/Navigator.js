@@ -129,7 +129,7 @@ export default function UrgudulNavigator() {
             </div>
 
             <div className="tw-py-2 tw-px-2 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-flex tw-justify-center tw-items-center">
-                <button className="tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 tw-transition-colors tw-transition-shadow" onClick={handlePrev}>
+                <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 tw-transition-colors tw-transition-shadow ${page === 1 ? 'tw-invisible' : ''}`} onClick={handlePrev}>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw-rotate-90" />
                 </button>
 
@@ -139,7 +139,7 @@ export default function UrgudulNavigator() {
                     'end': <PaginationEnd page={page} handleJump={handleJump} />,
                 }[showPaginationVariant(page)]}
 
-                <button className="tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 tw-transition-colors tw-transition-shadow" onClick={handleNext}>
+                <button className={`tw-flex tw-items-center tw-mx-2 tw-p-1 tw-text-sm tw-rounded-md hover:tw-shadow-md focus:tw-outline-none active:tw-text-indigo-500 tw-transition-colors tw-transition-shadow ${page === maxPage ? 'tw-invisible' : ''}`} onClick={handleNext}>
                     <ChevronDownSVG className="tw-w-4 tw-h-4 tw-transform tw--rotate-90" />
                 </button>
             </div>

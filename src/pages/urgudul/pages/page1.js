@@ -21,9 +21,10 @@ export default function UrgudulPage1({ projects = [] }) {
    const AlertCtx = useContext(AlertContext)
    const history = useHistory()
 
-   const [form, setForm] = useState(initialState)
-   const [products, setProducts] = useState([...initialProducts])
-   const [exportCountries, setExportCountries] = useState([...initialExportCountries])
+   const [form, setForm] = useState({ ...initialState })
+   const [products, setProducts] = useState([{ ...initialProducts[0] }])
+   const [exportCountries, setExportCountries] = useState([{ ...initialExportCountries[0], type: 'newMarket' }])
+   const [exportCountries1, setExportCountries1] = useState([{ ...initialExportCountries[0], type: 'target' }])
    const [companyName, setCompanyName] = useState(localStorage.getItem('companyname') ?? UrgudulCtx.data.user?.companyname)
    const [validate, setValidate] = useState(false)
 
@@ -46,21 +47,28 @@ export default function UrgudulPage1({ projects = [] }) {
       if (Object.keys(temp).length) {
          setForm(prev => ({ ...prev, ...temp }))
       } else {
-         setForm(initialState)
+         setForm({ ...initialState })
       }
 
       const value = UrgudulCtx.data.exportProducts
       if (value instanceof Array && value?.length) {
          setProducts(value)
       } else {
-         setProducts([...initialProducts])
+         setProducts([{ ...initialProducts[0] }])
       }
 
       const value1 = UrgudulCtx.data.exportCountries
       if (value1 instanceof Array && value1?.length) {
          setExportCountries(value1)
       } else {
-         setExportCountries([...initialExportCountries])
+         setExportCountries([{ ...initialExportCountries[0], type: 'newMarket' }])
+      }
+
+      const value2 = UrgudulCtx.data.exportCountries1
+      if (value2 instanceof Array && value2?.length) {
+         setExportCountries1(value2)
+      } else {
+         setExportCountries1([{ ...initialExportCountries[0], type: 'target' }])
       }
    }, [projectId])
 
@@ -108,7 +116,15 @@ export default function UrgudulPage1({ projects = [] }) {
       products.forEach(product => {
          allValid = allValid && !checkInvalid(product.product_name) && !checkInvalid(product.hs_code)
       })
-      exportCountries.forEach(country => {
+      form.entering_new_market === 1 && exportCountries.forEach(country => {
+         country.current === -1
+            ? allValid = allValid && !checkInvalid(country.current_other)
+            : allValid = allValid && !checkInvalid(country.current)
+         country.planned === -1
+            ? allValid = allValid && !checkInvalid(country.planned_other)
+            : allValid = allValid && !checkInvalid(country.planned)
+      })
+      exportCountries1.forEach(country => {
          country.current === -1
             ? allValid = allValid && !checkInvalid(country.current_other)
             : allValid = allValid && !checkInvalid(country.current)
@@ -121,7 +137,7 @@ export default function UrgudulPage1({ projects = [] }) {
          return
       }
 
-      axios.post('projects', { ...form, exportProducts: products, exportCountries: exportCountries }, {
+      axios.post('projects', { ...form, exportProducts: products, exportCountries: exportCountries, exportCountries1: exportCountries1 }, {
          headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
          UrgudulCtx.setData(res.data.data)
@@ -171,7 +187,15 @@ export default function UrgudulPage1({ projects = [] }) {
       products.forEach(product => {
          allValid = allValid && !checkInvalid(product.product_name) && !checkInvalid(product.hs_code)
       })
-      exportCountries.forEach(country => {
+      form.entering_new_market === 1 && exportCountries.forEach(country => {
+         country.current === -1
+            ? allValid = allValid && !checkInvalid(country.current_other)
+            : allValid = allValid && !checkInvalid(country.current)
+         country.planned === -1
+            ? allValid = allValid && !checkInvalid(country.planned_other)
+            : allValid = allValid && !checkInvalid(country.planned)
+      })
+      exportCountries1.forEach(country => {
          country.current === -1
             ? allValid = allValid && !checkInvalid(country.current_other)
             : allValid = allValid && !checkInvalid(country.current)
@@ -184,7 +208,7 @@ export default function UrgudulPage1({ projects = [] }) {
          return
       }
 
-      axios.put(`projects/${projectId}`, { ...form, exportProducts: products, exportCountries: exportCountries }, {
+      axios.put(`projects/${projectId}`, { ...form, exportProducts: products, exportCountries: exportCountries, exportCountries1: exportCountries1 }, {
          headers: { Authorization: getLoggedUserToken() },
       }).then(res => {
          UrgudulCtx.setData(prev => ({ ...prev, ...res.data.data }))
@@ -261,10 +285,20 @@ export default function UrgudulPage1({ projects = [] }) {
 
                <FormInline label="Регистрийн дугаар" type="number" value={form.register_number} name="register_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(form.register_number)} />
 
+               <div className="md:tw-col-span-2 tw-w-full tw-max-w-3xl">
+                  <div className="tw-text-sm tw-p-2 tw-pb-0 tw-font-medium tw-text-blue-900">
+                     Эмэгтэй хувьцаа эзэмшигч болон удирдах албан тушаалтантай эсэх
+                  </div>
+                  <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
+                     <FormOptions label="Хувьцаа эзэмшигч" options={optionsYesNo} values={[1, 0]} value={form.female_shareholder} name="female_shareholder" setter={handleInput} invalid={validate && checkInvalid(form.female_shareholder)} />
+                     <FormOptions label="Удирдах албан тушаалтан" options={optionsYesNo} values={[1, 0]} value={form.female_executive} name="female_executive" setter={handleInput} invalid={validate && checkInvalid(form.female_executive)} />
+                  </div>
+               </div>
+
                <FormOptions label="Үйл ажиллагааны чиглэл" options={activityClass} values={[1, 2, 3]} value={form.activity_direction} name="activity_direction" setter={handleInput} invalid={validate && checkInvalid(form.activity_direction)} />
 
                <div className="md:tw-col-span-2 tw-w-full tw-max-w-3xl">
-                  <div className="tw-text-sm tw-p-2">
+                  <div className="tw-text-sm tw-p-2 tw-pb-0 tw-font-medium tw-text-blue-900">
                      Экспортын гол бүтээгдэхүүний ангилал /Зөвхөн үйлдвэрлэлийн салбар/
                   </div>
                   <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start">
@@ -311,7 +345,19 @@ export default function UrgudulPage1({ projects = [] }) {
 
                <ExportProducts label="Экспортийн бүтээгдэхүүнүүд" list={products} setter={setProducts} validate={validate} />
 
-               <ExportCountries label="Экспортын зорилтот орны нэр" list={exportCountries} setter={setExportCountries} validate={validate} countriesOther={countriesOther} />
+               <FormOptions label="Экспорт хийж байсан туршлагатай эсэх"
+                  HelpPopup={<HelpPopup classAppend="tw-mx-2" main="5000 ам.доллараас дээш үнийн дүнтэй." />}
+                  options={optionsYesNo} values={[1, 0]} value={form.export_experience} name="export_experience" setter={handleInput} invalid={validate && checkInvalid(form.export_experience)}
+               />
+
+               <FormOptions label="Энэхүү төслийн хүрээнд экспортын шинэ зах зээлд нэвтрэх эсэх"
+                  HelpPopup={<HelpPopup classAppend="tw-mx-2" main="Хэрэв тийм бол доорх улсуудаас сонгон орууулна уу." />}
+                  options={optionsYesNo} values={[1, 0]} value={form.entering_new_market} name="entering_new_market" setter={handleInput} invalid={validate && checkInvalid(form.entering_new_market)}
+               />
+
+               <ExportCountries label="Шинэ зах зээл болох орнууд" list={exportCountries} setter={setExportCountries} validate={validate} countriesOther={countriesOther} type="newMarket" openCondition={form.entering_new_market === 1} cleanUp={() => setExportCountries([{ ...initialExportCountries[0], type: 'newMarket' }])} />
+
+               <ExportCountries label="Экспортын зорилтот орнууд" list={exportCountries1} setter={setExportCountries1} validate={validate} countriesOther={countriesOther} type="target" openCondition={true} />
 
                <PlannedActivity label="Төлөвлөсөн үйл ажиллагааны чиглэл" setter={handleInput} validate={validate}
                   values={[{
@@ -390,11 +436,15 @@ const initialState = {
    project_type: null,
    project_name: null,
    register_number: null,
+   female_shareholder: null,
+   female_executive: null,
    activity_direction: null,
    main_export: null,
    main_export_other: null,
    main_export_planned: null,
    main_export_planned_other: null,
+   export_experience: null,
+   entering_new_market: null,
    export_marketing: null,
    export_marketing_cost: null,
    quality_control: null,
@@ -414,6 +464,11 @@ const initialExportCountries = [{
    planned: null,
    planned_other: null
 }]
+
+export const optionsYesNo = [
+   'Тийм',
+   'Үгүй'
+]
 
 export const activityClass = [
    'Хөдөө аж ахуйд суурилсан үйлдвэрлэл',
@@ -502,9 +557,11 @@ function ExportProducts({ label, list, setter, HelpPopup, validate }) {
    })
 
    return (
-      <div className="md:tw-col-span-2 tw-w-full tw-mt-2 tw-max-w-xl">
+      <div className="md:tw-col-span-2 tw-w-full tw-mt-2 tw-max-w-xl tw-pb-3">
          <div className="tw-text-sm tw-p-2 tw-flex tw-items-center">
-            {label}
+            <span className="tw-font-medium tw-text-blue-900">
+               {label}
+            </span>
             {HelpPopup && HelpPopup}
          </div>
 
@@ -513,9 +570,9 @@ function ExportProducts({ label, list, setter, HelpPopup, validate }) {
                <div className="tw-flex tw-items-center tw-pb-1" key={i}>
                   <span className="tw-text-15px">{i + 1}.</span>
 
-                  <input className={`${basicInputClass} tw-ml-2 tw-flex-grow ${validate && checkInvalid(item?.product_name) && 'tw-border-red-500'} tw-transition-colors`} value={item?.product_name ?? ''} onChange={e => handleInput('product_name', e.target.value, i)} placeholder="Бүтээгдэхүүний нэр" />
+                  <input className={`${basicInputClass} tw-pt-1.5 tw-pb-1.5 tw-ml-2 tw-flex-grow ${validate && checkInvalid(item?.product_name) && 'tw-border-red-500'} tw-transition-colors`} value={item?.product_name ?? ''} onChange={e => handleInput('product_name', e.target.value, i)} placeholder="Бүтээгдэхүүний нэр" />
 
-                  <input className={`${basicInputClass} tw-ml-4 ${validate && checkInvalid(item?.hs_code) && 'tw-border-red-500'} tw-transition-colors`} type="number" value={item?.hs_code ?? ''} onChange={e => handleInput('hs_code', e.target.value, i)} placeholder="HS код" />
+                  <input className={`${basicInputClass} tw-pt-1.5 tw-pb-1.5 tw-ml-4 ${validate && checkInvalid(item?.hs_code) && 'tw-border-red-500'} tw-transition-colors`} type="number" value={item?.hs_code ?? ''} onChange={e => handleInput('hs_code', e.target.value, i)} placeholder="HS код" />
 
                   <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classAppend="tw-ml-3" classButton="tw-text-red-500 active:tw-text-red-600" />
                </div>
@@ -532,7 +589,7 @@ function ExportProducts({ label, list, setter, HelpPopup, validate }) {
    )
 }
 
-function ExportCountries({ label, HelpPopup, list, setter, validate, countriesOther }) {
+function ExportCountries({ label, HelpPopup, list, setter, validate, countriesOther, type, openCondition = false, cleanUp = () => { } }) {
    const handleInput = (key, value, index) => setter(prev => {
       const next = [...prev]
       next[index][key] = value
@@ -547,78 +604,95 @@ function ExportCountries({ label, HelpPopup, list, setter, validate, countriesOt
          current: null,
          current_other: null,
          planned: null,
-         planned_other: null
+         planned_other: null,
+         type: type
       })
       return next
    })
 
+   useEffect(() => {
+      !openCondition && cleanUp()
+   }, [openCondition])
+
    return (
-      <div className="md:tw-col-span-2 tw-w-full tw-mt-2 tw-max-w-3xl">
-         <div className="tw-text-sm tw-p-2 tw-flex tw-items-center">
-            {label}
-            {HelpPopup && HelpPopup}
-         </div>
-
-         <div className="tw-pl-4">
-            {list.map((item, i) =>
-               <div className="tw-flex tw-items-center" key={i}>
-                  <span className="tw-text-15px">{i + 1}.</span>
-                  <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-flex-grow">
-                     <div className="tw-w-full">
-                        <FormSelect
-                           data={countriesOther}
-                           setter={handleInput}
-                           name="current"
-                           index={i}
-                           label="Одоогийн байдлаар:"
-                           value={item.current}
-                           displayName="description_mon"
-                           invalid={validate && checkInvalid(item.current)}
-                           classAppend="tw-max-w-xs tw--mt-4"
-                        />
-                        <OthersInline
-                           value={item.current_other}
-                           name="current_other"
-                           index={i}
-                           setter={handleInput}
-                           invalid={validate && checkInvalid(item.current_other)}
-                           valueEffect={item.current}
-                        />
-                     </div>
-                     <div className="tw-w-full">
-                        <FormSelect
-                           data={countriesOther.filter(country => country.id !== -2)}
-                           setter={handleInput}
-                           name="planned"
-                           index={i}
-                           label="Уг өргөдлийн хувьд төлөвлөсөн:"
-                           value={item.planned}
-                           displayName="description_mon"
-                           invalid={validate && checkInvalid(item.planned)}
-                           classAppend="tw-max-w-xs tw--mt-4"
-                        />
-                        <OthersInline
-                           value={item.planned_other}
-                           name="planned_other"
-                           index={i}
-                           setter={handleInput}
-                           invalid={validate && checkInvalid(item.planned_other)}
-                           valueEffect={item.planned}
-                        />
-                     </div>
-                  </div>
-                  <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classAppend="tw-ml-3" classButton="tw-text-red-500 active:tw-text-red-600" />
+      <Transition
+         items={openCondition}
+         from={{ height: 0, opacity: 0 }}
+         enter={{ height: 'auto', opacity: 1 }}
+         leave={{ height: 0, opacity: 0 }}
+         config={config.stiff}
+      >
+         {item => item && (anims =>
+            <animated.div className="md:tw-col-span-2 tw-w-full tw-mt-2 tw-max-w-3xl" style={anims}>
+               <div className="tw-text-sm tw-p-2 tw-pb-0 tw-flex tw-items-center">
+                  <span className="tw-font-medium tw-text-blue-900">
+                     {label}
+                  </span>
+                  {HelpPopup && HelpPopup}
                </div>
-            )}
-         </div>
 
-         <div className="tw-flex tw-justify-end tw-items-center">
-            <span className="tw-italic tw-text-gray-500 tw-text-xs">
-               Экспортын зорилтот орон нэмэх
-            </span>
-            <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-ml-1" classButton="tw-text-green-500 active:tw-text-green-600" />
-         </div>
-      </div>
+               <div className="tw-pl-4">
+                  {list.map((item, i) =>
+                     <div className="tw-flex tw-items-center" key={i}>
+                        <span className="tw-text-15px">{i + 1}.</span>
+                        <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-place-items-start tw-flex-grow">
+                           <div className="tw-w-full">
+                              <FormSelect
+                                 data={countriesOther}
+                                 setter={handleInput}
+                                 name="current"
+                                 index={i}
+                                 label="Одоогийн байдлаар:"
+                                 value={item.current}
+                                 displayName="description_mon"
+                                 invalid={validate && checkInvalid(item.current)}
+                                 classAppend="tw-max-w-xs tw--mt-4"
+                              />
+                              <OthersInline
+                                 value={item.current_other}
+                                 name="current_other"
+                                 index={i}
+                                 setter={handleInput}
+                                 invalid={validate && checkInvalid(item.current_other)}
+                                 valueEffect={item.current}
+                              />
+                           </div>
+                           <div className="tw-w-full">
+                              <FormSelect
+                                 data={countriesOther.filter(country => country.id !== -2)}
+                                 setter={handleInput}
+                                 name="planned"
+                                 index={i}
+                                 label="Уг өргөдлийн хувьд төлөвлөсөн:"
+                                 value={item.planned}
+                                 displayName="description_mon"
+                                 invalid={validate && checkInvalid(item.planned)}
+                                 classAppend="tw-max-w-xs tw--mt-4"
+                              />
+                              <OthersInline
+                                 value={item.planned_other}
+                                 name="planned_other"
+                                 index={i}
+                                 setter={handleInput}
+                                 invalid={validate && checkInvalid(item.planned_other)}
+                                 valueEffect={item.planned}
+                              />
+                           </div>
+                        </div>
+                        <ButtonTooltip tooltip="Хасах" beforeSVG={<MinusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={() => handleRemove(i)} classAppend="tw-ml-3" classButton="tw-text-red-500 active:tw-text-red-600" />
+                     </div>
+                  )}
+               </div>
+
+               <div className="tw-flex tw-justify-end tw-items-center">
+                  <span className="tw-italic tw-text-gray-500 tw-text-xs">
+                     Экспортын зорилтот орон нэмэх
+                  </span>
+                  <ButtonTooltip tooltip="Шинээр нэмэх" beforeSVG={<PlusCircleSVG className="tw-w-8 tw-h-8 tw-transition-colors tw-duration-300" />} onClick={handleAdd} classAppend="tw-ml-1" classButton="tw-text-green-500 active:tw-text-green-600" />
+               </div>
+            </animated.div>
+         )}
+      </Transition>
    )
 }
 
@@ -636,8 +710,8 @@ function PlannedActivity({ label, HelpPopup, values, setter, validate }) {
 
    return (
       <div className="md:tw-col-span-2 tw-w-full tw-mt-2">
-         <div className="tw-text-sm tw-p-2 tw-flex tw-items-center">
-            <span className="">
+         <div className="tw-text-sm tw-p-2 tw-pb-1 tw-flex tw-items-center">
+            <span className="tw-font-medium tw-text-blue-900">
                {label}
             </span>
             {HelpPopup && HelpPopup}
