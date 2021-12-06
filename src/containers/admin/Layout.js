@@ -51,6 +51,8 @@ import SurveyPimis from 'pages/contract/survery/surveyPimis';
 import LaboratoryNavigator from 'components/admin/contents/laboratory/laboratoryNavigator';
 import MainReports from "components/admin/contents/monitoring/mainReports/container/Reports"
 import Member_interest from 'components/admin/contents/evaluation_results/Member_interest';
+import PrintSector from 'components/admin/contents/monitoring/mainReports/progressReport/PrintSector';
+import InsuranceMonitoring from 'components/admin/contents/insurance/monitoring/InsuranceMonitoring';
 
 function Layout({ setLocale }) {
   const ctx = useContext(UserContext);
@@ -96,6 +98,9 @@ function Layout({ setLocale }) {
                   </Route>
                 )
               })}
+              <Route path="/progress-report" component={PrintSector} />
+
+              <Route path="/incurance-report" component={InsuranceMonitoring} />
               {/* <Route path="/urgudul/:page">
                 <UrgudulNavigator preloaded={true} />
               </Route> */}
@@ -166,16 +171,16 @@ const MainReportsData = [
       { code: 6, title: "6.Хэрэгжилтийн үр ашгийн үнэлгээ" },
     ],
   },
-  {
-    route: "progress-report",
-    type: 2,
-    title: "Явцын үнэлгээний тайлан",
-    childs: [
-      { code: 0, title: "icon", },
-      { code: 1, title: "1.lessons learned and recommendations", },
-      { code: 2, title: "2.detailed project progress report" },
-    ],
-  },
+  // {
+  //   route: "progress-report",
+  //   type: 2,
+  //   title: "Явцын үнэлгээний тайлан",
+  //   childs: [
+  //     { code: 0, title: "icon", },
+  //     { code: 1, title: "1.lessons learned and recommendations", },
+  //     { code: 2, title: "2.detailed project progress report" },
+  //   ],
+  // },
   {
     route: "evaluation-report",
     type: 3,

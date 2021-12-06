@@ -6,9 +6,51 @@ import { useEffect, useState } from 'react';
 
 // console.log(ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName ));
 
-const editorConfiguration = {
-  toolbar: ['heading', '|', 'bold', 'italic', "blockQuote", '|', 'bulletedList', 'numberedList', 'Indent', "Table", "TableToolbar", 'undo', 'redo',],
-};
+// const editorConfiguration = {
+//   toolbar: ['heading', '|', 'bold', 'italic', "blockQuote", '|', 'bulletedList', 'numberedList', 'Indent', "Table", "TableToolbar", 'undo', 'redo',],
+// };
+
+const config = {
+  toolbar: {
+     items: [
+        'heading',
+        '|',
+        'bold',
+        'italic',
+        'link',
+        'bulletedList',
+        'numberedList',
+        '|',
+        'outdent',
+        'indent',
+        '|',
+        'imageUpload',
+        'blockQuote',
+        'insertTable',
+        'mediaEmbed',
+        'undo',
+        'redo'
+     ]
+  },
+  language: 'en',
+  image: {
+     toolbar: [
+        'imageTextAlternative',
+        'imageStyle:inline',
+        'imageStyle:block',
+        'imageStyle:side'
+     ]
+  },
+  table: {
+     contentToolbar: [
+        'tableColumn',
+        'tableRow',
+        'mergeTableCells',
+        'tableCellProperties'
+     ]
+  },
+  licenseKey: '',
+}
 
 function CkEditor({ title, data, setData, height, lang }) {
   const [customData, setCustomData] = useState("");
@@ -25,7 +67,7 @@ function CkEditor({ title, data, setData, height, lang }) {
         <CKEditor
           height={100}
           editor={Editor}
-          config={configuration}
+          config={config}
           data={customData}
           onReady={editor => {
             // You can store the "editor" and use when it is needed.
@@ -52,28 +94,28 @@ function CkEditor({ title, data, setData, height, lang }) {
 
 export default CkEditor;
 
-const configuration = {
-  toolbar: [
-    'heading',
-    '|',
-    'fontColor',
-    'fontSize',
-    '|',
-    'bold',
-    'italic',
-    'link',
-    'bulletedList',
-    'numberedList',
-    '|',
-    'blockQuote',
-    'insertTable',
-    // 'mediaEmbed',
-    'undo',
-    'redo',
-    '|',
-    //   ''
-  ],
-};
+// const configuration = {
+//   toolbar: [
+//     'heading',
+//     '|',
+//     'fontColor',
+//     'fontSize',
+//     '|',
+//     'bold',
+//     'italic',
+//     'link',
+//     'bulletedList',
+//     'numberedList',
+//     '|',
+//     'blockQuote',
+//     'insertTable',
+//     // 'mediaEmbed',
+//     'undo',
+//     'redo',
+//     '|',
+//     //   ''
+//   ],
+// };
 
 
 const Container = styled.div`
