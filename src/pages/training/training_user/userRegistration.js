@@ -15,6 +15,12 @@ import { titleClass, buttonClass } from './trainingsList'
 import ModalWindow from 'components/modal_window/modalWindow'
 import ExclamationSVG from 'assets/svgComponents/exclamationSVG'
 import CheckCircleSVG from 'assets/svgComponents/checkCircleSVG'
+import { UserAddModal } from 'components/admin/contents/insurance/AddModal'
+import { useTranslation } from 'react-i18next'
+import PlusSVG from 'assets/svgComponents/plusSVG'
+import FormSelect from 'components/urgudul_components/formSelect'
+import SearchSelect from 'components/urgudul_components/searchSelect'
+import Select from 'react-select'
 
 export default function TrainingUserRegistration() {
    const [registration, setRegistration] = useState(initialState)
@@ -160,6 +166,24 @@ export default function TrainingUserRegistration() {
       }
    }
 
+   const [users, setUsers] = useState([])
+   const [addCond, setAddCond] = useState(false)
+   const [addCompany, setAddCompany] = useState(false)
+
+   useEffect(() => {
+      axios.get(`users`, {
+         headers: { Authorization: getLoggedUserToken() }
+      }).then(res => {
+         setUsers(res.data.data.filter(item => item.role === 'user'))
+      })
+   }, [addCond])
+
+   const handleSelect = (option) => {
+      setRegistration(prev => ({ ...prev, company_register: option?.companyregister ?? null }))
+   }
+
+   const selectedCompany = users.find(user => user.companyregister === registration.company_register)
+
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-relative tw-p-2 tw-pb-12">
          <div className={titleClass}>
@@ -177,13 +201,60 @@ export default function TrainingUserRegistration() {
 
             <FormInline label="Имэйл хаяг" type="email" value={registration.email} name="email" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(registration.email)} />
 
-            <FormInline label="Байгууллагын нэр" type="text" value={registration.company_name} name="company_name" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(registration.company_name)} />
+            {/* <FormInline label="Байгууллагын нэр" type="text" value={registration.company_name} name="company_name" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(registration.company_name)} /> */}
 
             <FormInline label="Одоогийн ажлын албан тушаал" type="text" value={registration.employee_position} name="employee_position" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" invalid={validate && checkInvalid(registration.employee_position)} />
 
-            <TreeSelect data={sectors} label="Ямар чиглэлээр үйл ажиллагаа явуулдаг вэ?" displayName="bdescription_mon" value={registration.business_sectorId} name="business_sectorId" setter={handleInput} invalid={validate && checkInvalid(registration.business_sectorId)} />
+            {/* <TreeSelect data={sectors} label="Ямар чиглэлээр үйл ажиллагаа явуулдаг вэ?" displayName="bdescription_mon" value={registration.business_sectorId} name="business_sectorId" setter={handleInput} invalid={validate && checkInvalid(registration.business_sectorId)} /> */}
 
-            <FormInline label="Жилийн борлуулалтын тоо хэмжээ" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={registration.annual_sales} name="annual_sales" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(registration.annual_sales)} />
+            {/* <FormInline label="Жилийн борлуулалтын тоо хэмжээ" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={registration.annual_sales} name="annual_sales" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(registration.annual_sales)} /> */}
+
+            <div className="tw-col-span-2 tw-pt-6 tw-px-3 tw-pb-3 tw-flex tw-flex-col tw-gap-y-3">
+               <div className={validate && checkInvalid(registration.company_register) && 'tw-text-red-500 tw-transition-colors'}>
+                  Та өөрийн ажилладаг байгууллагаа сонгоно уу.
+               </div>
+               <div className="tw-flex tw-items-center tw-gap-x-5" style={{ maxWidth: 240 }}>
+                  <Select
+                     isClearable
+                     menuPortalTarget={document.body}
+                     styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                     options={users}
+                     value={registration.companyregister}
+                     getOptionValue={option => option.companyregister}
+                     onChange={handleSelect}
+                     getOptionLabel={option => option.companyregister}
+                     placeholder="Pегистр"
+                     className="tw-flex-grow"
+                     theme={theme => ({
+                        ...theme,
+                        colors: {
+                           ...theme.colors,
+                           primary: '#3B82F6',
+                           neutral20: '#9CA3AF'
+                        }
+                     })}
+                  />
+                  <PlusSVG className="tw-w-9 tw-h-9 tw-cursor-pointer tw-border tw-border-gray-400 tw-rounded tw-p-2 tw-flex-shrink-0 tw-text-gray-400 active:tw-border-gray-600 active:tw-text-gray-600 tw-transition-colors hover:tw-shadow-md tw-transition-shadow" strokeWidth={3} onClick={() => setAddCompany(true)} />
+                  {addCompany &&
+                     <UserAddModal setAddCond={setAddCond} setAddCompany={setAddCompany} />
+                  }
+               </div>
+               {selectedCompany
+                  ? <div className="tw-text-gray-500">
+                     <div className="">
+                        <span className="tw-mr-2">Байгууллагын нэр:</span>
+                        <span className="tw-font-medium">{selectedCompany.companyname}</span>
+                     </div>
+                     <div className="">
+                        <span className="tw-mr-2">Байгууллагын байршил:</span>
+                        <span className="tw-font-medium">{selectedCompany.location_detail}</span>
+                     </div>
+                  </div>
+                  : <div className="tw-text-gray-500 tw-italic">
+                     Байгууллагын регистрийн дугаар оруулж байгууллага сонгоно. Хэрэв олдоогүй бол хажуугийн товчоор нэмэх боломжтой.
+                  </div>
+               }
+            </div>
 
             <FormRichText
                label="Манай сургалтад хамрагдах нь танд ямар ашиг тустай вэ? Энэхүү сургалтаас ямар үр дүн хүлээж байгаа вэ?"
@@ -195,7 +266,7 @@ export default function TrainingUserRegistration() {
                classAppend="tw-w-full md:tw-col-span-2 tw-pl-3 tw-pt-1"
             />
 
-            <div className="tw-w-full md:tw-col-span-2">
+            {/* <div className="tw-w-full md:tw-col-span-2">
                <div className="tw-flex tw-items-end tw-text-13px tw-mt-5 tw-mb-2">
                   <span className="tw-border-b tw-border-gray-400 tw-ml-3 tw-pl-1 tw-pr-4 tw-font-light tw-pb-0.5">
                      Байгууллагын танилцуулга:
@@ -245,9 +316,9 @@ export default function TrainingUserRegistration() {
                         </animated.div>
                   }
                </Transition>
-            </div>
+            </div> */}
 
-            <div className="">
+            {/* <div className="">
                <FormLabel classAppend="tw-mt-4" label="Та доорх хэсэгт ажилтнаа сургалтад хамруулах тухай байгууллагын хүсэлт, албан тоотыг хавсаргана уу." invalid={validate && checkInvalid(registration.company_request_file)} />
                <div className="tw-h-20 tw-pl-8 tw-mt-3">
                   <Transition
@@ -261,9 +332,9 @@ export default function TrainingUserRegistration() {
                      }
                   </Transition>
                </div>
-            </div>
+            </div> */}
 
-            <div className="">
+            <div className="tw-col-span-2">
                <FormLabel classAppend="tw-mt-4" label="Та доорх хэсэгт иргэний үнэмлэхний хуулбарыг хавсаргана уу." invalid={validate && checkInvalid(registration.register_file)} />
                <div className="tw-h-20 tw-pl-8 tw-mt-3">
                   <Transition
@@ -319,14 +390,15 @@ const initialState = {
    register_number: null,
    phone: null,
    email: null,
-   company_name: null,
+   // company_name: null,
    employee_position: null,
-   business_sectorId: null,
-   annual_sales: null,
+   // business_sectorId: null,
+   // annual_sales: null,
    training_benefit: null,
-   company_introduction: null,
-   company_introduction_file: null,
-   company_request_file: null,
+   // company_introduction: null,
+   // company_introduction_file: null,
+   // company_request_file: null,
+   company_register: null,
    register_file: null,
 }
 

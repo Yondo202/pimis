@@ -82,12 +82,12 @@ export default function FeedbackQuestionnaireHandle() {
 
             <div className="tw-mt-4 tw-text-13px">
                <div className="tw-flex tw-items-center tw-py-1">
-                  <span className="tw-font-medium tw-mr-2 tw-text-sm">Ангилал: </span>
+                  <span className="tw-mr-2 tw-text-sm">Ангилал: </span>
                   <input className={`${inputClass} tw-mr-3 tw-flex-grow`} style={inputStyle} value={categoryInput} onChange={e => setCategoryInput(e.target.value)} />
                </div>
 
                <div className="tw-flex tw-items-center tw-py-1 tw-ml-4 tw-mr-2 tw-mt-0.5">
-                  <span className="tw-font-medium tw-mr-2">Асуумж:</span>
+                  <span className="tw-mr-2">Асуумж:</span>
                   <input className={`${inputClass} tw-max-w-xl tw-mr-3 tw-flex-grow`} value={descriptionInput} onChange={e => setDescriptionInput(e.target.value)} />
                   <button className="tw-ml-auto tw-py-1 tw-px-2 focus:tw-outline-none tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-rounded hover:tw-shadow-md tw-text-white tw-tracking-wide" onClick={handleAddCategory}>
                      Ангилал нэмэх
@@ -95,7 +95,7 @@ export default function FeedbackQuestionnaireHandle() {
                </div>
             </div>
 
-            <div className="tw-italic tw-text-gray-600 tw-font-semibold tw-mt-4 tw-p-1 tw-pl-4 tw-text-13px tw-font-sans">
+            <div className="tw-italic tw-text-gray-600 tw-font-medium tw-mt-4 tw-p-1 tw-pl-4 tw-text-13px tw-font-sans">
                *Бичвэр - гэсэн ангилал үүсгэснээр сургалтын үнэлгээг асуумжийн дагуу бичгээр авах боломжтой.
             </div>
 
@@ -181,7 +181,7 @@ const Category = ({ questionnaire, setQuestionnaire, AlertCtx }) => {
    }
 
    return (
-      <div className="tw-font-medium tw-mt-2 tw-text-13px">
+      <div className="tw-mt-2 tw-text-13px">
          <EditableCategory category={category} categoryOrder={categoryOrder} handleChangeCategory={handleChangeCategory} />
          {questionnaire.sort((a, b) => a.description_order - b.description_order).map((question, i) =>
             <div className="tw-ml-4 tw-mr-2 tw-flex tw-items-center tw-justify-between tw-py-1" key={i}>
@@ -201,7 +201,7 @@ const Category = ({ questionnaire, setQuestionnaire, AlertCtx }) => {
    )
 }
 
-const inputClass = 'focus:tw-outline-none tw-px-1 tw-py-1 tw-border tw-border-gray-400 tw-rounded focus:tw-ring-2 tw-ring-blue-400 tw-transition-colors tw-font-medium'
+const inputClass = 'focus:tw-outline-none tw-px-1 tw-py-1 tw-border tw-border-gray-400 tw-rounded focus:tw-ring-2 tw-ring-blue-400 tw-transition-colors'
 const inputStyle = { maxWidth: 200 }
 const svgClass = 'tw-w-5 tw-h-5 tw-m-0.5 tw-cursor-pointer active:tw-text-gray-900 tw-transition-colors'
 
@@ -240,7 +240,7 @@ const EditableCategory = ({ category, categoryOrder, handleChangeCategory }) => 
          {orderEditting
             ? <input className={`${inputClass} tw-w-10`} type="number" value={orderEdit} onChange={e => numCheck(e, setOrderEdit)} onBlur={handleBlurOrder} autoFocus />
             : <span className="tw-flex tw-items-center">
-               <PenAltSVG className={svgClass} onClick={handleFocusOrder} />
+               <PenAltSVG className={svgClass} strokeWidth={1.6} onClick={handleFocusOrder} />
                {categoryOrder}.
             </span>
          }
@@ -250,7 +250,7 @@ const EditableCategory = ({ category, categoryOrder, handleChangeCategory }) => 
                <span className={categoryIsText ? 'tw-text-blue-500' : ''}>
                   {category}
                </span>
-               <PenAltSVG className={`${svgClass} tw-ml-1`} onClick={handleFocusCat} />
+               <PenAltSVG className={`${svgClass} tw-ml-1`} strokeWidth={1.6} onClick={handleFocusCat} />
             </span>
          }
       </div>
@@ -291,7 +291,7 @@ const EditableDescription = ({ question, handleChangeDescription }) => {
          {orderEditting
             ? <input className={`${inputClass} tw-w-10`} type="number" value={orderEdit} onChange={e => numCheck(e, setOrderEdit)} onBlur={handleBlurOrder} autoFocus />
             : <span className="tw-flex tw-items-center">
-               <PenAltSVG className={`${svgClass}`} onClick={handleFocusOrder} />
+               <PenAltSVG className={`${svgClass}`} strokeWidth={1.6} onClick={handleFocusOrder} />
                {question.description_order}.
             </span>
          }
@@ -299,7 +299,7 @@ const EditableDescription = ({ question, handleChangeDescription }) => {
             ? <input className={`${inputClass} tw-flex-grow tw-max-w-xl tw-ml-3 tw-mr-3`} value={descEdit} onChange={e => setDescEdit(e.target.value)} onBlur={handleBlurDesc} autoFocus />
             : <span className="tw-flex tw-items-center tw-ml-3 tw-mr-3">
                {question.description}
-               <PenAltSVG className={`${svgClass} tw-ml-1`} onClick={handleFocusDesc} />
+               <PenAltSVG className={`${svgClass} tw-ml-1`} strokeWidth={1.6} onClick={handleFocusDesc} />
             </span>
          }
       </div>

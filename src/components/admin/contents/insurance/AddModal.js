@@ -52,7 +52,7 @@ const AddModal = ({ companyInfo, setModal, setCond, setAddCond, insuranceTypes, 
                 }, 370)
                 setCond(prev => !prev);
             }).catch(() => {
-                alertText('orange', 'Хадаглахад алдаа гарлаа', true);
+                alertText('orange', 'Хадгалахад алдаа гарлаа', true);
             })
         }
     }
@@ -241,7 +241,7 @@ const InsureType = styled.div`
     }
 `
 
-const UserAddModal = ({ setAddCompany, setAddCond }) => {
+export const UserAddModal = ({ setAddCompany, setAddCond }) => {
     const [cName, setName] = useState('');
     const { alertText } = useContext(UserContext);
     const [sectors, setSectors] = useState([]);

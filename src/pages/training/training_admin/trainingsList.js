@@ -168,15 +168,16 @@ const ButtonFliePreview = ({ data }) => {
          AlertCtx.setAlert({ open: true, variant: 'error', msg: 'Файлыг татаж чадсангүй.' })
       })
    }
-   return (
-      <button
+   return module_file?.name
+      ? <button
          className="tw-rounded-sm tw-bg-gray-600 active:tw-bg-gray-700 tw-transition-colors tw-text-white tw-px-2 tw-py-1 focus:tw-outline-none tw-truncate"
          style={{ width: 138 }}
          onClick={handleDownloadFile}
-         title={module_file?.name}>
+         title={module_file?.name}
+      >
          {module_file?.name}
       </button>
-   )
+      : null
 }
 
 const ButtonNavRegisteredUsers = ({ data }) => {

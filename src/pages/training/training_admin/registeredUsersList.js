@@ -89,10 +89,10 @@ export default function TrainingRegisteredUsersList() {
                <Column dataField="register_number" caption="Регистрийн дугаар" headerCellRender={HeaderCell} />
                <Column dataField="phone" caption="Утасны дугаар" headerCellRender={HeaderCell} />
                <Column dataField="email" caption="Имэйл хаяг" headerCellRender={HeaderCell} />
-               <Column dataField="company_name" caption="Байгууллагын нэр" headerCellRender={HeaderCell} />
+               {/* <Column dataField="company_name" caption="Байгууллагын нэр" headerCellRender={HeaderCell} /> */}
                <Column dataField="employee_position" caption="Одоогийн ажлын албан тушаал" headerCellRender={HeaderCell} minWidth={160} />
-               <Column dataField="business_sectorId" caption="Үйл ажиллагаа явуулдаг салбар" calculateCellValue={calculateCellSector} headerCellRender={HeaderCell} minWidth={240} />
-               <Column dataField="annual_sales" caption="Жилийн борлуулалтын тоо хэмжээ" headerCellRender={HeaderCell} />
+               {/* <Column dataField="business_sectorId" caption="Үйл ажиллагаа явуулдаг салбар" calculateCellValue={calculateCellSector} headerCellRender={HeaderCell} minWidth={240} /> */}
+               {/* <Column dataField="annual_sales" caption="Жилийн борлуулалтын тоо хэмжээ" headerCellRender={HeaderCell} /> */}
                <Column caption="Бүртгэлийг устгах" cellRender={data => <ButtonDelete data={data} trainingId={trainingId} removeRegistration={removeRegistration} />} alignment="center" headerCellRender={HeaderCell} />
 
                <MasterDetail enabled={true} component={MasterDetails} />
@@ -133,7 +133,7 @@ const MasterDetails = ({ data }) => {
    return (
       <TabPanel>
          <Item title="Сургаалтын өгөөж ба хүлээлт" render={() => <RenderRichText html={registeredUser.training_benefit} />} />
-         <Item title="Байгууллагын танилцуулга" render={() => <RenderRichText html={registeredUser.company_introduction} />} />
+         {/* <Item title="Байгууллагын танилцуулга" render={() => <RenderRichText html={registeredUser.company_introduction} />} /> */}
          <Item title="Хавсаргасан файлууд" render={() => <RenderAttachedFiles introFile={registeredUser.company_introduction_file} reqFile={registeredUser.company_request_file} regFile={registeredUser.register_file} />} />
       </TabPanel>
    )
@@ -152,8 +152,8 @@ export const RenderRichText = ({ html }) => (
 
 const RenderAttachedFiles = ({ introFile, reqFile, regFile }) => (
    <div className="tw-flex tw-flex-wrap tw-px-2 tw-py-2 tw-text-gray-700">
-      <FileCardContainer label="Байгууллагын танилцуулга" file={introFile} />
-      <FileCardContainer label="Байгууллагын хүсэлт" file={reqFile} />
+      {/* <FileCardContainer label="Байгууллагын танилцуулга" file={introFile} /> */}
+      {/* <FileCardContainer label="Байгууллагын хүсэлт" file={reqFile} /> */}
       <FileCardContainer label="Иргэний үнэмлэхний хуулбар" file={regFile} />
    </div>
 )

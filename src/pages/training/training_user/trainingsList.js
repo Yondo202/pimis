@@ -91,7 +91,10 @@ const TrainingCard = ({ training, handleDownloadFile, setModalOpenIsFull }) => {
 
    const handleViewFile = (e) => {
       e.stopPropagation()
-      handleDownloadFile(training.module_file.id)
+      const fileId = training.module_file?.id
+      if (![null, undefined].includes(fileId)) {
+         handleDownloadFile(fileId)
+      }
    }
 
    const isFull = training.registeredUserCount >= training.participant_number

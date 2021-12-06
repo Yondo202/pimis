@@ -125,9 +125,9 @@ function ActiveComp({ userId, data, edPlan, edPlanFinal }) {
                             <div className="items">5. Санхүүгийн дэмжлэгийн төлбөрийн нэхэмжлэх</div>
                         </Link>
                         <div className="line" ></div>
-                        <Link to="/survey-pimis">
+                        {/* <Link to="/survey-pimis">
                             <div className="items">6. Түншлэлийн хөтөлбөрийн судалгаа</div>
-                        </Link>
+                        </Link> */}
                         {/* <div className="line"></div> */}
                         {/* <Link to="/work-performance">
                             <div className="items">6. Ажлын гүйцэтгэл хүлээн авах маягт</div>
