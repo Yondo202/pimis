@@ -29,6 +29,8 @@ export default function TrainingUserRegistration() {
 
    const handleInputFormat = (key, values) => setRegistration(prev => ({ ...prev, [key]: values.value }))
 
+   const handleInputRegister = (key, value) => setRegistration(prev => ({ ...prev, [key]: value?.toUpperCase().slice(0, 10).replaceAll(' ', '') ?? null }))
+
    const [sectors, setSectors] = useState([])
 
    useEffect(() => {
@@ -179,10 +181,10 @@ export default function TrainingUserRegistration() {
    }, [addCond])
 
    const handleSelect = (option) => {
-      setRegistration(prev => ({ ...prev, company_register: option?.companyregister ?? null }))
+      setRegistration(prev => ({ ...prev, userId: option?.id ?? null }))
    }
 
-   const selectedCompany = users.find(user => user.companyregister === registration.company_register)
+   const selectedCompany = users.find(user => user.id === registration.userId)
 
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-relative tw-p-2 tw-pb-12">
@@ -195,7 +197,7 @@ export default function TrainingUserRegistration() {
 
             <FormOptions label="Хүйс" options={['Эрэгтэй', 'Эмэгтэй']} values={['Эрэгтэй', 'Эмэгтэй']} value={registration.gender} name="gender" setter={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(registration.gender)} />
 
-            <FormInline label="Регистрийн дугаар" type="text" value={registration.register_number} name="register_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(registration.register_number)} />
+            <FormInline label="Регистрийн дугаар" type="text" value={registration.register_number} name="register_number" setter={handleInputRegister} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(registration.register_number)} />
 
             <FormInline label="Утасны дугаар" type="numberFormat" formats={{ format: '(+976) #### ####' }} value={registration.phone} name="phone" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(registration.phone)} />
 
@@ -210,10 +212,10 @@ export default function TrainingUserRegistration() {
             {/* <FormInline label="Жилийн борлуулалтын тоо хэмжээ" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={registration.annual_sales} name="annual_sales" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(registration.annual_sales)} /> */}
 
             <div className="tw-col-span-2 tw-pt-6 tw-px-3 tw-pb-3 tw-flex tw-flex-col tw-gap-y-3">
-               <div className={validate && checkInvalid(registration.company_register) && 'tw-text-red-500 tw-transition-colors'}>
+               <div className={validate && checkInvalid(registration.userId) && 'tw-text-red-500 tw-transition-colors'}>
                   Та өөрийн ажилладаг байгууллагаа сонгоно уу.
                </div>
-               <div className="tw-flex tw-items-center tw-gap-x-5" style={{ maxWidth: 240 }}>
+               <div className="tw-flex tw-items-center tw-gap-x-5">
                   <Select
                      isClearable
                      menuPortalTarget={document.body}
@@ -222,9 +224,9 @@ export default function TrainingUserRegistration() {
                      value={registration.companyregister}
                      getOptionValue={option => option.companyregister}
                      onChange={handleSelect}
-                     getOptionLabel={option => option.companyregister}
-                     placeholder="Pегистр"
-                     className="tw-flex-grow"
+                     getOptionLabel={option => `${option.companyregister}, ${option.companyname}`}
+                     placeholder="Сонгох ..."
+                     className="tw-flex-grow tw-max-w-xs"
                      theme={theme => ({
                         ...theme,
                         colors: {
@@ -243,11 +245,15 @@ export default function TrainingUserRegistration() {
                   ? <div className="tw-text-gray-500">
                      <div className="">
                         <span className="tw-mr-2">Байгууллагын нэр:</span>
-                        <span className="tw-font-medium">{selectedCompany.companyname}</span>
+                        <span className="tw-font-medium tw-text-13px">{selectedCompany.companyname}</span>
                      </div>
                      <div className="">
-                        <span className="tw-mr-2">Байгууллагын байршил:</span>
-                        <span className="tw-font-medium">{selectedCompany.location_detail}</span>
+                        <span className="tw-mr-2">Салбар:</span>
+                        <span className="tw-font-medium tw-text-13px">{sectors.find(sector => sector.id === selectedCompany.business_sectorId)?.bdescription_mon}</span>
+                     </div>
+                     <div className="">
+                        <span className="tw-mr-2">Байршил:</span>
+                        <span className="tw-font-medium tw-text-13px">{selectedCompany.location_detail}</span>
                      </div>
                   </div>
                   : <div className="tw-text-gray-500 tw-italic">
@@ -398,7 +404,7 @@ const initialState = {
    // company_introduction: null,
    // company_introduction_file: null,
    // company_request_file: null,
-   company_register: null,
+   userId: null,
    register_file: null,
 }
 
