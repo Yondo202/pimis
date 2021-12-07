@@ -122,6 +122,7 @@ const MenuData = [
     icon:<FiBookOpen />,
     MenuChild:[ 
       { link:"/insurance", text:"Байгууллагуудын жагсаалт" },
+      { link:"/incurance-report", text:"Явцын үнэлгээний тайлан" },
     ],
     SubMenu:[
       { text:"Даатгал", subChild:[ { link:"/insurance-types", text:"Даатгалын бүтээгдэхүүнүүд тохируулах"  } ] }
@@ -135,7 +136,7 @@ const MenuData = [
     SubMenu:[
       { text:"Үндсэн тайлангууд", subChild:[
          { link:"/monitoring-report/0", text:"Хяналт-шинжилгээний тайлан" },
-         { link:"/progress-report/0", text:"Явцын үнэлгээний тайлан" },
+         { link:"/progress-report", text:"Явцын үнэлгээний тайлан" },
          { link:"/evaluation-report/0", text:"Үнэлгээний тайлан" },
          { link:"/completion-report/0", text:"Эцсийн тайлан" },
       ] }
