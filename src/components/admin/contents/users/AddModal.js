@@ -5,7 +5,7 @@ import { useSpring, animated } from 'react-spring';
 import axios from '../../../../axiosbase'
 import UserContext from '../../../../context/UserContext'
 
-export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
+export const AddModal = ({ showModal, setShowModal, setUpdate, trainers, Role }) => {
     const modalRef = useRef();
     const ctx = useContext(UserContext);
     const [per, setPer] = useState("");
@@ -53,7 +53,7 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
             }).catch(error => { ctx.alertText("orange", "Алдаа гарлаа", true); seBtnSpin(false); });
         }
     }
-    const roleHandle = (event) => { setPer(event.target.value) }
+    const roleHandle = event => { setPer(event.target.value) }
 
     return (
         <>
@@ -121,8 +121,14 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
 
                             <div className="otherPar">
                                 <div className="HeadCheck">
-                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="holbootoi_yamd" /> <span>Холбоотой Яамд</span></div>
+                                    {Role?.map((el,ind)=>{
+                                        return(
+                                            <div key={ind} className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value={el.value} /> <span>{el.title}</span></div>
+                                        )
+                                    })}
+
                                     {/* <div className="title"> <input onChange={roleHandle} className="getRoles" name="role" type="radio" value="tosliin_zahiral" /> <span>Төслийн Захирал</span></div> */}
+                                    {/* <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="holbootoi_yamd" /> <span>Холбоотой Яамд</span></div>
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="tosliin_zohitsuulagch" /> <span>Төслийн зохицуулагч</span></div>
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="ahlah_bhsh" /> <span>Ахлах БХШ</span></div>
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" type="radio" value="bh_zovloh" /> <span>БХЗ</span></div>
@@ -134,7 +140,7 @@ export const AddModal = ({ showModal, setShowModal, setUpdate, trainers }) => {
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" name="role" value="trainer" type="radio" /> <span>Сургалт зохион байгуулагч</span></div>
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" value="member" name="role" type="radio" /> <span>Үнэлгээний хорооны гишүүн</span></div>
                                     <div className="title"> <input required onChange={roleHandle} className="getRoles" value="monitoring" name="role" type="radio" /> <span>Мониторинг</span></div>
-                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div>
+                                    <div className="title"> <input required onChange={roleHandle} className="getRoles" value="edpadmin" name="role" type="radio" /> <span>edp admin</span></div> */}
                                 </div>
 
                                 {per === "edpuser" && (<div className="edpUsers">
@@ -203,7 +209,7 @@ const Background = styled.div`
                 font-size:14px;
                 display:flex;
                 flex-direction:column;
-                width:50%;
+                width:70%;
                 margin-bottom:15px;
                 padding-left:10px;
                 .title{

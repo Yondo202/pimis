@@ -41,9 +41,9 @@ function UserHandle() {
     return (
         // <motion.div exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Users>
-                <AddModal setUpdate={setUpdate} showModal={showModal} setShowModal={setShowModal} trainers={trainers} />
+                <AddModal Role={Role} setUpdate={setUpdate} showModal={showModal} setShowModal={setShowModal} trainers={trainers} />
                 <DeleteModal setUpdate={setUpdate} showModal={showModal2} setShowModal={setShowModal2} parent={targetElement} />
-                <EditModal setUpdate={setUpdate} showModal={showModal3} setShowModal={setShowModal3} parent={targetElement} parentEdit={setTargetElement} trainers={trainers} />
+                <EditModal Role={Role} setUpdate={setUpdate} showModal={showModal3} setShowModal={setShowModal3} parent={targetElement} parentEdit={setTargetElement} trainers={trainers} />
                 <div className="Title">Хэрэглэгчид</div>
                 <div className="listHead">
                     <div className="Inputs">
@@ -270,7 +270,7 @@ const Users = styled.div`
 
 const Role = [
     { title: "Холбоотой Яамд", value: "holbootoi_yamd", },
-    { title: "Төслийн Захирал", value: "tosliin_zahiral", },
+    // { title: "Төслийн Захирал", value: "tosliin_zahiral", },
     { title: "Төслийн зохицуулагч", value: "tosliin_zohitsuulagch", },
     { title: "Ахлах БХШ", value: "ahlah_bhsh", },
     { title: "БХЗ", value: "bh_zovloh", },
@@ -281,5 +281,9 @@ const Role = [
     { title: "Сургалт зохион байгуулагч", value: "trainer", },
     { title: "Үнэлгээний хорооны гишүүн", value: "member", },
     { title: "Мониторинг", value: "monitoring", },
-    { title: "edp - админ", value: "edpadmin", }
+    { title: "edp - админ", value: "edpadmin", },
+
+
+    { title: "2.1-2.2 Дэд бүрэлдхүүн хэсэгийн зөвлөх", value: "dedbureldhuun_heseg_zovloh", }, // component 2.1-2.2 оруулга
+    { title: "SPS - ийн мэргэжилтэн", value: "SPSiin_mergejilten", }, // component 3 ийг оруулна
 ]

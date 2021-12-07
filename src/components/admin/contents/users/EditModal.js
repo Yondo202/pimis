@@ -5,7 +5,7 @@ import { useSpring, animated } from 'react-spring';
 import axios from '../../../../axiosbase'
 import UserContext from '../../../../context/UserContext'
 
-export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEdit, trainers }) => {
+export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEdit, trainers, Role }) => {
     const ctx = useContext(UserContext);
     const [per, setPer] = useState(Role);
     const [errText, setErrText] = useState("0");
@@ -213,7 +213,7 @@ const Background = styled.div`
                 font-size:14px;
                 display:flex;
                 flex-direction:column;
-                width:50%;
+                width:70%;
                 margin-bottom:15px;
                 padding-left:10px;
                 .title{
@@ -337,19 +337,19 @@ const Background = styled.div`
     }
 `
 
-const Role = [
-    { title: "Холбоотой Яамд", value: "holbootoi_yamd", },
-    // { title: "Төслийн Захирал", value: "tosliin_zahiral", },
-    { title: "Төслийн зохицуулагч", value: "tosliin_zohitsuulagch", },
-    { title: "Ахлах БХШ", value: "ahlah_bhsh", },
-    { title: "БХЗ", value: "bh_zovloh", },
-    { title: "БХ дэд зөвлөх", value: "bh_ded_zovloh", },
-    { title: "ҮДД-ын зөвлөх", value: "vdd_zovloh", },
-    { title: "Хуулийн зөвлөх", value: "huuliin_zowloh", },  
-    { title: "Санхүү", value: "sanhuu", },
-    { title: "Худалдаан авах ажиллагаа", value: "hudaldanavah_ajillagaa", },
-    { title: "Сургалт зохион байгуулагч", value: "trainer", },
-    { title: "Үнэлгээний хорооны гишүүн", value: "member", },
-    { title: "Мониторинг", value: "monitoring", },
-    { title: "edp - админ", value: "edpadmin", }
-]
+// const Role = [
+//     { title: "Холбоотой Яамд", value: "holbootoi_yamd", },
+//     // { title: "Төслийн Захирал", value: "tosliin_zahiral", },
+//     { title: "Төслийн зохицуулагч", value: "tosliin_zohitsuulagch", },
+//     { title: "Ахлах БХШ", value: "ahlah_bhsh", },
+//     { title: "БХЗ", value: "bh_zovloh", },
+//     { title: "БХ дэд зөвлөх", value: "bh_ded_zovloh", },
+//     { title: "ҮДД-ын зөвлөх", value: "vdd_zovloh", },
+//     { title: "Хуулийн зөвлөх", value: "huuliin_zowloh", },  
+//     { title: "Санхүү", value: "sanhuu", },
+//     { title: "Худалдаан авах ажиллагаа", value: "hudaldanavah_ajillagaa", },
+//     { title: "Сургалт зохион байгуулагч", value: "trainer", },
+//     { title: "Үнэлгээний хорооны гишүүн", value: "member", },
+//     { title: "Мониторинг", value: "monitoring", },
+//     { title: "edp - админ", value: "edpadmin", }
+// ]

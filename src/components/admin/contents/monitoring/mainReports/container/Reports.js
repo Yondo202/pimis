@@ -3,7 +3,7 @@ import Ctx from "context/UserContext"
 import { HeaderTwo } from "components/misc/CustomStyle"
 import { Route, useLocation, useHistory } from "react-router-dom";
 import ReportComp from "components/admin/contents/monitoring/mainReports/components/ReportComp";
-import ProgressReport from '../progressReport/ProgressReport';
+// import ProgressReport from '../progressReport/ProgressReport';
 import { IoHomeSharp } from "react-icons/io5";
 import useQuery from 'components/utilities/useQueryLocation';
 import { AiOutlinePrinter } from "react-icons/ai"
@@ -80,9 +80,6 @@ function MonitoringReports({ data }) {
         }
         const HandlePush = (elem, url) =>{
             if(modal) return setShowModal(prev=>!prev);
-
-            
-
             push({
                 pathname: `/${data.route}/${element}`,
                 search: `${data.type!==4?`?year=${years}${url!==null?`&${url}=${elem}`:``}`:``}`,

@@ -29,33 +29,36 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
                if(userInfo?.role==="edpadmin")
                return <FilterMenu el={el} ind={ind} />
 
-                if(userInfo?.role==="holbootoi_yamd") //zugeer harna
-                  return el.title==="Мониторинг"?<FilterMenu el={el} ind={ind} />:<div />
-                  
-                if(userInfo?.role==="monitoring") // bugdiin hiine 
-                  return el.title==="Мониторинг"?<FilterMenu el={el} ind={ind} />:<div />
+              if(userInfo?.role==="holbootoi_yamd") //zugeer harna
+                return el.title==="Мониторинг"?<FilterMenu el={el} ind={ind} />:<div />
+                
+              if(userInfo?.role==="monitoring") // bugdiin hiine 
+                return el.title==="Мониторинг"?<FilterMenu el={el} ind={ind} />:<div />
 
-                if(userInfo?.role==="tosliin_zohitsuulagch") // zugeer harna
-                  return <FilterMenu el={el} ind={ind} />
+              if(userInfo?.role==="tosliin_zohitsuulagch") // zugeer harna
+                return <FilterMenu el={el} ind={ind} />
 
-                if(userInfo?.role==="ahlah_bhsh")
-                  return <FilterMenu el={el} ind={ind} />
+              if(userInfo?.role==="ahlah_bhsh")
+                return <FilterMenu el={el} ind={ind} />
 
-                if(userInfo?.role==="bh_zovloh") // zowhon harna
-                  return el.title==="Түншлэлийн хөтөлбөр"?<FilterMenu el={el} ind={ind} />:<div />
+              if(userInfo?.role==="bh_zovloh") // zowhon harna
+                return el.title==="Түншлэлийн хөтөлбөр"?<FilterMenu el={el} ind={ind} />:<div />
 
-                if(userInfo?.role==="bh_ded_zovloh") // zowhon harna
-                  return el.title==="Түншлэлийн хөтөлбөр"?<FilterMenu el={el} ind={ind} />:<div />
+              if(userInfo?.role==="bh_ded_zovloh") // zowhon harna
+                return el.title==="Түншлэлийн хөтөлбөр"?<FilterMenu el={el} ind={ind} />:<div />
 
-                if(userInfo?.role==="vdd_zovloh")
-                  return el.title==="Даатгал"?<FilterMenu el={el} ind={ind} />:<div />
+              if(userInfo?.role==="vdd_zovloh")
+                return el.title==="Даатгал"?<FilterMenu el={el} ind={ind} />:<div />
 
-                //huuliin_zowloh todorhoigui
-                //Санхүү - sanhuujilt gesen tsesiig harna,
-                //hudaldanavah_ajillagaa /todorhoigui
+              //huuliin_zowloh todorhoigui
+              //Санхүү - sanhuujilt gesen tsesiig harna,
+              //hudaldanavah_ajillagaa /todorhoigui
 
-                if(userInfo?.role==="trainer")
-                return el.title==="Сургалт"?<FilterMenu el={el} ind={ind} />:<div />
+              if(userInfo?.role==="dedbureldhuun_heseg_zovloh")
+                return el.title==="Тайлан"?<FilterMenu el={el} ind={ind} />:<div />
+
+              if(userInfo?.role==="SPSiin_mergejilten")
+                return el.title==="Тайлан оруулах"?<FilterMenu el={el} ind={ind} />:<div />
                   
                 return <div />
             })}
@@ -74,7 +77,7 @@ export default Aside;
 
 const FilterMenu = ({ el, ind }) =>{
   return(
-        <SubMenu title={el.title} icon={el.icon}>
+        <SubMenu key={ind} title={el.title} icon={el.icon}>
             {el.MenuChild?.map((elem,ind)=>{
               return(
                 <MenuItem key={ind}>
@@ -106,6 +109,7 @@ const MenuData = [
     { link:"/projects", text:"Бүртгүүлсэн байгууллагууд" },
     { link:"/meetings", text:"Сонгон шалгаруулалтын багийн хурал гэснээр солих" },
     { link:"/maindecision", text:"Сонгон шалгаруулалтын багийн хурлын шийдвэр" },
+    { link:"/pps-report", text:"Явцын үнэлгээний тайлан" },
     { link:"/report", text:"Тайлан" },
     ] 
   },
@@ -122,7 +126,7 @@ const MenuData = [
     icon:<FiBookOpen />,
     MenuChild:[ 
       { link:"/insurance", text:"Байгууллагуудын жагсаалт" },
-      { link:"/incurance-report", text:"Явцын үнэлгээний тайлан" },
+      { link:"/insurance-report", text:"Явцын үнэлгээний тайлан" },
     ],
     SubMenu:[
       { text:"Даатгал", subChild:[ { link:"/insurance-types", text:"Даатгалын бүтээгдэхүүнүүд тохируулах"  } ] }
@@ -165,5 +169,20 @@ const MenuData = [
          { link:"/training-questionnaire", text:"Сургалтын үнэлгээний асуумжууд" },
       ] }
     ]
+  },
+
+
+  { title:"Тайлан", 
+    icon: <IoSettingsOutline />,
+    MenuChild:[
+      { link:"/dedburelhuun", text:"Явцын үнэлгээний тайлан" },
+    ],
+  },
+
+  { title:"Тайлан оруулах", 
+    icon: <IoSettingsOutline />,
+    MenuChild:[
+      { link:"/spsmergijelten", text:"Явцын үнэлгээний тайлан" },
+    ],
   },
 ]

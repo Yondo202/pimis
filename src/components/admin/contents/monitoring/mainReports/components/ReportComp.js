@@ -111,7 +111,7 @@ const ReportComp = ({ dataParent, errText, detail, clickHanlde, modal, listData,
 
 export default ReportComp;
 
-const UserNameModal = ({ userName, setUserName, setNameModal }) =>{
+export const UserNameModal = ({ userName, setUserName, setNameModal }) =>{
         const [cName, setName] = useState('');
         const CloseHandle = () =>{
             setName('contentParent2');
