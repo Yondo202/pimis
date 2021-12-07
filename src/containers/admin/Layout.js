@@ -47,7 +47,6 @@ import InsuranceTypeHandle from 'components/admin/contents/insurance_type/insura
 import ResultMeasure from 'components/admin/contents/monitoring/resultReport/ResultMeasure';
 import { MakeContractForAdmin } from 'pages/contract/make_contract/makeContractPages';
 import { ContractReportsForAdmin } from 'pages/contract/contract_reports/contractReportPages';
-import SurveyPimis from 'pages/contract/survery/surveyPimis';
 import LaboratoryNavigator from 'components/admin/contents/laboratory/laboratoryNavigator';
 import MainReports from "components/admin/contents/monitoring/mainReports/container/Reports"
 import Member_interest from 'components/admin/contents/evaluation_results/Member_interest';
@@ -152,7 +151,6 @@ function Layout({ setLocale }) {
               <Route path="/trainer-organizations" component={TrainerOrganizationNavigator} />
               <Route path="/export-data" component={ExportDataList} />
               <Route path="/insurance-types" component={InsuranceTypeHandle} />
-              <Route path="/survey-pimis" component={SurveyPimis} />
               <Route path="/laboratories" component={LaboratoryNavigator} />
               <MiddleRoute />
             </Switch>

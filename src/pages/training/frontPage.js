@@ -28,8 +28,8 @@ export default function TrainingFrontPage({ user }) {
             </div>
 
             <div className="tw-flex-grow tw-w-full">
-               <div className="tw-flex tw-flex-col-reverse sm:tw-flex-row sm:tw-items-center tw-overflow-hidden tw-p-2 tw-mt-2 sm:tw-mt-8 tw-bg-white tw-rounded-lg tw-shadow-md tw-cursor-pointer" onClick={navTrainingHome}>
-                  <div className="tw-mt-2 tw-mb-1 sm:tw-my-0 tw-text-xl tw-flex tw-justify-center tw-flex-grow tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-blue-500 tw-to-green-500 tw-uppercase tw-font-bold tw-px-4 tw-whitespace-nowrap tw-tracking-wide">
+               <div className="tw-flex tw-flex-col-reverse sm:tw-flex-row sm:tw-items-center tw-overflow-hidden tw-p-2 tw-pr-8 tw-mt-2 sm:tw-mt-8 tw-bg-white tw-rounded-lg tw-shadow-md tw-cursor-pointer" onClick={navTrainingHome}>
+                  <div className="tw-mt-2 tw-mb-1 sm:tw-my-0 tw-text-xl tw-flex tw-justify-center tw-flex-grow tw-uppercase tw-font-bold tw-px-4 tw-whitespace-nowrap tw-tracking-wide tw-text-blue-400">
                      Сургалтын хөтөлбөр
                   </div>
                   <img className="tw-h-12 tw-object-contain" src="/head_logo.png" alt="logo-big" />

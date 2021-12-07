@@ -26,7 +26,6 @@ import InvoiceAttachments from 'pages/attachments/invoiceAttachments';
 import FinancialAttachments from 'pages/attachments/financialAttachments';
 import { MakeContractForUser } from 'pages/contract/make_contract/makeContractPages';
 import { ContractReportsForUser } from 'pages/contract/contract_reports/contractReportPages';
-import SurveyPimis from 'pages/contract/survery/surveyPimis';
 
 function UsersRoute() {
     return (
@@ -65,7 +64,6 @@ function UsersRoute() {
                     <Route path="/trainings">
                         <TrainingFrontPage user={true} />
                     </Route>
-                    <Route path="/survey-pimis" component={SurveyPimis} />
                     <MiddleRoute />
                 </Switch>
             </UrgudulStore>

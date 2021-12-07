@@ -89,13 +89,14 @@ export default function TrainingRegisteredUsersList() {
                <Column dataField="register_number" caption="Регистрийн дугаар" headerCellRender={HeaderCell} />
                <Column dataField="phone" caption="Утасны дугаар" headerCellRender={HeaderCell} />
                <Column dataField="email" caption="Имэйл хаяг" headerCellRender={HeaderCell} />
-               <Column dataField="company_name" caption="Байгууллагын нэр" headerCellRender={HeaderCell} />
+               {/* <Column dataField="company_name" caption="Байгууллагын нэр" headerCellRender={HeaderCell} /> */}
                <Column dataField="employee_position" caption="Одоогийн ажлын албан тушаал" headerCellRender={HeaderCell} minWidth={160} />
-               <Column dataField="business_sectorId" caption="Үйл ажиллагаа явуулдаг салбар" calculateCellValue={calculateCellSector} headerCellRender={HeaderCell} minWidth={240} />
-               <Column dataField="annual_sales" caption="Жилийн борлуулалтын тоо хэмжээ" headerCellRender={HeaderCell} />
+               {/* <Column dataField="business_sectorId" caption="Үйл ажиллагаа явуулдаг салбар" calculateCellValue={calculateCellSector} headerCellRender={HeaderCell} minWidth={240} /> */}
+               {/* <Column dataField="annual_sales" caption="Жилийн борлуулалтын тоо хэмжээ" headerCellRender={HeaderCell} /> */}
+               <Column dataField="user.companyname" caption="Байгууллагын нэр" headerCellRender={HeaderCell} />
                <Column caption="Бүртгэлийг устгах" cellRender={data => <ButtonDelete data={data} trainingId={trainingId} removeRegistration={removeRegistration} />} alignment="center" headerCellRender={HeaderCell} />
 
-               <MasterDetail enabled={true} component={MasterDetails} />
+               <MasterDetail enabled={true} render={data => <MasterDetails data={data} sectors={sectors} />} />
             </DataGrid>
          </div>
       </div>
@@ -127,17 +128,46 @@ const ButtonDelete = ({ data, trainingId, removeRegistration }) => {
    )
 }
 
-const MasterDetails = ({ data }) => {
+const MasterDetails = ({ data, sectors }) => {
    const registeredUser = data.data
 
    return (
       <TabPanel>
+         <Item title="Байгууллага" render={() => <RenderCompany company={registeredUser.user} sectors={sectors} />} />
          <Item title="Сургаалтын өгөөж ба хүлээлт" render={() => <RenderRichText html={registeredUser.training_benefit} />} />
-         <Item title="Байгууллагын танилцуулга" render={() => <RenderRichText html={registeredUser.company_introduction} />} />
+         {/* <Item title="Байгууллагын танилцуулга" render={() => <RenderRichText html={registeredUser.company_introduction} />} /> */}
          <Item title="Хавсаргасан файлууд" render={() => <RenderAttachedFiles introFile={registeredUser.company_introduction_file} reqFile={registeredUser.company_request_file} regFile={registeredUser.register_file} />} />
       </TabPanel>
    )
 }
+
+const RenderCompany = ({ company, sectors }) => (
+   <div className="tw-px-2 tw-pt-3 tw-pb-5 tw-text-gray-700">
+      {company
+         ? <div className="tw-flex tw-flex-col tw-gap-y-1">
+            <div className="">
+               <span className="tw-mr-2">Байгууллагын регистр:</span>
+               <span className="tw-font-medium">{company.companyregister}</span>
+            </div>
+            <div className="">
+               <span className="tw-mr-2">Байгууллагын нэр:</span>
+               <span className="tw-font-medium">{company.companyname}</span>
+            </div>
+            <div className="">
+               <span className="tw-mr-2">Салбар:</span>
+               <span className="tw-font-medium">{sectors.find(sector => sector.id === company.business_sectorId)?.bdescription_mon}</span>
+            </div>
+            <div className="">
+               <span className="tw-mr-2">Байршил:</span>
+               <span className="tw-font-medium">{company.location_detail}</span>
+            </div>
+         </div>
+         : <div className="tw-rounded tw-bg-gray-200 tw-text-gray-600 tw-italic tw-p-2 tw-font-medium tw-my-8" style={{ maxWidth: 726 }}>
+            Байгууллагын мэдээлэл оруулаагүй байна.
+         </div>
+      }
+   </div>
+)
 
 export const RenderRichText = ({ html }) => (
    <div className="tw-px-2 tw-pt-3 tw-pb-5 tw-text-gray-700">
@@ -152,8 +182,8 @@ export const RenderRichText = ({ html }) => (
 
 const RenderAttachedFiles = ({ introFile, reqFile, regFile }) => (
    <div className="tw-flex tw-flex-wrap tw-px-2 tw-py-2 tw-text-gray-700">
-      <FileCardContainer label="Байгууллагын танилцуулга" file={introFile} />
-      <FileCardContainer label="Байгууллагын хүсэлт" file={reqFile} />
+      {/* <FileCardContainer label="Байгууллагын танилцуулга" file={introFile} /> */}
+      {/* <FileCardContainer label="Байгууллагын хүсэлт" file={reqFile} /> */}
       <FileCardContainer label="Иргэний үнэмлэхний хуулбар" file={regFile} />
    </div>
 )
