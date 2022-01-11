@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { CustomModal, InputStyle } from "components/misc/CustomStyle";
 import styled from "styled-components"
+import { UserAddModal } from "./AddModal"
 import { MdAdd } from "react-icons/md"
 import { RiAddLine } from "react-icons/ri"
 import { IoMdArrowDropright } from "react-icons/io"
@@ -235,179 +236,179 @@ const InsureType = styled.div`
     }
 `
 
-const UserAddModal = ({ setAddCompany, setAddCond }) => {
-    const [cName, setName] = useState('');
-    const { alertText } = useContext(UserContext);
-    const [sectors, setSectors] = useState([]);
+// const UserAddModal = ({ setAddCompany, setAddCond }) => {
+//     const [cName, setName] = useState('');
+//     const { alertText } = useContext(UserContext);
+//     const [sectors, setSectors] = useState([]);
 
-    useEffect(() => {
-        void async function Fetch() {
-            let sector = await axios.get(`business-sector`);
-            setSectors(sector.data.data);
-        }()
-    }, [])
+//     useEffect(() => {
+//         void async function Fetch() {
+//             let sector = await axios.get(`business-sector`);
+//             setSectors(sector.data.data);
+//         }()
+//     }, [])
 
-    const CloseHandle = () => {
-        setName('contentParent2');
-        setTimeout(() => {
-            setAddCompany(false);
-        }, 370)
-    }
+//     const CloseHandle = () => {
+//         setName('contentParent2');
+//         setTimeout(() => {
+//             setAddCompany(false);
+//         }, 370)
+//     }
 
-    const HandleChange = (e) => {
-        e.preventDefault();
-        let inp = document.querySelectorAll(`.gettInps`); let arr = Array.from(inp); let final = {}
-        arr.forEach(el => {
-            final[el.name] = el.value;
-        });
+//     const HandleChange = (e) => {
+//         e.preventDefault();
+//         let inp = document.querySelectorAll(`.gettInps`); let arr = Array.from(inp); let final = {}
+//         arr.forEach(el => {
+//             final[el.name] = el.value;
+//         });
 
-        axios.post(`users`, final).then(_ => {
-            alertText('green', 'Амжилттай', true);
-            setAddCond(prev => !prev);
-            setName('contentParent2');
-            setTimeout(() => {
-                setAddCompany(false);
-            }, 370)
-        }).catch(_ => alertText('orange', "Алдаа гарлаа", true));
-    }
+//         axios.post(`users`, final).then(_ => {
+//             alertText('green', 'Амжилттай', true);
+//             setAddCond(prev => !prev);
+//             setName('contentParent2');
+//             setTimeout(() => {
+//                 setAddCompany(false);
+//             }, 370)
+//         }).catch(_ => alertText('orange', "Алдаа гарлаа", true));
+//     }
 
-    return (
-        <CustomModal style={{ paddingTop: `4rem` }}>
-            <div className={`contentParent ${cName}`} style={{ width: "40.5rem" }}>
+//     return (
+//         <CustomModal style={{ paddingTop: `4rem` }}>
+//             <div className={`contentParent ${cName}`} style={{ width: "40.5rem" }}>
 
-                <div className="head">
-                    <div className="title">Шинээр байгууллага нэмэх</div>
-                    <div onClick={CloseHandle} className="close">✖</div>
-                </div>
-                <form onSubmit={HandleChange}>
-                    <div className="content">
-                        <InputsParent>
-                            <InputStyle >
-                                <div className="label">Company name <span className="reds">*</span></div>
-                                <input type="text" name="companyname" className="gettInps" required />
-                            </InputStyle>
+//                 <div className="head">
+//                     <div className="title">Шинээр байгууллага нэмэх</div>
+//                     <div onClick={CloseHandle} className="close">✖</div>
+//                 </div>
+//                 <form onSubmit={HandleChange}>
+//                     <div className="content">
+//                         <InputsParent>
+//                             <InputStyle >
+//                                 <div className="label">Company name <span className="reds">*</span></div>
+//                                 <input type="text" name="companyname" className="gettInps" required />
+//                             </InputStyle>
 
-                            <InputStyle >
-                                <div className="label">Registration number <span className="reds">*</span></div>
-                                <input type="number" name="companyregister" className="gettInps" required />
-                            </InputStyle>
-                        </InputsParent>
+//                             <InputStyle >
+//                                 <div className="label">Registration number <span className="reds">*</span></div>
+//                                 <input type="number" name="companyregister" className="gettInps" required />
+//                             </InputStyle>
+//                         </InputsParent>
 
-                        <InputsParent>
-                            <InputStyle >
-                                <div className="label">Email address </div>
-                                <input type="email" name="email" className="gettInps" />
-                            </InputStyle>
+//                         <InputsParent>
+//                             <InputStyle >
+//                                 <div className="label">Email address </div>
+//                                 <input type="email" name="email" className="gettInps" />
+//                             </InputStyle>
 
-                            <InputStyle >
-                                <div className="label">Telephone number </div>
-                                <input type="number" name="phone" className="gettInps" />
-                            </InputStyle>
-                        </InputsParent>
+//                             <InputStyle >
+//                                 <div className="label">Telephone number </div>
+//                                 <input type="number" name="phone" className="gettInps" />
+//                             </InputStyle>
+//                         </InputsParent>
 
-                        <InputsParent>
-                            <InputStyle >
-                                <div className="label">Business sector<span className="reds">*</span></div>
-                                {/* <input type="text" name="desc" className="gettInp" required /> */}
-                                <div className="SelectPar">
-                                    <select name='business_sectorId' className="gettInps" required>
-                                        <option selected disabled></option>
-                                        {sectors.map((el, ind) => {
-                                            return (
-                                                <option key={ind} value={el.id}>{el.bdescription_mon}</option>
-                                            )
-                                        })}
-                                    </select>
-                                    <div className="SelectArr" ><IoMdArrowDropright /></div>
-                                </div>
-                            </InputStyle>
+//                         <InputsParent>
+//                             <InputStyle >
+//                                 <div className="label">Business sector<span className="reds">*</span></div>
+//                                 {/* <input type="text" name="desc" className="gettInp" required /> */}
+//                                 <div className="SelectPar">
+//                                     <select name='business_sectorId' className="gettInps" required>
+//                                         <option selected disabled></option>
+//                                         {sectors.map((el, ind) => {
+//                                             return (
+//                                                 <option key={ind} value={el.id}>{el.bdescription_mon}</option>
+//                                             )
+//                                         })}
+//                                     </select>
+//                                     <div className="SelectArr" ><IoMdArrowDropright /></div>
+//                                 </div>
+//                             </InputStyle>
 
-                            <InputStyle >
-                                {/* <div className="label">ESM </div>
-                                <div className="SelectPar">
-                                    <select name='insurance_type' className="gettInpp" required>
-                                        <option selected disabled></option>
-                                        <option value="A">A</option>
-                                        <option value="B" >B</option>
-                                        <option value="C">C</option>
-                                        <option value="D">D</option>
-                                        <option value="F">F</option>
-                                    </select>
-                                    <div className="SelectArr" ><IoMdArrowDropright /></div>
-                                </div> */}
-                            </InputStyle>
-                        </InputsParent>
+//                             <InputStyle >
+//                                 {/* <div className="label">ESM </div>
+//                                 <div className="SelectPar">
+//                                     <select name='insurance_type' className="gettInpp" required>
+//                                         <option selected disabled></option>
+//                                         <option value="A">A</option>
+//                                         <option value="B" >B</option>
+//                                         <option value="C">C</option>
+//                                         <option value="D">D</option>
+//                                         <option value="F">F</option>
+//                                     </select>
+//                                     <div className="SelectArr" ><IoMdArrowDropright /></div>
+//                                 </div> */}
+//                             </InputStyle>
+//                         </InputsParent>
 
-                        <InsureType contents="Contact information">
-                            <InputsParent>
-                                <InputStyle >
-                                    <div className="label">Name</div>
-                                    <input type="text" name="name" className="gettInps" required />
-                                </InputStyle>
+//                         <InsureType contents="Contact information">
+//                             <InputsParent>
+//                                 <InputStyle >
+//                                     <div className="label">Name</div>
+//                                     <input type="text" name="name" className="gettInps" required />
+//                                 </InputStyle>
 
-                                <InputStyle >
-                                    <div className="label">Position</div>
-                                    <input type="text" name="position" className="gettInps" required />
-                                </InputStyle>
-                            </InputsParent>
+//                                 <InputStyle >
+//                                     <div className="label">Position</div>
+//                                     <input type="text" name="position" className="gettInps" required />
+//                                 </InputStyle>
+//                             </InputsParent>
 
-                            <InputsParent>
-                                <InputStyle >
-                                    <div className="label">Address location </div>
-                                    {/* <input type="text" name="desc" className="gettInp" required /> */}
-                                    <div className="SelectPar">
-                                        <select name='location' className="gettInpps" required>
-                                            <option selected disabled></option>
-                                            {Location.map((el, ind) => <option value={el} key={ind}>{el}</option>)}
-                                        </select>
+//                             <InputsParent>
+//                                 <InputStyle >
+//                                     <div className="label">Address location </div>
+//                                     {/* <input type="text" name="desc" className="gettInp" required /> */}
+//                                     <div className="SelectPar">
+//                                         <select name='location' className="gettInpps" required>
+//                                             <option selected disabled></option>
+//                                             {Location.map((el, ind) => <option value={el} key={ind}>{el}</option>)}
+//                                         </select>
 
-                                        <div className="SelectArr" ><IoMdArrowDropright /></div>
-                                    </div>
-                                </InputStyle>
-                                <InputStyle ></InputStyle>
-                            </InputsParent>
+//                                         <div className="SelectArr" ><IoMdArrowDropright /></div>
+//                                     </div>
+//                                 </InputStyle>
+//                                 <InputStyle ></InputStyle>
+//                             </InputsParent>
 
-                            <InputsParent>
-                                <InputStyle >
-                                    <div className="label">Address detail </div>
-                                    <textarea name="location_detail" placeholder="Address detail" className="gettInps" required />
-                                </InputStyle>
-                            </InputsParent>
-                        </InsureType>
+//                             <InputsParent>
+//                                 <InputStyle >
+//                                     <div className="label">Address detail </div>
+//                                     <textarea name="location_detail" placeholder="Address detail" className="gettInps" required />
+//                                 </InputStyle>
+//                             </InputsParent>
+//                         </InsureType>
 
-                        <div className="modalbtnPar">
-                            <div style={{ opacity: `0` }} className="errText"><span className="red">* </span> Тэмдэглэгээтэй хэсгийг заавал бөглөнө үү...</div>
-                            <button type="submit" className="modalbtn"> <RiAddLine /> Нэмэх</button>
-                        </div>
-                    </div>
-                </form>
+//                         <div className="modalbtnPar">
+//                             <div style={{ opacity: `0` }} className="errText"><span className="red">* </span> Тэмдэглэгээтэй хэсгийг заавал бөглөнө үү...</div>
+//                             <button type="submit" className="modalbtn"> <RiAddLine /> Нэмэх</button>
+//                         </div>
+//                     </div>
+//                 </form>
 
-            </div>
-        </CustomModal>
-    )
-}
+//             </div>
+//         </CustomModal>
+//     )
+// }
 
-const Location = [
-    'Улаанбаатар',
-    'Архангай',
-    'Баян-Өлгий',
-    'Баянхонгор',
-    'Булган',
-    'Говь-Алтай',
-    'Говьсүмбэр',
-    'Дархан-Уул',
-    'Дорноговь',
-    'Дорнод',
-    'Дундговь',
-    'Завхан',
-    'Орхон',
-    'Өвөрхангай',
-    'Өмнөговь',
-    'Сүхбаатар',
-    'Сэлэнгэ',
-    'Төв',
-    'Увс',
-    'Ховд',
-    'Хөвсгөл',
-    'Хэнтий',
-]
+// const Location = [
+//     'Улаанбаатар',
+//     'Архангай',
+//     'Баян-Өлгий',
+//     'Баянхонгор',
+//     'Булган',
+//     'Говь-Алтай',
+//     'Говьсүмбэр',
+//     'Дархан-Уул',
+//     'Дорноговь',
+//     'Дорнод',
+//     'Дундговь',
+//     'Завхан',
+//     'Орхон',
+//     'Өвөрхангай',
+//     'Өмнөговь',
+//     'Сүхбаатар',
+//     'Сэлэнгэ',
+//     'Төв',
+//     'Увс',
+//     'Ховд',
+//     'Хөвсгөл',
+//     'Хэнтий',
+// ]

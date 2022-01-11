@@ -67,7 +67,6 @@ function TableOne(props) {
               let keys = Object.keys(finalOne2); const Procent = keys.length * 100 / 13; const FinalProcent = Math.round(Procent);
 
               let confirm = document.getElementById("GetcheckBtn").checked;
-              console.log(finalEnd, "final end");
 
              let arrs = [];  dataOne.map((el,i)=>{ finalOne2.map(elem=>{ if((i+1).toString()===elem.rownum && elem.rvalue === "true"){arrs.push(el.name); };});});
              setSecondChance(arrs);

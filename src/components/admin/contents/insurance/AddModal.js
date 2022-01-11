@@ -264,7 +264,11 @@ export const UserAddModal = ({ setAddCompany, setAddCond }) => {
         e.preventDefault();
         let inp = document.querySelectorAll(`.gettInps`); let arr = Array.from(inp); let final = {}
         arr.forEach(el => {
-            final[el.name] = el.value;
+            if(( el.name === 'female_shareholder' || el.name === 'export_experience') && el.checked === true ){
+                final[el.name] = (el.value === 'true');
+            }else if( el.name !== 'female_shareholder' && el.name !== 'export_experience' ){
+                final[el.name] = el.value;
+            }
         });
 
         axios.post(`users`, final).then(_ => {
@@ -289,31 +293,31 @@ export const UserAddModal = ({ setAddCompany, setAddCond }) => {
                     <div className="content">
                         <InputsParent>
                             <InputStyle >
-                                <div className="label">Company name <span className="reds">*</span></div>
+                                <div className="label">Байгууллагын нэр <span className="reds">*</span></div>
                                 <input type="text" name="companyname" className="gettInps" required />
                             </InputStyle>
 
                             <InputStyle >
-                                <div className="label">Registration number <span className="reds">*</span></div>
+                                <div className="label">Байгууллагын регистр <span className="reds">*</span></div>
                                 <input type="number" name="companyregister" className="gettInps" required />
                             </InputStyle>
                         </InputsParent>
 
                         <InputsParent>
                             <InputStyle >
-                                <div className="label">Email address </div>
+                                <div className="label">Емэйл хаяг </div>
                                 <input type="email" name="email" className="gettInps" />
                             </InputStyle>
 
                             <InputStyle >
-                                <div className="label">Telephone number </div>
+                                <div className="label">Утасны дугаар </div>
                                 <input type="number" name="phone" className="gettInps" />
                             </InputStyle>
                         </InputsParent>
 
                         <InputsParent>
                             <InputStyle >
-                                <div className="label">Business sector<span className="reds">*</span></div>
+                                <div className="label">Салбар<span className="reds">*</span></div>
                                 {/* <input type="text" name="desc" className="gettInp" required /> */}
                                 <div className="SelectPar">
                                     <select name='business_sectorId' className="gettInps" required>
@@ -327,39 +331,57 @@ export const UserAddModal = ({ setAddCompany, setAddCond }) => {
                                     <div className="SelectArr" ><IoMdArrowDropright /></div>
                                 </div>
                             </InputStyle>
+                            <InputStyle ></InputStyle>
+                        </InputsParent>
 
+                        <InputsParent>
                             <InputStyle >
-                                {/* <div className="label">ESM </div>
-                                <div className="SelectPar">
-                                    <select name='insurance_type' className="gettInpp" required>
-                                        <option selected disabled></option>
-                                        <option value="A">A</option>
-                                        <option value="B" >B</option>
-                                        <option value="C">C</option>
-                                        <option value="D">D</option>
-                                        <option value="F">F</option>
-                                    </select>
-                                    <div className="SelectArr" ><IoMdArrowDropright /></div>
-                                </div> */}
+                                <div className="label">Манай төслийн дэмжлэгтэйгээр шинэ зах зээлд нэвтрэх эсэх</div>
+                                <div className="selects">
+                                    <div className="child">
+                                        <label>Тйим</label>
+                                        <input type="radio" value="true" name="export_experience" className="gettInps" required />
+                                    </div>
+                                    <div className="child">
+                                        <label>Үгүй</label>
+                                        <input type="radio" value="false" name="export_experience" className="gettInps" required />
+                                    </div>
+                                </div>
                             </InputStyle>
                         </InputsParent>
 
-                        <InsureType contents="Contact information">
+                        <InputsParent>
+                            <InputStyle >
+                                <div className="label">Эмэгтэй удирдах албан тушаалтантай эсэх</div>
+                                <div className="selects">
+                                    <div className="child">
+                                        <label>Тйим</label>
+                                        <input type="radio" value="true" name="female_shareholder" className="gettInps" required />
+                                    </div>
+                                    <div className="child">
+                                        <label>Үгүй</label>
+                                        <input type="radio" value="false" name="female_shareholder" className="gettInps" required />
+                                    </div>
+                                </div>
+                            </InputStyle>
+                        </InputsParent>
+
+                        <InsureType contents="Холбогдох мэдээлэл">
                             <InputsParent>
                                 <InputStyle >
-                                    <div className="label">Name</div>
+                                    <div className="label">Нэр</div>
                                     <input type="text" name="name" className="gettInps" required />
                                 </InputStyle>
 
                                 <InputStyle >
-                                    <div className="label">Position</div>
+                                    <div className="label">Байрлал</div>
                                     <input type="text" name="position" className="gettInps" required />
                                 </InputStyle>
                             </InputsParent>
 
                             <InputsParent>
                                 <InputStyle >
-                                    <div className="label">Address location </div>
+                                    <div className="label">Хаяг байршил</div>
                                     {/* <input type="text" name="desc" className="gettInp" required /> */}
                                     <div className="SelectPar">
                                         <select name='location' className="gettInpps" required>
@@ -375,8 +397,8 @@ export const UserAddModal = ({ setAddCompany, setAddCond }) => {
 
                             <InputsParent>
                                 <InputStyle >
-                                    <div className="label">Address detail </div>
-                                    <textarea name="location_detail" placeholder="Address detail" className="gettInps" required />
+                                    <div className="label">Дэлгэрэнгүй хаяг</div>
+                                    <textarea name="location_detail" placeholder="Дэлгэрэнгүй хаяг" className="gettInps" required />
                                 </InputStyle>
                             </InputsParent>
                         </InsureType>

@@ -562,6 +562,30 @@ export const InputStyle = styled.div`
                 color:red;
             }
         }
+        .selects{
+            width:100%;
+            display:flex;
+            align-items:center;
+            justify-content:start;
+            gap:22px;
+            .child{
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:center;
+                font-size:11px;
+                label{
+                    font-weight:600;
+                }
+                input{
+                    cursor:pointer;
+                    width:18px;
+                    height:18px;
+                }
+            }
+            
+         
+        }
         input{
             box-shadow:1px 1px 13px -8px #21659f;
             border-radius: 4px;
