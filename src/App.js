@@ -1,9 +1,6 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, lazy, Suspense } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import Admin from "./containers/admin/MainMenu";
 import UserContext from "./context/UserContext";
-import UsersRoute from "containers/users/UsersRoute"
-import UnAuthContent from "UnauthContent";
 import { AlertStore } from "components/utilities/alertContext";
 import AlertDialog from "components/alert_dialog/alertDialog";
 import { FilePreviewStore } from "components/utilities/filePreviewContext";
@@ -11,8 +8,12 @@ import FilePreviewModal from "components/file_preview/filePreview";
 import 'devextreme/dist/css/dx.common.css'
 // import 'devextreme/dist/css/dx.light-compact.css'
 import 'assets/devExtremeTheme/dx.material.blue-light-compact.css'
-import MemberRoute from 'containers/member/MemberRoute'
-import TrainerPanel from "containers/trainer/TrainerPanel"
+
+const MemberRoute = lazy(() => import('containers/member/MemberRoute'))
+const TrainerPanel = lazy(() => import('containers/trainer/TrainerPanel'))
+const Admin = lazy(() => import('containers/admin/MainMenu'))
+const UsersRoute = lazy(() => import('containers/users/UsersRoute'))
+const UnAuthContent = lazy(() => import('UnauthContent'))
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -40,15 +41,17 @@ function App() {
       <AlertStore>
         <FilePreviewStore>
           <Router>
-            {ctxUser.userInfo.userId
-              ? ctxUser.userInfo.role !== "user"
-                ? {
-                  'member': <MemberRoute />,
-                  'trainer': <TrainerPanel />,
-                }[ctxUser.userInfo.role] || <Admin />
-                : (<UsersRoute />)
-              : (<UnAuthContent />)
-            }
+            <Suspense fallback={<></>}>
+              {ctxUser.userInfo.userId
+                ? ctxUser.userInfo.role !== "user"
+                  ? {
+                    'member': <MemberRoute />,
+                    'trainer': <TrainerPanel />,
+                  }[ctxUser.userInfo.role] || <Admin />
+                  : (<UsersRoute />)
+                : (<UnAuthContent />)
+              }
+            </Suspense>
           </Router>
           <FilePreviewModal />
         </FilePreviewStore>
