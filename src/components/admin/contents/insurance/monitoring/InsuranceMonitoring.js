@@ -2,23 +2,36 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Select from 'react-select';
 import { ButtonStyle2 } from "components/misc/CustomStyle"
-import CkEditor from 'components/misc/CkEditor';
+import Editor from './Editor'
 
-const InsuranceMonitoring = () => {
+const InsuranceMonitoring = ({ where_type, title }) => {
+    const [ compSwitch, setCompSwitch ] = useState(1)
     const [ selected, setSelected ] = useState({});
-    const [ dataEng, setDataEng ] = useState('');
-    const [ errText, setErrText ] = useState('')
+    const [ errText, setErrText ] = useState('');
+
+    const SwitchHandle = () =>{
+        if(!selected?.id){
+            setErrText('Жилээ сонгоно уу')
+            setTimeout(() => setErrText(''), 3000)
+        }else{
+            setCompSwitch(2)
+        }
+    }
 
     return (
         <Container className="container-fluid">
             <div className="TitlePar">
-                <div className="Title">Явцын үнэлгээний тайлан</div>
+                <div className="Title">{title??``}</div>
+                {selected?.id?<><span className="arrow">→</span>
+                    <span className="datePick">
+                    {selected?.year!==''?selected.year:`....`} оны
+                </span></>:null}
             </div>
-            
-            <div className="ReporthomePar">
+
+            {compSwitch===1?<div className="ReporthomePar">
                 <div className="Reporthome">
                     <div className="SelectParent">
-                        <div className="titleBig">Шинээр тайлан оруулах</div>
+                        <div className="titleBig">Тайлан оруулах</div>
                         <div className="selectItem">
                             <div className="title"> Жил сонгох</div>
                             <Select
@@ -36,17 +49,11 @@ const InsuranceMonitoring = () => {
                     </div>
                     <ButtonStyle2 className="buttons" >
                         {<div className="errTxt">{`${errText}`}</div>}
-                        <button  className="myBtn">Цааш → </button>
+                        <button  onClick={SwitchHandle} className="myBtn">Цааш → </button>
                     </ButtonStyle2>
                 </div>
-            </div>
-            {/* <div className="editor_par">
-                <CkEditor data={dataEng} title={'Явцын үнэлгээний тайлан'} lang="en" setData={setDataEng} />
-                <div className="button_par">
-                    <ButtonStyle2 className="buttons" ><button className="myBtn">←  Буцах </button></ButtonStyle2>
-                    <ButtonStyle2 className="buttons" ><button className="myBtn">Хадгалах</button></ButtonStyle2>
-                </div>
-            </div> */}
+            </div>:<Editor where_type={where_type} title={title} selected={selected} setCompSwitch={setCompSwitch} />}
+            
         </Container>
     )
 }
@@ -62,6 +69,23 @@ const Container = styled.div`
     box-shadow: -5px 5px 12px -12px black;
     font-size:12px;
     .editor_par{
+        .errTxt{
+            display:flex;
+            justify-content:flex-end;
+            .text{
+                transition: all 0.4s ease;
+                text-align: end;
+                background-color: #f6c343;
+                border-radius: 5px;
+                font-size: 13px !important;
+                font-weight: 400;
+                color: black !important;
+                line-height: 34px;
+                padding: 0px 20px;
+                margin-top:10px;
+            }
+            
+        }
         .button_par{
             display:flex;
             justify-content:space-between;
@@ -112,12 +136,13 @@ const Container = styled.div`
     }
     .TitlePar{
         display:flex;
-        align-items:start;
-        justify-content:space-between;
+        align-items:center;
+        gap:10px;
+        margin-bottom: 30px;
+        // justify-content:space-between;
         .Title{
             font-weight: 500;
             font-size: 20px;
-            margin-bottom: 30px;
             .arrow{
                 margin-right:12px;
                 margin-left:12px;

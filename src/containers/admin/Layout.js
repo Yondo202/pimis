@@ -50,7 +50,7 @@ import { ContractReportsForAdmin } from 'pages/contract/contract_reports/contrac
 import LaboratoryNavigator from 'components/admin/contents/laboratory/laboratoryNavigator';
 import MainReports from "components/admin/contents/monitoring/mainReports/container/Reports"
 import Member_interest from 'components/admin/contents/evaluation_results/Member_interest';
-import PrintSector from 'components/admin/contents/monitoring/mainReports/progressReport/PrintSector';
+import ProgressReport from 'components/admin/contents/monitoring/mainReports/progressReport/ProgressReport';
 import InsuranceMonitoring from 'components/admin/contents/insurance/monitoring/InsuranceMonitoring';
 
 function Layout({ setLocale }) {
@@ -97,9 +97,24 @@ function Layout({ setLocale }) {
                   </Route>
                 )
               })}
-              <Route path="/progress-report" component={PrintSector} />
+              <Route path="/progress-report" component={ProgressReport} />
 
-              <Route path="/incurance-report" component={InsuranceMonitoring} />
+              <Route path="/insurance-report" >
+                  <InsuranceMonitoring where_type='insurance' title="Явцын үнэлгээний тайлан" />
+              </Route>
+              
+              <Route path="/dedburelhuun" >
+                  <InsuranceMonitoring where_type='dedbureldhuun_heseg_zovloh' title="Явцын үнэлгээний тайлан" />
+              </Route>
+
+              <Route path="/spsmergijelten" >
+                  <InsuranceMonitoring where_type='SPSiin_mergejilten' title="Явцын үнэлгээний тайлан" />
+              </Route>
+
+
+              <Route path="/pps-report" >
+                  <InsuranceMonitoring where_type='pps' title="Явцын үнэлгээний тайлан" />
+              </Route>
               {/* <Route path="/urgudul/:page">
                 <UrgudulNavigator preloaded={true} />
               </Route> */}
