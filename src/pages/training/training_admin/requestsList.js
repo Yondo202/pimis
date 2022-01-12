@@ -33,7 +33,9 @@ export default function TrainingRequestsList() {
 
    const calculateCellSector = (rowdata) => {
       const sectorId = rowdata.business_sectorId
-      return sectors.find(sector => sector.id === sectorId)?.bdescription_mon
+      return sectorId === 1024
+         ? `Бусад - ${rowdata.business_sector_other}`
+         : sectors.find(sector => sector.id === sectorId)?.bdescription_mon
    }
 
    const containerRef = useRef()

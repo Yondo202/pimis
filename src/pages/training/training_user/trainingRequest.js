@@ -7,6 +7,7 @@ import FormRichText from 'components/urgudul_components/formRichText'
 import FormSelect from 'components/urgudul_components/formSelect'
 import AlertContext from 'components/utilities/alertContext'
 import React, { useContext, useEffect, useState } from 'react'
+import { Transition, animated } from 'react-spring/renderprops'
 import { buttonClass, titleClass } from './trainingsList'
 
 export default function TrainingRequest() {
@@ -27,7 +28,17 @@ export default function TrainingRequest() {
 
    const handleSubmit = () => {
       setValidate(true)
-      const allValid = Object.keys(initialState).every(key => !checkInvalid(request[key], quillTypes.includes(key) && 'quill'))
+      const allValid = Object.keys(initialState).every(key => {
+         switch (key) {
+            case 'business_sector_other':
+               return request.business_sectorId === 1024
+                  ? !checkInvalid(request.business_sector_other)
+                  : true
+            default:
+               return !checkInvalid(request[key], quillTypes.includes(key) && 'quill')
+         }
+      })
+
       if (allValid !== true) {
          AlertCtx.setAlert({ open: true, variant: 'normal', msg: 'Талбаруудыг гүйцэт бөглөнө үү.' })
          return
@@ -87,7 +98,26 @@ export default function TrainingRequest() {
 
             <FormInline label="Имэйл хаяг" type="email" value={request.company_email} name="company_email" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(request.company_email)} />
 
-            <FormSelect data={sectors} label="Харъяалагдах салбар" displayName="bdescription_mon" value={request.business_sectorId} name="business_sectorId" setter={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(request.business_sectorId)} />
+            <div className="tw-w-full tw-max-w-md">
+               <FormSelect data={sectors} label="Харъяалагдах салбар" displayName="bdescription_mon" value={request.business_sectorId} name="business_sectorId" setter={handleInput} classAppend="" invalid={validate && checkInvalid(request.business_sectorId)} />
+
+               <Transition
+                  items={request.business_sectorId === 1024}
+                  from={{ height: 0, opacity: 0 }}
+                  enter={{ height: 'auto', opacity: 1 }}
+                  leave={{ height: 0, opacity: 0 }}
+                  onDestroyed={() => handleInput('business_sector_other', null)}
+               >
+                  {item => item && (anims =>
+                     <div className="tw-flex tw-overflow-hidden tw-pl-3 tw-pr-3 tw-gap-x-3 tw-mt-1" style={anims}>
+                        <span className="tw-mt-1.5">
+                           Бусад:
+                        </span>
+                        <input type="text" className={`focus:tw-outline-none tw-border ${(validate && checkInvalid(request.business_sector_other)) ? 'tw-border-red-500' : 'tw-border-gray-400'} focus:tw-border-blue-700 tw-duration-700 tw-transition-colors tw-rounded tw-py-1 tw-px-2 tw-flex-grow`} value={request.business_sector_other} onChange={e => handleInput('business_sector_other', e.target.value)} />
+                     </div>
+                  )}
+               </Transition>
+            </div>
 
             <FormInline label="Улсын бүртгэлийн дугаар" type="number" value={request.company_registration_number} name="company_registration_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(request.company_registration_number)} />
 
@@ -140,6 +170,7 @@ const initialState = {
    phone: null,
    company_introduction: null,
    business_sectorId: null,
+   business_sector_other: null,
    company_registration_number: null,
    company_email: null,
    participant_number: null,
