@@ -263,7 +263,7 @@ export default function TrainingUserRegistration() {
             </div>
 
             <FormRichText
-               label="Манай сургалтад хамрагдах нь танд ямар ашиг тустай вэ? Энэхүү сургалтаас ямар үр дүн хүлээж байгаа вэ?"
+               label="Манай сургалтад хамрагдах нь танд ямар ашиг тустай вэ? Энэхүү сургалтаас ямар үр дүн хүлээж байна вэ?"
                invalid={validate && checkInvalid(registration.training_benefit, 'quill')}
                modules="small"
                value={registration.training_benefit}

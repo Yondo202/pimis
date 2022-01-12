@@ -4,10 +4,10 @@ import HelpPopup from 'components/help_popup/helpPopup'
 import ModalWindow from 'components/modal_window/modalWindow'
 import FormInline from 'components/urgudul_components/formInline'
 import FormRichText from 'components/urgudul_components/formRichText'
-import TreeSelect from 'components/urgudul_components/treeSelect'
+import FormSelect from 'components/urgudul_components/formSelect'
 import AlertContext from 'components/utilities/alertContext'
 import React, { useContext, useEffect, useState } from 'react'
-import { titleClass, buttonClass } from './trainingsList'
+import { buttonClass, titleClass } from './trainingsList'
 
 export default function TrainingRequest() {
    const [request, setRequest] = useState(initialState)
@@ -87,14 +87,14 @@ export default function TrainingRequest() {
 
             <FormInline label="Имэйл хаяг" type="email" value={request.company_email} name="company_email" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-full" validate={true} invalid={validate && checkInvalid(request.company_email)} />
 
-            <TreeSelect data={sectors} label="Харьялагдах салбар" displayName="bdescription_mon" value={request.business_sectorId} name="business_sectorId" setter={handleInput} invalid={validate && checkInvalid(request.business_sectorId)} />
+            <FormSelect data={sectors} label="Харъяалагдах салбар" displayName="bdescription_mon" value={request.business_sectorId} name="business_sectorId" setter={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(request.business_sectorId)} />
 
             <FormInline label="Улсын бүртгэлийн дугаар" type="number" value={request.company_registration_number} name="company_registration_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" invalid={validate && checkInvalid(request.company_registration_number)} />
 
             <FormInline label="Сургалтад хамрагдах ажилчдын тоо" type="number" value={request.participant_number} name="participant_number" setter={handleInput} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(request.participant_number)} />
 
             <FormRichText
-               label="Та ямар чиглэлээр ямар сургалт авах хүсэлтэй байгаа вэ? Та сургалтын хэрэгцээ, шаардлагаа тодорхой бичнэ үү."
+               label="Та ямар чиглэлээр ямар сургалт авах хүсэлтэй байна вэ? Та сургалтын хэрэгцээ, шаардлагаа тодорхой бичнэ үү."
                HelpPopup={<HelpPopup classAppend="tw-mr-2" main="Экспортод чиглэсэн байх шаардлагатай." />}
                invalid={validate && checkInvalid(request.training_request, 'quill')}
                modules="small"
@@ -105,7 +105,7 @@ export default function TrainingRequest() {
             />
 
             <FormRichText
-               label="Та сургалтад хамрагдсанаар та ямар ур чадвар эзэмших вэ? Та сургалтаас авах ашиг, үр дүнгийн талаар дэлгэрэнгүй бичнэ үү."
+               label="Та сургалтад хамрагдсанаар ямар ур чадвар эзэмших вэ? Та сургалтаас авах ашиг, үр дүнгийн талаар дэлгэрэнгүй бичнэ үү."
                invalid={validate && checkInvalid(request.training_benefit, 'quill')}
                modules="small"
                value={request.training_benefit}
