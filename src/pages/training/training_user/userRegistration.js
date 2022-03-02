@@ -1,26 +1,22 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import CheckCircleSVG from 'assets/svgComponents/checkCircleSVG'
+import ExclamationSVG from 'assets/svgComponents/exclamationSVG'
+import PlusSVG from 'assets/svgComponents/plusSVG'
+import SearchSVG from 'assets/svgComponents/searchSVG'
 import axios from 'axiosbase'
+import { UserAddModal } from 'components/admin/contents/insurance/AddModal'
+import ModalWindow from 'components/modal_window/modalWindow'
 import FormInline from 'components/urgudul_components/formInline'
 import FormOptions from 'components/urgudul_components/formOptions'
-import TreeSelect from 'components/urgudul_components/treeSelect'
 import FormRichText from 'components/urgudul_components/formRichText'
-import { animated, Transition } from 'react-spring/renderprops'
+import AlertContext from 'components/utilities/alertContext'
+import FilePreviewContext from 'components/utilities/filePreviewContext'
+import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
 import FileCard from 'pages/attachments/fileCard'
 import FileCardAdd from 'pages/attachments/fileCardAdd'
-import getLoggedUserToken from 'components/utilities/getLoggedUserToken'
-import FilePreviewContext from 'components/utilities/filePreviewContext'
-import AlertContext from 'components/utilities/alertContext'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router'
-import { titleClass, buttonClass } from './trainingsList'
-import ModalWindow from 'components/modal_window/modalWindow'
-import ExclamationSVG from 'assets/svgComponents/exclamationSVG'
-import CheckCircleSVG from 'assets/svgComponents/checkCircleSVG'
-import { UserAddModal } from 'components/admin/contents/insurance/AddModal'
-import { useTranslation } from 'react-i18next'
-import PlusSVG from 'assets/svgComponents/plusSVG'
-import FormSelect from 'components/urgudul_components/formSelect'
-import SearchSelect from 'components/urgudul_components/searchSelect'
-import Select from 'react-select'
+import { Transition } from 'react-spring/renderprops'
+import { buttonClass, titleClass } from './trainingsList'
 
 export default function TrainingUserRegistration() {
    const [registration, setRegistration] = useState(initialState)
@@ -168,23 +164,31 @@ export default function TrainingUserRegistration() {
       }
    }
 
-   const [users, setUsers] = useState([])
+   const [companyRegister, setCompanyRegister] = useState('')
    const [addCond, setAddCond] = useState(false)
    const [addCompany, setAddCompany] = useState(false)
+   const [selectedCompany, setSelectedCompany] = useState({})
 
-   useEffect(() => {
-      axios.get(`users`, {
-         headers: { Authorization: getLoggedUserToken() }
+   function getUserWithCompanyRegister() {
+      axios.get('users/company-register', {
+         params: { companyRegister }
       }).then(res => {
-         setUsers(res.data.data.filter(item => item.role === 'user'))
+         if (res.data.data === null) {
+            setSelectedCompany({
+               notFound: true
+            })
+         } else {
+            setSelectedCompany(res.data.data)
+            handleInput('userId', res.data.data?.id)
+         }
       })
-   }, [addCond])
-
-   const handleSelect = (option) => {
-      setRegistration(prev => ({ ...prev, userId: option?.id ?? null }))
    }
 
-   const selectedCompany = users.find(user => user.id === registration.userId)
+   function handleKeyPressCompanyRegister(e) {
+      if (e.code === 'Enter') {
+         getUserWithCompanyRegister()
+      }
+   }
 
    return (
       <div className="tw-text-gray-700 tw-text-sm tw-w-full tw-relative tw-p-2 tw-pb-12">
@@ -211,38 +215,26 @@ export default function TrainingUserRegistration() {
 
             {/* <FormInline label="Жилийн борлуулалтын тоо хэмжээ" type="numberFormat" formats={{ thousandSeparator: true, prefix: '$ ' }} value={registration.annual_sales} name="annual_sales" setter={handleInputFormat} classAppend="tw-w-full tw-max-w-md" classInput="tw-w-40" invalid={validate && checkInvalid(registration.annual_sales)} /> */}
 
-            <div className="tw-col-span-2 tw-pt-6 tw-px-3 tw-pb-3 tw-flex tw-flex-col tw-gap-y-3">
-               <div className={validate && checkInvalid(registration.userId) && 'tw-text-red-500 tw-transition-colors'}>
-                  Та өөрийн ажилладаг байгууллагаа сонгоно уу.
+            <div className="tw-col-span-2 tw-pt-6 tw-px-3 tw-pb-3 tw-flex tw-flex-col tw-gap-y-1.5">
+               <div className="">
+                  Та байгууллагын регистрийн дугаараа оруулж байгууллагаа сонгоно уу.
                </div>
                <div className="tw-flex tw-items-center tw-gap-x-5">
-                  <Select
-                     isClearable
-                     menuPortalTarget={document.body}
-                     styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-                     options={users}
-                     value={registration.companyregister}
-                     getOptionValue={option => option.companyregister}
-                     onChange={handleSelect}
-                     getOptionLabel={option => `${option.companyregister}, ${option.companyname}`}
-                     placeholder="Сонгох ..."
-                     className="tw-flex-grow tw-max-w-xs"
-                     theme={theme => ({
-                        ...theme,
-                        colors: {
-                           ...theme.colors,
-                           primary: '#3B82F6',
-                           neutral20: '#9CA3AF'
-                        }
-                     })}
-                  />
-                  <PlusSVG className="tw-w-9 tw-h-9 tw-cursor-pointer tw-border tw-border-gray-400 tw-rounded tw-p-2 tw-flex-shrink-0 tw-text-gray-400 active:tw-border-gray-600 active:tw-text-gray-600 tw-transition-colors hover:tw-shadow-md tw-transition-shadow" strokeWidth={3} onClick={() => setAddCompany(true)} />
+                  <div className={`tw-inline-flex tw-items-center tw-border ${validate && checkInvalid(registration.userId) ? 'tw-border-red-500 tw-text-red-500' : 'tw-border-gray-400 tw-text-gray-400'} focus-within:tw-border-blue-700 tw-transition-colors tw-duration-700 tw-rounded tw-h-8.5 tw-pl-3 tw-pr-1.5 tw-gap-x-2 tw-w-40  focus-within:tw-text-blue-700`}>
+                     <input type="number" className="focus:tw-outline-none tw-bg-transparent tw-w-full tw-text-gray-700" value={companyRegister} onChange={e => setCompanyRegister(e.target.value)} onKeyPress={handleKeyPressCompanyRegister} />
+                     <SearchSVG className="tw-w-4 tw-h-4 tw-text-current tw-cursor-pointer tw-flex-shrink-0" onClick={getUserWithCompanyRegister} />
+                  </div>
+
+                  {selectedCompany.notFound &&
+                     <PlusSVG className="tw-w-9 tw-h-9 tw-cursor-pointer tw-border tw-border-gray-400 tw-rounded tw-p-2 tw-flex-shrink-0 tw-text-gray-400 active:tw-border-gray-600 active:tw-text-gray-600 tw-transition-colors hover:tw-shadow-md tw-transition-shadow" strokeWidth={3} onClick={() => setAddCompany(true)} />
+                  }
+
                   {addCompany &&
                      <UserAddModal setAddCond={setAddCond} setAddCompany={setAddCompany} />
                   }
                </div>
-               {selectedCompany
-                  ? <div className="tw-text-gray-500">
+               {selectedCompany.id &&
+                  <div className="tw-text-gray-500">
                      <div className="">
                         <span className="tw-mr-2">Байгууллагын нэр:</span>
                         <span className="tw-font-medium tw-text-13px">{selectedCompany.companyname}</span>
@@ -256,20 +248,23 @@ export default function TrainingUserRegistration() {
                         <span className="tw-font-medium tw-text-13px">{selectedCompany.location_detail}</span>
                      </div>
                   </div>
-                  : <div className="tw-text-gray-500 tw-italic">
-                     Байгууллагын регистрийн дугаар оруулж байгууллага сонгоно. Хэрэв олдоогүй бол хажуугийн товчоор нэмэх боломжтой.
+               }
+
+               {selectedCompany.notFound &&
+                  <div className="tw-text-gray-500 tw-italic">
+                     Таны хайсан регистрийн дугаартай байгууллага нэмэгдээгүй байна. Та хажуугийн товчин дээр дарж байгууллагаа нэмэх боломжтой.
                   </div>
                }
             </div>
 
             <FormRichText
-               label="Манай сургалтад хамрагдах нь танд ямар ашиг тустай вэ? Энэхүү сургалтаас ямар үр дүн хүлээж байгаа вэ?"
+               label="Манай сургалтад хамрагдах нь танд ямар ашиг тустай вэ? Энэхүү сургалтаас ямар үр дүн хүлээж байна вэ?"
                invalid={validate && checkInvalid(registration.training_benefit, 'quill')}
                modules="small"
                value={registration.training_benefit}
                name="training_benefit"
                setter={handleInput}
-               classAppend="tw-w-full md:tw-col-span-2 tw-pl-3 tw-pt-1"
+               classAppend="tw-w-full md:tw-col-span-2 tw-pl-3 tw-pt-3"
             />
 
             {/* <div className="tw-w-full md:tw-col-span-2">
