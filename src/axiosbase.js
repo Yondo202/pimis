@@ -12,6 +12,7 @@ const instance = axios.create({
   baseURL: "http://188.166.188.164:3001/api/",
 });
 
+
 export default instance;
 
 export const edplan = axios.create({

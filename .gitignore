@@ -9,7 +9,7 @@
 /coverage
 
 # production
-/src/axiosbase.js
+# /src/axiosbase.js
 
 # misc
 .DS_Store
