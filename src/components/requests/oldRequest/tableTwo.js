@@ -61,8 +61,8 @@ function TableTwo(props) {
 
     const onChangeRecentDate = (event) => {
         const finalData = []
-        tableData.forEach((el, i) => { props.initialData.map(elem => elem); finalData.push(el); });
-        finalData.forEach((el, i) => { if (el.id.toString() === event.target.id) { el["recentDate"] = event.target.value } });
+        tableData.forEach(el => { props.initialData.map(elem => elem); finalData.push(el); });
+        finalData.forEach(el => { if (el.id.toString() === event.target.id) { el["recentDate"] = event.target.value } });
         setInitialData(finalData);
     }
 
