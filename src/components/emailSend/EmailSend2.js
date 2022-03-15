@@ -12,7 +12,6 @@ function EmailSend2() {
             email: "yondooo61@gmail.com",
             emailBody:EmailHTML,
            }).then((res)=>{
-                console.log(res.data.success, "my Response");
                 if(res.data.success === true){
                     setColor("#32CD32");
                     setText("Амжилттай илгээгдлээ");

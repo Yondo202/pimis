@@ -47,7 +47,7 @@ function TableFive(props) {
                 }
             }); tableCondition1.push(Lala); finalOne2.push(Lala);
         });
-        let keys1 = Object.keys(tableCondition1[0]); console.log(keys1.length, "my length");
+        let keys1 = Object.keys(tableCondition1[0]);
 
         let tableCondition2 = []; let rs22 = document.querySelectorAll(".GetItemAdd555"); let arr22 = Array.from(rs22); let finalOne22 = [];
 
@@ -71,8 +71,6 @@ function TableFive(props) {
         let confirm = document.getElementById("GetcheckBtn5").checked; console.log(confirm, "my confirm");
 
         finalOne["requestOne"] = finalOne2; finalOne["requestTwo"] = finalOne22; finalOne["name"] = userInp.name; finalOne["date"] = userInp.date; finalEnd["PPS5"] = finalOne;
-
-        console.log(finalEnd, "^^^final");
 
         if (keys1.length < 8 || keys2.length < 8) {
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү"); setOpacity2("1");

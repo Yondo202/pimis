@@ -34,8 +34,6 @@ function HomePage({}) {
         setOpen(prev=>!prev)
     }
 
-    console.log(`cardData`, cardData)
-
     return (
         <Memberhome style={{ maxWidth: 1160 }} className="container">
             <div className="header">

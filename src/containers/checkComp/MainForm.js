@@ -1,139 +1,136 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import FromOne from "../../components/checkComp/FormOne";
-import {AiOutlineSend} from 'react-icons/ai'
-import {RiMailSendLine} from 'react-icons/ri'
+import { AiOutlineSend } from 'react-icons/ai'
+import { RiMailSendLine } from 'react-icons/ri'
 import { animateScroll as scroll } from "react-scroll";
 import Axios from '../../axiosbase'
 // import Ghost from '../../components/Ghost'
 // import { motion } from 'framer-motion'
-import {fontFamily} from '../../components/theme'
-import {Link} from 'react-router-dom'
+import { fontFamily } from '../../components/theme'
+import { Link } from 'react-router-dom'
 import HelperMenu from "../menu/HelperMenu"
 
 let easing = [0, 0, 0.56, 0.95];
-const textVariants2 = {exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
-    enter: { y: 0,opacity: 1,transition: { delay: 0.2, duration: 0.6, ease: easing }}};
+const textVariants2 = {
+  exit: { y: -100, opacity: 0, transition: { duration: 0.9, ease: easing } },
+  enter: { y: 0, opacity: 1, transition: { delay: 0.2, duration: 0.6, ease: easing } }
+};
 
 function MainForm() {
-    const [userId, setUserId] = useState();
-    const [scale, setScale] = useState("0");
-    const [resScale, setresScale] = useState("0");
-    const [resText, setResText] = useState("");
+  const [userId, setUserId] = useState();
+  const [scale, setScale] = useState("0");
+  const [resScale, setresScale] = useState("0");
+  const [resText, setResText] = useState("");
 
-    useEffect(() => {
-      const userId = localStorage.getItem("userId", []);
-      setUserId(userId);
-    }, []);
+  useEffect(() => {
+    const userId = localStorage.getItem("userId", []);
+    setUserId(userId);
+  }, []);
 
-          const handleClick = async (e) =>{
-            e.preventDefault();
-            let rs = document.querySelectorAll(".getinput");
-            let arr = Array.from(rs);
-            let finalOne = {};
+  const handleClick = async (e) => {
+    e.preventDefault();
+    let rs = document.querySelectorAll(".getinput");
+    let arr = Array.from(rs);
+    let finalOne = {};
 
-            let rs2 = document.querySelectorAll(".inpTest3");
-            let arr2 = Array.from(rs2);
-            let finalOne2 = [];
+    let rs2 = document.querySelectorAll(".inpTest3");
+    let arr2 = Array.from(rs2);
+    let finalOne2 = [];
 
-            let rs3 = document.querySelectorAll(".getinput3");
-            let arr3 = Array.from(rs3);
-            let finalOne3 = [];
+    let rs3 = document.querySelectorAll(".getinput3");
+    let arr3 = Array.from(rs3);
+    let finalOne3 = [];
 
-            let rs4 = document.querySelectorAll(".userInp");
-            let arr4 = Array.from(rs4);
-            let userInp = {};
+    let rs4 = document.querySelectorAll(".userInp");
+    let arr4 = Array.from(rs4);
+    let userInp = {};
 
-            arr4.map(element=>{
-                let field = element.name;
-                let value = element.value;
-                userInp[field] = value;
-            });
+    arr4.map(element => {
+      let field = element.name;
+      let value = element.value;
+      userInp[field] = value;
+    });
 
-            arr.map(element=>{
-              if(element.checked === true){
-                let field = element.tabIndex;
-                let value = element.value;
-                finalOne[field] = [value];
-              }
-          });
-          arr2.map(element=>{
-            if(element.checked === true){
-              let soloObject2 = {}
-              let field = element.name;
-              let value = element.value;
-              soloObject2[field] = value;
-              finalOne2.push(soloObject2);
-            }
-        });
-        arr3.map(element=>{
-          if(element.checked === true){
-            let soloObject2 = {}
-            let field = element.name;
-            let value = element.value;
-            soloObject2[field] = value;
-            finalOne3.push(soloObject2);
-          }
+    arr.map(element => {
+      if (element.checked === true) {
+        let field = element.tabIndex;
+        let value = element.value;
+        finalOne[field] = [value];
+      }
+    });
+    arr2.map(element => {
+      if (element.checked === true) {
+        let soloObject2 = {}
+        let field = element.name;
+        let value = element.value;
+        soloObject2[field] = value;
+        finalOne2.push(soloObject2);
+      }
+    });
+    arr3.map(element => {
+      if (element.checked === true) {
+        let soloObject2 = {}
+        let field = element.name;
+        let value = element.value;
+        soloObject2[field] = value;
+        finalOne3.push(soloObject2);
+      }
+    });
+
+    finalOne[2] = finalOne2
+    finalOne[5] = finalOne3
+    finalOne["compname"] = userInp.compname
+    finalOne["registernum"] = userInp.registernum
+
+    let keys = Object.keys(finalOne);
+    if (keys.length < 8) {
+      setScale("1");
+      scroll.scrollTo(2500);
+    } else {
+      setScale("0");
+      await Axios.post('question-check', finalOne).then((result) => {
+        const appComp = result.data.data.approvedCompany
+        const appCluster = result.data.data.approvedCluster
+        if (appComp === true && appCluster === true) {
+          setresScale("1");
+          setResText("ААН, Кластер аль алинд тэнцэх боложтой байна. Та шалгуурууд болон бүрдүүлэх материалаа бүрдүүлэн өөрийн сонголтоор аль нэгэнд нь хандана уу.");
+        } else if (appCluster === true && appComp === false) {
+          setresScale("1");
+          setResText("Кластерын шалгуур, бүрдүүлэх материалыг бэлтгэн Кластераар хандаж болно.");
+          // setTimeout(()=>{ window.history.go(-1); },14000);
+        } else { setresScale("1"); }
       });
+    }
+  }
 
-        finalOne[2] = finalOne2
-        finalOne[5] = finalOne3
-        finalOne["compname"] = userInp.compname
-        finalOne["registernum"] = userInp.registernum
-
-        console.log(finalOne2 , "this my first fynal");
-        console.log(finalOne, "this finalLL");
-
-          let keys = Object.keys(finalOne);
-          console.log(keys.length, "myLength");
-          if(keys.length < 8){
-            setScale("1");
-            scroll.scrollTo(2500);
-          }else{
-            setScale("0");
-            await Axios.post( 'question-check', finalOne ).then((result)=>{
-              console.log(result.data.data, "result");
-              const appComp = result.data.data.approvedCompany
-              const appCluster = result.data.data.approvedCluster
-              if(appComp === true && appCluster === true){
-                setresScale("1");
-                setResText("ААН, Кластер аль алинд тэнцэх боложтой байна. Та шалгуурууд болон бүрдүүлэх материалаа бүрдүүлэн өөрийн сонголтоор аль нэгэнд нь хандана уу.");
-              }else if(appCluster === true && appComp === false){
-                setresScale("1");
-                setResText("Кластерын шалгуур, бүрдүүлэх материалыг бэлтгэн Кластераар хандаж болно.");
-                // setTimeout(()=>{ window.history.go(-1); },14000);
-              }else{ setresScale("1"); }
-            });
-          }
-        }
- 
   return (
     <React.Fragment>
       {userId ? null : <HelperMenu />}
       <Component className="container" >
-          {/* <Ghost /> */}
-          {/* <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}> */}
-            <div className="headPar">
-              <span className="headText">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ энэ асуулгаар шалгаж үзнэ үү </span>
-            </div>
-            <form onSubmit={handleClick}>
-            <FromOne />
-              <div className="SubmitButtonPar">
-                <span className="colorText" style={{transform:`scale(${scale})`}}> Тэдээлэл дутуу байна... </span>
-                {/* <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>handleClick()}> */}
-                  <button   className="SubmitButton" type="submit">Илгээх <div className="flexchild"><AiOutlineSend/> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
-                {/* </Link> */}
-              </div>
-            </form>
-          {/* </motion.div> */}
-          <div className="homeButtonPar" style={{transform:`scale(${resScale})`}}>
-            <Link to="/"><span className="homeBtn" >Буцах</span></Link>
-            <div className="resPar" ><RiMailSendLine /> <h5 className="finalText">{resText}</h5> </div>
+        {/* <Ghost /> */}
+        {/* <motion.div initial="exit" animate="enter" exit="exit" variants={textVariants2}> */}
+        <div className="headPar">
+          <span className="headText">Түншлэлийн хөтөлбөрт хамрагдах боломжтой эсэхээ энэ асуулгаар шалгаж үзнэ үү </span>
+        </div>
+        <form onSubmit={handleClick}>
+          <FromOne />
+          <div className="SubmitButtonPar">
+            <span className="colorText" style={{ transform: `scale(${scale})` }}> Тэдээлэл дутуу байна... </span>
+            {/* <Link  activeClass="active" to="section1" spy={true} smooth={true}  offset={-70} duration={0} onClick={()=>handleClick()}> */}
+            <button className="SubmitButton" type="submit">Илгээх <div className="flexchild"><AiOutlineSend /> <AiOutlineSend className="hide" /> <AiOutlineSend className="hide1" /></div>  </button>
+            {/* </Link> */}
           </div>
-        
-        </Component>
+        </form>
+        {/* </motion.div> */}
+        <div className="homeButtonPar" style={{ transform: `scale(${resScale})` }}>
+          <Link to="/"><span className="homeBtn" >Буцах</span></Link>
+          <div className="resPar" ><RiMailSendLine /> <h5 className="finalText">{resText}</h5> </div>
+        </div>
+
+      </Component>
     </React.Fragment>
-  
+
   );
 }
 

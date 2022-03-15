@@ -8,8 +8,6 @@ const ResultMeasurePdf = ({ wait, data, years, lang, LangText }) => {
     //     GlobalFont();
     // },[])
 
-    console.log(`data`, data)
-
     return (
         <Document title={LangText.title} >
             {wait?

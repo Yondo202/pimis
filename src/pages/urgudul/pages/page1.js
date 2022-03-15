@@ -343,7 +343,9 @@ export default function UrgudulPage1({ projects = [] }) {
                   </div>
                </div>
 
-               <ExportProducts label="Экспортийн бүтээгдэхүүнүүд" list={products} setter={setProducts} validate={validate} />
+               <ExportProducts label="Экспортийн бүтээгдэхүүнүүд" list={products} setter={setProducts} validate={validate}
+                  HelpPopup={<HelpPopup classAppend="tw-mx-2" main="Та бүтээгдэхүүний HS кодыг дараах линкээс харна уу." link="https://gaali.mn/hscode/mn" />}
+               />
 
                <FormOptions label="Экспорт хийж байсан туршлагатай эсэх"
                   HelpPopup={<HelpPopup classAppend="tw-mx-2" main="5000 ам.доллараас дээш үнийн дүнтэй." />}
@@ -477,9 +479,9 @@ export const activityClass = [
 ]
 
 export const plannedActivityClass = {
-   export_marketing: 'Экспортын маркетинг',
-   quality_control: 'Экспортын бүтээгдэхүүний чанарын удирдлага, гэрчилгээжүүлэлт',
-   tech_control: 'Экспортын бүтээгдэхүүний үйлдвэрлэл, технологийн удирдлага'
+   export_marketing: 'Эскпортын зах зээлд зориулсан маркетинг, идэвхжүүлэлт, гадаад худалдааны чадавх бэхжүүлэх',
+   quality_control: 'Экспортын бүтээгдэхүүний чанарын туршилт, гэрчилгээ, баталгаажуулалт',
+   tech_control: 'Экспортын бүтээгдэхүүн, үйлчилгээний хөгжүүлэлт, тэдгээр шаардлагатай шинэ техник, тоног төхөөрөмжийн худалдан авалт'
 }
 
 export const containerClass = 'tw-mt-8 tw-rounded-lg tw-shadow-md tw-min-w-min tw-w-11/12 tw-max-w-5xl tw-mx-auto tw-border-t tw-border-gray-100 tw-bg-white tw-divide-y tw-divide-dashed'
@@ -683,7 +685,6 @@ function ExportCountries({ label, HelpPopup, list, setter, validate, countriesOt
                      </div>
                   )}
                </div>
-
                <div className="tw-flex tw-justify-end tw-items-center">
                   <span className="tw-italic tw-text-gray-500 tw-text-xs">
                      Экспортын зорилтот орон нэмэх
@@ -746,7 +747,6 @@ function PlannedActivity({ label, HelpPopup, values, setter, validate }) {
                </div>
             )}
          </div>
-
          <StaticText
             label="Төлөвлөсөн үйл ажиллагааны нийт төсөв"
             text={`₮ ${sumActivityCost.toLocaleString()}`}

@@ -25,7 +25,6 @@ function App() {
     const expireDate = new Date(localStorage.getItem("expireDate"));
     if (token) {
       if (expireDate > new Date()) {
-        console.log(expireDate);
         // Hugatsaa n duusaaagui token baina, automat login hiine
         ctxUser.autoRenewTokenAfterMillisec(expireDate.getTime() - new Date().getTime());
       } else {

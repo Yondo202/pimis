@@ -17,7 +17,6 @@ const FileUploadLogo = ( { selectLogo, setSelectLogo, stamp }) => {
             data.append("desc", "edplan-upload" );
             axios.post(`attach-files`, data, { headers: { 'Authorization': AccessToken(), 'Content-Type': 'multipart/form-data',
             }}).then(res=>{
-                console.log(`res`, res);
                 setSelectLogo(res.data.data);
             }).catch(_=>ctx.alertText('orange','Алдаа гарлаа (хавсаргах)',true ));
         }

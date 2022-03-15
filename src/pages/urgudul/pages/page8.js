@@ -118,7 +118,7 @@ export default function UrgudulPage8() {
                   <div className="tw-flex tw-items-center tw-justify-between tw-text-sm odd:tw-bg-gray-50">
                      <span className="tw-px-4 tw-py-2">
                         <span className="tw-mr-2">3.</span>
-                        Экспортыг дэмжих төслөөс хүссэн нийт санхүүжилт нь кластерын хувьд 300 сая төгрөгөөс, аж ахуйн нэгжийн хувьд 150 сая төгрөгөөс хэтрэхгүй байна.
+                        Экспортыг дэмжих төслөөс хүссэн нийт санхүүжилт нь кластерын хувьд 500 сая төгрөгөөс, аж ахуйн нэгжийн хувьд 300 сая төгрөгөөс хэтрэхгүй байна.
                      </span>
                      <input className="tw-w-4 tw-h-4 tw-mx-4 tw-flex-shrink-0" type="checkbox" checked={form.funding} name="funding" onChange={handleInputCheckbox} />
                   </div>

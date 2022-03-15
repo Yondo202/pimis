@@ -44,7 +44,7 @@ function UsersInfo() {
         } else {
             setSpnBtn(true)
             axios.put(`users/${ctx.userInfo.userId}`, { ...userData, signature: imgData, business_sectorId: sectorId }, { headers: { Authorization: AccessToken() } }).then(res => {
-                console.log(`res`, res); setSpnBtn(false); ctx.alertText("green", "Амжилттай хадаглагдлаа", true); localStorage.setItem("signature", imgData);
+                setSpnBtn(false); ctx.alertText("green", "Амжилттай хадаглагдлаа", true); localStorage.setItem("signature", imgData);
             }).catch(err => { setSpnBtn(false); ctx.alertText("orange", "Алдаа гарлаа", true); console.log(`err.response.data`, err) });
         }
     }

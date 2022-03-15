@@ -69,7 +69,7 @@ function MainRequest() {
     const Four = param === "user" && helpCtx.GlobalStyle?.tableFour;
     const Five = param === "user" && helpCtx.GlobalStyle?.tableFive;
     const Six = param === "user" && helpCtx.GlobalStyle?.tableSix;
-    const errMsg = () => { console.log("+*+*+* err Msg"); };
+    const errMsg = () => { console.log("err Msg"); };
 
     return (
         <>

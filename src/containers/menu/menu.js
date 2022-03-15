@@ -30,7 +30,6 @@ function Menu() {
   useEffect(() => {
     const userName = localStorage.getItem("username");
     setUserName(userName);
-    return console.log("sey good bay");
   }, []);
 
   const handleClick = () => {

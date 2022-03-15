@@ -33,8 +33,8 @@ class Content extends React.Component {
                 signatureData:this.props?.Signature.signature,
                 emailBody:EmailHTML(this.props.approve,this.props?.edpInfo, this.state.username, this.props?.Signature ),
             }, { headers: { Authorization: AuthToken() } })
-            .then((res)=>{ console.log(res, "^ress");  this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true); setTimeout(()=> { this.props?.setNotifyShow(0); }, 3000);
-            }).catch((e)=>{console.log(e, "^err");   this.alertText("orange", "Алдаа гарлаа", true);  });
+            .then((res)=>{ this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true); setTimeout(()=> { this.props?.setNotifyShow(0); }, 3000);
+            }).catch((e)=>{console.log(e, "^err"); this.alertText("orange", "Алдаа гарлаа", true);  });
         }
     };
 

@@ -48,7 +48,6 @@ function MainWorkPerformance() {
         if (table1[0]) {
             final["todo_works"] = table1
         };
-        console.log(final, "final");
     }
 
     return (

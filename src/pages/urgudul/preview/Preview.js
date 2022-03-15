@@ -396,7 +396,7 @@ export default function UrgudulPreview(props) {
                                     <div className="tw-pl-2">
                                         {project.exportCountries?.length
                                             ? project.exportCountries?.map((country, i) =>
-                                                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-grid tw-grid-cols-2">
+                                                <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-grid tw-grid-cols-2" key={i}>
                                                     <span className="">
                                                         <span className="tw-mr-1.5">{i + 1}.</span>
                                                         Одоогийн байдлаар: {getExportCountry(country.current, country.current_other)}
@@ -418,7 +418,7 @@ export default function UrgudulPreview(props) {
                             <div className="tw-pl-2">
                                 {project.exportCountries1?.length
                                     ? project.exportCountries1?.map((country, i) =>
-                                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-grid tw-grid-cols-2">
+                                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-grid tw-grid-cols-2" key={i}>
                                             <span className="">
                                                 <span className="tw-mr-1.5">{i + 1}.</span>
                                                 Одоогийн байдлаар: {getExportCountry(country.current, country.current_other)}
@@ -438,7 +438,7 @@ export default function UrgudulPreview(props) {
                             <div className="tw-pl-2 tw-border-b tw-border-gray-400">
                                 {plannedActivities.length
                                     ? plannedActivities.map((activity, i) =>
-                                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-grid tw-grid-cols-2">
+                                        <div className="tw-px-2 tw-pt-1.5 tw-pb-1 tw-grid tw-grid-cols-2" key={i}>
                                             <span className="">
                                                 {i + 1}. {activity.label}
                                             </span>

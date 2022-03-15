@@ -46,9 +46,6 @@ const Editor = ({ selected, setCompSwitch, title, where_type}) => {
                 setNameModal(true)
             }else{
                 loadFunc(true);
-
-                console.log(`data`, data)
-
                 try{
                     // let res
                     if(DataId){

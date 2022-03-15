@@ -35,7 +35,6 @@ const Holidays = () => {
                   DateUtils.isSameDay(selectedDay, day)
                 );
                 selectedDays.splice(selectedIndex, 1);
-                console.log(`day`, new Date(day));
                 const formated =`${day.getFullYear()}-${day.getMonth()+1}-${day.getDate()}`
                 axios.delete(`holidays/${formated}`).then(res=>{
                   setSelectedDays(selectedDays); setreRender(prev=>!prev);

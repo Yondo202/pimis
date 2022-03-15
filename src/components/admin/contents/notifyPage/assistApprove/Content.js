@@ -35,7 +35,6 @@ class Content extends React.Component {
                 signatureData:this.props?.Signature.signature,
                 emailBody:EmailHTML(this.props.approve, this.props?.edpInfo, this.state.username, this.props?.Signature),
                }, { headers: { Authorization:AuthToken() } }).then((res)=>{
-                    console.log(res.data.success, "my Response");
                     setTimeout(()=> { this.props?.setNotifyShow(0); }, 3000);
                     this.setState({ Btn: "0"});
                     this.alertText("green", "Амжилттай илгээлээ", true);

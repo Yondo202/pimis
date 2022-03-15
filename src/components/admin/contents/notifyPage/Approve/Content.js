@@ -60,7 +60,6 @@ const DataList = [
                 emailBody:EmailHTML(this.state.myData, this.props?.data, this.props?.edpInfo, this.state.rejectReason, this.props.userData ),
                 approved : true
                }, { headers: { Authorization: AuthToken() } }).then((res)=>{
-                    console.log(res.data.success, "my Response");
                     this.setState({ Btn: "0"}); this.alertText("green", "Амжилттай илгээлээ", true); setTimeout(()=>{this.props.history.goBack()},3000);
                   }).catch(e=>{
                     this.alertText("orange", "Алдаа гарлаа", true);
