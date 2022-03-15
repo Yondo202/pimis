@@ -23,8 +23,6 @@ function ForgetPassword({ setVisible, visible }) {
             });
             await axios.post('users/forgot-password',  { email: finalOne.email })
                     .then((res)=>{
-                    console.log(res, "forget res");
-                    console.log(res.data.success, "forget res success");
                     if(res.data.success){
                         setErrmsg("✓ Та email хаягаа шалгана уу...");
                         setColor("green");

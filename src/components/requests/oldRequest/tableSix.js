@@ -122,8 +122,6 @@ function TableSix(props) {
         // finalOne["signature"] = trimmedDataURL;
         finalEnd["PPS6"] = finalOne;
 
-        console.log(finalEnd, "-+-+-++-+-+-+-+-final");
-        
         if(keys1.length < 8 || keys2.length < 8){
             setFinalErrorText("Хүснэгт хэсэгийг гүйцэд бөгөлнө үү");
             setOpacity2("1");
@@ -138,7 +136,7 @@ function TableSix(props) {
             setOpacity2("0");
             if(props.initialName){
                 axios.put(`pps-request/${props.id}`, finalEnd, {headers: {Authorization: props.token}}).then((res)=>{ 
-                    helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); history.push("/"); setSpnBtn(false); console.log(res, " ress");
+                    helperContext.alertText('green', 'Амжилттай хадаглагдлаа', true); history.push("/"); setSpnBtn(false);
                 }).catch((err)=>{console.log(err, " ress"); helperContext.alertText('orange', 'Алдаа гарлаа', true); setSpnBtn(false);});
             }else{
                 axios.put(`pps-request/${helperContext.tableId}`, finalEnd, {headers:{ Authorization:AccessToken()}}).then((res)=>{

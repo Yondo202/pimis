@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import QuestionMarkSVG from 'assets/svgComponents/questionMarkSVG'
 
 
-function HelpPopup({ classAppend, buttonClass, main, list }) {
+function HelpPopup({ classAppend, buttonClass, main, list, link }) {
     const [open, setOpen] = useState(false)
 
     const divRef = useRef()
@@ -48,7 +48,7 @@ function HelpPopup({ classAppend, buttonClass, main, list }) {
                     {main}
                 </div>
                 {list &&
-                    <ul className="tw-list-disc tw-pl-6 tw-mt-1">
+                    <ul className="tw-list-disc tw-pl-6">
                         {list.map((item, i) =>
                             <li className="tw-py-1" key={i}>
                                 {item}
@@ -56,6 +56,11 @@ function HelpPopup({ classAppend, buttonClass, main, list }) {
                         )
                         }
                     </ul>
+                }
+                {link &&
+                    <a className="tw-ml-2 tw-py-1" style={{ color: 'white' }} href={link} target="_blank" rel="noopener noreferrer">
+                        {link}
+                    </a>
                 }
             </div>
         </div>

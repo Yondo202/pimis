@@ -44,7 +44,7 @@ function EdpInformation() {
             // if(!Data){ final["manager_signature"] = imgData }else{ final["manager_signature"] = Data.manager_signature }
             setOpacity2("0"); setFinalErrorText("");
             axios.post(`edp-info`, final, { headers: { Authorization: AccessToken() } }).then(res => {
-                console.log(res, " res"); ctx.alertText('green', "Амжилттай хадаглагдлаа", true); setSpnBtn(false);
+                ctx.alertText('green', "Амжилттай хадаглагдлаа", true); setSpnBtn(false);
             }).catch(err => { setSpnBtn(false); ctx.alertText('orange', "Алдаа гарлаа", true); console.log(err.response.data) });
         }
     }

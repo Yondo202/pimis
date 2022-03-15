@@ -56,7 +56,7 @@ export const EditModal = ({ showModal, setShowModal, setUpdate, parent, parentEd
         } else {
             setErrText("0");
             axios.put(`users/${parent.id}`, final).then(res => {
-                console.log(res, "^ ress"); setUpdate(prev => !prev); ctx.alertText("green", "Амжилттай", true); setBtnSpin(false); setShowModal(prev => !prev);
+                setUpdate(prev => !prev); ctx.alertText("green", "Амжилттай", true); setBtnSpin(false); setShowModal(prev => !prev);
             }).catch(error => { console.error(error, "^err"); ctx.alertText("orange", "Алдаа гарлаа", true); setBtnSpin(false); });
         }
     }

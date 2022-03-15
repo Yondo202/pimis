@@ -8,7 +8,7 @@ const initialUserInfo = { userId: null, token: null, expireDate: null, name: nul
 export const UserStore = (props) => {
   const [userInfo, setUserInfo] = useState(initialUserInfo);
   const [alert, setAlert] = useState({ color: 'white', text: '', cond: false });
-  const [ loading, setLoading ] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [errMsgSignup, setErrMsgSignUp] = useState({ msg: "", cond: false });
   const [GlobalStyle, setGlobalStyle] = useState(initialStyle);
@@ -31,7 +31,7 @@ export const UserStore = (props) => {
     localStorage.setItem("trainerOrganizationId", user.trainerOrganizationId);
     localStorage.setItem("companyname", user.companyname);
   };
-  
+
 
   const loginUser = (email, password) => {
     axios.post("users/login", { email: email, password: password })
@@ -42,10 +42,10 @@ export const UserStore = (props) => {
         console.log(err, "User context deeer aldaa garlaa");
         if (err?.response?.data) {
           setErrMsg(err.response.data.error.message);
-          setTimeout(() => {setErrMsg(""); }, 5000);
+          setTimeout(() => { setErrMsg(""); }, 5000);
         } else {
           setErrMsg("Холболт алдаатай байна");
-          setTimeout(() => {setErrMsg(""); }, 5000);
+          setTimeout(() => { setErrMsg(""); }, 5000);
           setUserInfo(initialUserInfo);
         }
       });
@@ -70,7 +70,6 @@ export const UserStore = (props) => {
         token: localStorage.getItem("refreshToken"),
       })
       .then((result) => {
-        console.log("Token refreshed .....", result.data);
         const token = result.data.token;
         const refreshToken = result.data.refreshToken;
         const expireDate = result.data.expireDate;
@@ -112,12 +111,12 @@ export const UserStore = (props) => {
 
   };
 
-  const loadFunc = (cond) =>{
-      setLoading(cond);
-      setTimeout(() => {
-          setLoading(false);
-      }, 3000)
-      
+  const loadFunc = (cond) => {
+    setLoading(cond);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000)
+
   }
 
   const alertText = (color, text, cond) => {

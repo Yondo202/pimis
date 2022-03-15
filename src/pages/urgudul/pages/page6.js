@@ -117,8 +117,8 @@ export default function UrgudulPage6({ projects = [] }) {
    const limited = activities.some(activity => limitIds.includes(activity.activityId))
 
    const fundExceeded = isCluster
-      ? sumBudget / 2 > 300000000
-      : sumBudget / 2 > 150000000
+      ? sumBudget / 2 > 500000000
+      : sumBudget / 2 > 300000000
 
    return (
       <div className={containerClass}>
@@ -188,7 +188,7 @@ export default function UrgudulPage6({ projects = [] }) {
                label="Нийт Экспортыг Дэмжих Төслөөс хүсч буй санхүүжилт"
                text={isNaN(sumBudget) ? '0 ₮' : `${(sumBudget / 2).toLocaleString()} ₮`}
                classLabel={validate && fundExceeded && 'tw-text-red-500'}
-               HelpPopup={validate && fundExceeded && <HelpPopup classAppend="tw-ml-1.5" buttonClass="tw-text-red-500 active:tw-text-red-600" main="Экспортыг дэмжих төслөөс хүссэн нийт санхүүжилт нь кластерын хувьд 300 сая төгрөгөөс, аж ахуйн нэгжийн хувьд 150 сая төгрөгөөс хэтрэхгүй байна." />}
+               HelpPopup={validate && fundExceeded && <HelpPopup classAppend="tw-ml-1.5" buttonClass="tw-text-red-500 active:tw-text-red-600" main="Экспортыг дэмжих төслөөс хүссэн нийт санхүүжилт нь кластерын хувьд 500 сая төгрөгөөс, аж ахуйн нэгжийн хувьд 300 сая төгрөгөөс хэтрэхгүй байна." />}
             />
          </div>
 

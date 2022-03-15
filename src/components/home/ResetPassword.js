@@ -46,11 +46,6 @@ function ResetPassword() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-
-    console.log(passwordValidity.minChar, "min chaR1");
-    console.log(passwordValidity.number, "min chaR2");
-    console.log(passwordValidity.specialChar, "min chaR3");
-
     let rs = document.querySelectorAll(".Password");
     let arr = Array.from(rs);
     let finalOne = {};
@@ -72,8 +67,6 @@ function ResetPassword() {
     } else {
       await axios.post('users/reset-password', { password: finalOne.password, resetToken: id })
         .then((res) => {
-          console.log(res, "forget res");
-          console.log(res.data.success, "forget res success");
           if (res.data.success === true) {
             setErrText(" ✓ Нууц үг амжилттай солигдлоо");
             setScale("1");
@@ -83,7 +76,6 @@ function ResetPassword() {
           }
         }).catch((e) => {
           console.log(e.response.data.error.message, "err Response");
-          // setErrmsg(e.response.data.error.message);
           if (e.response.data.error.message) {
             setErrText(e.response.data.error.message);
             setScale("1");

@@ -17,7 +17,6 @@ function Feedback() {
     let inputFullName = useRef(null);
     useEffect(()=>{
         axios.get(`feedbacks`, { headers: { Authorization: AccessToken() } }).then(res=>{
-            console.log(res, " my res");
             if(res.data.data.id){ setData(res.data.data) }else{ setTimeout(()=>{  inputFullName.current.focus();},3000); }
         }).catch(err=> setTimeout(()=>{  inputFullName.current.focus();},3000) )
     },[btn]);
@@ -95,17 +94,15 @@ function Feedback() {
         final["feedbackdetails"] = tableOne;
         final["efficiency"] = tableTwo;
         let keys = Object.keys(final); 
-        console.log(keys.length);
 
         if(keys.length < 14){
             setFinalErrorText("Та гүйцэд бөгөлнө үү..."); setOpacity2("1");
         }else{
             setOpacity2("0");
             axios.post('feedbacks', final, { headers: { Authorization: AccessToken() } }).then(res=>{
-                console.log(res); ctx.alertText('green', "Амжилттай хадаглагдлаа", true); Spin(true);
+                ctx.alertText('green', "Амжилттай хадаглагдлаа", true); Spin(true);
             }).then(err=>{ ctx.alertText('orange', "Алдаа гарлаа", true); Spin(true); })
         }
-        console.log(final, "^final");
     }
 
     return (

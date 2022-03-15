@@ -55,12 +55,10 @@ export const ChangePassword = () =>{
             setOpacity2('0'); setSpnBtn(true);
             axios.post(`users/change-password`, final, {headers: { Authorization: Tokenn() }} ).then(res=>{
                 localStorage.setItem("accessToken", res.data.token); localStorage.setItem("refreshToken", res.data.refreshToken);
-                console.log(res, " ress"); ctx.alertText('green', 'Амжилттай солигдлоо', true);  setSpnBtn(false); setTimeout(()=>{history.push('/');},3000);
+                ctx.alertText('green', 'Амжилттай солигдлоо', true);  setSpnBtn(false); setTimeout(()=>{history.push('/');},3000);
             }).catch(err=>{  setOpacity2('1'); setErrText(err.response.data.error.message); setSpnBtn(false); })
         }
-        console.log(final, " my final");
     }
-
       
     return(
         <>
